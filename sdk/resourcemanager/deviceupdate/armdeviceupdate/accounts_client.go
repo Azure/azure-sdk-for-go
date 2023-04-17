@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,65 +24,58 @@ import (
 // AccountsClient contains the methods for the Accounts group.
 // Don't use this type directly, use NewAccountsClient() instead.
 type AccountsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAccountsClient creates a new instance of AccountsClient with the specified values.
-// subscriptionID - The Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AccountsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AccountsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Creates or updates Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// account - Account details.
-// options - AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - account - Account details.
+//   - options - AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
 func (client *AccountsClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginCreateOptions) (*runtime.Poller[AccountsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, account, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountsClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AccountsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates or updates Account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *AccountsClient) create(ctx context.Context, resourceGroupName string, accountName string, account Account, options *AccountsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, account, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +100,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,33 +113,35 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Deletes account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
 func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*runtime.Poller[AccountsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AccountsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +166,7 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,16 +179,17 @@ func (client *AccountsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Returns account details for the given account name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - options - AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
 func (client *AccountsClient) Get(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientGetOptions) (AccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return AccountsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountsClientGetResponse{}, err
 	}
@@ -220,7 +214,7 @@ func (client *AccountsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -241,16 +235,17 @@ func (client *AccountsClient) getHandleResponse(resp *http.Response) (AccountsCl
 }
 
 // Head - Checks whether account exists.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// options - AccountsClientHeadOptions contains the optional parameters for the AccountsClient.Head method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - options - AccountsClientHeadOptions contains the optional parameters for the AccountsClient.Head method.
 func (client *AccountsClient) Head(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientHeadOptions) (AccountsClientHeadResponse, error) {
 	req, err := client.headCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return AccountsClientHeadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountsClientHeadResponse{}, err
 	}
@@ -275,7 +270,7 @@ func (client *AccountsClient) headCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,11 +282,11 @@ func (client *AccountsClient) headCreateRequest(ctx context.Context, resourceGro
 }
 
 // NewListByResourceGroupPager - Returns list of Accounts.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The resource group name.
+//   - options - AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
+//     method.
 func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName string, options *AccountsClientListByResourceGroupOptions) *runtime.Pager[AccountsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountsClientListByResourceGroupResponse]{
 		More: func(page AccountsClientListByResourceGroupResponse) bool {
@@ -308,7 +303,7 @@ func (client *AccountsClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return AccountsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountsClientListByResourceGroupResponse{}, err
 			}
@@ -331,7 +326,7 @@ func (client *AccountsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -352,10 +347,10 @@ func (client *AccountsClient) listByResourceGroupHandleResponse(resp *http.Respo
 }
 
 // NewListBySubscriptionPager - Returns list of Accounts.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription
-// method.
+//   - options - AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
+//     method.
 func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClientListBySubscriptionOptions) *runtime.Pager[AccountsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountsClientListBySubscriptionResponse]{
 		More: func(page AccountsClientListBySubscriptionResponse) bool {
@@ -372,7 +367,7 @@ func (client *AccountsClient) NewListBySubscriptionPager(options *AccountsClient
 			if err != nil {
 				return AccountsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountsClientListBySubscriptionResponse{}, err
 			}
@@ -391,7 +386,7 @@ func (client *AccountsClient) listBySubscriptionCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -413,34 +408,36 @@ func (client *AccountsClient) listBySubscriptionHandleResponse(resp *http.Respon
 
 // BeginUpdate - Updates account's patchable properties
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// accountUpdatePayload - Updated Account.
-// options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - accountUpdatePayload - Updated Account.
+//   - options - AccountsClientBeginUpdateOptions contains the optional parameters for the AccountsClient.BeginUpdate method.
 func (client *AccountsClient) BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, accountUpdatePayload AccountUpdate, options *AccountsClientBeginUpdateOptions) (*runtime.Poller[AccountsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, accountName, accountUpdatePayload, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccountsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AccountsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Updates account's patchable properties
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *AccountsClient) update(ctx context.Context, resourceGroupName string, accountName string, accountUpdatePayload AccountUpdate, options *AccountsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, accountUpdatePayload, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -465,7 +462,7 @@ func (client *AccountsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

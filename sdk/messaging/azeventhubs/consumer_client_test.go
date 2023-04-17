@@ -22,15 +22,6 @@ import (
 )
 
 func TestConsumerClient_UsingWebSockets(t *testing.T) {
-	// NOTE: This error is coming from the `nhooyr.io/websocket` package. There's an
-	// open discussion here:
-	//   https://github.com/nhooyr/websocket/discussions/380
-	//
-	// The frame it's waiting for (at this point) is the other half of the websocket CLOSE handshake.
-	// I wireshark'd this and confirmed that the frame does arrive, it's just not read by the local
-	// package. In this context, since the connection has already shut down, this is harmless.
-	var expectedWSErr = "failed to close WebSocket: failed to read frame header: EOF"
-
 	newWebSocketConnFn := func(ctx context.Context, args azeventhubs.WebSocketConnParams) (net.Conn, error) {
 		opts := &websocket.DialOptions{
 			Subprotocols: []string{"amqp"},
@@ -51,10 +42,7 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	defer func() {
-		err := producerClient.Close(context.Background())
-		require.EqualError(t, err, expectedWSErr)
-	}()
+	defer test.RequireClose(t, producerClient)
 
 	partProps, err := producerClient.GetPartitionProperties(context.Background(), "0", nil)
 	require.NoError(t, err)
@@ -77,10 +65,7 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 	})
 	require.NoError(t, err)
 
-	defer func() {
-		err := consumerClient.Close(context.Background())
-		require.EqualError(t, err, expectedWSErr)
-	}()
+	defer test.RequireClose(t, consumerClient)
 
 	partClient, err := consumerClient.NewPartitionClient("0", &azeventhubs.PartitionClientOptions{
 		StartPosition: getStartPosition(partProps),

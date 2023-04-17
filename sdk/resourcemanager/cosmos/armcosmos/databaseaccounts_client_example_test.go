@@ -27,11 +27,11 @@ func ExampleDatabaseAccountsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ddb1", nil)
+	res, err := clientFactory.NewDatabaseAccountsClient().Get(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -170,11 +170,11 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountUpdateParameters{
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountUpdateParameters{
 		Identity: &armcosmos.ManagedServiceIdentity{
 			Type: to.Ptr(armcosmos.ResourceIdentityTypeSystemAssignedUserAssigned),
 			UserAssignedIdentities: map[string]*armcosmos.Components1Jq1T4ISchemasManagedserviceidentityPropertiesUserassignedidentitiesAdditionalproperties{
@@ -375,11 +375,11 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
 		Location: to.Ptr("westus"),
 		Tags:     map[string]*string{},
 		Identity: &armcosmos.ManagedServiceIdentity{
@@ -612,11 +612,11 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbDatabaseAccountCr
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
 		Location: to.Ptr("westus"),
 		Properties: &armcosmos.DatabaseAccountCreateUpdateProperties{
 			CreateMode:               to.Ptr(armcosmos.CreateModeDefault),
@@ -736,11 +736,11 @@ func ExampleDatabaseAccountsClient_BeginCreateOrUpdate_cosmosDbRestoreDatabaseAc
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountCreateUpdateParameters{
 		Location: to.Ptr("westus"),
 		Tags:     map[string]*string{},
 		Kind:     to.Ptr(armcosmos.DatabaseAccountKindGlobalDocumentDB),
@@ -882,11 +882,11 @@ func ExampleDatabaseAccountsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "ddb1", nil)
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginDelete(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -903,11 +903,11 @@ func ExampleDatabaseAccountsClient_BeginFailoverPriorityChange() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginFailoverPriorityChange(ctx, "rg1", "ddb1-failover", armcosmos.FailoverPolicies{
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginFailoverPriorityChange(ctx, "rg1", "ddb1-failover", armcosmos.FailoverPolicies{
 		FailoverPolicies: []*armcosmos.FailoverPolicy{
 			{
 				FailoverPriority: to.Ptr[int32](0),
@@ -934,11 +934,11 @@ func ExampleDatabaseAccountsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewDatabaseAccountsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1080,11 +1080,11 @@ func ExampleDatabaseAccountsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewDatabaseAccountsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1193,11 +1193,11 @@ func ExampleDatabaseAccountsClient_ListKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListKeys(ctx, "rg1", "ddb1", nil)
+	res, err := clientFactory.NewDatabaseAccountsClient().ListKeys(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1219,11 +1219,11 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListConnectionStrings(ctx, "rg1", "ddb1", nil)
+	res, err := clientFactory.NewDatabaseAccountsClient().ListConnectionStrings(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1241,11 +1241,11 @@ func ExampleDatabaseAccountsClient_ListConnectionStrings_cosmosDbDatabaseAccount
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListConnectionStrings(ctx, "rg1", "mongo-ddb1", nil)
+	res, err := clientFactory.NewDatabaseAccountsClient().ListConnectionStrings(ctx, "rg1", "mongo-ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1268,11 +1268,11 @@ func ExampleDatabaseAccountsClient_BeginOfflineRegion() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginOfflineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{}, nil)
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginOfflineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1289,11 +1289,11 @@ func ExampleDatabaseAccountsClient_BeginOnlineRegion() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginOnlineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{}, nil)
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginOnlineRegion(ctx, "rg1", "ddb1", armcosmos.RegionForOnlineOffline{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1310,11 +1310,11 @@ func ExampleDatabaseAccountsClient_GetReadOnlyKeys() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetReadOnlyKeys(ctx, "rg1", "ddb1", nil)
+	res, err := clientFactory.NewDatabaseAccountsClient().GetReadOnlyKeys(ctx, "rg1", "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1334,11 +1334,11 @@ func ExampleDatabaseAccountsClient_BeginRegenerateKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRegenerateKey(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountRegenerateKeyParameters{
+	poller, err := clientFactory.NewDatabaseAccountsClient().BeginRegenerateKey(ctx, "rg1", "ddb1", armcosmos.DatabaseAccountRegenerateKeyParameters{
 		KeyKind: to.Ptr(armcosmos.KeyKindPrimary),
 	}, nil)
 	if err != nil {
@@ -1357,11 +1357,11 @@ func ExampleDatabaseAccountsClient_CheckNameExists() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("<subscription-id>", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.CheckNameExists(ctx, "ddb1", nil)
+	_, err = clientFactory.NewDatabaseAccountsClient().CheckNameExists(ctx, "ddb1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1374,11 +1374,11 @@ func ExampleDatabaseAccountsClient_NewListMetricsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricsPager("rg1", "ddb1", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
+	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricsPager("rg1", "ddb1", "$filter=(name.value eq 'Total Requests') and timeGrain eq duration'PT5M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T00:13:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1437,11 +1437,11 @@ func ExampleDatabaseAccountsClient_NewListUsagesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUsagesPager("rg1", "ddb1", &armcosmos.DatabaseAccountsClientListUsagesOptions{Filter: to.Ptr("$filter=name.value eq 'Storage'")})
+	pager := clientFactory.NewDatabaseAccountsClient().NewListUsagesPager("rg1", "ddb1", &armcosmos.DatabaseAccountsClientListUsagesOptions{Filter: to.Ptr("$filter=name.value eq 'Storage'")})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1475,11 +1475,11 @@ func ExampleDatabaseAccountsClient_NewListMetricDefinitionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricDefinitionsPager("rg1", "ddb1", nil)
+	pager := clientFactory.NewDatabaseAccountsClient().NewListMetricDefinitionsPager("rg1", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

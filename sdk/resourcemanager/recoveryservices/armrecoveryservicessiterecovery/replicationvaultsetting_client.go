@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,69 +24,58 @@ import (
 // ReplicationVaultSettingClient contains the methods for the ReplicationVaultSetting group.
 // Don't use this type directly, use NewReplicationVaultSettingClient() instead.
 type ReplicationVaultSettingClient struct {
-	host              string
-	resourceName      string
-	resourceGroupName string
-	subscriptionID    string
-	pl                runtime.Pipeline
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewReplicationVaultSettingClient creates a new instance of ReplicationVaultSettingClient with the specified values.
-// resourceName - The name of the recovery services vault.
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
-func NewReplicationVaultSettingClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationVaultSettingClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
+func NewReplicationVaultSettingClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationVaultSettingClient, error) {
+	cl, err := arm.NewClient(moduleName+".ReplicationVaultSettingClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReplicationVaultSettingClient{
-		resourceName:      resourceName,
-		resourceGroupName: resourceGroupName,
-		subscriptionID:    subscriptionID,
-		host:              ep,
-		pl:                pl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - The operation to configure vault setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// vaultSettingName - Vault setting name.
-// input - Vault setting creation input.
-// options - ReplicationVaultSettingClientBeginCreateOptions contains the optional parameters for the ReplicationVaultSettingClient.BeginCreate
-// method.
-func (client *ReplicationVaultSettingClient) BeginCreate(ctx context.Context, vaultSettingName string, input VaultSettingCreationInput, options *ReplicationVaultSettingClientBeginCreateOptions) (*runtime.Poller[ReplicationVaultSettingClientCreateResponse], error) {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - vaultSettingName - Vault setting name.
+//   - input - Vault setting creation input.
+//   - options - ReplicationVaultSettingClientBeginCreateOptions contains the optional parameters for the ReplicationVaultSettingClient.BeginCreate
+//     method.
+func (client *ReplicationVaultSettingClient) BeginCreate(ctx context.Context, resourceName string, resourceGroupName string, vaultSettingName string, input VaultSettingCreationInput, options *ReplicationVaultSettingClientBeginCreateOptions) (*runtime.Poller[ReplicationVaultSettingClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, vaultSettingName, input, options)
+		resp, err := client.create(ctx, resourceName, resourceGroupName, vaultSettingName, input, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReplicationVaultSettingClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationVaultSettingClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationVaultSettingClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationVaultSettingClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - The operation to configure vault setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-func (client *ReplicationVaultSettingClient) create(ctx context.Context, vaultSettingName string, input VaultSettingCreationInput, options *ReplicationVaultSettingClientBeginCreateOptions) (*http.Response, error) {
-	req, err := client.createCreateRequest(ctx, vaultSettingName, input, options)
+func (client *ReplicationVaultSettingClient) create(ctx context.Context, resourceName string, resourceGroupName string, vaultSettingName string, input VaultSettingCreationInput, options *ReplicationVaultSettingClientBeginCreateOptions) (*http.Response, error) {
+	req, err := client.createCreateRequest(ctx, resourceName, resourceGroupName, vaultSettingName, input, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -99,16 +86,16 @@ func (client *ReplicationVaultSettingClient) create(ctx context.Context, vaultSe
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Context, vaultSettingName string, input VaultSettingCreationInput, options *ReplicationVaultSettingClientBeginCreateOptions) (*policy.Request, error) {
+func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, vaultSettingName string, input VaultSettingCreationInput, options *ReplicationVaultSettingClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -117,7 +104,7 @@ func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Con
 		return nil, errors.New("parameter vaultSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultSettingName}", url.PathEscape(vaultSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -130,16 +117,19 @@ func (client *ReplicationVaultSettingClient) createCreateRequest(ctx context.Con
 
 // Get - Gets the vault setting. This includes the Migration Hub connection settings.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// vaultSettingName - Vault setting name.
-// options - ReplicationVaultSettingClientGetOptions contains the optional parameters for the ReplicationVaultSettingClient.Get
-// method.
-func (client *ReplicationVaultSettingClient) Get(ctx context.Context, vaultSettingName string, options *ReplicationVaultSettingClientGetOptions) (ReplicationVaultSettingClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, vaultSettingName, options)
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - vaultSettingName - Vault setting name.
+//   - options - ReplicationVaultSettingClientGetOptions contains the optional parameters for the ReplicationVaultSettingClient.Get
+//     method.
+func (client *ReplicationVaultSettingClient) Get(ctx context.Context, resourceName string, resourceGroupName string, vaultSettingName string, options *ReplicationVaultSettingClientGetOptions) (ReplicationVaultSettingClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, vaultSettingName, options)
 	if err != nil {
 		return ReplicationVaultSettingClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReplicationVaultSettingClientGetResponse{}, err
 	}
@@ -150,16 +140,16 @@ func (client *ReplicationVaultSettingClient) Get(ctx context.Context, vaultSetti
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationVaultSettingClient) getCreateRequest(ctx context.Context, vaultSettingName string, options *ReplicationVaultSettingClientGetOptions) (*policy.Request, error) {
+func (client *ReplicationVaultSettingClient) getCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, vaultSettingName string, options *ReplicationVaultSettingClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings/{vaultSettingName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -168,7 +158,7 @@ func (client *ReplicationVaultSettingClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter vaultSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vaultSettingName}", url.PathEscape(vaultSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -189,10 +179,13 @@ func (client *ReplicationVaultSettingClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListPager - Gets the list of vault setting. This includes the Migration Hub connection settings.
+//
 // Generated from API version 2022-10-01
-// options - ReplicationVaultSettingClientListOptions contains the optional parameters for the ReplicationVaultSettingClient.List
-// method.
-func (client *ReplicationVaultSettingClient) NewListPager(options *ReplicationVaultSettingClientListOptions) *runtime.Pager[ReplicationVaultSettingClientListResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - options - ReplicationVaultSettingClientListOptions contains the optional parameters for the ReplicationVaultSettingClient.NewListPager
+//     method.
+func (client *ReplicationVaultSettingClient) NewListPager(resourceName string, resourceGroupName string, options *ReplicationVaultSettingClientListOptions) *runtime.Pager[ReplicationVaultSettingClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationVaultSettingClientListResponse]{
 		More: func(page ReplicationVaultSettingClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -201,14 +194,14 @@ func (client *ReplicationVaultSettingClient) NewListPager(options *ReplicationVa
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
+				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return ReplicationVaultSettingClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationVaultSettingClientListResponse{}, err
 			}
@@ -221,21 +214,21 @@ func (client *ReplicationVaultSettingClient) NewListPager(options *ReplicationVa
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationVaultSettingClient) listCreateRequest(ctx context.Context, options *ReplicationVaultSettingClientListOptions) (*policy.Request, error) {
+func (client *ReplicationVaultSettingClient) listCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, options *ReplicationVaultSettingClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultSettings"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -635,7 +635,7 @@ func TestRotateKey(t *testing.T) {
 				LifetimeActions: []*azkeys.LifetimeActions{
 					{
 						Action: &azkeys.LifetimeActionsType{
-							Type: to.Ptr(azkeys.ActionTypeRotate),
+							Type: to.Ptr(azkeys.KeyRotationPolicyActionRotate),
 						},
 						Trigger: &azkeys.LifetimeActionsTrigger{
 							TimeAfterCreate: timeAfterCreate,
@@ -653,7 +653,7 @@ func TestRotateKey(t *testing.T) {
 			require.NotEmpty(t, getResp.LifetimeActions)
 			require.Condition(t, func() bool {
 				for _, action := range getResp.LifetimeActions {
-					if strings.EqualFold(string(*action.Action.Type), string(azkeys.ActionTypeRotate)) && strings.EqualFold(string(*action.Trigger.TimeAfterCreate), *timeAfterCreate) {
+					if strings.EqualFold(string(*action.Action.Type), string(azkeys.KeyRotationPolicyActionRotate)) && strings.EqualFold(string(*action.Trigger.TimeAfterCreate), *timeAfterCreate) {
 						return true
 					}
 				}

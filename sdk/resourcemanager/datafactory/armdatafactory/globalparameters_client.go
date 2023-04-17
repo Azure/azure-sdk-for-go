@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // GlobalParametersClient contains the methods for the GlobalParameters group.
 // Don't use this type directly, use NewGlobalParametersClient() instead.
 type GlobalParametersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGlobalParametersClient creates a new instance of GlobalParametersClient with the specified values.
@@ -36,21 +33,13 @@ type GlobalParametersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGlobalParametersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GlobalParametersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GlobalParametersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GlobalParametersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *GlobalParametersClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return GlobalParametersClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GlobalParametersClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +88,7 @@ func (client *GlobalParametersClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter globalParameterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{globalParameterName}", url.PathEscape(globalParameterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,7 +121,7 @@ func (client *GlobalParametersClient) Delete(ctx context.Context, resourceGroupN
 	if err != nil {
 		return GlobalParametersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GlobalParametersClientDeleteResponse{}, err
 	}
@@ -161,7 +150,7 @@ func (client *GlobalParametersClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter globalParameterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{globalParameterName}", url.PathEscape(globalParameterName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +174,7 @@ func (client *GlobalParametersClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return GlobalParametersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GlobalParametersClientGetResponse{}, err
 	}
@@ -214,7 +203,7 @@ func (client *GlobalParametersClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter globalParameterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{globalParameterName}", url.PathEscape(globalParameterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +246,7 @@ func (client *GlobalParametersClient) NewListByFactoryPager(resourceGroupName st
 			if err != nil {
 				return GlobalParametersClientListByFactoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GlobalParametersClientListByFactoryResponse{}, err
 			}
@@ -284,7 +273,7 @@ func (client *GlobalParametersClient) listByFactoryCreateRequest(ctx context.Con
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

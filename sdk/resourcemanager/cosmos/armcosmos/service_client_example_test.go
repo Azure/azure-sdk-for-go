@@ -25,11 +25,11 @@ func ExampleServiceClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "ddb1", nil)
+	pager := clientFactory.NewServiceClient().NewListPager("rg1", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -73,11 +73,11 @@ func ExampleServiceClient_BeginCreate_dataTransferServiceCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "ddb1", "DataTransfer", armcosmos.ServiceResourceCreateUpdateParameters{
+	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "DataTransfer", armcosmos.ServiceResourceCreateUpdateParameters{
 		Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
 			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
@@ -121,11 +121,11 @@ func ExampleServiceClient_BeginCreate_graphApiComputeServiceCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "ddb1", "GraphAPICompute", armcosmos.ServiceResourceCreateUpdateParameters{
+	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "GraphAPICompute", armcosmos.ServiceResourceCreateUpdateParameters{
 		Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
 			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
@@ -171,11 +171,11 @@ func ExampleServiceClient_BeginCreate_materializedViewsBuilderServiceCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "ddb1", "MaterializedViewsBuilder", armcosmos.ServiceResourceCreateUpdateParameters{
+	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "MaterializedViewsBuilder", armcosmos.ServiceResourceCreateUpdateParameters{
 		Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
 			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
@@ -219,11 +219,11 @@ func ExampleServiceClient_BeginCreate_sqlDedicatedGatewayServiceCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "rg1", "ddb1", "SqlDedicatedGateway", armcosmos.ServiceResourceCreateUpdateParameters{
+	poller, err := clientFactory.NewServiceClient().BeginCreate(ctx, "rg1", "ddb1", "SqlDedicatedGateway", armcosmos.ServiceResourceCreateUpdateParameters{
 		Properties: &armcosmos.ServiceResourceCreateUpdateProperties{
 			InstanceCount: to.Ptr[int32](1),
 			InstanceSize:  to.Ptr(armcosmos.ServiceSizeCosmosD4S),
@@ -269,11 +269,11 @@ func ExampleServiceClient_Get_dataTransferServiceGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ddb1", "DataTransfer", nil)
+	res, err := clientFactory.NewServiceClient().Get(ctx, "rg1", "ddb1", "DataTransfer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -307,11 +307,11 @@ func ExampleServiceClient_Get_graphApiComputeServiceGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ddb1", "GraphAPICompute", nil)
+	res, err := clientFactory.NewServiceClient().Get(ctx, "rg1", "ddb1", "GraphAPICompute", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -347,11 +347,11 @@ func ExampleServiceClient_Get_materializedViewsBuilderServiceGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ddb1", "MaterializedViewsBuilder", nil)
+	res, err := clientFactory.NewServiceClient().Get(ctx, "rg1", "ddb1", "MaterializedViewsBuilder", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -385,11 +385,11 @@ func ExampleServiceClient_Get_sqlDedicatedGatewayServiceGet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ddb1", "SqlDedicatedGateway", nil)
+	res, err := clientFactory.NewServiceClient().Get(ctx, "rg1", "ddb1", "SqlDedicatedGateway", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -425,11 +425,11 @@ func ExampleServiceClient_BeginDelete_dataTransferServiceDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "ddb1", "DataTransfer", nil)
+	poller, err := clientFactory.NewServiceClient().BeginDelete(ctx, "rg1", "ddb1", "DataTransfer", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -446,11 +446,11 @@ func ExampleServiceClient_BeginDelete_graphApiComputeServiceDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "ddb1", "GraphAPICompute", nil)
+	poller, err := clientFactory.NewServiceClient().BeginDelete(ctx, "rg1", "ddb1", "GraphAPICompute", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -467,11 +467,11 @@ func ExampleServiceClient_BeginDelete_materializedViewsBuilderServiceDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "ddb1", "MaterializedViewsBuilder", nil)
+	poller, err := clientFactory.NewServiceClient().BeginDelete(ctx, "rg1", "ddb1", "MaterializedViewsBuilder", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -488,11 +488,11 @@ func ExampleServiceClient_BeginDelete_sqlDedicatedGatewayServiceDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewServiceClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "ddb1", "SqlDedicatedGateway", nil)
+	poller, err := clientFactory.NewServiceClient().BeginDelete(ctx, "rg1", "ddb1", "SqlDedicatedGateway", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

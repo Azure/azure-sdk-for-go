@@ -68,7 +68,7 @@ func (md *MockData) newSession(ctx context.Context, opts *amqp.SessionOptions, c
 		case <-conn.Status.Done():
 			return conn.Status.Err()
 		default:
-			sess.Status.CloseWithError(amqp.ErrSessionClosed)
+			sess.Status.CloseWithError(&amqp.SessionError{})
 			return nil
 		}
 	}).AnyTimes()

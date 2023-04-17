@@ -24,11 +24,11 @@ func ExampleAvailableServiceAliasesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAvailableServiceAliasesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("westcentralus", nil)
+	pager := clientFactory.NewAvailableServiceAliasesClient().NewListPager("westcentralus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -64,11 +64,11 @@ func ExampleAvailableServiceAliasesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAvailableServiceAliasesClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", "westcentralus", nil)
+	pager := clientFactory.NewAvailableServiceAliasesClient().NewListByResourceGroupPager("rg1", "westcentralus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

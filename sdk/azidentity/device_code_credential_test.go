@@ -9,6 +9,7 @@ package azidentity
 import (
 	"context"
 	"errors"
+	"fmt"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
@@ -80,7 +81,7 @@ func TestDeviceCodeCredential_UserPromptError(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected an error")
 	}
-	if err.Error() != success {
+	if expected := fmt.Sprintf("%s: %s", credNameDeviceCode, success); err.Error() != expected {
 		t.Fatalf("Unexpected error: %v", err)
 	}
 }

@@ -25,11 +25,11 @@ func ExampleExpressRouteCrossConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCrossConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewExpressRouteCrossConnectionsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -73,11 +73,11 @@ func ExampleExpressRouteCrossConnectionsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCrossConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("CrossConnection-SiliconValley", nil)
+	pager := clientFactory.NewExpressRouteCrossConnectionsClient().NewListByResourceGroupPager("CrossConnection-SiliconValley", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -121,11 +121,11 @@ func ExampleExpressRouteCrossConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCrossConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", nil)
+	res, err := clientFactory.NewExpressRouteCrossConnectionsClient().Get(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -162,11 +162,11 @@ func ExampleExpressRouteCrossConnectionsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCrossConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.ExpressRouteCrossConnection{
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginCreateOrUpdate(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.ExpressRouteCrossConnection{
 		Properties: &armnetwork.ExpressRouteCrossConnectionProperties{
 			ServiceProviderProvisioningState: to.Ptr(armnetwork.ServiceProviderProvisioningStateNotProvisioned),
 		},
@@ -210,11 +210,11 @@ func ExampleExpressRouteCrossConnectionsClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCrossConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.TagsObject{
+	res, err := clientFactory.NewExpressRouteCrossConnectionsClient().UpdateTags(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -259,11 +259,11 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListArpTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCrossConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListArpTable(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListArpTable(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -292,11 +292,11 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTableSummary() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCrossConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListRoutesTableSummary(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListRoutesTableSummary(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -331,11 +331,11 @@ func ExampleExpressRouteCrossConnectionsClient_BeginListRoutesTable() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCrossConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListRoutesTable(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
+	poller, err := clientFactory.NewExpressRouteCrossConnectionsClient().BeginListRoutesTable(ctx, "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", "primary", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

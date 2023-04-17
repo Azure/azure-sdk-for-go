@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,62 +24,55 @@ import (
 // SnapshotClient contains the methods for the Snapshot group.
 // Don't use this type directly, use NewSnapshotClient() instead.
 type SnapshotClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewSnapshotClient creates a new instance of SnapshotClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSnapshotClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SnapshotClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SnapshotClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SnapshotClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // BeginDownload - Download compliance needs from snapshot, like: Compliance Report, Resource List.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
-// reportName - Report Name.
-// snapshotName - Snapshot Name.
-// parameters - Parameters for the query operation
-// options - SnapshotClientBeginDownloadOptions contains the optional parameters for the SnapshotClient.BeginDownload method.
+//   - reportName - Report Name.
+//   - snapshotName - Snapshot Name.
+//   - parameters - Parameters for the query operation
+//   - options - SnapshotClientBeginDownloadOptions contains the optional parameters for the SnapshotClient.BeginDownload method.
 func (client *SnapshotClient) BeginDownload(ctx context.Context, reportName string, snapshotName string, parameters SnapshotDownloadRequest, options *SnapshotClientBeginDownloadOptions) (*runtime.Poller[SnapshotClientDownloadResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.download(ctx, reportName, snapshotName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SnapshotClientDownloadResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SnapshotClientDownloadResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SnapshotClientDownloadResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SnapshotClientDownloadResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Download - Download compliance needs from snapshot, like: Compliance Report, Resource List.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
 func (client *SnapshotClient) download(ctx context.Context, reportName string, snapshotName string, parameters SnapshotDownloadRequest, options *SnapshotClientBeginDownloadOptions) (*http.Response, error) {
 	req, err := client.downloadCreateRequest(ctx, reportName, snapshotName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -102,7 +93,7 @@ func (client *SnapshotClient) downloadCreateRequest(ctx context.Context, reportN
 		return nil, errors.New("parameter snapshotName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,16 +106,17 @@ func (client *SnapshotClient) downloadCreateRequest(ctx context.Context, reportN
 
 // Get - Get the AppComplianceAutomation snapshot and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-16-preview
-// reportName - Report Name.
-// snapshotName - Snapshot Name.
-// options - SnapshotClientGetOptions contains the optional parameters for the SnapshotClient.Get method.
+//   - reportName - Report Name.
+//   - snapshotName - Snapshot Name.
+//   - options - SnapshotClientGetOptions contains the optional parameters for the SnapshotClient.Get method.
 func (client *SnapshotClient) Get(ctx context.Context, reportName string, snapshotName string, options *SnapshotClientGetOptions) (SnapshotClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, reportName, snapshotName, options)
 	if err != nil {
 		return SnapshotClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SnapshotClientGetResponse{}, err
 	}
@@ -145,7 +137,7 @@ func (client *SnapshotClient) getCreateRequest(ctx context.Context, reportName s
 		return nil, errors.New("parameter snapshotName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{snapshotName}", url.PathEscape(snapshotName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

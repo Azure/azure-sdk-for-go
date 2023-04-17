@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ClusterPrincipalAssignmentsClient contains the methods for the ClusterPrincipalAssignments group.
 // Don't use this type directly, use NewClusterPrincipalAssignmentsClient() instead.
 type ClusterPrincipalAssignmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClusterPrincipalAssignmentsClient creates a new instance of ClusterPrincipalAssignmentsClient with the specified values.
@@ -37,21 +34,13 @@ type ClusterPrincipalAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewClusterPrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClusterPrincipalAssignmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ClusterPrincipalAssignmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ClusterPrincipalAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *ClusterPrincipalAssignmentsClient) CheckNameAvailability(ctx conte
 	if err != nil {
 		return ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -95,7 +84,7 @@ func (client *ClusterPrincipalAssignmentsClient) checkNameAvailabilityCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,9 +120,9 @@ func (client *ClusterPrincipalAssignmentsClient) BeginCreateOrUpdate(ctx context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClusterPrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -146,7 +135,7 @@ func (client *ClusterPrincipalAssignmentsClient) createOrUpdate(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +164,7 @@ func (client *ClusterPrincipalAssignmentsClient) createOrUpdateCreateRequest(ctx
 		return nil, errors.New("parameter principalAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{principalAssignmentName}", url.PathEscape(principalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,9 +190,9 @@ func (client *ClusterPrincipalAssignmentsClient) BeginDelete(ctx context.Context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClusterPrincipalAssignmentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClusterPrincipalAssignmentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClusterPrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClusterPrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -216,7 +205,7 @@ func (client *ClusterPrincipalAssignmentsClient) deleteOperation(ctx context.Con
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -245,7 +234,7 @@ func (client *ClusterPrincipalAssignmentsClient) deleteCreateRequest(ctx context
 		return nil, errors.New("parameter principalAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{principalAssignmentName}", url.PathEscape(principalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -270,7 +259,7 @@ func (client *ClusterPrincipalAssignmentsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ClusterPrincipalAssignmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClusterPrincipalAssignmentsClientGetResponse{}, err
 	}
@@ -299,7 +288,7 @@ func (client *ClusterPrincipalAssignmentsClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter principalAssignmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{principalAssignmentName}", url.PathEscape(principalAssignmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -336,7 +325,7 @@ func (client *ClusterPrincipalAssignmentsClient) NewListPager(resourceGroupName 
 			if err != nil {
 				return ClusterPrincipalAssignmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClusterPrincipalAssignmentsClientListResponse{}, err
 			}
@@ -363,7 +352,7 @@ func (client *ClusterPrincipalAssignmentsClient) listCreateRequest(ctx context.C
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

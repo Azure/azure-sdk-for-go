@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,47 +25,39 @@ import (
 // Client contains the methods for the Redis group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClient creates a new instance of Client with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckNameAvailability - Checks that the redis cache name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// parameters - Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
-// options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
+//   - parameters - Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
+//   - options - ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
 func (client *Client) CheckNameAvailability(ctx context.Context, parameters CheckNameAvailabilityParameters, options *ClientCheckNameAvailabilityOptions) (ClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
@@ -84,7 +74,7 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, pa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -97,32 +87,34 @@ func (client *Client) checkNameAvailabilityCreateRequest(ctx context.Context, pa
 
 // BeginCreate - Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// parameters - Parameters supplied to the Create Redis operation.
-// options - ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - parameters - Parameters supplied to the Create Redis operation.
+//   - options - ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
 func (client *Client) BeginCreate(ctx context.Context, resourceGroupName string, name string, parameters CreateParameters, options *ClientBeginCreateOptions) (*runtime.Poller[ClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, name, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create or replace (overwrite/recreate, with potential downtime) an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
 func (client *Client) create(ctx context.Context, resourceGroupName string, name string, parameters CreateParameters, options *ClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +139,7 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -160,31 +152,33 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 
 // BeginDelete - Deletes a Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
 func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, name, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
 func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, name string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -209,7 +203,7 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -222,32 +216,34 @@ func (client *Client) deleteCreateRequest(ctx context.Context, resourceGroupName
 
 // BeginExportData - Export data from the redis cache to blobs in a container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// parameters - Parameters for Redis export operation.
-// options - ClientBeginExportDataOptions contains the optional parameters for the Client.BeginExportData method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - parameters - Parameters for Redis export operation.
+//   - options - ClientBeginExportDataOptions contains the optional parameters for the Client.BeginExportData method.
 func (client *Client) BeginExportData(ctx context.Context, resourceGroupName string, name string, parameters ExportRDBParameters, options *ClientBeginExportDataOptions) (*runtime.Poller[ClientExportDataResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.exportData(ctx, resourceGroupName, name, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientExportDataResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientExportDataResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientExportDataResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientExportDataResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // ExportData - Export data from the redis cache to blobs in a container.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
 func (client *Client) exportData(ctx context.Context, resourceGroupName string, name string, parameters ExportRDBParameters, options *ClientBeginExportDataOptions) (*http.Response, error) {
 	req, err := client.exportDataCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -272,7 +268,7 @@ func (client *Client) exportDataCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -286,17 +282,18 @@ func (client *Client) exportDataCreateRequest(ctx context.Context, resourceGroup
 // ForceReboot - Reboot specified Redis node(s). This operation requires write permission to the cache resource. There can
 // be potential data loss.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// parameters - Specifies which Redis node(s) to reboot.
-// options - ClientForceRebootOptions contains the optional parameters for the Client.ForceReboot method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - parameters - Specifies which Redis node(s) to reboot.
+//   - options - ClientForceRebootOptions contains the optional parameters for the Client.ForceReboot method.
 func (client *Client) ForceReboot(ctx context.Context, resourceGroupName string, name string, parameters RebootParameters, options *ClientForceRebootOptions) (ClientForceRebootResponse, error) {
 	req, err := client.forceRebootCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return ClientForceRebootResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientForceRebootResponse{}, err
 	}
@@ -321,7 +318,7 @@ func (client *Client) forceRebootCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -343,16 +340,17 @@ func (client *Client) forceRebootHandleResponse(resp *http.Response) (ClientForc
 
 // Get - Gets a Redis cache (resource description).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// options - ClientGetOptions contains the optional parameters for the Client.Get method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - options - ClientGetOptions contains the optional parameters for the Client.Get method.
 func (client *Client) Get(ctx context.Context, resourceGroupName string, name string, options *ClientGetOptions) (ClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
@@ -377,7 +375,7 @@ func (client *Client) getCreateRequest(ctx context.Context, resourceGroupName st
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -399,32 +397,34 @@ func (client *Client) getHandleResponse(resp *http.Response) (ClientGetResponse,
 
 // BeginImportData - Import data into Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// parameters - Parameters for Redis import operation.
-// options - ClientBeginImportDataOptions contains the optional parameters for the Client.BeginImportData method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - parameters - Parameters for Redis import operation.
+//   - options - ClientBeginImportDataOptions contains the optional parameters for the Client.BeginImportData method.
 func (client *Client) BeginImportData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*runtime.Poller[ClientImportDataResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.importData(ctx, resourceGroupName, name, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientImportDataResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientImportDataResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientImportDataResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientImportDataResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // ImportData - Import data into Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
 func (client *Client) importData(ctx context.Context, resourceGroupName string, name string, parameters ImportRDBParameters, options *ClientBeginImportDataOptions) (*http.Response, error) {
 	req, err := client.importDataCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -449,7 +449,7 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -461,9 +461,11 @@ func (client *Client) importDataCreateRequest(ctx context.Context, resourceGroup
 }
 
 // NewListByResourceGroupPager - Lists all Redis caches in a resource group.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// options - ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+//   - resourceGroupName - The name of the resource group.
+//   - options - ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager
+//     method.
 func (client *Client) NewListByResourceGroupPager(resourceGroupName string, options *ClientListByResourceGroupOptions) *runtime.Pager[ClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListByResourceGroupResponse]{
 		More: func(page ClientListByResourceGroupResponse) bool {
@@ -480,7 +482,7 @@ func (client *Client) NewListByResourceGroupPager(resourceGroupName string, opti
 			if err != nil {
 				return ClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClientListByResourceGroupResponse{}, err
 			}
@@ -503,7 +505,7 @@ func (client *Client) listByResourceGroupCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -524,8 +526,9 @@ func (client *Client) listByResourceGroupHandleResponse(resp *http.Response) (Cl
 }
 
 // NewListBySubscriptionPager - Gets all Redis caches in the specified subscription.
+//
 // Generated from API version 2022-06-01
-// options - ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+//   - options - ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscriptionOptions) *runtime.Pager[ClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListBySubscriptionResponse]{
 		More: func(page ClientListBySubscriptionResponse) bool {
@@ -542,7 +545,7 @@ func (client *Client) NewListBySubscriptionPager(options *ClientListBySubscripti
 			if err != nil {
 				return ClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClientListBySubscriptionResponse{}, err
 			}
@@ -561,7 +564,7 @@ func (client *Client) listBySubscriptionCreateRequest(ctx context.Context, optio
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -583,16 +586,17 @@ func (client *Client) listBySubscriptionHandleResponse(resp *http.Response) (Cli
 
 // ListKeys - Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - options - ClientListKeysOptions contains the optional parameters for the Client.ListKeys method.
 func (client *Client) ListKeys(ctx context.Context, resourceGroupName string, name string, options *ClientListKeysOptions) (ClientListKeysResponse, error) {
 	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
 		return ClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientListKeysResponse{}, err
 	}
@@ -617,7 +621,7 @@ func (client *Client) listKeysCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -638,12 +642,13 @@ func (client *Client) listKeysHandleResponse(resp *http.Response) (ClientListKey
 }
 
 // NewListUpgradeNotificationsPager - Gets any upgrade notifications for a Redis cache.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// history - how many minutes in past to look for upgrade notifications
-// options - ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.ListUpgradeNotifications
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - history - how many minutes in past to look for upgrade notifications
+//   - options - ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.NewListUpgradeNotificationsPager
+//     method.
 func (client *Client) NewListUpgradeNotificationsPager(resourceGroupName string, name string, history float64, options *ClientListUpgradeNotificationsOptions) *runtime.Pager[ClientListUpgradeNotificationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClientListUpgradeNotificationsResponse]{
 		More: func(page ClientListUpgradeNotificationsResponse) bool {
@@ -660,7 +665,7 @@ func (client *Client) NewListUpgradeNotificationsPager(resourceGroupName string,
 			if err != nil {
 				return ClientListUpgradeNotificationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClientListUpgradeNotificationsResponse{}, err
 			}
@@ -687,7 +692,7 @@ func (client *Client) listUpgradeNotificationsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -710,17 +715,18 @@ func (client *Client) listUpgradeNotificationsHandleResponse(resp *http.Response
 
 // RegenerateKey - Regenerate Redis cache's access keys. This operation requires write permission to the cache resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// parameters - Specifies which key to regenerate.
-// options - ClientRegenerateKeyOptions contains the optional parameters for the Client.RegenerateKey method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - parameters - Specifies which key to regenerate.
+//   - options - ClientRegenerateKeyOptions contains the optional parameters for the Client.RegenerateKey method.
 func (client *Client) RegenerateKey(ctx context.Context, resourceGroupName string, name string, parameters RegenerateKeyParameters, options *ClientRegenerateKeyOptions) (ClientRegenerateKeyResponse, error) {
 	req, err := client.regenerateKeyCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return ClientRegenerateKeyResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientRegenerateKeyResponse{}, err
 	}
@@ -745,7 +751,7 @@ func (client *Client) regenerateKeyCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -767,32 +773,34 @@ func (client *Client) regenerateKeyHandleResponse(resp *http.Response) (ClientRe
 
 // BeginUpdate - Update an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
-// resourceGroupName - The name of the resource group.
-// name - The name of the Redis cache.
-// parameters - Parameters supplied to the Update Redis operation.
-// options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group.
+//   - name - The name of the Redis cache.
+//   - parameters - Parameters supplied to the Update Redis operation.
+//   - options - ClientBeginUpdateOptions contains the optional parameters for the Client.BeginUpdate method.
 func (client *Client) BeginUpdate(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, options *ClientBeginUpdateOptions) (*runtime.Poller[ClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, name, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update an existing Redis cache.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-06-01
 func (client *Client) update(ctx context.Context, resourceGroupName string, name string, parameters UpdateParameters, options *ClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, name, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -817,7 +825,7 @@ func (client *Client) updateCreateRequest(ctx context.Context, resourceGroupName
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

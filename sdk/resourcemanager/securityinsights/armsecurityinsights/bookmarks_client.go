@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // BookmarksClient contains the methods for the Bookmarks group.
 // Don't use this type directly, use NewBookmarksClient() instead.
 type BookmarksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewBookmarksClient creates a new instance of BookmarksClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewBookmarksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BookmarksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".BookmarksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &BookmarksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the bookmark.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// bookmarkID - Bookmark ID
-// bookmark - The bookmark
-// options - BookmarksClientCreateOrUpdateOptions contains the optional parameters for the BookmarksClient.CreateOrUpdate
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - bookmarkID - Bookmark ID
+//   - bookmark - The bookmark
+//   - options - BookmarksClientCreateOrUpdateOptions contains the optional parameters for the BookmarksClient.CreateOrUpdate
+//     method.
 func (client *BookmarksClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, bookmark Bookmark, options *BookmarksClientCreateOrUpdateOptions) (BookmarksClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, bookmark, options)
 	if err != nil {
 		return BookmarksClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BookmarksClientCreateOrUpdateResponse{}, err
 	}
@@ -98,12 +88,12 @@ func (client *BookmarksClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter bookmarkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, bookmark)
@@ -120,17 +110,18 @@ func (client *BookmarksClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Delete the bookmark.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// bookmarkID - Bookmark ID
-// options - BookmarksClientDeleteOptions contains the optional parameters for the BookmarksClient.Delete method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - bookmarkID - Bookmark ID
+//   - options - BookmarksClientDeleteOptions contains the optional parameters for the BookmarksClient.Delete method.
 func (client *BookmarksClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksClientDeleteOptions) (BookmarksClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, options)
 	if err != nil {
 		return BookmarksClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BookmarksClientDeleteResponse{}, err
 	}
@@ -159,12 +150,12 @@ func (client *BookmarksClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter bookmarkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,17 +163,18 @@ func (client *BookmarksClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Gets a bookmark.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// bookmarkID - Bookmark ID
-// options - BookmarksClientGetOptions contains the optional parameters for the BookmarksClient.Get method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - bookmarkID - Bookmark ID
+//   - options - BookmarksClientGetOptions contains the optional parameters for the BookmarksClient.Get method.
 func (client *BookmarksClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, bookmarkID string, options *BookmarksClientGetOptions) (BookmarksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, bookmarkID, options)
 	if err != nil {
 		return BookmarksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return BookmarksClientGetResponse{}, err
 	}
@@ -211,12 +203,12 @@ func (client *BookmarksClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter bookmarkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{bookmarkId}", url.PathEscape(bookmarkID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -232,10 +224,11 @@ func (client *BookmarksClient) getHandleResponse(resp *http.Response) (Bookmarks
 }
 
 // NewListPager - Gets all bookmarks.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - BookmarksClientListOptions contains the optional parameters for the BookmarksClient.List method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - BookmarksClientListOptions contains the optional parameters for the BookmarksClient.NewListPager method.
 func (client *BookmarksClient) NewListPager(resourceGroupName string, workspaceName string, options *BookmarksClientListOptions) *runtime.Pager[BookmarksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BookmarksClientListResponse]{
 		More: func(page BookmarksClientListResponse) bool {
@@ -252,7 +245,7 @@ func (client *BookmarksClient) NewListPager(resourceGroupName string, workspaceN
 			if err != nil {
 				return BookmarksClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return BookmarksClientListResponse{}, err
 			}
@@ -279,12 +272,12 @@ func (client *BookmarksClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

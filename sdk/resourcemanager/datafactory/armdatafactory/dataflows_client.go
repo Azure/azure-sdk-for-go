@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // DataFlowsClient contains the methods for the DataFlows group.
 // Don't use this type directly, use NewDataFlowsClient() instead.
 type DataFlowsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataFlowsClient creates a new instance of DataFlowsClient with the specified values.
@@ -36,21 +33,13 @@ type DataFlowsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewDataFlowsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataFlowsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataFlowsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataFlowsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +88,7 @@ func (client *DataFlowsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +124,7 @@ func (client *DataFlowsClient) Delete(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return DataFlowsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataFlowsClientDeleteResponse{}, err
 	}
@@ -164,7 +153,7 @@ func (client *DataFlowsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,7 +177,7 @@ func (client *DataFlowsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DataFlowsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataFlowsClientGetResponse{}, err
 	}
@@ -217,7 +206,7 @@ func (client *DataFlowsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter dataFlowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataFlowName}", url.PathEscape(dataFlowName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -263,7 +252,7 @@ func (client *DataFlowsClient) NewListByFactoryPager(resourceGroupName string, f
 			if err != nil {
 				return DataFlowsClientListByFactoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataFlowsClientListByFactoryResponse{}, err
 			}
@@ -290,7 +279,7 @@ func (client *DataFlowsClient) listByFactoryCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SQLPoolReplicationLinksClient contains the methods for the SQLPoolReplicationLinks group.
 // Don't use this type directly, use NewSQLPoolReplicationLinksClient() instead.
 type SQLPoolReplicationLinksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSQLPoolReplicationLinksClient creates a new instance of SQLPoolReplicationLinksClient with the specified values.
@@ -36,21 +33,13 @@ type SQLPoolReplicationLinksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSQLPoolReplicationLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolReplicationLinksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SQLPoolReplicationLinksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SQLPoolReplicationLinksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *SQLPoolReplicationLinksClient) GetByName(ctx context.Context, reso
 	if err != nil {
 		return SQLPoolReplicationLinksClientGetByNameResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolReplicationLinksClientGetByNameResponse{}, err
 	}
@@ -103,7 +92,7 @@ func (client *SQLPoolReplicationLinksClient) getByNameCreateRequest(ctx context.
 		return nil, errors.New("parameter linkID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkId}", url.PathEscape(linkID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +136,7 @@ func (client *SQLPoolReplicationLinksClient) NewListPager(resourceGroupName stri
 			if err != nil {
 				return SQLPoolReplicationLinksClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SQLPoolReplicationLinksClientListResponse{}, err
 			}
@@ -178,7 +167,7 @@ func (client *SQLPoolReplicationLinksClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

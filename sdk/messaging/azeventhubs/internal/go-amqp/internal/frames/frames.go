@@ -1,5 +1,6 @@
 // Copyright (C) 2017 Kale Blankenship
 // Portions Copyright (c) Microsoft Corporation
+
 package frames
 
 import (
@@ -11,6 +12,22 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/buffer"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp/internal/encoding"
 )
+
+// Type contains the values for a frame's type.
+type Type uint8
+
+const (
+	TypeAMQP Type = 0x0
+	TypeSASL Type = 0x1
+)
+
+// String implements the fmt.Stringer interface for type Type.
+func (t Type) String() string {
+	if t == 0 {
+		return "AMQP"
+	}
+	return "SASL"
+}
 
 /*
 <type name="source" class="composite" source="list" provides="source">
@@ -107,7 +124,7 @@ type Source struct {
 	//					distribution-modes. That is, the value MUST be of the same type as
 	//					would be valid in a field defined with the following attributes:
 	//						type="symbol" multiple="true" requires="distribution-mode"
-	DynamicNodeProperties map[encoding.Symbol]interface{} // TODO: implement custom type with validation
+	DynamicNodeProperties map[encoding.Symbol]any // TODO: implement custom type with validation
 
 	// the distribution mode of the link
 	//
@@ -129,7 +146,7 @@ type Source struct {
 	// Indicates the outcome to be used for transfers that have not reached a terminal
 	// state at the receiver when the transfer is settled, including when the source
 	// is destroyed. The value MUST be a valid outcome (e.g., released or rejected).
-	DefaultOutcome interface{}
+	DefaultOutcome any
 
 	// descriptors for the outcomes that can be chosen on this link
 	//
@@ -182,7 +199,7 @@ func (s *Source) Unmarshal(r *buffer.Buffer) error {
 
 func (s Source) String() string {
 	return fmt.Sprintf("source{Address: %s, Durable: %d, ExpiryPolicy: %s, Timeout: %d, "+
-		"Dynamic: %t, DynamicNodeProperties: %v, DistributionMode: %s, Filter: %v, DefaultOutcome: %v"+
+		"Dynamic: %t, DynamicNodeProperties: %v, DistributionMode: %s, Filter: %v, DefaultOutcome: %v "+
 		"Outcomes: %v, Capabilities: %v}",
 		s.Address,
 		s.Durable,
@@ -289,7 +306,7 @@ type Target struct {
 	//					distribution-modes. That is, the value MUST be of the same type as
 	//					would be valid in a field defined with the following attributes:
 	//						type="symbol" multiple="true" requires="distribution-mode"
-	DynamicNodeProperties map[encoding.Symbol]interface{} // TODO: implement custom type with validation
+	DynamicNodeProperties map[encoding.Symbol]any // TODO: implement custom type with validation
 
 	// the extension capabilities the sender supports/desires
 	//
@@ -336,12 +353,17 @@ func (t Target) String() string {
 
 // frame is the decoded representation of a frame
 type Frame struct {
-	Type    uint8     // AMQP/SASL
+	Type    Type      // AMQP/SASL
 	Channel uint16    // channel this frame is for
 	Body    FrameBody // body of the frame
 
 	// optional channel which will be closed after net transmit
 	Done chan encoding.DeliveryState
+}
+
+// String implements the fmt.Stringer interface for type Frame.
+func (f Frame) String() string {
+	return fmt.Sprintf("Frame{Type: %s, Channel: %d, Body: %s}", f.Type, f.Channel, f.Body)
 }
 
 // frameBody adds some type safety to frame encoding
@@ -375,7 +397,7 @@ type PerformOpen struct {
 	IncomingLocales     encoding.MultiSymbol
 	OfferedCapabilities encoding.MultiSymbol
 	DesiredCapabilities encoding.MultiSymbol
-	Properties          map[encoding.Symbol]interface{}
+	Properties          map[encoding.Symbol]any
 }
 
 func (o *PerformOpen) frameBody() {}
@@ -479,7 +501,7 @@ type PerformBegin struct {
 
 	// session properties
 	// http://www.amqp.org/specification/1.0/session-properties
-	Properties map[encoding.Symbol]interface{}
+	Properties map[encoding.Symbol]any
 }
 
 func (b *PerformBegin) frameBody() {}
@@ -681,7 +703,7 @@ type PerformAttach struct {
 
 	// link properties
 	// http://www.amqp.org/specification/1.0/link-properties
-	Properties map[encoding.Symbol]interface{}
+	Properties map[encoding.Symbol]any
 }
 
 func (a *PerformAttach) frameBody() {}
@@ -859,7 +881,7 @@ type PerformFlow struct {
 
 	// link state properties
 	// http://www.amqp.org/specification/1.0/link-state-properties
-	Properties map[encoding.Symbol]interface{}
+	Properties map[encoding.Symbol]any
 }
 
 func (f *PerformFlow) frameBody() {}
@@ -1087,7 +1109,7 @@ func (t *PerformTransfer) frameBody() {}
 func (t PerformTransfer) String() string {
 	deliveryTag := "<nil>"
 	if t.DeliveryTag != nil {
-		deliveryTag = fmt.Sprintf("%q", t.DeliveryTag)
+		deliveryTag = fmt.Sprintf("%X", t.DeliveryTag)
 	}
 
 	return fmt.Sprintf("Transfer{Handle: %d, DeliveryID: %s, DeliveryTag: %s, MessageFormat: %s, "+
@@ -1207,7 +1229,7 @@ type PerformDisposition struct {
 func (d *PerformDisposition) frameBody() {}
 
 func (d PerformDisposition) String() string {
-	return fmt.Sprintf("Disposition{Role: %s, First: %d, Last: %s, Settled: %t, State: %s, Batchable: %t}",
+	return fmt.Sprintf("Disposition{Role: %s, First: %d, Last: %s, Settled: %t, State: %v, Batchable: %t}",
 		d.Role,
 		d.First,
 		formatUint32Ptr(d.Last),
@@ -1306,6 +1328,10 @@ type PerformEnd struct {
 }
 
 func (e *PerformEnd) frameBody() {}
+
+func (d PerformEnd) String() string {
+	return fmt.Sprintf("End{Error: %v}", d.Error)
+}
 
 func (e *PerformEnd) Marshal(wr *buffer.Buffer) error {
 	return encoding.MarshalComposite(wr, encoding.TypeCodeEnd, []encoding.MarshalField{

@@ -1,5 +1,17 @@
 # Release History
 
+## 0.3.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 0.3.0 (2023-03-31)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+
+
 ## 0.2.0 (2022-06-28)
 ### Features Added
 

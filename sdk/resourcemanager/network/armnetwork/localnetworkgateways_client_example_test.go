@@ -25,11 +25,11 @@ func ExampleLocalNetworkGatewaysClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLocalNetworkGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "localgw", armnetwork.LocalNetworkGateway{
+	poller, err := clientFactory.NewLocalNetworkGatewaysClient().BeginCreateOrUpdate(ctx, "rg1", "localgw", armnetwork.LocalNetworkGateway{
 		Location: to.Ptr("Central US"),
 		Properties: &armnetwork.LocalNetworkGatewayPropertiesFormat{
 			Fqdn:             to.Ptr("site1.contoso.com"),
@@ -75,11 +75,11 @@ func ExampleLocalNetworkGatewaysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLocalNetworkGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "localgw", nil)
+	res, err := clientFactory.NewLocalNetworkGatewaysClient().Get(ctx, "rg1", "localgw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -111,11 +111,11 @@ func ExampleLocalNetworkGatewaysClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLocalNetworkGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "localgw", nil)
+	poller, err := clientFactory.NewLocalNetworkGatewaysClient().BeginDelete(ctx, "rg1", "localgw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -132,11 +132,11 @@ func ExampleLocalNetworkGatewaysClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLocalNetworkGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "lgw", armnetwork.TagsObject{
+	res, err := clientFactory.NewLocalNetworkGatewaysClient().UpdateTags(ctx, "rg1", "lgw", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -176,11 +176,11 @@ func ExampleLocalNetworkGatewaysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLocalNetworkGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewLocalNetworkGatewaysClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

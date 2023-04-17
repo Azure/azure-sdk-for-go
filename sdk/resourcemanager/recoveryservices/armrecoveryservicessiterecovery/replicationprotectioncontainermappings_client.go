@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,71 +24,60 @@ import (
 // ReplicationProtectionContainerMappingsClient contains the methods for the ReplicationProtectionContainerMappings group.
 // Don't use this type directly, use NewReplicationProtectionContainerMappingsClient() instead.
 type ReplicationProtectionContainerMappingsClient struct {
-	host              string
-	resourceName      string
-	resourceGroupName string
-	subscriptionID    string
-	pl                runtime.Pipeline
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewReplicationProtectionContainerMappingsClient creates a new instance of ReplicationProtectionContainerMappingsClient with the specified values.
-// resourceName - The name of the recovery services vault.
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
-func NewReplicationProtectionContainerMappingsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationProtectionContainerMappingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
+func NewReplicationProtectionContainerMappingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationProtectionContainerMappingsClient, error) {
+	cl, err := arm.NewClient(moduleName+".ReplicationProtectionContainerMappingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReplicationProtectionContainerMappingsClient{
-		resourceName:      resourceName,
-		resourceGroupName: resourceGroupName,
-		subscriptionID:    subscriptionID,
-		host:              ep,
-		pl:                pl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - The operation to create a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// fabricName - Fabric name.
-// protectionContainerName - Protection container name.
-// mappingName - Protection container mapping name.
-// creationInput - Mapping creation input.
-// options - ReplicationProtectionContainerMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginCreate
-// method.
-func (client *ReplicationProtectionContainerMappingsClient) BeginCreate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientCreateResponse], error) {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Fabric name.
+//   - protectionContainerName - Protection container name.
+//   - mappingName - Protection container mapping name.
+//   - creationInput - Mapping creation input.
+//   - options - ReplicationProtectionContainerMappingsClientBeginCreateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginCreate
+//     method.
+func (client *ReplicationProtectionContainerMappingsClient) BeginCreate(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, fabricName, protectionContainerName, mappingName, creationInput, options)
+		resp, err := client.create(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, creationInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - The operation to create a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*http.Response, error) {
-	req, err := client.createCreateRequest(ctx, fabricName, protectionContainerName, mappingName, creationInput, options)
+func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*http.Response, error) {
+	req, err := client.createCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, creationInput, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -101,16 +88,16 @@ func (client *ReplicationProtectionContainerMappingsClient) create(ctx context.C
 }
 
 // createCreateRequest creates the Create request.
-func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, creationInput CreateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -127,7 +114,7 @@ func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,34 +127,38 @@ func (client *ReplicationProtectionContainerMappingsClient) createCreateRequest(
 
 // BeginDelete - The operation to delete or remove a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// fabricName - Fabric name.
-// protectionContainerName - Protection container name.
-// mappingName - Protection container mapping name.
-// removalInput - Removal input.
-// options - ReplicationProtectionContainerMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginDelete
-// method.
-func (client *ReplicationProtectionContainerMappingsClient) BeginDelete(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientDeleteResponse], error) {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Fabric name.
+//   - protectionContainerName - Protection container name.
+//   - mappingName - Protection container mapping name.
+//   - removalInput - Removal input.
+//   - options - ReplicationProtectionContainerMappingsClientBeginDeleteOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginDelete
+//     method.
+func (client *ReplicationProtectionContainerMappingsClient) BeginDelete(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, fabricName, protectionContainerName, mappingName, removalInput, options)
+		resp, err := client.deleteOperation(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - The operation to delete or remove a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, fabricName, protectionContainerName, mappingName, removalInput, options)
+func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, removalInput, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -178,16 +169,16 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteOperation(ctx 
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, removalInput RemoveProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}/remove"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -204,7 +195,7 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,18 +207,21 @@ func (client *ReplicationProtectionContainerMappingsClient) deleteCreateRequest(
 
 // Get - Gets the details of a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// fabricName - Fabric name.
-// protectionContainerName - Protection container name.
-// mappingName - Protection Container mapping name.
-// options - ReplicationProtectionContainerMappingsClientGetOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.Get
-// method.
-func (client *ReplicationProtectionContainerMappingsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientGetOptions) (ReplicationProtectionContainerMappingsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, fabricName, protectionContainerName, mappingName, options)
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Fabric name.
+//   - protectionContainerName - Protection container name.
+//   - mappingName - Protection Container mapping name.
+//   - options - ReplicationProtectionContainerMappingsClientGetOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.Get
+//     method.
+func (client *ReplicationProtectionContainerMappingsClient) Get(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientGetOptions) (ReplicationProtectionContainerMappingsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, options)
 	if err != nil {
 		return ReplicationProtectionContainerMappingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ReplicationProtectionContainerMappingsClientGetResponse{}, err
 	}
@@ -238,16 +232,16 @@ func (client *ReplicationProtectionContainerMappingsClient) Get(ctx context.Cont
 }
 
 // getCreateRequest creates the Get request.
-func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientGetOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -264,7 +258,7 @@ func (client *ReplicationProtectionContainerMappingsClient) getCreateRequest(ctx
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -285,10 +279,13 @@ func (client *ReplicationProtectionContainerMappingsClient) getHandleResponse(re
 }
 
 // NewListPager - Lists the protection container mappings in the vault.
+//
 // Generated from API version 2022-10-01
-// options - ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.List
-// method.
-func (client *ReplicationProtectionContainerMappingsClient) NewListPager(options *ReplicationProtectionContainerMappingsClientListOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - options - ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.NewListPager
+//     method.
+func (client *ReplicationProtectionContainerMappingsClient) NewListPager(resourceName string, resourceGroupName string, options *ReplicationProtectionContainerMappingsClientListOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationProtectionContainerMappingsClientListResponse]{
 		More: func(page ReplicationProtectionContainerMappingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -297,14 +294,14 @@ func (client *ReplicationProtectionContainerMappingsClient) NewListPager(options
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
+				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return ReplicationProtectionContainerMappingsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationProtectionContainerMappingsClientListResponse{}, err
 			}
@@ -317,21 +314,21 @@ func (client *ReplicationProtectionContainerMappingsClient) NewListPager(options
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationProtectionContainerMappingsClient) listCreateRequest(ctx context.Context, options *ReplicationProtectionContainerMappingsClientListOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) listCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, options *ReplicationProtectionContainerMappingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationProtectionContainerMappings"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -352,12 +349,15 @@ func (client *ReplicationProtectionContainerMappingsClient) listHandleResponse(r
 }
 
 // NewListByReplicationProtectionContainersPager - Lists the protection container mappings for a protection container.
+//
 // Generated from API version 2022-10-01
-// fabricName - Fabric name.
-// protectionContainerName - Protection container name.
-// options - ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions contains the optional
-// parameters for the ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers method.
-func (client *ReplicationProtectionContainerMappingsClient) NewListByReplicationProtectionContainersPager(fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Fabric name.
+//   - protectionContainerName - Protection container name.
+//   - options - ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions contains the optional
+//     parameters for the ReplicationProtectionContainerMappingsClient.NewListByReplicationProtectionContainersPager method.
+func (client *ReplicationProtectionContainerMappingsClient) NewListByReplicationProtectionContainersPager(resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) *runtime.Pager[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse]{
 		More: func(page ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -366,14 +366,14 @@ func (client *ReplicationProtectionContainerMappingsClient) NewListByReplication
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listByReplicationProtectionContainersCreateRequest(ctx, fabricName, protectionContainerName, options)
+				req, err = client.listByReplicationProtectionContainersCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse{}, err
 			}
@@ -386,16 +386,16 @@ func (client *ReplicationProtectionContainerMappingsClient) NewListByReplication
 }
 
 // listByReplicationProtectionContainersCreateRequest creates the ListByReplicationProtectionContainers request.
-func (client *ReplicationProtectionContainerMappingsClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) listByReplicationProtectionContainersCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, options *ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -408,7 +408,7 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 		return nil, errors.New("parameter protectionContainerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{protectionContainerName}", url.PathEscape(protectionContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -430,33 +430,37 @@ func (client *ReplicationProtectionContainerMappingsClient) listByReplicationPro
 
 // BeginPurge - The operation to purge(force delete) a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// fabricName - Fabric name.
-// protectionContainerName - Protection container name.
-// mappingName - Protection container mapping name.
-// options - ReplicationProtectionContainerMappingsClientBeginPurgeOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginPurge
-// method.
-func (client *ReplicationProtectionContainerMappingsClient) BeginPurge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientPurgeResponse], error) {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Fabric name.
+//   - protectionContainerName - Protection container name.
+//   - mappingName - Protection container mapping name.
+//   - options - ReplicationProtectionContainerMappingsClientBeginPurgeOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginPurge
+//     method.
+func (client *ReplicationProtectionContainerMappingsClient) BeginPurge(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientPurgeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.purge(ctx, fabricName, protectionContainerName, mappingName, options)
+		resp, err := client.purge(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientPurgeResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientPurgeResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientPurgeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientPurgeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Purge - The operation to purge(force delete) a protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*http.Response, error) {
-	req, err := client.purgeCreateRequest(ctx, fabricName, protectionContainerName, mappingName, options)
+func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*http.Response, error) {
+	req, err := client.purgeCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -467,16 +471,16 @@ func (client *ReplicationProtectionContainerMappingsClient) purge(ctx context.Co
 }
 
 // purgeCreateRequest creates the Purge request.
-func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, options *ReplicationProtectionContainerMappingsClientBeginPurgeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -493,7 +497,7 @@ func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(c
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -505,34 +509,38 @@ func (client *ReplicationProtectionContainerMappingsClient) purgeCreateRequest(c
 
 // BeginUpdate - The operation to update protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// fabricName - Fabric name.
-// protectionContainerName - Protection container name.
-// mappingName - Protection container mapping name.
-// updateInput - Mapping update input.
-// options - ReplicationProtectionContainerMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginUpdate
-// method.
-func (client *ReplicationProtectionContainerMappingsClient) BeginUpdate(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientUpdateResponse], error) {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - Fabric name.
+//   - protectionContainerName - Protection container name.
+//   - mappingName - Protection container mapping name.
+//   - updateInput - Mapping update input.
+//   - options - ReplicationProtectionContainerMappingsClientBeginUpdateOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.BeginUpdate
+//     method.
+func (client *ReplicationProtectionContainerMappingsClient) BeginUpdate(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*runtime.Poller[ReplicationProtectionContainerMappingsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, fabricName, protectionContainerName, mappingName, updateInput, options)
+		resp, err := client.update(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ReplicationProtectionContainerMappingsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ReplicationProtectionContainerMappingsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - The operation to update protection container mapping.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*http.Response, error) {
-	req, err := client.updateCreateRequest(ctx, fabricName, protectionContainerName, mappingName, updateInput, options)
+func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*http.Response, error) {
+	req, err := client.updateCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, mappingName, updateInput, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -543,16 +551,16 @@ func (client *ReplicationProtectionContainerMappingsClient) update(ctx context.C
 }
 
 // updateCreateRequest creates the Update request.
-func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, mappingName string, updateInput UpdateProtectionContainerMappingInput, options *ReplicationProtectionContainerMappingsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectionContainerMappings/{mappingName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -569,7 +577,7 @@ func (client *ReplicationProtectionContainerMappingsClient) updateCreateRequest(
 		return nil, errors.New("parameter mappingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mappingName}", url.PathEscape(mappingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -11,7 +11,7 @@ package armdatafactory
 
 const (
 	moduleName    = "armdatafactory"
-	moduleVersion = "v3.1.0"
+	moduleVersion = "v3.2.1"
 )
 
 // AzureFunctionActivityMethod - The list of HTTP methods supported by a AzureFunctionActivity.
@@ -53,6 +53,28 @@ func PossibleAzureSearchIndexWriteBehaviorTypeValues() []AzureSearchIndexWriteBe
 	return []AzureSearchIndexWriteBehaviorType{
 		AzureSearchIndexWriteBehaviorTypeMerge,
 		AzureSearchIndexWriteBehaviorTypeUpload,
+	}
+}
+
+// AzureStorageAuthenticationType - The type used for authentication. Type: string.
+type AzureStorageAuthenticationType string
+
+const (
+	AzureStorageAuthenticationTypeAccountKey       AzureStorageAuthenticationType = "AccountKey"
+	AzureStorageAuthenticationTypeAnonymous        AzureStorageAuthenticationType = "Anonymous"
+	AzureStorageAuthenticationTypeMsi              AzureStorageAuthenticationType = "Msi"
+	AzureStorageAuthenticationTypeSasURI           AzureStorageAuthenticationType = "SasUri"
+	AzureStorageAuthenticationTypeServicePrincipal AzureStorageAuthenticationType = "ServicePrincipal"
+)
+
+// PossibleAzureStorageAuthenticationTypeValues returns the possible values for the AzureStorageAuthenticationType const type.
+func PossibleAzureStorageAuthenticationTypeValues() []AzureStorageAuthenticationType {
+	return []AzureStorageAuthenticationType{
+		AzureStorageAuthenticationTypeAccountKey,
+		AzureStorageAuthenticationTypeAnonymous,
+		AzureStorageAuthenticationTypeMsi,
+		AzureStorageAuthenticationTypeSasURI,
+		AzureStorageAuthenticationTypeServicePrincipal,
 	}
 }
 

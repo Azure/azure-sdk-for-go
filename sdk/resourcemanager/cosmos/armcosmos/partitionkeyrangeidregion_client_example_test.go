@@ -24,11 +24,11 @@ func ExamplePartitionKeyRangeIDRegionClient_NewListMetricsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewPartitionKeyRangeIDRegionClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListMetricsPager("rg1", "ddb1", "West US", "databaseRid", "collectionRid", "0", "$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z", nil)
+	pager := clientFactory.NewPartitionKeyRangeIDRegionClient().NewListMetricsPager("rg1", "ddb1", "West US", "databaseRid", "collectionRid", "0", "$filter=(name.value eq 'Max RUs Per Second') and timeGrain eq duration'PT1M' and startTime eq '2017-11-19T23:53:55.2780000Z' and endTime eq '2017-11-20T23:58:55.2780000Z", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

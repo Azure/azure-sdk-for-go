@@ -1,5 +1,31 @@
 # Release History
 
+## 2.1.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 2.1.0 (2023-03-24)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `TargetDiskNetworkAccessOption` with values `TargetDiskNetworkAccessOptionEnablePrivateAccessForAllDisks`, `TargetDiskNetworkAccessOptionEnablePublicAccessForAllDisks`, `TargetDiskNetworkAccessOptionSameAsOnSourceDisks`
+- New struct `ExtendedLocation`
+- New struct `SecuredVMDetails`
+- New struct `TargetDiskNetworkAccessSettings`
+- New field `IncludeSoftDeletedRP` in struct `BMSRPQueryObject`
+- New field `IsPrivateAccessEnabledOnAnyDisk` in struct `IaasVMRecoveryPoint`
+- New field `SecurityType` in struct `IaasVMRecoveryPoint`
+- New field `ExtendedLocation` in struct `IaasVMRestoreRequest`
+- New field `SecuredVMDetails` in struct `IaasVMRestoreRequest`
+- New field `TargetDiskNetworkAccessSettings` in struct `IaasVMRestoreRequest`
+- New field `ExtendedLocation` in struct `IaasVMRestoreWithRehydrationRequest`
+- New field `SecuredVMDetails` in struct `IaasVMRestoreWithRehydrationRequest`
+- New field `TargetDiskNetworkAccessSettings` in struct `IaasVMRestoreWithRehydrationRequest`
+- New field `IsSoftDeleted` in struct `RecoveryPointProperties`
+
+
 ## 2.0.0 (2023-01-19)
 ### Breaking Changes
 

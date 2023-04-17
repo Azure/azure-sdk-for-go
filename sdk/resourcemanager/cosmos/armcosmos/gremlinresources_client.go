@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // GremlinResourcesClient contains the methods for the GremlinResources group.
 // Don't use this type directly, use NewGremlinResourcesClient() instead.
 type GremlinResourcesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGremlinResourcesClient creates a new instance of GremlinResourcesClient with the specified values.
@@ -36,21 +33,13 @@ type GremlinResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewGremlinResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GremlinResourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GremlinResourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GremlinResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinDatabase(ctx conte
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientCreateUpdateGremlinDatabaseResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientCreateUpdateGremlinDatabaseResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientCreateUpdateGremlinDatabaseResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientCreateUpdateGremlinDatabaseResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabase(ctx context.Co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabaseCreateRequest(c
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -143,9 +132,9 @@ func (client *GremlinResourcesClient) BeginCreateUpdateGremlinGraph(ctx context.
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientCreateUpdateGremlinGraphResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientCreateUpdateGremlinGraphResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientCreateUpdateGremlinGraphResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientCreateUpdateGremlinGraphResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -158,7 +147,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraph(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +180,7 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraphCreateRequest(ctx 
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -217,9 +206,9 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinDatabase(ctx context.Con
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientDeleteGremlinDatabaseResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientDeleteGremlinDatabaseResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientDeleteGremlinDatabaseResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientDeleteGremlinDatabaseResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -232,7 +221,7 @@ func (client *GremlinResourcesClient) deleteGremlinDatabase(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -261,7 +250,7 @@ func (client *GremlinResourcesClient) deleteGremlinDatabaseCreateRequest(ctx con
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,9 +276,9 @@ func (client *GremlinResourcesClient) BeginDeleteGremlinGraph(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientDeleteGremlinGraphResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientDeleteGremlinGraphResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientDeleteGremlinGraphResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientDeleteGremlinGraphResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -302,7 +291,7 @@ func (client *GremlinResourcesClient) deleteGremlinGraph(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -335,7 +324,7 @@ func (client *GremlinResourcesClient) deleteGremlinGraphCreateRequest(ctx contex
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -359,7 +348,7 @@ func (client *GremlinResourcesClient) GetGremlinDatabase(ctx context.Context, re
 	if err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseResponse{}, err
 	}
@@ -388,7 +377,7 @@ func (client *GremlinResourcesClient) getGremlinDatabaseCreateRequest(ctx contex
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -423,7 +412,7 @@ func (client *GremlinResourcesClient) GetGremlinDatabaseThroughput(ctx context.C
 	if err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseThroughputResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseThroughputResponse{}, err
 	}
@@ -452,7 +441,7 @@ func (client *GremlinResourcesClient) getGremlinDatabaseThroughputCreateRequest(
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -487,7 +476,7 @@ func (client *GremlinResourcesClient) GetGremlinGraph(ctx context.Context, resou
 	if err != nil {
 		return GremlinResourcesClientGetGremlinGraphResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GremlinResourcesClientGetGremlinGraphResponse{}, err
 	}
@@ -520,7 +509,7 @@ func (client *GremlinResourcesClient) getGremlinGraphCreateRequest(ctx context.C
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -556,7 +545,7 @@ func (client *GremlinResourcesClient) GetGremlinGraphThroughput(ctx context.Cont
 	if err != nil {
 		return GremlinResourcesClientGetGremlinGraphThroughputResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GremlinResourcesClientGetGremlinGraphThroughputResponse{}, err
 	}
@@ -589,7 +578,7 @@ func (client *GremlinResourcesClient) getGremlinGraphThroughputCreateRequest(ctx
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -626,7 +615,7 @@ func (client *GremlinResourcesClient) NewListGremlinDatabasesPager(resourceGroup
 			if err != nil {
 				return GremlinResourcesClientListGremlinDatabasesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GremlinResourcesClientListGremlinDatabasesResponse{}, err
 			}
@@ -653,7 +642,7 @@ func (client *GremlinResourcesClient) listGremlinDatabasesCreateRequest(ctx cont
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -691,7 +680,7 @@ func (client *GremlinResourcesClient) NewListGremlinGraphsPager(resourceGroupNam
 			if err != nil {
 				return GremlinResourcesClientListGremlinGraphsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GremlinResourcesClientListGremlinGraphsResponse{}, err
 			}
@@ -722,7 +711,7 @@ func (client *GremlinResourcesClient) listGremlinGraphsCreateRequest(ctx context
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -757,9 +746,9 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToAutoscale(ctx
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientMigrateGremlinDatabaseToAutoscaleResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -772,7 +761,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscale(ctx cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -801,7 +790,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscaleCreateReq
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -827,9 +816,9 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinDatabaseToManualThrough
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientMigrateGremlinDatabaseToManualThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -842,7 +831,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughput(c
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -871,7 +860,7 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughputCr
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -898,9 +887,9 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToAutoscale(ctx co
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientMigrateGremlinGraphToAutoscaleResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -913,7 +902,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscale(ctx context
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -946,7 +935,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscaleCreateReques
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -973,9 +962,9 @@ func (client *GremlinResourcesClient) BeginMigrateGremlinGraphToManualThroughput
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientMigrateGremlinGraphToManualThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -988,7 +977,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughput(ctx 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1021,7 +1010,7 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughputCreat
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1049,11 +1038,11 @@ func (client *GremlinResourcesClient) BeginRetrieveContinuousBackupInformation(c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[GremlinResourcesClientRetrieveContinuousBackupInformationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GremlinResourcesClientRetrieveContinuousBackupInformationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientRetrieveContinuousBackupInformationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientRetrieveContinuousBackupInformationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1066,7 +1055,7 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformation(ctx co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1099,7 +1088,7 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformationCreateR
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1126,9 +1115,9 @@ func (client *GremlinResourcesClient) BeginUpdateGremlinDatabaseThroughput(ctx c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1141,7 +1130,7 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughput(ctx contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1170,7 +1159,7 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughputCreateReque
 		return nil, errors.New("parameter databaseName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{databaseName}", url.PathEscape(databaseName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1198,9 +1187,9 @@ func (client *GremlinResourcesClient) BeginUpdateGremlinGraphThroughput(ctx cont
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GremlinResourcesClientUpdateGremlinGraphThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GremlinResourcesClientUpdateGremlinGraphThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GremlinResourcesClientUpdateGremlinGraphThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GremlinResourcesClientUpdateGremlinGraphThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1213,7 +1202,7 @@ func (client *GremlinResourcesClient) updateGremlinGraphThroughput(ctx context.C
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1246,7 +1235,7 @@ func (client *GremlinResourcesClient) updateGremlinGraphThroughputCreateRequest(
 		return nil, errors.New("parameter graphName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{graphName}", url.PathEscape(graphName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

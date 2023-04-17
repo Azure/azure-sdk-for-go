@@ -25,11 +25,11 @@ func ExampleCassandraDataCentersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraDataCentersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("cassandra-prod-rg", "cassandra-prod", nil)
+	pager := clientFactory.NewCassandraDataCentersClient().NewListPager("cassandra-prod-rg", "cassandra-prod", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -75,11 +75,11 @@ func ExampleCassandraDataCentersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraDataCentersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", nil)
+	res, err := clientFactory.NewCassandraDataCentersClient().Get(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -117,11 +117,11 @@ func ExampleCassandraDataCentersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraDataCentersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", nil)
+	poller, err := clientFactory.NewCassandraDataCentersClient().BeginDelete(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,11 +138,11 @@ func ExampleCassandraDataCentersClient_BeginCreateUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraDataCentersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", armcosmos.DataCenterResource{
+	poller, err := clientFactory.NewCassandraDataCentersClient().BeginCreateUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", armcosmos.DataCenterResource{
 		Properties: &armcosmos.DataCenterResourceProperties{
 			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 			DataCenterLocation:                 to.Ptr("West US 2"),
@@ -190,11 +190,11 @@ func ExampleCassandraDataCentersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraDataCentersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", armcosmos.DataCenterResource{
+	poller, err := clientFactory.NewCassandraDataCentersClient().BeginUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", "dc1", armcosmos.DataCenterResource{
 		Properties: &armcosmos.DataCenterResourceProperties{
 			Base64EncodedCassandraYamlFragment: to.Ptr("Y29tcGFjdGlvbl90aHJvdWdocHV0X21iX3Blcl9zZWM6IDMyCmNvbXBhY3Rpb25fbGFyZ2VfcGFydGl0aW9uX3dhcm5pbmdfdGhyZXNob2xkX21iOiAxMDA="),
 			DataCenterLocation:                 to.Ptr("West US 2"),

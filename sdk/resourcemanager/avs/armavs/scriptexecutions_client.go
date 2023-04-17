@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,65 +24,58 @@ import (
 // ScriptExecutionsClient contains the methods for the ScriptExecutions group.
 // Don't use this type directly, use NewScriptExecutionsClient() instead.
 type ScriptExecutionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewScriptExecutionsClient creates a new instance of ScriptExecutionsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewScriptExecutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScriptExecutionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ScriptExecutionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ScriptExecutionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a script execution in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - The name of the private cloud.
-// scriptExecutionName - Name of the user-invoked script execution resource
-// scriptExecution - A script running in the private cloud
-// options - ScriptExecutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScriptExecutionsClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - The name of the private cloud.
+//   - scriptExecutionName - Name of the user-invoked script execution resource
+//   - scriptExecution - A script running in the private cloud
+//   - options - ScriptExecutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScriptExecutionsClient.BeginCreateOrUpdate
+//     method.
 func (client *ScriptExecutionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ScriptExecutionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ScriptExecutionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ScriptExecutionsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ScriptExecutionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ScriptExecutionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a script execution in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *ScriptExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, scriptExecution ScriptExecution, options *ScriptExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,7 +104,7 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter scriptExecutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionName}", url.PathEscape(scriptExecutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,33 +117,35 @@ func (client *ScriptExecutionsClient) createOrUpdateCreateRequest(ctx context.Co
 
 // BeginDelete - Cancel a ScriptExecution in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// scriptExecutionName - Name of the user-invoked script execution resource
-// options - ScriptExecutionsClientBeginDeleteOptions contains the optional parameters for the ScriptExecutionsClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - scriptExecutionName - Name of the user-invoked script execution resource
+//   - options - ScriptExecutionsClientBeginDeleteOptions contains the optional parameters for the ScriptExecutionsClient.BeginDelete
+//     method.
 func (client *ScriptExecutionsClient) BeginDelete(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientBeginDeleteOptions) (*runtime.Poller[ScriptExecutionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, privateCloudName, scriptExecutionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ScriptExecutionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ScriptExecutionsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ScriptExecutionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ScriptExecutionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Cancel a ScriptExecution in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
 func (client *ScriptExecutionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, privateCloudName, scriptExecutionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -181,7 +174,7 @@ func (client *ScriptExecutionsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter scriptExecutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionName}", url.PathEscape(scriptExecutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,17 +187,18 @@ func (client *ScriptExecutionsClient) deleteCreateRequest(ctx context.Context, r
 
 // Get - Get an script execution by name in a private cloud
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// scriptExecutionName - Name of the user-invoked script execution resource
-// options - ScriptExecutionsClientGetOptions contains the optional parameters for the ScriptExecutionsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - scriptExecutionName - Name of the user-invoked script execution resource
+//   - options - ScriptExecutionsClientGetOptions contains the optional parameters for the ScriptExecutionsClient.Get method.
 func (client *ScriptExecutionsClient) Get(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientGetOptions) (ScriptExecutionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, privateCloudName, scriptExecutionName, options)
 	if err != nil {
 		return ScriptExecutionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ScriptExecutionsClientGetResponse{}, err
 	}
@@ -233,7 +227,7 @@ func (client *ScriptExecutionsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter scriptExecutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionName}", url.PathEscape(scriptExecutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -255,18 +249,19 @@ func (client *ScriptExecutionsClient) getHandleResponse(resp *http.Response) (Sc
 
 // GetExecutionLogs - Return the logs for a script execution resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// scriptExecutionName - Name of the user-invoked script execution resource
-// options - ScriptExecutionsClientGetExecutionLogsOptions contains the optional parameters for the ScriptExecutionsClient.GetExecutionLogs
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - scriptExecutionName - Name of the user-invoked script execution resource
+//   - options - ScriptExecutionsClientGetExecutionLogsOptions contains the optional parameters for the ScriptExecutionsClient.GetExecutionLogs
+//     method.
 func (client *ScriptExecutionsClient) GetExecutionLogs(ctx context.Context, resourceGroupName string, privateCloudName string, scriptExecutionName string, options *ScriptExecutionsClientGetExecutionLogsOptions) (ScriptExecutionsClientGetExecutionLogsResponse, error) {
 	req, err := client.getExecutionLogsCreateRequest(ctx, resourceGroupName, privateCloudName, scriptExecutionName, options)
 	if err != nil {
 		return ScriptExecutionsClientGetExecutionLogsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ScriptExecutionsClientGetExecutionLogsResponse{}, err
 	}
@@ -295,7 +290,7 @@ func (client *ScriptExecutionsClient) getExecutionLogsCreateRequest(ctx context.
 		return nil, errors.New("parameter scriptExecutionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{scriptExecutionName}", url.PathEscape(scriptExecutionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -319,10 +314,12 @@ func (client *ScriptExecutionsClient) getExecutionLogsHandleResponse(resp *http.
 }
 
 // NewListPager - List script executions in a private cloud
+//
 // Generated from API version 2022-05-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// privateCloudName - Name of the private cloud
-// options - ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateCloudName - Name of the private cloud
+//   - options - ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.NewListPager
+//     method.
 func (client *ScriptExecutionsClient) NewListPager(resourceGroupName string, privateCloudName string, options *ScriptExecutionsClientListOptions) *runtime.Pager[ScriptExecutionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ScriptExecutionsClientListResponse]{
 		More: func(page ScriptExecutionsClientListResponse) bool {
@@ -339,7 +336,7 @@ func (client *ScriptExecutionsClient) NewListPager(resourceGroupName string, pri
 			if err != nil {
 				return ScriptExecutionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ScriptExecutionsClientListResponse{}, err
 			}
@@ -366,7 +363,7 @@ func (client *ScriptExecutionsClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter privateCloudName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateCloudName}", url.PathEscape(privateCloudName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

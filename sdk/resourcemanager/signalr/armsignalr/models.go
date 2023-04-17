@@ -51,12 +51,12 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager method.
 type ClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 type ClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -75,49 +75,49 @@ type ClientListSKUsOptions struct {
 type CorsSettings struct {
 	// Gets or sets the list of origins that should be allowed to make cross-origin calls (for example: http://example.com:12345).
 	// Use "*" to allow all. If omitted, allow all by default.
-	AllowedOrigins []*string `json:"allowedOrigins,omitempty"`
+	AllowedOrigins []*string
 }
 
 // CustomCertificate - A custom certificate.
 type CustomCertificate struct {
 	// REQUIRED; Custom certificate properties.
-	Properties *CustomCertificateProperties `json:"properties,omitempty"`
+	Properties *CustomCertificateProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomCertificateList - Custom certificates list.
 type CustomCertificateList struct {
 	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of custom certificates of this resource.
-	Value []*CustomCertificate `json:"value,omitempty"`
+	Value []*CustomCertificate
 }
 
 // CustomCertificateProperties - Custom certificate properties.
 type CustomCertificateProperties struct {
 	// REQUIRED; Base uri of the KeyVault that stores certificate.
-	KeyVaultBaseURI *string `json:"keyVaultBaseUri,omitempty"`
+	KeyVaultBaseURI *string
 
 	// REQUIRED; Certificate secret name.
-	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+	KeyVaultSecretName *string
 
 	// Certificate secret version.
-	KeyVaultSecretVersion *string `json:"keyVaultSecretVersion,omitempty"`
+	KeyVaultSecretVersion *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // CustomCertificatesClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomCertificatesClient.BeginCreateOrUpdate
@@ -137,7 +137,7 @@ type CustomCertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.List method.
+// CustomCertificatesClientListOptions contains the optional parameters for the CustomCertificatesClient.NewListPager method.
 type CustomCertificatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -145,40 +145,40 @@ type CustomCertificatesClientListOptions struct {
 // CustomDomain - A custom domain
 type CustomDomain struct {
 	// REQUIRED; Properties of a custom domain.
-	Properties *CustomDomainProperties `json:"properties,omitempty"`
+	Properties *CustomDomainProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomDomainList - Custom domains list
 type CustomDomainList struct {
 	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of custom domains that bind to this resource.
-	Value []*CustomDomain `json:"value,omitempty"`
+	Value []*CustomDomain
 }
 
 // CustomDomainProperties - Properties of a custom domain.
 type CustomDomainProperties struct {
 	// REQUIRED; Reference to a resource.
-	CustomCertificate *ResourceReference `json:"customCertificate,omitempty"`
+	CustomCertificate *ResourceReference
 
 	// REQUIRED; The custom domain name.
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // CustomDomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomDomainsClient.BeginCreateOrUpdate
@@ -199,7 +199,7 @@ type CustomDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.List method.
+// CustomDomainsClientListOptions contains the optional parameters for the CustomDomainsClient.NewListPager method.
 type CustomDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -207,50 +207,50 @@ type CustomDomainsClientListOptions struct {
 // Dimension - Specifications of the Dimension of metrics.
 type Dimension struct {
 	// Localized friendly display name of the dimension.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of the dimension as it appears in MDM.
-	InternalName *string `json:"internalName,omitempty"`
+	InternalName *string
 
 	// The public facing name of the dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// A Boolean flag indicating whether this dimension should be included for the shoebox export scenario.
-	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+	ToBeExportedForShoebox *bool
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Feature of a resource, which controls the runtime behavior.
@@ -266,204 +266,204 @@ type Feature struct {
 	// SignalR based web application or self-troubleshooting some issues. Please note that live traces are counted as outbound
 	// messages that will be charged. Values allowed: "true"/"false", to
 	// enable/disable live trace feature.
-	Flag *FeatureFlags `json:"flag,omitempty"`
+	Flag *FeatureFlags
 
 	// REQUIRED; Value of the feature flag. See Azure SignalR service document https://docs.microsoft.com/azure/azure-signalr/
 	// for allowed values.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// Optional properties related to this feature.
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 }
 
 // Keys - A class represents the access keys of the resource.
 type Keys struct {
 	// Connection string constructed via the primaryKey
-	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty"`
+	PrimaryConnectionString *string
 
 	// The primary access key.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Connection string constructed via the secondaryKey
-	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
+	SecondaryConnectionString *string
 
 	// The secondary access key.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 }
 
 // LiveTraceCategory - Live trace category configuration of a Microsoft.SignalRService resource.
 type LiveTraceCategory struct {
 	// Indicates whether or the live trace category is enabled. Available values: true, false. Case insensitive.
-	Enabled *string `json:"enabled,omitempty"`
+	Enabled *string
 
 	// Gets or sets the live trace category's name. Available values: ConnectivityLogs, MessagingLogs. Case insensitive.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // LiveTraceConfiguration - Live trace configuration of a Microsoft.SignalRService resource.
 type LiveTraceConfiguration struct {
 	// Gets or sets the list of category configurations.
-	Categories []*LiveTraceCategory `json:"categories,omitempty"`
+	Categories []*LiveTraceCategory
 
 	// Indicates whether or not enable live trace. When it's set to true, live trace client can connect to the service. Otherwise,
 	// live trace client can't connect to the service, so that you are unable to
 	// receive any log, no matter what you configure in "categories". Available values: true, false. Case insensitive.
-	Enabled *string `json:"enabled,omitempty"`
+	Enabled *string
 }
 
 // LogSpecification - Specifications of the Logs for Azure Monitoring.
 type LogSpecification struct {
 	// Localized friendly display name of the log.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of the log.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ManagedIdentity - A class represent managed identities used for request and response
 type ManagedIdentity struct {
 	// Represents the identity type: systemAssigned, userAssigned, None
-	Type *ManagedIdentityType `json:"type,omitempty"`
+	Type *ManagedIdentityType
 
 	// Get or set the user assigned identities
-	UserAssignedIdentities map[string]*UserAssignedIdentityProperty `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentityProperty
 
 	// READ-ONLY; Get the principal id for the system assigned identity. Only be used in response.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; Get the tenant id for the system assigned identity. Only be used in response
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ManagedIdentitySettings - Managed identity settings for upstream.
 type ManagedIdentitySettings struct {
 	// The Resource indicating the App ID URI of the target resource. It also appears in the aud (audience) claim of the issued
 	// token.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // MetricSpecification - Specifications of the Metrics for Azure Monitoring.
 type MetricSpecification struct {
 	// Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// The name of the metric category that the metric belongs to. A metric can only belong to a single category.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// The dimensions of the metrics.
-	Dimensions []*Dimension `json:"dimensions,omitempty"`
+	Dimensions []*Dimension
 
 	// Localized friendly description of the metric.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// Localized friendly display name of the metric.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published. Ex. a metric
 	// that returns the number of times a particular error code was emitted. The
 	// error code may not appear often, instead of the RP publishing 0, Shoebox can auto fill in 0s for time periods where nothing
 	// was emitted.
-	FillGapWithZero *string `json:"fillGapWithZero,omitempty"`
+	FillGapWithZero *string
 
 	// Name of the metric.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The unit that makes sense for the metric.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // NameAvailability - Result of the request to check name availability. It contains a flag and possible reason of failure.
 type NameAvailability struct {
 	// The message of the operation.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicates whether the name is available or not.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason of the availability. Required if name is not available.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 }
 
 // NameAvailabilityParameters - Data POST-ed to the nameAvailability action
 type NameAvailabilityParameters struct {
 	// REQUIRED; The resource name to validate. e.g."my-resource-name"
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The resource type. Can be "Microsoft.SignalRService/SignalR" or "Microsoft.SignalRService/webPubSub"
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // NetworkACL - Network ACL
 type NetworkACL struct {
 	// Allowed request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
-	Allow []*SignalRRequestType `json:"allow,omitempty"`
+	Allow []*SignalRRequestType
 
 	// Denied request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
-	Deny []*SignalRRequestType `json:"deny,omitempty"`
+	Deny []*SignalRRequestType
 }
 
 // NetworkACLs - Network ACLs for the resource
 type NetworkACLs struct {
 	// Azure Networking ACL Action.
-	DefaultAction *ACLAction `json:"defaultAction,omitempty"`
+	DefaultAction *ACLAction
 
 	// ACLs for requests from private endpoints
-	PrivateEndpoints []*PrivateEndpointACL `json:"privateEndpoints,omitempty"`
+	PrivateEndpoints []*PrivateEndpointACL
 
 	// Network ACL
-	PublicNetwork *NetworkACL `json:"publicNetwork,omitempty"`
+	PublicNetwork *NetworkACL
 }
 
 // Operation - REST API operation supported by resource provider.
 type Operation struct {
 	// The object that describes a operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// If the operation is a data action. (for data plane rbac)
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the operation with format: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Optional. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
 	// UX.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Extra Operation properties.
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 }
 
 // OperationDisplay - The object that describes a operation.
 type OperationDisplay struct {
 	// The localized friendly description for the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The localized friendly name for the operation.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Friendly name of the resource provider
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource type on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationList - Result of the request to list REST API operations. It contains a list of operations.
 type OperationList struct {
 	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of operations supported by the resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationProperties - Extra Operation properties.
 type OperationProperties struct {
 	// An object that describes a specification.
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ServiceSpecification
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -471,62 +471,62 @@ type OperationsClientListOptions struct {
 // PrivateEndpoint - Private endpoint
 type PrivateEndpoint struct {
 	// Full qualified Id of the private endpoint
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateEndpointACL - ACL for a private endpoint
 type PrivateEndpointACL struct {
 	// REQUIRED; Name of the private endpoint connection
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Allowed request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
-	Allow []*SignalRRequestType `json:"allow,omitempty"`
+	Allow []*SignalRRequestType
 
 	// Denied request types. The value can be one or more of: ClientConnection, ServerConnection, RESTAPI.
-	Deny []*SignalRRequestType `json:"deny,omitempty"`
+	Deny []*SignalRRequestType
 }
 
 // PrivateEndpointConnection - A private endpoint connection to an azure resource
 type PrivateEndpointConnection struct {
 	// Private endpoint connection properties
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionList - A list of private endpoint connections
 type PrivateEndpointConnectionList struct {
 	// Request URL that can be used to query next page of private endpoint connections. Returned when the total number of requested
 	// private endpoint connections exceed maximum page size.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of the private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Private endpoint connection properties
 type PrivateEndpointConnectionProperties struct {
 	// Private endpoint
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// Connection state of the private endpoint connection
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// READ-ONLY; Group IDs
-	GroupIDs []*string `json:"groupIds,omitempty" azure:"ro"`
+	GroupIDs []*string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
@@ -542,7 +542,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -557,43 +557,44 @@ type PrivateEndpointConnectionsClientUpdateOptions struct {
 // PrivateLinkResource - Private link resource
 type PrivateLinkResource struct {
 	// Private link resource properties
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceList - Contains a list of PrivateLinkResource and a possible link to query more results
 type PrivateLinkResourceList struct {
 	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of PrivateLinkResource
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Private link resource properties
 type PrivateLinkResourceProperties struct {
 	// Group Id of the private link resource
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// Required members of the private link resource
-	RequiredMembers []*string `json:"requiredMembers,omitempty"`
+	RequiredMembers []*string
 
 	// Required private DNS zone names
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// The list of resources that are onboarded to private link service
-	ShareablePrivateLinkResourceTypes []*ShareablePrivateLinkResourceType `json:"shareablePrivateLinkResourceTypes,omitempty"`
+	ShareablePrivateLinkResourceTypes []*ShareablePrivateLinkResourceType
 }
 
-// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.List method.
+// PrivateLinkResourcesClientListOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListPager
+// method.
 type PrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -601,238 +602,238 @@ type PrivateLinkResourcesClientListOptions struct {
 // PrivateLinkServiceConnectionState - Connection state of the private endpoint connection
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateLinkServiceConnectionStatus
 }
 
 // Properties - A class that describes the properties of the resource
 type Properties struct {
 	// Cross-Origin Resource Sharing (CORS) settings.
-	Cors *CorsSettings `json:"cors,omitempty"`
+	Cors *CorsSettings
 
 	// DisableLocalAuth Enable or disable aad auth When set as true, connection with AuthType=aad won't work.
-	DisableAADAuth *bool `json:"disableAadAuth,omitempty"`
+	DisableAADAuth *bool
 
 	// DisableLocalAuth Enable or disable local auth with AccessKey When set as true, connection with AccessKey=xxx won't work.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// List of the featureFlags.
 	// FeatureFlags that are not included in the parameters for the update operation will not be modified. And the response will
 	// only include featureFlags that are explicitly set. When a featureFlag is not
 	// explicitly set, its globally default value will be used But keep in mind, the default value doesn't mean "false". It varies
 	// in terms of different FeatureFlags.
-	Features []*Feature `json:"features,omitempty"`
+	Features []*Feature
 
 	// Live trace configuration of a Microsoft.SignalRService resource.
-	LiveTraceConfiguration *LiveTraceConfiguration `json:"liveTraceConfiguration,omitempty"`
+	LiveTraceConfiguration *LiveTraceConfiguration
 
 	// Network ACLs for the resource
-	NetworkACLs *NetworkACLs `json:"networkACLs,omitempty"`
+	NetworkACLs *NetworkACLs
 
 	// Enable or disable public network access. Default to "Enabled". When it's Enabled, network ACLs still apply. When it's Disabled,
 	// public network access is always disabled no matter what you set in
 	// network ACLs.
-	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *string
 
 	// Resource log configuration of a Microsoft.SignalRService resource.
-	ResourceLogConfiguration *ResourceLogConfiguration `json:"resourceLogConfiguration,omitempty"`
+	ResourceLogConfiguration *ResourceLogConfiguration
 
 	// Serverless settings.
-	Serverless *ServerlessSettings `json:"serverless,omitempty"`
+	Serverless *ServerlessSettings
 
 	// TLS settings for the resource
-	TLS *TLSSettings `json:"tls,omitempty"`
+	TLS *TLSSettings
 
 	// The settings for the Upstream when the service is in server-less mode.
-	Upstream *ServerlessUpstreamSettings `json:"upstream,omitempty"`
+	Upstream *ServerlessUpstreamSettings
 
 	// READ-ONLY; The publicly accessible IP of the resource.
-	ExternalIP *string `json:"externalIP,omitempty" azure:"ro"`
+	ExternalIP *string
 
 	// READ-ONLY; FQDN of the service instance.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; Deprecated.
-	HostNamePrefix *string `json:"hostNamePrefix,omitempty" azure:"ro"`
+	HostNamePrefix *string
 
 	// READ-ONLY; Private endpoint connections to the resource.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The publicly accessible port of the resource which is designed for browser/client side usage.
-	PublicPort *int32 `json:"publicPort,omitempty" azure:"ro"`
+	PublicPort *int32
 
 	// READ-ONLY; The publicly accessible port of the resource which is designed for customer server side usage.
-	ServerPort *int32 `json:"serverPort,omitempty" azure:"ro"`
+	ServerPort *int32
 
 	// READ-ONLY; The list of shared private link resources.
-	SharedPrivateLinkResources []*SharedPrivateLinkResource `json:"sharedPrivateLinkResources,omitempty" azure:"ro"`
+	SharedPrivateLinkResources []*SharedPrivateLinkResource
 
 	// READ-ONLY; Version of the resource. Probably you need the same or higher version of client SDKs.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
 // and tags
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RegenerateKeyParameters - Parameters describes the request to regenerate access keys
 type RegenerateKeyParameters struct {
 	// The type of access key.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 }
 
 // Resource - The core properties of ARM resources.
 type Resource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceInfo - A class represent a resource.
 type ResourceInfo struct {
 	// A class represent managed identities used for request and response
-	Identity *ManagedIdentity `json:"identity,omitempty"`
+	Identity *ManagedIdentity
 
 	// The kind of the service, it can be SignalR or RawWebSockets
-	Kind *ServiceKind `json:"kind,omitempty"`
+	Kind *ServiceKind
 
 	// The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// A class that describes the properties of the resource
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 
 	// The billing information of the resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	SKU *ResourceSKU
 
 	// Tags of the service which is a list of key value pairs that describe the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceInfoList - Object that includes an array of resources and a possible link for next set.
 type ResourceInfoList struct {
 	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of the resources
-	Value []*ResourceInfo `json:"value,omitempty"`
+	Value []*ResourceInfo
 }
 
 // ResourceLogCategory - Resource log category configuration of a Microsoft.SignalRService resource.
 type ResourceLogCategory struct {
 	// Indicates whether or the resource log category is enabled. Available values: true, false. Case insensitive.
-	Enabled *string `json:"enabled,omitempty"`
+	Enabled *string
 
 	// Gets or sets the resource log category's name. Available values: ConnectivityLogs, MessagingLogs. Case insensitive.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ResourceLogConfiguration - Resource log configuration of a Microsoft.SignalRService resource.
 type ResourceLogConfiguration struct {
 	// Gets or sets the list of category configurations.
-	Categories []*ResourceLogCategory `json:"categories,omitempty"`
+	Categories []*ResourceLogCategory
 }
 
 // ResourceReference - Reference to a resource.
 type ResourceReference struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // ResourceSKU - The billing information of the resource.
 type ResourceSKU struct {
 	// REQUIRED; The name of the SKU. Required.
 	// Allowed values: StandardS1, FreeF1, Premium_P1
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Optional, integer. The unit count of the resource. 1 by default.
 	// If present, following values are allowed: Free: 1; Standard: 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100; Premium:
 	// 1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100;
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Optional tier of this particular SKU. 'Standard' or 'Free'.
 	// Basic is deprecated, use Standard instead.
-	Tier *SignalRSKUTier `json:"tier,omitempty"`
+	Tier *SignalRSKUTier
 
 	// READ-ONLY; Not used. Retained for future use.
-	Family *string `json:"family,omitempty" azure:"ro"`
+	Family *string
 
 	// READ-ONLY; Not used. Retained for future use.
-	Size *string `json:"size,omitempty" azure:"ro"`
+	Size *string
 }
 
 // SKU - Describes an available sku."
 type SKU struct {
 	// READ-ONLY; Describes scaling information of a sku.
-	Capacity *SKUCapacity `json:"capacity,omitempty" azure:"ro"`
+	Capacity *SKUCapacity
 
 	// READ-ONLY; The resource type that this object applies to
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; The billing information of the resource.
-	SKU *ResourceSKU `json:"sku,omitempty" azure:"ro"`
+	SKU *ResourceSKU
 }
 
 // SKUCapacity - Describes scaling information of a sku.
 type SKUCapacity struct {
 	// READ-ONLY; Allows capacity value list.
-	AllowedValues []*int32 `json:"allowedValues,omitempty" azure:"ro"`
+	AllowedValues []*int32
 
 	// READ-ONLY; The default capacity.
-	Default *int32 `json:"default,omitempty" azure:"ro"`
+	Default *int32
 
 	// READ-ONLY; The highest permitted capacity for this resource
-	Maximum *int32 `json:"maximum,omitempty" azure:"ro"`
+	Maximum *int32
 
 	// READ-ONLY; The lowest permitted capacity for this resource
-	Minimum *int32 `json:"minimum,omitempty" azure:"ro"`
+	Minimum *int32
 
 	// READ-ONLY; The scale type applicable to the sku.
-	ScaleType *ScaleType `json:"scaleType,omitempty" azure:"ro"`
+	ScaleType *ScaleType
 }
 
 // SKUList - The list skus operation response
 type SKUList struct {
 	// READ-ONLY; The URL the client should use to fetch the next page (per server side paging). It's null for now, added for
 	// future use.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The list of skus available for the resource.
-	Value []*SKU `json:"value,omitempty" azure:"ro"`
+	Value []*SKU
 }
 
 // ServerlessSettings - Serverless settings.
@@ -843,90 +844,90 @@ type ServerlessSettings struct {
 	// to a longer period if messages are expected to be sent in longer intervals,
 	// and they want to keep the same client connection alive during this session. The service considers the client disconnected
 	// if it hasn't received a message (including keep-alive) in this interval.
-	ConnectionTimeoutInSeconds *int32 `json:"connectionTimeoutInSeconds,omitempty"`
+	ConnectionTimeoutInSeconds *int32
 }
 
 // ServerlessUpstreamSettings - The settings for the Upstream when the service is in server-less mode.
 type ServerlessUpstreamSettings struct {
 	// Gets or sets the list of Upstream URL templates. Order matters, and the first matching template takes effects.
-	Templates []*UpstreamTemplate `json:"templates,omitempty"`
+	Templates []*UpstreamTemplate
 }
 
 // ServiceSpecification - An object that describes a specification.
 type ServiceSpecification struct {
 	// Specifications of the Logs for Azure Monitoring.
-	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*LogSpecification
 
 	// Specifications of the Metrics for Azure Monitoring.
-	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*MetricSpecification
 }
 
 // ShareablePrivateLinkResourceProperties - Describes the properties of a resource type that has been onboarded to private
 // link service
 type ShareablePrivateLinkResourceProperties struct {
 	// The description of the resource type that has been onboarded to private link service
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The resource provider group id for the resource that has been onboarded to private link service
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The resource provider type for the resource that has been onboarded to private link service
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ShareablePrivateLinkResourceType - Describes a resource type that has been onboarded to private link service
 type ShareablePrivateLinkResourceType struct {
 	// The name of the resource type that has been onboarded to private link service
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Describes the properties of a resource type that has been onboarded to private link service
-	Properties *ShareablePrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *ShareablePrivateLinkResourceProperties
 }
 
 // SharedPrivateLinkResource - Describes a Shared Private Link Resource
 type SharedPrivateLinkResource struct {
 	// Describes the properties of an existing Shared Private Link Resource
-	Properties *SharedPrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *SharedPrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SharedPrivateLinkResourceList - A list of shared private link resources
 type SharedPrivateLinkResourceList struct {
 	// Request URL that can be used to query next page of private endpoint connections. Returned when the total number of requested
 	// private endpoint connections exceed maximum page size.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of the shared private link resources
-	Value []*SharedPrivateLinkResource `json:"value,omitempty"`
+	Value []*SharedPrivateLinkResource
 }
 
 // SharedPrivateLinkResourceProperties - Describes the properties of an existing Shared Private Link Resource
 type SharedPrivateLinkResourceProperties struct {
 	// REQUIRED; The group id from the provider of resource the shared private link resource is for
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// REQUIRED; The resource id of the resource the shared private link resource is for
-	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	PrivateLinkResourceID *string
 
 	// The request message for requesting approval of the shared private link resource
-	RequestMessage *string `json:"requestMessage,omitempty"`
+	RequestMessage *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Status of the shared private link resource
-	Status *SharedPrivateLinkResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *SharedPrivateLinkResourceStatus
 }
 
 // SharedPrivateLinkResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.BeginCreateOrUpdate
@@ -949,7 +950,7 @@ type SharedPrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SharedPrivateLinkResourcesClientListOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.List
+// SharedPrivateLinkResourcesClientListOptions contains the optional parameters for the SharedPrivateLinkResourcesClient.NewListPager
 // method.
 type SharedPrivateLinkResourcesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -958,55 +959,55 @@ type SharedPrivateLinkResourcesClientListOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TLSSettings - TLS settings for the resource
 type TLSSettings struct {
 	// Request client certificate during TLS handshake if enabled
-	ClientCertEnabled *bool `json:"clientCertEnabled,omitempty"`
+	ClientCertEnabled *bool
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource.
 type TrackedResource struct {
 	// The GEO location of the resource. e.g. West US | East US | North Central US | South Central US.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Tags of the service which is a list of key value pairs that describe the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource - e.g. "Microsoft.SignalRService/SignalR"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UpstreamAuthSettings - Upstream auth settings. If not set, no auth is used for upstream messages.
 type UpstreamAuthSettings struct {
 	// Managed identity settings for upstream.
-	ManagedIdentity *ManagedIdentitySettings `json:"managedIdentity,omitempty"`
+	ManagedIdentity *ManagedIdentitySettings
 
 	// Upstream auth type enum.
-	Type *UpstreamAuthType `json:"type,omitempty"`
+	Type *UpstreamAuthType
 }
 
 // UpstreamTemplate - Upstream template item settings. It defines the Upstream URL of the incoming requests. The template
@@ -1018,67 +1019,67 @@ type UpstreamTemplate struct {
 	// request comes in. For example, if the urlTemplate is http://example.com/{hub}/api/{event}, with a client request from hub
 	// chat connects, it will first POST to this URL:
 	// http://example.com/chat/api/connect.
-	URLTemplate *string `json:"urlTemplate,omitempty"`
+	URLTemplate *string
 
 	// Upstream auth settings. If not set, no auth is used for upstream messages.
-	Auth *UpstreamAuthSettings `json:"auth,omitempty"`
+	Auth *UpstreamAuthSettings
 
 	// Gets or sets the matching pattern for category names. If not set, it matches any category. There are 3 kind of patterns
 	// supported: 1. "*", it to matches any category name. 2. Combine multiple
 	// categories with ",", for example "connections,messages", it matches category "connections" and "messages". 3. The single
 	// category name, for example, "connections", it matches the category
 	// "connections".
-	CategoryPattern *string `json:"categoryPattern,omitempty"`
+	CategoryPattern *string
 
 	// Gets or sets the matching pattern for event names. If not set, it matches any event. There are 3 kind of patterns supported:
 	// 1. "*", it to matches any event name. 2. Combine multiple events with ",",
 	// for example "connect,disconnect", it matches event "connect" and "disconnect". 3. The single event name, for example, "connect",
 	// it matches "connect".
-	EventPattern *string `json:"eventPattern,omitempty"`
+	EventPattern *string
 
 	// Gets or sets the matching pattern for hub names. If not set, it matches any hub. There are 3 kind of patterns supported:
 	// 1. "*", it to matches any hub name. 2. Combine multiple hubs with ",", for
 	// example "hub1,hub2", it matches "hub1" and "hub2". 3. The single hub name, for example, "hub1", it matches "hub1".
-	HubPattern *string `json:"hubPattern,omitempty"`
+	HubPattern *string
 }
 
 // Usage - Object that describes a specific usage of the resources.
 type Usage struct {
 	// Current value for the usage quota.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
+	CurrentValue *int64
 
 	// Fully qualified ARM resource id
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The maximum permitted value for the usage quota. If there is no limit, this value will be -1.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// Localizable String object containing the name and a localized value.
-	Name *UsageName `json:"name,omitempty"`
+	Name *UsageName
 
 	// Representing the units of the usage quota. Possible values are: Count, Bytes, Seconds, Percent, CountPerSecond, BytesPerSecond.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // UsageList - Object that includes an array of the resource usages and a possible link for next set.
 type UsageList struct {
 	// The URL the client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of the resource usages
-	Value []*Usage `json:"value,omitempty"`
+	Value []*Usage
 }
 
 // UsageName - Localizable String object containing the name and a localized value.
 type UsageName struct {
 	// Localized name of the usage.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// The identifier of the usage.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
-// UsagesClientListOptions contains the optional parameters for the UsagesClient.List method.
+// UsagesClientListOptions contains the optional parameters for the UsagesClient.NewListPager method.
 type UsagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1086,8 +1087,8 @@ type UsagesClientListOptions struct {
 // UserAssignedIdentityProperty - Properties of user assigned identity.
 type UserAssignedIdentityProperty struct {
 	// READ-ONLY; Get the client id for the user assigned identity
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; Get the principal id for the user assigned identity
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }

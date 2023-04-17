@@ -25,11 +25,11 @@ func ExampleExpressRouteCircuitPeeringsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitPeeringsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "circuitName", "peeringName", nil)
+	poller, err := clientFactory.NewExpressRouteCircuitPeeringsClient().BeginDelete(ctx, "rg1", "circuitName", "peeringName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleExpressRouteCircuitPeeringsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitPeeringsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "circuitName", "MicrosoftPeering", nil)
+	res, err := clientFactory.NewExpressRouteCircuitPeeringsClient().Get(ctx, "rg1", "circuitName", "MicrosoftPeering", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -114,11 +114,11 @@ func ExampleExpressRouteCircuitPeeringsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitPeeringsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "circuitName", "AzurePrivatePeering", armnetwork.ExpressRouteCircuitPeering{
+	poller, err := clientFactory.NewExpressRouteCircuitPeeringsClient().BeginCreateOrUpdate(ctx, "rg1", "circuitName", "AzurePrivatePeering", armnetwork.ExpressRouteCircuitPeering{
 		Properties: &armnetwork.ExpressRouteCircuitPeeringPropertiesFormat{
 			PeerASN:                    to.Ptr[int64](200),
 			PrimaryPeerAddressPrefix:   to.Ptr("192.168.16.252/30"),
@@ -171,11 +171,11 @@ func ExampleExpressRouteCircuitPeeringsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewExpressRouteCircuitPeeringsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "circuitName", nil)
+	pager := clientFactory.NewExpressRouteCircuitPeeringsClient().NewListPager("rg1", "circuitName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

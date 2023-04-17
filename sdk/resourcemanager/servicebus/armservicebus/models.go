@@ -14,87 +14,87 @@ import "time"
 // AccessKeys - Namespace/ServiceBus Connection String
 type AccessKeys struct {
 	// READ-ONLY; Primary connection string of the alias if GEO DR is enabled
-	AliasPrimaryConnectionString *string `json:"aliasPrimaryConnectionString,omitempty" azure:"ro"`
+	AliasPrimaryConnectionString *string
 
 	// READ-ONLY; Secondary connection string of the alias if GEO DR is enabled
-	AliasSecondaryConnectionString *string `json:"aliasSecondaryConnectionString,omitempty" azure:"ro"`
+	AliasSecondaryConnectionString *string
 
 	// READ-ONLY; A string that describes the authorization rule.
-	KeyName *string `json:"keyName,omitempty" azure:"ro"`
+	KeyName *string
 
 	// READ-ONLY; Primary connection string of the created namespace authorization rule.
-	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty" azure:"ro"`
+	PrimaryConnectionString *string
 
 	// READ-ONLY; A base64-encoded 256-bit primary key for signing and validating the SAS token.
-	PrimaryKey *string `json:"primaryKey,omitempty" azure:"ro"`
+	PrimaryKey *string
 
 	// READ-ONLY; Secondary connection string of the created namespace authorization rule.
-	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty" azure:"ro"`
+	SecondaryConnectionString *string
 
 	// READ-ONLY; A base64-encoded 256-bit primary key for signing and validating the SAS token.
-	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
+	SecondaryKey *string
 }
 
 // Action - Represents the filter actions which are allowed for the transformation of a message that have been matched by
 // a filter expression.
 type Action struct {
 	// This property is reserved for future use. An integer value showing the compatibility level, currently hard-coded to 20.
-	CompatibilityLevel *int32 `json:"compatibilityLevel,omitempty"`
+	CompatibilityLevel *int32
 
 	// Value that indicates whether the rule action requires preprocessing.
-	RequiresPreprocessing *bool `json:"requiresPreprocessing,omitempty"`
+	RequiresPreprocessing *bool
 
 	// SQL expression. e.g. MyProperty='ABC'
-	SQLExpression *string `json:"sqlExpression,omitempty"`
+	SQLExpression *string
 }
 
 // ArmDisasterRecovery - Single item in List or Get Alias(Disaster Recovery configuration) operation
 type ArmDisasterRecovery struct {
 	// Properties required to the Create Or Update Alias(Disaster Recovery configurations)
-	Properties *ArmDisasterRecoveryProperties `json:"properties,omitempty"`
+	Properties *ArmDisasterRecoveryProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ArmDisasterRecoveryListResult - The result of the List Alias(Disaster Recovery configuration) operation.
 type ArmDisasterRecoveryListResult struct {
 	// List of Alias(Disaster Recovery configurations)
-	Value []*ArmDisasterRecovery `json:"value,omitempty"`
+	Value []*ArmDisasterRecovery
 
 	// READ-ONLY; Link to the next set of results. Not empty if Value contains incomplete list of Alias(Disaster Recovery configuration)
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ArmDisasterRecoveryProperties - Properties required to the Create Or Update Alias(Disaster Recovery configurations)
 type ArmDisasterRecoveryProperties struct {
 	// Primary/Secondary eventhub namespace name, which is part of GEO DR pairing
-	AlternateName *string `json:"alternateName,omitempty"`
+	AlternateName *string
 
 	// ARM Id of the Primary/Secondary eventhub namespace name, which is part of GEO DR pairing
-	PartnerNamespace *string `json:"partnerNamespace,omitempty"`
+	PartnerNamespace *string
 
 	// READ-ONLY; Number of entities pending to be replicated.
-	PendingReplicationOperationsCount *int64 `json:"pendingReplicationOperationsCount,omitempty" azure:"ro"`
+	PendingReplicationOperationsCount *int64
 
 	// READ-ONLY; Provisioning state of the Alias(Disaster Recovery configuration) - possible values 'Accepted' or 'Succeeded'
 	// or 'Failed'
-	ProvisioningState *ProvisioningStateDR `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningStateDR
 
 	// READ-ONLY; role of namespace in GEO DR - possible values 'Primary' or 'PrimaryNotReplicating' or 'Secondary'
-	Role *RoleDisasterRecovery `json:"role,omitempty" azure:"ro"`
+	Role *RoleDisasterRecovery
 }
 
 // CheckNameAvailability - Description of a Check Name availability request properties.
@@ -102,61 +102,61 @@ type CheckNameAvailability struct {
 	// REQUIRED; The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and
 	// hyphens. The namespace must start with a letter, and it must end with a letter or
 	// number.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // CheckNameAvailabilityResult - Description of a Check Name availability request properties.
 type CheckNameAvailabilityResult struct {
 	// Value indicating namespace is availability, true if the namespace is available; otherwise, false.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason for unavailability of a namespace.
-	Reason *UnavailableReason `json:"reason,omitempty"`
+	Reason *UnavailableReason
 
 	// READ-ONLY; The detailed info regarding the reason associated with the namespace.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // ConnectionState information.
 type ConnectionState struct {
 	// Description of the connection state.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Status of the connection.
-	Status *PrivateLinkConnectionStatus `json:"status,omitempty"`
+	Status *PrivateLinkConnectionStatus
 }
 
 // CorrelationFilter - Represents the correlation filter expression.
 type CorrelationFilter struct {
 	// Content type of the message.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// Identifier of the correlation.
-	CorrelationID *string `json:"correlationId,omitempty"`
+	CorrelationID *string
 
 	// Application specific label.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// Identifier of the message.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// dictionary object for custom filters
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// Address of the queue to reply to.
-	ReplyTo *string `json:"replyTo,omitempty"`
+	ReplyTo *string
 
 	// Session identifier to reply to.
-	ReplyToSessionID *string `json:"replyToSessionId,omitempty"`
+	ReplyToSessionID *string
 
 	// Value that indicates whether the rule action requires preprocessing.
-	RequiresPreprocessing *bool `json:"requiresPreprocessing,omitempty"`
+	RequiresPreprocessing *bool
 
 	// Session identifier.
-	SessionID *string `json:"sessionId,omitempty"`
+	SessionID *string
 
 	// Address to send to.
-	To *string `json:"to,omitempty"`
+	To *string
 }
 
 // DisasterRecoveryConfigsClientBreakPairingOptions contains the optional parameters for the DisasterRecoveryConfigsClient.BreakPairing
@@ -222,156 +222,156 @@ type DisasterRecoveryConfigsClientListOptions struct {
 // Encryption - Properties to configure Encryption
 type Encryption struct {
 	// Enumerates the possible value of keySource for Encryption
-	KeySource *string `json:"keySource,omitempty"`
+	KeySource *string
 
 	// Properties of KeyVault
-	KeyVaultProperties []*KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties []*KeyVaultProperties
 
 	// Enable Infrastructure Encryption (Double Encryption)
-	RequireInfrastructureEncryption *bool `json:"requireInfrastructureEncryption,omitempty"`
+	RequireInfrastructureEncryption *bool
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponse - The resource management error response.
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorResponseError `json:"error,omitempty"`
+	Error *ErrorResponseError
 }
 
 // ErrorResponseError - The error object.
 type ErrorResponseError struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // FailoverProperties - Safe failover is to indicate the service should wait for pending replication to finish before switching
 // to the secondary.
 type FailoverProperties struct {
 	// Safe failover is to indicate the service should wait for pending replication to finish before switching to the secondary.
-	Properties *FailoverPropertiesProperties `json:"properties,omitempty"`
+	Properties *FailoverPropertiesProperties
 }
 
 // FailoverPropertiesProperties - Safe failover is to indicate the service should wait for pending replication to finish before
 // switching to the secondary.
 type FailoverPropertiesProperties struct {
 	// Safe failover is to indicate the service should wait for pending replication to finish before switching to the secondary.
-	IsSafeFailover *bool `json:"IsSafeFailover,omitempty"`
+	IsSafeFailover *bool
 }
 
 // Identity - Properties to configure User Assigned Identities for Bring your Own Keys
 type Identity struct {
 	// Type of managed service identity.
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// Properties for User Assigned Identities
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; ObjectId from the KeyVault
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; TenantId from the KeyVault
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // KeyVaultProperties - Properties to configure keyVault Properties
 type KeyVaultProperties struct {
-	Identity *UserAssignedIdentityProperties `json:"identity,omitempty"`
+	Identity *UserAssignedIdentityProperties
 
 	// Name of the Key from KeyVault
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// Uri of KeyVault
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	KeyVaultURI *string
 
 	// Version of KeyVault
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 }
 
 // MessageCountDetails - Message Count Details.
 type MessageCountDetails struct {
 	// READ-ONLY; Number of active messages in the queue, topic, or subscription.
-	ActiveMessageCount *int64 `json:"activeMessageCount,omitempty" azure:"ro"`
+	ActiveMessageCount *int64
 
 	// READ-ONLY; Number of messages that are dead lettered.
-	DeadLetterMessageCount *int64 `json:"deadLetterMessageCount,omitempty" azure:"ro"`
+	DeadLetterMessageCount *int64
 
 	// READ-ONLY; Number of scheduled messages.
-	ScheduledMessageCount *int64 `json:"scheduledMessageCount,omitempty" azure:"ro"`
+	ScheduledMessageCount *int64
 
 	// READ-ONLY; Number of messages transferred into dead letters.
-	TransferDeadLetterMessageCount *int64 `json:"transferDeadLetterMessageCount,omitempty" azure:"ro"`
+	TransferDeadLetterMessageCount *int64
 
 	// READ-ONLY; Number of messages transferred to another queue, topic, or subscription.
-	TransferMessageCount *int64 `json:"transferMessageCount,omitempty" azure:"ro"`
+	TransferMessageCount *int64
 }
 
 // MigrationConfigListResult - The result of the List migrationConfigurations operation.
 type MigrationConfigListResult struct {
 	// List of Migration Configs
-	Value []*MigrationConfigProperties `json:"value,omitempty"`
+	Value []*MigrationConfigProperties
 
 	// READ-ONLY; Link to the next set of results. Not empty if Value contains incomplete list of migrationConfigurations
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // MigrationConfigProperties - Single item in List or Get Migration Config operation
 type MigrationConfigProperties struct {
 	// Properties required to the Create Migration Configuration
-	Properties *MigrationConfigPropertiesProperties `json:"properties,omitempty"`
+	Properties *MigrationConfigPropertiesProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MigrationConfigPropertiesProperties - Properties required to the Create Migration Configuration
 type MigrationConfigPropertiesProperties struct {
 	// REQUIRED; Name to access Standard Namespace after migration
-	PostMigrationName *string `json:"postMigrationName,omitempty"`
+	PostMigrationName *string
 
 	// REQUIRED; Existing premium Namespace ARM Id name which has no entities, will be used for migration
-	TargetNamespace *string `json:"targetNamespace,omitempty"`
+	TargetNamespace *string
 
 	// READ-ONLY; State in which Standard to Premium Migration is, possible values : Unknown, Reverting, Completing, Initiating,
 	// Syncing, Active
-	MigrationState *string `json:"migrationState,omitempty" azure:"ro"`
+	MigrationState *string
 
 	// READ-ONLY; Number of entities pending to be replicated.
-	PendingReplicationOperationsCount *int64 `json:"pendingReplicationOperationsCount,omitempty" azure:"ro"`
+	PendingReplicationOperationsCount *int64
 
 	// READ-ONLY; Provisioning state of Migration Configuration
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // MigrationConfigsClientBeginCreateAndStartMigrationOptions contains the optional parameters for the MigrationConfigsClient.BeginCreateAndStartMigration
@@ -410,19 +410,19 @@ type MigrationConfigsClientRevertOptions struct {
 // NWRuleSetIPRules - Description of NetWorkRuleSet - IpRules resource.
 type NWRuleSetIPRules struct {
 	// The IP Filter Action
-	Action *NetworkRuleIPAction `json:"action,omitempty"`
+	Action *NetworkRuleIPAction
 
 	// IP Mask
-	IPMask *string `json:"ipMask,omitempty"`
+	IPMask *string
 }
 
 // NWRuleSetVirtualNetworkRules - Description of VirtualNetworkRules - NetworkRules resource.
 type NWRuleSetVirtualNetworkRules struct {
 	// Value that indicates whether to ignore missing VNet Service Endpoint
-	IgnoreMissingVnetServiceEndpoint *bool `json:"ignoreMissingVnetServiceEndpoint,omitempty"`
+	IgnoreMissingVnetServiceEndpoint *bool
 
 	// Subnet properties
-	Subnet *Subnet `json:"subnet,omitempty"`
+	Subnet *Subnet
 }
 
 // NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
@@ -519,92 +519,92 @@ type NamespacesClientUpdateOptions struct {
 // NetworkRuleSet - Description of NetworkRuleSet resource.
 type NetworkRuleSet struct {
 	// NetworkRuleSet properties
-	Properties *NetworkRuleSetProperties `json:"properties,omitempty"`
+	Properties *NetworkRuleSetProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkRuleSetListResult - The response of the List NetworkRuleSet operation.
 type NetworkRuleSetListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of NetworkRuleSet.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List NetworkRuleSet operation.
-	Value []*NetworkRuleSet `json:"value,omitempty"`
+	Value []*NetworkRuleSet
 }
 
 // NetworkRuleSetProperties - NetworkRuleSet properties
 type NetworkRuleSetProperties struct {
 	// Default Action for Network Rule Set
-	DefaultAction *DefaultAction `json:"defaultAction,omitempty"`
+	DefaultAction *DefaultAction
 
 	// List of IpRules
-	IPRules []*NWRuleSetIPRules `json:"ipRules,omitempty"`
+	IPRules []*NWRuleSetIPRules
 
 	// This determines if traffic is allowed over public network. By default it is enabled.
-	PublicNetworkAccess *PublicNetworkAccessFlag `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccessFlag
 
 	// Value that indicates whether Trusted Service Access is Enabled or not.
-	TrustedServiceAccessEnabled *bool `json:"trustedServiceAccessEnabled,omitempty"`
+	TrustedServiceAccessEnabled *bool
 
 	// List VirtualNetwork Rules
-	VirtualNetworkRules []*NWRuleSetVirtualNetworkRules `json:"virtualNetworkRules,omitempty"`
+	VirtualNetworkRules []*NWRuleSetVirtualNetworkRules
 }
 
 // Operation - A Service Bus REST API operation
 type Operation struct {
 	// Display of the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operation
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationDisplay - Operation display payload
 type OperationDisplay struct {
 	// READ-ONLY; Localized friendly description for the operation
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Localized friendly name for the operation
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Resource provider of the operation
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource of the operation
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list ServiceBus operations. It contains a list of operations and a URL link
 // to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of ServiceBus operations supported by the Microsoft.ServiceBus resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -615,49 +615,49 @@ type OperationsClientListOptions struct {
 // PrivateEndpoint information.
 type PrivateEndpoint struct {
 	// The ARM identifier for Private Endpoint.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateEndpointConnection - Properties of the PrivateEndpointConnection.
 type PrivateEndpointConnection struct {
 	// Properties of the PrivateEndpointConnection.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - Result of the list of all private endpoint connections operation.
 type PrivateEndpointConnectionListResult struct {
 	// A link for the next page of private endpoint connection resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of private endpoint connection resources.
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the private endpoint connection resource.
 type PrivateEndpointConnectionProperties struct {
 	// The Private Endpoint resource for this Connection.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// Details about the state of the connection.
-	PrivateLinkServiceConnectionState *ConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *ConnectionState
 
 	// Provisioning state of the Private Endpoint Connection.
-	ProvisioningState *EndPointProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *EndPointProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
@@ -688,27 +688,27 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateLinkResource - Information of the private link resource.
 type PrivateLinkResource struct {
 	// Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the resource
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the private link resource.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// Type of the resource
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // PrivateLinkResourceProperties - Properties of PrivateLinkResource
 type PrivateLinkResourceProperties struct {
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// Required Members
-	RequiredMembers []*string `json:"requiredMembers,omitempty"`
+	RequiredMembers []*string
 
 	// Required Zone Names
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -719,25 +719,25 @@ type PrivateLinkResourcesClientGetOptions struct {
 // PrivateLinkResourcesListResult - Result of the List private link resources operation.
 type PrivateLinkResourcesListResult struct {
 	// A link for the next page of private link resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // ProxyResource - Common fields that are returned in the response for all Azure Resource Manager resources
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // QueuesClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the QueuesClient.CreateOrUpdateAuthorizationRule
@@ -802,86 +802,86 @@ type QueuesClientRegenerateKeysOptions struct {
 // needs to be reset.
 type RegenerateAccessKeyParameters struct {
 	// REQUIRED; The access key to regenerate.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 
 	// Optional, if the key value provided, is reset for KeyType value or autogenerate Key value set for keyType
-	Key *string `json:"key,omitempty"`
+	Key *string
 }
 
 // Resource - The Resource definition for other than namespace.
 type Resource struct {
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceNamespacePatch - The Resource definition.
 type ResourceNamespacePatch struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Rule - Description of Rule Resource.
 type Rule struct {
 	// Properties of Rule resource
-	Properties *Ruleproperties `json:"properties,omitempty"`
+	Properties *Ruleproperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RuleListResult - The response of the List rule operation.
 type RuleListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of rules
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List Rules operation.
-	Value []*Rule `json:"value,omitempty"`
+	Value []*Rule
 }
 
 // Ruleproperties - Description of Rule Resource.
 type Ruleproperties struct {
 	// Represents the filter actions which are allowed for the transformation of a message that have been matched by a filter
 	// expression.
-	Action *Action `json:"action,omitempty"`
+	Action *Action
 
 	// Properties of correlationFilter
-	CorrelationFilter *CorrelationFilter `json:"correlationFilter,omitempty"`
+	CorrelationFilter *CorrelationFilter
 
 	// Filter type that is evaluated against a BrokeredMessage.
-	FilterType *FilterType `json:"filterType,omitempty"`
+	FilterType *FilterType
 
 	// Properties of sqlFilter
-	SQLFilter *SQLFilter `json:"sqlFilter,omitempty"`
+	SQLFilter *SQLFilter
 }
 
 // RulesClientCreateOrUpdateOptions contains the optional parameters for the RulesClient.CreateOrUpdate method.
@@ -913,523 +913,510 @@ type RulesClientListBySubscriptionsOptions struct {
 // SBAuthorizationRule - Description of a namespace authorization rule.
 type SBAuthorizationRule struct {
 	// AuthorizationRule properties.
-	Properties *SBAuthorizationRuleProperties `json:"properties,omitempty"`
+	Properties *SBAuthorizationRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SBAuthorizationRuleListResult - The response to the List Namespace operation.
 type SBAuthorizationRuleListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of Authorization Rules.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List Authorization Rules operation.
-	Value []*SBAuthorizationRule `json:"value,omitempty"`
+	Value []*SBAuthorizationRule
 }
 
 // SBAuthorizationRuleProperties - AuthorizationRule properties.
 type SBAuthorizationRuleProperties struct {
 	// REQUIRED; The rights associated with the rule.
-	Rights []*AccessRights `json:"rights,omitempty"`
+	Rights []*AccessRights
 }
 
 // SBClientAffineProperties - Properties specific to client affine subscriptions.
 type SBClientAffineProperties struct {
 	// Indicates the Client ID of the application that created the client-affine subscription.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// For client-affine subscriptions, this value indicates whether the subscription is durable or not.
-	IsDurable *bool `json:"isDurable,omitempty"`
+	IsDurable *bool
 
 	// For client-affine subscriptions, this value indicates whether the subscription is shared or not.
-	IsShared *bool `json:"isShared,omitempty"`
+	IsShared *bool
 }
 
 // SBNamespace - Description of a namespace resource.
 type SBNamespace struct {
 	// REQUIRED; The Geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of BYOK Identity description
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Properties of the namespace.
-	Properties *SBNamespaceProperties `json:"properties,omitempty"`
+	Properties *SBNamespaceProperties
 
 	// Properties of SKU
-	SKU *SBSKU `json:"sku,omitempty"`
+	SKU *SBSKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SBNamespaceListResult - The response of the List Namespace operation.
 type SBNamespaceListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of Namespaces.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List Namespace operation.
-	Value []*SBNamespace `json:"value,omitempty"`
+	Value []*SBNamespace
 }
 
 // SBNamespaceProperties - Properties of the namespace.
 type SBNamespaceProperties struct {
 	// Alternate name for namespace
-	AlternateName *string `json:"alternateName,omitempty"`
+	AlternateName *string
 
 	// This property disables SAS authentication for the Service Bus namespace.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// Properties of BYOK Encryption description
-	Encryption *Encryption `json:"encryption,omitempty"`
-
-	// The minimum TLS version for the cluster to support, e.g. '1.2'
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
-
-	// The number of partitions of a Service Bus namespace. This property is only applicable to Premium SKU namespaces. The default
-	// value is 1 and possible values are 1, 2 and 4
-	PremiumMessagingPartitions *int32 `json:"premiumMessagingPartitions,omitempty"`
+	Encryption *Encryption
 
 	// List of private endpoint connections.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
-
-	// This determines if traffic is allowed over public network. By default it is enabled.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.
-	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	ZoneRedundant *bool
 
 	// READ-ONLY; The time the namespace was created
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; Identifier for Azure Insights metrics
-	MetricID *string `json:"metricId,omitempty" azure:"ro"`
+	MetricID *string
 
 	// READ-ONLY; Provisioning state of the namespace.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Endpoint you can use to perform Service Bus operations.
-	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty" azure:"ro"`
+	ServiceBusEndpoint *string
 
 	// READ-ONLY; Status of the namespace.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; The time the namespace was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *time.Time
 }
 
 // SBNamespaceUpdateParameters - Description of a namespace resource.
 type SBNamespaceUpdateParameters struct {
 	// Properties of BYOK Identity description
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the namespace.
-	Properties *SBNamespaceUpdateProperties `json:"properties,omitempty"`
+	Properties *SBNamespaceUpdateProperties
 
 	// Properties of SKU
-	SKU *SBSKU `json:"sku,omitempty"`
+	SKU *SBSKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SBNamespaceUpdateProperties - Properties of the namespace.
 type SBNamespaceUpdateProperties struct {
 	// Alternate name for namespace
-	AlternateName *string `json:"alternateName,omitempty"`
+	AlternateName *string
 
 	// This property disables SAS authentication for the Service Bus namespace.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// Properties of BYOK Encryption description
-	Encryption *Encryption `json:"encryption,omitempty"`
+	Encryption *Encryption
 
 	// List of private endpoint connections.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The time the namespace was created
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; Identifier for Azure Insights metrics
-	MetricID *string `json:"metricId,omitempty" azure:"ro"`
+	MetricID *string
 
 	// READ-ONLY; Provisioning state of the namespace.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Endpoint you can use to perform Service Bus operations.
-	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty" azure:"ro"`
+	ServiceBusEndpoint *string
 
 	// READ-ONLY; Status of the namespace.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; The time the namespace was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *time.Time
 }
 
 // SBQueue - Description of queue Resource.
 type SBQueue struct {
 	// Queue Properties
-	Properties *SBQueueProperties `json:"properties,omitempty"`
+	Properties *SBQueueProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SBQueueListResult - The response to the List Queues operation.
 type SBQueueListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of queues.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List Queues operation.
-	Value []*SBQueue `json:"value,omitempty"`
+	Value []*SBQueue
 }
 
 // SBQueueProperties - The Queue Properties definition.
 type SBQueueProperties struct {
 	// ISO 8061 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5 minutes.
-	AutoDeleteOnIdle *string `json:"autoDeleteOnIdle,omitempty"`
+	AutoDeleteOnIdle *string
 
 	// A value that indicates whether this queue has dead letter support when a message expires.
-	DeadLetteringOnMessageExpiration *bool `json:"deadLetteringOnMessageExpiration,omitempty"`
+	DeadLetteringOnMessageExpiration *bool
 
 	// ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when
 	// the message is sent to Service Bus. This is the default value used when
 	// TimeToLive is not set on a message itself.
-	DefaultMessageTimeToLive *string `json:"defaultMessageTimeToLive,omitempty"`
+	DefaultMessageTimeToLive *string
 
 	// ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
-	DuplicateDetectionHistoryTimeWindow *string `json:"duplicateDetectionHistoryTimeWindow,omitempty"`
+	DuplicateDetectionHistoryTimeWindow *string
 
 	// Value that indicates whether server-side batched operations are enabled.
-	EnableBatchedOperations *bool `json:"enableBatchedOperations,omitempty"`
+	EnableBatchedOperations *bool
 
 	// A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before
 	// writing it to persistent storage.
-	EnableExpress *bool `json:"enableExpress,omitempty"`
+	EnableExpress *bool
 
 	// A value that indicates whether the queue is to be partitioned across multiple message brokers.
-	EnablePartitioning *bool `json:"enablePartitioning,omitempty"`
+	EnablePartitioning *bool
 
 	// Queue/Topic name to forward the Dead Letter message
-	ForwardDeadLetteredMessagesTo *string `json:"forwardDeadLetteredMessagesTo,omitempty"`
+	ForwardDeadLetteredMessagesTo *string
 
 	// Queue/Topic name to forward the messages
-	ForwardTo *string `json:"forwardTo,omitempty"`
+	ForwardTo *string
 
 	// ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers.
 	// The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
-	LockDuration *string `json:"lockDuration,omitempty"`
+	LockDuration *string
 
 	// The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10.
-	MaxDeliveryCount *int32 `json:"maxDeliveryCount,omitempty"`
+	MaxDeliveryCount *int32
 
 	// Maximum size (in KB) of the message payload that can be accepted by the queue. This property is only used in Premium today
 	// and default is 1024.
-	MaxMessageSizeInKilobytes *int64 `json:"maxMessageSizeInKilobytes,omitempty"`
+	MaxMessageSizeInKilobytes *int64
 
 	// The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024.
-	MaxSizeInMegabytes *int32 `json:"maxSizeInMegabytes,omitempty"`
+	MaxSizeInMegabytes *int32
 
 	// A value indicating if this queue requires duplicate detection.
-	RequiresDuplicateDetection *bool `json:"requiresDuplicateDetection,omitempty"`
+	RequiresDuplicateDetection *bool
 
 	// A value that indicates whether the queue supports the concept of sessions.
-	RequiresSession *bool `json:"requiresSession,omitempty"`
+	RequiresSession *bool
 
 	// Enumerates the possible values for the status of a messaging entity.
-	Status *EntityStatus `json:"status,omitempty"`
+	Status *EntityStatus
 
 	// READ-ONLY; Last time a message was sent, or the last time there was a receive request to this queue.
-	AccessedAt *time.Time `json:"accessedAt,omitempty" azure:"ro"`
+	AccessedAt *time.Time
 
 	// READ-ONLY; Message Count Details.
-	CountDetails *MessageCountDetails `json:"countDetails,omitempty" azure:"ro"`
+	CountDetails *MessageCountDetails
 
 	// READ-ONLY; The exact time the message was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; The number of messages in the queue.
-	MessageCount *int64 `json:"messageCount,omitempty" azure:"ro"`
+	MessageCount *int64
 
 	// READ-ONLY; The size of the queue, in bytes.
-	SizeInBytes *int64 `json:"sizeInBytes,omitempty" azure:"ro"`
+	SizeInBytes *int64
 
 	// READ-ONLY; The exact time the message was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *time.Time
 }
 
 // SBSKU - SKU of the namespace.
 type SBSKU struct {
 	// REQUIRED; Name of this SKU.
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 
-	// Messaging units for your service bus premium namespace. Valid capacities are {1, 2, 4, 8, 16} multiples of your properties.premiumMessagingPartitions
-	// setting. For example, If
-	// properties.premiumMessagingPartitions is 1 then possible capacity values are 1, 2, 4, 8, and 16. If properties.premiumMessagingPartitions
-	// is 4 then possible capacity values are 4, 8, 16, 32 and 64
-	Capacity *int32 `json:"capacity,omitempty"`
+	// The specified messaging units for the tier. For Premium tier, capacity are 1,2 and 4.
+	Capacity *int32
 
 	// The billing tier of this particular SKU.
-	Tier *SKUTier `json:"tier,omitempty"`
+	Tier *SKUTier
 }
 
 // SBSubscription - Description of subscription resource.
 type SBSubscription struct {
 	// Properties of subscriptions resource.
-	Properties *SBSubscriptionProperties `json:"properties,omitempty"`
+	Properties *SBSubscriptionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SBSubscriptionListResult - The response to the List Subscriptions operation.
 type SBSubscriptionListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of subscriptions.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List Subscriptions operation.
-	Value []*SBSubscription `json:"value,omitempty"`
+	Value []*SBSubscription
 }
 
 // SBSubscriptionProperties - Description of Subscription Resource.
 type SBSubscriptionProperties struct {
 	// ISO 8061 timeSpan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
-	AutoDeleteOnIdle *string `json:"autoDeleteOnIdle,omitempty"`
+	AutoDeleteOnIdle *string
 
 	// Properties specific to client affine subscriptions.
-	ClientAffineProperties *SBClientAffineProperties `json:"clientAffineProperties,omitempty"`
+	ClientAffineProperties *SBClientAffineProperties
 
 	// Value that indicates whether a subscription has dead letter support on filter evaluation exceptions.
-	DeadLetteringOnFilterEvaluationExceptions *bool `json:"deadLetteringOnFilterEvaluationExceptions,omitempty"`
+	DeadLetteringOnFilterEvaluationExceptions *bool
 
 	// Value that indicates whether a subscription has dead letter support when a message expires.
-	DeadLetteringOnMessageExpiration *bool `json:"deadLetteringOnMessageExpiration,omitempty"`
+	DeadLetteringOnMessageExpiration *bool
 
 	// ISO 8061 Default message timespan to live value. This is the duration after which the message expires, starting from when
 	// the message is sent to Service Bus. This is the default value used when
 	// TimeToLive is not set on a message itself.
-	DefaultMessageTimeToLive *string `json:"defaultMessageTimeToLive,omitempty"`
+	DefaultMessageTimeToLive *string
 
 	// ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
-	DuplicateDetectionHistoryTimeWindow *string `json:"duplicateDetectionHistoryTimeWindow,omitempty"`
+	DuplicateDetectionHistoryTimeWindow *string
 
 	// Value that indicates whether server-side batched operations are enabled.
-	EnableBatchedOperations *bool `json:"enableBatchedOperations,omitempty"`
+	EnableBatchedOperations *bool
 
 	// Queue/Topic name to forward the Dead Letter message
-	ForwardDeadLetteredMessagesTo *string `json:"forwardDeadLetteredMessagesTo,omitempty"`
+	ForwardDeadLetteredMessagesTo *string
 
 	// Queue/Topic name to forward the messages
-	ForwardTo *string `json:"forwardTo,omitempty"`
+	ForwardTo *string
 
 	// Value that indicates whether the subscription has an affinity to the client id.
-	IsClientAffine *bool `json:"isClientAffine,omitempty"`
+	IsClientAffine *bool
 
 	// ISO 8061 lock duration timespan for the subscription. The default value is 1 minute.
-	LockDuration *string `json:"lockDuration,omitempty"`
+	LockDuration *string
 
 	// Number of maximum deliveries.
-	MaxDeliveryCount *int32 `json:"maxDeliveryCount,omitempty"`
+	MaxDeliveryCount *int32
 
 	// Value indicating if a subscription supports the concept of sessions.
-	RequiresSession *bool `json:"requiresSession,omitempty"`
+	RequiresSession *bool
 
 	// Enumerates the possible values for the status of a messaging entity.
-	Status *EntityStatus `json:"status,omitempty"`
+	Status *EntityStatus
 
 	// READ-ONLY; Last time there was a receive request to this subscription.
-	AccessedAt *time.Time `json:"accessedAt,omitempty" azure:"ro"`
+	AccessedAt *time.Time
 
 	// READ-ONLY; Message count details
-	CountDetails *MessageCountDetails `json:"countDetails,omitempty" azure:"ro"`
+	CountDetails *MessageCountDetails
 
 	// READ-ONLY; Exact time the message was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; Number of messages.
-	MessageCount *int64 `json:"messageCount,omitempty" azure:"ro"`
+	MessageCount *int64
 
 	// READ-ONLY; The exact time the message was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *time.Time
 }
 
 // SBTopic - Description of topic resource.
 type SBTopic struct {
 	// Properties of topic resource.
-	Properties *SBTopicProperties `json:"properties,omitempty"`
+	Properties *SBTopicProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SBTopicListResult - The response to the List Topics operation.
 type SBTopicListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of topics.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List Topics operation.
-	Value []*SBTopic `json:"value,omitempty"`
+	Value []*SBTopic
 }
 
 // SBTopicProperties - The Topic Properties definition.
 type SBTopicProperties struct {
 	// ISO 8601 timespan idle interval after which the topic is automatically deleted. The minimum duration is 5 minutes.
-	AutoDeleteOnIdle *string `json:"autoDeleteOnIdle,omitempty"`
+	AutoDeleteOnIdle *string
 
 	// ISO 8601 Default message timespan to live value. This is the duration after which the message expires, starting from when
 	// the message is sent to Service Bus. This is the default value used when
 	// TimeToLive is not set on a message itself.
-	DefaultMessageTimeToLive *string `json:"defaultMessageTimeToLive,omitempty"`
+	DefaultMessageTimeToLive *string
 
 	// ISO8601 timespan structure that defines the duration of the duplicate detection history. The default value is 10 minutes.
-	DuplicateDetectionHistoryTimeWindow *string `json:"duplicateDetectionHistoryTimeWindow,omitempty"`
+	DuplicateDetectionHistoryTimeWindow *string
 
 	// Value that indicates whether server-side batched operations are enabled.
-	EnableBatchedOperations *bool `json:"enableBatchedOperations,omitempty"`
+	EnableBatchedOperations *bool
 
 	// Value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before
 	// writing it to persistent storage.
-	EnableExpress *bool `json:"enableExpress,omitempty"`
+	EnableExpress *bool
 
 	// Value that indicates whether the topic to be partitioned across multiple message brokers is enabled.
-	EnablePartitioning *bool `json:"enablePartitioning,omitempty"`
+	EnablePartitioning *bool
 
 	// Maximum size (in KB) of the message payload that can be accepted by the topic. This property is only used in Premium today
 	// and default is 1024.
-	MaxMessageSizeInKilobytes *int64 `json:"maxMessageSizeInKilobytes,omitempty"`
+	MaxMessageSizeInKilobytes *int64
 
 	// Maximum size of the topic in megabytes, which is the size of the memory allocated for the topic. Default is 1024.
-	MaxSizeInMegabytes *int32 `json:"maxSizeInMegabytes,omitempty"`
+	MaxSizeInMegabytes *int32
 
 	// Value indicating if this topic requires duplicate detection.
-	RequiresDuplicateDetection *bool `json:"requiresDuplicateDetection,omitempty"`
+	RequiresDuplicateDetection *bool
 
 	// Enumerates the possible values for the status of a messaging entity.
-	Status *EntityStatus `json:"status,omitempty"`
+	Status *EntityStatus
 
 	// Value that indicates whether the topic supports ordering.
-	SupportOrdering *bool `json:"supportOrdering,omitempty"`
+	SupportOrdering *bool
 
 	// READ-ONLY; Last time the message was sent, or a request was received, for this topic.
-	AccessedAt *time.Time `json:"accessedAt,omitempty" azure:"ro"`
+	AccessedAt *time.Time
 
 	// READ-ONLY; Message count details
-	CountDetails *MessageCountDetails `json:"countDetails,omitempty" azure:"ro"`
+	CountDetails *MessageCountDetails
 
 	// READ-ONLY; Exact time the message was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; Size of the topic, in bytes.
-	SizeInBytes *int64 `json:"sizeInBytes,omitempty" azure:"ro"`
+	SizeInBytes *int64
 
 	// READ-ONLY; Number of subscriptions.
-	SubscriptionCount *int32 `json:"subscriptionCount,omitempty" azure:"ro"`
+	SubscriptionCount *int32
 
 	// READ-ONLY; The exact time the message was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *time.Time
 }
 
 // SQLFilter - Represents a filter which is a composition of an expression and an action that is executed in the pub/sub pipeline.
 type SQLFilter struct {
 	// This property is reserved for future use. An integer value showing the compatibility level, currently hard-coded to 20.
-	CompatibilityLevel *int32 `json:"compatibilityLevel,omitempty"`
+	CompatibilityLevel *int32
 
 	// Value that indicates whether the rule action requires preprocessing.
-	RequiresPreprocessing *bool `json:"requiresPreprocessing,omitempty"`
+	RequiresPreprocessing *bool
 
 	// The SQL expression. e.g. MyProperty='ABC'
-	SQLExpression *string `json:"sqlExpression,omitempty"`
+	SQLExpression *string
 }
 
 // SQLRuleAction - Represents set of actions written in SQL language-based syntax that is performed against a ServiceBus.Messaging.BrokeredMessage
 type SQLRuleAction struct {
 	// This property is reserved for future use. An integer value showing the compatibility level, currently hard-coded to 20.
-	CompatibilityLevel *int32 `json:"compatibilityLevel,omitempty"`
+	CompatibilityLevel *int32
 
 	// Value that indicates whether the rule action requires preprocessing.
-	RequiresPreprocessing *bool `json:"requiresPreprocessing,omitempty"`
+	RequiresPreprocessing *bool
 
 	// SQL expression. e.g. MyProperty='ABC'
-	SQLExpression *string `json:"sqlExpression,omitempty"`
+	SQLExpression *string
 }
 
 // Subnet - Properties supplied for Subnet
 type Subnet struct {
 	// REQUIRED; Resource ID of Virtual Network Subnet
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SubscriptionsClientCreateOrUpdateOptions contains the optional parameters for the SubscriptionsClient.CreateOrUpdate method.
@@ -1461,22 +1448,22 @@ type SubscriptionsClientListByTopicOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The type of identity that last modified the resource.
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TopicsClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the TopicsClient.CreateOrUpdateAuthorizationRule
@@ -1540,31 +1527,31 @@ type TopicsClientRegenerateKeysOptions struct {
 // TrackedResource - The Resource definition.
 type TrackedResource struct {
 	// REQUIRED; The Geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserAssignedIdentity - Recognized Dictionary value.
 type UserAssignedIdentity struct {
 	// READ-ONLY; Client Id of user assigned identity
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; Principal Id of user assigned identity
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 type UserAssignedIdentityProperties struct {
 	// ARM ID of user Identity selected for encryption
-	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
+	UserAssignedIdentity *string
 }

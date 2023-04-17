@@ -25,11 +25,11 @@ func ExampleRestorableGremlinGraphsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableGremlinGraphsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("WestUS", "98a570f2-63db-4117-91f0-366327b7b353", &armcosmos.RestorableGremlinGraphsClientListOptions{RestorableGremlinDatabaseRid: to.Ptr("PD5DALigDgw="),
+	pager := clientFactory.NewRestorableGremlinGraphsClient().NewListPager("WestUS", "98a570f2-63db-4117-91f0-366327b7b353", &armcosmos.RestorableGremlinGraphsClientListOptions{RestorableGremlinDatabaseRid: to.Ptr("PD5DALigDgw="),
 		StartTime: nil,
 		EndTime:   nil,
 	})

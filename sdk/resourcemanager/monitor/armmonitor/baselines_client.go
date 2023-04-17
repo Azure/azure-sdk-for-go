@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,36 +22,28 @@ import (
 // BaselinesClient contains the methods for the Baselines group.
 // Don't use this type directly, use NewBaselinesClient() instead.
 type BaselinesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewBaselinesClient creates a new instance of BaselinesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewBaselinesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BaselinesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".BaselinesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &BaselinesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Lists the metric baseline values for a resource.
+//
 // Generated from API version 2019-03-01
-// resourceURI - The identifier of the resource.
-// options - BaselinesClientListOptions contains the optional parameters for the BaselinesClient.List method.
+//   - resourceURI - The identifier of the resource.
+//   - options - BaselinesClientListOptions contains the optional parameters for the BaselinesClient.NewListPager method.
 func (client *BaselinesClient) NewListPager(resourceURI string, options *BaselinesClientListOptions) *runtime.Pager[BaselinesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[BaselinesClientListResponse]{
 		More: func(page BaselinesClientListResponse) bool {
@@ -64,7 +54,7 @@ func (client *BaselinesClient) NewListPager(resourceURI string, options *Baselin
 			if err != nil {
 				return BaselinesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return BaselinesClientListResponse{}, err
 			}
@@ -80,7 +70,7 @@ func (client *BaselinesClient) NewListPager(resourceURI string, options *Baselin
 func (client *BaselinesClient) listCreateRequest(ctx context.Context, resourceURI string, options *BaselinesClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/metricBaselines"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

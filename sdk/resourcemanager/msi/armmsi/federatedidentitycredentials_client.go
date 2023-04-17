@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // FederatedIdentityCredentialsClient contains the methods for the FederatedIdentityCredentials group.
 // Don't use this type directly, use NewFederatedIdentityCredentialsClient() instead.
 type FederatedIdentityCredentialsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFederatedIdentityCredentialsClient creates a new instance of FederatedIdentityCredentialsClient with the specified values.
@@ -37,21 +34,13 @@ type FederatedIdentityCredentialsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewFederatedIdentityCredentialsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FederatedIdentityCredentialsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FederatedIdentityCredentialsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FederatedIdentityCredentialsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *FederatedIdentityCredentialsClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return FederatedIdentityCredentialsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FederatedIdentityCredentialsClientCreateOrUpdateResponse{}, err
 	}
@@ -100,7 +89,7 @@ func (client *FederatedIdentityCredentialsClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter federatedIdentityCredentialResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{federatedIdentityCredentialResourceName}", url.PathEscape(federatedIdentityCredentialResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -134,7 +123,7 @@ func (client *FederatedIdentityCredentialsClient) Delete(ctx context.Context, re
 	if err != nil {
 		return FederatedIdentityCredentialsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FederatedIdentityCredentialsClientDeleteResponse{}, err
 	}
@@ -163,7 +152,7 @@ func (client *FederatedIdentityCredentialsClient) deleteCreateRequest(ctx contex
 		return nil, errors.New("parameter federatedIdentityCredentialResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{federatedIdentityCredentialResourceName}", url.PathEscape(federatedIdentityCredentialResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,7 +177,7 @@ func (client *FederatedIdentityCredentialsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return FederatedIdentityCredentialsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FederatedIdentityCredentialsClientGetResponse{}, err
 	}
@@ -217,7 +206,7 @@ func (client *FederatedIdentityCredentialsClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter federatedIdentityCredentialResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{federatedIdentityCredentialResourceName}", url.PathEscape(federatedIdentityCredentialResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -260,7 +249,7 @@ func (client *FederatedIdentityCredentialsClient) NewListPager(resourceGroupName
 			if err != nil {
 				return FederatedIdentityCredentialsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FederatedIdentityCredentialsClientListResponse{}, err
 			}
@@ -287,7 +276,7 @@ func (client *FederatedIdentityCredentialsClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

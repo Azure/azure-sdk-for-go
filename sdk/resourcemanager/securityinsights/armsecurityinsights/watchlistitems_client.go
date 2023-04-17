@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // WatchlistItemsClient contains the methods for the WatchlistItems group.
 // Don't use this type directly, use NewWatchlistItemsClient() instead.
 type WatchlistItemsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWatchlistItemsClient creates a new instance of WatchlistItemsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWatchlistItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WatchlistItemsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WatchlistItemsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WatchlistItemsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Creates or updates a watchlist item.
+// CreateOrUpdate - Create or update a watchlist item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// watchlistAlias - Watchlist Alias
-// watchlistItemID - Watchlist Item Id (GUID)
-// watchlistItem - The watchlist item
-// options - WatchlistItemsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistItemsClient.CreateOrUpdate
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - watchlistAlias - The watchlist alias
+//   - watchlistItemID - The watchlist item id (GUID)
+//   - watchlistItem - The watchlist item
+//   - options - WatchlistItemsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistItemsClient.CreateOrUpdate
+//     method.
 func (client *WatchlistItemsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlistItemID string, watchlistItem WatchlistItem, options *WatchlistItemsClientCreateOrUpdateOptions) (WatchlistItemsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, watchlistAlias, watchlistItemID, watchlistItem, options)
 	if err != nil {
 		return WatchlistItemsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchlistItemsClientCreateOrUpdateResponse{}, err
 	}
@@ -103,12 +93,12 @@ func (client *WatchlistItemsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter watchlistItemID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{watchlistItemId}", url.PathEscape(watchlistItemID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, watchlistItem)
@@ -125,18 +115,19 @@ func (client *WatchlistItemsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Delete a watchlist item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// watchlistAlias - Watchlist Alias
-// watchlistItemID - Watchlist Item Id (GUID)
-// options - WatchlistItemsClientDeleteOptions contains the optional parameters for the WatchlistItemsClient.Delete method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - watchlistAlias - The watchlist alias
+//   - watchlistItemID - The watchlist item id (GUID)
+//   - options - WatchlistItemsClientDeleteOptions contains the optional parameters for the WatchlistItemsClient.Delete method.
 func (client *WatchlistItemsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlistItemID string, options *WatchlistItemsClientDeleteOptions) (WatchlistItemsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, watchlistAlias, watchlistItemID, options)
 	if err != nil {
 		return WatchlistItemsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchlistItemsClientDeleteResponse{}, err
 	}
@@ -169,31 +160,32 @@ func (client *WatchlistItemsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter watchlistItemID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{watchlistItemId}", url.PathEscape(watchlistItemID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets a watchlist, without its watchlist items.
+// Get - Get a watchlist item.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// watchlistAlias - Watchlist Alias
-// watchlistItemID - Watchlist Item Id (GUID)
-// options - WatchlistItemsClientGetOptions contains the optional parameters for the WatchlistItemsClient.Get method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - watchlistAlias - The watchlist alias
+//   - watchlistItemID - The watchlist item id (GUID)
+//   - options - WatchlistItemsClientGetOptions contains the optional parameters for the WatchlistItemsClient.Get method.
 func (client *WatchlistItemsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, watchlistAlias string, watchlistItemID string, options *WatchlistItemsClientGetOptions) (WatchlistItemsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, watchlistAlias, watchlistItemID, options)
 	if err != nil {
 		return WatchlistItemsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WatchlistItemsClientGetResponse{}, err
 	}
@@ -226,12 +218,12 @@ func (client *WatchlistItemsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter watchlistItemID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{watchlistItemId}", url.PathEscape(watchlistItemID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,12 +238,13 @@ func (client *WatchlistItemsClient) getHandleResponse(resp *http.Response) (Watc
 	return result, nil
 }
 
-// NewListPager - Gets all watchlist Items.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// watchlistAlias - Watchlist Alias
-// options - WatchlistItemsClientListOptions contains the optional parameters for the WatchlistItemsClient.List method.
+// NewListPager - Get all watchlist Items.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - watchlistAlias - The watchlist alias
+//   - options - WatchlistItemsClientListOptions contains the optional parameters for the WatchlistItemsClient.NewListPager method.
 func (client *WatchlistItemsClient) NewListPager(resourceGroupName string, workspaceName string, watchlistAlias string, options *WatchlistItemsClientListOptions) *runtime.Pager[WatchlistItemsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WatchlistItemsClientListResponse]{
 		More: func(page WatchlistItemsClientListResponse) bool {
@@ -268,7 +261,7 @@ func (client *WatchlistItemsClient) NewListPager(resourceGroupName string, works
 			if err != nil {
 				return WatchlistItemsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WatchlistItemsClientListResponse{}, err
 			}
@@ -299,12 +292,12 @@ func (client *WatchlistItemsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter watchlistAlias cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{watchlistAlias}", url.PathEscape(watchlistAlias))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.SkipToken != nil {
 		reqQP.Set("$skipToken", *options.SkipToken)
 	}

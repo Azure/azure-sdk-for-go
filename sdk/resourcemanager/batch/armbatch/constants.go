@@ -11,7 +11,7 @@ package armbatch
 
 const (
 	moduleName    = "armbatch"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.2.1"
 )
 
 // AccountKeyType - The type of account key to regenerate.

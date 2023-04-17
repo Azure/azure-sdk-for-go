@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // TableClient contains the methods for the Table group.
 // Don't use this type directly, use NewTableClient() instead.
 type TableClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTableClient creates a new instance of TableClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTableClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TableClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TableClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TableClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Creates a new table with the specified table name, under the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// tableName - A table name must be unique within a storage account and must be between 3 and 63 characters.The name must
-// comprise of only alphanumeric characters and it cannot begin with a numeric character.
-// options - TableClientCreateOptions contains the optional parameters for the TableClient.Create method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - tableName - A table name must be unique within a storage account and must be between 3 and 63 characters.The name must
+//     comprise of only alphanumeric characters and it cannot begin with a numeric character.
+//   - options - TableClientCreateOptions contains the optional parameters for the TableClient.Create method.
 func (client *TableClient) Create(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableClientCreateOptions) (TableClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TableClientCreateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *TableClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,19 +113,20 @@ func (client *TableClient) createHandleResponse(resp *http.Response) (TableClien
 
 // Delete - Deletes the table with the specified table name, under the specified account if it exists.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// tableName - A table name must be unique within a storage account and must be between 3 and 63 characters.The name must
-// comprise of only alphanumeric characters and it cannot begin with a numeric character.
-// options - TableClientDeleteOptions contains the optional parameters for the TableClient.Delete method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - tableName - A table name must be unique within a storage account and must be between 3 and 63 characters.The name must
+//     comprise of only alphanumeric characters and it cannot begin with a numeric character.
+//   - options - TableClientDeleteOptions contains the optional parameters for the TableClient.Delete method.
 func (client *TableClient) Delete(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableClientDeleteOptions) (TableClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TableClientDeleteResponse{}, err
 	}
@@ -164,7 +155,7 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -177,19 +168,20 @@ func (client *TableClient) deleteCreateRequest(ctx context.Context, resourceGrou
 
 // Get - Gets the table with the specified table name, under the specified account if it exists.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// tableName - A table name must be unique within a storage account and must be between 3 and 63 characters.The name must
-// comprise of only alphanumeric characters and it cannot begin with a numeric character.
-// options - TableClientGetOptions contains the optional parameters for the TableClient.Get method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - tableName - A table name must be unique within a storage account and must be between 3 and 63 characters.The name must
+//     comprise of only alphanumeric characters and it cannot begin with a numeric character.
+//   - options - TableClientGetOptions contains the optional parameters for the TableClient.Get method.
 func (client *TableClient) Get(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableClientGetOptions) (TableClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TableClientGetResponse{}, err
 	}
@@ -218,7 +210,7 @@ func (client *TableClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,11 +231,12 @@ func (client *TableClient) getHandleResponse(resp *http.Response) (TableClientGe
 }
 
 // NewListPager - Gets a list of all the tables under the specified storage account
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// options - TableClientListOptions contains the optional parameters for the TableClient.List method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - TableClientListOptions contains the optional parameters for the TableClient.NewListPager method.
 func (client *TableClient) NewListPager(resourceGroupName string, accountName string, options *TableClientListOptions) *runtime.Pager[TableClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[TableClientListResponse]{
 		More: func(page TableClientListResponse) bool {
@@ -260,7 +253,7 @@ func (client *TableClient) NewListPager(resourceGroupName string, accountName st
 			if err != nil {
 				return TableClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TableClientListResponse{}, err
 			}
@@ -287,7 +280,7 @@ func (client *TableClient) listCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -309,19 +302,20 @@ func (client *TableClient) listHandleResponse(resp *http.Response) (TableClientL
 
 // Update - Creates a new table with the specified table name, under the specified account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// tableName - A table name must be unique within a storage account and must be between 3 and 63 characters.The name must
-// comprise of only alphanumeric characters and it cannot begin with a numeric character.
-// options - TableClientUpdateOptions contains the optional parameters for the TableClient.Update method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - tableName - A table name must be unique within a storage account and must be between 3 and 63 characters.The name must
+//     comprise of only alphanumeric characters and it cannot begin with a numeric character.
+//   - options - TableClientUpdateOptions contains the optional parameters for the TableClient.Update method.
 func (client *TableClient) Update(ctx context.Context, resourceGroupName string, accountName string, tableName string, options *TableClientUpdateOptions) (TableClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, tableName, options)
 	if err != nil {
 		return TableClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TableClientUpdateResponse{}, err
 	}
@@ -350,7 +344,7 @@ func (client *TableClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

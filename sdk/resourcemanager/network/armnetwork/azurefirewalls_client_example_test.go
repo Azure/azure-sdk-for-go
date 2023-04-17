@@ -25,11 +25,11 @@ func ExampleAzureFirewallsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "azurefirewall", nil)
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginDelete(ctx, "rg1", "azurefirewall", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewall() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "azurefirewall", nil)
+	res, err := clientFactory.NewAzureFirewallsClient().Get(ctx, "rg1", "azurefirewall", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -208,11 +208,11 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithAdditionalProperties() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "azurefirewall", nil)
+	res, err := clientFactory.NewAzureFirewallsClient().Get(ctx, "rg1", "azurefirewall", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -370,11 +370,11 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithIpGroups() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "azurefirewall", nil)
+	res, err := clientFactory.NewAzureFirewallsClient().Get(ctx, "rg1", "azurefirewall", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -542,11 +542,11 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithZones() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "azurefirewall", nil)
+	res, err := clientFactory.NewAzureFirewallsClient().Get(ctx, "rg1", "azurefirewall", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -706,11 +706,11 @@ func ExampleAzureFirewallsClient_Get_getAzureFirewallWithManagementSubnet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "azurefirewall", nil)
+	res, err := clientFactory.NewAzureFirewallsClient().Get(ctx, "rg1", "azurefirewall", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -880,11 +880,11 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewall() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -1173,11 +1173,11 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithAddi
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -1471,11 +1471,11 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithIpGr
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -1762,11 +1762,11 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithZone
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
 		Location: to.Ptr("West US 2"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -2060,11 +2060,11 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallWithMana
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -2362,11 +2362,11 @@ func ExampleAzureFirewallsClient_BeginCreateOrUpdate_createAzureFirewallInVirtua
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginCreateOrUpdate(ctx, "rg1", "azurefirewall", armnetwork.AzureFirewall{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -2449,11 +2449,11 @@ func ExampleAzureFirewallsClient_BeginUpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTags(ctx, "azfwtest", "fw1", armnetwork.TagsObject{
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginUpdateTags(ctx, "azfwtest", "fw1", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -2492,11 +2492,11 @@ func ExampleAzureFirewallsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewAzureFirewallsClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2674,11 +2674,11 @@ func ExampleAzureFirewallsClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewAzureFirewallsClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2856,11 +2856,11 @@ func ExampleAzureFirewallsClient_BeginListLearnedPrefixes() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewAzureFirewallsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListLearnedPrefixes(ctx, "rg1", "azureFirewall1", nil)
+	poller, err := clientFactory.NewAzureFirewallsClient().BeginListLearnedPrefixes(ctx, "rg1", "azureFirewall1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -9,16 +9,6 @@
 
 package armappcontainers
 
-// AvailableWorkloadProfilesClientGetResponse contains the response from method AvailableWorkloadProfilesClient.Get.
-type AvailableWorkloadProfilesClientGetResponse struct {
-	AvailableWorkloadProfilesCollection
-}
-
-// BillingMetersClientGetResponse contains the response from method BillingMetersClient.Get.
-type BillingMetersClientGetResponse struct {
-	BillingMeterCollection
-}
-
 // CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
 type CertificatesClientCreateOrUpdateResponse struct {
 	Certificate
@@ -34,7 +24,7 @@ type CertificatesClientGetResponse struct {
 	Certificate
 }
 
-// CertificatesClientListResponse contains the response from method CertificatesClient.List.
+// CertificatesClientListResponse contains the response from method CertificatesClient.NewListPager.
 type CertificatesClientListResponse struct {
 	CertificateCollection
 }
@@ -42,111 +32,6 @@ type CertificatesClientListResponse struct {
 // CertificatesClientUpdateResponse contains the response from method CertificatesClient.Update.
 type CertificatesClientUpdateResponse struct {
 	Certificate
-}
-
-// ConnectedEnvironmentsCertificatesClientCreateOrUpdateResponse contains the response from method ConnectedEnvironmentsCertificatesClient.CreateOrUpdate.
-type ConnectedEnvironmentsCertificatesClientCreateOrUpdateResponse struct {
-	Certificate
-}
-
-// ConnectedEnvironmentsCertificatesClientDeleteResponse contains the response from method ConnectedEnvironmentsCertificatesClient.Delete.
-type ConnectedEnvironmentsCertificatesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ConnectedEnvironmentsCertificatesClientGetResponse contains the response from method ConnectedEnvironmentsCertificatesClient.Get.
-type ConnectedEnvironmentsCertificatesClientGetResponse struct {
-	Certificate
-}
-
-// ConnectedEnvironmentsCertificatesClientListResponse contains the response from method ConnectedEnvironmentsCertificatesClient.List.
-type ConnectedEnvironmentsCertificatesClientListResponse struct {
-	CertificateCollection
-}
-
-// ConnectedEnvironmentsCertificatesClientUpdateResponse contains the response from method ConnectedEnvironmentsCertificatesClient.Update.
-type ConnectedEnvironmentsCertificatesClientUpdateResponse struct {
-	Certificate
-}
-
-// ConnectedEnvironmentsClientCheckNameAvailabilityResponse contains the response from method ConnectedEnvironmentsClient.CheckNameAvailability.
-type ConnectedEnvironmentsClientCheckNameAvailabilityResponse struct {
-	CheckNameAvailabilityResponse
-}
-
-// ConnectedEnvironmentsClientCreateOrUpdateResponse contains the response from method ConnectedEnvironmentsClient.CreateOrUpdate.
-type ConnectedEnvironmentsClientCreateOrUpdateResponse struct {
-	ConnectedEnvironment
-}
-
-// ConnectedEnvironmentsClientDeleteResponse contains the response from method ConnectedEnvironmentsClient.Delete.
-type ConnectedEnvironmentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ConnectedEnvironmentsClientGetResponse contains the response from method ConnectedEnvironmentsClient.Get.
-type ConnectedEnvironmentsClientGetResponse struct {
-	ConnectedEnvironment
-}
-
-// ConnectedEnvironmentsClientListByResourceGroupResponse contains the response from method ConnectedEnvironmentsClient.ListByResourceGroup.
-type ConnectedEnvironmentsClientListByResourceGroupResponse struct {
-	ConnectedEnvironmentCollection
-}
-
-// ConnectedEnvironmentsClientListBySubscriptionResponse contains the response from method ConnectedEnvironmentsClient.ListBySubscription.
-type ConnectedEnvironmentsClientListBySubscriptionResponse struct {
-	ConnectedEnvironmentCollection
-}
-
-// ConnectedEnvironmentsClientUpdateResponse contains the response from method ConnectedEnvironmentsClient.Update.
-type ConnectedEnvironmentsClientUpdateResponse struct {
-	ConnectedEnvironment
-}
-
-// ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateResponse contains the response from method ConnectedEnvironmentsDaprComponentsClient.CreateOrUpdate.
-type ConnectedEnvironmentsDaprComponentsClientCreateOrUpdateResponse struct {
-	DaprComponent
-}
-
-// ConnectedEnvironmentsDaprComponentsClientDeleteResponse contains the response from method ConnectedEnvironmentsDaprComponentsClient.Delete.
-type ConnectedEnvironmentsDaprComponentsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ConnectedEnvironmentsDaprComponentsClientGetResponse contains the response from method ConnectedEnvironmentsDaprComponentsClient.Get.
-type ConnectedEnvironmentsDaprComponentsClientGetResponse struct {
-	DaprComponent
-}
-
-// ConnectedEnvironmentsDaprComponentsClientListResponse contains the response from method ConnectedEnvironmentsDaprComponentsClient.List.
-type ConnectedEnvironmentsDaprComponentsClientListResponse struct {
-	DaprComponentsCollection
-}
-
-// ConnectedEnvironmentsDaprComponentsClientListSecretsResponse contains the response from method ConnectedEnvironmentsDaprComponentsClient.ListSecrets.
-type ConnectedEnvironmentsDaprComponentsClientListSecretsResponse struct {
-	DaprSecretsCollection
-}
-
-// ConnectedEnvironmentsStoragesClientCreateOrUpdateResponse contains the response from method ConnectedEnvironmentsStoragesClient.CreateOrUpdate.
-type ConnectedEnvironmentsStoragesClientCreateOrUpdateResponse struct {
-	ConnectedEnvironmentStorage
-}
-
-// ConnectedEnvironmentsStoragesClientDeleteResponse contains the response from method ConnectedEnvironmentsStoragesClient.Delete.
-type ConnectedEnvironmentsStoragesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ConnectedEnvironmentsStoragesClientGetResponse contains the response from method ConnectedEnvironmentsStoragesClient.Get.
-type ConnectedEnvironmentsStoragesClientGetResponse struct {
-	ConnectedEnvironmentStorage
-}
-
-// ConnectedEnvironmentsStoragesClientListResponse contains the response from method ConnectedEnvironmentsStoragesClient.List.
-type ConnectedEnvironmentsStoragesClientListResponse struct {
-	ConnectedEnvironmentStoragesCollection
 }
 
 // ContainerAppsAuthConfigsClientCreateOrUpdateResponse contains the response from method ContainerAppsAuthConfigsClient.CreateOrUpdate.
@@ -164,24 +49,19 @@ type ContainerAppsAuthConfigsClientGetResponse struct {
 	AuthConfig
 }
 
-// ContainerAppsAuthConfigsClientListByContainerAppResponse contains the response from method ContainerAppsAuthConfigsClient.ListByContainerApp.
+// ContainerAppsAuthConfigsClientListByContainerAppResponse contains the response from method ContainerAppsAuthConfigsClient.NewListByContainerAppPager.
 type ContainerAppsAuthConfigsClientListByContainerAppResponse struct {
 	AuthConfigCollection
 }
 
-// ContainerAppsClientCreateOrUpdateResponse contains the response from method ContainerAppsClient.CreateOrUpdate.
+// ContainerAppsClientCreateOrUpdateResponse contains the response from method ContainerAppsClient.BeginCreateOrUpdate.
 type ContainerAppsClientCreateOrUpdateResponse struct {
 	ContainerApp
 }
 
-// ContainerAppsClientDeleteResponse contains the response from method ContainerAppsClient.Delete.
+// ContainerAppsClientDeleteResponse contains the response from method ContainerAppsClient.BeginDelete.
 type ContainerAppsClientDeleteResponse struct {
 	// placeholder for future response values
-}
-
-// ContainerAppsClientGetAuthTokenResponse contains the response from method ContainerAppsClient.GetAuthToken.
-type ContainerAppsClientGetAuthTokenResponse struct {
-	ContainerAppAuthToken
 }
 
 // ContainerAppsClientGetResponse contains the response from method ContainerAppsClient.Get.
@@ -189,12 +69,12 @@ type ContainerAppsClientGetResponse struct {
 	ContainerApp
 }
 
-// ContainerAppsClientListByResourceGroupResponse contains the response from method ContainerAppsClient.ListByResourceGroup.
+// ContainerAppsClientListByResourceGroupResponse contains the response from method ContainerAppsClient.NewListByResourceGroupPager.
 type ContainerAppsClientListByResourceGroupResponse struct {
 	ContainerAppCollection
 }
 
-// ContainerAppsClientListBySubscriptionResponse contains the response from method ContainerAppsClient.ListBySubscription.
+// ContainerAppsClientListBySubscriptionResponse contains the response from method ContainerAppsClient.NewListBySubscriptionPager.
 type ContainerAppsClientListBySubscriptionResponse struct {
 	ContainerAppCollection
 }
@@ -209,34 +89,9 @@ type ContainerAppsClientListSecretsResponse struct {
 	SecretsCollection
 }
 
-// ContainerAppsClientUpdateResponse contains the response from method ContainerAppsClient.Update.
+// ContainerAppsClientUpdateResponse contains the response from method ContainerAppsClient.BeginUpdate.
 type ContainerAppsClientUpdateResponse struct {
 	// placeholder for future response values
-}
-
-// ContainerAppsDiagnosticsClientGetDetectorResponse contains the response from method ContainerAppsDiagnosticsClient.GetDetector.
-type ContainerAppsDiagnosticsClientGetDetectorResponse struct {
-	Diagnostics
-}
-
-// ContainerAppsDiagnosticsClientGetRevisionResponse contains the response from method ContainerAppsDiagnosticsClient.GetRevision.
-type ContainerAppsDiagnosticsClientGetRevisionResponse struct {
-	Revision
-}
-
-// ContainerAppsDiagnosticsClientGetRootResponse contains the response from method ContainerAppsDiagnosticsClient.GetRoot.
-type ContainerAppsDiagnosticsClientGetRootResponse struct {
-	ContainerApp
-}
-
-// ContainerAppsDiagnosticsClientListDetectorsResponse contains the response from method ContainerAppsDiagnosticsClient.ListDetectors.
-type ContainerAppsDiagnosticsClientListDetectorsResponse struct {
-	DiagnosticsCollection
-}
-
-// ContainerAppsDiagnosticsClientListRevisionsResponse contains the response from method ContainerAppsDiagnosticsClient.ListRevisions.
-type ContainerAppsDiagnosticsClientListRevisionsResponse struct {
-	RevisionCollection
 }
 
 // ContainerAppsRevisionReplicasClientGetReplicaResponse contains the response from method ContainerAppsRevisionReplicasClient.GetReplica.
@@ -264,7 +119,7 @@ type ContainerAppsRevisionsClientGetRevisionResponse struct {
 	Revision
 }
 
-// ContainerAppsRevisionsClientListRevisionsResponse contains the response from method ContainerAppsRevisionsClient.ListRevisions.
+// ContainerAppsRevisionsClientListRevisionsResponse contains the response from method ContainerAppsRevisionsClient.NewListRevisionsPager.
 type ContainerAppsRevisionsClientListRevisionsResponse struct {
 	RevisionCollection
 }
@@ -274,12 +129,12 @@ type ContainerAppsRevisionsClientRestartRevisionResponse struct {
 	// placeholder for future response values
 }
 
-// ContainerAppsSourceControlsClientCreateOrUpdateResponse contains the response from method ContainerAppsSourceControlsClient.CreateOrUpdate.
+// ContainerAppsSourceControlsClientCreateOrUpdateResponse contains the response from method ContainerAppsSourceControlsClient.BeginCreateOrUpdate.
 type ContainerAppsSourceControlsClientCreateOrUpdateResponse struct {
 	SourceControl
 }
 
-// ContainerAppsSourceControlsClientDeleteResponse contains the response from method ContainerAppsSourceControlsClient.Delete.
+// ContainerAppsSourceControlsClientDeleteResponse contains the response from method ContainerAppsSourceControlsClient.BeginDelete.
 type ContainerAppsSourceControlsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -289,7 +144,7 @@ type ContainerAppsSourceControlsClientGetResponse struct {
 	SourceControl
 }
 
-// ContainerAppsSourceControlsClientListByContainerAppResponse contains the response from method ContainerAppsSourceControlsClient.ListByContainerApp.
+// ContainerAppsSourceControlsClientListByContainerAppResponse contains the response from method ContainerAppsSourceControlsClient.NewListByContainerAppPager.
 type ContainerAppsSourceControlsClientListByContainerAppResponse struct {
 	SourceControlCollection
 }
@@ -309,7 +164,7 @@ type DaprComponentsClientGetResponse struct {
 	DaprComponent
 }
 
-// DaprComponentsClientListResponse contains the response from method DaprComponentsClient.List.
+// DaprComponentsClientListResponse contains the response from method DaprComponentsClient.NewListPager.
 type DaprComponentsClientListResponse struct {
 	DaprComponentsCollection
 }
@@ -319,29 +174,14 @@ type DaprComponentsClientListSecretsResponse struct {
 	DaprSecretsCollection
 }
 
-// ManagedEnvironmentDiagnosticsClientGetDetectorResponse contains the response from method ManagedEnvironmentDiagnosticsClient.GetDetector.
-type ManagedEnvironmentDiagnosticsClientGetDetectorResponse struct {
-	Diagnostics
-}
-
-// ManagedEnvironmentDiagnosticsClientListDetectorsResponse contains the response from method ManagedEnvironmentDiagnosticsClient.ListDetectors.
-type ManagedEnvironmentDiagnosticsClientListDetectorsResponse struct {
-	DiagnosticsCollection
-}
-
-// ManagedEnvironmentsClientCreateOrUpdateResponse contains the response from method ManagedEnvironmentsClient.CreateOrUpdate.
+// ManagedEnvironmentsClientCreateOrUpdateResponse contains the response from method ManagedEnvironmentsClient.BeginCreateOrUpdate.
 type ManagedEnvironmentsClientCreateOrUpdateResponse struct {
 	ManagedEnvironment
 }
 
-// ManagedEnvironmentsClientDeleteResponse contains the response from method ManagedEnvironmentsClient.Delete.
+// ManagedEnvironmentsClientDeleteResponse contains the response from method ManagedEnvironmentsClient.BeginDelete.
 type ManagedEnvironmentsClientDeleteResponse struct {
 	// placeholder for future response values
-}
-
-// ManagedEnvironmentsClientGetAuthTokenResponse contains the response from method ManagedEnvironmentsClient.GetAuthToken.
-type ManagedEnvironmentsClientGetAuthTokenResponse struct {
-	EnvironmentAuthToken
 }
 
 // ManagedEnvironmentsClientGetResponse contains the response from method ManagedEnvironmentsClient.Get.
@@ -349,29 +189,19 @@ type ManagedEnvironmentsClientGetResponse struct {
 	ManagedEnvironment
 }
 
-// ManagedEnvironmentsClientListByResourceGroupResponse contains the response from method ManagedEnvironmentsClient.ListByResourceGroup.
+// ManagedEnvironmentsClientListByResourceGroupResponse contains the response from method ManagedEnvironmentsClient.NewListByResourceGroupPager.
 type ManagedEnvironmentsClientListByResourceGroupResponse struct {
 	ManagedEnvironmentsCollection
 }
 
-// ManagedEnvironmentsClientListBySubscriptionResponse contains the response from method ManagedEnvironmentsClient.ListBySubscription.
+// ManagedEnvironmentsClientListBySubscriptionResponse contains the response from method ManagedEnvironmentsClient.NewListBySubscriptionPager.
 type ManagedEnvironmentsClientListBySubscriptionResponse struct {
 	ManagedEnvironmentsCollection
 }
 
-// ManagedEnvironmentsClientListWorkloadProfileStatesResponse contains the response from method ManagedEnvironmentsClient.ListWorkloadProfileStates.
-type ManagedEnvironmentsClientListWorkloadProfileStatesResponse struct {
-	WorkloadProfileStatesCollection
-}
-
-// ManagedEnvironmentsClientUpdateResponse contains the response from method ManagedEnvironmentsClient.Update.
+// ManagedEnvironmentsClientUpdateResponse contains the response from method ManagedEnvironmentsClient.BeginUpdate.
 type ManagedEnvironmentsClientUpdateResponse struct {
 	// placeholder for future response values
-}
-
-// ManagedEnvironmentsDiagnosticsClientGetRootResponse contains the response from method ManagedEnvironmentsDiagnosticsClient.GetRoot.
-type ManagedEnvironmentsDiagnosticsClientGetRootResponse struct {
-	ManagedEnvironment
 }
 
 // ManagedEnvironmentsStoragesClientCreateOrUpdateResponse contains the response from method ManagedEnvironmentsStoragesClient.CreateOrUpdate.
@@ -399,7 +229,7 @@ type NamespacesClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResponse
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	AvailableOperations
 }

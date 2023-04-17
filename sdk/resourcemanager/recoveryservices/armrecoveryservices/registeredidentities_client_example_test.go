@@ -24,11 +24,11 @@ func ExampleRegisteredIdentitiesClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservices.NewRegisteredIdentitiesClient("77777777-d41f-4550-9f70-7708a3a2283b", cred, nil)
+	clientFactory, err := armrecoveryservices.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "BCDRIbzRG", "BCDRIbzVault", "dpmcontainer01", nil)
+	_, err = clientFactory.NewRegisteredIdentitiesClient().Delete(ctx, "BCDRIbzRG", "BCDRIbzVault", "dpmcontainer01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

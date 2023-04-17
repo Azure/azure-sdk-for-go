@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // WebhookClient contains the methods for the Webhook group.
 // Don't use this type directly, use NewWebhookClient() instead.
 type WebhookClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWebhookClient creates a new instance of WebhookClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWebhookClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WebhookClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WebhookClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WebhookClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create the webhook identified by webhook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-10-31
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// webhookName - The webhook name.
-// parameters - The create or update parameters for webhook.
-// options - WebhookClientCreateOrUpdateOptions contains the optional parameters for the WebhookClient.CreateOrUpdate method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - webhookName - The webhook name.
+//   - parameters - The create or update parameters for webhook.
+//   - options - WebhookClientCreateOrUpdateOptions contains the optional parameters for the WebhookClient.CreateOrUpdate method.
 func (client *WebhookClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, webhookName string, parameters WebhookCreateOrUpdateParameters, options *WebhookClientCreateOrUpdateOptions) (WebhookClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, webhookName, parameters, options)
 	if err != nil {
 		return WebhookClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebhookClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *WebhookClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *WebhookClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete the webhook by name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-10-31
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// webhookName - The webhook name.
-// options - WebhookClientDeleteOptions contains the optional parameters for the WebhookClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - webhookName - The webhook name.
+//   - options - WebhookClientDeleteOptions contains the optional parameters for the WebhookClient.Delete method.
 func (client *WebhookClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, webhookName string, options *WebhookClientDeleteOptions) (WebhookClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, webhookName, options)
 	if err != nil {
 		return WebhookClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebhookClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *WebhookClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,16 +163,17 @@ func (client *WebhookClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // GenerateURI - Generates a Uri for use in creating a webhook.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-10-31
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - WebhookClientGenerateURIOptions contains the optional parameters for the WebhookClient.GenerateURI method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - WebhookClientGenerateURIOptions contains the optional parameters for the WebhookClient.GenerateURI method.
 func (client *WebhookClient) GenerateURI(ctx context.Context, resourceGroupName string, automationAccountName string, options *WebhookClientGenerateURIOptions) (WebhookClientGenerateURIResponse, error) {
 	req, err := client.generateURICreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
 		return WebhookClientGenerateURIResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebhookClientGenerateURIResponse{}, err
 	}
@@ -206,7 +198,7 @@ func (client *WebhookClient) generateURICreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -228,17 +220,18 @@ func (client *WebhookClient) generateURIHandleResponse(resp *http.Response) (Web
 
 // Get - Retrieve the webhook identified by webhook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-10-31
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// webhookName - The webhook name.
-// options - WebhookClientGetOptions contains the optional parameters for the WebhookClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - webhookName - The webhook name.
+//   - options - WebhookClientGetOptions contains the optional parameters for the WebhookClient.Get method.
 func (client *WebhookClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, webhookName string, options *WebhookClientGetOptions) (WebhookClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, webhookName, options)
 	if err != nil {
 		return WebhookClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebhookClientGetResponse{}, err
 	}
@@ -267,7 +260,7 @@ func (client *WebhookClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -288,12 +281,12 @@ func (client *WebhookClient) getHandleResponse(resp *http.Response) (WebhookClie
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of webhooks.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-10-31
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - WebhookClientListByAutomationAccountOptions contains the optional parameters for the WebhookClient.NewListByAutomationAccountPager
+//     method.
 func (client *WebhookClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *WebhookClientListByAutomationAccountOptions) *runtime.Pager[WebhookClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WebhookClientListByAutomationAccountResponse]{
 		More: func(page WebhookClientListByAutomationAccountResponse) bool {
@@ -310,7 +303,7 @@ func (client *WebhookClient) NewListByAutomationAccountPager(resourceGroupName s
 			if err != nil {
 				return WebhookClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WebhookClientListByAutomationAccountResponse{}, err
 			}
@@ -337,7 +330,7 @@ func (client *WebhookClient) listByAutomationAccountCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -362,18 +355,19 @@ func (client *WebhookClient) listByAutomationAccountHandleResponse(resp *http.Re
 
 // Update - Update the webhook identified by webhook name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2015-10-31
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// webhookName - The webhook name.
-// parameters - The update parameters for webhook.
-// options - WebhookClientUpdateOptions contains the optional parameters for the WebhookClient.Update method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - webhookName - The webhook name.
+//   - parameters - The update parameters for webhook.
+//   - options - WebhookClientUpdateOptions contains the optional parameters for the WebhookClient.Update method.
 func (client *WebhookClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, webhookName string, parameters WebhookUpdateParameters, options *WebhookClientUpdateOptions) (WebhookClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, webhookName, parameters, options)
 	if err != nil {
 		return WebhookClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WebhookClientUpdateResponse{}, err
 	}
@@ -402,7 +396,7 @@ func (client *WebhookClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

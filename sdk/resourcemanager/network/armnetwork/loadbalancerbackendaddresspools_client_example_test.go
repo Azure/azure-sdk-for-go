@@ -25,11 +25,11 @@ func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_loadBalancerWithB
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancerBackendAddressPoolsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testrg", "lb", nil)
+	pager := clientFactory.NewLoadBalancerBackendAddressPoolsClient().NewListPager("testrg", "lb", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -85,11 +85,11 @@ func ExampleLoadBalancerBackendAddressPoolsClient_NewListPager_loadBalancerBacke
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancerBackendAddressPoolsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("testrg", "lb", nil)
+	pager := clientFactory.NewLoadBalancerBackendAddressPoolsClient().NewListPager("testrg", "lb", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -130,11 +130,11 @@ func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerWithBackendAdd
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancerBackendAddressPoolsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg", "lb", "backend", nil)
+	res, err := clientFactory.NewLoadBalancerBackendAddressPoolsClient().Get(ctx, "testrg", "lb", "backend", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -182,11 +182,11 @@ func ExampleLoadBalancerBackendAddressPoolsClient_Get_loadBalancerBackendAddress
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancerBackendAddressPoolsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "testrg", "lb", "backend", nil)
+	res, err := clientFactory.NewLoadBalancerBackendAddressPoolsClient().Get(ctx, "testrg", "lb", "backend", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -219,11 +219,11 @@ func ExampleLoadBalancerBackendAddressPoolsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancerBackendAddressPoolsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "testrg", "lb", "backend", armnetwork.BackendAddressPool{
+	poller, err := clientFactory.NewLoadBalancerBackendAddressPoolsClient().BeginCreateOrUpdate(ctx, "testrg", "lb", "backend", armnetwork.BackendAddressPool{
 		Properties: &armnetwork.BackendAddressPoolPropertiesFormat{
 			LoadBalancerBackendAddresses: []*armnetwork.LoadBalancerBackendAddress{
 				{
@@ -297,11 +297,11 @@ func ExampleLoadBalancerBackendAddressPoolsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancerBackendAddressPoolsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "testrg", "lb", "backend", nil)
+	poller, err := clientFactory.NewLoadBalancerBackendAddressPoolsClient().BeginDelete(ctx, "testrg", "lb", "backend", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

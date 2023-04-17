@@ -9,12 +9,12 @@
 
 package armelasticsan
 
-// ElasticSansClientCreateResponse contains the response from method ElasticSansClient.Create.
+// ElasticSansClientCreateResponse contains the response from method ElasticSansClient.BeginCreate.
 type ElasticSansClientCreateResponse struct {
 	ElasticSan
 }
 
-// ElasticSansClientDeleteResponse contains the response from method ElasticSansClient.Delete.
+// ElasticSansClientDeleteResponse contains the response from method ElasticSansClient.BeginDelete.
 type ElasticSansClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,37 +24,37 @@ type ElasticSansClientGetResponse struct {
 	ElasticSan
 }
 
-// ElasticSansClientListByResourceGroupResponse contains the response from method ElasticSansClient.ListByResourceGroup.
+// ElasticSansClientListByResourceGroupResponse contains the response from method ElasticSansClient.NewListByResourceGroupPager.
 type ElasticSansClientListByResourceGroupResponse struct {
 	List
 }
 
-// ElasticSansClientListBySubscriptionResponse contains the response from method ElasticSansClient.ListBySubscription.
+// ElasticSansClientListBySubscriptionResponse contains the response from method ElasticSansClient.NewListBySubscriptionPager.
 type ElasticSansClientListBySubscriptionResponse struct {
 	List
 }
 
-// ElasticSansClientUpdateResponse contains the response from method ElasticSansClient.Update.
+// ElasticSansClientUpdateResponse contains the response from method ElasticSansClient.BeginUpdate.
 type ElasticSansClientUpdateResponse struct {
 	ElasticSan
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// SKUsClientListResponse contains the response from method SKUsClient.List.
+// SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
 type SKUsClientListResponse struct {
 	SKUInformationList
 }
 
-// VolumeGroupsClientCreateResponse contains the response from method VolumeGroupsClient.Create.
+// VolumeGroupsClientCreateResponse contains the response from method VolumeGroupsClient.BeginCreate.
 type VolumeGroupsClientCreateResponse struct {
 	VolumeGroup
 }
 
-// VolumeGroupsClientDeleteResponse contains the response from method VolumeGroupsClient.Delete.
+// VolumeGroupsClientDeleteResponse contains the response from method VolumeGroupsClient.BeginDelete.
 type VolumeGroupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -64,22 +64,22 @@ type VolumeGroupsClientGetResponse struct {
 	VolumeGroup
 }
 
-// VolumeGroupsClientListByElasticSanResponse contains the response from method VolumeGroupsClient.ListByElasticSan.
+// VolumeGroupsClientListByElasticSanResponse contains the response from method VolumeGroupsClient.NewListByElasticSanPager.
 type VolumeGroupsClientListByElasticSanResponse struct {
 	VolumeGroupList
 }
 
-// VolumeGroupsClientUpdateResponse contains the response from method VolumeGroupsClient.Update.
+// VolumeGroupsClientUpdateResponse contains the response from method VolumeGroupsClient.BeginUpdate.
 type VolumeGroupsClientUpdateResponse struct {
 	VolumeGroup
 }
 
-// VolumesClientCreateResponse contains the response from method VolumesClient.Create.
+// VolumesClientCreateResponse contains the response from method VolumesClient.BeginCreate.
 type VolumesClientCreateResponse struct {
 	Volume
 }
 
-// VolumesClientDeleteResponse contains the response from method VolumesClient.Delete.
+// VolumesClientDeleteResponse contains the response from method VolumesClient.BeginDelete.
 type VolumesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -89,12 +89,12 @@ type VolumesClientGetResponse struct {
 	Volume
 }
 
-// VolumesClientListByVolumeGroupResponse contains the response from method VolumesClient.ListByVolumeGroup.
+// VolumesClientListByVolumeGroupResponse contains the response from method VolumesClient.NewListByVolumeGroupPager.
 type VolumesClientListByVolumeGroupResponse struct {
 	VolumeList
 }
 
-// VolumesClientUpdateResponse contains the response from method VolumesClient.Update.
+// VolumesClientUpdateResponse contains the response from method VolumesClient.BeginUpdate.
 type VolumesClientUpdateResponse struct {
 	Volume
 }

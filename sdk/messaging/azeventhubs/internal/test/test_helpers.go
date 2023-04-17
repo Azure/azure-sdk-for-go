@@ -92,12 +92,14 @@ func RandomString(prefix string, length int) string {
 }
 
 type ConnectionParamsForTest struct {
-	ConnectionString        string
-	EventHubName            string
-	EventHubNamespace       string
-	ResourceGroup           string
-	StorageConnectionString string
-	SubscriptionID          string
+	ConnectionString           string
+	ConnectionStringListenOnly string
+	ConnectionStringSendOnly   string
+	EventHubName               string
+	EventHubNamespace          string
+	ResourceGroup              string
+	StorageConnectionString    string
+	SubscriptionID             string
 }
 
 func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
@@ -110,6 +112,8 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 	envVars := mustGetEnvironmentVars(t, []string{
 		"AZURE_SUBSCRIPTION_ID",
 		"CHECKPOINTSTORE_STORAGE_CONNECTION_STRING",
+		"EVENTHUB_CONNECTION_STRING_LISTEN_ONLY",
+		"EVENTHUB_CONNECTION_STRING_SEND_ONLY",
 		"EVENTHUB_CONNECTION_STRING",
 		"EVENTHUB_NAME",
 		"RESOURCE_GROUP",
@@ -119,12 +123,14 @@ func GetConnectionParamsForTest(t *testing.T) ConnectionParamsForTest {
 	require.NoError(t, err)
 
 	return ConnectionParamsForTest{
-		ConnectionString:        envVars["EVENTHUB_CONNECTION_STRING"],
-		EventHubName:            envVars["EVENTHUB_NAME"],
-		EventHubNamespace:       connProps.FullyQualifiedNamespace,
-		ResourceGroup:           envVars["RESOURCE_GROUP"],
-		StorageConnectionString: envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
-		SubscriptionID:          envVars["AZURE_SUBSCRIPTION_ID"],
+		ConnectionString:           envVars["EVENTHUB_CONNECTION_STRING"],
+		ConnectionStringListenOnly: envVars["EVENTHUB_CONNECTION_STRING_LISTEN_ONLY"],
+		ConnectionStringSendOnly:   envVars["EVENTHUB_CONNECTION_STRING_SEND_ONLY"],
+		EventHubName:               envVars["EVENTHUB_NAME"],
+		EventHubNamespace:          connProps.FullyQualifiedNamespace,
+		ResourceGroup:              envVars["RESOURCE_GROUP"],
+		StorageConnectionString:    envVars["CHECKPOINTSTORE_STORAGE_CONNECTION_STRING"],
+		SubscriptionID:             envVars["AZURE_SUBSCRIPTION_ID"],
 	}
 }
 
@@ -155,6 +161,12 @@ func RequireClose[T interface {
 	Close(ctx context.Context) error
 }](t *testing.T, closeable T) {
 	require.NoErrorf(t, closeable.Close(context.Background()), "%T closes cleanly", closeable)
+}
+
+func RequireNSClose(t *testing.T, closeable interface {
+	Close(ctx context.Context, permanent bool) error
+}) {
+	require.NoError(t, closeable.Close(context.Background(), true))
 }
 
 // RequireContextHasDefaultTimeout checks that the context has a deadline set, and that it's

@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/datafactory/armdatafactory/v3"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValue.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValue.json
 func ExampleExposureControlClient_GetFeatureValue() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewExposureControlClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetFeatureValue(ctx, "WestEurope", armdatafactory.ExposureControlRequest{
+	res, err := clientFactory.NewExposureControlClient().GetFeatureValue(ctx, "WestEurope", armdatafactory.ExposureControlRequest{
 		FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),
 		FeatureType: to.Ptr("Feature"),
 	}, nil)
@@ -45,18 +45,18 @@ func ExampleExposureControlClient_GetFeatureValue() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValueByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_GetFeatureValueByFactory.json
 func ExampleExposureControlClient_GetFeatureValueByFactory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewExposureControlClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetFeatureValueByFactory(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.ExposureControlRequest{
+	res, err := clientFactory.NewExposureControlClient().GetFeatureValueByFactory(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.ExposureControlRequest{
 		FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),
 		FeatureType: to.Ptr("Feature"),
 	}, nil)
@@ -72,18 +72,18 @@ func ExampleExposureControlClient_GetFeatureValueByFactory() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/4afa6837cfb404d8e5ffa8a604a5e09996d6f79e/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_QueryFeatureValuesByFactory.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5c9459305484e0456b4a922e3d31a61e2ddd3c99/specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/ExposureControl_QueryFeatureValuesByFactory.json
 func ExampleExposureControlClient_QueryFeatureValuesByFactory() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armdatafactory.NewExposureControlClient("12345678-1234-1234-1234-12345678abc", cred, nil)
+	clientFactory, err := armdatafactory.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.QueryFeatureValuesByFactory(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.ExposureControlBatchRequest{
+	res, err := clientFactory.NewExposureControlClient().QueryFeatureValuesByFactory(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.ExposureControlBatchRequest{
 		ExposureControlRequests: []*armdatafactory.ExposureControlRequest{
 			{
 				FeatureName: to.Ptr("ADFIntegrationRuntimeSharingRbac"),

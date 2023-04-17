@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // StorageTargetClient contains the methods for the StorageTarget group.
 // Don't use this type directly, use NewStorageTargetClient() instead.
 type StorageTargetClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewStorageTargetClient creates a new instance of StorageTargetClient with the specified values.
@@ -37,21 +34,13 @@ type StorageTargetClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewStorageTargetClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageTargetClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".StorageTargetClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &StorageTargetClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -72,11 +61,11 @@ func (client *StorageTargetClient) BeginFlush(ctx context.Context, resourceGroup
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetClientFlushResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageTargetClientFlushResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[StorageTargetClientFlushResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetClientFlushResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -90,7 +79,7 @@ func (client *StorageTargetClient) flush(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -119,7 +108,7 @@ func (client *StorageTargetClient) flushCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -146,11 +135,11 @@ func (client *StorageTargetClient) BeginInvalidate(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetClientInvalidateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageTargetClientInvalidateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[StorageTargetClientInvalidateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetClientInvalidateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -164,7 +153,7 @@ func (client *StorageTargetClient) invalidate(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -193,7 +182,7 @@ func (client *StorageTargetClient) invalidateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,11 +208,11 @@ func (client *StorageTargetClient) BeginResume(ctx context.Context, resourceGrou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetClientResumeResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageTargetClientResumeResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[StorageTargetClientResumeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetClientResumeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -236,7 +225,7 @@ func (client *StorageTargetClient) resume(ctx context.Context, resourceGroupName
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -265,7 +254,7 @@ func (client *StorageTargetClient) resumeCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -291,11 +280,11 @@ func (client *StorageTargetClient) BeginSuspend(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[StorageTargetClientSuspendResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageTargetClientSuspendResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[StorageTargetClientSuspendResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[StorageTargetClientSuspendResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -308,7 +297,7 @@ func (client *StorageTargetClient) suspend(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -337,7 +326,7 @@ func (client *StorageTargetClient) suspendCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter storageTargetName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

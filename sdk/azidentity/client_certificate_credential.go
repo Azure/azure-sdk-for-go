@@ -25,9 +25,13 @@ const credNameCert = "ClientCertificateCredential"
 type ClientCertificateCredentialOptions struct {
 	azcore.ClientOptions
 
-	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire tokens.
+	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
+	// application is registered.
+	AdditionallyAllowedTenants []string
+	// DisableInstanceDiscovery should be true for applications authenticating in disconnected or private clouds.
+	// This skips a metadata request that will fail for such applications.
 	DisableInstanceDiscovery bool
-
 	// SendCertificateChain controls whether the credential sends the public certificate chain in the x5c
 	// header of each token request's JWT. This is required for Subject Name/Issuer (SNI) authentication.
 	// Defaults to False.
@@ -37,6 +41,7 @@ type ClientCertificateCredentialOptions struct {
 // ClientCertificateCredential authenticates a service principal with a certificate.
 type ClientCertificateCredential struct {
 	client confidentialClient
+	s      *syncer
 }
 
 // NewClientCertificateCredential constructs a ClientCertificateCredential. Pass nil for options to accept defaults.
@@ -47,7 +52,7 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if options == nil {
 		options = &ClientCertificateCredentialOptions{}
 	}
-	cred, err := confidential.NewCredFromCertChain(certs, key)
+	cred, err := confidential.NewCredFromCert(certs, key)
 	if err != nil {
 		return nil, err
 	}
@@ -60,25 +65,23 @@ func NewClientCertificateCredential(tenantID string, clientID string, certs []*x
 	if err != nil {
 		return nil, err
 	}
-	return &ClientCertificateCredential{client: c}, nil
+	cc := ClientCertificateCredential{client: c}
+	cc.s = newSyncer(credNameCert, tenantID, options.AdditionallyAllowedTenants, cc.requestToken, cc.silentAuth)
+	return &cc, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. This method is called automatically by Azure SDK clients.
 func (c *ClientCertificateCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	if len(opts.Scopes) == 0 {
-		return azcore.AccessToken{}, errors.New(credNameCert + ": GetToken() requires at least one scope")
-	}
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
-	if err == nil {
-		logGetTokenSuccess(c, opts)
-		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
-	}
+	return c.s.GetToken(ctx, opts)
+}
 
-	ar, err = c.client.AcquireTokenByCredential(ctx, opts.Scopes)
-	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameCert, err)
-	}
-	logGetTokenSuccess(c, opts)
+func (c *ClientCertificateCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes)
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+}
+
+func (c *ClientCertificateCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	ar, err := c.client.AcquireTokenByCredential(ctx, opts.Scopes)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

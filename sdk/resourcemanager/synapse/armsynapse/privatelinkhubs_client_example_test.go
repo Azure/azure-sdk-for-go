@@ -25,11 +25,11 @@ func ExamplePrivateLinkHubsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateLinkHubsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("resourceGroup1", nil)
+	pager := clientFactory.NewPrivateLinkHubsClient().NewListByResourceGroupPager("resourceGroup1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -77,11 +77,11 @@ func ExamplePrivateLinkHubsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateLinkHubsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "privateLinkHub1", nil)
+	res, err := clientFactory.NewPrivateLinkHubsClient().Get(ctx, "resourceGroup1", "privateLinkHub1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -109,11 +109,11 @@ func ExamplePrivateLinkHubsClient_Update() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateLinkHubsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "resourceGroup1", "privateLinkHub1", armsynapse.PrivateLinkHubPatchInfo{
+	res, err := clientFactory.NewPrivateLinkHubsClient().Update(ctx, "resourceGroup1", "privateLinkHub1", armsynapse.PrivateLinkHubPatchInfo{
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
 		},
@@ -145,11 +145,11 @@ func ExamplePrivateLinkHubsClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateLinkHubsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "resourceGroup1", "privateLinkHub1", armsynapse.PrivateLinkHub{
+	res, err := clientFactory.NewPrivateLinkHubsClient().CreateOrUpdate(ctx, "resourceGroup1", "privateLinkHub1", armsynapse.PrivateLinkHub{
 		Location: to.Ptr("East US"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
@@ -183,11 +183,11 @@ func ExamplePrivateLinkHubsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateLinkHubsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resourceGroup1", "privateLinkHub1", nil)
+	poller, err := clientFactory.NewPrivateLinkHubsClient().BeginDelete(ctx, "resourceGroup1", "privateLinkHub1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -204,11 +204,11 @@ func ExamplePrivateLinkHubsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewPrivateLinkHubsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewPrivateLinkHubsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

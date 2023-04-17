@@ -1,5 +1,22 @@
 # Release History
 
+## 4.2.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 4.2.0 (2023-03-27)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New value `StorageAccountTypeStandardSSDLRS` added to enum type `StorageAccountType`
+- New field `ComputerName` in struct `VirtualMachineScaleSetVMInstanceView`
+- New field `HyperVGeneration` in struct `VirtualMachineScaleSetVMInstanceView`
+- New field `OSName` in struct `VirtualMachineScaleSetVMInstanceView`
+- New field `OSVersion` in struct `VirtualMachineScaleSetVMInstanceView`
+
+
 ## 4.1.0 (2023-01-27)
 ### Features Added
 

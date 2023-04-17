@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,38 @@ import (
 // RoleDefinitionsClient contains the methods for the RoleDefinitions group.
 // Don't use this type directly, use NewRoleDefinitionsClient() instead.
 type RoleDefinitionsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewRoleDefinitionsClient creates a new instance of RoleDefinitionsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRoleDefinitionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleDefinitionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RoleDefinitionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RoleDefinitionsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// scope - The scope of the role definition.
-// roleDefinitionID - The ID of the role definition.
-// roleDefinition - The values for the role definition.
-// options - RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
-// method.
+//   - scope - The scope of the role definition.
+//   - roleDefinitionID - The ID of the role definition.
+//   - roleDefinition - The values for the role definition.
+//   - options - RoleDefinitionsClientCreateOrUpdateOptions contains the optional parameters for the RoleDefinitionsClient.CreateOrUpdate
+//     method.
 func (client *RoleDefinitionsClient) CreateOrUpdate(ctx context.Context, scope string, roleDefinitionID string, roleDefinition RoleDefinition, options *RoleDefinitionsClientCreateOrUpdateOptions) (RoleDefinitionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, scope, roleDefinitionID, roleDefinition, options)
 	if err != nil {
 		return RoleDefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleDefinitionsClientCreateOrUpdateResponse{}, err
 	}
@@ -83,7 +73,7 @@ func (client *RoleDefinitionsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,16 +95,17 @@ func (client *RoleDefinitionsClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Deletes a role definition.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// scope - The scope of the role definition.
-// roleDefinitionID - The ID of the role definition to delete.
-// options - RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
+//   - scope - The scope of the role definition.
+//   - roleDefinitionID - The ID of the role definition to delete.
+//   - options - RoleDefinitionsClientDeleteOptions contains the optional parameters for the RoleDefinitionsClient.Delete method.
 func (client *RoleDefinitionsClient) Delete(ctx context.Context, scope string, roleDefinitionID string, options *RoleDefinitionsClientDeleteOptions) (RoleDefinitionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, scope, roleDefinitionID, options)
 	if err != nil {
 		return RoleDefinitionsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleDefinitionsClientDeleteResponse{}, err
 	}
@@ -132,7 +123,7 @@ func (client *RoleDefinitionsClient) deleteCreateRequest(ctx context.Context, sc
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -154,16 +145,17 @@ func (client *RoleDefinitionsClient) deleteHandleResponse(resp *http.Response) (
 
 // Get - Get role definition by name (GUID).
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// scope - The scope of the role definition.
-// roleDefinitionID - The ID of the role definition.
-// options - RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
+//   - scope - The scope of the role definition.
+//   - roleDefinitionID - The ID of the role definition.
+//   - options - RoleDefinitionsClientGetOptions contains the optional parameters for the RoleDefinitionsClient.Get method.
 func (client *RoleDefinitionsClient) Get(ctx context.Context, scope string, roleDefinitionID string, options *RoleDefinitionsClientGetOptions) (RoleDefinitionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleDefinitionID, options)
 	if err != nil {
 		return RoleDefinitionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleDefinitionsClientGetResponse{}, err
 	}
@@ -181,7 +173,7 @@ func (client *RoleDefinitionsClient) getCreateRequest(ctx context.Context, scope
 		return nil, errors.New("parameter roleDefinitionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleDefinitionId}", url.PathEscape(roleDefinitionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,17 +195,18 @@ func (client *RoleDefinitionsClient) getHandleResponse(resp *http.Response) (Rol
 
 // GetByID - Gets a role definition by ID.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// roleID - The fully qualified role definition ID. Use the format, /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}
-// for subscription level role definitions, or
-// /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant level role definitions.
-// options - RoleDefinitionsClientGetByIDOptions contains the optional parameters for the RoleDefinitionsClient.GetByID method.
+//   - roleID - The fully qualified role definition ID. Use the format, /subscriptions/{guid}/providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId}
+//     for subscription level role definitions, or
+//     /providers/Microsoft.Authorization/roleDefinitions/{roleDefinitionId} for tenant level role definitions.
+//   - options - RoleDefinitionsClientGetByIDOptions contains the optional parameters for the RoleDefinitionsClient.GetByID method.
 func (client *RoleDefinitionsClient) GetByID(ctx context.Context, roleID string, options *RoleDefinitionsClientGetByIDOptions) (RoleDefinitionsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, roleID, options)
 	if err != nil {
 		return RoleDefinitionsClientGetByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleDefinitionsClientGetByIDResponse{}, err
 	}
@@ -227,7 +220,7 @@ func (client *RoleDefinitionsClient) GetByID(ctx context.Context, roleID string,
 func (client *RoleDefinitionsClient) getByIDCreateRequest(ctx context.Context, roleID string, options *RoleDefinitionsClientGetByIDOptions) (*policy.Request, error) {
 	urlPath := "/{roleId}"
 	urlPath = strings.ReplaceAll(urlPath, "{roleId}", roleID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -248,10 +241,11 @@ func (client *RoleDefinitionsClient) getByIDHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Get all role definitions that are applicable at scope and above.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// scope - The scope of the role definition.
-// options - RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.List method.
+//   - scope - The scope of the role definition.
+//   - options - RoleDefinitionsClientListOptions contains the optional parameters for the RoleDefinitionsClient.NewListPager
+//     method.
 func (client *RoleDefinitionsClient) NewListPager(scope string, options *RoleDefinitionsClientListOptions) *runtime.Pager[RoleDefinitionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleDefinitionsClientListResponse]{
 		More: func(page RoleDefinitionsClientListResponse) bool {
@@ -268,7 +262,7 @@ func (client *RoleDefinitionsClient) NewListPager(scope string, options *RoleDef
 			if err != nil {
 				return RoleDefinitionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleDefinitionsClientListResponse{}, err
 			}
@@ -284,7 +278,7 @@ func (client *RoleDefinitionsClient) NewListPager(scope string, options *RoleDef
 func (client *RoleDefinitionsClient) listCreateRequest(ctx context.Context, scope string, options *RoleDefinitionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleDefinitions"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

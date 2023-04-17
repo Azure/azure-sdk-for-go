@@ -27,11 +27,11 @@ func ExampleWatchersClient_CreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "rg1", "nw1", armnetwork.Watcher{
+	res, err := clientFactory.NewWatchersClient().CreateOrUpdate(ctx, "rg1", "nw1", armnetwork.Watcher{
 		Location:   to.Ptr("eastus"),
 		Properties: &armnetwork.WatcherPropertiesFormat{},
 	}, nil)
@@ -62,11 +62,11 @@ func ExampleWatchersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "nw1", nil)
+	res, err := clientFactory.NewWatchersClient().Get(ctx, "rg1", "nw1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -94,11 +94,11 @@ func ExampleWatchersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "nw1", nil)
+	poller, err := clientFactory.NewWatchersClient().BeginDelete(ctx, "rg1", "nw1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -115,11 +115,11 @@ func ExampleWatchersClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "nw1", armnetwork.TagsObject{
+	res, err := clientFactory.NewWatchersClient().UpdateTags(ctx, "rg1", "nw1", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -154,11 +154,11 @@ func ExampleWatchersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewWatchersClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -206,11 +206,11 @@ func ExampleWatchersClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewWatchersClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -258,11 +258,11 @@ func ExampleWatchersClient_GetTopology() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetTopology(ctx, "rg1", "nw1", armnetwork.TopologyParameters{
+	res, err := clientFactory.NewWatchersClient().GetTopology(ctx, "rg1", "nw1", armnetwork.TopologyParameters{
 		TargetResourceGroupName: to.Ptr("rg2"),
 	}, nil)
 	if err != nil {
@@ -302,11 +302,11 @@ func ExampleWatchersClient_BeginVerifyIPFlow() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginVerifyIPFlow(ctx, "rg1", "nw1", armnetwork.VerificationIPFlowParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginVerifyIPFlow(ctx, "rg1", "nw1", armnetwork.VerificationIPFlowParameters{
 		Direction:        to.Ptr(armnetwork.DirectionOutbound),
 		LocalIPAddress:   to.Ptr("10.2.0.4"),
 		LocalPort:        to.Ptr("80"),
@@ -338,11 +338,11 @@ func ExampleWatchersClient_BeginGetNextHop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetNextHop(ctx, "rg1", "nw1", armnetwork.NextHopParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginGetNextHop(ctx, "rg1", "nw1", armnetwork.NextHopParameters{
 		DestinationIPAddress: to.Ptr("10.0.0.10"),
 		SourceIPAddress:      to.Ptr("10.0.0.5"),
 		TargetNicResourceID:  to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkInterfaces/nic1"),
@@ -372,11 +372,11 @@ func ExampleWatchersClient_BeginGetVMSecurityRules() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetVMSecurityRules(ctx, "rg1", "nw1", armnetwork.SecurityGroupViewParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginGetVMSecurityRules(ctx, "rg1", "nw1", armnetwork.SecurityGroupViewParameters{
 		TargetResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"),
 	}, nil)
 	if err != nil {
@@ -456,11 +456,11 @@ func ExampleWatchersClient_BeginGetTroubleshooting() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetTroubleshooting(ctx, "rg1", "nw1", armnetwork.TroubleshootingParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginGetTroubleshooting(ctx, "rg1", "nw1", armnetwork.TroubleshootingParameters{
 		Properties: &armnetwork.TroubleshootingProperties{
 			StorageID:   to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/st1"),
 			StoragePath: to.Ptr("https://st1.blob.core.windows.net/cn1"),
@@ -509,11 +509,11 @@ func ExampleWatchersClient_BeginGetTroubleshootingResult() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetTroubleshootingResult(ctx, "rg1", "nw1", armnetwork.QueryTroubleshootingParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginGetTroubleshootingResult(ctx, "rg1", "nw1", armnetwork.QueryTroubleshootingParameters{
 		TargetResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg2/providers/Microsoft.Compute/virtualMachines/vm1"),
 	}, nil)
 	if err != nil {
@@ -558,11 +558,11 @@ func ExampleWatchersClient_BeginSetFlowLogConfiguration() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSetFlowLogConfiguration(ctx, "rg1", "nw1", armnetwork.FlowLogInformation{
+	poller, err := clientFactory.NewWatchersClient().BeginSetFlowLogConfiguration(ctx, "rg1", "nw1", armnetwork.FlowLogInformation{
 		Properties: &armnetwork.FlowLogProperties{
 			Enabled:   to.Ptr(true),
 			StorageID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/st1"),
@@ -595,11 +595,11 @@ func ExampleWatchersClient_BeginGetFlowLogStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetFlowLogStatus(ctx, "rg1", "nw1", armnetwork.FlowLogStatusParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginGetFlowLogStatus(ctx, "rg1", "nw1", armnetwork.FlowLogStatusParameters{
 		TargetResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/networkSecurityGroups/nsg1"),
 	}, nil)
 	if err != nil {
@@ -628,11 +628,11 @@ func ExampleWatchersClient_BeginCheckConnectivity() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCheckConnectivity(ctx, "rg1", "nw1", armnetwork.ConnectivityParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginCheckConnectivity(ctx, "rg1", "nw1", armnetwork.ConnectivityParameters{
 		Destination: &armnetwork.ConnectivityDestination{
 			Address: to.Ptr("192.168.100.4"),
 			Port:    to.Ptr[int32](3389),
@@ -690,11 +690,11 @@ func ExampleWatchersClient_BeginGetAzureReachabilityReport() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetAzureReachabilityReport(ctx, "rg1", "nw1", armnetwork.AzureReachabilityReportParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginGetAzureReachabilityReport(ctx, "rg1", "nw1", armnetwork.AzureReachabilityReportParameters{
 		AzureLocations: []*string{
 			to.Ptr("West US")},
 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-09-10T00:00:00Z"); return t }()),
@@ -750,11 +750,11 @@ func ExampleWatchersClient_BeginListAvailableProviders() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListAvailableProviders(ctx, "rg1", "nw1", armnetwork.AvailableProvidersListParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginListAvailableProviders(ctx, "rg1", "nw1", armnetwork.AvailableProvidersListParameters{
 		AzureLocations: []*string{
 			to.Ptr("West US")},
 		City:    to.Ptr("seattle"),
@@ -799,11 +799,11 @@ func ExampleWatchersClient_BeginGetNetworkConfigurationDiagnostic() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewWatchersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginGetNetworkConfigurationDiagnostic(ctx, "rg1", "nw1", armnetwork.ConfigurationDiagnosticParameters{
+	poller, err := clientFactory.NewWatchersClient().BeginGetNetworkConfigurationDiagnostic(ctx, "rg1", "nw1", armnetwork.ConfigurationDiagnosticParameters{
 		Profiles: []*armnetwork.ConfigurationDiagnosticProfile{
 			{
 				Destination:     to.Ptr("12.11.12.14"),

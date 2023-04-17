@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"sort"
 	"strings"
 	"sync"
@@ -13,6 +14,7 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/test"
@@ -20,8 +22,10 @@ import (
 )
 
 func TestProducerClient_SAS(t *testing.T) {
+	getLogsFn := test.CaptureLogsForTest()
+
 	testParams := test.GetConnectionParamsForTest(t)
-	sasCS, err := sas.CreateConnectionStringWithSAS(testParams.ConnectionString, time.Hour)
+	sasCS, err := sas.CreateConnectionStringWithSASUsingExpiry(testParams.ConnectionString, time.Now().UTC().Add(time.Hour))
 	require.NoError(t, err)
 
 	// sanity check - we did actually generate a connection string with an embedded SharedAccessSignature
@@ -63,9 +67,111 @@ func TestProducerClient_SAS(t *testing.T) {
 	events, err := partClient.ReceiveEvents(context.Background(), 1, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, events)
+
+	logs := getLogsFn()
+	require.Contains(t, logs, backgroundRenewalDisabledMsg)
+}
+
+const backgroundRenewalDisabledMsg = "[azeh.Auth] Token does not have an expiration date, no background renewal needed."
+
+func TestClientsUnauthorizedCreds(t *testing.T) {
+	testParams := test.GetConnectionParamsForTest(t)
+
+	t.Run("ListenOnly with Producer", func(t *testing.T) {
+		pc, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionStringListenOnly, testParams.EventHubName, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, pc)
+
+		batch, err := pc.NewEventDataBatch(context.Background(), nil)
+
+		var ehErr *azeventhubs.Error
+		require.ErrorAs(t, err, &ehErr)
+		require.Equal(t, azeventhubs.ErrorCodeUnauthorizedAccess, ehErr.Code)
+		require.Contains(t, err.Error(), "Description: Unauthorized access. 'Send' claim(s) are required to perform this operation")
+		require.Nil(t, batch)
+	})
+
+	t.Run("SendOnly with Consumer", func(t *testing.T) {
+		client, err := azeventhubs.NewConsumerClientFromConnectionString(testParams.ConnectionStringSendOnly, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, client)
+
+		pc, err := client.NewPartitionClient("0", nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, pc)
+
+		events, err := pc.ReceiveEvents(context.Background(), 1, nil)
+
+		var ehErr *azeventhubs.Error
+		require.ErrorAs(t, err, &ehErr)
+		require.Equal(t, azeventhubs.ErrorCodeUnauthorizedAccess, ehErr.Code)
+		require.Contains(t, err.Error(), "Description: Unauthorized access. 'Listen' claim(s) are required to perform this operation")
+		require.Empty(t, events)
+	})
+
+	t.Run("Expired SAS", func(t *testing.T) {
+		expiredCS, err := sas.CreateConnectionStringWithSASUsingExpiry(testParams.ConnectionString, time.Now().Add(-10*time.Minute))
+		require.NoError(t, err)
+
+		cc, err := azeventhubs.NewConsumerClientFromConnectionString(expiredCS, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, cc)
+
+		pc, err := cc.NewPartitionClient("0", nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, pc)
+
+		events, err := pc.ReceiveEvents(context.Background(), 1, nil)
+
+		var ehErr *azeventhubs.Error
+		require.ErrorAs(t, err, &ehErr)
+		require.Equal(t, azeventhubs.ErrorCodeUnauthorizedAccess, ehErr.Code)
+		require.Contains(t, err.Error(), "rpc: failed, status code 401 and description: ExpiredToken: The token is expired. Expiration time:")
+		require.Empty(t, events)
+
+		prodClient, err := azeventhubs.NewProducerClientFromConnectionString(expiredCS, testParams.EventHubName, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, prodClient)
+
+		batch, err := prodClient.NewEventDataBatch(context.Background(), nil)
+		require.ErrorAs(t, err, &ehErr)
+		require.Equal(t, azeventhubs.ErrorCodeUnauthorizedAccess, ehErr.Code)
+		require.Contains(t, err.Error(), "rpc: failed, status code 401 and description: ExpiredToken: The token is expired. Expiration time:")
+		require.Nil(t, batch)
+	})
+
+	t.Run("invalid identity creds", func(t *testing.T) {
+		tenantID := os.Getenv("AZEVENTHUBS_TENANT_ID")
+		clientID := os.Getenv("AZEVENTHUBS_CLIENT_ID")
+
+		cliCred, err := azidentity.NewClientSecretCredential(tenantID, clientID, "bogus-client-secret", nil)
+		require.NoError(t, err)
+
+		prodClient, err := azeventhubs.NewProducerClient(testParams.EventHubNamespace, testParams.EventHubName, cliCred, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, prodClient)
+
+		batch, err := prodClient.NewEventDataBatch(context.Background(), nil)
+		var authFailedErr *azidentity.AuthenticationFailedError
+		require.ErrorAs(t, err, &authFailedErr)
+		require.Nil(t, batch)
+
+		cc, err := azeventhubs.NewConsumerClient(testParams.EventHubNamespace, testParams.EventHubName, azeventhubs.DefaultConsumerGroup, cliCred, nil)
+		require.NoError(t, err)
+		defer test.RequireClose(t, cc)
+
+		partClient, err := cc.NewPartitionClient("0", nil)
+		require.NoError(t, err)
+
+		events, err := partClient.ReceiveEvents(context.Background(), 1, nil)
+		require.ErrorAs(t, err, &authFailedErr)
+		require.Nil(t, batch)
+		require.Empty(t, events)
+	})
 }
 
 func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
+	getLogsFn := test.CaptureLogsForTest()
 	testParams := test.GetConnectionParamsForTest(t)
 
 	producer, err := azeventhubs.NewProducerClientFromConnectionString(testParams.ConnectionString, testParams.EventHubName, nil)
@@ -95,6 +201,21 @@ func TestProducerClient_GetHubAndPartitionProperties(t *testing.T) {
 	}
 
 	wg.Wait()
+	logs := getLogsFn()
+	checkForTokenRefresh(t, logs, testParams.EventHubName)
+}
+
+// checkForTokenRefresh just makes sure that background token refresh has been started
+// and that we haven't somehow fallen into the trap of marking all tokens are expired.
+func checkForTokenRefresh(t *testing.T, logs []string, eventHubName string) {
+	require.NotContains(t, logs, backgroundRenewalDisabledMsg)
+
+	for _, log := range logs {
+		if strings.HasPrefix(log, fmt.Sprintf("[azeh.Auth] (%s/$management) next refresh in ", eventHubName)) {
+			return
+		}
+	}
+	require.Failf(t, "No token negotiation log lines", "logs:%s", strings.Join(logs, "\n"))
 }
 
 func TestProducerClient_GetEventHubsProperties(t *testing.T) {

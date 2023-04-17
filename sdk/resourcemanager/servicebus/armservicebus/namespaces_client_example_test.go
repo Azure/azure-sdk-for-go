@@ -15,21 +15,21 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceList.json
 func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewNamespacesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -53,7 +53,6 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-08-23T02:40:17.27Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:ns-91f08e47-2b04-4943-b0cd-a5fb02b88f20"),
-		// 				MinimumTLSVersion: to.Ptr(armservicebus.TLSVersionOne2),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://NS-91f08e47-2b04-4943-b0cd-a5fb02b88f20.servicebus.windows-int.net:443/"),
 		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-02-11T07:15:30.78Z"); return t}()),
@@ -114,7 +113,6 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:01:00.42Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sbpremium"),
-		// 				PremiumMessagingPartitions: to.Ptr[int32](1),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://SBPremium.servicebus.windows-int.net:443/"),
 		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:01:00.42Z"); return t}()),
@@ -196,14 +194,13 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-13T00:02:39.997Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:prem-ns123"),
-		// 				PremiumMessagingPartitions: to.Ptr[int32](2),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://prem-ns123.servicebus.windows-int.net:443/"),
 		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-09-13T00:02:39.997Z"); return t}()),
 		// 			},
 		// 			SKU: &armservicebus.SBSKU{
 		// 				Name: to.Ptr(armservicebus.SKUNamePremium),
-		// 				Capacity: to.Ptr[int32](4),
+		// 				Capacity: to.Ptr[int32](1),
 		// 				Tier: to.Ptr(armservicebus.SKUTierPremium),
 		// 			},
 		// 		},
@@ -398,7 +395,6 @@ func ExampleNamespacesClient_NewListPager() {
 		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:16:30.87Z"); return t}()),
 		// 				DisableLocalAuth: to.Ptr(false),
 		// 				MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sbprem"),
-		// 				PremiumMessagingPartitions: to.Ptr[int32](2),
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				ServiceBusEndpoint: to.Ptr("https://SBPrem.servicebus.windows-int.net:443/"),
 		// 				UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2016-10-10T22:16:30.87Z"); return t}()),
@@ -955,18 +951,18 @@ func ExampleNamespacesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceListByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("ArunMonocle", nil)
+	pager := clientFactory.NewNamespacesClient().NewListByResourceGroupPager("ArunMonocle", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1005,30 +1001,26 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceCreate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "ArunMonocle", "sdk-Namespace2924", armservicebus.SBNamespace{
+	poller, err := clientFactory.NewNamespacesClient().BeginCreateOrUpdate(ctx, "ArunMonocle", "sdk-Namespace2924", armservicebus.SBNamespace{
 		Location: to.Ptr("South Central US"),
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
 		},
-		Properties: &armservicebus.SBNamespaceProperties{
-			PremiumMessagingPartitions: to.Ptr[int32](2),
-		},
 		SKU: &armservicebus.SBSKU{
-			Name:     to.Ptr(armservicebus.SKUNamePremium),
-			Capacity: to.Ptr[int32](4),
-			Tier:     to.Ptr(armservicebus.SKUTierPremium),
+			Name: to.Ptr(armservicebus.SKUNameStandard),
+			Tier: to.Ptr(armservicebus.SKUTierStandard),
 		},
 	}, nil)
 	if err != nil {
@@ -1053,32 +1045,29 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// 	Properties: &armservicebus.SBNamespaceProperties{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
 	// 		MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-2924"),
-	// 		MinimumTLSVersion: to.Ptr(armservicebus.TLSVersionOne2),
-	// 		PremiumMessagingPartitions: to.Ptr[int32](2),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		ServiceBusEndpoint: to.Ptr("https://sdk-Namespace-2924.servicebus.windows-int.net:443/"),
 	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
 	// 	},
 	// 	SKU: &armservicebus.SBSKU{
-	// 		Name: to.Ptr(armservicebus.SKUNamePremium),
-	// 		Capacity: to.Ptr[int32](4),
-	// 		Tier: to.Ptr(armservicebus.SKUTierPremium),
+	// 		Name: to.Ptr(armservicebus.SKUNameStandard),
+	// 		Tier: to.Ptr(armservicebus.SKUTierStandard),
 	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceDelete.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "ArunMonocle", "sdk-Namespace-3285", nil)
+	poller, err := clientFactory.NewNamespacesClient().BeginDelete(ctx, "ArunMonocle", "sdk-Namespace-3285", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1088,18 +1077,18 @@ func ExampleNamespacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceGet.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ArunMonocle", "sdk-Namespace-2924", nil)
+	res, err := clientFactory.NewNamespacesClient().Get(ctx, "ArunMonocle", "sdk-Namespace-2924", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1119,7 +1108,6 @@ func ExampleNamespacesClient_Get() {
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T22:26:36.76Z"); return t}()),
 	// 		DisableLocalAuth: to.Ptr(false),
 	// 		MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-2924"),
-	// 		MinimumTLSVersion: to.Ptr(armservicebus.TLSVersionOne2),
 	// 		PrivateEndpointConnections: []*armservicebus.PrivateEndpointConnection{
 	// 			{
 	// 				Name: to.Ptr("privateEndpointConnectionName"),
@@ -1147,18 +1135,18 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceUpdate.json
 func ExampleNamespacesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "ArunMonocle", "sdk-Namespace-3285", armservicebus.SBNamespaceUpdateParameters{
+	res, err := clientFactory.NewNamespacesClient().Update(ctx, "ArunMonocle", "sdk-Namespace-3285", armservicebus.SBNamespaceUpdateParameters{
 		Location: to.Ptr("South Central US"),
 		Tags: map[string]*string{
 			"tag3": to.Ptr("value3"),
@@ -1184,7 +1172,6 @@ func ExampleNamespacesClient_Update() {
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T23:07:58.17Z"); return t}()),
 	// 		DisableLocalAuth: to.Ptr(false),
 	// 		MetricID: to.Ptr("5f750a97-50d9-4e36-8081-c9ee4c0210d4:sdk-namespace-3285"),
-	// 		MinimumTLSVersion: to.Ptr(armservicebus.TLSVersionOne1),
 	// 		ProvisioningState: to.Ptr("Succeeded"),
 	// 		ServiceBusEndpoint: to.Ptr("https://sdk-Namespace-3285.servicebus.windows-int.net:443/"),
 	// 		UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-05-25T23:08:45.497Z"); return t}()),
@@ -1196,18 +1183,18 @@ func ExampleNamespacesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetCreate.json
 func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("Subscription", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", armservicebus.NetworkRuleSet{
+	res, err := clientFactory.NewNamespacesClient().CreateOrUpdateNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", armservicebus.NetworkRuleSet{
 		Properties: &armservicebus.NetworkRuleSetProperties{
 			DefaultAction: to.Ptr(armservicebus.DefaultActionDeny),
 			IPRules: []*armservicebus.NWRuleSetIPRules{
@@ -1309,18 +1296,18 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetGet.json
 func ExampleNamespacesClient_GetNetworkRuleSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("Subscription", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", nil)
+	res, err := clientFactory.NewNamespacesClient().GetNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1378,18 +1365,18 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/VirtualNetworkRule/SBNetworkRuleSetList.json
 func ExampleNamespacesClient_NewListNetworkRuleSetsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("Subscription", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListNetworkRuleSetsPager("ResourceGroup", "sdk-Namespace-6019", nil)
+	pager := clientFactory.NewNamespacesClient().NewListNetworkRuleSetsPager("ResourceGroup", "sdk-Namespace-6019", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1454,18 +1441,18 @@ func ExampleNamespacesClient_NewListNetworkRuleSetsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceAuthorizationRuleListAll.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceAuthorizationRuleListAll.json
 func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAuthorizationRulesPager("ArunMonocle", "sdk-Namespace-6914", nil)
+	pager := clientFactory.NewNamespacesClient().NewListAuthorizationRulesPager("ArunMonocle", "sdk-Namespace-6914", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1503,18 +1490,18 @@ func ExampleNamespacesClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceAuthorizationRuleCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceAuthorizationRuleCreate.json
 func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdateAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-6914", "sdk-AuthRules-1788", armservicebus.SBAuthorizationRule{
+	res, err := clientFactory.NewNamespacesClient().CreateOrUpdateAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-6914", "sdk-AuthRules-1788", armservicebus.SBAuthorizationRule{
 		Properties: &armservicebus.SBAuthorizationRuleProperties{
 			Rights: []*armservicebus.AccessRights{
 				to.Ptr(armservicebus.AccessRightsListen),
@@ -1539,35 +1526,35 @@ func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceAuthorizationRuleDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceAuthorizationRuleDelete.json
 func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.DeleteAuthorizationRule(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", nil)
+	_, err = clientFactory.NewNamespacesClient().DeleteAuthorizationRule(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceAuthorizationRuleGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceAuthorizationRuleGet.json
 func ExampleNamespacesClient_GetAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-6914", "sdk-AuthRules-1788", nil)
+	res, err := clientFactory.NewNamespacesClient().GetAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-6914", "sdk-AuthRules-1788", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1586,18 +1573,18 @@ func ExampleNamespacesClient_GetAuthorizationRule() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceAuthorizationRuleListKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceAuthorizationRuleListKey.json
 func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListKeys(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", nil)
+	res, err := clientFactory.NewNamespacesClient().ListKeys(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1613,18 +1600,18 @@ func ExampleNamespacesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceAuthorizationRuleRegenerateKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceAuthorizationRuleRegenerateKey.json
 func ExampleNamespacesClient_RegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.RegenerateKeys(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", armservicebus.RegenerateAccessKeyParameters{
+	res, err := clientFactory.NewNamespacesClient().RegenerateKeys(ctx, "ArunMonocle", "sdk-namespace-6914", "sdk-AuthRules-1788", armservicebus.RegenerateAccessKeyParameters{
 		KeyType: to.Ptr(armservicebus.KeyTypePrimaryKey),
 	}, nil)
 	if err != nil {
@@ -1642,18 +1629,18 @@ func ExampleNamespacesClient_RegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/NameSpaces/SBNameSpaceCheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/NameSpaces/SBNameSpaceCheckNameAvailability.json
 func ExampleNamespacesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewNamespacesClient("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, armservicebus.CheckNameAvailability{
+	res, err := clientFactory.NewNamespacesClient().CheckNameAvailability(ctx, armservicebus.CheckNameAvailability{
 		Name: to.Ptr("sdk-Namespace-2924"),
 	}, nil)
 	if err != nil {

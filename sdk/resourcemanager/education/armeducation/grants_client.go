@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,44 +25,36 @@ import (
 // GrantsClient contains the methods for the Grants group.
 // Don't use this type directly, use NewGrantsClient() instead.
 type GrantsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewGrantsClient creates a new instance of GrantsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGrantsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*GrantsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GrantsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GrantsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Get details for a specific grant linked to the provided billing account and billing profile.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// options - GrantsClientGetOptions contains the optional parameters for the GrantsClient.Get method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - options - GrantsClientGetOptions contains the optional parameters for the GrantsClient.Get method.
 func (client *GrantsClient) Get(ctx context.Context, billingAccountName string, billingProfileName string, options *GrantsClientGetOptions) (GrantsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, billingAccountName, billingProfileName, options)
 	if err != nil {
 		return GrantsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GrantsClientGetResponse{}, err
 	}
@@ -85,7 +75,7 @@ func (client *GrantsClient) getCreateRequest(ctx context.Context, billingAccount
 		return nil, errors.New("parameter billingProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,11 +99,11 @@ func (client *GrantsClient) getHandleResponse(resp *http.Response) (GrantsClient
 }
 
 // NewListPager - Get details for a specific grant linked to the provided billing account and billing profile.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// billingAccountName - Billing account name.
-// billingProfileName - Billing profile name.
-// options - GrantsClientListOptions contains the optional parameters for the GrantsClient.List method.
+//   - billingAccountName - Billing account name.
+//   - billingProfileName - Billing profile name.
+//   - options - GrantsClientListOptions contains the optional parameters for the GrantsClient.NewListPager method.
 func (client *GrantsClient) NewListPager(billingAccountName string, billingProfileName string, options *GrantsClientListOptions) *runtime.Pager[GrantsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GrantsClientListResponse]{
 		More: func(page GrantsClientListResponse) bool {
@@ -130,7 +120,7 @@ func (client *GrantsClient) NewListPager(billingAccountName string, billingProfi
 			if err != nil {
 				return GrantsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GrantsClientListResponse{}, err
 			}
@@ -153,7 +143,7 @@ func (client *GrantsClient) listCreateRequest(ctx context.Context, billingAccoun
 		return nil, errors.New("parameter billingProfileName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{billingProfileName}", url.PathEscape(billingProfileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -177,9 +167,9 @@ func (client *GrantsClient) listHandleResponse(resp *http.Response) (GrantsClien
 }
 
 // NewListAllPager - Get a list of grants that Microsoft has provided.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-12-01-preview
-// options - GrantsClientListAllOptions contains the optional parameters for the GrantsClient.ListAll method.
+//   - options - GrantsClientListAllOptions contains the optional parameters for the GrantsClient.NewListAllPager method.
 func (client *GrantsClient) NewListAllPager(options *GrantsClientListAllOptions) *runtime.Pager[GrantsClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GrantsClientListAllResponse]{
 		More: func(page GrantsClientListAllResponse) bool {
@@ -196,7 +186,7 @@ func (client *GrantsClient) NewListAllPager(options *GrantsClientListAllOptions)
 			if err != nil {
 				return GrantsClientListAllResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GrantsClientListAllResponse{}, err
 			}
@@ -211,7 +201,7 @@ func (client *GrantsClient) NewListAllPager(options *GrantsClientListAllOptions)
 // listAllCreateRequest creates the ListAll request.
 func (client *GrantsClient) listAllCreateRequest(ctx context.Context, options *GrantsClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Education/grants"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

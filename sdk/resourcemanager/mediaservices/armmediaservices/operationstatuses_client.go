@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,47 +24,39 @@ import (
 // OperationStatusesClient contains the methods for the MediaServicesOperationStatuses group.
 // Don't use this type directly, use NewOperationStatusesClient() instead.
 type OperationStatusesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewOperationStatusesClient creates a new instance of OperationStatusesClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationStatusesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationStatusesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".OperationStatusesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &OperationStatusesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get media service operation status.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-01
-// locationName - Location name.
-// operationID - Operation ID.
-// options - OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
+//   - locationName - Location name.
+//   - operationID - Operation ID.
+//   - options - OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
 func (client *OperationStatusesClient) Get(ctx context.Context, locationName string, operationID string, options *OperationStatusesClientGetOptions) (OperationStatusesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, operationID, options)
 	if err != nil {
 		return OperationStatusesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return OperationStatusesClientGetResponse{}, err
 	}
@@ -91,7 +81,7 @@ func (client *OperationStatusesClient) getCreateRequest(ctx context.Context, loc
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

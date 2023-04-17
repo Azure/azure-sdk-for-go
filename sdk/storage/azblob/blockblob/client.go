@@ -42,7 +42,7 @@ type Client base.CompositeClient[generated.BlobClient, generated.BlockBlobClient
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := runtime.NewBearerTokenPolicy(cred, []string{shared.TokenScope}, nil)
+	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
@@ -162,6 +162,19 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 	opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.format()
 
 	resp, err := bb.generated().Upload(ctx, count, body, opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
+	return resp, err
+}
+
+// UploadBlobFromURL - The Put Blob from URL operation creates a new Block Blob where the contents of the blob are read from
+// a given URL. Partial updates are not supported with Put Blob from URL; the content of an existing blob is overwritten
+// with the content of the new blob. To perform partial updates to a block blob’s contents using a source URL, use the Put
+// Block from URL API in conjunction with Put Block List.
+// For more information, see https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url
+func (bb *Client) UploadBlobFromURL(ctx context.Context, copySource string, options *UploadBlobFromURLOptions) (UploadBlobFromURLResponse, error) {
+	opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions := options.format()
+
+	resp, err := bb.generated().PutBlobFromURL(ctx, int64(0), copySource, opts, httpHeaders, leaseAccessConditions, cpkInfo, cpkSourceInfo, modifiedAccessConditions, sourceModifiedConditions)
+
 	return resp, err
 }
 
@@ -314,6 +327,12 @@ func (bb *Client) SetExpiry(ctx context.Context, expiryType ExpiryType, o *SetEx
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob-properties.
 func (bb *Client) GetProperties(ctx context.Context, o *blob.GetPropertiesOptions) (blob.GetPropertiesResponse, error) {
 	return bb.BlobClient().GetProperties(ctx, o)
+}
+
+// GetAccountInfo provides account level information
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-account-information?tabs=shared-access-signatures.
+func (bb *Client) GetAccountInfo(ctx context.Context, o *blob.GetAccountInfoOptions) (blob.GetAccountInfoResponse, error) {
+	return bb.BlobClient().GetAccountInfo(ctx, o)
 }
 
 // SetHTTPHeaders changes a blob's HTTP headers.

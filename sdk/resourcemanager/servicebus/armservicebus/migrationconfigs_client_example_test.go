@@ -15,21 +15,21 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/servicebus/armservicebus"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/Migrationconfigurations/SBMigrationconfigurationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Migrationconfigurations/SBMigrationconfigurationList.json
 func ExampleMigrationConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("ResourceGroup", "sdk-Namespace-9259", nil)
+	pager := clientFactory.NewMigrationConfigsClient().NewListPager("ResourceGroup", "sdk-Namespace-9259", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -57,18 +57,18 @@ func ExampleMigrationConfigsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/Migrationconfigurations/SBMigrationconfigurationCreateAndStartMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Migrationconfigurations/SBMigrationconfigurationCreateAndStartMigration.json
 func ExampleMigrationConfigsClient_BeginCreateAndStartMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateAndStartMigration(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, armservicebus.MigrationConfigProperties{
+	poller, err := clientFactory.NewMigrationConfigsClient().BeginCreateAndStartMigration(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, armservicebus.MigrationConfigProperties{
 		Properties: &armservicebus.MigrationConfigPropertiesProperties{
 			PostMigrationName: to.Ptr("sdk-PostMigration-5919"),
 			TargetNamespace:   to.Ptr("/subscriptions/SubscriptionId/resourceGroups/ResourceGroup/providers/Microsoft.ServiceBus/namespaces/sdk-Namespace-4028"),
@@ -97,35 +97,35 @@ func ExampleMigrationConfigsClient_BeginCreateAndStartMigration() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/Migrationconfigurations/SBMigrationconfigurationDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Migrationconfigurations/SBMigrationconfigurationDelete.json
 func ExampleMigrationConfigsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
+	_, err = clientFactory.NewMigrationConfigsClient().Delete(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/Migrationconfigurations/SBMigrationconfigurationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Migrationconfigurations/SBMigrationconfigurationGet.json
 func ExampleMigrationConfigsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
+	res, err := clientFactory.NewMigrationConfigsClient().Get(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -146,35 +146,35 @@ func ExampleMigrationConfigsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/Migrationconfigurations/SBMigrationconfigurationCompleteMigration.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Migrationconfigurations/SBMigrationconfigurationCompleteMigration.json
 func ExampleMigrationConfigsClient_CompleteMigration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.CompleteMigration(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
+	_, err = clientFactory.NewMigrationConfigsClient().CompleteMigration(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/5e24fa8e30bff0cb321494a0b550b1c1282a8a3c/specification/servicebus/resource-manager/Microsoft.ServiceBus/preview/2022-10-01-preview/examples/Migrationconfigurations/SBMigrationconfigurationRevert.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/servicebus/resource-manager/Microsoft.ServiceBus/stable/2021-11-01/examples/Migrationconfigurations/SBMigrationconfigurationRevert.json
 func ExampleMigrationConfigsClient_Revert() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armservicebus.NewMigrationConfigsClient("SubscriptionId", cred, nil)
+	clientFactory, err := armservicebus.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Revert(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
+	_, err = clientFactory.NewMigrationConfigsClient().Revert(ctx, "ResourceGroup", "sdk-Namespace-41", armservicebus.MigrationConfigurationNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

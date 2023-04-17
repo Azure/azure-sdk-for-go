@@ -1,8 +1,15 @@
 # Release History
 
-## 2.2.0 (2023-03-21)
+## 2.2.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 2.2.0 (2023-03-24)
 ### Features Added
 
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 - New value `ApplicationGatewayCustomErrorStatusCodeHTTPStatus400`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus404`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus405`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus408`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus499`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus500`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus503`, `ApplicationGatewayCustomErrorStatusCodeHTTPStatus504` added to enum type `ApplicationGatewayCustomErrorStatusCode`
 - New enum type `WebApplicationFirewallState` with values `WebApplicationFirewallStateDisabled`, `WebApplicationFirewallStateEnabled`
 - New field `AuthorizationStatus` in struct `ExpressRouteCircuitPropertiesFormat`

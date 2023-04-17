@@ -119,6 +119,8 @@ func TestNewClientWithWebsockets(t *testing.T) {
 	})
 	require.NoError(t, err)
 
+	defer test.RequireClose(t, client)
+
 	sender, err := client.NewSender(queue, nil)
 	require.NoError(t, err)
 
@@ -126,16 +128,6 @@ func TestNewClientWithWebsockets(t *testing.T) {
 		Body: []byte("hello world"),
 	}, nil)
 	require.NoError(t, err)
-
-	// NOTE: This error is coming from the `nhooyr.io/websocket` package. There's an
-	// open discussion here:
-	//   https://github.com/nhooyr/websocket/discussions/380
-	//
-	// The frame it's waiting for (at this point) is the other half of the websocket CLOSE handshake.
-	// I wireshark'd this and confirmed that the frame does arrive, it's just not read by the local
-	// package. In this context, since the connection has already shut down, this is harmless.
-	var expectedErr = "failed to close WebSocket: failed to read frame header: EOF"
-	require.EqualError(t, client.Close(context.Background()), expectedErr)
 }
 
 func TestNewClientUsingSharedAccessSignature(t *testing.T) {
@@ -172,8 +164,10 @@ func TestNewClientUsingSharedAccessSignature(t *testing.T) {
 	require.EqualValues(t, "hello world", string(messages[0].Body))
 
 	logs := getLogsFn()
-	require.Contains(t, logs, "[azsb.Auth] Token does not have an expiration date, no background renewal needed.")
+	require.Contains(t, logs, backgroundRenewalDisabledMsg)
 }
+
+const backgroundRenewalDisabledMsg = "[azsb.Auth] Token does not have an expiration date, no background renewal needed."
 
 const fastNotFoundDuration = 10 * time.Second
 

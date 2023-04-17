@@ -22,8 +22,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,49 +32,41 @@ import (
 // InventoryItemsClient contains the methods for the InventoryItems group.
 // Don't use this type directly, use NewInventoryItemsClient() instead.
 type InventoryItemsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewInventoryItemsClient creates a new instance of InventoryItemsClient with the specified values.
-// subscriptionID - The Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewInventoryItemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InventoryItemsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".InventoryItemsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &InventoryItemsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Create Or Update InventoryItem.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// vcenterName - Name of the vCenter.
-// inventoryItemName - Name of the inventoryItem.
-// body - Request payload.
-// options - InventoryItemsClientCreateOptions contains the optional parameters for the InventoryItemsClient.Create method.
+//   - resourceGroupName - The Resource Group Name.
+//   - vcenterName - Name of the vCenter.
+//   - inventoryItemName - Name of the inventoryItem.
+//   - body - Request payload.
+//   - options - InventoryItemsClientCreateOptions contains the optional parameters for the InventoryItemsClient.Create method.
 func (client *InventoryItemsClient) Create(ctx context.Context, resourceGroupName string, vcenterName string, inventoryItemName string, body InventoryItem, options *InventoryItemsClientCreateOptions) (InventoryItemsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, vcenterName, inventoryItemName, body, options)
 	if err != nil {
 		return InventoryItemsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return InventoryItemsClientCreateResponse{}, err
 	}
@@ -105,7 +95,7 @@ func (client *InventoryItemsClient) createCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter inventoryItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{inventoryItemName}", url.PathEscape(inventoryItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,17 +117,18 @@ func (client *InventoryItemsClient) createHandleResponse(resp *http.Response) (I
 
 // Delete - Implements inventoryItem DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// vcenterName - Name of the vCenter.
-// inventoryItemName - Name of the inventoryItem.
-// options - InventoryItemsClientDeleteOptions contains the optional parameters for the InventoryItemsClient.Delete method.
+//   - resourceGroupName - The Resource Group Name.
+//   - vcenterName - Name of the vCenter.
+//   - inventoryItemName - Name of the inventoryItem.
+//   - options - InventoryItemsClientDeleteOptions contains the optional parameters for the InventoryItemsClient.Delete method.
 func (client *InventoryItemsClient) Delete(ctx context.Context, resourceGroupName string, vcenterName string, inventoryItemName string, options *InventoryItemsClientDeleteOptions) (InventoryItemsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, vcenterName, inventoryItemName, options)
 	if err != nil {
 		return InventoryItemsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return InventoryItemsClientDeleteResponse{}, err
 	}
@@ -166,7 +157,7 @@ func (client *InventoryItemsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter inventoryItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{inventoryItemName}", url.PathEscape(inventoryItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,17 +170,18 @@ func (client *InventoryItemsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Implements InventoryItem GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// vcenterName - Name of the vCenter.
-// inventoryItemName - Name of the inventoryItem.
-// options - InventoryItemsClientGetOptions contains the optional parameters for the InventoryItemsClient.Get method.
+//   - resourceGroupName - The Resource Group Name.
+//   - vcenterName - Name of the vCenter.
+//   - inventoryItemName - Name of the inventoryItem.
+//   - options - InventoryItemsClientGetOptions contains the optional parameters for the InventoryItemsClient.Get method.
 func (client *InventoryItemsClient) Get(ctx context.Context, resourceGroupName string, vcenterName string, inventoryItemName string, options *InventoryItemsClientGetOptions) (InventoryItemsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vcenterName, inventoryItemName, options)
 	if err != nil {
 		return InventoryItemsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return InventoryItemsClientGetResponse{}, err
 	}
@@ -218,7 +210,7 @@ func (client *InventoryItemsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter inventoryItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{inventoryItemName}", url.PathEscape(inventoryItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -239,12 +231,12 @@ func (client *InventoryItemsClient) getHandleResponse(resp *http.Response) (Inve
 }
 
 // NewListByVCenterPager - Returns the list of inventoryItems of the given vCenter.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// vcenterName - Name of the vCenter.
-// options - InventoryItemsClientListByVCenterOptions contains the optional parameters for the InventoryItemsClient.ListByVCenter
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - vcenterName - Name of the vCenter.
+//   - options - InventoryItemsClientListByVCenterOptions contains the optional parameters for the InventoryItemsClient.NewListByVCenterPager
+//     method.
 func (client *InventoryItemsClient) NewListByVCenterPager(resourceGroupName string, vcenterName string, options *InventoryItemsClientListByVCenterOptions) *runtime.Pager[InventoryItemsClientListByVCenterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InventoryItemsClientListByVCenterResponse]{
 		More: func(page InventoryItemsClientListByVCenterResponse) bool {
@@ -261,7 +253,7 @@ func (client *InventoryItemsClient) NewListByVCenterPager(resourceGroupName stri
 			if err != nil {
 				return InventoryItemsClientListByVCenterResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return InventoryItemsClientListByVCenterResponse{}, err
 			}
@@ -288,7 +280,7 @@ func (client *InventoryItemsClient) listByVCenterCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter vcenterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{vcenterName}", url.PathEscape(vcenterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

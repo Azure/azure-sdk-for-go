@@ -25,11 +25,11 @@ func ExampleApplicationGatewayPrivateEndpointConnectionsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewayPrivateEndpointConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "appgw", "connection1", nil)
+	poller, err := clientFactory.NewApplicationGatewayPrivateEndpointConnectionsClient().BeginDelete(ctx, "rg1", "appgw", "connection1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleApplicationGatewayPrivateEndpointConnectionsClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewayPrivateEndpointConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "rg1", "appgw", "connection1", armnetwork.ApplicationGatewayPrivateEndpointConnection{
+	poller, err := clientFactory.NewApplicationGatewayPrivateEndpointConnectionsClient().BeginUpdate(ctx, "rg1", "appgw", "connection1", armnetwork.ApplicationGatewayPrivateEndpointConnection{
 		Name: to.Ptr("connection1"),
 		Properties: &armnetwork.ApplicationGatewayPrivateEndpointConnectionProperties{
 			PrivateEndpoint: &armnetwork.PrivateEndpoint{
@@ -94,11 +94,11 @@ func ExampleApplicationGatewayPrivateEndpointConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewayPrivateEndpointConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "appgw", "connection1", nil)
+	res, err := clientFactory.NewApplicationGatewayPrivateEndpointConnectionsClient().Get(ctx, "rg1", "appgw", "connection1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -130,11 +130,11 @@ func ExampleApplicationGatewayPrivateEndpointConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewayPrivateEndpointConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "appgw", nil)
+	pager := clientFactory.NewApplicationGatewayPrivateEndpointConnectionsClient().NewListPager("rg1", "appgw", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

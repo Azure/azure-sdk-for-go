@@ -31,7 +31,7 @@ type StubAMQPReceiver struct {
 	stubModifyMessageCalled         int
 	stubLinkName                    func(inner amqpwrap.AMQPReceiverCloser) string
 	stubLinkNameCalled              int
-	stubLinkSourceFilterValue       func(inner amqpwrap.AMQPReceiverCloser, name string) interface{}
+	stubLinkSourceFilterValue       func(inner amqpwrap.AMQPReceiverCloser, name string) any
 	stubLinkSourceFilterValueCalled int
 	inner                           amqpwrap.AMQPReceiverCloser
 }
@@ -57,7 +57,7 @@ func (r *StubAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
 	if r.stubReceive != nil {
 		return r.stubReceive(r.inner, ctx)
 	}
-	return r.inner.Receive(ctx)
+	return r.inner.Receive(ctx, nil)
 }
 
 func (r *StubAMQPReceiver) Prefetched() *amqp.Message {
@@ -109,7 +109,7 @@ func (r *StubAMQPReceiver) LinkName() string {
 	return r.inner.LinkName()
 }
 
-func (r *StubAMQPReceiver) LinkSourceFilterValue(name string) interface{} {
+func (r *StubAMQPReceiver) LinkSourceFilterValue(name string) any {
 	r.stubLinkSourceFilterValueCalled++
 	if r.stubLinkSourceFilterValue != nil {
 		return r.stubLinkSourceFilterValue(r.inner, name)

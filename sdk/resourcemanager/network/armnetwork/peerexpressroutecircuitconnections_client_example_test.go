@@ -24,11 +24,11 @@ func ExamplePeerExpressRouteCircuitConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPeerExpressRouteCircuitConnectionsClient("subid1", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ExpressRouteARMCircuitA", "AzurePrivatePeering", "60aee347-e889-4a42-8c1b-0aae8b1e4013", nil)
+	res, err := clientFactory.NewPeerExpressRouteCircuitConnectionsClient().Get(ctx, "rg1", "ExpressRouteARMCircuitA", "AzurePrivatePeering", "60aee347-e889-4a42-8c1b-0aae8b1e4013", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -62,11 +62,11 @@ func ExamplePeerExpressRouteCircuitConnectionsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPeerExpressRouteCircuitConnectionsClient("subid1", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "ExpressRouteARMCircuitA", "AzurePrivatePeering", nil)
+	pager := clientFactory.NewPeerExpressRouteCircuitConnectionsClient().NewListPager("rg1", "ExpressRouteARMCircuitA", "AzurePrivatePeering", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

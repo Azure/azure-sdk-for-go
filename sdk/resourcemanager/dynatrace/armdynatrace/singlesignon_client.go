@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // SingleSignOnClient contains the methods for the SingleSignOn group.
 // Don't use this type directly, use NewSingleSignOnClient() instead.
 type SingleSignOnClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSingleSignOnClient creates a new instance of SingleSignOnClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSingleSignOnClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SingleSignOnClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SingleSignOnClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SingleSignOnClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// configurationName - Single Sign On Configuration Name
-// resource - Resource create parameters.
-// options - SingleSignOnClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - configurationName - Single Sign On Configuration Name
+//   - resource - Resource create parameters.
+//   - options - SingleSignOnClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnClient.BeginCreateOrUpdate
+//     method.
 func (client *SingleSignOnClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, resource SingleSignOnResource, options *SingleSignOnClientBeginCreateOrUpdateOptions) (*runtime.Poller[SingleSignOnClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, monitorName, configurationName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SingleSignOnClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SingleSignOnClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SingleSignOnClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SingleSignOnClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
 func (client *SingleSignOnClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, resource SingleSignOnResource, options *SingleSignOnClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, monitorName, configurationName, resource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +106,7 @@ func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,17 +119,18 @@ func (client *SingleSignOnClient) createOrUpdateCreateRequest(ctx context.Contex
 
 // Get - Get a DynatraceSingleSignOnResource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// configurationName - Single Sign On Configuration Name
-// options - SingleSignOnClientGetOptions contains the optional parameters for the SingleSignOnClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - configurationName - Single Sign On Configuration Name
+//   - options - SingleSignOnClientGetOptions contains the optional parameters for the SingleSignOnClient.Get method.
 func (client *SingleSignOnClient) Get(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, options *SingleSignOnClientGetOptions) (SingleSignOnClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, monitorName, configurationName, options)
 	if err != nil {
 		return SingleSignOnClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SingleSignOnClientGetResponse{}, err
 	}
@@ -167,7 +159,7 @@ func (client *SingleSignOnClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter configurationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{configurationName}", url.PathEscape(configurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,10 +180,11 @@ func (client *SingleSignOnClient) getHandleResponse(resp *http.Response) (Single
 }
 
 // NewListPager - List all DynatraceSingleSignOnResource by monitorName
+//
 // Generated from API version 2021-09-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// monitorName - Monitor resource name
-// options - SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - options - SingleSignOnClientListOptions contains the optional parameters for the SingleSignOnClient.NewListPager method.
 func (client *SingleSignOnClient) NewListPager(resourceGroupName string, monitorName string, options *SingleSignOnClientListOptions) *runtime.Pager[SingleSignOnClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SingleSignOnClientListResponse]{
 		More: func(page SingleSignOnClientListResponse) bool {
@@ -208,7 +201,7 @@ func (client *SingleSignOnClient) NewListPager(resourceGroupName string, monitor
 			if err != nil {
 				return SingleSignOnClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SingleSignOnClientListResponse{}, err
 			}
@@ -235,7 +228,7 @@ func (client *SingleSignOnClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

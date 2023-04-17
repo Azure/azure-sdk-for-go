@@ -38,7 +38,7 @@ type FullBackupOperation struct {
 	EndTime *time.Time `json:"endTime,omitempty"`
 
 	// Error encountered, if any, during the full backup operation.
-	Error *ServerError `json:"error,omitempty"`
+	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Identifier for the full backup operation.
 	JobID *string `json:"jobId,omitempty"`
@@ -59,7 +59,7 @@ type RestoreOperation struct {
 	EndTime *time.Time `json:"endTime,omitempty"`
 
 	// Error encountered, if any, during the restore operation.
-	Error *ServerError `json:"error,omitempty"`
+	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Identifier for the restore operation.
 	JobID *string `json:"jobId,omitempty"`
@@ -98,7 +98,7 @@ type SelectiveKeyRestoreOperation struct {
 	EndTime *time.Time `json:"endTime,omitempty"`
 
 	// Error encountered, if any, during the selective key restore operation.
-	Error *ServerError `json:"error,omitempty"`
+	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Identifier for the selective key restore operation.
 	JobID *string `json:"jobId,omitempty"`

@@ -25,11 +25,11 @@ func ExampleSQLPoolRestorePointsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolRestorePointsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("Default-SQL-SouthEastAsia", "testserver", "testDatabase", nil)
+	pager := clientFactory.NewSQLPoolRestorePointsClient().NewListPager("Default-SQL-SouthEastAsia", "testserver", "testDatabase", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -85,11 +85,11 @@ func ExampleSQLPoolRestorePointsClient_BeginCreate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolRestorePointsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "Default-SQL-SouthEastAsia", "testserver", "testDatabase", armsynapse.CreateSQLPoolRestorePointDefinition{
+	poller, err := clientFactory.NewSQLPoolRestorePointsClient().BeginCreate(ctx, "Default-SQL-SouthEastAsia", "testserver", "testDatabase", armsynapse.CreateSQLPoolRestorePointDefinition{
 		RestorePointLabel: to.Ptr("mylabel"),
 	}, nil)
 	if err != nil {
@@ -122,11 +122,11 @@ func ExampleSQLPoolRestorePointsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolRestorePointsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "Default-SQL-SouthEastAsia", "testws", "testpool", "131546477590000000", nil)
+	res, err := clientFactory.NewSQLPoolRestorePointsClient().Get(ctx, "Default-SQL-SouthEastAsia", "testws", "testpool", "131546477590000000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -153,11 +153,11 @@ func ExampleSQLPoolRestorePointsClient_Delete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewSQLPoolRestorePointsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "Default-SQL-SouthEastAsia", "testws", "testpool", "131546477590000000", nil)
+	_, err = clientFactory.NewSQLPoolRestorePointsClient().Delete(ctx, "Default-SQL-SouthEastAsia", "testws", "testpool", "131546477590000000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

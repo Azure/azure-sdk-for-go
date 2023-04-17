@@ -1,12 +1,15 @@
 # Release History
 
-## 1.1.0-beta.1 (2022-05-19)
+## 1.1.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 1.1.0 (2023-04-06)
 ### Features Added
 
-- New struct `FhirServiceImportConfiguration`
-- New struct `ServiceImportConfigurationInfo`
-- New field `ImportConfiguration` in struct `ServicesProperties`
-- New field `ImportConfiguration` in struct `FhirServiceProperties`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 1.0.0 (2022-05-18)

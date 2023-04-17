@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SQLPoolSecurityAlertPoliciesClient contains the methods for the SQLPoolSecurityAlertPolicies group.
 // Don't use this type directly, use NewSQLPoolSecurityAlertPoliciesClient() instead.
 type SQLPoolSecurityAlertPoliciesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSQLPoolSecurityAlertPoliciesClient creates a new instance of SQLPoolSecurityAlertPoliciesClient with the specified values.
@@ -36,21 +33,13 @@ type SQLPoolSecurityAlertPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSQLPoolSecurityAlertPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolSecurityAlertPoliciesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SQLPoolSecurityAlertPoliciesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SQLPoolSecurityAlertPoliciesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -104,7 +93,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) createOrUpdateCreateRequest(ct
 		return nil, errors.New("parameter securityAlertPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityAlertPolicyName}", url.PathEscape(string(securityAlertPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -139,7 +128,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) Get(ctx context.Context, resou
 	if err != nil {
 		return SQLPoolSecurityAlertPoliciesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolSecurityAlertPoliciesClientGetResponse{}, err
 	}
@@ -172,7 +161,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) getCreateRequest(ctx context.C
 		return nil, errors.New("parameter securityAlertPolicyName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{securityAlertPolicyName}", url.PathEscape(string(securityAlertPolicyName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -216,7 +205,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) NewListPager(resourceGroupName
 			if err != nil {
 				return SQLPoolSecurityAlertPoliciesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SQLPoolSecurityAlertPoliciesClientListResponse{}, err
 			}
@@ -247,7 +236,7 @@ func (client *SQLPoolSecurityAlertPoliciesClient) listCreateRequest(ctx context.
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

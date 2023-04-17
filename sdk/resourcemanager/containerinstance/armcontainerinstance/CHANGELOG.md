@@ -1,13 +1,9 @@
 # Release History
 
-## 2.2.0-beta.1 (2023-01-27)
+## 2.2.0 (2023-04-07)
 ### Features Added
 
-- New value `ContainerGroupSKUConfidential` added to type alias `ContainerGroupSKU`
-- New type alias `ContainerGroupPriority` with values `ContainerGroupPriorityRegular`, `ContainerGroupPrioritySpot`
-- New struct `ConfidentialComputeProperties`
-- New field `ConfidentialComputeProperties` in struct `ContainerGroupPropertiesProperties`
-- New field `Priority` in struct `ContainerGroupPropertiesProperties`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
 
 
 ## 2.1.0 (2022-11-08)

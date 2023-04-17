@@ -1,5 +1,33 @@
 # Release History
 
+## 1.3.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 1.3.0 (2023-03-31)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `ImmutabilityState` with values `ImmutabilityStateDisabled`, `ImmutabilityStateLocked`, `ImmutabilityStateUnlocked`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
+- New enum type `VaultSubResourceType` with values `VaultSubResourceTypeAzureBackup`, `VaultSubResourceTypeAzureBackupSecondary`, `VaultSubResourceTypeAzureSiteRecovery`
+- New function `*Client.Capabilities(context.Context, string, ResourceCapabilities, *ClientCapabilitiesOptions) (ClientCapabilitiesResponse, error)`
+- New struct `CapabilitiesProperties`
+- New struct `CapabilitiesResponse`
+- New struct `CapabilitiesResponseProperties`
+- New struct `DNSZone`
+- New struct `DNSZoneResponse`
+- New struct `ImmutabilitySettings`
+- New struct `ResourceCapabilities`
+- New struct `ResourceCapabilitiesBase`
+- New struct `SecuritySettings`
+- New field `GroupIDs` in struct `PrivateEndpointConnection`
+- New field `PublicNetworkAccess` in struct `VaultProperties`
+- New field `SecuritySettings` in struct `VaultProperties`
+
+
 ## 1.2.0 (2023-02-24)
 ### Features Added
 

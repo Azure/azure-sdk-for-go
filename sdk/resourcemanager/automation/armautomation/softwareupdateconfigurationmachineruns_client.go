@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // SoftwareUpdateConfigurationMachineRunsClient contains the methods for the SoftwareUpdateConfigurationMachineRuns group.
 // Don't use this type directly, use NewSoftwareUpdateConfigurationMachineRunsClient() instead.
 type SoftwareUpdateConfigurationMachineRunsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSoftwareUpdateConfigurationMachineRunsClient creates a new instance of SoftwareUpdateConfigurationMachineRunsClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSoftwareUpdateConfigurationMachineRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SoftwareUpdateConfigurationMachineRunsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SoftwareUpdateConfigurationMachineRunsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SoftwareUpdateConfigurationMachineRunsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetByID - Get a single software update configuration machine run by Id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-06-01
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// softwareUpdateConfigurationMachineRunID - The Id of the software update configuration machine run.
-// options - SoftwareUpdateConfigurationMachineRunsClientGetByIDOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRunsClient.GetByID
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - softwareUpdateConfigurationMachineRunID - The Id of the software update configuration machine run.
+//   - options - SoftwareUpdateConfigurationMachineRunsClientGetByIDOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRunsClient.GetByID
+//     method.
 func (client *SoftwareUpdateConfigurationMachineRunsClient) GetByID(ctx context.Context, resourceGroupName string, automationAccountName string, softwareUpdateConfigurationMachineRunID string, options *SoftwareUpdateConfigurationMachineRunsClientGetByIDOptions) (SoftwareUpdateConfigurationMachineRunsClientGetByIDResponse, error) {
 	req, err := client.getByIDCreateRequest(ctx, resourceGroupName, automationAccountName, softwareUpdateConfigurationMachineRunID, options)
 	if err != nil {
 		return SoftwareUpdateConfigurationMachineRunsClientGetByIDResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SoftwareUpdateConfigurationMachineRunsClientGetByIDResponse{}, err
 	}
@@ -95,7 +85,7 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDCreateRequest
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
 	urlPath = strings.ReplaceAll(urlPath, "{softwareUpdateConfigurationMachineRunId}", url.PathEscape(softwareUpdateConfigurationMachineRunID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) getByIDHandleRespons
 
 // List - Return list of software update configuration machine runs
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-06-01
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - SoftwareUpdateConfigurationMachineRunsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRunsClient.List
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - SoftwareUpdateConfigurationMachineRunsClientListOptions contains the optional parameters for the SoftwareUpdateConfigurationMachineRunsClient.List
+//     method.
 func (client *SoftwareUpdateConfigurationMachineRunsClient) List(ctx context.Context, resourceGroupName string, automationAccountName string, options *SoftwareUpdateConfigurationMachineRunsClientListOptions) (SoftwareUpdateConfigurationMachineRunsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, automationAccountName, options)
 	if err != nil {
 		return SoftwareUpdateConfigurationMachineRunsClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SoftwareUpdateConfigurationMachineRunsClientListResponse{}, err
 	}
@@ -155,7 +146,7 @@ func (client *SoftwareUpdateConfigurationMachineRunsClient) listCreateRequest(ct
 		return nil, errors.New("parameter automationAccountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{automationAccountName}", url.PathEscape(automationAccountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

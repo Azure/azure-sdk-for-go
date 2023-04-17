@@ -25,11 +25,11 @@ func ExampleServiceEndpointPoliciesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "serviceEndpointPolicy1", nil)
+	poller, err := clientFactory.NewServiceEndpointPoliciesClient().BeginDelete(ctx, "rg1", "serviceEndpointPolicy1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleServiceEndpointPoliciesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testServiceEndpointPolicy", &armnetwork.ServiceEndpointPoliciesClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewServiceEndpointPoliciesClient().Get(ctx, "rg1", "testServiceEndpointPolicy", &armnetwork.ServiceEndpointPoliciesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -90,11 +90,11 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testPolicy", armnetwork.ServiceEndpointPolicy{
+	poller, err := clientFactory.NewServiceEndpointPoliciesClient().BeginCreateOrUpdate(ctx, "rg1", "testPolicy", armnetwork.ServiceEndpointPolicy{
 		Location: to.Ptr("westus"),
 	}, nil)
 	if err != nil {
@@ -130,11 +130,11 @@ func ExampleServiceEndpointPoliciesClient_BeginCreateOrUpdate_createServiceEndpo
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testPolicy", armnetwork.ServiceEndpointPolicy{
+	poller, err := clientFactory.NewServiceEndpointPoliciesClient().BeginCreateOrUpdate(ctx, "rg1", "testPolicy", armnetwork.ServiceEndpointPolicy{
 		Location: to.Ptr("westus"),
 		Properties: &armnetwork.ServiceEndpointPolicyPropertiesFormat{
 			ServiceEndpointPolicyDefinitions: []*armnetwork.ServiceEndpointPolicyDefinition{
@@ -194,11 +194,11 @@ func ExampleServiceEndpointPoliciesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "testServiceEndpointPolicy", armnetwork.TagsObject{
+	res, err := clientFactory.NewServiceEndpointPoliciesClient().UpdateTags(ctx, "rg1", "testServiceEndpointPolicy", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -247,11 +247,11 @@ func ExampleServiceEndpointPoliciesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewServiceEndpointPoliciesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -323,11 +323,11 @@ func ExampleServiceEndpointPoliciesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewServiceEndpointPoliciesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewServiceEndpointPoliciesClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

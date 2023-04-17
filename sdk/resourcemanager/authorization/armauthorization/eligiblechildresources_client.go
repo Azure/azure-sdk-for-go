@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -24,38 +22,29 @@ import (
 // EligibleChildResourcesClient contains the methods for the EligibleChildResources group.
 // Don't use this type directly, use NewEligibleChildResourcesClient() instead.
 type EligibleChildResourcesClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewEligibleChildResourcesClient creates a new instance of EligibleChildResourcesClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewEligibleChildResourcesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*EligibleChildResourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".EligibleChildResourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &EligibleChildResourcesClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // NewGetPager - Get the child resources of a resource on which user has eligible access
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role management policy.
-// options - EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.Get
-// method.
+//   - scope - The scope of the role management policy.
+//   - options - EligibleChildResourcesClientGetOptions contains the optional parameters for the EligibleChildResourcesClient.NewGetPager
+//     method.
 func (client *EligibleChildResourcesClient) NewGetPager(scope string, options *EligibleChildResourcesClientGetOptions) *runtime.Pager[EligibleChildResourcesClientGetResponse] {
 	return runtime.NewPager(runtime.PagingHandler[EligibleChildResourcesClientGetResponse]{
 		More: func(page EligibleChildResourcesClientGetResponse) bool {
@@ -72,7 +61,7 @@ func (client *EligibleChildResourcesClient) NewGetPager(scope string, options *E
 			if err != nil {
 				return EligibleChildResourcesClientGetResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return EligibleChildResourcesClientGetResponse{}, err
 			}
@@ -88,7 +77,7 @@ func (client *EligibleChildResourcesClient) NewGetPager(scope string, options *E
 func (client *EligibleChildResourcesClient) getCreateRequest(ctx context.Context, scope string, options *EligibleChildResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/eligibleChildResources"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

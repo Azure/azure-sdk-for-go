@@ -25,11 +25,11 @@ func ExampleClusterPrincipalAssignmentsClient_CheckNameAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClusterPrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.ClusterPrincipalAssignmentCheckNameRequest{
+	res, err := clientFactory.NewClusterPrincipalAssignmentsClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.ClusterPrincipalAssignmentCheckNameRequest{
 		Name: to.Ptr("kustoprincipal1"),
 		Type: to.Ptr("Microsoft.Kusto/clusters/principalAssignments"),
 	}, nil)
@@ -53,11 +53,11 @@ func ExampleClusterPrincipalAssignmentsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClusterPrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "kustorptest", "kustoCluster", "kustoprincipal1", nil)
+	res, err := clientFactory.NewClusterPrincipalAssignmentsClient().Get(ctx, "kustorptest", "kustoCluster", "kustoprincipal1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,11 +88,11 @@ func ExampleClusterPrincipalAssignmentsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClusterPrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "kustoprincipal1", armkusto.ClusterPrincipalAssignment{
+	poller, err := clientFactory.NewClusterPrincipalAssignmentsClient().BeginCreateOrUpdate(ctx, "kustorptest", "kustoCluster", "kustoprincipal1", armkusto.ClusterPrincipalAssignment{
 		Properties: &armkusto.ClusterPrincipalProperties{
 			PrincipalID:   to.Ptr("87654321-1234-1234-1234-123456789123"),
 			PrincipalType: to.Ptr(armkusto.PrincipalTypeApp),
@@ -134,11 +134,11 @@ func ExampleClusterPrincipalAssignmentsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClusterPrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "kustorptest", "kustoCluster", "kustoprincipal1", nil)
+	poller, err := clientFactory.NewClusterPrincipalAssignmentsClient().BeginDelete(ctx, "kustorptest", "kustoCluster", "kustoprincipal1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -155,11 +155,11 @@ func ExampleClusterPrincipalAssignmentsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armkusto.NewClusterPrincipalAssignmentsClient("12345678-1234-1234-1234-123456789098", cred, nil)
+	clientFactory, err := armkusto.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("kustorptest", "kustoCluster", nil)
+	pager := clientFactory.NewClusterPrincipalAssignmentsClient().NewListPager("kustorptest", "kustoCluster", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

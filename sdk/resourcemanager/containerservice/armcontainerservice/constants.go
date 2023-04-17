@@ -11,7 +11,7 @@ package armcontainerservice
 
 const (
 	moduleName    = "armcontainerservice"
-	moduleVersion = "v2.4.0-beta.1"
+	moduleVersion = "v2.5.0-beta.1"
 )
 
 // AgentPoolMode - A cluster must have at least one 'System' Agent Pool at all times. For additional information on agent
@@ -105,6 +105,22 @@ func PossibleConnectionStatusValues() []ConnectionStatus {
 		ConnectionStatusDisconnected,
 		ConnectionStatusPending,
 		ConnectionStatusRejected,
+	}
+}
+
+// ControlPlaneUpgradeOverride - The list of control plane upgrade override settings.
+type ControlPlaneUpgradeOverride string
+
+const (
+	// ControlPlaneUpgradeOverrideIgnoreKubernetesDeprecations - Upgrade the cluster control plane version without checking for
+	// recent Kubernetes deprecations usage.
+	ControlPlaneUpgradeOverrideIgnoreKubernetesDeprecations ControlPlaneUpgradeOverride = "IgnoreKubernetesDeprecations"
+)
+
+// PossibleControlPlaneUpgradeOverrideValues returns the possible values for the ControlPlaneUpgradeOverride const type.
+func PossibleControlPlaneUpgradeOverrideValues() []ControlPlaneUpgradeOverride {
+	return []ControlPlaneUpgradeOverride{
+		ControlPlaneUpgradeOverrideIgnoreKubernetesDeprecations,
 	}
 }
 
@@ -450,26 +466,37 @@ func PossibleManagedClusterPodIdentityProvisioningStateValues() []ManagedCluster
 type ManagedClusterSKUName string
 
 const (
+	// ManagedClusterSKUNameBase - Base option for the AKS control plane.
+	ManagedClusterSKUNameBase ManagedClusterSKUName = "Base"
+	// ManagedClusterSKUNameBasic - Basic will be removed in 07/01/2023 API version. Base will replace Basic, please switch to
+	// Base.
 	ManagedClusterSKUNameBasic ManagedClusterSKUName = "Basic"
 )
 
 // PossibleManagedClusterSKUNameValues returns the possible values for the ManagedClusterSKUName const type.
 func PossibleManagedClusterSKUNameValues() []ManagedClusterSKUName {
 	return []ManagedClusterSKUName{
+		ManagedClusterSKUNameBase,
 		ManagedClusterSKUNameBasic,
 	}
 }
 
-// ManagedClusterSKUTier - If not specified, the default is 'Free'. See uptime SLA [https://docs.microsoft.com/azure/aks/uptime-sla]
+// ManagedClusterSKUTier - If not specified, the default is 'Free'. See AKS Pricing Tier [https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers]
 // for more details.
 type ManagedClusterSKUTier string
 
 const (
-	// ManagedClusterSKUTierFree - No guaranteed SLA, no additional charges. Free tier clusters have an SLO of 99.5%.
+	// ManagedClusterSKUTierFree - The cluster management is free, but charged for VM, storage, and networking usage. Best for
+	// experimenting, learning, simple testing, or workloads with fewer than 10 nodes. Not recommended for production use cases.
 	ManagedClusterSKUTierFree ManagedClusterSKUTier = "Free"
-	// ManagedClusterSKUTierPaid - Guarantees 99.95% availability of the Kubernetes API server endpoint for clusters that use
-	// Availability Zones and 99.9% of availability for clusters that don't use Availability Zones.
+	// ManagedClusterSKUTierPaid - Paid tier will be removed in 07/01/2023 API version. Standard tier will replace Paid tier,
+	// please switch to Standard tier.
 	ManagedClusterSKUTierPaid ManagedClusterSKUTier = "Paid"
+	// ManagedClusterSKUTierStandard - Recommended for mission-critical and production workloads. Includes Kubernetes control
+	// plane autoscaling, workload-intensive testing, and up to 5,000 nodes per cluster. Guarantees 99.95% availability of the
+	// Kubernetes API server endpoint for clusters that use Availability Zones and 99.9% of availability for clusters that don't
+	// use Availability Zones.
+	ManagedClusterSKUTierStandard ManagedClusterSKUTier = "Standard"
 )
 
 // PossibleManagedClusterSKUTierValues returns the possible values for the ManagedClusterSKUTier const type.
@@ -477,6 +504,7 @@ func PossibleManagedClusterSKUTierValues() []ManagedClusterSKUTier {
 	return []ManagedClusterSKUTier{
 		ManagedClusterSKUTierFree,
 		ManagedClusterSKUTierPaid,
+		ManagedClusterSKUTierStandard,
 	}
 }
 

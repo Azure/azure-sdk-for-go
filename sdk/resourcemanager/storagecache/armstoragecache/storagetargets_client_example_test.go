@@ -25,11 +25,11 @@ func ExampleStorageTargetsClient_BeginDNSRefresh() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDNSRefresh(ctx, "scgroup", "sc", "st1", nil)
+	poller, err := clientFactory.NewStorageTargetsClient().BeginDNSRefresh(ctx, "scgroup", "sc", "st1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleStorageTargetsClient_NewListByCachePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByCachePager("scgroup", "sc1", nil)
+	pager := clientFactory.NewStorageTargetsClient().NewListByCachePager("scgroup", "sc1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -167,11 +167,11 @@ func ExampleStorageTargetsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "scgroup", "sc1", "st1", &armstoragecache.StorageTargetsClientBeginDeleteOptions{Force: nil})
+	poller, err := clientFactory.NewStorageTargetsClient().BeginDelete(ctx, "scgroup", "sc1", "st1", &armstoragecache.StorageTargetsClientBeginDeleteOptions{Force: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -188,11 +188,11 @@ func ExampleStorageTargetsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "scgroup", "sc1", "st1", nil)
+	res, err := clientFactory.NewStorageTargetsClient().Get(ctx, "scgroup", "sc1", "st1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -243,11 +243,11 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdat
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "scgroup", "sc1", "st1", armstoragecache.StorageTarget{
+	poller, err := clientFactory.NewStorageTargetsClient().BeginCreateOrUpdate(ctx, "scgroup", "sc1", "st1", armstoragecache.StorageTarget{
 		Properties: &armstoragecache.StorageTargetProperties{
 			Junctions: []*armstoragecache.NamespaceJunction{
 				{
@@ -324,11 +324,11 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdat
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "scgroup", "sc1", "st1", armstoragecache.StorageTarget{
+	poller, err := clientFactory.NewStorageTargetsClient().BeginCreateOrUpdate(ctx, "scgroup", "sc1", "st1", armstoragecache.StorageTarget{
 		Properties: &armstoragecache.StorageTargetProperties{
 			BlobNfs: &armstoragecache.BlobNfsTarget{
 				Target:            to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Storage/storageAccounts/blofnfs/blobServices/default/containers/blobnfs"),
@@ -389,11 +389,11 @@ func ExampleStorageTargetsClient_BeginCreateOrUpdate_storageTargetsCreateOrUpdat
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "scgroup", "sc1", "st1", armstoragecache.StorageTarget{
+	poller, err := clientFactory.NewStorageTargetsClient().BeginCreateOrUpdate(ctx, "scgroup", "sc1", "st1", armstoragecache.StorageTarget{
 		Properties: &armstoragecache.StorageTargetProperties{
 			Nfs3: &armstoragecache.Nfs3Target{
 				Target:            to.Ptr("10.0.44.44"),
@@ -444,11 +444,11 @@ func ExampleStorageTargetsClient_BeginRestoreDefaults() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewStorageTargetsClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRestoreDefaults(ctx, "scgroup", "sc", "st1", nil)
+	poller, err := clientFactory.NewStorageTargetsClient().BeginRestoreDefaults(ctx, "scgroup", "sc", "st1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

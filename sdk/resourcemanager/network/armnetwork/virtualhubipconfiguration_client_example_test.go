@@ -25,11 +25,11 @@ func ExampleVirtualHubIPConfigurationClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubIPConfigurationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "hub1", "ipconfig1", nil)
+	res, err := clientFactory.NewVirtualHubIPConfigurationClient().Get(ctx, "rg1", "hub1", "ipconfig1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -57,11 +57,11 @@ func ExampleVirtualHubIPConfigurationClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubIPConfigurationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "hub1", "ipconfig1", armnetwork.HubIPConfiguration{
+	poller, err := clientFactory.NewVirtualHubIPConfigurationClient().BeginCreateOrUpdate(ctx, "rg1", "hub1", "ipconfig1", armnetwork.HubIPConfiguration{
 		Properties: &armnetwork.HubIPConfigurationPropertiesFormat{
 			Subnet: &armnetwork.Subnet{
 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/subnet1"),
@@ -99,11 +99,11 @@ func ExampleVirtualHubIPConfigurationClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubIPConfigurationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "hub1", "ipconfig1", nil)
+	poller, err := clientFactory.NewVirtualHubIPConfigurationClient().BeginDelete(ctx, "rg1", "hub1", "ipconfig1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -120,11 +120,11 @@ func ExampleVirtualHubIPConfigurationClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubIPConfigurationClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "hub1", nil)
+	pager := clientFactory.NewVirtualHubIPConfigurationClient().NewListPager("rg1", "hub1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

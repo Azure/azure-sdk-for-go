@@ -1,5 +1,161 @@
 # Release History
 
+## 0.9.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 0.9.0 (2023-03-24)
+### Breaking Changes
+
+- Function `NewMetricDefinitionsClient` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Function `NewMetricsClient` parameter(s) have been changed from `(azcore.TokenCredential, *arm.ClientOptions)` to `(string, azcore.TokenCredential, *arm.ClientOptions)`
+- Type of `ErrorContract.Error` has been changed from `*ErrorResponseDetails` to `*ErrorResponse`
+- Type of `Metric.Unit` has been changed from `*MetricUnit` to `*Unit`
+- Function `*ActionGroupsClient.BeginCreateNotificationsAtResourceGroupLevel` has been removed
+- Function `*ActionGroupsClient.GetTestNotifications` has been removed
+- Function `*ActionGroupsClient.GetTestNotificationsAtResourceGroupLevel` has been removed
+- Function `*ActionGroupsClient.BeginPostTestNotifications` has been removed
+
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New value `KnownDataCollectionEndpointProvisioningStateCanceled` added to enum type `KnownDataCollectionEndpointProvisioningState`
+- New value `KnownDataCollectionRuleAssociationProvisioningStateCanceled` added to enum type `KnownDataCollectionRuleAssociationProvisioningState`
+- New value `KnownDataCollectionRuleProvisioningStateCanceled` added to enum type `KnownDataCollectionRuleProvisioningState`
+- New value `KnownPublicNetworkAccessOptionsSecuredByPerimeter` added to enum type `KnownPublicNetworkAccessOptions`
+- New enum type `ActionType` with values `ActionTypeInternal`
+- New enum type `IdentityType` with values `IdentityTypeNone`, `IdentityTypeSystemAssigned`, `IdentityTypeUserAssigned`
+- New enum type `KnownLocationSpecProvisioningStatus` with values `KnownLocationSpecProvisioningStatusCanceled`, `KnownLocationSpecProvisioningStatusCreating`, `KnownLocationSpecProvisioningStatusDeleting`, `KnownLocationSpecProvisioningStatusFailed`, `KnownLocationSpecProvisioningStatusSucceeded`, `KnownLocationSpecProvisioningStatusUpdating`
+- New enum type `KnownPrometheusForwarderDataSourceStreams` with values `KnownPrometheusForwarderDataSourceStreamsMicrosoftPrometheusMetrics`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `MetricAggregationType` with values `MetricAggregationTypeAverage`, `MetricAggregationTypeCount`, `MetricAggregationTypeMaximum`, `MetricAggregationTypeMinimum`, `MetricAggregationTypeNone`, `MetricAggregationTypeTotal`
+- New enum type `MetricResultType` with values `MetricResultTypeData`, `MetricResultTypeMetadata`
+- New enum type `Origin` with values `OriginSystem`, `OriginUser`, `OriginUserSystem`
+- New enum type `ProvisioningState` with values `ProvisioningStateCanceled`, `ProvisioningStateCreating`, `ProvisioningStateDeleting`, `ProvisioningStateFailed`, `ProvisioningStateSucceeded`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`, `PublicNetworkAccessSecuredByPerimeter`
+- New enum type `Unit` with values `UnitBitsPerSecond`, `UnitByteSeconds`, `UnitBytes`, `UnitBytesPerSecond`, `UnitCores`, `UnitCount`, `UnitCountPerSecond`, `UnitMilliCores`, `UnitMilliSeconds`, `UnitNanoCores`, `UnitPercent`, `UnitSeconds`, `UnitUnspecified`
+- New function `NewAzureMonitorWorkspacesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*AzureMonitorWorkspacesClient, error)`
+- New function `*AzureMonitorWorkspacesClient.Create(context.Context, string, string, AzureMonitorWorkspaceResource, *AzureMonitorWorkspacesClientCreateOptions) (AzureMonitorWorkspacesClientCreateResponse, error)`
+- New function `*AzureMonitorWorkspacesClient.Delete(context.Context, string, string, *AzureMonitorWorkspacesClientDeleteOptions) (AzureMonitorWorkspacesClientDeleteResponse, error)`
+- New function `*AzureMonitorWorkspacesClient.Get(context.Context, string, string, *AzureMonitorWorkspacesClientGetOptions) (AzureMonitorWorkspacesClientGetResponse, error)`
+- New function `*AzureMonitorWorkspacesClient.NewListByResourceGroupPager(string, *AzureMonitorWorkspacesClientListByResourceGroupOptions) *runtime.Pager[AzureMonitorWorkspacesClientListByResourceGroupResponse]`
+- New function `*AzureMonitorWorkspacesClient.NewListBySubscriptionPager(*AzureMonitorWorkspacesClientListBySubscriptionOptions) *runtime.Pager[AzureMonitorWorkspacesClientListBySubscriptionResponse]`
+- New function `*AzureMonitorWorkspacesClient.Update(context.Context, string, string, *AzureMonitorWorkspacesClientUpdateOptions) (AzureMonitorWorkspacesClientUpdateResponse, error)`
+- New function `*MetricDefinitionsClient.NewListAtSubscriptionScopePager(string, *MetricDefinitionsClientListAtSubscriptionScopeOptions) *runtime.Pager[MetricDefinitionsClientListAtSubscriptionScopeResponse]`
+- New function `*MetricsClient.ListAtSubscriptionScope(context.Context, string, *MetricsClientListAtSubscriptionScopeOptions) (MetricsClientListAtSubscriptionScopeResponse, error)`
+- New function `*MetricsClient.ListAtSubscriptionScopePost(context.Context, string, *MetricsClientListAtSubscriptionScopePostOptions) (MetricsClientListAtSubscriptionScopePostResponse, error)`
+- New function `NewOperationsForMonitorClient(azcore.TokenCredential, *arm.ClientOptions) (*OperationsForMonitorClient, error)`
+- New function `*OperationsForMonitorClient.NewListPager(*OperationsForMonitorClientListOptions) *runtime.Pager[OperationsForMonitorClientListResponse]`
+- New function `NewTenantActionGroupsClient(azcore.TokenCredential, *arm.ClientOptions) (*TenantActionGroupsClient, error)`
+- New function `*TenantActionGroupsClient.CreateOrUpdate(context.Context, string, string, string, TenantActionGroupResource, *TenantActionGroupsClientCreateOrUpdateOptions) (TenantActionGroupsClientCreateOrUpdateResponse, error)`
+- New function `*TenantActionGroupsClient.Delete(context.Context, string, string, string, *TenantActionGroupsClientDeleteOptions) (TenantActionGroupsClientDeleteResponse, error)`
+- New function `*TenantActionGroupsClient.Get(context.Context, string, string, string, *TenantActionGroupsClientGetOptions) (TenantActionGroupsClientGetResponse, error)`
+- New function `*TenantActionGroupsClient.NewListByManagementGroupIDPager(string, string, *TenantActionGroupsClientListByManagementGroupIDOptions) *runtime.Pager[TenantActionGroupsClientListByManagementGroupIDResponse]`
+- New function `*TenantActionGroupsClient.Update(context.Context, string, string, string, ActionGroupPatchBodyAutoGenerated, *TenantActionGroupsClientUpdateOptions) (TenantActionGroupsClientUpdateResponse, error)`
+- New struct `ActionGroupPatchAutoGenerated`
+- New struct `ActionGroupPatchBodyAutoGenerated`
+- New struct `AzureAppPushReceiverAutoGenerated`
+- New struct `AzureMonitorWorkspace`
+- New struct `AzureMonitorWorkspaceDefaultIngestionSettings`
+- New struct `AzureMonitorWorkspaceMetrics`
+- New struct `AzureMonitorWorkspaceResource`
+- New struct `AzureMonitorWorkspaceResourceForUpdate`
+- New struct `AzureMonitorWorkspaceResourceListResult`
+- New struct `AzureMonitorWorkspaceResourceProperties`
+- New struct `DataCollectionEndpointFailoverConfiguration`
+- New struct `DataCollectionEndpointMetadata`
+- New struct `DataCollectionEndpointMetricsIngestion`
+- New struct `DataCollectionEndpointResourceIdentity`
+- New struct `DataCollectionRuleResourceIdentity`
+- New struct `DataImportSources`
+- New struct `DataImportSourcesEventHub`
+- New struct `DataSourcesSpecDataImports`
+- New struct `EmailReceiverAutoGenerated`
+- New struct `ErrorContractAutoGenerated`
+- New struct `ErrorDetailAutoGenerated`
+- New struct `ErrorResponseAutoGenerated2`
+- New struct `EventHubDataSource`
+- New struct `EventHubDestination`
+- New struct `EventHubDirectDestination`
+- New struct `FailoverConfigurationSpec`
+- New struct `Identity`
+- New struct `IngestionSettings`
+- New struct `LocationSpec`
+- New struct `ManagedServiceIdentity`
+- New struct `Metrics`
+- New struct `MetricsIngestionEndpointSpec`
+- New struct `MonitoringAccountDestination`
+- New struct `OperationAutoGenerated`
+- New struct `OperationDisplayAutoGenerated`
+- New struct `OperationListResultAutoGenerated`
+- New struct `PlatformTelemetryDataSource`
+- New struct `PrivateLinkScopedResource`
+- New struct `PrometheusForwarderDataSource`
+- New struct `ResourceAutoGenerated5`
+- New struct `ResourceForUpdateIdentity`
+- New struct `RuleResolveConfiguration`
+- New struct `SmsReceiverAutoGenerated`
+- New struct `StorageBlobDestination`
+- New struct `StorageTableDestination`
+- New struct `SubscriptionScopeMetric`
+- New struct `SubscriptionScopeMetricDefinition`
+- New struct `SubscriptionScopeMetricDefinitionCollection`
+- New struct `SubscriptionScopeMetricResponse`
+- New struct `SubscriptionScopeMetricsRequestBodyParameters`
+- New struct `TenantActionGroup`
+- New struct `TenantActionGroupList`
+- New struct `TenantActionGroupResource`
+- New struct `TrackedResourceAutoGenerated`
+- New struct `UserAssignedIdentity`
+- New struct `UserIdentityProperties`
+- New struct `VoiceReceiverAutoGenerated`
+- New struct `WebhookReceiverAutoGenerated`
+- New struct `WindowsFirewallLogsDataSource`
+- New field `FailoverConfiguration` in struct `DataCollectionEndpoint`
+- New field `Metadata` in struct `DataCollectionEndpoint`
+- New field `MetricsIngestion` in struct `DataCollectionEndpoint`
+- New field `PrivateLinkScopedResources` in struct `DataCollectionEndpoint`
+- New field `Identity` in struct `DataCollectionEndpointResource`
+- New field `FailoverConfiguration` in struct `DataCollectionEndpointResourceProperties`
+- New field `Metadata` in struct `DataCollectionEndpointResourceProperties`
+- New field `MetricsIngestion` in struct `DataCollectionEndpointResourceProperties`
+- New field `PrivateLinkScopedResources` in struct `DataCollectionEndpointResourceProperties`
+- New field `ProvisionedByResourceID` in struct `DataCollectionRuleAssociationMetadata`
+- New field `DataImports` in struct `DataCollectionRuleDataSources`
+- New field `PlatformTelemetry` in struct `DataCollectionRuleDataSources`
+- New field `PrometheusForwarder` in struct `DataCollectionRuleDataSources`
+- New field `WindowsFirewallLogs` in struct `DataCollectionRuleDataSources`
+- New field `EventHubs` in struct `DataCollectionRuleDestinations`
+- New field `EventHubsDirect` in struct `DataCollectionRuleDestinations`
+- New field `MonitoringAccounts` in struct `DataCollectionRuleDestinations`
+- New field `StorageAccounts` in struct `DataCollectionRuleDestinations`
+- New field `StorageBlobsDirect` in struct `DataCollectionRuleDestinations`
+- New field `StorageTablesDirect` in struct `DataCollectionRuleDestinations`
+- New field `ProvisionedByResourceID` in struct `DataCollectionRuleMetadata`
+- New field `Identity` in struct `DataCollectionRuleResource`
+- New field `BuiltInTransform` in struct `DataFlow`
+- New field `DataImports` in struct `DataSourcesSpec`
+- New field `PlatformTelemetry` in struct `DataSourcesSpec`
+- New field `PrometheusForwarder` in struct `DataSourcesSpec`
+- New field `WindowsFirewallLogs` in struct `DataSourcesSpec`
+- New field `EventHubs` in struct `DestinationsSpec`
+- New field `EventHubsDirect` in struct `DestinationsSpec`
+- New field `MonitoringAccounts` in struct `DestinationsSpec`
+- New field `StorageAccounts` in struct `DestinationsSpec`
+- New field `StorageBlobsDirect` in struct `DestinationsSpec`
+- New field `StorageTablesDirect` in struct `DestinationsSpec`
+- New field `ProvisionedByResourceID` in struct `Metadata`
+- New field `AutoAdjustTimegrain` in struct `MetricsClientListOptions`
+- New field `ValidateDimensions` in struct `MetricsClientListOptions`
+- New field `Identity` in struct `ResourceForUpdate`
+- New field `PublicNetworkAccess` in struct `ScheduledQueryRuleProperties`
+- New field `RuleResolveConfiguration` in struct `ScheduledQueryRuleProperties`
+- New field `Identity` in struct `ScheduledQueryRuleResource`
+- New field `Identity` in struct `ScheduledQueryRuleResourcePatch`
+
+
 ## 0.8.0 (2022-10-18)
 ### Breaking Changes
 

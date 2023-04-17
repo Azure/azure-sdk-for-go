@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,45 +24,36 @@ import (
 // PermissionsClient contains the methods for the Permissions group.
 // Don't use this type directly, use NewPermissionsClient() instead.
 type PermissionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPermissionsClient creates a new instance of PermissionsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPermissionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PermissionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PermissionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PermissionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListForResourcePager - Gets all permissions the caller has for a resource.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceProviderNamespace - The namespace of the resource provider.
-// parentResourcePath - The parent resource identity.
-// resourceType - The resource type of the resource.
-// resourceName - The name of the resource to get the permissions for.
-// options - PermissionsClientListForResourceOptions contains the optional parameters for the PermissionsClient.ListForResource
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceProviderNamespace - The namespace of the resource provider.
+//   - parentResourcePath - The parent resource identity.
+//   - resourceType - The resource type of the resource.
+//   - resourceName - The name of the resource to get the permissions for.
+//   - options - PermissionsClientListForResourceOptions contains the optional parameters for the PermissionsClient.NewListForResourcePager
+//     method.
 func (client *PermissionsClient) NewListForResourcePager(resourceGroupName string, resourceProviderNamespace string, parentResourcePath string, resourceType string, resourceName string, options *PermissionsClientListForResourceOptions) *runtime.Pager[PermissionsClientListForResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListForResourceResponse]{
 		More: func(page PermissionsClientListForResourceResponse) bool {
@@ -81,7 +70,7 @@ func (client *PermissionsClient) NewListForResourcePager(resourceGroupName strin
 			if err != nil {
 				return PermissionsClientListForResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PermissionsClientListForResourceResponse{}, err
 			}
@@ -111,7 +100,7 @@ func (client *PermissionsClient) listForResourceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,11 +121,11 @@ func (client *PermissionsClient) listForResourceHandleResponse(resp *http.Respon
 }
 
 // NewListForResourceGroupPager - Gets all permissions the caller has for a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-04-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.ListForResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - PermissionsClientListForResourceGroupOptions contains the optional parameters for the PermissionsClient.NewListForResourceGroupPager
+//     method.
 func (client *PermissionsClient) NewListForResourceGroupPager(resourceGroupName string, options *PermissionsClientListForResourceGroupOptions) *runtime.Pager[PermissionsClientListForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PermissionsClientListForResourceGroupResponse]{
 		More: func(page PermissionsClientListForResourceGroupResponse) bool {
@@ -153,7 +142,7 @@ func (client *PermissionsClient) NewListForResourceGroupPager(resourceGroupName 
 			if err != nil {
 				return PermissionsClientListForResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PermissionsClientListForResourceGroupResponse{}, err
 			}
@@ -176,7 +165,7 @@ func (client *PermissionsClient) listForResourceGroupCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

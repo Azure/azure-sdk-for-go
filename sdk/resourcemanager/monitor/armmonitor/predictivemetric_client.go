@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,53 +24,45 @@ import (
 // PredictiveMetricClient contains the methods for the PredictiveMetric group.
 // Don't use this type directly, use NewPredictiveMetricClient() instead.
 type PredictiveMetricClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPredictiveMetricClient creates a new instance of PredictiveMetricClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPredictiveMetricClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PredictiveMetricClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PredictiveMetricClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PredictiveMetricClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - get predictive autoscale metric future data
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// autoscaleSettingName - The autoscale setting name.
-// timespan - The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
-// interval - The interval (i.e. timegrain) of the query.
-// metricNamespace - Metric namespace to query metric definitions for.
-// metricName - The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in
-// it then use %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
-// aggregation - The list of aggregation types (comma separated) to retrieve.
-// options - PredictiveMetricClientGetOptions contains the optional parameters for the PredictiveMetricClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autoscaleSettingName - The autoscale setting name.
+//   - timespan - The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
+//   - interval - The interval (i.e. timegrain) of the query.
+//   - metricNamespace - Metric namespace to query metric definitions for.
+//   - metricName - The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in
+//     it then use %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
+//   - aggregation - The list of aggregation types (comma separated) to retrieve.
+//   - options - PredictiveMetricClientGetOptions contains the optional parameters for the PredictiveMetricClient.Get method.
 func (client *PredictiveMetricClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string, timespan string, interval string, metricNamespace string, metricName string, aggregation string, options *PredictiveMetricClientGetOptions) (PredictiveMetricClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, autoscaleSettingName, timespan, interval, metricNamespace, metricName, aggregation, options)
 	if err != nil {
 		return PredictiveMetricClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PredictiveMetricClientGetResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *PredictiveMetricClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter autoscaleSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{autoscaleSettingName}", url.PathEscape(autoscaleSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

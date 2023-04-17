@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // KustoPoolDatabasePrincipalAssignmentsClient contains the methods for the KustoPoolDatabasePrincipalAssignments group.
 // Don't use this type directly, use NewKustoPoolDatabasePrincipalAssignmentsClient() instead.
 type KustoPoolDatabasePrincipalAssignmentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewKustoPoolDatabasePrincipalAssignmentsClient creates a new instance of KustoPoolDatabasePrincipalAssignmentsClient with the specified values.
@@ -36,21 +33,13 @@ type KustoPoolDatabasePrincipalAssignmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewKustoPoolDatabasePrincipalAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*KustoPoolDatabasePrincipalAssignmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".KustoPoolDatabasePrincipalAssignmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &KustoPoolDatabasePrincipalAssignmentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) CheckNameAvailability
 	if err != nil {
 		return KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return KustoPoolDatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -104,7 +93,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) checkNameAvailability
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -142,9 +131,9 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) BeginCreateOrUpdate(c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolDatabasePrincipalAssignmentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -157,7 +146,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdate(ctx co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -194,7 +183,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) createOrUpdateCreateR
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -222,9 +211,9 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) BeginDelete(ctx conte
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[KustoPoolDatabasePrincipalAssignmentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -237,7 +226,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteOperation(ctx c
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -274,7 +263,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) deleteCreateRequest(c
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -301,7 +290,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) Get(ctx context.Conte
 	if err != nil {
 		return KustoPoolDatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return KustoPoolDatabasePrincipalAssignmentsClientGetResponse{}, err
 	}
@@ -338,7 +327,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) getCreateRequest(ctx 
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -377,7 +366,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) NewListPager(workspac
 			if err != nil {
 				return KustoPoolDatabasePrincipalAssignmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return KustoPoolDatabasePrincipalAssignmentsClientListResponse{}, err
 			}
@@ -412,7 +401,7 @@ func (client *KustoPoolDatabasePrincipalAssignmentsClient) listCreateRequest(ctx
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

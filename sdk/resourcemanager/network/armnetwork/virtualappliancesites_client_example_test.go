@@ -25,11 +25,11 @@ func ExampleVirtualApplianceSitesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualApplianceSitesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "nva", "site1", nil)
+	poller, err := clientFactory.NewVirtualApplianceSitesClient().BeginDelete(ctx, "rg1", "nva", "site1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleVirtualApplianceSitesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualApplianceSitesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "nva", "site1", nil)
+	res, err := clientFactory.NewVirtualApplianceSitesClient().Get(ctx, "rg1", "nva", "site1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -82,11 +82,11 @@ func ExampleVirtualApplianceSitesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualApplianceSitesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "nva", "site1", armnetwork.VirtualApplianceSite{
+	poller, err := clientFactory.NewVirtualApplianceSitesClient().BeginCreateOrUpdate(ctx, "rg1", "nva", "site1", armnetwork.VirtualApplianceSite{
 		Properties: &armnetwork.VirtualApplianceSiteProperties{
 			AddressPrefix: to.Ptr("192.168.1.0/24"),
 			O365Policy: &armnetwork.Office365PolicyProperties{
@@ -133,11 +133,11 @@ func ExampleVirtualApplianceSitesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualApplianceSitesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", "nva", nil)
+	pager := clientFactory.NewVirtualApplianceSitesClient().NewListPager("rg1", "nva", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

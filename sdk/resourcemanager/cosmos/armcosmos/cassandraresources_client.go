@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CassandraResourcesClient contains the methods for the CassandraResources group.
 // Don't use this type directly, use NewCassandraResourcesClient() instead.
 type CassandraResourcesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCassandraResourcesClient creates a new instance of CassandraResourcesClient with the specified values.
@@ -36,21 +33,13 @@ type CassandraResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCassandraResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CassandraResourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CassandraResourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CassandraResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *CassandraResourcesClient) BeginCreateUpdateCassandraKeyspace(ctx c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientCreateUpdateCassandraKeyspaceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraKeyspace(ctx contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraKeyspaceCreateReque
 		return nil, errors.New("parameter keyspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -143,9 +132,9 @@ func (client *CassandraResourcesClient) BeginCreateUpdateCassandraTable(ctx cont
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientCreateUpdateCassandraTableResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientCreateUpdateCassandraTableResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientCreateUpdateCassandraTableResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientCreateUpdateCassandraTableResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -158,7 +147,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraTable(ctx context.C
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -191,7 +180,7 @@ func (client *CassandraResourcesClient) createUpdateCassandraTableCreateRequest(
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -217,9 +206,9 @@ func (client *CassandraResourcesClient) BeginDeleteCassandraKeyspace(ctx context
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientDeleteCassandraKeyspaceResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientDeleteCassandraKeyspaceResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientDeleteCassandraKeyspaceResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientDeleteCassandraKeyspaceResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -232,7 +221,7 @@ func (client *CassandraResourcesClient) deleteCassandraKeyspace(ctx context.Cont
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -261,7 +250,7 @@ func (client *CassandraResourcesClient) deleteCassandraKeyspaceCreateRequest(ctx
 		return nil, errors.New("parameter keyspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -287,9 +276,9 @@ func (client *CassandraResourcesClient) BeginDeleteCassandraTable(ctx context.Co
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientDeleteCassandraTableResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientDeleteCassandraTableResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientDeleteCassandraTableResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientDeleteCassandraTableResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -302,7 +291,7 @@ func (client *CassandraResourcesClient) deleteCassandraTable(ctx context.Context
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -335,7 +324,7 @@ func (client *CassandraResourcesClient) deleteCassandraTableCreateRequest(ctx co
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -360,7 +349,7 @@ func (client *CassandraResourcesClient) GetCassandraKeyspace(ctx context.Context
 	if err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceResponse{}, err
 	}
@@ -389,7 +378,7 @@ func (client *CassandraResourcesClient) getCassandraKeyspaceCreateRequest(ctx co
 		return nil, errors.New("parameter keyspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -424,7 +413,7 @@ func (client *CassandraResourcesClient) GetCassandraKeyspaceThroughput(ctx conte
 	if err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceThroughputResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceThroughputResponse{}, err
 	}
@@ -453,7 +442,7 @@ func (client *CassandraResourcesClient) getCassandraKeyspaceThroughputCreateRequ
 		return nil, errors.New("parameter keyspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -488,7 +477,7 @@ func (client *CassandraResourcesClient) GetCassandraTable(ctx context.Context, r
 	if err != nil {
 		return CassandraResourcesClientGetCassandraTableResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CassandraResourcesClientGetCassandraTableResponse{}, err
 	}
@@ -521,7 +510,7 @@ func (client *CassandraResourcesClient) getCassandraTableCreateRequest(ctx conte
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -557,7 +546,7 @@ func (client *CassandraResourcesClient) GetCassandraTableThroughput(ctx context.
 	if err != nil {
 		return CassandraResourcesClientGetCassandraTableThroughputResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CassandraResourcesClientGetCassandraTableThroughputResponse{}, err
 	}
@@ -590,7 +579,7 @@ func (client *CassandraResourcesClient) getCassandraTableThroughputCreateRequest
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -627,7 +616,7 @@ func (client *CassandraResourcesClient) NewListCassandraKeyspacesPager(resourceG
 			if err != nil {
 				return CassandraResourcesClientListCassandraKeyspacesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CassandraResourcesClientListCassandraKeyspacesResponse{}, err
 			}
@@ -654,7 +643,7 @@ func (client *CassandraResourcesClient) listCassandraKeyspacesCreateRequest(ctx 
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -692,7 +681,7 @@ func (client *CassandraResourcesClient) NewListCassandraTablesPager(resourceGrou
 			if err != nil {
 				return CassandraResourcesClientListCassandraTablesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CassandraResourcesClientListCassandraTablesResponse{}, err
 			}
@@ -723,7 +712,7 @@ func (client *CassandraResourcesClient) listCassandraTablesCreateRequest(ctx con
 		return nil, errors.New("parameter keyspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -758,9 +747,9 @@ func (client *CassandraResourcesClient) BeginMigrateCassandraKeyspaceToAutoscale
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -773,7 +762,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscale(ctx 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -802,7 +791,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscaleCreat
 		return nil, errors.New("parameter keyspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -829,9 +818,9 @@ func (client *CassandraResourcesClient) BeginMigrateCassandraKeyspaceToManualThr
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientMigrateCassandraKeyspaceToManualThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -844,7 +833,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughp
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -873,7 +862,7 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughp
 		return nil, errors.New("parameter keyspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -900,9 +889,9 @@ func (client *CassandraResourcesClient) BeginMigrateCassandraTableToAutoscale(ct
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientMigrateCassandraTableToAutoscaleResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -915,7 +904,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToAutoscale(ctx con
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -948,7 +937,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToAutoscaleCreateRe
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -975,9 +964,9 @@ func (client *CassandraResourcesClient) BeginMigrateCassandraTableToManualThroug
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -990,7 +979,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughput(
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1023,7 +1012,7 @@ func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughputC
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1050,9 +1039,9 @@ func (client *CassandraResourcesClient) BeginUpdateCassandraKeyspaceThroughput(c
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1065,7 +1054,7 @@ func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughput(ctx co
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1094,7 +1083,7 @@ func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughputCreateR
 		return nil, errors.New("parameter keyspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{keyspaceName}", url.PathEscape(keyspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -1122,9 +1111,9 @@ func (client *CassandraResourcesClient) BeginUpdateCassandraTableThroughput(ctx 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CassandraResourcesClientUpdateCassandraTableThroughputResponse](resp, client.pl, nil)
+		return runtime.NewPoller[CassandraResourcesClientUpdateCassandraTableThroughputResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[CassandraResourcesClientUpdateCassandraTableThroughputResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CassandraResourcesClientUpdateCassandraTableThroughputResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -1137,7 +1126,7 @@ func (client *CassandraResourcesClient) updateCassandraTableThroughput(ctx conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -1170,7 +1159,7 @@ func (client *CassandraResourcesClient) updateCassandraTableThroughputCreateRequ
 		return nil, errors.New("parameter tableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{tableName}", url.PathEscape(tableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

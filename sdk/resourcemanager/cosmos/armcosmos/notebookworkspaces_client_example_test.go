@@ -24,11 +24,11 @@ func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewNotebookWorkspacesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabaseAccountPager("rg1", "ddb1", nil)
+	pager := clientFactory.NewNotebookWorkspacesClient().NewListByDatabaseAccountPager("rg1", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -61,11 +61,11 @@ func ExampleNotebookWorkspacesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewNotebookWorkspacesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
+	res, err := clientFactory.NewNotebookWorkspacesClient().Get(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -90,11 +90,11 @@ func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewNotebookWorkspacesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, armcosmos.NotebookWorkspaceCreateUpdateParameters{}, nil)
+	poller, err := clientFactory.NewNotebookWorkspacesClient().BeginCreateOrUpdate(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, armcosmos.NotebookWorkspaceCreateUpdateParameters{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -123,11 +123,11 @@ func ExampleNotebookWorkspacesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewNotebookWorkspacesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
+	poller, err := clientFactory.NewNotebookWorkspacesClient().BeginDelete(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -144,11 +144,11 @@ func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewNotebookWorkspacesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.ListConnectionInfo(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
+	res, err := clientFactory.NewNotebookWorkspacesClient().ListConnectionInfo(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -168,11 +168,11 @@ func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewNotebookWorkspacesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRegenerateAuthToken(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
+	poller, err := clientFactory.NewNotebookWorkspacesClient().BeginRegenerateAuthToken(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -189,11 +189,11 @@ func ExampleNotebookWorkspacesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewNotebookWorkspacesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
+	poller, err := clientFactory.NewNotebookWorkspacesClient().BeginStart(ctx, "rg1", "ddb1", armcosmos.NotebookWorkspaceNameDefault, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

@@ -25,11 +25,11 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleFor
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", armsynapse.DataMaskingRule{
+	res, err := clientFactory.NewDataMaskingRulesClient().CreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", armsynapse.DataMaskingRule{
 		Properties: &armsynapse.DataMaskingRuleProperties{
 			AliasName:       to.Ptr("nickname"),
 			ColumnName:      to.Ptr("test1"),
@@ -68,11 +68,11 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleFor
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", armsynapse.DataMaskingRule{
+	res, err := clientFactory.NewDataMaskingRulesClient().CreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", armsynapse.DataMaskingRule{
 		Properties: &armsynapse.DataMaskingRuleProperties{
 			ColumnName:      to.Ptr("test1"),
 			MaskingFunction: to.Ptr(armsynapse.DataMaskingFunctionDefault),
@@ -108,11 +108,11 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleFor
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", armsynapse.DataMaskingRule{
+	res, err := clientFactory.NewDataMaskingRulesClient().CreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", armsynapse.DataMaskingRule{
 		Properties: &armsynapse.DataMaskingRuleProperties{
 			ColumnName:      to.Ptr("test1"),
 			MaskingFunction: to.Ptr(armsynapse.DataMaskingFunctionNumber),
@@ -152,11 +152,11 @@ func ExampleDataMaskingRulesClient_CreateOrUpdate_createUpdateDataMaskingRuleFor
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", armsynapse.DataMaskingRule{
+	res, err := clientFactory.NewDataMaskingRulesClient().CreateOrUpdate(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", armsynapse.DataMaskingRule{
 		Properties: &armsynapse.DataMaskingRuleProperties{
 			ColumnName:        to.Ptr("test1"),
 			MaskingFunction:   to.Ptr(armsynapse.DataMaskingFunctionText),
@@ -198,11 +198,11 @@ func ExampleDataMaskingRulesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", nil)
+	res, err := clientFactory.NewDataMaskingRulesClient().Get(ctx, "sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", "rule1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -235,11 +235,11 @@ func ExampleDataMaskingRulesClient_NewListBySQLPoolPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewDataMaskingRulesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySQLPoolPager("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", nil)
+	pager := clientFactory.NewDataMaskingRulesClient().NewListBySQLPoolPager("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-331", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

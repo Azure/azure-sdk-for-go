@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // MigrationConfigsClient contains the methods for the MigrationConfigs group.
 // Don't use this type directly, use NewMigrationConfigsClient() instead.
 type MigrationConfigsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMigrationConfigsClient creates a new instance of MigrationConfigsClient with the specified values.
@@ -37,21 +34,13 @@ type MigrationConfigsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewMigrationConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MigrationConfigsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MigrationConfigsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MigrationConfigsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -61,7 +50,7 @@ func NewMigrationConfigsClient(subscriptionID string, credential azcore.TokenCre
 // operation will fail when entity migration is in-progress.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -72,7 +61,7 @@ func (client *MigrationConfigsClient) CompleteMigration(ctx context.Context, res
 	if err != nil {
 		return MigrationConfigsClientCompleteMigrationResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MigrationConfigsClientCompleteMigrationResponse{}, err
 	}
@@ -101,12 +90,12 @@ func (client *MigrationConfigsClient) completeMigrationCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -116,7 +105,7 @@ func (client *MigrationConfigsClient) completeMigrationCreateRequest(ctx context
 // namespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -129,22 +118,22 @@ func (client *MigrationConfigsClient) BeginCreateAndStartMigration(ctx context.C
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MigrationConfigsClientCreateAndStartMigrationResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MigrationConfigsClientCreateAndStartMigrationResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MigrationConfigsClientCreateAndStartMigrationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MigrationConfigsClientCreateAndStartMigrationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateAndStartMigration - Creates Migration configuration and starts migration of entities from Standard to Premium namespace
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 func (client *MigrationConfigsClient) createAndStartMigration(ctx context.Context, resourceGroupName string, namespaceName string, configName MigrationConfigurationName, parameters MigrationConfigProperties, options *MigrationConfigsClientBeginCreateAndStartMigrationOptions) (*http.Response, error) {
 	req, err := client.createAndStartMigrationCreateRequest(ctx, resourceGroupName, namespaceName, configName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -173,12 +162,12 @@ func (client *MigrationConfigsClient) createAndStartMigrationCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -187,7 +176,7 @@ func (client *MigrationConfigsClient) createAndStartMigrationCreateRequest(ctx c
 // Delete - Deletes a MigrationConfiguration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -197,7 +186,7 @@ func (client *MigrationConfigsClient) Delete(ctx context.Context, resourceGroupN
 	if err != nil {
 		return MigrationConfigsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MigrationConfigsClientDeleteResponse{}, err
 	}
@@ -226,12 +215,12 @@ func (client *MigrationConfigsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -240,7 +229,7 @@ func (client *MigrationConfigsClient) deleteCreateRequest(ctx context.Context, r
 // Get - Retrieves Migration Config
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -250,7 +239,7 @@ func (client *MigrationConfigsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return MigrationConfigsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MigrationConfigsClientGetResponse{}, err
 	}
@@ -279,12 +268,12 @@ func (client *MigrationConfigsClient) getCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,7 +290,7 @@ func (client *MigrationConfigsClient) getHandleResponse(resp *http.Response) (Mi
 
 // NewListPager - Gets all migrationConfigurations
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - MigrationConfigsClientListOptions contains the optional parameters for the MigrationConfigsClient.NewListPager
@@ -322,7 +311,7 @@ func (client *MigrationConfigsClient) NewListPager(resourceGroupName string, nam
 			if err != nil {
 				return MigrationConfigsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MigrationConfigsClientListResponse{}, err
 			}
@@ -349,12 +338,12 @@ func (client *MigrationConfigsClient) listCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -372,7 +361,7 @@ func (client *MigrationConfigsClient) listHandleResponse(resp *http.Response) (M
 // Revert - This operation reverts Migration
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - configName - The configuration name. Should always be "$default".
@@ -382,7 +371,7 @@ func (client *MigrationConfigsClient) Revert(ctx context.Context, resourceGroupN
 	if err != nil {
 		return MigrationConfigsClientRevertResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MigrationConfigsClientRevertResponse{}, err
 	}
@@ -411,12 +400,12 @@ func (client *MigrationConfigsClient) revertCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -97,10 +97,10 @@ func (mr *MockAMQPReceiverMockRecorder) LinkName() *gomock.Call {
 }
 
 // LinkSourceFilterValue mocks base method.
-func (m *MockAMQPReceiver) LinkSourceFilterValue(name string) interface{} {
+func (m *MockAMQPReceiver) LinkSourceFilterValue(name string) any {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LinkSourceFilterValue", name)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(any)
 	return ret0
 }
 
@@ -139,18 +139,18 @@ func (mr *MockAMQPReceiverMockRecorder) Prefetched() *gomock.Call {
 }
 
 // Receive mocks base method.
-func (m *MockAMQPReceiver) Receive(ctx context.Context) (*amqp.Message, error) {
+func (m *MockAMQPReceiver) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Receive", ctx)
+	ret := m.ctrl.Call(m, "Receive", ctx, o)
 	ret0, _ := ret[0].(*amqp.Message)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Receive indicates an expected call of Receive.
-func (mr *MockAMQPReceiverMockRecorder) Receive(ctx interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverMockRecorder) Receive(ctx, o interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Receive", reflect.TypeOf((*MockAMQPReceiver)(nil).Receive), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Receive", reflect.TypeOf((*MockAMQPReceiver)(nil).Receive), ctx, o)
 }
 
 // RejectMessage mocks base method.
@@ -275,10 +275,10 @@ func (mr *MockAMQPReceiverCloserMockRecorder) LinkName() *gomock.Call {
 }
 
 // LinkSourceFilterValue mocks base method.
-func (m *MockAMQPReceiverCloser) LinkSourceFilterValue(name string) interface{} {
+func (m *MockAMQPReceiverCloser) LinkSourceFilterValue(name string) any {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "LinkSourceFilterValue", name)
-	ret0, _ := ret[0].(interface{})
+	ret0, _ := ret[0].(any)
 	return ret0
 }
 
@@ -317,18 +317,18 @@ func (mr *MockAMQPReceiverCloserMockRecorder) Prefetched() *gomock.Call {
 }
 
 // Receive mocks base method.
-func (m *MockAMQPReceiverCloser) Receive(ctx context.Context) (*amqp.Message, error) {
+func (m *MockAMQPReceiverCloser) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Receive", ctx)
+	ret := m.ctrl.Call(m, "Receive", ctx, o)
 	ret0, _ := ret[0].(*amqp.Message)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // Receive indicates an expected call of Receive.
-func (mr *MockAMQPReceiverCloserMockRecorder) Receive(ctx interface{}) *gomock.Call {
+func (mr *MockAMQPReceiverCloserMockRecorder) Receive(ctx, o interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Receive", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).Receive), ctx)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Receive", reflect.TypeOf((*MockAMQPReceiverCloser)(nil).Receive), ctx, o)
 }
 
 // RejectMessage mocks base method.
@@ -411,17 +411,17 @@ func (mr *MockAMQPSenderMockRecorder) MaxMessageSize() *gomock.Call {
 }
 
 // Send mocks base method.
-func (m *MockAMQPSender) Send(ctx context.Context, msg *amqp.Message) error {
+func (m *MockAMQPSender) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Send", ctx, msg)
+	ret := m.ctrl.Call(m, "Send", ctx, msg, o)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Send indicates an expected call of Send.
-func (mr *MockAMQPSenderMockRecorder) Send(ctx, msg interface{}) *gomock.Call {
+func (mr *MockAMQPSenderMockRecorder) Send(ctx, msg, o interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MockAMQPSender)(nil).Send), ctx, msg)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MockAMQPSender)(nil).Send), ctx, msg, o)
 }
 
 // MockAMQPSenderCloser is a mock of AMQPSenderCloser interface.
@@ -490,17 +490,17 @@ func (mr *MockAMQPSenderCloserMockRecorder) MaxMessageSize() *gomock.Call {
 }
 
 // Send mocks base method.
-func (m *MockAMQPSenderCloser) Send(ctx context.Context, msg *amqp.Message) error {
+func (m *MockAMQPSenderCloser) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "Send", ctx, msg)
+	ret := m.ctrl.Call(m, "Send", ctx, msg, o)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // Send indicates an expected call of Send.
-func (mr *MockAMQPSenderCloserMockRecorder) Send(ctx, msg interface{}) *gomock.Call {
+func (mr *MockAMQPSenderCloserMockRecorder) Send(ctx, msg, o interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MockAMQPSenderCloser)(nil).Send), ctx, msg)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Send", reflect.TypeOf((*MockAMQPSenderCloser)(nil).Send), ctx, msg, o)
 }
 
 // MockAMQPSession is a mock of AMQPSession interface.

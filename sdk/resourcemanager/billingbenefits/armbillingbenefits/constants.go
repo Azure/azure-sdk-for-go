@@ -11,7 +11,7 @@ package armbillingbenefits
 
 const (
 	moduleName    = "armbillingbenefits"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v2.0.0"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

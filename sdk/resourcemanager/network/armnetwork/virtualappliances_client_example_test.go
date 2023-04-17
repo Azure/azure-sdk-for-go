@@ -25,11 +25,11 @@ func ExampleVirtualAppliancesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualAppliancesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "nva", nil)
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginDelete(ctx, "rg1", "nva", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleVirtualAppliancesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualAppliancesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "nva", &armnetwork.VirtualAppliancesClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewVirtualAppliancesClient().Get(ctx, "rg1", "nva", &armnetwork.VirtualAppliancesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -118,11 +118,11 @@ func ExampleVirtualAppliancesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualAppliancesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "nva", armnetwork.TagsObject{
+	res, err := clientFactory.NewVirtualAppliancesClient().UpdateTags(ctx, "rg1", "nva", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 			"key2": to.Ptr("value2"),
@@ -192,11 +192,11 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createNetworkVirtualAppl
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualAppliancesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "nva", armnetwork.VirtualAppliance{
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginCreateOrUpdate(ctx, "rg1", "nva", armnetwork.VirtualAppliance{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -294,11 +294,11 @@ func ExampleVirtualAppliancesClient_BeginCreateOrUpdate_createSaaSNetworkVirtual
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualAppliancesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "nva", armnetwork.VirtualAppliance{
+	poller, err := clientFactory.NewVirtualAppliancesClient().BeginCreateOrUpdate(ctx, "rg1", "nva", armnetwork.VirtualAppliance{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -357,11 +357,11 @@ func ExampleVirtualAppliancesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualAppliancesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewVirtualAppliancesClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -437,11 +437,11 @@ func ExampleVirtualAppliancesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualAppliancesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewVirtualAppliancesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

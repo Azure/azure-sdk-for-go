@@ -14,13 +14,13 @@ import "time"
 // A2AAddDisksInput - A2A add disk(s) input.
 type A2AAddDisksInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The list of vm disk details.
-	VMDisks []*A2AVMDiskInputDetails `json:"vmDisks,omitempty"`
+	VMDisks []*A2AVMDiskInputDetails
 
 	// The list of vm managed disk details.
-	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
+	VMManagedDisks []*A2AVMManagedDiskInputDetails
 }
 
 // GetAddDisksProviderSpecificInput implements the AddDisksProviderSpecificInputClassification interface for type A2AAddDisksInput.
@@ -33,7 +33,7 @@ func (a *A2AAddDisksInput) GetAddDisksProviderSpecificInput() *AddDisksProviderS
 // A2AApplyRecoveryPointInput - ApplyRecoveryPoint input specific to A2A provider.
 type A2AApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
@@ -47,7 +47,7 @@ func (a *A2AApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecificInput(
 // A2AContainerCreationInput - A2A cloud creation input.
 type A2AContainerCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
@@ -61,16 +61,16 @@ func (a *A2AContainerCreationInput) GetReplicationProviderSpecificContainerCreat
 // A2AContainerMappingInput - A2A container mapping input.
 type A2AContainerMappingInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether the auto update is enabled.
-	AgentAutoUpdateStatus *AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
+	AgentAutoUpdateStatus *AgentAutoUpdateStatus
 
 	// The automation account arm id.
-	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
+	AutomationAccountArmID *string
 
 	// A value indicating the type authentication to use for automation Account.
-	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
+	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType
 }
 
 // GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
@@ -84,73 +84,73 @@ func (a *A2AContainerMappingInput) GetReplicationProviderSpecificContainerMappin
 // A2ACreateProtectionIntentInput - A2A create protection intent input.
 type A2ACreateProtectionIntentInput struct {
 	// REQUIRED; The fabric specific object Id of the virtual machine.
-	FabricObjectID *string `json:"fabricObjectId,omitempty"`
+	FabricObjectID *string
 
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The primary location for the virtual machine.
-	PrimaryLocation *string `json:"primaryLocation,omitempty"`
+	PrimaryLocation *string
 
 	// REQUIRED; The recovery availability type of the virtual machine.
-	RecoveryAvailabilityType *A2ARecoveryAvailabilityType `json:"recoveryAvailabilityType,omitempty"`
+	RecoveryAvailabilityType *A2ARecoveryAvailabilityType
 
 	// REQUIRED; The recovery location for the virtual machine.
-	RecoveryLocation *string `json:"recoveryLocation,omitempty"`
+	RecoveryLocation *string
 
 	// REQUIRED; The recovery resource group Id. Valid for V2 scenarios.
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 
 	// REQUIRED; The recovery subscription Id of the virtual machine.
-	RecoverySubscriptionID *string `json:"recoverySubscriptionId,omitempty"`
+	RecoverySubscriptionID *string
 
 	// A value indicating whether the auto update is enabled.
-	AgentAutoUpdateStatus *AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
+	AgentAutoUpdateStatus *AgentAutoUpdateStatus
 
 	// A value indicating whether the auto protection is enabled.
-	AutoProtectionOfDataDisk *AutoProtectionOfDataDisk `json:"autoProtectionOfDataDisk,omitempty"`
+	AutoProtectionOfDataDisk *AutoProtectionOfDataDisk
 
 	// The automation account arm id.
-	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
+	AutomationAccountArmID *string
 
 	// A value indicating the authentication type for automation account. The default value is "RunAsAccount".
-	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
+	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType
 
 	// The recovery disk encryption information (for two pass flows).
-	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	DiskEncryptionInfo *DiskEncryptionInfo
 
 	// The multi vm group id.
-	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
+	MultiVMGroupID *string
 
 	// The multi vm group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// The primary staging storage account input.
-	PrimaryStagingStorageAccountCustomInput StorageAccountCustomDetailsClassification `json:"primaryStagingStorageAccountCustomInput,omitempty"`
+	PrimaryStagingStorageAccountCustomInput StorageAccountCustomDetailsClassification
 
 	// The protection profile custom inputs.
-	ProtectionProfileCustomInput ProtectionProfileCustomDetailsClassification `json:"protectionProfileCustomInput,omitempty"`
+	ProtectionProfileCustomInput ProtectionProfileCustomDetailsClassification
 
 	// The recovery availability set input.
-	RecoveryAvailabilitySetCustomInput RecoveryAvailabilitySetCustomDetailsClassification `json:"recoveryAvailabilitySetCustomInput,omitempty"`
+	RecoveryAvailabilitySetCustomInput RecoveryAvailabilitySetCustomDetailsClassification
 
 	// The recovery availability zone.
-	RecoveryAvailabilityZone *string `json:"recoveryAvailabilityZone,omitempty"`
+	RecoveryAvailabilityZone *string
 
 	// The boot diagnostic storage account.
-	RecoveryBootDiagStorageAccount StorageAccountCustomDetailsClassification `json:"recoveryBootDiagStorageAccount,omitempty"`
+	RecoveryBootDiagStorageAccount StorageAccountCustomDetailsClassification
 
 	// The recovery proximity placement group custom input.
-	RecoveryProximityPlacementGroupCustomInput RecoveryProximityPlacementGroupCustomDetailsClassification `json:"recoveryProximityPlacementGroupCustomInput,omitempty"`
+	RecoveryProximityPlacementGroupCustomInput RecoveryProximityPlacementGroupCustomDetailsClassification
 
 	// The recovery virtual network input.
-	RecoveryVirtualNetworkCustomInput RecoveryVirtualNetworkCustomDetailsClassification `json:"recoveryVirtualNetworkCustomInput,omitempty"`
+	RecoveryVirtualNetworkCustomInput RecoveryVirtualNetworkCustomDetailsClassification
 
 	// The list of vm disk inputs.
-	VMDisks []*A2AProtectionIntentDiskInputDetails `json:"vmDisks,omitempty"`
+	VMDisks []*A2AProtectionIntentDiskInputDetails
 
 	// The list of vm managed disk inputs.
-	VMManagedDisks []*A2AProtectionIntentManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
+	VMManagedDisks []*A2AProtectionIntentManagedDiskInputDetails
 }
 
 // GetCreateProtectionIntentProviderSpecificDetails implements the CreateProtectionIntentProviderSpecificDetailsClassification
@@ -164,7 +164,7 @@ func (a *A2ACreateProtectionIntentInput) GetCreateProtectionIntentProviderSpecif
 // A2ACrossClusterMigrationApplyRecoveryPointInput - ApplyRecoveryPoint input specific to A2ACrossClusterMigration provider.
 type A2ACrossClusterMigrationApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
@@ -178,7 +178,7 @@ func (a *A2ACrossClusterMigrationApplyRecoveryPointInput) GetApplyRecoveryPointP
 // A2ACrossClusterMigrationContainerCreationInput - A2ACrossClusterMigration cloud creation input.
 type A2ACrossClusterMigrationContainerCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
@@ -192,13 +192,13 @@ func (a *A2ACrossClusterMigrationContainerCreationInput) GetReplicationProviderS
 // A2ACrossClusterMigrationEnableProtectionInput - A2A Cross-Cluster Migration enable protection input.
 type A2ACrossClusterMigrationEnableProtectionInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The fabric specific object Id of the virtual machine.
-	FabricObjectID *string `json:"fabricObjectId,omitempty"`
+	FabricObjectID *string
 
 	// The recovery container Id.
-	RecoveryContainerID *string `json:"recoveryContainerId,omitempty"`
+	RecoveryContainerID *string
 }
 
 // GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
@@ -212,7 +212,7 @@ func (a *A2ACrossClusterMigrationEnableProtectionInput) GetEnableProtectionProvi
 // A2ACrossClusterMigrationPolicyCreationInput - A2A Cross-Cluster Migration Policy creation input.
 type A2ACrossClusterMigrationPolicyCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type A2ACrossClusterMigrationPolicyCreationInput.
@@ -225,27 +225,27 @@ func (a *A2ACrossClusterMigrationPolicyCreationInput) GetPolicyProviderSpecificI
 // A2ACrossClusterMigrationReplicationDetails - A2A provider specific settings.
 type A2ACrossClusterMigrationReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The fabric specific object Id of the virtual machine.
-	FabricObjectID *string `json:"fabricObjectId,omitempty"`
+	FabricObjectID *string
 
 	// An id associated with the PE that survives actions like switch protection which change the backing PE/CPE objects internally.The
 	// lifecycle id gets carried forward to have a link/continuity in being
 	// able to have an Id that denotes the "same" protected item even though other internal Ids/ARM Id might be changing.
-	LifecycleID *string `json:"lifecycleId,omitempty"`
+	LifecycleID *string
 
 	// The type of operating system.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// Primary fabric location.
-	PrimaryFabricLocation *string `json:"primaryFabricLocation,omitempty"`
+	PrimaryFabricLocation *string
 
 	// The protection state for the vm.
-	VMProtectionState *string `json:"vmProtectionState,omitempty"`
+	VMProtectionState *string
 
 	// The protection state description for the vm.
-	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+	VMProtectionStateDescription *string
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -259,61 +259,61 @@ func (a *A2ACrossClusterMigrationReplicationDetails) GetReplicationProviderSpeci
 // A2AEnableProtectionInput - A2A enable protection input.
 type A2AEnableProtectionInput struct {
 	// REQUIRED; The fabric specific object Id of the virtual machine.
-	FabricObjectID *string `json:"fabricObjectId,omitempty"`
+	FabricObjectID *string
 
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The recovery disk encryption information (for two pass flows).
-	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	DiskEncryptionInfo *DiskEncryptionInfo
 
 	// The multi vm group id.
-	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
+	MultiVMGroupID *string
 
 	// The multi vm group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// The recovery availability set Id.
-	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	RecoveryAvailabilitySetID *string
 
 	// The recovery availability zone.
-	RecoveryAvailabilityZone *string `json:"recoveryAvailabilityZone,omitempty"`
+	RecoveryAvailabilityZone *string
 
 	// The recovery Azure virtual network ARM id.
-	RecoveryAzureNetworkID *string `json:"recoveryAzureNetworkId,omitempty"`
+	RecoveryAzureNetworkID *string
 
 	// The boot diagnostic storage account.
-	RecoveryBootDiagStorageAccountID *string `json:"recoveryBootDiagStorageAccountId,omitempty"`
+	RecoveryBootDiagStorageAccountID *string
 
 	// The recovery capacity reservation group Id.
-	RecoveryCapacityReservationGroupID *string `json:"recoveryCapacityReservationGroupId,omitempty"`
+	RecoveryCapacityReservationGroupID *string
 
 	// The recovery cloud service Id. Valid for V1 scenarios.
-	RecoveryCloudServiceID *string `json:"recoveryCloudServiceId,omitempty"`
+	RecoveryCloudServiceID *string
 
 	// The recovery container Id.
-	RecoveryContainerID *string `json:"recoveryContainerId,omitempty"`
+	RecoveryContainerID *string
 
 	// The recovery extended location.
-	RecoveryExtendedLocation *ExtendedLocation `json:"recoveryExtendedLocation,omitempty"`
+	RecoveryExtendedLocation *ExtendedLocation
 
 	// The recovery proximity placement group Id.
-	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
+	RecoveryProximityPlacementGroupID *string
 
 	// The recovery resource group Id. Valid for V2 scenarios.
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 
 	// The recovery subnet name.
-	RecoverySubnetName *string `json:"recoverySubnetName,omitempty"`
+	RecoverySubnetName *string
 
 	// The virtual machine scale set Id.
-	RecoveryVirtualMachineScaleSetID *string `json:"recoveryVirtualMachineScaleSetId,omitempty"`
+	RecoveryVirtualMachineScaleSetID *string
 
 	// The list of vm disk details.
-	VMDisks []*A2AVMDiskInputDetails `json:"vmDisks,omitempty"`
+	VMDisks []*A2AVMDiskInputDetails
 
 	// The list of vm managed disk details.
-	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
+	VMManagedDisks []*A2AVMManagedDiskInputDetails
 }
 
 // GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
@@ -327,25 +327,25 @@ func (a *A2AEnableProtectionInput) GetEnableProtectionProviderSpecificInput() *E
 // A2AEventDetails - Model class for event details of a A2A event.
 type A2AEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The fabric location.
-	FabricLocation *string `json:"fabricLocation,omitempty"`
+	FabricLocation *string
 
 	// Fabric arm name.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// The azure vm arm id.
-	FabricObjectID *string `json:"fabricObjectId,omitempty"`
+	FabricObjectID *string
 
 	// The protected item arm name.
-	ProtectedItemName *string `json:"protectedItemName,omitempty"`
+	ProtectedItemName *string
 
 	// Remote fabric location.
-	RemoteFabricLocation *string `json:"remoteFabricLocation,omitempty"`
+	RemoteFabricLocation *string
 
 	// Remote fabric arm name.
-	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
+	RemoteFabricName *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type A2AEventDetails.
@@ -358,28 +358,28 @@ func (a *A2AEventDetails) GetEventProviderSpecificDetails() *EventProviderSpecif
 // A2AExtendedLocationDetails - ExtendedLocation details data.
 type A2AExtendedLocationDetails struct {
 	// The primary ExtendedLocation.
-	PrimaryExtendedLocation *ExtendedLocation `json:"primaryExtendedLocation,omitempty"`
+	PrimaryExtendedLocation *ExtendedLocation
 
 	// The recovery ExtendedLocation.
-	RecoveryExtendedLocation *ExtendedLocation `json:"recoveryExtendedLocation,omitempty"`
+	RecoveryExtendedLocation *ExtendedLocation
 }
 
 // A2APolicyCreationInput - A2A Policy creation input.
 type A2APolicyCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
-	MultiVMSyncStatus *SetMultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *SetMultiVMSyncStatus
 
 	// The app consistent snapshot frequency (in minutes).
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency (in minutes).
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	RecoveryPointHistory *int32
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type A2APolicyCreationInput.
@@ -392,22 +392,22 @@ func (a *A2APolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyProvide
 // A2APolicyDetails - A2A specific policy details.
 type A2APolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency in minutes.
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency in minutes.
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// A value indicating whether multi-VM sync has to be enabled.
-	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *string
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	RecoveryPointHistory *int32
 
 	// The recovery point threshold in minutes.
-	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+	RecoveryPointThresholdInMinutes *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type A2APolicyDetails.
@@ -420,181 +420,181 @@ func (a *A2APolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProviderSpe
 // A2AProtectedDiskDetails - A2A protected disk details.
 type A2AProtectedDiskDetails struct {
 	// The disk level operations list.
-	AllowedDiskLevelOperation []*string `json:"allowedDiskLevelOperation,omitempty"`
+	AllowedDiskLevelOperation []*string
 
 	// The data pending at source virtual machine in MB.
-	DataPendingAtSourceAgentInMB *float64 `json:"dataPendingAtSourceAgentInMB,omitempty"`
+	DataPendingAtSourceAgentInMB *float64
 
 	// The data pending for replication in MB at staging account.
-	DataPendingInStagingStorageAccountInMB *float64 `json:"dataPendingInStagingStorageAccountInMB,omitempty"`
+	DataPendingInStagingStorageAccountInMB *float64
 
 	// The KeyVault resource id for secret (BEK).
-	DekKeyVaultArmID *string `json:"dekKeyVaultArmId,omitempty"`
+	DekKeyVaultArmID *string
 
 	// The disk capacity in bytes.
-	DiskCapacityInBytes *int64 `json:"diskCapacityInBytes,omitempty"`
+	DiskCapacityInBytes *int64
 
 	// The disk name.
-	DiskName *string `json:"diskName,omitempty"`
+	DiskName *string
 
 	// The disk state.
-	DiskState *string `json:"diskState,omitempty"`
+	DiskState *string
 
 	// The type of disk.
-	DiskType *string `json:"diskType,omitempty"`
+	DiskType *string
 
 	// The disk uri.
-	DiskURI *string `json:"diskUri,omitempty"`
+	DiskURI *string
 
 	// The failover name for the managed disk.
-	FailoverDiskName *string `json:"failoverDiskName,omitempty"`
+	FailoverDiskName *string
 
 	// A value indicating whether vm has encrypted os disk or not.
-	IsDiskEncrypted *bool `json:"isDiskEncrypted,omitempty"`
+	IsDiskEncrypted *bool
 
 	// A value indicating whether disk key got encrypted or not.
-	IsDiskKeyEncrypted *bool `json:"isDiskKeyEncrypted,omitempty"`
+	IsDiskKeyEncrypted *bool
 
 	// The KeyVault resource id for key (KEK).
-	KekKeyVaultArmID *string `json:"kekKeyVaultArmId,omitempty"`
+	KekKeyVaultArmID *string
 
 	// The key URL / identifier (KEK).
-	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+	KeyIdentifier *string
 
 	// The type of the monitoring job. The progress is contained in MonitoringPercentageCompletion property.
-	MonitoringJobType *string `json:"monitoringJobType,omitempty"`
+	MonitoringJobType *string
 
 	// The percentage of the monitoring job. The type of the monitoring job is defined by MonitoringJobType property.
-	MonitoringPercentageCompletion *int32 `json:"monitoringPercentageCompletion,omitempty"`
+	MonitoringPercentageCompletion *int32
 
 	// The primary disk storage account.
-	PrimaryDiskAzureStorageAccountID *string `json:"primaryDiskAzureStorageAccountId,omitempty"`
+	PrimaryDiskAzureStorageAccountID *string
 
 	// The primary staging storage account.
-	PrimaryStagingAzureStorageAccountID *string `json:"primaryStagingAzureStorageAccountId,omitempty"`
+	PrimaryStagingAzureStorageAccountID *string
 
 	// The recovery disk storage account.
-	RecoveryAzureStorageAccountID *string `json:"recoveryAzureStorageAccountId,omitempty"`
+	RecoveryAzureStorageAccountID *string
 
 	// Recovery disk uri.
-	RecoveryDiskURI *string `json:"recoveryDiskUri,omitempty"`
+	RecoveryDiskURI *string
 
 	// A value indicating whether resync is required for this disk.
-	ResyncRequired *bool `json:"resyncRequired,omitempty"`
+	ResyncRequired *bool
 
 	// The secret URL / identifier (BEK).
-	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
+	SecretIdentifier *string
 
 	// The test failover name for the managed disk.
-	TfoDiskName *string `json:"tfoDiskName,omitempty"`
+	TfoDiskName *string
 }
 
 // A2AProtectedManagedDiskDetails - A2A protected managed disk details.
 type A2AProtectedManagedDiskDetails struct {
 	// The disk level operations list.
-	AllowedDiskLevelOperation []*string `json:"allowedDiskLevelOperation,omitempty"`
+	AllowedDiskLevelOperation []*string
 
 	// The data pending at source virtual machine in MB.
-	DataPendingAtSourceAgentInMB *float64 `json:"dataPendingAtSourceAgentInMB,omitempty"`
+	DataPendingAtSourceAgentInMB *float64
 
 	// The data pending for replication in MB at staging account.
-	DataPendingInStagingStorageAccountInMB *float64 `json:"dataPendingInStagingStorageAccountInMB,omitempty"`
+	DataPendingInStagingStorageAccountInMB *float64
 
 	// The KeyVault resource id for secret (BEK).
-	DekKeyVaultArmID *string `json:"dekKeyVaultArmId,omitempty"`
+	DekKeyVaultArmID *string
 
 	// The disk capacity in bytes.
-	DiskCapacityInBytes *int64 `json:"diskCapacityInBytes,omitempty"`
+	DiskCapacityInBytes *int64
 
 	// The managed disk Arm id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The disk name.
-	DiskName *string `json:"diskName,omitempty"`
+	DiskName *string
 
 	// The disk state.
-	DiskState *string `json:"diskState,omitempty"`
+	DiskState *string
 
 	// The type of disk.
-	DiskType *string `json:"diskType,omitempty"`
+	DiskType *string
 
 	// The failover name for the managed disk.
-	FailoverDiskName *string `json:"failoverDiskName,omitempty"`
+	FailoverDiskName *string
 
 	// A value indicating whether vm has encrypted os disk or not.
-	IsDiskEncrypted *bool `json:"isDiskEncrypted,omitempty"`
+	IsDiskEncrypted *bool
 
 	// A value indicating whether disk key got encrypted or not.
-	IsDiskKeyEncrypted *bool `json:"isDiskKeyEncrypted,omitempty"`
+	IsDiskKeyEncrypted *bool
 
 	// The KeyVault resource id for key (KEK).
-	KekKeyVaultArmID *string `json:"kekKeyVaultArmId,omitempty"`
+	KekKeyVaultArmID *string
 
 	// The key URL / identifier (KEK).
-	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+	KeyIdentifier *string
 
 	// The type of the monitoring job. The progress is contained in MonitoringPercentageCompletion property.
-	MonitoringJobType *string `json:"monitoringJobType,omitempty"`
+	MonitoringJobType *string
 
 	// The percentage of the monitoring job. The type of the monitoring job is defined by MonitoringJobType property.
-	MonitoringPercentageCompletion *int32 `json:"monitoringPercentageCompletion,omitempty"`
+	MonitoringPercentageCompletion *int32
 
 	// The primary disk encryption set Id.
-	PrimaryDiskEncryptionSetID *string `json:"primaryDiskEncryptionSetId,omitempty"`
+	PrimaryDiskEncryptionSetID *string
 
 	// The primary staging storage account.
-	PrimaryStagingAzureStorageAccountID *string `json:"primaryStagingAzureStorageAccountId,omitempty"`
+	PrimaryStagingAzureStorageAccountID *string
 
 	// The recovery disk encryption set Id.
-	RecoveryDiskEncryptionSetID *string `json:"recoveryDiskEncryptionSetId,omitempty"`
+	RecoveryDiskEncryptionSetID *string
 
 	// Recovery original target disk Arm Id.
-	RecoveryOrignalTargetDiskID *string `json:"recoveryOrignalTargetDiskId,omitempty"`
+	RecoveryOrignalTargetDiskID *string
 
 	// The replica disk type. Its an optional value and will be same as source disk type if not user provided.
-	RecoveryReplicaDiskAccountType *string `json:"recoveryReplicaDiskAccountType,omitempty"`
+	RecoveryReplicaDiskAccountType *string
 
 	// Recovery replica disk Arm Id.
-	RecoveryReplicaDiskID *string `json:"recoveryReplicaDiskId,omitempty"`
+	RecoveryReplicaDiskID *string
 
 	// The recovery disk resource group Arm Id.
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 
 	// The target disk type after failover. Its an optional value and will be same as source disk type if not user provided.
-	RecoveryTargetDiskAccountType *string `json:"recoveryTargetDiskAccountType,omitempty"`
+	RecoveryTargetDiskAccountType *string
 
 	// Recovery target disk Arm Id.
-	RecoveryTargetDiskID *string `json:"recoveryTargetDiskId,omitempty"`
+	RecoveryTargetDiskID *string
 
 	// A value indicating whether resync is required for this disk.
-	ResyncRequired *bool `json:"resyncRequired,omitempty"`
+	ResyncRequired *bool
 
 	// The secret URL / identifier (BEK).
-	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
+	SecretIdentifier *string
 
 	// The test failover name for the managed disk.
-	TfoDiskName *string `json:"tfoDiskName,omitempty"`
+	TfoDiskName *string
 }
 
 // A2AProtectionContainerMappingDetails - A2A provider specific settings.
 type A2AProtectionContainerMappingDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether the auto update is enabled.
-	AgentAutoUpdateStatus *AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
+	AgentAutoUpdateStatus *AgentAutoUpdateStatus
 
 	// The automation account arm id.
-	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
+	AutomationAccountArmID *string
 
 	// A value indicating the type authentication to use for automation Account.
-	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
+	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType
 
 	// The job schedule arm name.
-	JobScheduleName *string `json:"jobScheduleName,omitempty"`
+	JobScheduleName *string
 
 	// The schedule arm name.
-	ScheduleName *string `json:"scheduleName,omitempty"`
+	ScheduleName *string
 }
 
 // GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
@@ -608,49 +608,49 @@ func (a *A2AProtectionContainerMappingDetails) GetProtectionContainerMappingProv
 // A2AProtectionIntentDiskInputDetails - Azure VM unmanaged disk input details.
 type A2AProtectionIntentDiskInputDetails struct {
 	// REQUIRED; The disk Uri.
-	DiskURI *string `json:"diskUri,omitempty"`
+	DiskURI *string
 
 	// The primary staging storage account input.
-	PrimaryStagingStorageAccountCustomInput StorageAccountCustomDetailsClassification `json:"primaryStagingStorageAccountCustomInput,omitempty"`
+	PrimaryStagingStorageAccountCustomInput StorageAccountCustomDetailsClassification
 
 	// The recovery VHD storage account input.
-	RecoveryAzureStorageAccountCustomInput StorageAccountCustomDetailsClassification `json:"recoveryAzureStorageAccountCustomInput,omitempty"`
+	RecoveryAzureStorageAccountCustomInput StorageAccountCustomDetailsClassification
 }
 
 // A2AProtectionIntentManagedDiskInputDetails - Azure VM managed disk input details.
 type A2AProtectionIntentManagedDiskInputDetails struct {
 	// REQUIRED; The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The recovery disk encryption information (for one / single pass flows).
-	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	DiskEncryptionInfo *DiskEncryptionInfo
 
 	// The primary staging storage account input.
-	PrimaryStagingStorageAccountCustomInput StorageAccountCustomDetailsClassification `json:"primaryStagingStorageAccountCustomInput,omitempty"`
+	PrimaryStagingStorageAccountCustomInput StorageAccountCustomDetailsClassification
 
 	// The recovery disk encryption set Id.
-	RecoveryDiskEncryptionSetID *string `json:"recoveryDiskEncryptionSetId,omitempty"`
+	RecoveryDiskEncryptionSetID *string
 
 	// The replica disk type. Its an optional value and will be same as source disk type if not user provided.
-	RecoveryReplicaDiskAccountType *string `json:"recoveryReplicaDiskAccountType,omitempty"`
+	RecoveryReplicaDiskAccountType *string
 
 	// The recovery resource group input.
-	RecoveryResourceGroupCustomInput RecoveryResourceGroupCustomDetailsClassification `json:"recoveryResourceGroupCustomInput,omitempty"`
+	RecoveryResourceGroupCustomInput RecoveryResourceGroupCustomDetailsClassification
 
 	// The target disk type after failover. Its an optional value and will be same as source disk type if not user provided.
-	RecoveryTargetDiskAccountType *string `json:"recoveryTargetDiskAccountType,omitempty"`
+	RecoveryTargetDiskAccountType *string
 }
 
 // A2ARecoveryPointDetails - A2A provider specific recovery point details.
 type A2ARecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// List of disk ids representing a recovery point.
-	Disks []*string `json:"disks,omitempty"`
+	Disks []*string
 
 	// A value indicating whether the recovery point is multi VM consistent.
-	RecoveryPointSyncType *RecoveryPointSyncType `json:"recoveryPointSyncType,omitempty"`
+	RecoveryPointSyncType *RecoveryPointSyncType
 }
 
 // GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
@@ -664,13 +664,13 @@ func (a *A2ARecoveryPointDetails) GetProviderSpecificRecoveryPointDetails() *Pro
 // A2ARemoveDisksInput - A2A remove disk(s) input.
 type A2ARemoveDisksInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The list of vm disk vhd URIs.
-	VMDisksUris []*string `json:"vmDisksUris,omitempty"`
+	VMDisksUris []*string
 
 	// The list of vm managed disk Ids.
-	VMManagedDisksIDs []*string `json:"vmManagedDisksIds,omitempty"`
+	VMManagedDisksIDs []*string
 }
 
 // GetRemoveDisksProviderSpecificInput implements the RemoveDisksProviderSpecificInputClassification interface for type A2ARemoveDisksInput.
@@ -683,168 +683,168 @@ func (a *A2ARemoveDisksInput) GetRemoveDisksProviderSpecificInput() *RemoveDisks
 // A2AReplicationDetails - A2A provider specific settings.
 type A2AReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Agent expiry date.
-	AgentExpiryDate *time.Time `json:"agentExpiryDate,omitempty"`
+	AgentExpiryDate *time.Time
 
 	// The agent version.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// A value indicating whether the auto protection is enabled.
-	AutoProtectionOfDataDisk *AutoProtectionOfDataDisk `json:"autoProtectionOfDataDisk,omitempty"`
+	AutoProtectionOfDataDisk *AutoProtectionOfDataDisk
 
 	// The fabric specific object Id of the virtual machine.
-	FabricObjectID *string `json:"fabricObjectId,omitempty"`
+	FabricObjectID *string
 
 	// The initial primary extended location.
-	InitialPrimaryExtendedLocation *ExtendedLocation `json:"initialPrimaryExtendedLocation,omitempty"`
+	InitialPrimaryExtendedLocation *ExtendedLocation
 
 	// The initial recovery extended location.
-	InitialRecoveryExtendedLocation *ExtendedLocation `json:"initialRecoveryExtendedLocation,omitempty"`
+	InitialRecoveryExtendedLocation *ExtendedLocation
 
 	// A value indicating whether agent certificate update is required.
-	IsReplicationAgentCertificateUpdateRequired *bool `json:"isReplicationAgentCertificateUpdateRequired,omitempty"`
+	IsReplicationAgentCertificateUpdateRequired *bool
 
 	// A value indicating whether replication agent update is required.
-	IsReplicationAgentUpdateRequired *bool `json:"isReplicationAgentUpdateRequired,omitempty"`
+	IsReplicationAgentUpdateRequired *bool
 
 	// The last heartbeat received from the source server.
-	LastHeartbeat *time.Time `json:"lastHeartbeat,omitempty"`
+	LastHeartbeat *time.Time
 
 	// The time (in UTC) when the last RPO value was calculated by Protection Service.
-	LastRpoCalculatedTime *time.Time `json:"lastRpoCalculatedTime,omitempty"`
+	LastRpoCalculatedTime *time.Time
 
 	// An id associated with the PE that survives actions like switch protection which change the backing PE/CPE objects internally.The
 	// lifecycle id gets carried forward to have a link/continuity in being
 	// able to have an Id that denotes the "same" protected item even though other internal Ids/ARM Id might be changing.
-	LifecycleID *string `json:"lifecycleId,omitempty"`
+	LifecycleID *string
 
 	// The management Id.
-	ManagementID *string `json:"managementId,omitempty"`
+	ManagementID *string
 
 	// The type of the monitoring job. The progress is contained in MonitoringPercentageCompletion property.
-	MonitoringJobType *string `json:"monitoringJobType,omitempty"`
+	MonitoringJobType *string
 
 	// The percentage of the monitoring job. The type of the monitoring job is defined by MonitoringJobType property.
-	MonitoringPercentageCompletion *int32 `json:"monitoringPercentageCompletion,omitempty"`
+	MonitoringPercentageCompletion *int32
 
 	// Whether Multi VM group is auto created or specified by user.
-	MultiVMGroupCreateOption *MultiVMGroupCreateOption `json:"multiVmGroupCreateOption,omitempty"`
+	MultiVMGroupCreateOption *MultiVMGroupCreateOption
 
 	// The multi vm group Id.
-	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
+	MultiVMGroupID *string
 
 	// The multi vm group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// The type of operating system.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The primary availability zone.
-	PrimaryAvailabilityZone *string `json:"primaryAvailabilityZone,omitempty"`
+	PrimaryAvailabilityZone *string
 
 	// The primary Extended Location.
-	PrimaryExtendedLocation *ExtendedLocation `json:"primaryExtendedLocation,omitempty"`
+	PrimaryExtendedLocation *ExtendedLocation
 
 	// Primary fabric location.
-	PrimaryFabricLocation *string `json:"primaryFabricLocation,omitempty"`
+	PrimaryFabricLocation *string
 
 	// The list of protected disks.
-	ProtectedDisks []*A2AProtectedDiskDetails `json:"protectedDisks,omitempty"`
+	ProtectedDisks []*A2AProtectedDiskDetails
 
 	// The list of protected managed disks.
-	ProtectedManagedDisks []*A2AProtectedManagedDiskDetails `json:"protectedManagedDisks,omitempty"`
+	ProtectedManagedDisks []*A2AProtectedManagedDiskDetails
 
 	// The recovery availability set.
-	RecoveryAvailabilitySet *string `json:"recoveryAvailabilitySet,omitempty"`
+	RecoveryAvailabilitySet *string
 
 	// The recovery availability zone.
-	RecoveryAvailabilityZone *string `json:"recoveryAvailabilityZone,omitempty"`
+	RecoveryAvailabilityZone *string
 
 	// The recovery resource group.
-	RecoveryAzureResourceGroupID *string `json:"recoveryAzureResourceGroupId,omitempty"`
+	RecoveryAzureResourceGroupID *string
 
 	// The name of recovery virtual machine.
-	RecoveryAzureVMName *string `json:"recoveryAzureVMName,omitempty"`
+	RecoveryAzureVMName *string
 
 	// The size of recovery virtual machine.
-	RecoveryAzureVMSize *string `json:"recoveryAzureVMSize,omitempty"`
+	RecoveryAzureVMSize *string
 
 	// The recovery boot diagnostic storage account Arm Id.
-	RecoveryBootDiagStorageAccountID *string `json:"recoveryBootDiagStorageAccountId,omitempty"`
+	RecoveryBootDiagStorageAccountID *string
 
 	// The recovery capacity reservation group Id.
-	RecoveryCapacityReservationGroupID *string `json:"recoveryCapacityReservationGroupId,omitempty"`
+	RecoveryCapacityReservationGroupID *string
 
 	// The recovery cloud service.
-	RecoveryCloudService *string `json:"recoveryCloudService,omitempty"`
+	RecoveryCloudService *string
 
 	// The recovery Extended Location.
-	RecoveryExtendedLocation *ExtendedLocation `json:"recoveryExtendedLocation,omitempty"`
+	RecoveryExtendedLocation *ExtendedLocation
 
 	// The recovery fabric location.
-	RecoveryFabricLocation *string `json:"recoveryFabricLocation,omitempty"`
+	RecoveryFabricLocation *string
 
 	// The recovery fabric object Id.
-	RecoveryFabricObjectID *string `json:"recoveryFabricObjectId,omitempty"`
+	RecoveryFabricObjectID *string
 
 	// The recovery proximity placement group Id.
-	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
+	RecoveryProximityPlacementGroupID *string
 
 	// The recovery virtual machine scale set id.
-	RecoveryVirtualMachineScaleSetID *string `json:"recoveryVirtualMachineScaleSetId,omitempty"`
+	RecoveryVirtualMachineScaleSetID *string
 
 	// The last RPO value in seconds.
-	RpoInSeconds *int64 `json:"rpoInSeconds,omitempty"`
+	RpoInSeconds *int64
 
 	// The recovery virtual network.
-	SelectedRecoveryAzureNetworkID *string `json:"selectedRecoveryAzureNetworkId,omitempty"`
+	SelectedRecoveryAzureNetworkID *string
 
 	// The test failover virtual network.
-	SelectedTfoAzureNetworkID *string `json:"selectedTfoAzureNetworkId,omitempty"`
+	SelectedTfoAzureNetworkID *string
 
 	// The test failover fabric object Id.
-	TestFailoverRecoveryFabricObjectID *string `json:"testFailoverRecoveryFabricObjectId,omitempty"`
+	TestFailoverRecoveryFabricObjectID *string
 
 	// The test failover vm name.
-	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
+	TfoAzureVMName *string
 
 	// The list of unprotected disks.
-	UnprotectedDisks []*A2AUnprotectedDiskDetails `json:"unprotectedDisks,omitempty"`
+	UnprotectedDisks []*A2AUnprotectedDiskDetails
 
 	// The virtual machine nic details.
-	VMNics []*VMNicDetails `json:"vmNics,omitempty"`
+	VMNics []*VMNicDetails
 
 	// The protection state for the vm.
-	VMProtectionState *string `json:"vmProtectionState,omitempty"`
+	VMProtectionState *string
 
 	// The protection state description for the vm.
-	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+	VMProtectionStateDescription *string
 
 	// The synced configuration details.
-	VMSyncedConfigDetails *AzureToAzureVMSyncedConfigDetails `json:"vmSyncedConfigDetails,omitempty"`
+	VMSyncedConfigDetails *AzureToAzureVMSyncedConfigDetails
 
 	// READ-ONLY; Agent certificate expiry date.
-	AgentCertificateExpiryDate *time.Time `json:"agentCertificateExpiryDate,omitempty" azure:"ro"`
+	AgentCertificateExpiryDate *time.Time
 
 	// READ-ONLY; The initial primary fabric location.
-	InitialPrimaryFabricLocation *string `json:"initialPrimaryFabricLocation,omitempty" azure:"ro"`
+	InitialPrimaryFabricLocation *string
 
 	// READ-ONLY; The initial primary availability zone.
-	InitialPrimaryZone *string `json:"initialPrimaryZone,omitempty" azure:"ro"`
+	InitialPrimaryZone *string
 
 	// READ-ONLY; The initial recovery fabric location.
-	InitialRecoveryFabricLocation *string `json:"initialRecoveryFabricLocation,omitempty" azure:"ro"`
+	InitialRecoveryFabricLocation *string
 
 	// READ-ONLY; The initial recovery availability zone.
-	InitialRecoveryZone *string `json:"initialRecoveryZone,omitempty" azure:"ro"`
+	InitialRecoveryZone *string
 
 	// READ-ONLY; The recovery azure generation.
-	RecoveryAzureGeneration *string `json:"recoveryAzureGeneration,omitempty" azure:"ro"`
+	RecoveryAzureGeneration *string
 
 	// READ-ONLY; The encryption type of the VM.
-	VMEncryptionType *VMEncryptionType `json:"vmEncryptionType,omitempty" azure:"ro"`
+	VMEncryptionType *VMEncryptionType
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -858,73 +858,73 @@ func (a *A2AReplicationDetails) GetReplicationProviderSpecificSettings() *Replic
 // A2AReplicationIntentDetails - A2A provider specific settings.
 type A2AReplicationIntentDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The recovery availability type of the virtual machine.
-	RecoveryAvailabilityType *string `json:"recoveryAvailabilityType,omitempty"`
+	RecoveryAvailabilityType *string
 
 	// A value indicating whether the auto update is enabled.
-	AgentAutoUpdateStatus *AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
+	AgentAutoUpdateStatus *AgentAutoUpdateStatus
 
 	// A value indicating whether the auto protection is enabled.
-	AutoProtectionOfDataDisk *AutoProtectionOfDataDisk `json:"autoProtectionOfDataDisk,omitempty"`
+	AutoProtectionOfDataDisk *AutoProtectionOfDataDisk
 
 	// The automation account arm id.
-	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
+	AutomationAccountArmID *string
 
 	// A value indicating the type authentication to use for automation Account.
-	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
+	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType
 
 	// The recovery disk encryption information (for two pass flows).
-	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	DiskEncryptionInfo *DiskEncryptionInfo
 
 	// The fabric specific object Id of the virtual machine.
-	FabricObjectID *string `json:"fabricObjectId,omitempty"`
+	FabricObjectID *string
 
 	// The multi vm group id.
-	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
+	MultiVMGroupID *string
 
 	// The multi vm group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// The primary location for the virtual machine.
-	PrimaryLocation *string `json:"primaryLocation,omitempty"`
+	PrimaryLocation *string
 
 	// The primary staging storage account details.
-	PrimaryStagingStorageAccount StorageAccountCustomDetailsClassification `json:"primaryStagingStorageAccount,omitempty"`
+	PrimaryStagingStorageAccount StorageAccountCustomDetailsClassification
 
 	// The protection profile custom details.
-	ProtectionProfile ProtectionProfileCustomDetailsClassification `json:"protectionProfile,omitempty"`
+	ProtectionProfile ProtectionProfileCustomDetailsClassification
 
 	// The recovery availability set details.
-	RecoveryAvailabilitySet RecoveryAvailabilitySetCustomDetailsClassification `json:"recoveryAvailabilitySet,omitempty"`
+	RecoveryAvailabilitySet RecoveryAvailabilitySetCustomDetailsClassification
 
 	// The recovery availability zone.
-	RecoveryAvailabilityZone *string `json:"recoveryAvailabilityZone,omitempty"`
+	RecoveryAvailabilityZone *string
 
 	// The boot diagnostic storage account.
-	RecoveryBootDiagStorageAccount StorageAccountCustomDetailsClassification `json:"recoveryBootDiagStorageAccount,omitempty"`
+	RecoveryBootDiagStorageAccount StorageAccountCustomDetailsClassification
 
 	// The recovery location for the virtual machine.
-	RecoveryLocation *string `json:"recoveryLocation,omitempty"`
+	RecoveryLocation *string
 
 	// The recovery proximity placement group custom details.
-	RecoveryProximityPlacementGroup RecoveryProximityPlacementGroupCustomDetailsClassification `json:"recoveryProximityPlacementGroup,omitempty"`
+	RecoveryProximityPlacementGroup RecoveryProximityPlacementGroupCustomDetailsClassification
 
 	// The recovery resource group id.
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 
 	// The recovery subscription Id of the virtual machine.
-	RecoverySubscriptionID *string `json:"recoverySubscriptionId,omitempty"`
+	RecoverySubscriptionID *string
 
 	// The recovery virtual network details.
-	RecoveryVirtualNetwork RecoveryVirtualNetworkCustomDetailsClassification `json:"recoveryVirtualNetwork,omitempty"`
+	RecoveryVirtualNetwork RecoveryVirtualNetworkCustomDetailsClassification
 
 	// The list of vm disk details.
-	VMDisks []*A2AProtectionIntentDiskInputDetails `json:"vmDisks,omitempty"`
+	VMDisks []*A2AProtectionIntentDiskInputDetails
 
 	// The list of vm managed disk details.
-	VMManagedDisks []*A2AProtectionIntentManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
+	VMManagedDisks []*A2AProtectionIntentManagedDiskInputDetails
 }
 
 // GetReplicationProtectionIntentProviderSpecificSettings implements the ReplicationProtectionIntentProviderSpecificSettingsClassification
@@ -938,25 +938,25 @@ func (a *A2AReplicationIntentDetails) GetReplicationProtectionIntentProviderSpec
 // A2AReprotectInput - Azure specific reprotect input.
 type A2AReprotectInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The Policy Id.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// The recovery availability set.
-	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	RecoveryAvailabilitySetID *string
 
 	// The recovery cloud service Id. Valid for V1 scenarios.
-	RecoveryCloudServiceID *string `json:"recoveryCloudServiceId,omitempty"`
+	RecoveryCloudServiceID *string
 
 	// The recovery container Id.
-	RecoveryContainerID *string `json:"recoveryContainerId,omitempty"`
+	RecoveryContainerID *string
 
 	// The recovery resource group Id. Valid for V2 scenarios.
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 
 	// The list of vm disk details.
-	VMDisks []*A2AVMDiskInputDetails `json:"vmDisks,omitempty"`
+	VMDisks []*A2AVMDiskInputDetails
 }
 
 // GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
@@ -970,46 +970,46 @@ func (a *A2AReprotectInput) GetReverseReplicationProviderSpecificInput() *Revers
 // A2ASwitchProtectionInput - A2A specific switch protection input.
 type A2ASwitchProtectionInput struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The recovery disk encryption information.
-	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	DiskEncryptionInfo *DiskEncryptionInfo
 
 	// The Policy Id.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// The recovery availability set.
-	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	RecoveryAvailabilitySetID *string
 
 	// The recovery availability zone.
-	RecoveryAvailabilityZone *string `json:"recoveryAvailabilityZone,omitempty"`
+	RecoveryAvailabilityZone *string
 
 	// The boot diagnostic storage account.
-	RecoveryBootDiagStorageAccountID *string `json:"recoveryBootDiagStorageAccountId,omitempty"`
+	RecoveryBootDiagStorageAccountID *string
 
 	// The recovery capacity reservation group Id.
-	RecoveryCapacityReservationGroupID *string `json:"recoveryCapacityReservationGroupId,omitempty"`
+	RecoveryCapacityReservationGroupID *string
 
 	// The recovery cloud service Id. Valid for V1 scenarios.
-	RecoveryCloudServiceID *string `json:"recoveryCloudServiceId,omitempty"`
+	RecoveryCloudServiceID *string
 
 	// The recovery container Id.
-	RecoveryContainerID *string `json:"recoveryContainerId,omitempty"`
+	RecoveryContainerID *string
 
 	// The recovery proximity placement group Id.
-	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
+	RecoveryProximityPlacementGroupID *string
 
 	// The recovery resource group Id. Valid for V2 scenarios.
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 
 	// The virtual machine scale set id.
-	RecoveryVirtualMachineScaleSetID *string `json:"recoveryVirtualMachineScaleSetId,omitempty"`
+	RecoveryVirtualMachineScaleSetID *string
 
 	// The list of vm disk details.
-	VMDisks []*A2AVMDiskInputDetails `json:"vmDisks,omitempty"`
+	VMDisks []*A2AVMDiskInputDetails
 
 	// The list of vm managed disk details.
-	VMManagedDisks []*A2AVMManagedDiskInputDetails `json:"vmManagedDisks,omitempty"`
+	VMManagedDisks []*A2AVMManagedDiskInputDetails
 }
 
 // GetSwitchProtectionProviderSpecificInput implements the SwitchProtectionProviderSpecificInputClassification interface for
@@ -1023,14 +1023,14 @@ func (a *A2ASwitchProtectionInput) GetSwitchProtectionProviderSpecificInput() *S
 // A2ATestFailoverInput - A2A provider specific input for test failover.
 type A2ATestFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether to use recovery cloud service for TFO or not.
-	CloudServiceCreationOption *string `json:"cloudServiceCreationOption,omitempty"`
+	CloudServiceCreationOption *string
 
 	// The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null
 	// should be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 }
 
 // GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
@@ -1044,14 +1044,14 @@ func (a *A2ATestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFailo
 // A2AUnplannedFailoverInput - A2A provider specific input for unplanned failover.
 type A2AUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether to use recovery cloud service for failover or not.
-	CloudServiceCreationOption *string `json:"cloudServiceCreationOption,omitempty"`
+	CloudServiceCreationOption *string
 
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 }
 
 // GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
@@ -1065,25 +1065,25 @@ func (a *A2AUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificInput() 
 // A2AUnprotectedDiskDetails - A2A unprotected disk details.
 type A2AUnprotectedDiskDetails struct {
 	// A value indicating whether the disk auto protection is enabled.
-	DiskAutoProtectionStatus *AutoProtectionOfDataDisk `json:"diskAutoProtectionStatus,omitempty"`
+	DiskAutoProtectionStatus *AutoProtectionOfDataDisk
 
 	// The source lun Id for the data disk.
-	DiskLunID *int32 `json:"diskLunId,omitempty"`
+	DiskLunID *int32
 }
 
 // A2AUpdateContainerMappingInput - A2A update protection container mapping.
 type A2AUpdateContainerMappingInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether the auto update is enabled.
-	AgentAutoUpdateStatus *AgentAutoUpdateStatus `json:"agentAutoUpdateStatus,omitempty"`
+	AgentAutoUpdateStatus *AgentAutoUpdateStatus
 
 	// The automation account arm id.
-	AutomationAccountArmID *string `json:"automationAccountArmId,omitempty"`
+	AutomationAccountArmID *string
 
 	// A value indicating the type authentication to use for automation Account.
-	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType `json:"automationAccountAuthenticationType,omitempty"`
+	AutomationAccountAuthenticationType *AutomationAccountAuthenticationType
 }
 
 // GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
@@ -1097,34 +1097,34 @@ func (a *A2AUpdateContainerMappingInput) GetReplicationProviderSpecificUpdateCon
 // A2AUpdateReplicationProtectedItemInput - InMage Azure V2 input to update replication protected item.
 type A2AUpdateReplicationProtectedItemInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The recovery os disk encryption information.
-	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	DiskEncryptionInfo *DiskEncryptionInfo
 
 	// Managed disk update details.
-	ManagedDiskUpdateDetails []*A2AVMManagedDiskUpdateDetails `json:"managedDiskUpdateDetails,omitempty"`
+	ManagedDiskUpdateDetails []*A2AVMManagedDiskUpdateDetails
 
 	// The boot diagnostic storage account.
-	RecoveryBootDiagStorageAccountID *string `json:"recoveryBootDiagStorageAccountId,omitempty"`
+	RecoveryBootDiagStorageAccountID *string
 
 	// The recovery capacity reservation group Id.
-	RecoveryCapacityReservationGroupID *string `json:"recoveryCapacityReservationGroupId,omitempty"`
+	RecoveryCapacityReservationGroupID *string
 
 	// The target cloud service ARM Id (for V1).
-	RecoveryCloudServiceID *string `json:"recoveryCloudServiceId,omitempty"`
+	RecoveryCloudServiceID *string
 
 	// The recovery proximity placement group Id.
-	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
+	RecoveryProximityPlacementGroupID *string
 
 	// The target resource group ARM Id (for V2).
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 
 	// The recovery virtual machine scale set Id.
-	RecoveryVirtualMachineScaleSetID *string `json:"recoveryVirtualMachineScaleSetId,omitempty"`
+	RecoveryVirtualMachineScaleSetID *string
 
 	// The user given name for Test Failover VM.
-	TfoAzureVMName *string `json:"tfoAzureVMName,omitempty"`
+	TfoAzureVMName *string
 }
 
 // GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
@@ -1138,113 +1138,113 @@ func (a *A2AUpdateReplicationProtectedItemInput) GetUpdateReplicationProtectedIt
 // A2AVMDiskInputDetails - A2A disk input details.
 type A2AVMDiskInputDetails struct {
 	// REQUIRED; The disk Uri.
-	DiskURI *string `json:"diskUri,omitempty"`
+	DiskURI *string
 
 	// REQUIRED; The primary staging storage account Id.
-	PrimaryStagingAzureStorageAccountID *string `json:"primaryStagingAzureStorageAccountId,omitempty"`
+	PrimaryStagingAzureStorageAccountID *string
 
 	// REQUIRED; The recovery VHD storage account Id.
-	RecoveryAzureStorageAccountID *string `json:"recoveryAzureStorageAccountId,omitempty"`
+	RecoveryAzureStorageAccountID *string
 }
 
 // A2AVMManagedDiskInputDetails - A2A managed disk input details.
 type A2AVMManagedDiskInputDetails struct {
 	// REQUIRED; The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// REQUIRED; The primary staging storage account Arm Id.
-	PrimaryStagingAzureStorageAccountID *string `json:"primaryStagingAzureStorageAccountId,omitempty"`
+	PrimaryStagingAzureStorageAccountID *string
 
 	// REQUIRED; The target resource group Arm Id.
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 
 	// The recovery disk encryption information (for one / single pass flows).
-	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	DiskEncryptionInfo *DiskEncryptionInfo
 
 	// The recovery disk encryption set Id.
-	RecoveryDiskEncryptionSetID *string `json:"recoveryDiskEncryptionSetId,omitempty"`
+	RecoveryDiskEncryptionSetID *string
 
 	// The replica disk type. Its an optional value and will be same as source disk type if not user provided.
-	RecoveryReplicaDiskAccountType *string `json:"recoveryReplicaDiskAccountType,omitempty"`
+	RecoveryReplicaDiskAccountType *string
 
 	// The target disk type after failover. Its an optional value and will be same as source disk type if not user provided.
-	RecoveryTargetDiskAccountType *string `json:"recoveryTargetDiskAccountType,omitempty"`
+	RecoveryTargetDiskAccountType *string
 }
 
 // A2AVMManagedDiskUpdateDetails - A2A Vm managed disk update details.
 type A2AVMManagedDiskUpdateDetails struct {
 	// The recovery os disk encryption information.
-	DiskEncryptionInfo *DiskEncryptionInfo `json:"diskEncryptionInfo,omitempty"`
+	DiskEncryptionInfo *DiskEncryptionInfo
 
 	// The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The target disk name for unplanned failover operation.
-	FailoverDiskName *string `json:"failoverDiskName,omitempty"`
+	FailoverDiskName *string
 
 	// The replica disk type before failover.
-	RecoveryReplicaDiskAccountType *string `json:"recoveryReplicaDiskAccountType,omitempty"`
+	RecoveryReplicaDiskAccountType *string
 
 	// The target disk type before failover.
-	RecoveryTargetDiskAccountType *string `json:"recoveryTargetDiskAccountType,omitempty"`
+	RecoveryTargetDiskAccountType *string
 
 	// The target disk name for test failover operation.
-	TfoDiskName *string `json:"tfoDiskName,omitempty"`
+	TfoDiskName *string
 }
 
 // A2AZoneDetails - Zone details data.
 type A2AZoneDetails struct {
 	// Source zone info.
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// The target zone info.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ASRTask - Task of the Job.
 type ASRTask struct {
 	// The state/actions applicable on this task.
-	AllowedActions []*string `json:"allowedActions,omitempty"`
+	AllowedActions []*string
 
 	// The custom task details based on the task type.
-	CustomDetails TaskTypeDetailsClassification `json:"customDetails,omitempty"`
+	CustomDetails TaskTypeDetailsClassification
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The task error details.
-	Errors []*JobErrorDetails `json:"errors,omitempty"`
+	Errors []*JobErrorDetails
 
 	// The name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The custom task details based on the task type, if the task type is GroupTaskDetails or one of the types derived from it.
-	GroupTaskCustomDetails GroupTaskDetailsClassification `json:"groupTaskCustomDetails,omitempty"`
+	GroupTaskCustomDetails GroupTaskDetailsClassification
 
 	// The unique Task name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The State. It is one of these values - NotStarted, InProgress, Succeeded, Failed, Cancelled, Suspended or Other.
-	State *string `json:"state,omitempty"`
+	State *string
 
 	// The description of the task state. For example - For Succeeded state, description can be Completed, PartiallySucceeded,
 	// CompletedWithInformation or Skipped.
-	StateDescription *string `json:"stateDescription,omitempty"`
+	StateDescription *string
 
 	// The Id.
-	TaskID *string `json:"taskId,omitempty"`
+	TaskID *string
 
 	// The type of task. Details in CustomDetails property depend on this type.
-	TaskType *string `json:"taskType,omitempty"`
+	TaskType *string
 }
 
 // AddDisksInput - Input for add disk(s) operation.
 type AddDisksInput struct {
 	// Add disks input properties.
-	Properties *AddDisksInputProperties `json:"properties,omitempty"`
+	Properties *AddDisksInputProperties
 }
 
 // AddDisksInputProperties - Add Disks input properties.
@@ -1252,7 +1252,7 @@ type AddDisksInputProperties struct {
 	// REQUIRED; The ReplicationProviderInput. For HyperVReplicaAzure provider, it will be AzureEnableProtectionInput object.
 	// For San provider, it will be SanEnableProtectionInput object. For HyperVReplicaAzure
 	// provider, it can be null.
-	ProviderSpecificDetails AddDisksProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails AddDisksProviderSpecificInputClassification
 }
 
 // AddDisksProviderSpecificInputClassification provides polymorphic access to related types.
@@ -1267,7 +1267,7 @@ type AddDisksProviderSpecificInputClassification interface {
 // AddDisksProviderSpecificInput - Add Disks provider specific input.
 type AddDisksProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetAddDisksProviderSpecificInput implements the AddDisksProviderSpecificInputClassification interface for type AddDisksProviderSpecificInput.
@@ -1278,142 +1278,142 @@ func (a *AddDisksProviderSpecificInput) GetAddDisksProviderSpecificInput() *AddD
 // AddRecoveryServicesProviderInput - Input required to add a provider.
 type AddRecoveryServicesProviderInput struct {
 	// REQUIRED; The properties of an add provider request.
-	Properties *AddRecoveryServicesProviderInputProperties `json:"properties,omitempty"`
+	Properties *AddRecoveryServicesProviderInputProperties
 }
 
 // AddRecoveryServicesProviderInputProperties - The properties of an add provider request.
 type AddRecoveryServicesProviderInputProperties struct {
 	// REQUIRED; The identity provider input for DRA authentication.
-	AuthenticationIdentityInput *IdentityProviderInput `json:"authenticationIdentityInput,omitempty"`
+	AuthenticationIdentityInput *IdentityProviderInput
 
 	// REQUIRED; The name of the machine where the provider is getting added.
-	MachineName *string `json:"machineName,omitempty"`
+	MachineName *string
 
 	// REQUIRED; The identity provider input for resource access.
-	ResourceAccessIdentityInput *IdentityProviderInput `json:"resourceAccessIdentityInput,omitempty"`
+	ResourceAccessIdentityInput *IdentityProviderInput
 
 	// The Bios Id of the machine.
-	BiosID *string `json:"biosId,omitempty"`
+	BiosID *string
 
 	// The identity provider input for data plane authentication.
-	DataPlaneAuthenticationIdentityInput *IdentityProviderInput `json:"dataPlaneAuthenticationIdentityInput,omitempty"`
+	DataPlaneAuthenticationIdentityInput *IdentityProviderInput
 
 	// The Id of the machine where the provider is getting added.
-	MachineID *string `json:"machineId,omitempty"`
+	MachineID *string
 }
 
 // AddVCenterRequest - Input required to add vCenter.
 type AddVCenterRequest struct {
 	// The properties of an add vCenter request.
-	Properties *AddVCenterRequestProperties `json:"properties,omitempty"`
+	Properties *AddVCenterRequestProperties
 }
 
 // AddVCenterRequestProperties - The properties of an add vCenter request.
 type AddVCenterRequestProperties struct {
 	// The friendly name of the vCenter.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The IP address of the vCenter to be discovered.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The port number for discovery.
-	Port *string `json:"port,omitempty"`
+	Port *string
 
 	// The process server Id from where the discovery is orchestrated.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The account Id which has privileges to discover the vCenter.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 }
 
 // AgentDetails - Agent details.
 type AgentDetails struct {
 	// READ-ONLY; The Id of the agent running on the server.
-	AgentID *string `json:"agentId,omitempty" azure:"ro"`
+	AgentID *string
 
 	// READ-ONLY; The machine BIOS Id.
-	BiosID *string `json:"biosId,omitempty" azure:"ro"`
+	BiosID *string
 
 	// READ-ONLY; The disks.
-	Disks []*AgentDiskDetails `json:"disks,omitempty" azure:"ro"`
+	Disks []*AgentDiskDetails
 
 	// READ-ONLY; The machine FQDN.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; The Id of the machine to which the agent is registered.
-	MachineID *string `json:"machineId,omitempty" azure:"ro"`
+	MachineID *string
 }
 
 // AgentDiskDetails - Agent disk details.
 type AgentDiskDetails struct {
 	// READ-ONLY; The disk capacity in bytes.
-	CapacityInBytes *int64 `json:"capacityInBytes,omitempty" azure:"ro"`
+	CapacityInBytes *int64
 
 	// READ-ONLY; The disk Id.
-	DiskID *string `json:"diskId,omitempty" azure:"ro"`
+	DiskID *string
 
 	// READ-ONLY; The disk name.
-	DiskName *string `json:"diskName,omitempty" azure:"ro"`
+	DiskName *string
 
 	// READ-ONLY; A value indicating whether the disk is the OS disk.
-	IsOSDisk *string `json:"isOSDisk,omitempty" azure:"ro"`
+	IsOSDisk *string
 
 	// READ-ONLY; The lun of disk.
-	LunID *int32 `json:"lunId,omitempty" azure:"ro"`
+	LunID *int32
 }
 
 // Alert - Implements the Alert class.
 type Alert struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Alert related data.
-	Properties *AlertProperties `json:"properties,omitempty"`
+	Properties *AlertProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertCollection - Collection of alerts.
 type AlertCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of alerts.
-	Value []*Alert `json:"value,omitempty"`
+	Value []*Alert
 }
 
 // AlertProperties - The properties of an alert.
 type AlertProperties struct {
 	// The custom email address for sending emails.
-	CustomEmailAddresses []*string `json:"customEmailAddresses,omitempty"`
+	CustomEmailAddresses []*string
 
 	// The locale for the email notification.
-	Locale *string `json:"locale,omitempty"`
+	Locale *string
 
 	// A value indicating whether to send email to subscription administrator.
-	SendToOwners *string `json:"sendToOwners,omitempty"`
+	SendToOwners *string
 }
 
 // ApplianceCollection - Collection of appliance details.
 type ApplianceCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The appliance details.
-	Value []*ReplicationAppliance `json:"value,omitempty"`
+	Value []*ReplicationAppliance
 }
 
 // ApplianceQueryParameter - Query parameter to get appliance.
 type ApplianceQueryParameter struct {
 	// The providerType to be used for fetching appliance details.
-	ProviderType *string `json:"providerType,omitempty"`
+	ProviderType *string
 }
 
 // ApplianceSpecificDetailsClassification provides polymorphic access to related types.
@@ -1428,7 +1428,7 @@ type ApplianceSpecificDetailsClassification interface {
 // ApplianceSpecificDetails - Appliance specific details.
 type ApplianceSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetApplianceSpecificDetails implements the ApplianceSpecificDetailsClassification interface for type ApplianceSpecificDetails.
@@ -1437,16 +1437,16 @@ func (a *ApplianceSpecificDetails) GetApplianceSpecificDetails() *ApplianceSpeci
 // ApplyRecoveryPointInput - Input to apply recovery point.
 type ApplyRecoveryPointInput struct {
 	// REQUIRED; The input properties to apply recovery point.
-	Properties *ApplyRecoveryPointInputProperties `json:"properties,omitempty"`
+	Properties *ApplyRecoveryPointInputProperties
 }
 
 // ApplyRecoveryPointInputProperties - Input properties to apply recovery point.
 type ApplyRecoveryPointInputProperties struct {
 	// REQUIRED; Provider specific input for applying recovery point.
-	ProviderSpecificDetails ApplyRecoveryPointProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ApplyRecoveryPointProviderSpecificInputClassification
 
 	// The recovery point Id.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 }
 
 // ApplyRecoveryPointProviderSpecificInputClassification provides polymorphic access to related types.
@@ -1462,7 +1462,7 @@ type ApplyRecoveryPointProviderSpecificInputClassification interface {
 // ApplyRecoveryPointProviderSpecificInput - Provider specific input for apply recovery point.
 type ApplyRecoveryPointProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
@@ -1474,11 +1474,11 @@ func (a *ApplyRecoveryPointProviderSpecificInput) GetApplyRecoveryPointProviderS
 // AsrJobDetails - This class represents job details based on specific job type.
 type AsrJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
-	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
+	AffectedObjectDetails map[string]*string
 }
 
 // GetJobDetails implements the JobDetailsClassification interface for type AsrJobDetails.
@@ -1492,34 +1492,34 @@ func (a *AsrJobDetails) GetJobDetails() *JobDetails {
 // AutomationRunbookTaskDetails - This class represents the task details for an automation runbook.
 type AutomationRunbookTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The automation account name of the runbook.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// The cloud service of the automation runbook account.
-	CloudServiceName *string `json:"cloudServiceName,omitempty"`
+	CloudServiceName *string
 
 	// A value indicating whether it is a primary side script or not.
-	IsPrimarySideScript *bool `json:"isPrimarySideScript,omitempty"`
+	IsPrimarySideScript *bool
 
 	// The job Id of the runbook execution.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 
 	// The execution output of the runbook.
-	JobOutput *string `json:"jobOutput,omitempty"`
+	JobOutput *string
 
 	// The recovery plan task name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The runbook Id.
-	RunbookID *string `json:"runbookId,omitempty"`
+	RunbookID *string
 
 	// The runbook name.
-	RunbookName *string `json:"runbookName,omitempty"`
+	RunbookName *string
 
 	// The subscription Id of the automation runbook account.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 }
 
 // GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type AutomationRunbookTaskDetails.
@@ -1532,10 +1532,10 @@ func (a *AutomationRunbookTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
 // AzureFabricCreationInput - Fabric provider specific settings.
 type AzureFabricCreationInput struct {
 	// REQUIRED; Gets the class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 }
 
 // GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type AzureFabricCreationInput.
@@ -1548,19 +1548,19 @@ func (a *AzureFabricCreationInput) GetFabricSpecificCreationInput() *FabricSpeci
 // AzureFabricSpecificDetails - Azure Fabric Specific Details.
 type AzureFabricSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The container Ids for the Azure fabric.
-	ContainerIDs []*string `json:"containerIds,omitempty"`
+	ContainerIDs []*string
 
 	// The ExtendedLocations.
-	ExtendedLocations []*A2AExtendedLocationDetails `json:"extendedLocations,omitempty"`
+	ExtendedLocations []*A2AExtendedLocationDetails
 
 	// The Location for the Azure fabric.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The zones.
-	Zones []*A2AZoneDetails `json:"zones,omitempty"`
+	Zones []*A2AZoneDetails
 }
 
 // GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type AzureFabricSpecificDetails.
@@ -1574,10 +1574,10 @@ func (a *AzureFabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecificD
 // mapping.
 type AzureToAzureCreateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The primary azure vnet Id.
-	PrimaryNetworkID *string `json:"primaryNetworkId,omitempty"`
+	PrimaryNetworkID *string
 }
 
 // GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
@@ -1591,13 +1591,13 @@ func (a *AzureToAzureCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMa
 // AzureToAzureNetworkMappingSettings - A2A Network Mapping fabric specific settings.
 type AzureToAzureNetworkMappingSettings struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The primary fabric location.
-	PrimaryFabricLocation *string `json:"primaryFabricLocation,omitempty"`
+	PrimaryFabricLocation *string
 
 	// The recovery fabric location.
-	RecoveryFabricLocation *string `json:"recoveryFabricLocation,omitempty"`
+	RecoveryFabricLocation *string
 }
 
 // GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
@@ -1611,10 +1611,10 @@ func (a *AzureToAzureNetworkMappingSettings) GetNetworkMappingFabricSpecificSett
 // AzureToAzureUpdateNetworkMappingInput - Updates network mappings input.
 type AzureToAzureUpdateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The primary azure vnet Id.
-	PrimaryNetworkID *string `json:"primaryNetworkId,omitempty"`
+	PrimaryNetworkID *string
 }
 
 // GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
@@ -1628,52 +1628,52 @@ func (a *AzureToAzureUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMa
 // AzureToAzureVMSyncedConfigDetails - Azure to Azure VM synced configuration details.
 type AzureToAzureVMSyncedConfigDetails struct {
 	// The Azure VM input endpoints.
-	InputEndpoints []*InputEndpoint `json:"inputEndpoints,omitempty"`
+	InputEndpoints []*InputEndpoint
 
 	// The Azure VM tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AzureVMDiskDetails - Disk details for E2A provider.
 type AzureVMDiskDetails struct {
 	// The custom target Azure disk name.
-	CustomTargetDiskName *string `json:"customTargetDiskName,omitempty"`
+	CustomTargetDiskName *string
 
 	// The DiskEncryptionSet ARM ID.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// The disk resource id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// Ordinal\LunId of the disk for the Azure VM.
-	LunID *string `json:"lunId,omitempty"`
+	LunID *string
 
 	// Max side in MB.
-	MaxSizeMB *string `json:"maxSizeMB,omitempty"`
+	MaxSizeMB *string
 
 	// Blob uri of the Azure disk.
-	TargetDiskLocation *string `json:"targetDiskLocation,omitempty"`
+	TargetDiskLocation *string
 
 	// The target Azure disk name.
-	TargetDiskName *string `json:"targetDiskName,omitempty"`
+	TargetDiskName *string
 
 	// The VHD id.
-	VhdID *string `json:"vhdId,omitempty"`
+	VhdID *string
 
 	// VHD name.
-	VhdName *string `json:"vhdName,omitempty"`
+	VhdName *string
 
 	// VHD type.
-	VhdType *string `json:"vhdType,omitempty"`
+	VhdType *string
 }
 
 // ComputeSizeErrorDetails - Represents the error used to indicate why the target compute size is not applicable.
 type ComputeSizeErrorDetails struct {
 	// The error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The severity of the error.
-	Severity *string `json:"severity,omitempty"`
+	Severity *string
 }
 
 // ConfigurationSettingsClassification provides polymorphic access to related types.
@@ -1688,7 +1688,7 @@ type ConfigurationSettingsClassification interface {
 // ConfigurationSettings - Replication provider specific settings.
 type ConfigurationSettings struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type ConfigurationSettings.
@@ -1697,28 +1697,28 @@ func (c *ConfigurationSettings) GetConfigurationSettings() *ConfigurationSetting
 // ConfigureAlertRequest - Request to configure alerts for the system.
 type ConfigureAlertRequest struct {
 	// The properties of a configure alert request.
-	Properties *ConfigureAlertRequestProperties `json:"properties,omitempty"`
+	Properties *ConfigureAlertRequestProperties
 }
 
 // ConfigureAlertRequestProperties - Properties of a configure alert request.
 type ConfigureAlertRequestProperties struct {
 	// The custom email address for sending emails.
-	CustomEmailAddresses []*string `json:"customEmailAddresses,omitempty"`
+	CustomEmailAddresses []*string
 
 	// The locale for the email notification.
-	Locale *string `json:"locale,omitempty"`
+	Locale *string
 
 	// A value indicating whether to send email to subscription administrator.
-	SendToOwners *string `json:"sendToOwners,omitempty"`
+	SendToOwners *string
 }
 
 // ConsistencyCheckTaskDetails - This class contains monitoring details of all the inconsistent Protected Entities in Vmm.
 type ConsistencyCheckTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The list of inconsistent Vm details.
-	VMDetails []*InconsistentVMDetails `json:"vmDetails,omitempty"`
+	VMDetails []*InconsistentVMDetails
 }
 
 // GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ConsistencyCheckTaskDetails.
@@ -1731,73 +1731,73 @@ func (c *ConsistencyCheckTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
 // CreateNetworkMappingInput - Create network mappings input.
 type CreateNetworkMappingInput struct {
 	// REQUIRED; Input properties for creating network mapping.
-	Properties *CreateNetworkMappingInputProperties `json:"properties,omitempty"`
+	Properties *CreateNetworkMappingInputProperties
 }
 
 // CreateNetworkMappingInputProperties - Common input details for network mapping operation.
 type CreateNetworkMappingInputProperties struct {
 	// REQUIRED; Recovery network Id.
-	RecoveryNetworkID *string `json:"recoveryNetworkId,omitempty"`
+	RecoveryNetworkID *string
 
 	// Fabric specific input properties.
-	FabricSpecificDetails FabricSpecificCreateNetworkMappingInputClassification `json:"fabricSpecificDetails,omitempty"`
+	FabricSpecificDetails FabricSpecificCreateNetworkMappingInputClassification
 
 	// Recovery fabric Name.
-	RecoveryFabricName *string `json:"recoveryFabricName,omitempty"`
+	RecoveryFabricName *string
 }
 
 // CreatePolicyInput - Protection Policy input.
 type CreatePolicyInput struct {
 	// Policy creation properties.
-	Properties *CreatePolicyInputProperties `json:"properties,omitempty"`
+	Properties *CreatePolicyInputProperties
 }
 
 // CreatePolicyInputProperties - Policy creation properties.
 type CreatePolicyInputProperties struct {
 	// The ReplicationProviderSettings.
-	ProviderSpecificInput PolicyProviderSpecificInputClassification `json:"providerSpecificInput,omitempty"`
+	ProviderSpecificInput PolicyProviderSpecificInputClassification
 }
 
 // CreateProtectionContainerInput - Create protection container input.
 type CreateProtectionContainerInput struct {
 	// Create protection container input properties.
-	Properties *CreateProtectionContainerInputProperties `json:"properties,omitempty"`
+	Properties *CreateProtectionContainerInputProperties
 }
 
 // CreateProtectionContainerInputProperties - Create protection container input properties.
 type CreateProtectionContainerInputProperties struct {
 	// Provider specific inputs for container creation.
-	ProviderSpecificInput []ReplicationProviderSpecificContainerCreationInputClassification `json:"providerSpecificInput,omitempty"`
+	ProviderSpecificInput []ReplicationProviderSpecificContainerCreationInputClassification
 }
 
 // CreateProtectionContainerMappingInput - Configure pairing input.
 type CreateProtectionContainerMappingInput struct {
 	// Configure protection input properties.
-	Properties *CreateProtectionContainerMappingInputProperties `json:"properties,omitempty"`
+	Properties *CreateProtectionContainerMappingInputProperties
 }
 
 // CreateProtectionContainerMappingInputProperties - Configure pairing input properties.
 type CreateProtectionContainerMappingInputProperties struct {
 	// Applicable policy.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Provider specific input for pairing.
-	ProviderSpecificInput ReplicationProviderSpecificContainerMappingInputClassification `json:"providerSpecificInput,omitempty"`
+	ProviderSpecificInput ReplicationProviderSpecificContainerMappingInputClassification
 
 	// The target unique protection container name.
-	TargetProtectionContainerID *string `json:"targetProtectionContainerId,omitempty"`
+	TargetProtectionContainerID *string
 }
 
 // CreateProtectionIntentInput - Create protection intent input.
 type CreateProtectionIntentInput struct {
 	// Create protection intent input properties.
-	Properties *CreateProtectionIntentProperties `json:"properties,omitempty"`
+	Properties *CreateProtectionIntentProperties
 }
 
 // CreateProtectionIntentProperties - Create protection intent input properties.
 type CreateProtectionIntentProperties struct {
 	// The ReplicationProviderInput. For A2A provider, it will be A2ACreateProtectionIntentInput object.
-	ProviderSpecificDetails CreateProtectionIntentProviderSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails CreateProtectionIntentProviderSpecificDetailsClassification
 }
 
 // CreateProtectionIntentProviderSpecificDetailsClassification provides polymorphic access to related types.
@@ -1812,7 +1812,7 @@ type CreateProtectionIntentProviderSpecificDetailsClassification interface {
 // CreateProtectionIntentProviderSpecificDetails - Create protection intent provider specific input.
 type CreateProtectionIntentProviderSpecificDetails struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetCreateProtectionIntentProviderSpecificDetails implements the CreateProtectionIntentProviderSpecificDetailsClassification
@@ -1824,97 +1824,97 @@ func (c *CreateProtectionIntentProviderSpecificDetails) GetCreateProtectionInten
 // CreateRecoveryPlanInput - Create recovery plan input class.
 type CreateRecoveryPlanInput struct {
 	// REQUIRED; Recovery plan creation properties.
-	Properties *CreateRecoveryPlanInputProperties `json:"properties,omitempty"`
+	Properties *CreateRecoveryPlanInputProperties
 }
 
 // CreateRecoveryPlanInputProperties - Recovery plan creation properties.
 type CreateRecoveryPlanInputProperties struct {
 	// REQUIRED; The recovery plan groups.
-	Groups []*RecoveryPlanGroup `json:"groups,omitempty"`
+	Groups []*RecoveryPlanGroup
 
 	// REQUIRED; The primary fabric Id.
-	PrimaryFabricID *string `json:"primaryFabricId,omitempty"`
+	PrimaryFabricID *string
 
 	// REQUIRED; The recovery fabric Id.
-	RecoveryFabricID *string `json:"recoveryFabricId,omitempty"`
+	RecoveryFabricID *string
 
 	// The failover deployment model.
-	FailoverDeploymentModel *FailoverDeploymentModel `json:"failoverDeploymentModel,omitempty"`
+	FailoverDeploymentModel *FailoverDeploymentModel
 
 	// The provider specific input.
-	ProviderSpecificInput []RecoveryPlanProviderSpecificInputClassification `json:"providerSpecificInput,omitempty"`
+	ProviderSpecificInput []RecoveryPlanProviderSpecificInputClassification
 }
 
 // CriticalJobHistoryDetails - Critical past job details of the migration item.
 type CriticalJobHistoryDetails struct {
 	// READ-ONLY; The ARM Id of the job being executed.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
+	JobID *string
 
 	// READ-ONLY; The job name.
-	JobName *string `json:"jobName,omitempty" azure:"ro"`
+	JobName *string
 
 	// READ-ONLY; The job state.
-	JobStatus *string `json:"jobStatus,omitempty" azure:"ro"`
+	JobStatus *string
 
 	// READ-ONLY; The start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // CurrentJobDetails - Current job details of the migration item.
 type CurrentJobDetails struct {
 	// READ-ONLY; The ARM Id of the job being executed.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
+	JobID *string
 
 	// READ-ONLY; The job name.
-	JobName *string `json:"jobName,omitempty" azure:"ro"`
+	JobName *string
 
 	// READ-ONLY; The start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // CurrentScenarioDetails - Current scenario details of the protected entity.
 type CurrentScenarioDetails struct {
 	// ARM Id of the job being executed.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 
 	// Scenario name.
-	ScenarioName *string `json:"scenarioName,omitempty"`
+	ScenarioName *string
 
 	// Start time of the workflow.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // DataStore - The datastore details of the MT.
 type DataStore struct {
 	// The capacity of data store in GBs.
-	Capacity *string `json:"capacity,omitempty"`
+	Capacity *string
 
 	// The free space of data store in GBs.
-	FreeSpace *string `json:"freeSpace,omitempty"`
+	FreeSpace *string
 
 	// The symbolic name of data store.
-	SymbolicName *string `json:"symbolicName,omitempty"`
+	SymbolicName *string
 
 	// The type of data store.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The uuid of data store.
-	UUID *string `json:"uuid,omitempty"`
+	UUID *string
 }
 
 // DisableProtectionInput - Disable protection input.
 type DisableProtectionInput struct {
 	// REQUIRED; Disable protection input properties.
-	Properties *DisableProtectionInputProperties `json:"properties,omitempty"`
+	Properties *DisableProtectionInputProperties
 }
 
 // DisableProtectionInputProperties - Disable protection input properties.
 type DisableProtectionInputProperties struct {
 	// Disable protection reason. It can have values NotSpecified/MigrationComplete.
-	DisableProtectionReason *DisableProtectionReason `json:"disableProtectionReason,omitempty"`
+	DisableProtectionReason *DisableProtectionReason
 
 	// Replication provider specific input.
-	ReplicationProviderInput DisableProtectionProviderSpecificInputClassification `json:"replicationProviderInput,omitempty"`
+	ReplicationProviderInput DisableProtectionProviderSpecificInputClassification
 }
 
 // DisableProtectionProviderSpecificInputClassification provides polymorphic access to related types.
@@ -1929,7 +1929,7 @@ type DisableProtectionProviderSpecificInputClassification interface {
 // DisableProtectionProviderSpecificInput - Disable protection provider specific input.
 type DisableProtectionProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetDisableProtectionProviderSpecificInput implements the DisableProtectionProviderSpecificInputClassification interface
@@ -1941,61 +1941,61 @@ func (d *DisableProtectionProviderSpecificInput) GetDisableProtectionProviderSpe
 // DiscoverProtectableItemRequest - Request to add a physical machine as a protectable item in a container.
 type DiscoverProtectableItemRequest struct {
 	// The properties of a discover protectable item request.
-	Properties *DiscoverProtectableItemRequestProperties `json:"properties,omitempty"`
+	Properties *DiscoverProtectableItemRequestProperties
 }
 
 // DiscoverProtectableItemRequestProperties - Discover protectable item properties.
 type DiscoverProtectableItemRequestProperties struct {
 	// The friendly name of the physical machine.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The IP address of the physical machine to be discovered.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The OS type on the physical machine.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 }
 
 // DiskDetails - Onprem disk details data.
 type DiskDetails struct {
 	// The hard disk max size in MB.
-	MaxSizeMB *int64 `json:"maxSizeMB,omitempty"`
+	MaxSizeMB *int64
 
 	// The VHD Id.
-	VhdID *string `json:"vhdId,omitempty"`
+	VhdID *string
 
 	// The VHD name.
-	VhdName *string `json:"vhdName,omitempty"`
+	VhdName *string
 
 	// The type of the volume.
-	VhdType *string `json:"vhdType,omitempty"`
+	VhdType *string
 }
 
 // DiskEncryptionInfo - Recovery disk encryption info (BEK and KEK).
 type DiskEncryptionInfo struct {
 	// The recovery KeyVault reference for secret.
-	DiskEncryptionKeyInfo *DiskEncryptionKeyInfo `json:"diskEncryptionKeyInfo,omitempty"`
+	DiskEncryptionKeyInfo *DiskEncryptionKeyInfo
 
 	// The recovery KeyVault reference for key.
-	KeyEncryptionKeyInfo *KeyEncryptionKeyInfo `json:"keyEncryptionKeyInfo,omitempty"`
+	KeyEncryptionKeyInfo *KeyEncryptionKeyInfo
 }
 
 // DiskEncryptionKeyInfo - Disk Encryption Key Information (BitLocker Encryption Key (BEK) on Windows).
 type DiskEncryptionKeyInfo struct {
 	// The KeyVault resource ARM id for secret.
-	KeyVaultResourceArmID *string `json:"keyVaultResourceArmId,omitempty"`
+	KeyVaultResourceArmID *string
 
 	// The secret url / identifier.
-	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
+	SecretIdentifier *string
 }
 
 // DiskVolumeDetails - Volume details.
 type DiskVolumeDetails struct {
 	// The volume label.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The volume name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // Display - Contains the localized display information for this particular operation / action. These value will be used by
@@ -2009,69 +2009,69 @@ type Display struct {
 	// 'display.provider' resource Prescriptive guidance for namespaces: Read any 'display.resource' Create or Update any 'display.resource'
 	// Delete any 'display.resource' 'ActionName' any
 	// 'display.resources'.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The operation. The localized friendly name for the operation, as it should be shown to the user. It should be concise (to
 	// fit in drop downs) but clear (i.e. self-documenting). It should use Title
 	// Casing. Prescriptive guidance: Read Create or Update Delete 'ActionName'.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The provider. The localized friendly form of the resource provider name - it is expected to also include the publisher/company
 	// responsible. It should use Title Casing and begin with "Microsoft" for
 	// 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute.".
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// The resource. The localized friendly form of the resource related to this action/operation - it should match the public
 	// documentation for the resource provider. It should use Title Casing. This value
 	// should be unique for a particular URL type (e.g. nested types should not reuse their parent's display.resource field).
 	// e.g. "Virtual Machines" or "Scheduler Job Collections", or "Virtual Machine VM
 	// Sizes" or "Scheduler Jobs".
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // DraDetails - DRA details.
 type DraDetails struct {
 	// READ-ONLY; The DRA Bios Id.
-	BiosID *string `json:"biosId,omitempty" azure:"ro"`
+	BiosID *string
 
 	// READ-ONLY; The count of protected items which are protected in forward direction.
-	ForwardProtectedItemCount *int32 `json:"forwardProtectedItemCount,omitempty" azure:"ro"`
+	ForwardProtectedItemCount *int32
 
 	// READ-ONLY; The health.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty" azure:"ro"`
+	HealthErrors []*HealthError
 
 	// READ-ONLY; The DRA Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The last heartbeat received from the DRA.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The DRA name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The count of protected items which are protected in reverse direction.
-	ReverseProtectedItemCount *int32 `json:"reverseProtectedItemCount,omitempty" azure:"ro"`
+	ReverseProtectedItemCount *int32
 
 	// READ-ONLY; The version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // EnableMigrationInput - Enable migration input.
 type EnableMigrationInput struct {
 	// REQUIRED; Enable migration input properties.
-	Properties *EnableMigrationInputProperties `json:"properties,omitempty"`
+	Properties *EnableMigrationInputProperties
 }
 
 // EnableMigrationInputProperties - Enable migration input properties.
 type EnableMigrationInputProperties struct {
 	// REQUIRED; The policy Id.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// REQUIRED; The provider specific details.
-	ProviderSpecificDetails EnableMigrationProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails EnableMigrationProviderSpecificInputClassification
 }
 
 // EnableMigrationProviderSpecificInputClassification provides polymorphic access to related types.
@@ -2086,7 +2086,7 @@ type EnableMigrationProviderSpecificInputClassification interface {
 // EnableMigrationProviderSpecificInput - Enable migration provider specific input.
 type EnableMigrationProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetEnableMigrationProviderSpecificInput implements the EnableMigrationProviderSpecificInputClassification interface for
@@ -2098,21 +2098,21 @@ func (e *EnableMigrationProviderSpecificInput) GetEnableMigrationProviderSpecifi
 // EnableProtectionInput - Enable protection input.
 type EnableProtectionInput struct {
 	// Enable protection input properties.
-	Properties *EnableProtectionInputProperties `json:"properties,omitempty"`
+	Properties *EnableProtectionInputProperties
 }
 
 // EnableProtectionInputProperties - Enable protection input properties.
 type EnableProtectionInputProperties struct {
 	// The Policy Id.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// The protectable item Id.
-	ProtectableItemID *string `json:"protectableItemId,omitempty"`
+	ProtectableItemID *string
 
 	// The ReplicationProviderInput. For HyperVReplicaAzure provider, it will be AzureEnableProtectionInput object. For San provider,
 	// it will be SanEnableProtectionInput object. For HyperVReplicaAzure
 	// provider, it can be null.
-	ProviderSpecificDetails EnableProtectionProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails EnableProtectionProviderSpecificInputClassification
 }
 
 // EnableProtectionProviderSpecificInputClassification provides polymorphic access to related types.
@@ -2128,7 +2128,7 @@ type EnableProtectionProviderSpecificInputClassification interface {
 // EnableProtectionProviderSpecificInput - Enable protection provider specific input.
 type EnableProtectionProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
@@ -2140,76 +2140,76 @@ func (e *EnableProtectionProviderSpecificInput) GetEnableProtectionProviderSpeci
 // EncryptionDetails - Encryption details for the fabric.
 type EncryptionDetails struct {
 	// The key encryption key certificate expiry date.
-	KekCertExpiryDate *time.Time `json:"kekCertExpiryDate,omitempty"`
+	KekCertExpiryDate *time.Time
 
 	// The key encryption key certificate thumbprint.
-	KekCertThumbprint *string `json:"kekCertThumbprint,omitempty"`
+	KekCertThumbprint *string
 
 	// The key encryption key state for the Vmm.
-	KekState *string `json:"kekState,omitempty"`
+	KekState *string
 }
 
 // Event - Implements the Event class.
 type Event struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Event related data.
-	Properties *EventProperties `json:"properties,omitempty"`
+	Properties *EventProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EventCollection - Collection of fabric details.
 type EventCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of events.
-	Value []*Event `json:"value,omitempty"`
+	Value []*Event
 }
 
 // EventProperties - The properties of a monitoring event.
 type EventProperties struct {
 	// The affected object correlationId for the event.
-	AffectedObjectCorrelationID *string `json:"affectedObjectCorrelationId,omitempty"`
+	AffectedObjectCorrelationID *string
 
 	// The friendly name of the source of the event on which it is raised (for example, VM, VMM etc).
-	AffectedObjectFriendlyName *string `json:"affectedObjectFriendlyName,omitempty"`
+	AffectedObjectFriendlyName *string
 
 	// The event name.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The Id of the monitoring event.
-	EventCode *string `json:"eventCode,omitempty"`
+	EventCode *string
 
 	// The event specific settings.
-	EventSpecificDetails EventSpecificDetailsClassification `json:"eventSpecificDetails,omitempty"`
+	EventSpecificDetails EventSpecificDetailsClassification
 
 	// The type of the event. for example: VM Health, Server Health, Job Failure etc.
-	EventType *string `json:"eventType,omitempty"`
+	EventType *string
 
 	// The ARM ID of the fabric.
-	FabricID *string `json:"fabricId,omitempty"`
+	FabricID *string
 
 	// The list of errors / warnings capturing details associated with the issue(s).
-	HealthErrors []*HealthError `json:"healthErrors,omitempty"`
+	HealthErrors []*HealthError
 
 	// The provider specific settings.
-	ProviderSpecificDetails EventProviderSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails EventProviderSpecificDetailsClassification
 
 	// The severity of the event.
-	Severity *string `json:"severity,omitempty"`
+	Severity *string
 
 	// The time of occurrence of the event.
-	TimeOfOccurrence *time.Time `json:"timeOfOccurrence,omitempty"`
+	TimeOfOccurrence *time.Time
 }
 
 // EventProviderSpecificDetailsClassification provides polymorphic access to related types.
@@ -2225,7 +2225,7 @@ type EventProviderSpecificDetailsClassification interface {
 // EventProviderSpecificDetails - Model class for provider specific details for an event.
 type EventProviderSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type EventProviderSpecificDetails.
@@ -2236,28 +2236,28 @@ func (e *EventProviderSpecificDetails) GetEventProviderSpecificDetails() *EventP
 // EventQueryParameter - Implements the event query parameter.
 type EventQueryParameter struct {
 	// The affected object correlationId for the events to be queried.
-	AffectedObjectCorrelationID *string `json:"affectedObjectCorrelationId,omitempty"`
+	AffectedObjectCorrelationID *string
 
 	// The affected object name of the events to be queried.
-	AffectedObjectFriendlyName *string `json:"affectedObjectFriendlyName,omitempty"`
+	AffectedObjectFriendlyName *string
 
 	// The end time of the time range within which the events are to be queried.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The source id of the events to be queried.
-	EventCode *string `json:"eventCode,omitempty"`
+	EventCode *string
 
 	// The type of the events to be queried.
-	EventType *string `json:"eventType,omitempty"`
+	EventType *string
 
 	// The affected object server id of the events to be queried.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// The severity of the events to be queried.
-	Severity *string `json:"severity,omitempty"`
+	Severity *string
 
 	// The start time of the time range within which the events are to be queried.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // EventSpecificDetailsClassification provides polymorphic access to related types.
@@ -2272,7 +2272,7 @@ type EventSpecificDetailsClassification interface {
 // EventSpecificDetails - Model class for event specific details for an event.
 type EventSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetEventSpecificDetails implements the EventSpecificDetailsClassification interface for type EventSpecificDetails.
@@ -2281,10 +2281,10 @@ func (e *EventSpecificDetails) GetEventSpecificDetails() *EventSpecificDetails {
 // ExistingProtectionProfile - Existing storage account input.
 type ExistingProtectionProfile struct {
 	// REQUIRED; The protection profile Arm Id. Throw error, if resource does not exists.
-	ProtectionProfileID *string `json:"protectionProfileId,omitempty"`
+	ProtectionProfileID *string
 
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type ExistingProtectionProfile.
@@ -2297,10 +2297,10 @@ func (e *ExistingProtectionProfile) GetProtectionProfileCustomDetails() *Protect
 // ExistingRecoveryAvailabilitySet - Existing recovery availability set input.
 type ExistingRecoveryAvailabilitySet struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The recovery availability set Id. Will throw error, if resource does not exist.
-	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	RecoveryAvailabilitySetID *string
 }
 
 // GetRecoveryAvailabilitySetCustomDetails implements the RecoveryAvailabilitySetCustomDetailsClassification interface for
@@ -2314,10 +2314,10 @@ func (e *ExistingRecoveryAvailabilitySet) GetRecoveryAvailabilitySetCustomDetail
 // ExistingRecoveryProximityPlacementGroup - Existing recovery proximity placement group input.
 type ExistingRecoveryProximityPlacementGroup struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The recovery proximity placement group Id. Will throw error, if resource does not exist.
-	RecoveryProximityPlacementGroupID *string `json:"recoveryProximityPlacementGroupId,omitempty"`
+	RecoveryProximityPlacementGroupID *string
 }
 
 // GetRecoveryProximityPlacementGroupCustomDetails implements the RecoveryProximityPlacementGroupCustomDetailsClassification
@@ -2331,10 +2331,10 @@ func (e *ExistingRecoveryProximityPlacementGroup) GetRecoveryProximityPlacementG
 // ExistingRecoveryResourceGroup - Existing recovery resource group input.
 type ExistingRecoveryResourceGroup struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The recovery resource group Id. Valid for V2 scenarios.
-	RecoveryResourceGroupID *string `json:"recoveryResourceGroupId,omitempty"`
+	RecoveryResourceGroupID *string
 }
 
 // GetRecoveryResourceGroupCustomDetails implements the RecoveryResourceGroupCustomDetailsClassification interface for type
@@ -2348,13 +2348,13 @@ func (e *ExistingRecoveryResourceGroup) GetRecoveryResourceGroupCustomDetails() 
 // ExistingRecoveryVirtualNetwork - Existing recovery virtual network input.
 type ExistingRecoveryVirtualNetwork struct {
 	// REQUIRED; The recovery virtual network Id. Will throw error, if resource does not exist.
-	RecoveryVirtualNetworkID *string `json:"recoveryVirtualNetworkId,omitempty"`
+	RecoveryVirtualNetworkID *string
 
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The recovery subnet name.
-	RecoverySubnetName *string `json:"recoverySubnetName,omitempty"`
+	RecoverySubnetName *string
 }
 
 // GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
@@ -2368,10 +2368,10 @@ func (e *ExistingRecoveryVirtualNetwork) GetRecoveryVirtualNetworkCustomDetails(
 // ExistingStorageAccount - Existing storage account input.
 type ExistingStorageAccount struct {
 	// REQUIRED; The storage account Arm Id. Throw error, if resource does not exists.
-	AzureStorageAccountID *string `json:"azureStorageAccountId,omitempty"`
+	AzureStorageAccountID *string
 
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // GetStorageAccountCustomDetails implements the StorageAccountCustomDetailsClassification interface for type ExistingStorageAccount.
@@ -2384,17 +2384,17 @@ func (e *ExistingStorageAccount) GetStorageAccountCustomDetails() *StorageAccoun
 // ExportJobDetails - This class represents details for export jobs workflow.
 type ExportJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
-	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
+	AffectedObjectDetails map[string]*string
 
 	// BlobUri of the exported jobs.
-	BlobURI *string `json:"blobUri,omitempty"`
+	BlobURI *string
 
 	// The sas token to access blob.
-	SasToken *string `json:"sasToken,omitempty"`
+	SasToken *string
 }
 
 // GetJobDetails implements the JobDetailsClassification interface for type ExportJobDetails.
@@ -2408,112 +2408,112 @@ func (e *ExportJobDetails) GetJobDetails() *JobDetails {
 // ExtendedLocation - Extended location of the resource.
 type ExtendedLocation struct {
 	// REQUIRED; The name of the extended location.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The extended location type.
-	Type *ExtendedLocationType `json:"type,omitempty"`
+	Type *ExtendedLocationType
 }
 
 // Fabric definition.
 type Fabric struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Fabric related data.
-	Properties *FabricProperties `json:"properties,omitempty"`
+	Properties *FabricProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FabricCollection - Collection of fabric details.
 type FabricCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The fabric details.
-	Value []*Fabric `json:"value,omitempty"`
+	Value []*Fabric
 }
 
 // FabricCreationInput - Site details provided during the time of site creation.
 type FabricCreationInput struct {
 	// Fabric creation input.
-	Properties *FabricCreationInputProperties `json:"properties,omitempty"`
+	Properties *FabricCreationInputProperties
 }
 
 // FabricCreationInputProperties - Properties of site details provided during the time of site creation.
 type FabricCreationInputProperties struct {
 	// Fabric provider specific creation input.
-	CustomDetails FabricSpecificCreationInputClassification `json:"customDetails,omitempty"`
+	CustomDetails FabricSpecificCreationInputClassification
 }
 
 // FabricProperties - Fabric properties.
 type FabricProperties struct {
 	// BCDR state of the fabric.
-	BcdrState *string `json:"bcdrState,omitempty"`
+	BcdrState *string
 
 	// Fabric specific settings.
-	CustomDetails FabricSpecificDetailsClassification `json:"customDetails,omitempty"`
+	CustomDetails FabricSpecificDetailsClassification
 
 	// Encryption details for the fabric.
-	EncryptionDetails *EncryptionDetails `json:"encryptionDetails,omitempty"`
+	EncryptionDetails *EncryptionDetails
 
 	// Friendly name of the fabric.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Health of fabric.
-	Health *string `json:"health,omitempty"`
+	Health *string
 
 	// Fabric health error details.
-	HealthErrorDetails []*HealthError `json:"healthErrorDetails,omitempty"`
+	HealthErrorDetails []*HealthError
 
 	// Dra Registration Id.
-	InternalIdentifier *string `json:"internalIdentifier,omitempty"`
+	InternalIdentifier *string
 
 	// Rollover encryption details for the fabric.
-	RolloverEncryptionDetails *EncryptionDetails `json:"rolloverEncryptionDetails,omitempty"`
+	RolloverEncryptionDetails *EncryptionDetails
 }
 
 // FabricQueryParameter - Query parameter to get fabric.
 type FabricQueryParameter struct {
 	// The BIOS Id to be used for fetching agent details.
-	BiosID *string `json:"biosId,omitempty"`
+	BiosID *string
 
 	// The type of the discovered machine to be used for fetching agent details.
-	DiscoveryType *string `json:"discoveryType,omitempty"`
+	DiscoveryType *string
 
 	// A value indicating whether the agent details are to be fetched.
-	FetchAgentDetails *string `json:"fetchAgentDetails,omitempty"`
+	FetchAgentDetails *string
 
 	// The FQDN to be used for fetching agent details.
-	Fqdn *string `json:"fqdn,omitempty"`
+	Fqdn *string
 
 	// The OS type to be used for fetching agent details.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// A value indicating whether the zone to zone mappings are to be returned.
-	ZoneToZoneMappings *string `json:"zoneToZoneMappings,omitempty"`
+	ZoneToZoneMappings *string
 }
 
 // FabricReplicationGroupTaskDetails - This class represents the fabric replication group task details.
 type FabricReplicationGroupTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The job entity.
-	JobTask *JobEntity `json:"jobTask,omitempty"`
+	JobTask *JobEntity
 
 	// The skipped reason.
-	SkippedReason *string `json:"skippedReason,omitempty"`
+	SkippedReason *string
 
 	// The skipped reason string.
-	SkippedReasonString *string `json:"skippedReasonString,omitempty"`
+	SkippedReasonString *string
 }
 
 // GetJobTaskDetails implements the JobTaskDetailsClassification interface for type FabricReplicationGroupTaskDetails.
@@ -2544,7 +2544,7 @@ type FabricSpecificCreateNetworkMappingInputClassification interface {
 // FabricSpecificCreateNetworkMappingInput - Input details specific to fabrics during Network Mapping.
 type FabricSpecificCreateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
@@ -2565,7 +2565,7 @@ type FabricSpecificCreationInputClassification interface {
 // FabricSpecificCreationInput - Fabric provider specific settings.
 type FabricSpecificCreationInput struct {
 	// REQUIRED; Gets the class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type FabricSpecificCreationInput.
@@ -2586,7 +2586,7 @@ type FabricSpecificDetailsClassification interface {
 // FabricSpecificDetails - Fabric specific details.
 type FabricSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type FabricSpecificDetails.
@@ -2605,7 +2605,7 @@ type FabricSpecificUpdateNetworkMappingInputClassification interface {
 // FabricSpecificUpdateNetworkMappingInput - Input details specific to fabrics during Network Mapping.
 type FabricSpecificUpdateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
@@ -2617,14 +2617,14 @@ func (f *FabricSpecificUpdateNetworkMappingInput) GetFabricSpecificUpdateNetwork
 // FailoverJobDetails - This class represents the details for a failover job.
 type FailoverJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
-	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
+	AffectedObjectDetails map[string]*string
 
 	// The test VM details.
-	ProtectedItemDetails []*FailoverReplicationProtectedItemDetails `json:"protectedItemDetails,omitempty"`
+	ProtectedItemDetails []*FailoverReplicationProtectedItemDetails
 }
 
 // GetJobDetails implements the JobDetailsClassification interface for type FailoverJobDetails.
@@ -2638,55 +2638,55 @@ func (f *FailoverJobDetails) GetJobDetails() *JobDetails {
 // FailoverProcessServerRequest - Request to failover a process server.
 type FailoverProcessServerRequest struct {
 	// The properties of the PS Failover request.
-	Properties *FailoverProcessServerRequestProperties `json:"properties,omitempty"`
+	Properties *FailoverProcessServerRequestProperties
 }
 
 // FailoverProcessServerRequestProperties - The properties of the Failover Process Server request.
 type FailoverProcessServerRequestProperties struct {
 	// The container identifier.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// The source process server.
-	SourceProcessServerID *string `json:"sourceProcessServerId,omitempty"`
+	SourceProcessServerID *string
 
 	// The new process server.
-	TargetProcessServerID *string `json:"targetProcessServerId,omitempty"`
+	TargetProcessServerID *string
 
 	// A value for failover type. It can be systemlevel/serverlevel.
-	UpdateType *string `json:"updateType,omitempty"`
+	UpdateType *string
 
 	// The VMS to migrate.
-	VMsToMigrate []*string `json:"vmsToMigrate,omitempty"`
+	VMsToMigrate []*string
 }
 
 // FailoverReplicationProtectedItemDetails - Failover details for a replication protected item.
 type FailoverReplicationProtectedItemDetails struct {
 	// The friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The network connection status.
-	NetworkConnectionStatus *string `json:"networkConnectionStatus,omitempty"`
+	NetworkConnectionStatus *string
 
 	// The network friendly name.
-	NetworkFriendlyName *string `json:"networkFriendlyName,omitempty"`
+	NetworkFriendlyName *string
 
 	// The recovery point Id.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// The recovery point time.
-	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty"`
+	RecoveryPointTime *time.Time
 
 	// The network subnet.
-	Subnet *string `json:"subnet,omitempty"`
+	Subnet *string
 
 	// The test Vm friendly name.
-	TestVMFriendlyName *string `json:"testVmFriendlyName,omitempty"`
+	TestVMFriendlyName *string
 
 	// The test Vm name.
-	TestVMName *string `json:"testVmName,omitempty"`
+	TestVMName *string
 }
 
 // GroupTaskDetailsClassification provides polymorphic access to related types.
@@ -2701,10 +2701,10 @@ type GroupTaskDetailsClassification interface {
 // GroupTaskDetails - This class represents the group task details when parent child relationship exists in the drill down.
 type GroupTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The child tasks.
-	ChildTasks []*ASRTask `json:"childTasks,omitempty"`
+	ChildTasks []*ASRTask
 }
 
 // GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type GroupTaskDetails.
@@ -2713,52 +2713,52 @@ func (g *GroupTaskDetails) GetGroupTaskDetails() *GroupTaskDetails { return g }
 // HealthError - Health Error.
 type HealthError struct {
 	// Error creation time (UTC).
-	CreationTimeUTC *time.Time `json:"creationTimeUtc,omitempty"`
+	CreationTimeUTC *time.Time
 
 	// Value indicating whether the health error is customer resolvable.
-	CustomerResolvability *HealthErrorCustomerResolvability `json:"customerResolvability,omitempty"`
+	CustomerResolvability *HealthErrorCustomerResolvability
 
 	// ID of the entity.
-	EntityID *string `json:"entityId,omitempty"`
+	EntityID *string
 
 	// Category of error.
-	ErrorCategory *string `json:"errorCategory,omitempty"`
+	ErrorCategory *string
 
 	// Error code.
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// The health error unique id.
-	ErrorID *string `json:"errorId,omitempty"`
+	ErrorID *string
 
 	// Level of error.
-	ErrorLevel *string `json:"errorLevel,omitempty"`
+	ErrorLevel *string
 
 	// Error message.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// Source of error.
-	ErrorSource *string `json:"errorSource,omitempty"`
+	ErrorSource *string
 
 	// Type of error.
-	ErrorType *string `json:"errorType,omitempty"`
+	ErrorType *string
 
 	// The inner health errors. HealthError having a list of HealthError as child errors is problematic. InnerHealthError is used
 	// because this will prevent an infinite loop of structures when Hydra tries to
 	// auto-generate the contract. We are exposing the related health errors as inner health errors and all API consumers can
 	// utilize this in the same fashion as Exception -> InnerException.
-	InnerHealthErrors []*InnerHealthError `json:"innerHealthErrors,omitempty"`
+	InnerHealthErrors []*InnerHealthError
 
 	// Possible causes of error.
-	PossibleCauses *string `json:"possibleCauses,omitempty"`
+	PossibleCauses *string
 
 	// Recommended action to resolve error.
-	RecommendedAction *string `json:"recommendedAction,omitempty"`
+	RecommendedAction *string
 
 	// DRA error message.
-	RecoveryProviderErrorMessage *string `json:"recoveryProviderErrorMessage,omitempty"`
+	RecoveryProviderErrorMessage *string
 
 	// Summary message of the entity.
-	SummaryMessage *string `json:"summaryMessage,omitempty"`
+	SummaryMessage *string
 }
 
 // HealthErrorSummary - class to define the summary of the health error details.
@@ -2766,55 +2766,55 @@ type HealthErrorSummary struct {
 	// The list of affected resource correlation Ids. This can be used to uniquely identify the count of items affected by a specific
 	// category and severity as well as count of item affected by an specific
 	// issue.
-	AffectedResourceCorrelationIDs []*string `json:"affectedResourceCorrelationIds,omitempty"`
+	AffectedResourceCorrelationIDs []*string
 
 	// The sub type of any subcomponent within the ARM resource that this might be applicable. Value remains null if not applicable.
-	AffectedResourceSubtype *string `json:"affectedResourceSubtype,omitempty"`
+	AffectedResourceSubtype *string
 
 	// The type of affected ARM resource.
-	AffectedResourceType *string `json:"affectedResourceType,omitempty"`
+	AffectedResourceType *string
 
 	// The category of the health error.
-	Category *HealthErrorCategory `json:"category,omitempty"`
+	Category *HealthErrorCategory
 
 	// Severity of error.
-	Severity *Severity `json:"severity,omitempty"`
+	Severity *Severity
 
 	// The code of the health error.
-	SummaryCode *string `json:"summaryCode,omitempty"`
+	SummaryCode *string
 
 	// The summary message of the health error.
-	SummaryMessage *string `json:"summaryMessage,omitempty"`
+	SummaryMessage *string
 }
 
 // HyperVHostDetails - Hyper-V host details.
 type HyperVHostDetails struct {
 	// READ-ONLY; The Hyper-V host Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The Mars agent version.
-	MarsAgentVersion *string `json:"marsAgentVersion,omitempty" azure:"ro"`
+	MarsAgentVersion *string
 
 	// READ-ONLY; The Hyper-V host name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // HyperVReplica2012EventDetails - Model class for event details of a HyperVReplica E2E event.
 type HyperVReplica2012EventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The container friendly name.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// The fabric friendly name.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// The remote container name.
-	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
+	RemoteContainerName *string
 
 	// The remote fabric name.
-	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
+	RemoteFabricName *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplica2012EventDetails.
@@ -2827,19 +2827,19 @@ func (h *HyperVReplica2012EventDetails) GetEventProviderSpecificDetails() *Event
 // HyperVReplica2012R2EventDetails - Model class for event details of a HyperVReplica blue E2E event.
 type HyperVReplica2012R2EventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The container friendly name.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// The fabric friendly name.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// The remote container name.
-	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
+	RemoteContainerName *string
 
 	// The remote fabric name.
-	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
+	RemoteFabricName *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplica2012R2EventDetails.
@@ -2852,13 +2852,13 @@ func (h *HyperVReplica2012R2EventDetails) GetEventProviderSpecificDetails() *Eve
 // HyperVReplicaAzureApplyRecoveryPointInput - ApplyRecoveryPoint input specific to HyperVReplicaAzure provider.
 type HyperVReplicaAzureApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The primary kek certificate pfx.
-	PrimaryKekCertificatePfx *string `json:"primaryKekCertificatePfx,omitempty"`
+	PrimaryKekCertificatePfx *string
 
 	// The secondary kek certificate pfx.
-	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+	SecondaryKekCertificatePfx *string
 }
 
 // GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
@@ -2872,107 +2872,107 @@ func (h *HyperVReplicaAzureApplyRecoveryPointInput) GetApplyRecoveryPointProvide
 // HyperVReplicaAzureDiskInputDetails - Disk input details.
 type HyperVReplicaAzureDiskInputDetails struct {
 	// The DiskEncryptionSet ARM ID.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// The DiskId.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The DiskType.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 
 	// The LogStorageAccountId.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 }
 
 // HyperVReplicaAzureEnableProtectionInput - HyperVReplicaAzure specific enable protection input.
 type HyperVReplicaAzureEnableProtectionInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The DiskEncryptionSet ARM Id.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// The DiskType.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 
 	// The list of VHD Ids of disks to be protected.
-	DisksToInclude []*string `json:"disksToInclude,omitempty"`
+	DisksToInclude []*string
 
 	// The disks to include list for managed disks.
-	DisksToIncludeForManagedDisks []*HyperVReplicaAzureDiskInputDetails `json:"disksToIncludeForManagedDisks,omitempty"`
+	DisksToIncludeForManagedDisks []*HyperVReplicaAzureDiskInputDetails
 
 	// The selected option to enable RDP\SSH on target vm after failover. String value of SrsDataContract.EnableRDPOnTargetOption
 	// enum.
-	EnableRdpOnTargetOption *string `json:"enableRdpOnTargetOption,omitempty"`
+	EnableRdpOnTargetOption *string
 
 	// The Hyper-V host VM Id.
-	HvHostVMID *string `json:"hvHostVmId,omitempty"`
+	HvHostVMID *string
 
 	// License type.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// The storage account to be used for logging during replication.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 
 	// The OS type associated with VM.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The SQL Server license type.
-	SQLServerLicenseType *SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *SQLServerLicenseType
 
 	// The tags for the seed managed disks.
-	SeedManagedDiskTags map[string]*string `json:"seedManagedDiskTags,omitempty"`
+	SeedManagedDiskTags map[string]*string
 
 	// The target availability set ARM Id for resource manager deployment.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The selected target Azure network Id.
-	TargetAzureNetworkID *string `json:"targetAzureNetworkId,omitempty"`
+	TargetAzureNetworkID *string
 
 	// The selected target Azure subnet Id.
-	TargetAzureSubnetID *string `json:"targetAzureSubnetId,omitempty"`
+	TargetAzureSubnetID *string
 
 	// The Id of the target resource group (for classic deployment) in which the failover VM is to be created.
-	TargetAzureV1ResourceGroupID *string `json:"targetAzureV1ResourceGroupId,omitempty"`
+	TargetAzureV1ResourceGroupID *string
 
 	// The Id of the target resource group (for resource manager deployment) in which the failover VM is to be created.
-	TargetAzureV2ResourceGroupID *string `json:"targetAzureV2ResourceGroupId,omitempty"`
+	TargetAzureV2ResourceGroupID *string
 
 	// The target azure VM Name.
-	TargetAzureVMName *string `json:"targetAzureVmName,omitempty"`
+	TargetAzureVMName *string
 
 	// The tags for the target managed disks.
-	TargetManagedDiskTags map[string]*string `json:"targetManagedDiskTags,omitempty"`
+	TargetManagedDiskTags map[string]*string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The proximity placement group ARM Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The storage account Id.
-	TargetStorageAccountID *string `json:"targetStorageAccountId,omitempty"`
+	TargetStorageAccountID *string
 
 	// The target VM size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 
 	// A value indicating whether managed disks should be used during failover.
-	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
+	UseManagedDisks *string
 
 	// A value indicating whether managed disks should be used during replication.
-	UseManagedDisksForReplication *string `json:"useManagedDisksForReplication,omitempty"`
+	UseManagedDisksForReplication *string
 
 	// The VM Name.
-	VMName *string `json:"vmName,omitempty"`
+	VMName *string
 
 	// The OS disk VHD id associated with VM.
-	VhdID *string `json:"vhdId,omitempty"`
+	VhdID *string
 }
 
 // GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
@@ -2986,16 +2986,16 @@ func (h *HyperVReplicaAzureEnableProtectionInput) GetEnableProtectionProviderSpe
 // HyperVReplicaAzureEventDetails - Model class for event details of a HyperVReplica E2A event.
 type HyperVReplicaAzureEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The container friendly name.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// The fabric friendly name.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// The remote container name.
-	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
+	RemoteContainerName *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplicaAzureEventDetails.
@@ -3008,16 +3008,16 @@ func (h *HyperVReplicaAzureEventDetails) GetEventProviderSpecificDetails() *Even
 // HyperVReplicaAzureFailbackProviderInput - HyperVReplicaAzureFailback specific planned failover input.
 type HyperVReplicaAzureFailbackProviderInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Data sync option.
-	DataSyncOption *string `json:"dataSyncOption,omitempty"`
+	DataSyncOption *string
 
 	// Provider Id for alternate location.
-	ProviderIDForAlternateRecovery *string `json:"providerIdForAlternateRecovery,omitempty"`
+	ProviderIDForAlternateRecovery *string
 
 	// ALR options to create alternate recovery.
-	RecoveryVMCreationOption *string `json:"recoveryVmCreationOption,omitempty"`
+	RecoveryVMCreationOption *string
 }
 
 // GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
@@ -3031,32 +3031,32 @@ func (h *HyperVReplicaAzureFailbackProviderInput) GetPlannedFailoverProviderSpec
 // HyperVReplicaAzureManagedDiskDetails - Hyper-V Managed disk details.
 type HyperVReplicaAzureManagedDiskDetails struct {
 	// The disk encryption set ARM Id.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The replica disk type.
-	ReplicaDiskType *string `json:"replicaDiskType,omitempty"`
+	ReplicaDiskType *string
 
 	// Seed managed disk Id.
-	SeedManagedDiskID *string `json:"seedManagedDiskId,omitempty"`
+	SeedManagedDiskID *string
 }
 
 // HyperVReplicaAzurePlannedFailoverProviderInput - HyperVReplicaAzure specific planned failover input.
 type HyperVReplicaAzurePlannedFailoverProviderInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Primary kek certificate pfx.
-	PrimaryKekCertificatePfx *string `json:"primaryKekCertificatePfx,omitempty"`
+	PrimaryKekCertificatePfx *string
 
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// Secondary kek certificate pfx.
-	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+	SecondaryKekCertificatePfx *string
 }
 
 // GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
@@ -3070,25 +3070,25 @@ func (h *HyperVReplicaAzurePlannedFailoverProviderInput) GetPlannedFailoverProvi
 // HyperVReplicaAzurePolicyDetails - Hyper-V Replica Azure specific protection profile details.
 type HyperVReplicaAzurePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The active storage account Id.
-	ActiveStorageAccountID *string `json:"activeStorageAccountId,omitempty"`
+	ActiveStorageAccountID *string
 
 	// The interval (in hours) at which Hyper-V Replica should create an application consistent snapshot within the VM.
-	ApplicationConsistentSnapshotFrequencyInHours *int32 `json:"applicationConsistentSnapshotFrequencyInHours,omitempty"`
+	ApplicationConsistentSnapshotFrequencyInHours *int32
 
 	// A value indicating whether encryption is enabled for virtual machines in this cloud.
-	Encryption *string `json:"encryption,omitempty"`
+	Encryption *string
 
 	// The scheduled start time for the initial replication. If this parameter is Null, the initial replication starts immediately.
-	OnlineReplicationStartTime *string `json:"onlineReplicationStartTime,omitempty"`
+	OnlineReplicationStartTime *string
 
 	// The duration (in hours) to which point the recovery history needs to be maintained.
-	RecoveryPointHistoryDurationInHours *int32 `json:"recoveryPointHistoryDurationInHours,omitempty"`
+	RecoveryPointHistoryDurationInHours *int32
 
 	// The replication interval.
-	ReplicationInterval *int32 `json:"replicationInterval,omitempty"`
+	ReplicationInterval *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaAzurePolicyDetails.
@@ -3101,22 +3101,22 @@ func (h *HyperVReplicaAzurePolicyDetails) GetPolicyProviderSpecificDetails() *Po
 // HyperVReplicaAzurePolicyInput - Hyper-V Replica Azure specific input for creating a protection profile.
 type HyperVReplicaAzurePolicyInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The interval (in hours) at which Hyper-V Replica should create an application consistent snapshot within the VM.
-	ApplicationConsistentSnapshotFrequencyInHours *int32 `json:"applicationConsistentSnapshotFrequencyInHours,omitempty"`
+	ApplicationConsistentSnapshotFrequencyInHours *int32
 
 	// The scheduled start time for the initial replication. If this parameter is Null, the initial replication starts immediately.
-	OnlineReplicationStartTime *string `json:"onlineReplicationStartTime,omitempty"`
+	OnlineReplicationStartTime *string
 
 	// The duration (in hours) to which point the recovery history needs to be maintained.
-	RecoveryPointHistoryDuration *int32 `json:"recoveryPointHistoryDuration,omitempty"`
+	RecoveryPointHistoryDuration *int32
 
 	// The replication interval.
-	ReplicationInterval *int32 `json:"replicationInterval,omitempty"`
+	ReplicationInterval *int32
 
 	// The list of storage accounts to which the VMs in the primary cloud can replicate to.
-	StorageAccounts []*string `json:"storageAccounts,omitempty"`
+	StorageAccounts []*string
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type HyperVReplicaAzurePolicyInput.
@@ -3129,108 +3129,108 @@ func (h *HyperVReplicaAzurePolicyInput) GetPolicyProviderSpecificInput() *Policy
 // HyperVReplicaAzureReplicationDetails - Hyper V Replica Azure provider specific settings.
 type HyperVReplicaAzureReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Azure VM Disk details.
-	AzureVMDiskDetails []*AzureVMDiskDetails `json:"azureVmDiskDetails,omitempty"`
+	AzureVMDiskDetails []*AzureVMDiskDetails
 
 	// The selected option to enable RDP\SSH on target vm after failover. String value of SrsDataContract.EnableRDPOnTargetOption
 	// enum.
-	EnableRdpOnTargetOption *string `json:"enableRdpOnTargetOption,omitempty"`
+	EnableRdpOnTargetOption *string
 
 	// The encryption info.
-	Encryption *string `json:"encryption,omitempty"`
+	Encryption *string
 
 	// Initial replication details.
-	InitialReplicationDetails *InitialReplicationDetails `json:"initialReplicationDetails,omitempty"`
+	InitialReplicationDetails *InitialReplicationDetails
 
 	// The Last replication time.
-	LastReplicatedTime *time.Time `json:"lastReplicatedTime,omitempty"`
+	LastReplicatedTime *time.Time
 
 	// The last RPO calculated time.
-	LastRpoCalculatedTime *time.Time `json:"lastRpoCalculatedTime,omitempty"`
+	LastRpoCalculatedTime *time.Time
 
 	// License Type of the VM to be used.
-	LicenseType *string `json:"licenseType,omitempty"`
+	LicenseType *string
 
 	// The operating system info.
-	OSDetails *OSDetails `json:"oSDetails,omitempty"`
+	OSDetails *OSDetails
 
 	// The list of protected managed disks.
-	ProtectedManagedDisks []*HyperVReplicaAzureManagedDiskDetails `json:"protectedManagedDisks,omitempty"`
+	ProtectedManagedDisks []*HyperVReplicaAzureManagedDiskDetails
 
 	// The recovery availability set Id.
-	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	RecoveryAvailabilitySetID *string
 
 	// The ARM id of the log storage account used for replication. This will be set to null if no log storage account was provided
 	// during enable protection.
-	RecoveryAzureLogStorageAccountID *string `json:"recoveryAzureLogStorageAccountId,omitempty"`
+	RecoveryAzureLogStorageAccountID *string
 
 	// The target resource group Id.
-	RecoveryAzureResourceGroupID *string `json:"recoveryAzureResourceGroupId,omitempty"`
+	RecoveryAzureResourceGroupID *string
 
 	// The recovery Azure storage account.
-	RecoveryAzureStorageAccount *string `json:"recoveryAzureStorageAccount,omitempty"`
+	RecoveryAzureStorageAccount *string
 
 	// Recovery Azure given name.
-	RecoveryAzureVMName *string `json:"recoveryAzureVmName,omitempty"`
+	RecoveryAzureVMName *string
 
 	// The Recovery Azure VM size.
-	RecoveryAzureVMSize *string `json:"recoveryAzureVMSize,omitempty"`
+	RecoveryAzureVMSize *string
 
 	// Last RPO value.
-	RpoInSeconds *int64 `json:"rpoInSeconds,omitempty"`
+	RpoInSeconds *int64
 
 	// The SQL Server license type.
-	SQLServerLicenseType *string `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *string
 
 	// The tags for the seed managed disks.
-	SeedManagedDiskTags map[string]*string `json:"seedManagedDiskTags,omitempty"`
+	SeedManagedDiskTags map[string]*string
 
 	// The selected recovery azure network Id.
-	SelectedRecoveryAzureNetworkID *string `json:"selectedRecoveryAzureNetworkId,omitempty"`
+	SelectedRecoveryAzureNetworkID *string
 
 	// The selected source nic Id which will be used as the primary nic during failover.
-	SelectedSourceNicID *string `json:"selectedSourceNicId,omitempty"`
+	SelectedSourceNicID *string
 
 	// The CPU count of the VM on the primary side.
-	SourceVMCPUCount *int32 `json:"sourceVmCpuCount,omitempty"`
+	SourceVMCPUCount *int32
 
 	// The RAM size of the VM on the primary side.
-	SourceVMRAMSizeInMB *int32 `json:"sourceVmRamSizeInMB,omitempty"`
+	SourceVMRAMSizeInMB *int32
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The tags for the target managed disks.
-	TargetManagedDiskTags map[string]*string `json:"targetManagedDiskTags,omitempty"`
+	TargetManagedDiskTags map[string]*string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The target proximity placement group Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 
 	// A value indicating whether managed disks should be used during failover.
-	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
+	UseManagedDisks *string
 
 	// The virtual machine Id.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 
 	// The PE Network details.
-	VMNics []*VMNicDetails `json:"vmNics,omitempty"`
+	VMNics []*VMNicDetails
 
 	// The protection state for the vm.
-	VMProtectionState *string `json:"vmProtectionState,omitempty"`
+	VMProtectionState *string
 
 	// The protection state description for the vm.
-	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+	VMProtectionStateDescription *string
 
 	// READ-ONLY; The last recovery point received time.
-	LastRecoveryPointReceived *time.Time `json:"lastRecoveryPointReceived,omitempty" azure:"ro"`
+	LastRecoveryPointReceived *time.Time
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -3244,25 +3244,25 @@ func (h *HyperVReplicaAzureReplicationDetails) GetReplicationProviderSpecificSet
 // HyperVReplicaAzureReprotectInput - Azure specific reprotect input.
 type HyperVReplicaAzureReprotectInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The Hyper-V host Vm Id.
-	HvHostVMID *string `json:"hvHostVmId,omitempty"`
+	HvHostVMID *string
 
 	// The storage account to be used for logging during replication.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 
 	// The OS type associated with vm.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The storage account name.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// The OS disk VHD id associated with vm.
-	VHDID *string `json:"vHDId,omitempty"`
+	VHDID *string
 
 	// The Vm Name.
-	VMName *string `json:"vmName,omitempty"`
+	VMName *string
 }
 
 // GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
@@ -3276,17 +3276,17 @@ func (h *HyperVReplicaAzureReprotectInput) GetReverseReplicationProviderSpecific
 // HyperVReplicaAzureTestFailoverInput - HvrA provider specific input for test failover.
 type HyperVReplicaAzureTestFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Primary kek certificate pfx.
-	PrimaryKekCertificatePfx *string `json:"primaryKekCertificatePfx,omitempty"`
+	PrimaryKekCertificatePfx *string
 
 	// The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null
 	// should be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// Secondary kek certificate pfx.
-	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+	SecondaryKekCertificatePfx *string
 }
 
 // GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
@@ -3300,17 +3300,17 @@ func (h *HyperVReplicaAzureTestFailoverInput) GetTestFailoverProviderSpecificInp
 // HyperVReplicaAzureUnplannedFailoverInput - HvrA provider specific input for unplanned failover.
 type HyperVReplicaAzureUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Primary kek certificate pfx.
-	PrimaryKekCertificatePfx *string `json:"primaryKekCertificatePfx,omitempty"`
+	PrimaryKekCertificatePfx *string
 
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// Secondary kek certificate pfx.
-	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+	SecondaryKekCertificatePfx *string
 }
 
 // GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
@@ -3324,40 +3324,40 @@ func (h *HyperVReplicaAzureUnplannedFailoverInput) GetUnplannedFailoverProviderS
 // HyperVReplicaAzureUpdateReplicationProtectedItemInput - HyperV replica Azure input to update replication protected item.
 type HyperVReplicaAzureUpdateReplicationProtectedItemInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The dictionary of disk resource Id to disk encryption set ARM Id.
-	DiskIDToDiskEncryptionMap map[string]*string `json:"diskIdToDiskEncryptionMap,omitempty"`
+	DiskIDToDiskEncryptionMap map[string]*string
 
 	// The recovery Azure resource group Id for classic deployment.
-	RecoveryAzureV1ResourceGroupID *string `json:"recoveryAzureV1ResourceGroupId,omitempty"`
+	RecoveryAzureV1ResourceGroupID *string
 
 	// The recovery Azure resource group Id for resource manager deployment.
-	RecoveryAzureV2ResourceGroupID *string `json:"recoveryAzureV2ResourceGroupId,omitempty"`
+	RecoveryAzureV2ResourceGroupID *string
 
 	// The SQL Server license type.
-	SQLServerLicenseType *SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *SQLServerLicenseType
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The tags for the target managed disks.
-	TargetManagedDiskTags map[string]*string `json:"targetManagedDiskTags,omitempty"`
+	TargetManagedDiskTags map[string]*string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The target proximity placement group Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 
 	// A value indicating whether managed disks should be used during failover.
-	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
+	UseManagedDisks *string
 
 	// The list of disk update properties.
-	VMDisks []*UpdateDiskInput `json:"vmDisks,omitempty"`
+	VMDisks []*UpdateDiskInput
 }
 
 // GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
@@ -3371,19 +3371,19 @@ func (h *HyperVReplicaAzureUpdateReplicationProtectedItemInput) GetUpdateReplica
 // HyperVReplicaBaseEventDetails - Abstract model class for event details of a HyperVReplica E2E event.
 type HyperVReplicaBaseEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The container friendly name.
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// The fabric friendly name.
-	FabricName *string `json:"fabricName,omitempty"`
+	FabricName *string
 
 	// The remote container name.
-	RemoteContainerName *string `json:"remoteContainerName,omitempty"`
+	RemoteContainerName *string
 
 	// The remote fabric name.
-	RemoteFabricName *string `json:"remoteFabricName,omitempty"`
+	RemoteFabricName *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type HyperVReplicaBaseEventDetails.
@@ -3396,37 +3396,37 @@ func (h *HyperVReplicaBaseEventDetails) GetEventProviderSpecificDetails() *Event
 // HyperVReplicaBasePolicyDetails - Base class for HyperVReplica policy details.
 type HyperVReplicaBasePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating the authentication type.
-	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
+	AllowedAuthenticationType *int32
 
 	// A value indicating the application consistent frequency.
-	ApplicationConsistentSnapshotFrequencyInHours *int32 `json:"applicationConsistentSnapshotFrequencyInHours,omitempty"`
+	ApplicationConsistentSnapshotFrequencyInHours *int32
 
 	// A value indicating whether compression has to be enabled.
-	Compression *string `json:"compression,omitempty"`
+	Compression *string
 
 	// A value indicating whether IR is online.
-	InitialReplicationMethod *string `json:"initialReplicationMethod,omitempty"`
+	InitialReplicationMethod *string
 
 	// A value indicating the offline IR export path.
-	OfflineReplicationExportPath *string `json:"offlineReplicationExportPath,omitempty"`
+	OfflineReplicationExportPath *string
 
 	// A value indicating the offline IR import path.
-	OfflineReplicationImportPath *string `json:"offlineReplicationImportPath,omitempty"`
+	OfflineReplicationImportPath *string
 
 	// A value indicating the online IR start time.
-	OnlineReplicationStartTime *string `json:"onlineReplicationStartTime,omitempty"`
+	OnlineReplicationStartTime *string
 
 	// A value indicating the number of recovery points.
-	RecoveryPoints *int32 `json:"recoveryPoints,omitempty"`
+	RecoveryPoints *int32
 
 	// A value indicating whether the VM has to be auto deleted. Supported Values: String.Empty, None, OnRecoveryCloud.
-	ReplicaDeletionOption *string `json:"replicaDeletionOption,omitempty"`
+	ReplicaDeletionOption *string
 
 	// A value indicating the recovery HTTPS port.
-	ReplicationPort *int32 `json:"replicationPort,omitempty"`
+	ReplicationPort *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaBasePolicyDetails.
@@ -3439,28 +3439,28 @@ func (h *HyperVReplicaBasePolicyDetails) GetPolicyProviderSpecificDetails() *Pol
 // HyperVReplicaBaseReplicationDetails - Hyper V replica provider specific settings base class.
 type HyperVReplicaBaseReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Initial replication details.
-	InitialReplicationDetails *InitialReplicationDetails `json:"initialReplicationDetails,omitempty"`
+	InitialReplicationDetails *InitialReplicationDetails
 
 	// The Last replication time.
-	LastReplicatedTime *time.Time `json:"lastReplicatedTime,omitempty"`
+	LastReplicatedTime *time.Time
 
 	// VM disk details.
-	VMDiskDetails []*DiskDetails `json:"vMDiskDetails,omitempty"`
+	VMDiskDetails []*DiskDetails
 
 	// The virtual machine Id.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 
 	// The PE Network details.
-	VMNics []*VMNicDetails `json:"vmNics,omitempty"`
+	VMNics []*VMNicDetails
 
 	// The protection state for the vm.
-	VMProtectionState *string `json:"vmProtectionState,omitempty"`
+	VMProtectionState *string
 
 	// The protection state description for the vm.
-	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+	VMProtectionStateDescription *string
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -3474,40 +3474,40 @@ func (h *HyperVReplicaBaseReplicationDetails) GetReplicationProviderSpecificSett
 // HyperVReplicaBluePolicyDetails - Hyper-V Replica Blue specific protection profile details.
 type HyperVReplicaBluePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating the authentication type.
-	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
+	AllowedAuthenticationType *int32
 
 	// A value indicating the application consistent frequency.
-	ApplicationConsistentSnapshotFrequencyInHours *int32 `json:"applicationConsistentSnapshotFrequencyInHours,omitempty"`
+	ApplicationConsistentSnapshotFrequencyInHours *int32
 
 	// A value indicating whether compression has to be enabled.
-	Compression *string `json:"compression,omitempty"`
+	Compression *string
 
 	// A value indicating whether IR is online.
-	InitialReplicationMethod *string `json:"initialReplicationMethod,omitempty"`
+	InitialReplicationMethod *string
 
 	// A value indicating the offline IR export path.
-	OfflineReplicationExportPath *string `json:"offlineReplicationExportPath,omitempty"`
+	OfflineReplicationExportPath *string
 
 	// A value indicating the offline IR import path.
-	OfflineReplicationImportPath *string `json:"offlineReplicationImportPath,omitempty"`
+	OfflineReplicationImportPath *string
 
 	// A value indicating the online IR start time.
-	OnlineReplicationStartTime *string `json:"onlineReplicationStartTime,omitempty"`
+	OnlineReplicationStartTime *string
 
 	// A value indicating the number of recovery points.
-	RecoveryPoints *int32 `json:"recoveryPoints,omitempty"`
+	RecoveryPoints *int32
 
 	// A value indicating whether the VM has to be auto deleted. Supported Values: String.Empty, None, OnRecoveryCloud
-	ReplicaDeletionOption *string `json:"replicaDeletionOption,omitempty"`
+	ReplicaDeletionOption *string
 
 	// A value indicating the replication interval.
-	ReplicationFrequencyInSeconds *int32 `json:"replicationFrequencyInSeconds,omitempty"`
+	ReplicationFrequencyInSeconds *int32
 
 	// A value indicating the recovery HTTPS port.
-	ReplicationPort *int32 `json:"replicationPort,omitempty"`
+	ReplicationPort *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaBluePolicyDetails.
@@ -3520,40 +3520,40 @@ func (h *HyperVReplicaBluePolicyDetails) GetPolicyProviderSpecificDetails() *Pol
 // HyperVReplicaBluePolicyInput - HyperV Replica Blue policy input.
 type HyperVReplicaBluePolicyInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating the authentication type.
-	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
+	AllowedAuthenticationType *int32
 
 	// A value indicating the application consistent frequency.
-	ApplicationConsistentSnapshotFrequencyInHours *int32 `json:"applicationConsistentSnapshotFrequencyInHours,omitempty"`
+	ApplicationConsistentSnapshotFrequencyInHours *int32
 
 	// A value indicating whether compression has to be enabled.
-	Compression *string `json:"compression,omitempty"`
+	Compression *string
 
 	// A value indicating whether IR is online.
-	InitialReplicationMethod *string `json:"initialReplicationMethod,omitempty"`
+	InitialReplicationMethod *string
 
 	// A value indicating the offline IR export path.
-	OfflineReplicationExportPath *string `json:"offlineReplicationExportPath,omitempty"`
+	OfflineReplicationExportPath *string
 
 	// A value indicating the offline IR import path.
-	OfflineReplicationImportPath *string `json:"offlineReplicationImportPath,omitempty"`
+	OfflineReplicationImportPath *string
 
 	// A value indicating the online IR start time.
-	OnlineReplicationStartTime *string `json:"onlineReplicationStartTime,omitempty"`
+	OnlineReplicationStartTime *string
 
 	// A value indicating the number of recovery points.
-	RecoveryPoints *int32 `json:"recoveryPoints,omitempty"`
+	RecoveryPoints *int32
 
 	// A value indicating whether the VM has to be auto deleted.
-	ReplicaDeletion *string `json:"replicaDeletion,omitempty"`
+	ReplicaDeletion *string
 
 	// A value indicating the replication interval.
-	ReplicationFrequencyInSeconds *int32 `json:"replicationFrequencyInSeconds,omitempty"`
+	ReplicationFrequencyInSeconds *int32
 
 	// A value indicating the recovery HTTPS port.
-	ReplicationPort *int32 `json:"replicationPort,omitempty"`
+	ReplicationPort *int32
 }
 
 // GetHyperVReplicaPolicyInput implements the HyperVReplicaPolicyInputClassification interface for type HyperVReplicaBluePolicyInput.
@@ -3583,28 +3583,28 @@ func (h *HyperVReplicaBluePolicyInput) GetPolicyProviderSpecificInput() *PolicyP
 // HyperVReplicaBlueReplicationDetails - HyperV replica 2012 R2 (Blue) replication details.
 type HyperVReplicaBlueReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Initial replication details.
-	InitialReplicationDetails *InitialReplicationDetails `json:"initialReplicationDetails,omitempty"`
+	InitialReplicationDetails *InitialReplicationDetails
 
 	// The Last replication time.
-	LastReplicatedTime *time.Time `json:"lastReplicatedTime,omitempty"`
+	LastReplicatedTime *time.Time
 
 	// VM disk details.
-	VMDiskDetails []*DiskDetails `json:"vMDiskDetails,omitempty"`
+	VMDiskDetails []*DiskDetails
 
 	// The virtual machine Id.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 
 	// The PE Network details.
-	VMNics []*VMNicDetails `json:"vmNics,omitempty"`
+	VMNics []*VMNicDetails
 
 	// The protection state for the vm.
-	VMProtectionState *string `json:"vmProtectionState,omitempty"`
+	VMProtectionState *string
 
 	// The protection state description for the vm.
-	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+	VMProtectionStateDescription *string
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -3618,37 +3618,37 @@ func (h *HyperVReplicaBlueReplicationDetails) GetReplicationProviderSpecificSett
 // HyperVReplicaPolicyDetails - Hyper-V Replica Blue specific protection profile details.
 type HyperVReplicaPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating the authentication type.
-	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
+	AllowedAuthenticationType *int32
 
 	// A value indicating the application consistent frequency.
-	ApplicationConsistentSnapshotFrequencyInHours *int32 `json:"applicationConsistentSnapshotFrequencyInHours,omitempty"`
+	ApplicationConsistentSnapshotFrequencyInHours *int32
 
 	// A value indicating whether compression has to be enabled.
-	Compression *string `json:"compression,omitempty"`
+	Compression *string
 
 	// A value indicating whether IR is online.
-	InitialReplicationMethod *string `json:"initialReplicationMethod,omitempty"`
+	InitialReplicationMethod *string
 
 	// A value indicating the offline IR export path.
-	OfflineReplicationExportPath *string `json:"offlineReplicationExportPath,omitempty"`
+	OfflineReplicationExportPath *string
 
 	// A value indicating the offline IR import path.
-	OfflineReplicationImportPath *string `json:"offlineReplicationImportPath,omitempty"`
+	OfflineReplicationImportPath *string
 
 	// A value indicating the online IR start time.
-	OnlineReplicationStartTime *string `json:"onlineReplicationStartTime,omitempty"`
+	OnlineReplicationStartTime *string
 
 	// A value indicating the number of recovery points.
-	RecoveryPoints *int32 `json:"recoveryPoints,omitempty"`
+	RecoveryPoints *int32
 
 	// A value indicating whether the VM has to be auto deleted. Supported Values: String.Empty, None, OnRecoveryCloud
-	ReplicaDeletionOption *string `json:"replicaDeletionOption,omitempty"`
+	ReplicaDeletionOption *string
 
 	// A value indicating the recovery HTTPS port.
-	ReplicationPort *int32 `json:"replicationPort,omitempty"`
+	ReplicationPort *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type HyperVReplicaPolicyDetails.
@@ -3671,37 +3671,37 @@ type HyperVReplicaPolicyInputClassification interface {
 // HyperVReplicaPolicyInput - Hyper-V Replica specific policy Input.
 type HyperVReplicaPolicyInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating the authentication type.
-	AllowedAuthenticationType *int32 `json:"allowedAuthenticationType,omitempty"`
+	AllowedAuthenticationType *int32
 
 	// A value indicating the application consistent frequency.
-	ApplicationConsistentSnapshotFrequencyInHours *int32 `json:"applicationConsistentSnapshotFrequencyInHours,omitempty"`
+	ApplicationConsistentSnapshotFrequencyInHours *int32
 
 	// A value indicating whether compression has to be enabled.
-	Compression *string `json:"compression,omitempty"`
+	Compression *string
 
 	// A value indicating whether IR is online.
-	InitialReplicationMethod *string `json:"initialReplicationMethod,omitempty"`
+	InitialReplicationMethod *string
 
 	// A value indicating the offline IR export path.
-	OfflineReplicationExportPath *string `json:"offlineReplicationExportPath,omitempty"`
+	OfflineReplicationExportPath *string
 
 	// A value indicating the offline IR import path.
-	OfflineReplicationImportPath *string `json:"offlineReplicationImportPath,omitempty"`
+	OfflineReplicationImportPath *string
 
 	// A value indicating the online IR start time.
-	OnlineReplicationStartTime *string `json:"onlineReplicationStartTime,omitempty"`
+	OnlineReplicationStartTime *string
 
 	// A value indicating the number of recovery points.
-	RecoveryPoints *int32 `json:"recoveryPoints,omitempty"`
+	RecoveryPoints *int32
 
 	// A value indicating whether the VM has to be auto deleted.
-	ReplicaDeletion *string `json:"replicaDeletion,omitempty"`
+	ReplicaDeletion *string
 
 	// A value indicating the recovery HTTPS port.
-	ReplicationPort *int32 `json:"replicationPort,omitempty"`
+	ReplicationPort *int32
 }
 
 // GetHyperVReplicaPolicyInput implements the HyperVReplicaPolicyInputClassification interface for type HyperVReplicaPolicyInput.
@@ -3717,28 +3717,28 @@ func (h *HyperVReplicaPolicyInput) GetPolicyProviderSpecificInput() *PolicyProvi
 // HyperVReplicaReplicationDetails - HyperV replica 2012 replication details.
 type HyperVReplicaReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Initial replication details.
-	InitialReplicationDetails *InitialReplicationDetails `json:"initialReplicationDetails,omitempty"`
+	InitialReplicationDetails *InitialReplicationDetails
 
 	// The Last replication time.
-	LastReplicatedTime *time.Time `json:"lastReplicatedTime,omitempty"`
+	LastReplicatedTime *time.Time
 
 	// VM disk details.
-	VMDiskDetails []*DiskDetails `json:"vMDiskDetails,omitempty"`
+	VMDiskDetails []*DiskDetails
 
 	// The virtual machine Id.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 
 	// The PE Network details.
-	VMNics []*VMNicDetails `json:"vmNics,omitempty"`
+	VMNics []*VMNicDetails
 
 	// The protection state for the vm.
-	VMProtectionState *string `json:"vmProtectionState,omitempty"`
+	VMProtectionState *string
 
 	// The protection state description for the vm.
-	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+	VMProtectionStateDescription *string
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -3752,10 +3752,10 @@ func (h *HyperVReplicaReplicationDetails) GetReplicationProviderSpecificSettings
 // HyperVSiteDetails - HyperVSite fabric specific details.
 type HyperVSiteDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The list of Hyper-V hosts associated with the fabric.
-	HyperVHosts []*HyperVHostDetails `json:"hyperVHosts,omitempty"`
+	HyperVHosts []*HyperVHostDetails
 }
 
 // GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type HyperVSiteDetails.
@@ -3778,32 +3778,32 @@ type HyperVVirtualMachineDetailsClassification interface {
 // HyperVVirtualMachineDetails - Single Host fabric provider specific VM settings.
 type HyperVVirtualMachineDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The Last successful failover time.
-	DiskDetails []*DiskDetails `json:"diskDetails,omitempty"`
+	DiskDetails []*DiskDetails
 
 	// The id of the object in fabric.
-	Generation *string `json:"generation,omitempty"`
+	Generation *string
 
 	// A value indicating whether the VM has a fibre channel adapter attached. String value of SrsDataContract.PresenceStatus
 	// enum.
-	HasFibreChannelAdapter *PresenceStatus `json:"hasFibreChannelAdapter,omitempty"`
+	HasFibreChannelAdapter *PresenceStatus
 
 	// A value indicating whether the VM has a physical disk attached. String value of SrsDataContract.PresenceStatus enum.
-	HasPhysicalDisk *PresenceStatus `json:"hasPhysicalDisk,omitempty"`
+	HasPhysicalDisk *PresenceStatus
 
 	// A value indicating whether the VM has a shared VHD attached. String value of SrsDataContract.PresenceStatus enum.
-	HasSharedVhd *PresenceStatus `json:"hasSharedVhd,omitempty"`
+	HasSharedVhd *PresenceStatus
 
 	// The Id of the hyper-v host in fabric.
-	HyperVHostID *string `json:"hyperVHostId,omitempty"`
+	HyperVHostID *string
 
 	// The Last replication time.
-	OSDetails *OSDetails `json:"osDetails,omitempty"`
+	OSDetails *OSDetails
 
 	// The source id of the object.
-	SourceItemID *string `json:"sourceItemId,omitempty"`
+	SourceItemID *string
 }
 
 // GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type HyperVVirtualMachineDetails.
@@ -3819,100 +3819,100 @@ func (h *HyperVVirtualMachineDetails) GetHyperVVirtualMachineDetails() *HyperVVi
 }
 
 type IPConfigDetails struct {
-	IPAddressType                   *string   `json:"ipAddressType,omitempty"`
-	IsPrimary                       *bool     `json:"isPrimary,omitempty"`
-	IsSeletedForFailover            *bool     `json:"isSeletedForFailover,omitempty"`
-	Name                            *string   `json:"name,omitempty"`
-	RecoveryIPAddressType           *string   `json:"recoveryIPAddressType,omitempty"`
-	RecoveryLBBackendAddressPoolIDs []*string `json:"recoveryLBBackendAddressPoolIds,omitempty"`
-	RecoveryPublicIPAddressID       *string   `json:"recoveryPublicIPAddressId,omitempty"`
-	RecoveryStaticIPAddress         *string   `json:"recoveryStaticIPAddress,omitempty"`
-	RecoverySubnetName              *string   `json:"recoverySubnetName,omitempty"`
-	StaticIPAddress                 *string   `json:"staticIPAddress,omitempty"`
-	SubnetName                      *string   `json:"subnetName,omitempty"`
-	TfoLBBackendAddressPoolIDs      []*string `json:"tfoLBBackendAddressPoolIds,omitempty"`
-	TfoPublicIPAddressID            *string   `json:"tfoPublicIPAddressId,omitempty"`
-	TfoStaticIPAddress              *string   `json:"tfoStaticIPAddress,omitempty"`
-	TfoSubnetName                   *string   `json:"tfoSubnetName,omitempty"`
+	IPAddressType                   *string
+	IsPrimary                       *bool
+	IsSeletedForFailover            *bool
+	Name                            *string
+	RecoveryIPAddressType           *string
+	RecoveryLBBackendAddressPoolIDs []*string
+	RecoveryPublicIPAddressID       *string
+	RecoveryStaticIPAddress         *string
+	RecoverySubnetName              *string
+	StaticIPAddress                 *string
+	SubnetName                      *string
+	TfoLBBackendAddressPoolIDs      []*string
+	TfoPublicIPAddressID            *string
+	TfoStaticIPAddress              *string
+	TfoSubnetName                   *string
 }
 
 type IPConfigInputDetails struct {
-	IPConfigName                    *string   `json:"ipConfigName,omitempty"`
-	IsPrimary                       *bool     `json:"isPrimary,omitempty"`
-	IsSeletedForFailover            *bool     `json:"isSeletedForFailover,omitempty"`
-	RecoveryLBBackendAddressPoolIDs []*string `json:"recoveryLBBackendAddressPoolIds,omitempty"`
-	RecoveryPublicIPAddressID       *string   `json:"recoveryPublicIPAddressId,omitempty"`
-	RecoveryStaticIPAddress         *string   `json:"recoveryStaticIPAddress,omitempty"`
-	RecoverySubnetName              *string   `json:"recoverySubnetName,omitempty"`
-	TfoLBBackendAddressPoolIDs      []*string `json:"tfoLBBackendAddressPoolIds,omitempty"`
-	TfoPublicIPAddressID            *string   `json:"tfoPublicIPAddressId,omitempty"`
-	TfoStaticIPAddress              *string   `json:"tfoStaticIPAddress,omitempty"`
-	TfoSubnetName                   *string   `json:"tfoSubnetName,omitempty"`
+	IPConfigName                    *string
+	IsPrimary                       *bool
+	IsSeletedForFailover            *bool
+	RecoveryLBBackendAddressPoolIDs []*string
+	RecoveryPublicIPAddressID       *string
+	RecoveryStaticIPAddress         *string
+	RecoverySubnetName              *string
+	TfoLBBackendAddressPoolIDs      []*string
+	TfoPublicIPAddressID            *string
+	TfoStaticIPAddress              *string
+	TfoSubnetName                   *string
 }
 
 // IdentityProviderDetails - Identity provider details.
 type IdentityProviderDetails struct {
 	// The base authority for Azure Active Directory authentication.
-	AADAuthority *string `json:"aadAuthority,omitempty"`
+	AADAuthority *string
 
 	// The application/client Id for the service principal with which the on-premise management/data plane components would communicate
 	// with our Azure services.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 
 	// The intended Audience of the service principal with which the on-premise management/data plane components would communicate
 	// with our Azure services.
-	Audience *string `json:"audience,omitempty"`
+	Audience *string
 
 	// The object Id of the service principal with which the on-premise management/data plane components would communicate with
 	// our Azure services.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// The tenant Id for the service principal with which the on-premise management/data plane components would communicate with
 	// our Azure services.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // IdentityProviderInput - Identity provider input.
 type IdentityProviderInput struct {
 	// REQUIRED; The base authority for Azure Active Directory authentication.
-	AADAuthority *string `json:"aadAuthority,omitempty"`
+	AADAuthority *string
 
 	// REQUIRED; The application/client Id for the service principal with which the on-premise management/data plane components
 	// would communicate with our Azure services.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 
 	// REQUIRED; The intended Audience of the service principal with which the on-premise management/data plane components would
 	// communicate with our Azure services.
-	Audience *string `json:"audience,omitempty"`
+	Audience *string
 
 	// REQUIRED; The object Id of the service principal with which the on-premise management/data plane components would communicate
 	// with our Azure services.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// REQUIRED; The tenant Id for the service principal with which the on-premise management/data plane components would communicate
 	// with our Azure services.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // InMageAgentDetails - The details of the InMage agent.
 type InMageAgentDetails struct {
 	// Agent expiry date.
-	AgentExpiryDate *time.Time `json:"agentExpiryDate,omitempty"`
+	AgentExpiryDate *time.Time
 
 	// A value indicating whether installed agent needs to be updated.
-	AgentUpdateStatus *string `json:"agentUpdateStatus,omitempty"`
+	AgentUpdateStatus *string
 
 	// The agent version.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// A value indicating whether reboot is required after update is applied.
-	PostUpdateRebootStatus *string `json:"postUpdateRebootStatus,omitempty"`
+	PostUpdateRebootStatus *string
 }
 
 // InMageAzureV2ApplyRecoveryPointInput - ApplyRecoveryPoint input specific to InMageAzureV2 provider.
 type InMageAzureV2ApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
@@ -3926,101 +3926,101 @@ func (i *InMageAzureV2ApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpec
 // InMageAzureV2DiskInputDetails - Disk input details.
 type InMageAzureV2DiskInputDetails struct {
 	// The DiskEncryptionSet ARM ID.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// The DiskId.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The DiskType.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 
 	// The LogStorageAccountId.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 }
 
 // InMageAzureV2EnableProtectionInput - VMware Azure specific enable protection input.
 type InMageAzureV2EnableProtectionInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The DiskEncryptionSet ARM Id.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// The DiskType.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 
 	// The disks to include list.
-	DisksToInclude []*InMageAzureV2DiskInputDetails `json:"disksToInclude,omitempty"`
+	DisksToInclude []*InMageAzureV2DiskInputDetails
 
 	// The selected option to enable RDP\SSH on target VM after failover. String value of SrsDataContract.EnableRDPOnTargetOption
 	// enum.
-	EnableRdpOnTargetOption *string `json:"enableRdpOnTargetOption,omitempty"`
+	EnableRdpOnTargetOption *string
 
 	// License type.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// The storage account to be used for logging during replication.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 
 	// The Master target Id.
-	MasterTargetID *string `json:"masterTargetId,omitempty"`
+	MasterTargetID *string
 
 	// The multi VM group Id.
-	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
+	MultiVMGroupID *string
 
 	// The multi VM group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// The Process Server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The CS account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 
 	// The SQL Server license type.
-	SQLServerLicenseType *SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *SQLServerLicenseType
 
 	// The tags for the seed managed disks.
-	SeedManagedDiskTags map[string]*string `json:"seedManagedDiskTags,omitempty"`
+	SeedManagedDiskTags map[string]*string
 
 	// The storage account Id.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// The target availability set ARM Id for resource manager deployment.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The selected target Azure network Id.
-	TargetAzureNetworkID *string `json:"targetAzureNetworkId,omitempty"`
+	TargetAzureNetworkID *string
 
 	// The selected target Azure subnet Id.
-	TargetAzureSubnetID *string `json:"targetAzureSubnetId,omitempty"`
+	TargetAzureSubnetID *string
 
 	// The Id of the target resource group (for classic deployment) in which the failover VM is to be created.
-	TargetAzureV1ResourceGroupID *string `json:"targetAzureV1ResourceGroupId,omitempty"`
+	TargetAzureV1ResourceGroupID *string
 
 	// The Id of the target resource group (for resource manager deployment) in which the failover VM is to be created.
-	TargetAzureV2ResourceGroupID *string `json:"targetAzureV2ResourceGroupId,omitempty"`
+	TargetAzureV2ResourceGroupID *string
 
 	// The target azure VM Name.
-	TargetAzureVMName *string `json:"targetAzureVmName,omitempty"`
+	TargetAzureVMName *string
 
 	// The tags for the target managed disks.
-	TargetManagedDiskTags map[string]*string `json:"targetManagedDiskTags,omitempty"`
+	TargetManagedDiskTags map[string]*string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The proximity placement group ARM Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target VM size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 }
 
 // GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
@@ -4034,28 +4034,28 @@ func (i *InMageAzureV2EnableProtectionInput) GetEnableProtectionProviderSpecific
 // InMageAzureV2EventDetails - Model class for event details of a VMwareAzureV2 event.
 type InMageAzureV2EventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// InMage Event Category.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// InMage Event Component.
-	Component *string `json:"component,omitempty"`
+	Component *string
 
 	// Corrective Action string for the event.
-	CorrectiveAction *string `json:"correctiveAction,omitempty"`
+	CorrectiveAction *string
 
 	// InMage Event Details.
-	Details *string `json:"details,omitempty"`
+	Details *string
 
 	// InMage Event type. Takes one of the values of InMageDataContract.InMageMonitoringEventType.
-	EventType *string `json:"eventType,omitempty"`
+	EventType *string
 
 	// VMware Site name.
-	SiteName *string `json:"siteName,omitempty"`
+	SiteName *string
 
 	// InMage Event Summary.
-	Summary *string `json:"summary,omitempty"`
+	Summary *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageAzureV2EventDetails.
@@ -4068,40 +4068,40 @@ func (i *InMageAzureV2EventDetails) GetEventProviderSpecificDetails() *EventProv
 // InMageAzureV2ManagedDiskDetails - InMageAzureV2 Managed disk details.
 type InMageAzureV2ManagedDiskDetails struct {
 	// The DiskEncryptionSet ARM ID.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// The disk id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The replica disk type.
-	ReplicaDiskType *string `json:"replicaDiskType,omitempty"`
+	ReplicaDiskType *string
 
 	// Seed managed disk Id.
-	SeedManagedDiskID *string `json:"seedManagedDiskId,omitempty"`
+	SeedManagedDiskID *string
 
 	// The target disk name.
-	TargetDiskName *string `json:"targetDiskName,omitempty"`
+	TargetDiskName *string
 }
 
 // InMageAzureV2PolicyDetails - InMage Azure v2 specific protection profile details.
 type InMageAzureV2PolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency in minutes.
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency in minutes.
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// A value indicating whether multi-VM sync has to be enabled.
-	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *string
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	RecoveryPointHistory *int32
 
 	// The recovery point threshold in minutes.
-	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+	RecoveryPointThresholdInMinutes *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageAzureV2PolicyDetails.
@@ -4114,22 +4114,22 @@ func (i *InMageAzureV2PolicyDetails) GetPolicyProviderSpecificDetails() *PolicyP
 // InMageAzureV2PolicyInput - VMWare Azure specific policy Input.
 type InMageAzureV2PolicyInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
-	MultiVMSyncStatus *SetMultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *SetMultiVMSyncStatus
 
 	// The app consistent snapshot frequency (in minutes).
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency (in minutes).
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	RecoveryPointHistory *int32
 
 	// The recovery point threshold in minutes.
-	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+	RecoveryPointThresholdInMinutes *int32
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageAzureV2PolicyInput.
@@ -4142,82 +4142,82 @@ func (i *InMageAzureV2PolicyInput) GetPolicyProviderSpecificInput() *PolicyProvi
 // InMageAzureV2ProtectedDiskDetails - InMageAzureV2 protected disk details.
 type InMageAzureV2ProtectedDiskDetails struct {
 	// The disk capacity in bytes.
-	DiskCapacityInBytes *int64 `json:"diskCapacityInBytes,omitempty"`
+	DiskCapacityInBytes *int64
 
 	// The disk id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The disk name.
-	DiskName *string `json:"diskName,omitempty"`
+	DiskName *string
 
 	// A value indicating whether disk is resized.
-	DiskResized *string `json:"diskResized,omitempty"`
+	DiskResized *string
 
 	// The disk file system capacity in bytes.
-	FileSystemCapacityInBytes *int64 `json:"fileSystemCapacityInBytes,omitempty"`
+	FileSystemCapacityInBytes *int64
 
 	// The health error code for the disk.
-	HealthErrorCode *string `json:"healthErrorCode,omitempty"`
+	HealthErrorCode *string
 
 	// The last RPO calculated time.
-	LastRpoCalculatedTime *time.Time `json:"lastRpoCalculatedTime,omitempty"`
+	LastRpoCalculatedTime *time.Time
 
 	// The Progress Health.
-	ProgressHealth *string `json:"progressHealth,omitempty"`
+	ProgressHealth *string
 
 	// The Progress Status.
-	ProgressStatus *string `json:"progressStatus,omitempty"`
+	ProgressStatus *string
 
 	// The protection stage.
-	ProtectionStage *string `json:"protectionStage,omitempty"`
+	ProtectionStage *string
 
 	// The PS data transit in MB.
-	PsDataInMegaBytes *float64 `json:"psDataInMegaBytes,omitempty"`
+	PsDataInMegaBytes *float64
 
 	// The resync duration in seconds.
-	ResyncDurationInSeconds *int64 `json:"resyncDurationInSeconds,omitempty"`
+	ResyncDurationInSeconds *int64
 
 	// The resync last 15 minutes transferred bytes.
-	ResyncLast15MinutesTransferredBytes *int64 `json:"resyncLast15MinutesTransferredBytes,omitempty"`
+	ResyncLast15MinutesTransferredBytes *int64
 
 	// The last data transfer time in UTC.
-	ResyncLastDataTransferTimeUTC *time.Time `json:"resyncLastDataTransferTimeUTC,omitempty"`
+	ResyncLastDataTransferTimeUTC *time.Time
 
 	// The resync processed bytes.
-	ResyncProcessedBytes *int64 `json:"resyncProcessedBytes,omitempty"`
+	ResyncProcessedBytes *int64
 
 	// The resync progress percentage.
-	ResyncProgressPercentage *int32 `json:"resyncProgressPercentage,omitempty"`
+	ResyncProgressPercentage *int32
 
 	// A value indicating whether resync is required for this disk.
-	ResyncRequired *string `json:"resyncRequired,omitempty"`
+	ResyncRequired *string
 
 	// The resync start time.
-	ResyncStartTime *time.Time `json:"resyncStartTime,omitempty"`
+	ResyncStartTime *time.Time
 
 	// The resync total transferred bytes.
-	ResyncTotalTransferredBytes *int64 `json:"resyncTotalTransferredBytes,omitempty"`
+	ResyncTotalTransferredBytes *int64
 
 	// The RPO in seconds.
-	RpoInSeconds *int64 `json:"rpoInSeconds,omitempty"`
+	RpoInSeconds *int64
 
 	// The seconds to take for switch provider.
-	SecondsToTakeSwitchProvider *int64 `json:"secondsToTakeSwitchProvider,omitempty"`
+	SecondsToTakeSwitchProvider *int64
 
 	// The source data transit in MB.
-	SourceDataInMegaBytes *float64 `json:"sourceDataInMegaBytes,omitempty"`
+	SourceDataInMegaBytes *float64
 
 	// The target data transit in MB.
-	TargetDataInMegaBytes *float64 `json:"targetDataInMegaBytes,omitempty"`
+	TargetDataInMegaBytes *float64
 }
 
 // InMageAzureV2RecoveryPointDetails - InMage Azure V2 provider specific recovery point details.
 type InMageAzureV2RecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether the recovery point is multi VM consistent.
-	IsMultiVMSyncPoint *string `json:"isMultiVmSyncPoint,omitempty"`
+	IsMultiVMSyncPoint *string
 }
 
 // GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
@@ -4231,211 +4231,211 @@ func (i *InMageAzureV2RecoveryPointDetails) GetProviderSpecificRecoveryPointDeta
 // InMageAzureV2ReplicationDetails - InMageAzureV2 provider specific settings.
 type InMageAzureV2ReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Agent expiry date.
-	AgentExpiryDate *time.Time `json:"agentExpiryDate,omitempty"`
+	AgentExpiryDate *time.Time
 
 	// The agent version.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// Azure VM Disk details.
-	AzureVMDiskDetails []*AzureVMDiskDetails `json:"azureVMDiskDetails,omitempty"`
+	AzureVMDiskDetails []*AzureVMDiskDetails
 
 	// The target generation for this protected item.
-	AzureVMGeneration *string `json:"azureVmGeneration,omitempty"`
+	AzureVMGeneration *string
 
 	// The compressed data change rate in MB.
-	CompressedDataRateInMB *float64 `json:"compressedDataRateInMB,omitempty"`
+	CompressedDataRateInMB *float64
 
 	// The datastores of the on-premise machine. Value can be list of strings that contain datastore names.
-	Datastores []*string `json:"datastores,omitempty"`
+	Datastores []*string
 
 	// A value indicating the discovery type of the machine. Value can be vCenter or physical.
-	DiscoveryType *string `json:"discoveryType,omitempty"`
+	DiscoveryType *string
 
 	// A value indicating whether any disk is resized for this VM.
-	DiskResized *string `json:"diskResized,omitempty"`
+	DiskResized *string
 
 	// The selected option to enable RDP\SSH on target vm after failover. String value of SrsDataContract.EnableRDPOnTargetOption
 	// enum.
-	EnableRdpOnTargetOption *string `json:"enableRdpOnTargetOption,omitempty"`
+	EnableRdpOnTargetOption *string
 
 	// The firmware type of this protected item.
-	FirmwareType *string `json:"firmwareType,omitempty"`
+	FirmwareType *string
 
 	// The source IP address.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The infrastructure VM Id.
-	InfrastructureVMID *string `json:"infrastructureVmId,omitempty"`
+	InfrastructureVMID *string
 
 	// A value indicating whether additional IR stats are available or not.
-	IsAdditionalStatsAvailable *bool `json:"isAdditionalStatsAvailable,omitempty"`
+	IsAdditionalStatsAvailable *bool
 
 	// A value indicating whether installed agent needs to be updated.
-	IsAgentUpdateRequired *string `json:"isAgentUpdateRequired,omitempty"`
+	IsAgentUpdateRequired *string
 
 	// A value indicating whether the source server requires a restart after update.
-	IsRebootAfterUpdateRequired *string `json:"isRebootAfterUpdateRequired,omitempty"`
+	IsRebootAfterUpdateRequired *string
 
 	// The last heartbeat received from the source server.
-	LastHeartbeat *time.Time `json:"lastHeartbeat,omitempty"`
+	LastHeartbeat *time.Time
 
 	// The last RPO calculated time.
-	LastRpoCalculatedTime *time.Time `json:"lastRpoCalculatedTime,omitempty"`
+	LastRpoCalculatedTime *time.Time
 
 	// The last update time received from on-prem components.
-	LastUpdateReceivedTime *time.Time `json:"lastUpdateReceivedTime,omitempty"`
+	LastUpdateReceivedTime *time.Time
 
 	// License Type of the VM to be used.
-	LicenseType *string `json:"licenseType,omitempty"`
+	LicenseType *string
 
 	// The master target Id.
-	MasterTargetID *string `json:"masterTargetId,omitempty"`
+	MasterTargetID *string
 
 	// The multi vm group Id.
-	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
+	MultiVMGroupID *string
 
 	// The multi vm group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// A value indicating whether multi vm sync is enabled or disabled.
-	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *string
 
 	// The id of the disk containing the OS.
-	OSDiskID *string `json:"osDiskId,omitempty"`
+	OSDiskID *string
 
 	// The type of the OS on the VM.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The OS Version of the protected item.
-	OSVersion *string `json:"osVersion,omitempty"`
+	OSVersion *string
 
 	// The process server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The process server name.
-	ProcessServerName *string `json:"processServerName,omitempty"`
+	ProcessServerName *string
 
 	// The list of protected disks.
-	ProtectedDisks []*InMageAzureV2ProtectedDiskDetails `json:"protectedDisks,omitempty"`
+	ProtectedDisks []*InMageAzureV2ProtectedDiskDetails
 
 	// The list of protected managed disks.
-	ProtectedManagedDisks []*InMageAzureV2ManagedDiskDetails `json:"protectedManagedDisks,omitempty"`
+	ProtectedManagedDisks []*InMageAzureV2ManagedDiskDetails
 
 	// The protection stage.
-	ProtectionStage *string `json:"protectionStage,omitempty"`
+	ProtectionStage *string
 
 	// The recovery availability set Id.
-	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	RecoveryAvailabilitySetID *string
 
 	// The ARM id of the log storage account used for replication. This will be set to null if no log storage account was provided
 	// during enable protection.
-	RecoveryAzureLogStorageAccountID *string `json:"recoveryAzureLogStorageAccountId,omitempty"`
+	RecoveryAzureLogStorageAccountID *string
 
 	// The target resource group Id.
-	RecoveryAzureResourceGroupID *string `json:"recoveryAzureResourceGroupId,omitempty"`
+	RecoveryAzureResourceGroupID *string
 
 	// The recovery Azure storage account.
-	RecoveryAzureStorageAccount *string `json:"recoveryAzureStorageAccount,omitempty"`
+	RecoveryAzureStorageAccount *string
 
 	// Recovery Azure given name.
-	RecoveryAzureVMName *string `json:"recoveryAzureVMName,omitempty"`
+	RecoveryAzureVMName *string
 
 	// The Recovery Azure VM size.
-	RecoveryAzureVMSize *string `json:"recoveryAzureVMSize,omitempty"`
+	RecoveryAzureVMSize *string
 
 	// The replica id of the protected item.
-	ReplicaID *string `json:"replicaId,omitempty"`
+	ReplicaID *string
 
 	// The resync progress percentage.
-	ResyncProgressPercentage *int32 `json:"resyncProgressPercentage,omitempty"`
+	ResyncProgressPercentage *int32
 
 	// The RPO in seconds.
-	RpoInSeconds *int64 `json:"rpoInSeconds,omitempty"`
+	RpoInSeconds *int64
 
 	// The SQL Server license type.
-	SQLServerLicenseType *string `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *string
 
 	// The tags for the seed managed disks.
-	SeedManagedDiskTags map[string]*string `json:"seedManagedDiskTags,omitempty"`
+	SeedManagedDiskTags map[string]*string
 
 	// The selected recovery azure network Id.
-	SelectedRecoveryAzureNetworkID *string `json:"selectedRecoveryAzureNetworkId,omitempty"`
+	SelectedRecoveryAzureNetworkID *string
 
 	// The selected source nic Id which will be used as the primary nic during failover.
-	SelectedSourceNicID *string `json:"selectedSourceNicId,omitempty"`
+	SelectedSourceNicID *string
 
 	// The test failover virtual network.
-	SelectedTfoAzureNetworkID *string `json:"selectedTfoAzureNetworkId,omitempty"`
+	SelectedTfoAzureNetworkID *string
 
 	// The CPU count of the VM on the primary side.
-	SourceVMCPUCount *int32 `json:"sourceVmCpuCount,omitempty"`
+	SourceVMCPUCount *int32
 
 	// The RAM size of the VM on the primary side.
-	SourceVMRAMSizeInMB *int32 `json:"sourceVmRamSizeInMB,omitempty"`
+	SourceVMRAMSizeInMB *int32
 
 	// The switch provider blocking error information.
-	SwitchProviderBlockingErrorDetails []*InMageAzureV2SwitchProviderBlockingErrorDetails `json:"switchProviderBlockingErrorDetails,omitempty"`
+	SwitchProviderBlockingErrorDetails []*InMageAzureV2SwitchProviderBlockingErrorDetails
 
 	// The switch provider blocking error information.
-	SwitchProviderDetails *InMageAzureV2SwitchProviderDetails `json:"switchProviderDetails,omitempty"`
+	SwitchProviderDetails *InMageAzureV2SwitchProviderDetails
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The tags for the target managed disks.
-	TargetManagedDiskTags map[string]*string `json:"targetManagedDiskTags,omitempty"`
+	TargetManagedDiskTags map[string]*string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The target proximity placement group Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The ARM Id of the target Azure VM. This value will be null until the VM is failed over. Only after failure it will be populated
 	// with the ARM Id of the Azure VM.
-	TargetVMID *string `json:"targetVmId,omitempty"`
+	TargetVMID *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 
 	// The total transferred data in bytes.
-	TotalDataTransferred *int64 `json:"totalDataTransferred,omitempty"`
+	TotalDataTransferred *int64
 
 	// The progress health.
-	TotalProgressHealth *string `json:"totalProgressHealth,omitempty"`
+	TotalProgressHealth *string
 
 	// The uncompressed data change rate in MB.
-	UncompressedDataRateInMB *float64 `json:"uncompressedDataRateInMB,omitempty"`
+	UncompressedDataRateInMB *float64
 
 	// A value indicating whether managed disks should be used during failover.
-	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
+	UseManagedDisks *string
 
 	// The vCenter infrastructure Id.
-	VCenterInfrastructureID *string `json:"vCenterInfrastructureId,omitempty"`
+	VCenterInfrastructureID *string
 
 	// The virtual machine Id.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 
 	// The PE Network details.
-	VMNics []*VMNicDetails `json:"vmNics,omitempty"`
+	VMNics []*VMNicDetails
 
 	// The protection state for the vm.
-	VMProtectionState *string `json:"vmProtectionState,omitempty"`
+	VMProtectionState *string
 
 	// The protection state description for the vm.
-	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+	VMProtectionStateDescription *string
 
 	// The validation errors of the on-premise machine Value can be list of validation errors.
-	ValidationErrors []*HealthError `json:"validationErrors,omitempty"`
+	ValidationErrors []*HealthError
 
 	// The OS disk VHD name.
-	VhdName *string `json:"vhdName,omitempty"`
+	VhdName *string
 
 	// READ-ONLY; The last recovery point received time.
-	LastRecoveryPointReceived *time.Time `json:"lastRecoveryPointReceived,omitempty" azure:"ro"`
+	LastRecoveryPointReceived *time.Time
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -4449,28 +4449,28 @@ func (i *InMageAzureV2ReplicationDetails) GetReplicationProviderSpecificSettings
 // InMageAzureV2ReprotectInput - InMageAzureV2 specific provider input.
 type InMageAzureV2ReprotectInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The disks to include list.
-	DisksToInclude []*string `json:"disksToInclude,omitempty"`
+	DisksToInclude []*string
 
 	// The storage account to be used for logging during replication.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 
 	// The Master target Id.
-	MasterTargetID *string `json:"masterTargetId,omitempty"`
+	MasterTargetID *string
 
 	// The Policy Id.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// The Process Server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The CS account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 
 	// The storage account id.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 }
 
 // GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
@@ -4484,52 +4484,52 @@ func (i *InMageAzureV2ReprotectInput) GetReverseReplicationProviderSpecificInput
 // InMageAzureV2SwitchProviderBlockingErrorDetails - InMageAzureV2 switch provider blocking error details.
 type InMageAzureV2SwitchProviderBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
-	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *string
 
 	// READ-ONLY; The error message.
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; The error message parameters.
-	ErrorMessageParameters map[string]*string `json:"errorMessageParameters,omitempty" azure:"ro"`
+	ErrorMessageParameters map[string]*string
 
 	// READ-ONLY; The error tags.
-	ErrorTags map[string]*string `json:"errorTags,omitempty" azure:"ro"`
+	ErrorTags map[string]*string
 
 	// READ-ONLY; The possible causes.
-	PossibleCauses *string `json:"possibleCauses,omitempty" azure:"ro"`
+	PossibleCauses *string
 
 	// READ-ONLY; The recommended action.
-	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
+	RecommendedAction *string
 }
 
 // InMageAzureV2SwitchProviderDetails - InMageAzureV2 switch provider details.
 type InMageAzureV2SwitchProviderDetails struct {
 	// READ-ONLY; The target appliance Id.
-	TargetApplianceID *string `json:"targetApplianceId,omitempty" azure:"ro"`
+	TargetApplianceID *string
 
 	// READ-ONLY; The target fabric Id.
-	TargetFabricID *string `json:"targetFabricId,omitempty" azure:"ro"`
+	TargetFabricID *string
 
 	// READ-ONLY; The target resource Id.
-	TargetResourceID *string `json:"targetResourceId,omitempty" azure:"ro"`
+	TargetResourceID *string
 
 	// READ-ONLY; The target vault Id.
-	TargetVaultID *string `json:"targetVaultId,omitempty" azure:"ro"`
+	TargetVaultID *string
 }
 
 // InMageAzureV2SwitchProviderInput - Provider specific input for InMageAzureV2 switch provider.
 type InMageAzureV2SwitchProviderInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The target appliance Id.
-	TargetApplianceID *string `json:"targetApplianceID,omitempty"`
+	TargetApplianceID *string
 
 	// REQUIRED; The target fabric Id.
-	TargetFabricID *string `json:"targetFabricID,omitempty"`
+	TargetFabricID *string
 
 	// REQUIRED; The target vault Id.
-	TargetVaultID *string `json:"targetVaultID,omitempty"`
+	TargetVaultID *string
 }
 
 // GetSwitchProviderSpecificInput implements the SwitchProviderSpecificInputClassification interface for type InMageAzureV2SwitchProviderInput.
@@ -4542,11 +4542,11 @@ func (i *InMageAzureV2SwitchProviderInput) GetSwitchProviderSpecificInput() *Swi
 // InMageAzureV2TestFailoverInput - InMageAzureV2 provider specific input for test failover.
 type InMageAzureV2TestFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null
 	// should be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 }
 
 // GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
@@ -4560,11 +4560,11 @@ func (i *InMageAzureV2TestFailoverInput) GetTestFailoverProviderSpecificInput() 
 // InMageAzureV2UnplannedFailoverInput - InMageAzureV2 provider specific input for unplanned failover.
 type InMageAzureV2UnplannedFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 }
 
 // GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
@@ -4578,37 +4578,37 @@ func (i *InMageAzureV2UnplannedFailoverInput) GetUnplannedFailoverProviderSpecif
 // InMageAzureV2UpdateReplicationProtectedItemInput - InMage Azure V2 input to update replication protected item.
 type InMageAzureV2UpdateReplicationProtectedItemInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The recovery Azure resource group Id for classic deployment.
-	RecoveryAzureV1ResourceGroupID *string `json:"recoveryAzureV1ResourceGroupId,omitempty"`
+	RecoveryAzureV1ResourceGroupID *string
 
 	// The recovery Azure resource group Id for resource manager deployment.
-	RecoveryAzureV2ResourceGroupID *string `json:"recoveryAzureV2ResourceGroupId,omitempty"`
+	RecoveryAzureV2ResourceGroupID *string
 
 	// The SQL Server license type.
-	SQLServerLicenseType *SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *SQLServerLicenseType
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The tags for the target managed disks.
-	TargetManagedDiskTags map[string]*string `json:"targetManagedDiskTags,omitempty"`
+	TargetManagedDiskTags map[string]*string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The target proximity placement group Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 
 	// A value indicating whether managed disks should be used during failover.
-	UseManagedDisks *string `json:"useManagedDisks,omitempty"`
+	UseManagedDisks *string
 
 	// The list of disk update properties.
-	VMDisks []*UpdateDiskInput `json:"vmDisks,omitempty"`
+	VMDisks []*UpdateDiskInput
 }
 
 // GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
@@ -4622,19 +4622,19 @@ func (i *InMageAzureV2UpdateReplicationProtectedItemInput) GetUpdateReplicationP
 // InMageBasePolicyDetails - Base class for the policies of providers using InMage replication.
 type InMageBasePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency in minutes.
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// A value indicating whether multi-VM sync has to be enabled.
-	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *string
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	RecoveryPointHistory *int32
 
 	// The recovery point threshold in minutes.
-	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+	RecoveryPointThresholdInMinutes *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageBasePolicyDetails.
@@ -4647,10 +4647,10 @@ func (i *InMageBasePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProv
 // InMageDisableProtectionProviderSpecificInput - InMage disable protection provider specific input.
 type InMageDisableProtectionProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether the replica VM should be destroyed or retained. Values from Delete and Retain.
-	ReplicaVMDeletionStatus *string `json:"replicaVmDeletionStatus,omitempty"`
+	ReplicaVMDeletionStatus *string
 }
 
 // GetDisableProtectionProviderSpecificInput implements the DisableProtectionProviderSpecificInputClassification interface
@@ -4664,74 +4664,74 @@ func (i *InMageDisableProtectionProviderSpecificInput) GetDisableProtectionProvi
 // InMageDiskDetails - VMware/Physical specific Disk Details.
 type InMageDiskDetails struct {
 	// Whether disk is dynamic disk or basic disk.
-	DiskConfiguration *string `json:"diskConfiguration,omitempty"`
+	DiskConfiguration *string
 
 	// The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The disk name.
-	DiskName *string `json:"diskName,omitempty"`
+	DiskName *string
 
 	// The disk size in MB.
-	DiskSizeInMB *string `json:"diskSizeInMB,omitempty"`
+	DiskSizeInMB *string
 
 	// Whether disk is system disk or data disk.
-	DiskType *string `json:"diskType,omitempty"`
+	DiskType *string
 
 	// Volumes of the disk.
-	VolumeList []*DiskVolumeDetails `json:"volumeList,omitempty"`
+	VolumeList []*DiskVolumeDetails
 }
 
 // InMageDiskExclusionInput - DiskExclusionInput when doing enable protection of virtual machine in InMage provider.
 type InMageDiskExclusionInput struct {
 	// The guest disk signature based option for disk exclusion.
-	DiskSignatureOptions []*InMageDiskSignatureExclusionOptions `json:"diskSignatureOptions,omitempty"`
+	DiskSignatureOptions []*InMageDiskSignatureExclusionOptions
 
 	// The volume label based option for disk exclusion.
-	VolumeOptions []*InMageVolumeExclusionOptions `json:"volumeOptions,omitempty"`
+	VolumeOptions []*InMageVolumeExclusionOptions
 }
 
 // InMageDiskSignatureExclusionOptions - Guest disk signature based disk exclusion option when doing enable protection of
 // virtual machine in InMage provider.
 type InMageDiskSignatureExclusionOptions struct {
 	// The guest signature of disk to be excluded from replication.
-	DiskSignature *string `json:"diskSignature,omitempty"`
+	DiskSignature *string
 }
 
 // InMageEnableProtectionInput - VMware Azure specific enable protection input.
 type InMageEnableProtectionInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The Master Target Id.
-	MasterTargetID *string `json:"masterTargetId,omitempty"`
+	MasterTargetID *string
 
 	// REQUIRED; The multi VM group Id.
-	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
+	MultiVMGroupID *string
 
 	// REQUIRED; The multi VM group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// REQUIRED; The Process Server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// REQUIRED; The retention drive to use on the MT.
-	RetentionDrive *string `json:"retentionDrive,omitempty"`
+	RetentionDrive *string
 
 	// The target datastore name.
-	DatastoreName *string `json:"datastoreName,omitempty"`
+	DatastoreName *string
 
 	// The enable disk exclusion input.
-	DiskExclusionInput *InMageDiskExclusionInput `json:"diskExclusionInput,omitempty"`
+	DiskExclusionInput *InMageDiskExclusionInput
 
 	// The disks to include list.
-	DisksToInclude []*string `json:"disksToInclude,omitempty"`
+	DisksToInclude []*string
 
 	// The CS account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 
 	// The VM Name.
-	VMFriendlyName *string `json:"vmFriendlyName,omitempty"`
+	VMFriendlyName *string
 }
 
 // GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
@@ -4745,40 +4745,40 @@ func (i *InMageEnableProtectionInput) GetEnableProtectionProviderSpecificInput()
 // InMageFabricSwitchProviderBlockingErrorDetails - InMageFabric switch provider blocking error details.
 type InMageFabricSwitchProviderBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
-	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *string
 
 	// READ-ONLY; The error message.
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; The error message parameters.
-	ErrorMessageParameters map[string]*string `json:"errorMessageParameters,omitempty" azure:"ro"`
+	ErrorMessageParameters map[string]*string
 
 	// READ-ONLY; The error tags.
-	ErrorTags map[string]*string `json:"errorTags,omitempty" azure:"ro"`
+	ErrorTags map[string]*string
 
 	// READ-ONLY; The possible causes.
-	PossibleCauses *string `json:"possibleCauses,omitempty" azure:"ro"`
+	PossibleCauses *string
 
 	// READ-ONLY; The recommended action.
-	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
+	RecommendedAction *string
 }
 
 // InMagePolicyDetails - InMage specific protection profile details.
 type InMagePolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency in minutes.
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// A value indicating whether multi-VM sync has to be enabled.
-	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *string
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	RecoveryPointHistory *int32
 
 	// The recovery point threshold in minutes.
-	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+	RecoveryPointThresholdInMinutes *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMagePolicyDetails.
@@ -4791,19 +4791,19 @@ func (i *InMagePolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProvider
 // InMagePolicyInput - VMWare Azure specific protection profile Input.
 type InMagePolicyInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
-	MultiVMSyncStatus *SetMultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *SetMultiVMSyncStatus
 
 	// The app consistent snapshot frequency (in minutes).
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	RecoveryPointHistory *int32
 
 	// The recovery point threshold in minutes.
-	RecoveryPointThresholdInMinutes *int32 `json:"recoveryPointThresholdInMinutes,omitempty"`
+	RecoveryPointThresholdInMinutes *int32
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMagePolicyInput.
@@ -4816,136 +4816,136 @@ func (i *InMagePolicyInput) GetPolicyProviderSpecificInput() *PolicyProviderSpec
 // InMageProtectedDiskDetails - InMage protected disk details.
 type InMageProtectedDiskDetails struct {
 	// The disk capacity in bytes.
-	DiskCapacityInBytes *int64 `json:"diskCapacityInBytes,omitempty"`
+	DiskCapacityInBytes *int64
 
 	// The disk id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The disk name.
-	DiskName *string `json:"diskName,omitempty"`
+	DiskName *string
 
 	// A value indicating whether disk is resized.
-	DiskResized *string `json:"diskResized,omitempty"`
+	DiskResized *string
 
 	// The file system capacity in bytes.
-	FileSystemCapacityInBytes *int64 `json:"fileSystemCapacityInBytes,omitempty"`
+	FileSystemCapacityInBytes *int64
 
 	// The health error code for the disk.
-	HealthErrorCode *string `json:"healthErrorCode,omitempty"`
+	HealthErrorCode *string
 
 	// The last RPO calculated time.
-	LastRpoCalculatedTime *time.Time `json:"lastRpoCalculatedTime,omitempty"`
+	LastRpoCalculatedTime *time.Time
 
 	// The Progress Health.
-	ProgressHealth *string `json:"progressHealth,omitempty"`
+	ProgressHealth *string
 
 	// The Progress Status.
-	ProgressStatus *string `json:"progressStatus,omitempty"`
+	ProgressStatus *string
 
 	// The protection stage.
-	ProtectionStage *string `json:"protectionStage,omitempty"`
+	ProtectionStage *string
 
 	// The PS data transit in MB.
-	PsDataInMB *float64 `json:"psDataInMB,omitempty"`
+	PsDataInMB *float64
 
 	// The resync duration in seconds.
-	ResyncDurationInSeconds *int64 `json:"resyncDurationInSeconds,omitempty"`
+	ResyncDurationInSeconds *int64
 
 	// The resync last 15 minutes transferred bytes.
-	ResyncLast15MinutesTransferredBytes *int64 `json:"resyncLast15MinutesTransferredBytes,omitempty"`
+	ResyncLast15MinutesTransferredBytes *int64
 
 	// The last data transfer time in UTC.
-	ResyncLastDataTransferTimeUTC *time.Time `json:"resyncLastDataTransferTimeUTC,omitempty"`
+	ResyncLastDataTransferTimeUTC *time.Time
 
 	// The resync processed bytes.
-	ResyncProcessedBytes *int64 `json:"resyncProcessedBytes,omitempty"`
+	ResyncProcessedBytes *int64
 
 	// The resync progress percentage.
-	ResyncProgressPercentage *int32 `json:"resyncProgressPercentage,omitempty"`
+	ResyncProgressPercentage *int32
 
 	// A value indicating whether resync is required for this disk.
-	ResyncRequired *string `json:"resyncRequired,omitempty"`
+	ResyncRequired *string
 
 	// The resync start time.
-	ResyncStartTime *time.Time `json:"resyncStartTime,omitempty"`
+	ResyncStartTime *time.Time
 
 	// The resync total transferred bytes.
-	ResyncTotalTransferredBytes *int64 `json:"resyncTotalTransferredBytes,omitempty"`
+	ResyncTotalTransferredBytes *int64
 
 	// The RPO in seconds.
-	RpoInSeconds *int64 `json:"rpoInSeconds,omitempty"`
+	RpoInSeconds *int64
 
 	// The source data transit in MB.
-	SourceDataInMB *float64 `json:"sourceDataInMB,omitempty"`
+	SourceDataInMB *float64
 
 	// The target data transit in MB.
-	TargetDataInMB *float64 `json:"targetDataInMB,omitempty"`
+	TargetDataInMB *float64
 }
 
 // InMageRcmAgentUpgradeBlockingErrorDetails - InMageRcm source agent upgrade blocking error details.
 type InMageRcmAgentUpgradeBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
-	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *string
 
 	// READ-ONLY; The error message.
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; The error message parameters.
-	ErrorMessageParameters map[string]*string `json:"errorMessageParameters,omitempty" azure:"ro"`
+	ErrorMessageParameters map[string]*string
 
 	// READ-ONLY; The error tags.
-	ErrorTags map[string]*string `json:"errorTags,omitempty" azure:"ro"`
+	ErrorTags map[string]*string
 
 	// READ-ONLY; The possible causes.
-	PossibleCauses *string `json:"possibleCauses,omitempty" azure:"ro"`
+	PossibleCauses *string
 
 	// READ-ONLY; The recommended action.
-	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
+	RecommendedAction *string
 }
 
 // InMageRcmApplianceDetails - InMageRcm appliance details.
 type InMageRcmApplianceDetails struct {
 	// READ-ONLY; The DRA.
-	Dra *DraDetails `json:"dra,omitempty" azure:"ro"`
+	Dra *DraDetails
 
 	// READ-ONLY; The fabric ARM Id.
-	FabricArmID *string `json:"fabricArmId,omitempty" azure:"ro"`
+	FabricArmID *string
 
 	// READ-ONLY; The appliance Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The Mars agent.
-	MarsAgent *MarsAgentDetails `json:"marsAgent,omitempty" azure:"ro"`
+	MarsAgent *MarsAgentDetails
 
 	// READ-ONLY; The appliance name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The process server.
-	ProcessServer *ProcessServerDetails `json:"processServer,omitempty" azure:"ro"`
+	ProcessServer *ProcessServerDetails
 
 	// READ-ONLY; The push installer.
-	PushInstaller *PushInstallerDetails `json:"pushInstaller,omitempty" azure:"ro"`
+	PushInstaller *PushInstallerDetails
 
 	// READ-ONLY; The of RCM proxy.
-	RcmProxy *RcmProxyDetails `json:"rcmProxy,omitempty" azure:"ro"`
+	RcmProxy *RcmProxyDetails
 
 	// READ-ONLY; The replication agent.
-	ReplicationAgent *ReplicationAgentDetails `json:"replicationAgent,omitempty" azure:"ro"`
+	ReplicationAgent *ReplicationAgentDetails
 
 	// READ-ONLY; The reprotect agent.
-	ReprotectAgent *ReprotectAgentDetails `json:"reprotectAgent,omitempty" azure:"ro"`
+	ReprotectAgent *ReprotectAgentDetails
 
 	// READ-ONLY; The switch provider blocking error information.
-	SwitchProviderBlockingErrorDetails []*InMageRcmFabricSwitchProviderBlockingErrorDetails `json:"switchProviderBlockingErrorDetails,omitempty" azure:"ro"`
+	SwitchProviderBlockingErrorDetails []*InMageRcmFabricSwitchProviderBlockingErrorDetails
 }
 
 // InMageRcmApplianceSpecificDetails - InMageRcm appliance specific details.
 type InMageRcmApplianceSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// READ-ONLY; The list of appliances.
-	Appliances []*InMageRcmApplianceDetails `json:"appliances,omitempty" azure:"ro"`
+	Appliances []*InMageRcmApplianceDetails
 }
 
 // GetApplianceSpecificDetails implements the ApplianceSpecificDetailsClassification interface for type InMageRcmApplianceSpecificDetails.
@@ -4958,10 +4958,10 @@ func (i *InMageRcmApplianceSpecificDetails) GetApplianceSpecificDetails() *Appli
 // InMageRcmApplyRecoveryPointInput - ApplyRecoveryPoint input specific to InMageRcm provider.
 type InMageRcmApplyRecoveryPointInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The recovery point Id.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 }
 
 // GetApplyRecoveryPointProviderSpecificInput implements the ApplyRecoveryPointProviderSpecificInputClassification interface
@@ -4975,127 +4975,127 @@ func (i *InMageRcmApplyRecoveryPointInput) GetApplyRecoveryPointProviderSpecific
 // InMageRcmDiscoveredProtectedVMDetails - InMageRcm discovered protected VM details.
 type InMageRcmDiscoveredProtectedVMDetails struct {
 	// READ-ONLY; The SDS created timestamp.
-	CreatedTimestamp *time.Time `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *time.Time
 
 	// READ-ONLY; The list of datastores.
-	Datastores []*string `json:"datastores,omitempty" azure:"ro"`
+	Datastores []*string
 
 	// READ-ONLY; The list of IP addresses.
-	IPAddresses []*string `json:"ipAddresses,omitempty" azure:"ro"`
+	IPAddresses []*string
 
 	// READ-ONLY; A value indicating whether the VM is deleted.
-	IsDeleted *bool `json:"isDeleted,omitempty" azure:"ro"`
+	IsDeleted *bool
 
 	// READ-ONLY; The last time when SDS information discovered in SRS.
-	LastDiscoveryTimeInUTC *time.Time `json:"lastDiscoveryTimeInUtc,omitempty" azure:"ro"`
+	LastDiscoveryTimeInUTC *time.Time
 
 	// READ-ONLY; The VM's OS name.
-	OSName *string `json:"osName,omitempty" azure:"ro"`
+	OSName *string
 
 	// READ-ONLY; The VM power status.
-	PowerStatus *string `json:"powerStatus,omitempty" azure:"ro"`
+	PowerStatus *string
 
 	// READ-ONLY; The SDS updated timestamp.
-	UpdatedTimestamp *time.Time `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *time.Time
 
 	// READ-ONLY; The VCenter fqdn.
-	VCenterFqdn *string `json:"vCenterFqdn,omitempty" azure:"ro"`
+	VCenterFqdn *string
 
 	// READ-ONLY; The VCenter Id.
-	VCenterID *string `json:"vCenterId,omitempty" azure:"ro"`
+	VCenterID *string
 
 	// READ-ONLY; The VM fqdn.
-	VMFqdn *string `json:"vmFqdn,omitempty" azure:"ro"`
+	VMFqdn *string
 
 	// READ-ONLY; The VMware tools status.
-	VmwareToolsStatus *string `json:"vmwareToolsStatus,omitempty" azure:"ro"`
+	VmwareToolsStatus *string
 }
 
 // InMageRcmDiskInput - InMageRcm disk input.
 type InMageRcmDiskInput struct {
 	// REQUIRED; The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// REQUIRED; The disk type.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 
 	// REQUIRED; The log storage account ARM Id.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 
 	// The DiskEncryptionSet ARM Id.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 }
 
 // InMageRcmDisksDefaultInput - InMageRcm disk input.
 type InMageRcmDisksDefaultInput struct {
 	// REQUIRED; The disk type.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 
 	// REQUIRED; The log storage account ARM Id.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 
 	// The DiskEncryptionSet ARM Id.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 }
 
 // InMageRcmEnableProtectionInput - InMageRcm specific enable protection input.
 type InMageRcmEnableProtectionInput struct {
 	// REQUIRED; The ARM Id of discovered machine.
-	FabricDiscoveryMachineID *string `json:"fabricDiscoveryMachineId,omitempty"`
+	FabricDiscoveryMachineID *string
 
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The process server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// REQUIRED; The target resource group ARM Id.
-	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	TargetResourceGroupID *string
 
 	// The default disk input.
-	DisksDefault *InMageRcmDisksDefaultInput `json:"disksDefault,omitempty"`
+	DisksDefault *InMageRcmDisksDefaultInput
 
 	// The disks to include list.
-	DisksToInclude []*InMageRcmDiskInput `json:"disksToInclude,omitempty"`
+	DisksToInclude []*InMageRcmDiskInput
 
 	// The license type.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// The multi VM group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// The run-as account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 
 	// The target availability set ARM Id.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The target boot diagnostics storage account ARM Id.
-	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	TargetBootDiagnosticsStorageAccountID *string
 
 	// The selected target network ARM Id.
-	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	TargetNetworkID *string
 
 	// The target proximity placement group Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The selected target subnet name.
-	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	TargetSubnetName *string
 
 	// The target VM name.
-	TargetVMName *string `json:"targetVmName,omitempty"`
+	TargetVMName *string
 
 	// The target VM size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// The selected test network ARM Id.
-	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	TestNetworkID *string
 
 	// The selected test subnet name.
-	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	TestSubnetName *string
 }
 
 // GetEnableProtectionProviderSpecificInput implements the EnableProtectionProviderSpecificInputClassification interface for
@@ -5109,31 +5109,31 @@ func (i *InMageRcmEnableProtectionInput) GetEnableProtectionProviderSpecificInpu
 // InMageRcmEventDetails - Event details for InMageRcm provider.
 type InMageRcmEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// READ-ONLY; The appliance name.
-	ApplianceName *string `json:"applianceName,omitempty" azure:"ro"`
+	ApplianceName *string
 
 	// READ-ONLY; The component display name.
-	ComponentDisplayName *string `json:"componentDisplayName,omitempty" azure:"ro"`
+	ComponentDisplayName *string
 
 	// READ-ONLY; The fabric name.
-	FabricName *string `json:"fabricName,omitempty" azure:"ro"`
+	FabricName *string
 
 	// READ-ONLY; The job Id.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
+	JobID *string
 
 	// READ-ONLY; The latest agent version.
-	LatestAgentVersion *string `json:"latestAgentVersion,omitempty" azure:"ro"`
+	LatestAgentVersion *string
 
 	// READ-ONLY; The protected item name.
-	ProtectedItemName *string `json:"protectedItemName,omitempty" azure:"ro"`
+	ProtectedItemName *string
 
 	// READ-ONLY; The server type.
-	ServerType *string `json:"serverType,omitempty" azure:"ro"`
+	ServerType *string
 
 	// READ-ONLY; The protected item name.
-	VMName *string `json:"vmName,omitempty" azure:"ro"`
+	VMName *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageRcmEventDetails.
@@ -5146,16 +5146,16 @@ func (i *InMageRcmEventDetails) GetEventProviderSpecificDetails() *EventProvider
 // InMageRcmFabricCreationInput - InMageRcm fabric provider specific settings.
 type InMageRcmFabricCreationInput struct {
 	// REQUIRED; Gets the class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The ARM Id of the physical site.
-	PhysicalSiteID *string `json:"physicalSiteId,omitempty"`
+	PhysicalSiteID *string
 
 	// REQUIRED; The identity provider input for source agent authentication.
-	SourceAgentIdentity *IdentityProviderInput `json:"sourceAgentIdentity,omitempty"`
+	SourceAgentIdentity *IdentityProviderInput
 
 	// REQUIRED; The ARM Id of the VMware site.
-	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
+	VmwareSiteID *string
 }
 
 // GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type InMageRcmFabricCreationInput.
@@ -5168,55 +5168,55 @@ func (i *InMageRcmFabricCreationInput) GetFabricSpecificCreationInput() *FabricS
 // InMageRcmFabricSpecificDetails - InMageRcm fabric specific details.
 type InMageRcmFabricSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The source agent identity details.
-	SourceAgentIdentityDetails *IdentityProviderDetails `json:"sourceAgentIdentityDetails,omitempty"`
+	SourceAgentIdentityDetails *IdentityProviderDetails
 
 	// READ-ONLY; The list of agent details.
-	AgentDetails []*AgentDetails `json:"agentDetails,omitempty" azure:"ro"`
+	AgentDetails []*AgentDetails
 
 	// READ-ONLY; The control plane Uri.
-	ControlPlaneURI *string `json:"controlPlaneUri,omitempty" azure:"ro"`
+	ControlPlaneURI *string
 
 	// READ-ONLY; The data plane Uri.
-	DataPlaneURI *string `json:"dataPlaneUri,omitempty" azure:"ro"`
+	DataPlaneURI *string
 
 	// READ-ONLY; The list of DRAs.
-	Dras []*DraDetails `json:"dras,omitempty" azure:"ro"`
+	Dras []*DraDetails
 
 	// READ-ONLY; The list of Mars agents.
-	MarsAgents []*MarsAgentDetails `json:"marsAgents,omitempty" azure:"ro"`
+	MarsAgents []*MarsAgentDetails
 
 	// READ-ONLY; The ARM Id of the physical site.
-	PhysicalSiteID *string `json:"physicalSiteId,omitempty" azure:"ro"`
+	PhysicalSiteID *string
 
 	// READ-ONLY; The list of process servers.
-	ProcessServers []*ProcessServerDetails `json:"processServers,omitempty" azure:"ro"`
+	ProcessServers []*ProcessServerDetails
 
 	// READ-ONLY; The list of push installers.
-	PushInstallers []*PushInstallerDetails `json:"pushInstallers,omitempty" azure:"ro"`
+	PushInstallers []*PushInstallerDetails
 
 	// READ-ONLY; The list of RCM proxies.
-	RcmProxies []*RcmProxyDetails `json:"rcmProxies,omitempty" azure:"ro"`
+	RcmProxies []*RcmProxyDetails
 
 	// READ-ONLY; The list of replication agents.
-	ReplicationAgents []*ReplicationAgentDetails `json:"replicationAgents,omitempty" azure:"ro"`
+	ReplicationAgents []*ReplicationAgentDetails
 
 	// READ-ONLY; The list of reprotect agents.
-	ReprotectAgents []*ReprotectAgentDetails `json:"reprotectAgents,omitempty" azure:"ro"`
+	ReprotectAgents []*ReprotectAgentDetails
 
 	// READ-ONLY; The service container Id.
-	ServiceContainerID *string `json:"serviceContainerId,omitempty" azure:"ro"`
+	ServiceContainerID *string
 
 	// READ-ONLY; The service endpoint.
-	ServiceEndpoint *string `json:"serviceEndpoint,omitempty" azure:"ro"`
+	ServiceEndpoint *string
 
 	// READ-ONLY; The service resource Id.
-	ServiceResourceID *string `json:"serviceResourceId,omitempty" azure:"ro"`
+	ServiceResourceID *string
 
 	// READ-ONLY; The ARM Id of the VMware site.
-	VmwareSiteID *string `json:"vmwareSiteId,omitempty" azure:"ro"`
+	VmwareSiteID *string
 }
 
 // GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type InMageRcmFabricSpecificDetails.
@@ -5229,82 +5229,82 @@ func (i *InMageRcmFabricSpecificDetails) GetFabricSpecificDetails() *FabricSpeci
 // InMageRcmFabricSwitchProviderBlockingErrorDetails - InMageRcmFabric switch provider blocking error details.
 type InMageRcmFabricSwitchProviderBlockingErrorDetails struct {
 	// READ-ONLY; The error code.
-	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *string
 
 	// READ-ONLY; The error message.
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; The error message parameters.
-	ErrorMessageParameters map[string]*string `json:"errorMessageParameters,omitempty" azure:"ro"`
+	ErrorMessageParameters map[string]*string
 
 	// READ-ONLY; The error tags.
-	ErrorTags map[string]*string `json:"errorTags,omitempty" azure:"ro"`
+	ErrorTags map[string]*string
 
 	// READ-ONLY; The possible causes.
-	PossibleCauses *string `json:"possibleCauses,omitempty" azure:"ro"`
+	PossibleCauses *string
 
 	// READ-ONLY; The recommended action.
-	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
+	RecommendedAction *string
 }
 
 // InMageRcmFailbackDiscoveredProtectedVMDetails - InMageRcmFailback discovered VM details.
 type InMageRcmFailbackDiscoveredProtectedVMDetails struct {
 	// READ-ONLY; The SDS created timestamp.
-	CreatedTimestamp *time.Time `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *time.Time
 
 	// READ-ONLY; The list of datastores.
-	Datastores []*string `json:"datastores,omitempty" azure:"ro"`
+	Datastores []*string
 
 	// READ-ONLY; The list of IP addresses.
-	IPAddresses []*string `json:"ipAddresses,omitempty" azure:"ro"`
+	IPAddresses []*string
 
 	// READ-ONLY; A value indicating whether the VM is deleted.
-	IsDeleted *bool `json:"isDeleted,omitempty" azure:"ro"`
+	IsDeleted *bool
 
 	// READ-ONLY; The last time when SDS information discovered in SRS.
-	LastDiscoveryTimeInUTC *time.Time `json:"lastDiscoveryTimeInUtc,omitempty" azure:"ro"`
+	LastDiscoveryTimeInUTC *time.Time
 
 	// READ-ONLY; The VM's OS name.
-	OSName *string `json:"osName,omitempty" azure:"ro"`
+	OSName *string
 
 	// READ-ONLY; The VM power status.
-	PowerStatus *string `json:"powerStatus,omitempty" azure:"ro"`
+	PowerStatus *string
 
 	// READ-ONLY; The SDS updated timestamp.
-	UpdatedTimestamp *time.Time `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *time.Time
 
 	// READ-ONLY; The VCenter fqdn.
-	VCenterFqdn *string `json:"vCenterFqdn,omitempty" azure:"ro"`
+	VCenterFqdn *string
 
 	// READ-ONLY; The VCenter Id.
-	VCenterID *string `json:"vCenterId,omitempty" azure:"ro"`
+	VCenterID *string
 
 	// READ-ONLY; The VM fqdn.
-	VMFqdn *string `json:"vmFqdn,omitempty" azure:"ro"`
+	VMFqdn *string
 
 	// READ-ONLY; The VMware tools status.
-	VmwareToolsStatus *string `json:"vmwareToolsStatus,omitempty" azure:"ro"`
+	VmwareToolsStatus *string
 }
 
 // InMageRcmFailbackEventDetails - Event details for InMageRcmFailback provider.
 type InMageRcmFailbackEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// READ-ONLY; The appliance name.
-	ApplianceName *string `json:"applianceName,omitempty" azure:"ro"`
+	ApplianceName *string
 
 	// READ-ONLY; The component display name.
-	ComponentDisplayName *string `json:"componentDisplayName,omitempty" azure:"ro"`
+	ComponentDisplayName *string
 
 	// READ-ONLY; The protected item name.
-	ProtectedItemName *string `json:"protectedItemName,omitempty" azure:"ro"`
+	ProtectedItemName *string
 
 	// READ-ONLY; The server type.
-	ServerType *string `json:"serverType,omitempty" azure:"ro"`
+	ServerType *string
 
 	// READ-ONLY; The protected item name.
-	VMName *string `json:"vmName,omitempty" azure:"ro"`
+	VMName *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type InMageRcmFailbackEventDetails.
@@ -5317,55 +5317,55 @@ func (i *InMageRcmFailbackEventDetails) GetEventProviderSpecificDetails() *Event
 // InMageRcmFailbackMobilityAgentDetails - InMageRcmFailback mobility agent details.
 type InMageRcmFailbackMobilityAgentDetails struct {
 	// READ-ONLY; The agent version expiry date.
-	AgentVersionExpiryDate *time.Time `json:"agentVersionExpiryDate,omitempty" azure:"ro"`
+	AgentVersionExpiryDate *time.Time
 
 	// READ-ONLY; The driver version.
-	DriverVersion *string `json:"driverVersion,omitempty" azure:"ro"`
+	DriverVersion *string
 
 	// READ-ONLY; The driver version expiry date.
-	DriverVersionExpiryDate *time.Time `json:"driverVersionExpiryDate,omitempty" azure:"ro"`
+	DriverVersionExpiryDate *time.Time
 
 	// READ-ONLY; A value indicating whether agent is upgradeable or not.
-	IsUpgradeable *string `json:"isUpgradeable,omitempty" azure:"ro"`
+	IsUpgradeable *string
 
 	// READ-ONLY; The time of the last heartbeat received from the agent.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The latest upgradeable version available without reboot.
-	LatestUpgradableVersionWithoutReboot *string `json:"latestUpgradableVersionWithoutReboot,omitempty" azure:"ro"`
+	LatestUpgradableVersionWithoutReboot *string
 
 	// READ-ONLY; The latest agent version available.
-	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+	LatestVersion *string
 
 	// READ-ONLY; The whether update is possible or not.
-	ReasonsBlockingUpgrade []*AgentUpgradeBlockedReason `json:"reasonsBlockingUpgrade,omitempty" azure:"ro"`
+	ReasonsBlockingUpgrade []*AgentUpgradeBlockedReason
 
 	// READ-ONLY; The agent version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // InMageRcmFailbackNicDetails - InMageRcmFailback NIC details.
 type InMageRcmFailbackNicDetails struct {
 	// READ-ONLY; The adapter type.
-	AdapterType *string `json:"adapterType,omitempty" azure:"ro"`
+	AdapterType *string
 
 	// READ-ONLY; The mac address.
-	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
+	MacAddress *string
 
 	// READ-ONLY; The network name.
-	NetworkName *string `json:"networkName,omitempty" azure:"ro"`
+	NetworkName *string
 
 	// READ-ONLY; The IP address.
-	SourceIPAddress *string `json:"sourceIpAddress,omitempty" azure:"ro"`
+	SourceIPAddress *string
 }
 
 // InMageRcmFailbackPlannedFailoverProviderInput - Provider specific input for InMageRcmFailback failover.
 type InMageRcmFailbackPlannedFailoverProviderInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The recovery point type.
-	RecoveryPointType *InMageRcmFailbackRecoveryPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *InMageRcmFailbackRecoveryPointType
 }
 
 // GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
@@ -5379,13 +5379,13 @@ func (i *InMageRcmFailbackPlannedFailoverProviderInput) GetPlannedFailoverProvid
 // InMageRcmFailbackPolicyCreationInput - InMageRcmFailback policy creation input.
 type InMageRcmFailbackPolicyCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency (in minutes).
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency (in minutes).
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageRcmFailbackPolicyCreationInput.
@@ -5398,13 +5398,13 @@ func (i *InMageRcmFailbackPolicyCreationInput) GetPolicyProviderSpecificInput() 
 // InMageRcmFailbackPolicyDetails - InMageRcm failback specific policy details.
 type InMageRcmFailbackPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency in minutes.
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency in minutes.
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageRcmFailbackPolicyDetails.
@@ -5417,132 +5417,132 @@ func (i *InMageRcmFailbackPolicyDetails) GetPolicyProviderSpecificDetails() *Pol
 // InMageRcmFailbackProtectedDiskDetails - InMageRcmFailback protected disk details.
 type InMageRcmFailbackProtectedDiskDetails struct {
 	// The initial replication details.
-	IrDetails *InMageRcmFailbackSyncDetails `json:"irDetails,omitempty"`
+	IrDetails *InMageRcmFailbackSyncDetails
 
 	// The resync details.
-	ResyncDetails *InMageRcmFailbackSyncDetails `json:"resyncDetails,omitempty"`
+	ResyncDetails *InMageRcmFailbackSyncDetails
 
 	// READ-ONLY; The disk capacity in bytes.
-	CapacityInBytes *int64 `json:"capacityInBytes,omitempty" azure:"ro"`
+	CapacityInBytes *int64
 
 	// READ-ONLY; The data pending at source agent in MB.
-	DataPendingAtSourceAgentInMB *float64 `json:"dataPendingAtSourceAgentInMB,omitempty" azure:"ro"`
+	DataPendingAtSourceAgentInMB *float64
 
 	// READ-ONLY; The data pending in log data store in MB.
-	DataPendingInLogDataStoreInMB *float64 `json:"dataPendingInLogDataStoreInMB,omitempty" azure:"ro"`
+	DataPendingInLogDataStoreInMB *float64
 
 	// READ-ONLY; The disk Id (reported by source agent).
-	DiskID *string `json:"diskId,omitempty" azure:"ro"`
+	DiskID *string
 
 	// READ-ONLY; The disk name.
-	DiskName *string `json:"diskName,omitempty" azure:"ro"`
+	DiskName *string
 
 	// READ-ONLY; The disk Uuid (reported by vCenter).
-	DiskUUID *string `json:"diskUuid,omitempty" azure:"ro"`
+	DiskUUID *string
 
 	// READ-ONLY; A value indicating whether initial replication is complete or not.
-	IsInitialReplicationComplete *string `json:"isInitialReplicationComplete,omitempty" azure:"ro"`
+	IsInitialReplicationComplete *string
 
 	// READ-ONLY; A value indicating whether the disk is the OS disk.
-	IsOSDisk *string `json:"isOSDisk,omitempty" azure:"ro"`
+	IsOSDisk *string
 
 	// READ-ONLY; The last sync time.
-	LastSyncTime *time.Time `json:"lastSyncTime,omitempty" azure:"ro"`
+	LastSyncTime *time.Time
 }
 
 // InMageRcmFailbackReplicationDetails - InMageRcmFailback provider specific details.
 type InMageRcmFailbackReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The discovered VM information.
-	DiscoveredVMDetails *InMageRcmFailbackDiscoveredProtectedVMDetails `json:"discoveredVmDetails,omitempty"`
+	DiscoveredVMDetails *InMageRcmFailbackDiscoveredProtectedVMDetails
 
 	// The mobility agent information.
-	MobilityAgentDetails *InMageRcmFailbackMobilityAgentDetails `json:"mobilityAgentDetails,omitempty"`
+	MobilityAgentDetails *InMageRcmFailbackMobilityAgentDetails
 
 	// The list of protected disks.
-	ProtectedDisks []*InMageRcmFailbackProtectedDiskDetails `json:"protectedDisks,omitempty"`
+	ProtectedDisks []*InMageRcmFailbackProtectedDiskDetails
 
 	// The network details.
-	VMNics []*InMageRcmFailbackNicDetails `json:"vmNics,omitempty"`
+	VMNics []*InMageRcmFailbackNicDetails
 
 	// READ-ONLY; The ARM Id of the azure VM.
-	AzureVirtualMachineID *string `json:"azureVirtualMachineId,omitempty" azure:"ro"`
+	AzureVirtualMachineID *string
 
 	// READ-ONLY; The initial replication processed bytes. This includes sum of total bytes transferred and matched bytes on all
 	// selected disks in source VM.
-	InitialReplicationProcessedBytes *int64 `json:"initialReplicationProcessedBytes,omitempty" azure:"ro"`
+	InitialReplicationProcessedBytes *int64
 
 	// READ-ONLY; The initial replication progress health.
-	InitialReplicationProgressHealth *VMReplicationProgressHealth `json:"initialReplicationProgressHealth,omitempty" azure:"ro"`
+	InitialReplicationProgressHealth *VMReplicationProgressHealth
 
 	// READ-ONLY; The initial replication progress percentage.
-	InitialReplicationProgressPercentage *int32 `json:"initialReplicationProgressPercentage,omitempty" azure:"ro"`
+	InitialReplicationProgressPercentage *int32
 
 	// READ-ONLY; The initial replication transferred bytes from source VM to target for all selected disks on source VM.
-	InitialReplicationTransferredBytes *int64 `json:"initialReplicationTransferredBytes,omitempty" azure:"ro"`
+	InitialReplicationTransferredBytes *int64
 
 	// READ-ONLY; The virtual machine internal identifier.
-	InternalIdentifier *string `json:"internalIdentifier,omitempty" azure:"ro"`
+	InternalIdentifier *string
 
 	// READ-ONLY; A value indicating whether agent registration was successful after failover.
-	IsAgentRegistrationSuccessfulAfterFailover *bool `json:"isAgentRegistrationSuccessfulAfterFailover,omitempty" azure:"ro"`
+	IsAgentRegistrationSuccessfulAfterFailover *bool
 
 	// READ-ONLY; The last planned failover start time.
-	LastPlannedFailoverStartTime *time.Time `json:"lastPlannedFailoverStartTime,omitempty" azure:"ro"`
+	LastPlannedFailoverStartTime *time.Time
 
 	// READ-ONLY; The last planned failover status.
-	LastPlannedFailoverStatus *PlannedFailoverStatus `json:"lastPlannedFailoverStatus,omitempty" azure:"ro"`
+	LastPlannedFailoverStatus *PlannedFailoverStatus
 
 	// READ-ONLY; The policy friendly name used by the forward replication.
-	LastUsedPolicyFriendlyName *string `json:"lastUsedPolicyFriendlyName,omitempty" azure:"ro"`
+	LastUsedPolicyFriendlyName *string
 
 	// READ-ONLY; The policy Id used by the forward replication.
-	LastUsedPolicyID *string `json:"lastUsedPolicyId,omitempty" azure:"ro"`
+	LastUsedPolicyID *string
 
 	// READ-ONLY; The log storage account ARM Id.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty" azure:"ro"`
+	LogStorageAccountID *string
 
 	// READ-ONLY; The multi VM group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty" azure:"ro"`
+	MultiVMGroupName *string
 
 	// READ-ONLY; The type of the OS on the VM.
-	OSType *string `json:"osType,omitempty" azure:"ro"`
+	OSType *string
 
 	// READ-ONLY; The reprotect agent Id.
-	ReprotectAgentID *string `json:"reprotectAgentId,omitempty" azure:"ro"`
+	ReprotectAgentID *string
 
 	// READ-ONLY; The reprotect agent name.
-	ReprotectAgentName *string `json:"reprotectAgentName,omitempty" azure:"ro"`
+	ReprotectAgentName *string
 
 	// READ-ONLY; The resync processed bytes. This includes sum of total bytes transferred and matched bytes on all selected disks
 	// in source VM.
-	ResyncProcessedBytes *int64 `json:"resyncProcessedBytes,omitempty" azure:"ro"`
+	ResyncProcessedBytes *int64
 
 	// READ-ONLY; The resync progress health.
-	ResyncProgressHealth *VMReplicationProgressHealth `json:"resyncProgressHealth,omitempty" azure:"ro"`
+	ResyncProgressHealth *VMReplicationProgressHealth
 
 	// READ-ONLY; The resync progress percentage.
-	ResyncProgressPercentage *int32 `json:"resyncProgressPercentage,omitempty" azure:"ro"`
+	ResyncProgressPercentage *int32
 
 	// READ-ONLY; A value indicating whether resync is required.
-	ResyncRequired *string `json:"resyncRequired,omitempty" azure:"ro"`
+	ResyncRequired *string
 
 	// READ-ONLY; The resync state.
-	ResyncState *ResyncState `json:"resyncState,omitempty" azure:"ro"`
+	ResyncState *ResyncState
 
 	// READ-ONLY; The resync transferred bytes from source VM to target for all selected disks on source VM.
-	ResyncTransferredBytes *int64 `json:"resyncTransferredBytes,omitempty" azure:"ro"`
+	ResyncTransferredBytes *int64
 
 	// READ-ONLY; The target datastore name.
-	TargetDataStoreName *string `json:"targetDataStoreName,omitempty" azure:"ro"`
+	TargetDataStoreName *string
 
 	// READ-ONLY; The target VM name.
-	TargetVMName *string `json:"targetVmName,omitempty" azure:"ro"`
+	TargetVMName *string
 
 	// READ-ONLY; The target vCenter Id.
-	TargetvCenterID *string `json:"targetvCenterId,omitempty" azure:"ro"`
+	TargetvCenterID *string
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -5556,16 +5556,16 @@ func (i *InMageRcmFailbackReplicationDetails) GetReplicationProviderSpecificSett
 // InMageRcmFailbackReprotectInput - InMageRcmFailback specific provider input.
 type InMageRcmFailbackReprotectInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The Policy Id.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// REQUIRED; The process server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The run as account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 }
 
 // GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
@@ -5579,166 +5579,166 @@ func (i *InMageRcmFailbackReprotectInput) GetReverseReplicationProviderSpecificI
 // InMageRcmFailbackSyncDetails - InMageRcmFailback disk level sync details.
 type InMageRcmFailbackSyncDetails struct {
 	// READ-ONLY; The bytes transferred in last 15 minutes from source VM to target.
-	Last15MinutesTransferredBytes *int64 `json:"last15MinutesTransferredBytes,omitempty" azure:"ro"`
+	Last15MinutesTransferredBytes *int64
 
 	// READ-ONLY; The time of the last data transfer from source VM to target.
-	LastDataTransferTimeUTC *string `json:"lastDataTransferTimeUtc,omitempty" azure:"ro"`
+	LastDataTransferTimeUTC *string
 
 	// READ-ONLY; The last refresh time.
-	LastRefreshTime *string `json:"lastRefreshTime,omitempty" azure:"ro"`
+	LastRefreshTime *string
 
 	// READ-ONLY; The total processed bytes. This includes bytes that are transferred from source VM to target and matched bytes.
-	ProcessedBytes *int64 `json:"processedBytes,omitempty" azure:"ro"`
+	ProcessedBytes *int64
 
 	// READ-ONLY; The progress health.
-	ProgressHealth *DiskReplicationProgressHealth `json:"progressHealth,omitempty" azure:"ro"`
+	ProgressHealth *DiskReplicationProgressHealth
 
 	// READ-ONLY; Progress in percentage. Progress percentage is calculated based on processed bytes.
-	ProgressPercentage *int32 `json:"progressPercentage,omitempty" azure:"ro"`
+	ProgressPercentage *int32
 
 	// READ-ONLY; The start time.
-	StartTime *string `json:"startTime,omitempty" azure:"ro"`
+	StartTime *string
 
 	// READ-ONLY; The transferred bytes from source VM to azure for the disk.
-	TransferredBytes *int64 `json:"transferredBytes,omitempty" azure:"ro"`
+	TransferredBytes *int64
 }
 
 // InMageRcmLastAgentUpgradeErrorDetails - InMageRcm last source agent upgrade error details.
 type InMageRcmLastAgentUpgradeErrorDetails struct {
 	// READ-ONLY; The error code.
-	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *string
 
 	// READ-ONLY; The error message.
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; The error message parameters.
-	ErrorMessageParameters map[string]*string `json:"errorMessageParameters,omitempty" azure:"ro"`
+	ErrorMessageParameters map[string]*string
 
 	// READ-ONLY; The error tags.
-	ErrorTags map[string]*string `json:"errorTags,omitempty" azure:"ro"`
+	ErrorTags map[string]*string
 
 	// READ-ONLY; The possible causes.
-	PossibleCauses *string `json:"possibleCauses,omitempty" azure:"ro"`
+	PossibleCauses *string
 
 	// READ-ONLY; The recommended action.
-	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
+	RecommendedAction *string
 }
 
 // InMageRcmMobilityAgentDetails - InMageRcm mobility agent details.
 type InMageRcmMobilityAgentDetails struct {
 	// READ-ONLY; The agent version expiry date.
-	AgentVersionExpiryDate *time.Time `json:"agentVersionExpiryDate,omitempty" azure:"ro"`
+	AgentVersionExpiryDate *time.Time
 
 	// READ-ONLY; The driver version.
-	DriverVersion *string `json:"driverVersion,omitempty" azure:"ro"`
+	DriverVersion *string
 
 	// READ-ONLY; The driver version expiry date.
-	DriverVersionExpiryDate *time.Time `json:"driverVersionExpiryDate,omitempty" azure:"ro"`
+	DriverVersionExpiryDate *time.Time
 
 	// READ-ONLY; A value indicating whether agent is upgradeable or not.
-	IsUpgradeable *string `json:"isUpgradeable,omitempty" azure:"ro"`
+	IsUpgradeable *string
 
 	// READ-ONLY; The time of the last heartbeat received from the agent.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The latest agent version release date.
-	LatestAgentReleaseDate *string `json:"latestAgentReleaseDate,omitempty" azure:"ro"`
+	LatestAgentReleaseDate *string
 
 	// READ-ONLY; The latest upgradeable version available without reboot.
-	LatestUpgradableVersionWithoutReboot *string `json:"latestUpgradableVersionWithoutReboot,omitempty" azure:"ro"`
+	LatestUpgradableVersionWithoutReboot *string
 
 	// READ-ONLY; The latest agent version available.
-	LatestVersion *string `json:"latestVersion,omitempty" azure:"ro"`
+	LatestVersion *string
 
 	// READ-ONLY; The whether update is possible or not.
-	ReasonsBlockingUpgrade []*AgentUpgradeBlockedReason `json:"reasonsBlockingUpgrade,omitempty" azure:"ro"`
+	ReasonsBlockingUpgrade []*AgentUpgradeBlockedReason
 
 	// READ-ONLY; The agent version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // InMageRcmNicDetails - InMageRcm NIC details.
 type InMageRcmNicDetails struct {
 	// A value indicating whether this is the primary NIC.
-	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
+	IsPrimaryNic *string
 
 	// A value indicating whether this NIC is selected for failover.
-	IsSelectedForFailover *string `json:"isSelectedForFailover,omitempty"`
+	IsSelectedForFailover *string
 
 	// The target IP address.
-	TargetIPAddress *string `json:"targetIPAddress,omitempty"`
+	TargetIPAddress *string
 
 	// The target IP address type.
-	TargetIPAddressType *EthernetAddressType `json:"targetIPAddressType,omitempty"`
+	TargetIPAddressType *EthernetAddressType
 
 	// Target subnet name.
-	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	TargetSubnetName *string
 
 	// The test IP address.
-	TestIPAddress *string `json:"testIPAddress,omitempty"`
+	TestIPAddress *string
 
 	// The test IP address type.
-	TestIPAddressType *EthernetAddressType `json:"testIPAddressType,omitempty"`
+	TestIPAddressType *EthernetAddressType
 
 	// Test subnet name.
-	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	TestSubnetName *string
 
 	// READ-ONLY; The NIC Id.
-	NicID *string `json:"nicId,omitempty" azure:"ro"`
+	NicID *string
 
 	// READ-ONLY; The source IP address.
-	SourceIPAddress *string `json:"sourceIPAddress,omitempty" azure:"ro"`
+	SourceIPAddress *string
 
 	// READ-ONLY; The source IP address type.
-	SourceIPAddressType *EthernetAddressType `json:"sourceIPAddressType,omitempty" azure:"ro"`
+	SourceIPAddressType *EthernetAddressType
 
 	// READ-ONLY; Source network Id.
-	SourceNetworkID *string `json:"sourceNetworkId,omitempty" azure:"ro"`
+	SourceNetworkID *string
 
 	// READ-ONLY; Source subnet name.
-	SourceSubnetName *string `json:"sourceSubnetName,omitempty" azure:"ro"`
+	SourceSubnetName *string
 }
 
 // InMageRcmNicInput - InMageRcm NIC input.
 type InMageRcmNicInput struct {
 	// REQUIRED; A value indicating whether this is the primary NIC.
-	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
+	IsPrimaryNic *string
 
 	// REQUIRED; The NIC Id.
-	NicID *string `json:"nicId,omitempty"`
+	NicID *string
 
 	// A value indicating whether this NIC is selected for failover.
-	IsSelectedForFailover *string `json:"isSelectedForFailover,omitempty"`
+	IsSelectedForFailover *string
 
 	// The target static IP address.
-	TargetStaticIPAddress *string `json:"targetStaticIPAddress,omitempty"`
+	TargetStaticIPAddress *string
 
 	// Target subnet name.
-	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	TargetSubnetName *string
 
 	// The test static IP address.
-	TestStaticIPAddress *string `json:"testStaticIPAddress,omitempty"`
+	TestStaticIPAddress *string
 
 	// The test subnet name.
-	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	TestSubnetName *string
 }
 
 // InMageRcmPolicyCreationInput - InMageRcm policy creation input.
 type InMageRcmPolicyCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency (in minutes).
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency (in minutes).
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// A value indicating whether multi-VM sync has to be enabled.
-	EnableMultiVMSync *string `json:"enableMultiVmSync,omitempty"`
+	EnableMultiVMSync *string
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
+	RecoveryPointHistoryInMinutes *int32
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type InMageRcmPolicyCreationInput.
@@ -5751,19 +5751,19 @@ func (i *InMageRcmPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyP
 // InMageRcmPolicyDetails - InMageRcm specific policy details.
 type InMageRcmPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency in minutes.
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency in minutes.
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// A value indicating whether multi-VM sync has to be enabled.
-	EnableMultiVMSync *string `json:"enableMultiVmSync,omitempty"`
+	EnableMultiVMSync *string
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
+	RecoveryPointHistoryInMinutes *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type InMageRcmPolicyDetails.
@@ -5776,58 +5776,58 @@ func (i *InMageRcmPolicyDetails) GetPolicyProviderSpecificDetails() *PolicyProvi
 // InMageRcmProtectedDiskDetails - InMageRcm protected disk details.
 type InMageRcmProtectedDiskDetails struct {
 	// The disk type.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 
 	// The initial replication details.
-	IrDetails *InMageRcmSyncDetails `json:"irDetails,omitempty"`
+	IrDetails *InMageRcmSyncDetails
 
 	// The resync details.
-	ResyncDetails *InMageRcmSyncDetails `json:"resyncDetails,omitempty"`
+	ResyncDetails *InMageRcmSyncDetails
 
 	// READ-ONLY; The disk capacity in bytes.
-	CapacityInBytes *int64 `json:"capacityInBytes,omitempty" azure:"ro"`
+	CapacityInBytes *int64
 
 	// READ-ONLY; The data pending at source agent in MB.
-	DataPendingAtSourceAgentInMB *float64 `json:"dataPendingAtSourceAgentInMB,omitempty" azure:"ro"`
+	DataPendingAtSourceAgentInMB *float64
 
 	// READ-ONLY; The data pending in log data store in MB.
-	DataPendingInLogDataStoreInMB *float64 `json:"dataPendingInLogDataStoreInMB,omitempty" azure:"ro"`
+	DataPendingInLogDataStoreInMB *float64
 
 	// READ-ONLY; The DiskEncryptionSet ARM Id.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty" azure:"ro"`
+	DiskEncryptionSetID *string
 
 	// READ-ONLY; The disk Id.
-	DiskID *string `json:"diskId,omitempty" azure:"ro"`
+	DiskID *string
 
 	// READ-ONLY; The disk name.
-	DiskName *string `json:"diskName,omitempty" azure:"ro"`
+	DiskName *string
 
 	// READ-ONLY; A value indicating whether initial replication is complete or not.
-	IsInitialReplicationComplete *string `json:"isInitialReplicationComplete,omitempty" azure:"ro"`
+	IsInitialReplicationComplete *string
 
 	// READ-ONLY; A value indicating whether the disk is the OS disk.
-	IsOSDisk *string `json:"isOSDisk,omitempty" azure:"ro"`
+	IsOSDisk *string
 
 	// READ-ONLY; The log storage account ARM Id.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty" azure:"ro"`
+	LogStorageAccountID *string
 
 	// READ-ONLY; The uri of the seed blob.
-	SeedBlobURI *string `json:"seedBlobUri,omitempty" azure:"ro"`
+	SeedBlobURI *string
 
 	// READ-ONLY; The ARM Id of the seed managed disk.
-	SeedManagedDiskID *string `json:"seedManagedDiskId,omitempty" azure:"ro"`
+	SeedManagedDiskID *string
 
 	// READ-ONLY; The ARM Id of the target managed disk.
-	TargetManagedDiskID *string `json:"targetManagedDiskId,omitempty" azure:"ro"`
+	TargetManagedDiskID *string
 }
 
 // InMageRcmProtectionContainerMappingDetails - InMageRcm provider specific container mapping details.
 type InMageRcmProtectionContainerMappingDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// READ-ONLY; A value indicating whether the flag for enable agent auto upgrade.
-	EnableAgentAutoUpgrade *string `json:"enableAgentAutoUpgrade,omitempty" azure:"ro"`
+	EnableAgentAutoUpgrade *string
 }
 
 // GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
@@ -5841,10 +5841,10 @@ func (i *InMageRcmProtectionContainerMappingDetails) GetProtectionContainerMappi
 // InMageRcmRecoveryPointDetails - InMageRcm provider specific recovery point details.
 type InMageRcmRecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// READ-ONLY; A value indicating whether the recovery point is multi VM consistent.
-	IsMultiVMSyncPoint *string `json:"isMultiVmSyncPoint,omitempty" azure:"ro"`
+	IsMultiVMSyncPoint *string
 }
 
 // GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
@@ -5858,167 +5858,167 @@ func (i *InMageRcmRecoveryPointDetails) GetProviderSpecificRecoveryPointDetails(
 // InMageRcmReplicationDetails - InMageRcm provider specific details.
 type InMageRcmReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The agent upgrade blocking error information.
-	AgentUpgradeBlockingErrorDetails []*InMageRcmAgentUpgradeBlockingErrorDetails `json:"agentUpgradeBlockingErrorDetails,omitempty"`
+	AgentUpgradeBlockingErrorDetails []*InMageRcmAgentUpgradeBlockingErrorDetails
 
 	// The discovered VM details.
-	DiscoveredVMDetails *InMageRcmDiscoveredProtectedVMDetails `json:"discoveredVmDetails,omitempty"`
+	DiscoveredVMDetails *InMageRcmDiscoveredProtectedVMDetails
 
 	// The last agent upgrade error information.
-	LastAgentUpgradeErrorDetails []*InMageRcmLastAgentUpgradeErrorDetails `json:"lastAgentUpgradeErrorDetails,omitempty"`
+	LastAgentUpgradeErrorDetails []*InMageRcmLastAgentUpgradeErrorDetails
 
 	// License Type of the VM to be used.
-	LicenseType *string `json:"licenseType,omitempty"`
+	LicenseType *string
 
 	// The mobility agent information.
-	MobilityAgentDetails *InMageRcmMobilityAgentDetails `json:"mobilityAgentDetails,omitempty"`
+	MobilityAgentDetails *InMageRcmMobilityAgentDetails
 
 	// The list of protected disks.
-	ProtectedDisks []*InMageRcmProtectedDiskDetails `json:"protectedDisks,omitempty"`
+	ProtectedDisks []*InMageRcmProtectedDiskDetails
 
 	// The target availability set Id.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The target boot diagnostics storage account ARM Id.
-	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	TargetBootDiagnosticsStorageAccountID *string
 
 	// The target location.
-	TargetLocation *string `json:"targetLocation,omitempty"`
+	TargetLocation *string
 
 	// The target network Id.
-	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	TargetNetworkID *string
 
 	// The target proximity placement group Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target resource group Id.
-	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	TargetResourceGroupID *string
 
 	// Target VM name.
-	TargetVMName *string `json:"targetVmName,omitempty"`
+	TargetVMName *string
 
 	// The target VM size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// The test network Id.
-	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	TestNetworkID *string
 
 	// The network details.
-	VMNics []*InMageRcmNicDetails `json:"vmNics,omitempty"`
+	VMNics []*InMageRcmNicDetails
 
 	// READ-ONLY; The agent version to which last agent upgrade was attempted.
-	AgentUpgradeAttemptToVersion *string `json:"agentUpgradeAttemptToVersion,omitempty" azure:"ro"`
+	AgentUpgradeAttemptToVersion *string
 
 	// READ-ONLY; The agent upgrade job Id.
-	AgentUpgradeJobID *string `json:"agentUpgradeJobId,omitempty" azure:"ro"`
+	AgentUpgradeJobID *string
 
 	// READ-ONLY; The agent auto upgrade state.
-	AgentUpgradeState *MobilityAgentUpgradeState `json:"agentUpgradeState,omitempty" azure:"ro"`
+	AgentUpgradeState *MobilityAgentUpgradeState
 
 	// READ-ONLY; The allocated memory in MB.
-	AllocatedMemoryInMB *float64 `json:"allocatedMemoryInMB,omitempty" azure:"ro"`
+	AllocatedMemoryInMB *float64
 
 	// READ-ONLY; The type of the discovered VM.
-	DiscoveryType *string `json:"discoveryType,omitempty" azure:"ro"`
+	DiscoveryType *string
 
 	// READ-ONLY; The ARM Id of the discovered VM.
-	FabricDiscoveryMachineID *string `json:"fabricDiscoveryMachineId,omitempty" azure:"ro"`
+	FabricDiscoveryMachineID *string
 
 	// READ-ONLY; The recovery point Id to which the VM was failed over.
-	FailoverRecoveryPointID *string `json:"failoverRecoveryPointId,omitempty" azure:"ro"`
+	FailoverRecoveryPointID *string
 
 	// READ-ONLY; The firmware type.
-	FirmwareType *string `json:"firmwareType,omitempty" azure:"ro"`
+	FirmwareType *string
 
 	// READ-ONLY; The initial replication processed bytes. This includes sum of total bytes transferred and matched bytes on all
 	// selected disks in source VM.
-	InitialReplicationProcessedBytes *int64 `json:"initialReplicationProcessedBytes,omitempty" azure:"ro"`
+	InitialReplicationProcessedBytes *int64
 
 	// READ-ONLY; The initial replication progress health.
-	InitialReplicationProgressHealth *VMReplicationProgressHealth `json:"initialReplicationProgressHealth,omitempty" azure:"ro"`
+	InitialReplicationProgressHealth *VMReplicationProgressHealth
 
 	// READ-ONLY; The initial replication progress percentage. This is calculated based on total bytes processed for all disks
 	// in the source VM.
-	InitialReplicationProgressPercentage *int32 `json:"initialReplicationProgressPercentage,omitempty" azure:"ro"`
+	InitialReplicationProgressPercentage *int32
 
 	// READ-ONLY; The initial replication transferred bytes from source VM to azure for all selected disks on source VM.
-	InitialReplicationTransferredBytes *int64 `json:"initialReplicationTransferredBytes,omitempty" azure:"ro"`
+	InitialReplicationTransferredBytes *int64
 
 	// READ-ONLY; The virtual machine internal identifier.
-	InternalIdentifier *string `json:"internalIdentifier,omitempty" azure:"ro"`
+	InternalIdentifier *string
 
 	// READ-ONLY; A value indicating whether agent registration was successful after failover.
-	IsAgentRegistrationSuccessfulAfterFailover *bool `json:"isAgentRegistrationSuccessfulAfterFailover,omitempty" azure:"ro"`
+	IsAgentRegistrationSuccessfulAfterFailover *bool
 
 	// READ-ONLY; A value indicating whether last agent upgrade was successful or not.
-	IsLastUpgradeSuccessful *string `json:"isLastUpgradeSuccessful,omitempty" azure:"ro"`
+	IsLastUpgradeSuccessful *string
 
 	// READ-ONLY; The last agent upgrade type.
-	LastAgentUpgradeType *string `json:"lastAgentUpgradeType,omitempty" azure:"ro"`
+	LastAgentUpgradeType *string
 
 	// READ-ONLY; The last recovery point Id.
-	LastRecoveryPointID *string `json:"lastRecoveryPointId,omitempty" azure:"ro"`
+	LastRecoveryPointID *string
 
 	// READ-ONLY; The last recovery point received time.
-	LastRecoveryPointReceived *time.Time `json:"lastRecoveryPointReceived,omitempty" azure:"ro"`
+	LastRecoveryPointReceived *time.Time
 
 	// READ-ONLY; The last recovery point objective calculated time.
-	LastRpoCalculatedTime *time.Time `json:"lastRpoCalculatedTime,omitempty" azure:"ro"`
+	LastRpoCalculatedTime *time.Time
 
 	// READ-ONLY; The last recovery point objective value.
-	LastRpoInSeconds *int64 `json:"lastRpoInSeconds,omitempty" azure:"ro"`
+	LastRpoInSeconds *int64
 
 	// READ-ONLY; The multi VM group name.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty" azure:"ro"`
+	MultiVMGroupName *string
 
 	// READ-ONLY; The type of the OS on the VM.
-	OSType *string `json:"osType,omitempty" azure:"ro"`
+	OSType *string
 
 	// READ-ONLY; The IP address of the primary network interface.
-	PrimaryNicIPAddress *string `json:"primaryNicIpAddress,omitempty" azure:"ro"`
+	PrimaryNicIPAddress *string
 
 	// READ-ONLY; The process server Id.
-	ProcessServerID *string `json:"processServerId,omitempty" azure:"ro"`
+	ProcessServerID *string
 
 	// READ-ONLY; The process server name.
-	ProcessServerName *string `json:"processServerName,omitempty" azure:"ro"`
+	ProcessServerName *string
 
 	// READ-ONLY; The processor core count.
-	ProcessorCoreCount *int32 `json:"processorCoreCount,omitempty" azure:"ro"`
+	ProcessorCoreCount *int32
 
 	// READ-ONLY; The resync processed bytes. This includes sum of total bytes transferred and matched bytes on all selected disks
 	// in source VM.
-	ResyncProcessedBytes *int64 `json:"resyncProcessedBytes,omitempty" azure:"ro"`
+	ResyncProcessedBytes *int64
 
 	// READ-ONLY; The resync progress health.
-	ResyncProgressHealth *VMReplicationProgressHealth `json:"resyncProgressHealth,omitempty" azure:"ro"`
+	ResyncProgressHealth *VMReplicationProgressHealth
 
 	// READ-ONLY; The resync progress percentage. This is calculated based on total bytes processed for all disks in the source
 	// VM.
-	ResyncProgressPercentage *int32 `json:"resyncProgressPercentage,omitempty" azure:"ro"`
+	ResyncProgressPercentage *int32
 
 	// READ-ONLY; A value indicating whether resync is required.
-	ResyncRequired *string `json:"resyncRequired,omitempty" azure:"ro"`
+	ResyncRequired *string
 
 	// READ-ONLY; The resync state.
-	ResyncState *ResyncState `json:"resyncState,omitempty" azure:"ro"`
+	ResyncState *ResyncState
 
 	// READ-ONLY; The resync transferred bytes from source VM to azure for all selected disks on source VM.
-	ResyncTransferredBytes *int64 `json:"resyncTransferredBytes,omitempty" azure:"ro"`
+	ResyncTransferredBytes *int64
 
 	// READ-ONLY; The run-as account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty" azure:"ro"`
+	RunAsAccountID *string
 
 	// READ-ONLY; The replication storage account ARM Id. This is applicable only for the blob based replication test hook.
-	StorageAccountID *string `json:"storageAccountId,omitempty" azure:"ro"`
+	StorageAccountID *string
 
 	// READ-ONLY; The target generation.
-	TargetGeneration *string `json:"targetGeneration,omitempty" azure:"ro"`
+	TargetGeneration *string
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -6032,19 +6032,19 @@ func (i *InMageRcmReplicationDetails) GetReplicationProviderSpecificSettings() *
 // InMageRcmReprotectInput - InMageRcm specific provider input.
 type InMageRcmReprotectInput struct {
 	// REQUIRED; The target datastore name.
-	DatastoreName *string `json:"datastoreName,omitempty"`
+	DatastoreName *string
 
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The log storage account ARM Id.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 
 	// REQUIRED; The reprotect agent Id.
-	ReprotectAgentID *string `json:"reprotectAgentId,omitempty"`
+	ReprotectAgentID *string
 
 	// The Policy Id.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 }
 
 // GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
@@ -6058,41 +6058,41 @@ func (i *InMageRcmReprotectInput) GetReverseReplicationProviderSpecificInput() *
 // InMageRcmSyncDetails - InMageRcm disk level sync details.
 type InMageRcmSyncDetails struct {
 	// READ-ONLY; The bytes transferred in last 15 minutes from source VM to azure.
-	Last15MinutesTransferredBytes *int64 `json:"last15MinutesTransferredBytes,omitempty" azure:"ro"`
+	Last15MinutesTransferredBytes *int64
 
 	// READ-ONLY; The time of the last data transfer from source VM to azure.
-	LastDataTransferTimeUTC *string `json:"lastDataTransferTimeUtc,omitempty" azure:"ro"`
+	LastDataTransferTimeUTC *string
 
 	// READ-ONLY; The last refresh time.
-	LastRefreshTime *string `json:"lastRefreshTime,omitempty" azure:"ro"`
+	LastRefreshTime *string
 
 	// READ-ONLY; The total processed bytes. This includes bytes that are transferred from source VM to azure and matched bytes.
-	ProcessedBytes *int64 `json:"processedBytes,omitempty" azure:"ro"`
+	ProcessedBytes *int64
 
 	// READ-ONLY; The progress health.
-	ProgressHealth *DiskReplicationProgressHealth `json:"progressHealth,omitempty" azure:"ro"`
+	ProgressHealth *DiskReplicationProgressHealth
 
 	// READ-ONLY; Progress in percentage. Progress percentage is calculated based on processed bytes.
-	ProgressPercentage *int32 `json:"progressPercentage,omitempty" azure:"ro"`
+	ProgressPercentage *int32
 
 	// READ-ONLY; The start time.
-	StartTime *string `json:"startTime,omitempty" azure:"ro"`
+	StartTime *string
 
 	// READ-ONLY; The transferred bytes from source VM to azure for the disk.
-	TransferredBytes *int64 `json:"transferredBytes,omitempty" azure:"ro"`
+	TransferredBytes *int64
 }
 
 // InMageRcmTestFailoverInput - InMageRcm provider specific input for test failover.
 type InMageRcmTestFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The test network Id.
-	NetworkID *string `json:"networkId,omitempty"`
+	NetworkID *string
 
 	// The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null
 	// should be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 }
 
 // GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
@@ -6106,14 +6106,14 @@ func (i *InMageRcmTestFailoverInput) GetTestFailoverProviderSpecificInput() *Tes
 // InMageRcmUnplannedFailoverInput - InMageRcm provider specific input for unplanned failover.
 type InMageRcmUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; A value indicating whether VM is to be shutdown.
-	PerformShutdown *string `json:"performShutdown,omitempty"`
+	PerformShutdown *string
 
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 }
 
 // GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
@@ -6128,10 +6128,10 @@ func (i *InMageRcmUnplannedFailoverInput) GetUnplannedFailoverProviderSpecificIn
 // protected item.
 type InMageRcmUpdateApplianceForReplicationProtectedItemInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The run as account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 }
 
 // GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput implements the UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification
@@ -6145,10 +6145,10 @@ func (i *InMageRcmUpdateApplianceForReplicationProtectedItemInput) GetUpdateAppl
 // InMageRcmUpdateContainerMappingInput - InMageRcm update protection container mapping.
 type InMageRcmUpdateContainerMappingInput struct {
 	// REQUIRED; A value indicating whether agent auto upgrade has to be enabled.
-	EnableAgentAutoUpgrade *string `json:"enableAgentAutoUpgrade,omitempty"`
+	EnableAgentAutoUpgrade *string
 
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
@@ -6162,40 +6162,40 @@ func (i *InMageRcmUpdateContainerMappingInput) GetReplicationProviderSpecificUpd
 // InMageRcmUpdateReplicationProtectedItemInput - InMageRcm provider specific input to update replication protected item.
 type InMageRcmUpdateReplicationProtectedItemInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The license type.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// The target availability set ARM Id.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The target boot diagnostics storage account ARM Id.
-	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	TargetBootDiagnosticsStorageAccountID *string
 
 	// The target network ARM Id.
-	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	TargetNetworkID *string
 
 	// The target proximity placement group Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target resource group ARM Id.
-	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	TargetResourceGroupID *string
 
 	// The target VM name.
-	TargetVMName *string `json:"targetVmName,omitempty"`
+	TargetVMName *string
 
 	// The target VM size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// The test network ARM Id.
-	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	TestNetworkID *string
 
 	// The list of NIC details.
-	VMNics []*InMageRcmNicInput `json:"vmNics,omitempty"`
+	VMNics []*InMageRcmNicInput
 }
 
 // GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
@@ -6209,130 +6209,130 @@ func (i *InMageRcmUpdateReplicationProtectedItemInput) GetUpdateReplicationProte
 // InMageReplicationDetails - InMage provider specific settings.
 type InMageReplicationDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The active location of the VM. If the VM is being protected from Azure, this field will take values from { Azure, OnPrem
 	// }. If the VM is being protected between two data-centers, this field will be
 	// OnPrem always.
-	ActiveSiteType *string `json:"activeSiteType,omitempty"`
+	ActiveSiteType *string
 
 	// The agent details.
-	AgentDetails *InMageAgentDetails `json:"agentDetails,omitempty"`
+	AgentDetails *InMageAgentDetails
 
 	// A value indicating the underlying Azure storage account. If the VM is not running in Azure, this value shall be set to
 	// null.
-	AzureStorageAccountID *string `json:"azureStorageAccountId,omitempty"`
+	AzureStorageAccountID *string
 
 	// The compressed data change rate in MB.
-	CompressedDataRateInMB *float64 `json:"compressedDataRateInMB,omitempty"`
+	CompressedDataRateInMB *float64
 
 	// The collection of Consistency points.
-	ConsistencyPoints map[string]*time.Time `json:"consistencyPoints,omitempty"`
+	ConsistencyPoints map[string]*time.Time
 
 	// The datastores of the on-premise machine Value can be list of strings that contain datastore names.
-	Datastores []*string `json:"datastores,omitempty"`
+	Datastores []*string
 
 	// A value indicating the discovery type of the machine.
-	DiscoveryType *string `json:"discoveryType,omitempty"`
+	DiscoveryType *string
 
 	// A value indicating whether any disk is resized for this VM.
-	DiskResized *string `json:"diskResized,omitempty"`
+	DiskResized *string
 
 	// The source IP address.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The infrastructure VM Id.
-	InfrastructureVMID *string `json:"infrastructureVmId,omitempty"`
+	InfrastructureVMID *string
 
 	// A value indicating whether additional IR stats are available or not.
-	IsAdditionalStatsAvailable *bool `json:"isAdditionalStatsAvailable,omitempty"`
+	IsAdditionalStatsAvailable *bool
 
 	// The last heartbeat received from the source server.
-	LastHeartbeat *time.Time `json:"lastHeartbeat,omitempty"`
+	LastHeartbeat *time.Time
 
 	// The last RPO calculated time.
-	LastRpoCalculatedTime *time.Time `json:"lastRpoCalculatedTime,omitempty"`
+	LastRpoCalculatedTime *time.Time
 
 	// The last update time received from on-prem components.
-	LastUpdateReceivedTime *time.Time `json:"lastUpdateReceivedTime,omitempty"`
+	LastUpdateReceivedTime *time.Time
 
 	// The master target Id.
-	MasterTargetID *string `json:"masterTargetId,omitempty"`
+	MasterTargetID *string
 
 	// The multi vm group Id, if any.
-	MultiVMGroupID *string `json:"multiVmGroupId,omitempty"`
+	MultiVMGroupID *string
 
 	// The multi vm group name, if any.
-	MultiVMGroupName *string `json:"multiVmGroupName,omitempty"`
+	MultiVMGroupName *string
 
 	// A value indicating whether the multi vm sync is enabled or disabled.
-	MultiVMSyncStatus *string `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *string
 
 	// The OS details.
-	OSDetails *OSDiskDetails `json:"osDetails,omitempty"`
+	OSDetails *OSDiskDetails
 
 	// The OS Version of the protected item.
-	OSVersion *string `json:"osVersion,omitempty"`
+	OSVersion *string
 
 	// The process server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The list of protected disks.
-	ProtectedDisks []*InMageProtectedDiskDetails `json:"protectedDisks,omitempty"`
+	ProtectedDisks []*InMageProtectedDiskDetails
 
 	// The protection stage.
-	ProtectionStage *string `json:"protectionStage,omitempty"`
+	ProtectionStage *string
 
 	// A value indicating whether the source server requires a restart after update.
-	RebootAfterUpdateStatus *string `json:"rebootAfterUpdateStatus,omitempty"`
+	RebootAfterUpdateStatus *string
 
 	// The replica id of the protected item.
-	ReplicaID *string `json:"replicaId,omitempty"`
+	ReplicaID *string
 
 	// The resync details of the machine.
-	ResyncDetails *InitialReplicationDetails `json:"resyncDetails,omitempty"`
+	ResyncDetails *InitialReplicationDetails
 
 	// The retention window end time.
-	RetentionWindowEnd *time.Time `json:"retentionWindowEnd,omitempty"`
+	RetentionWindowEnd *time.Time
 
 	// The retention window start time.
-	RetentionWindowStart *time.Time `json:"retentionWindowStart,omitempty"`
+	RetentionWindowStart *time.Time
 
 	// The RPO in seconds.
-	RpoInSeconds *int64 `json:"rpoInSeconds,omitempty"`
+	RpoInSeconds *int64
 
 	// The CPU count of the VM on the primary side.
-	SourceVMCPUCount *int32 `json:"sourceVmCpuCount,omitempty"`
+	SourceVMCPUCount *int32
 
 	// The RAM size of the VM on the primary side.
-	SourceVMRAMSizeInMB *int32 `json:"sourceVmRamSizeInMB,omitempty"`
+	SourceVMRAMSizeInMB *int32
 
 	// The total transferred data in bytes.
-	TotalDataTransferred *int64 `json:"totalDataTransferred,omitempty"`
+	TotalDataTransferred *int64
 
 	// The progress health.
-	TotalProgressHealth *string `json:"totalProgressHealth,omitempty"`
+	TotalProgressHealth *string
 
 	// The uncompressed data change rate in MB.
-	UncompressedDataRateInMB *float64 `json:"uncompressedDataRateInMB,omitempty"`
+	UncompressedDataRateInMB *float64
 
 	// The vCenter infrastructure Id.
-	VCenterInfrastructureID *string `json:"vCenterInfrastructureId,omitempty"`
+	VCenterInfrastructureID *string
 
 	// The virtual machine Id.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 
 	// The PE Network details.
-	VMNics []*VMNicDetails `json:"vmNics,omitempty"`
+	VMNics []*VMNicDetails
 
 	// The protection state for the vm.
-	VMProtectionState *string `json:"vmProtectionState,omitempty"`
+	VMProtectionState *string
 
 	// The protection state description for the vm.
-	VMProtectionStateDescription *string `json:"vmProtectionStateDescription,omitempty"`
+	VMProtectionStateDescription *string
 
 	// The validation errors of the on-premise machine Value can be list of validation errors.
-	ValidationErrors []*HealthError `json:"validationErrors,omitempty"`
+	ValidationErrors []*HealthError
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -6346,31 +6346,31 @@ func (i *InMageReplicationDetails) GetReplicationProviderSpecificSettings() *Rep
 // InMageReprotectInput - InMageAzureV2 specific provider input.
 type InMageReprotectInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The Master Target Id.
-	MasterTargetID *string `json:"masterTargetId,omitempty"`
+	MasterTargetID *string
 
 	// REQUIRED; The Process Server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// REQUIRED; The Policy Id.
-	ProfileID *string `json:"profileId,omitempty"`
+	ProfileID *string
 
 	// REQUIRED; The retention drive to use on the MT.
-	RetentionDrive *string `json:"retentionDrive,omitempty"`
+	RetentionDrive *string
 
 	// The target datastore name.
-	DatastoreName *string `json:"datastoreName,omitempty"`
+	DatastoreName *string
 
 	// The enable disk exclusion input.
-	DiskExclusionInput *InMageDiskExclusionInput `json:"diskExclusionInput,omitempty"`
+	DiskExclusionInput *InMageDiskExclusionInput
 
 	// The disks to include list.
-	DisksToInclude []*string `json:"disksToInclude,omitempty"`
+	DisksToInclude []*string
 
 	// The CS account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 }
 
 // GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
@@ -6384,16 +6384,16 @@ func (i *InMageReprotectInput) GetReverseReplicationProviderSpecificInput() *Rev
 // InMageTestFailoverInput - Provider specific input for InMage test failover.
 type InMageTestFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The recovery point id to be passed to test failover to a particular recovery point. In case of latest recovery point, null
 	// should be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// The recovery point type. Values from LatestTime, LatestTag or Custom. In the case of custom, the recovery point provided
 	// by RecoveryPointId will be used. In the other two cases, recovery point id will
 	// be ignored.
-	RecoveryPointType *RecoveryPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *RecoveryPointType
 }
 
 // GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
@@ -6407,16 +6407,16 @@ func (i *InMageTestFailoverInput) GetTestFailoverProviderSpecificInput() *TestFa
 // InMageUnplannedFailoverInput - Provider specific input for InMage unplanned failover.
 type InMageUnplannedFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The recovery point id to be passed to failover to a particular recovery point. In case of latest recovery point, null should
 	// be passed.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// The recovery point type. Values from LatestTime, LatestTag or Custom. In the case of custom, the recovery point provided
 	// by RecoveryPointId will be used. In the other two cases, recovery point id will
 	// be ignored.
-	RecoveryPointType *RecoveryPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *RecoveryPointType
 }
 
 // GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
@@ -6433,46 +6433,46 @@ type InMageVolumeExclusionOptions struct {
 	// The value indicating whether to exclude multi volume disk or not. If a disk has multiple volumes and one of the volume
 	// has label matching with VolumeLabel this disk will be excluded from replication
 	// if OnlyExcludeIfSingleVolume is false.
-	OnlyExcludeIfSingleVolume *string `json:"onlyExcludeIfSingleVolume,omitempty"`
+	OnlyExcludeIfSingleVolume *string
 
 	// The volume label. The disk having any volume with this label will be excluded from replication.
-	VolumeLabel *string `json:"volumeLabel,omitempty"`
+	VolumeLabel *string
 }
 
 // InconsistentVMDetails - This class stores the monitoring details for consistency check of inconsistent Protected Entity.
 type InconsistentVMDetails struct {
 	// The Cloud name.
-	CloudName *string `json:"cloudName,omitempty"`
+	CloudName *string
 
 	// The list of details regarding state of the Protected Entity in SRS and On prem.
-	Details []*string `json:"details,omitempty"`
+	Details []*string
 
 	// The list of error ids.
-	ErrorIDs []*string `json:"errorIds,omitempty"`
+	ErrorIDs []*string
 
 	// The Vm name.
-	VMName *string `json:"vmName,omitempty"`
+	VMName *string
 }
 
 // InitialReplicationDetails - Initial replication details.
 type InitialReplicationDetails struct {
 	// The initial replication progress percentage.
-	InitialReplicationProgressPercentage *string `json:"initialReplicationProgressPercentage,omitempty"`
+	InitialReplicationProgressPercentage *string
 
 	// Initial replication type.
-	InitialReplicationType *string `json:"initialReplicationType,omitempty"`
+	InitialReplicationType *string
 }
 
 // InlineWorkflowTaskDetails - This class represents the inline workflow task details.
 type InlineWorkflowTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The child tasks.
-	ChildTasks []*ASRTask `json:"childTasks,omitempty"`
+	ChildTasks []*ASRTask
 
 	// The list of child workflow ids.
-	WorkflowIDs []*string `json:"workflowIds,omitempty"`
+	WorkflowIDs []*string
 }
 
 // GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type InlineWorkflowTaskDetails.
@@ -6489,80 +6489,80 @@ func (i *InlineWorkflowTaskDetails) GetGroupTaskDetails() *GroupTaskDetails {
 // can utilize this in the same fashion as Exception -> InnerException.
 type InnerHealthError struct {
 	// Error creation time (UTC).
-	CreationTimeUTC *time.Time `json:"creationTimeUtc,omitempty"`
+	CreationTimeUTC *time.Time
 
 	// Value indicating whether the health error is customer resolvable.
-	CustomerResolvability *HealthErrorCustomerResolvability `json:"customerResolvability,omitempty"`
+	CustomerResolvability *HealthErrorCustomerResolvability
 
 	// ID of the entity.
-	EntityID *string `json:"entityId,omitempty"`
+	EntityID *string
 
 	// Category of error.
-	ErrorCategory *string `json:"errorCategory,omitempty"`
+	ErrorCategory *string
 
 	// Error code.
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// The health error unique id.
-	ErrorID *string `json:"errorId,omitempty"`
+	ErrorID *string
 
 	// Level of error.
-	ErrorLevel *string `json:"errorLevel,omitempty"`
+	ErrorLevel *string
 
 	// Error message.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// Source of error.
-	ErrorSource *string `json:"errorSource,omitempty"`
+	ErrorSource *string
 
 	// Type of error.
-	ErrorType *string `json:"errorType,omitempty"`
+	ErrorType *string
 
 	// Possible causes of error.
-	PossibleCauses *string `json:"possibleCauses,omitempty"`
+	PossibleCauses *string
 
 	// Recommended action to resolve error.
-	RecommendedAction *string `json:"recommendedAction,omitempty"`
+	RecommendedAction *string
 
 	// DRA error message.
-	RecoveryProviderErrorMessage *string `json:"recoveryProviderErrorMessage,omitempty"`
+	RecoveryProviderErrorMessage *string
 
 	// Summary message of the entity.
-	SummaryMessage *string `json:"summaryMessage,omitempty"`
+	SummaryMessage *string
 }
 
 type InputEndpoint struct {
-	EndpointName *string `json:"endpointName,omitempty"`
-	PrivatePort  *int32  `json:"privatePort,omitempty"`
-	Protocol     *string `json:"protocol,omitempty"`
-	PublicPort   *int32  `json:"publicPort,omitempty"`
+	EndpointName *string
+	PrivatePort  *int32
+	Protocol     *string
+	PublicPort   *int32
 }
 
 // Job details.
 type Job struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The custom data.
-	Properties *JobProperties `json:"properties,omitempty"`
+	Properties *JobProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobCollection - Collection of jobs.
 type JobCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of jobs.
-	Value []*Job `json:"value,omitempty"`
+	Value []*Job
 }
 
 // JobDetailsClassification provides polymorphic access to related types.
@@ -6577,11 +6577,11 @@ type JobDetailsClassification interface {
 // JobDetails - Job details based on specific job type.
 type JobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
-	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
+	AffectedObjectDetails map[string]*string
 }
 
 // GetJobDetails implements the JobDetailsClassification interface for type JobDetails.
@@ -6590,131 +6590,131 @@ func (j *JobDetails) GetJobDetails() *JobDetails { return j }
 // JobEntity - This class contains the minimal job details required to navigate to the desired drill down.
 type JobEntity struct {
 	// The job display name.
-	JobFriendlyName *string `json:"jobFriendlyName,omitempty"`
+	JobFriendlyName *string
 
 	// The job id.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 
 	// The job name. Enum type ScenarioName.
-	JobScenarioName *string `json:"jobScenarioName,omitempty"`
+	JobScenarioName *string
 
 	// The workflow affected object type.
-	TargetInstanceType *string `json:"targetInstanceType,omitempty"`
+	TargetInstanceType *string
 
 	// The object id.
-	TargetObjectID *string `json:"targetObjectId,omitempty"`
+	TargetObjectID *string
 
 	// The object name.
-	TargetObjectName *string `json:"targetObjectName,omitempty"`
+	TargetObjectName *string
 }
 
 // JobErrorDetails - This class contains the error details per object.
 type JobErrorDetails struct {
 	// The creation time of job error.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// Error level of error.
-	ErrorLevel *string `json:"errorLevel,omitempty"`
+	ErrorLevel *string
 
 	// The Provider error details.
-	ProviderErrorDetails *ProviderError `json:"providerErrorDetails,omitempty"`
+	ProviderErrorDetails *ProviderError
 
 	// The Service error details.
-	ServiceErrorDetails *ServiceError `json:"serviceErrorDetails,omitempty"`
+	ServiceErrorDetails *ServiceError
 
 	// The Id of the task.
-	TaskID *string `json:"taskId,omitempty"`
+	TaskID *string
 }
 
 // JobProperties - Job custom data details.
 type JobProperties struct {
 	// The activity id.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// The Allowed action the job.
-	AllowedActions []*string `json:"allowedActions,omitempty"`
+	AllowedActions []*string
 
 	// The custom job details like test failover job details.
-	CustomDetails JobDetailsClassification `json:"customDetails,omitempty"`
+	CustomDetails JobDetailsClassification
 
 	// The end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The errors.
-	Errors []*JobErrorDetails `json:"errors,omitempty"`
+	Errors []*JobErrorDetails
 
 	// The DisplayName.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The ScenarioName.
-	ScenarioName *string `json:"scenarioName,omitempty"`
+	ScenarioName *string
 
 	// The start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the Job. It is one of these values - NotStarted, InProgress, Succeeded, Failed, Cancelled, Suspended or Other.
-	State *string `json:"state,omitempty"`
+	State *string
 
 	// The description of the state of the Job. For e.g. - For Succeeded state, description can be Completed, PartiallySucceeded,
 	// CompletedWithInformation or Skipped.
-	StateDescription *string `json:"stateDescription,omitempty"`
+	StateDescription *string
 
 	// The type of the affected object which is of Microsoft.Azure.SiteRecovery.V20151110.AffectedObjectType class.
-	TargetInstanceType *string `json:"targetInstanceType,omitempty"`
+	TargetInstanceType *string
 
 	// The affected Object Id.
-	TargetObjectID *string `json:"targetObjectId,omitempty"`
+	TargetObjectID *string
 
 	// The name of the affected object.
-	TargetObjectName *string `json:"targetObjectName,omitempty"`
+	TargetObjectName *string
 
 	// The tasks.
-	Tasks []*ASRTask `json:"tasks,omitempty"`
+	Tasks []*ASRTask
 }
 
 // JobQueryParameter - Query parameter to enumerate jobs.
 type JobQueryParameter struct {
 	// The type of objects.
-	AffectedObjectTypes *string `json:"affectedObjectTypes,omitempty"`
+	AffectedObjectTypes *string
 
 	// Date time to get jobs upto.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// The Id of the fabric to search jobs under.
-	FabricID *string `json:"fabricId,omitempty"`
+	FabricID *string
 
 	// The job Name.
-	JobName *string `json:"jobName,omitempty"`
+	JobName *string
 
 	// The output type of the jobs.
-	JobOutputType *ExportJobOutputSerializationType `json:"jobOutputType,omitempty"`
+	JobOutputType *ExportJobOutputSerializationType
 
 	// The states of the job to be filtered can be in.
-	JobStatus *string `json:"jobStatus,omitempty"`
+	JobStatus *string
 
 	// Date time to get jobs from.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 
 	// The timezone offset for the location of the request (in minutes).
-	TimezoneOffset *float64 `json:"timezoneOffset,omitempty"`
+	TimezoneOffset *float64
 }
 
 // JobStatusEventDetails - Model class for event details of a job status event.
 type JobStatusEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// AffectedObjectType for the event.
-	AffectedObjectType *string `json:"affectedObjectType,omitempty"`
+	AffectedObjectType *string
 
 	// JobName for the Event.
-	JobFriendlyName *string `json:"jobFriendlyName,omitempty"`
+	JobFriendlyName *string
 
 	// Job arm id for the event.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 
 	// JobStatus for the Event.
-	JobStatus *string `json:"jobStatus,omitempty"`
+	JobStatus *string
 }
 
 // GetEventSpecificDetails implements the EventSpecificDetailsClassification interface for type JobStatusEventDetails.
@@ -6738,10 +6738,10 @@ type JobTaskDetailsClassification interface {
 // down.
 type JobTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The job entity.
-	JobTask *JobEntity `json:"jobTask,omitempty"`
+	JobTask *JobEntity
 }
 
 // GetJobTaskDetails implements the JobTaskDetailsClassification interface for type JobTaskDetails.
@@ -6757,67 +6757,67 @@ func (j *JobTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
 // KeyEncryptionKeyInfo - Key Encryption Key (KEK) information.
 type KeyEncryptionKeyInfo struct {
 	// The key URL / identifier.
-	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+	KeyIdentifier *string
 
 	// The KeyVault resource ARM Id for key.
-	KeyVaultResourceArmID *string `json:"keyVaultResourceArmId,omitempty"`
+	KeyVaultResourceArmID *string
 }
 
 // LogicalNetwork - Logical network data model.
 type LogicalNetwork struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The Logical Network Properties.
-	Properties *LogicalNetworkProperties `json:"properties,omitempty"`
+	Properties *LogicalNetworkProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LogicalNetworkCollection - List of logical networks.
 type LogicalNetworkCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The Logical Networks list details.
-	Value []*LogicalNetwork `json:"value,omitempty"`
+	Value []*LogicalNetwork
 }
 
 // LogicalNetworkProperties - Logical Network Properties.
 type LogicalNetworkProperties struct {
 	// The Friendly Name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// A value indicating whether logical network definitions are isolated.
-	LogicalNetworkDefinitionsStatus *string `json:"logicalNetworkDefinitionsStatus,omitempty"`
+	LogicalNetworkDefinitionsStatus *string
 
 	// A value indicating whether logical network is used as private test network by test failover.
-	LogicalNetworkUsage *string `json:"logicalNetworkUsage,omitempty"`
+	LogicalNetworkUsage *string
 
 	// A value indicating whether Network Virtualization is enabled for the logical network.
-	NetworkVirtualizationStatus *string `json:"networkVirtualizationStatus,omitempty"`
+	NetworkVirtualizationStatus *string
 }
 
 // ManualActionTaskDetails - This class represents the manual action task details.
 type ManualActionTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The instructions.
-	Instructions *string `json:"instructions,omitempty"`
+	Instructions *string
 
 	// The name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The observation.
-	Observation *string `json:"observation,omitempty"`
+	Observation *string
 }
 
 // GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ManualActionTaskDetails.
@@ -6830,100 +6830,100 @@ func (m *ManualActionTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
 // MarsAgentDetails - Mars agent details.
 type MarsAgentDetails struct {
 	// READ-ONLY; The Mars agent Bios Id.
-	BiosID *string `json:"biosId,omitempty" azure:"ro"`
+	BiosID *string
 
 	// READ-ONLY; The fabric object Id.
-	FabricObjectID *string `json:"fabricObjectId,omitempty" azure:"ro"`
+	FabricObjectID *string
 
 	// READ-ONLY; The Mars agent Fqdn.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; The health of the Mars agent.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty" azure:"ro"`
+	HealthErrors []*HealthError
 
 	// READ-ONLY; The Mars agent Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The last heartbeat received from the Mars agent.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The Mars agent name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // MasterTargetServer - Details of a Master Target Server.
 type MasterTargetServer struct {
 	// Agent expiry date.
-	AgentExpiryDate *time.Time `json:"agentExpiryDate,omitempty"`
+	AgentExpiryDate *time.Time
 
 	// The version of the scout component on the server.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// Agent version details.
-	AgentVersionDetails *VersionDetails `json:"agentVersionDetails,omitempty"`
+	AgentVersionDetails *VersionDetails
 
 	// The list of data stores in the fabric.
-	DataStores []*DataStore `json:"dataStores,omitempty"`
+	DataStores []*DataStore
 
 	// Disk count of the master target.
-	DiskCount *int32 `json:"diskCount,omitempty"`
+	DiskCount *int32
 
 	// Health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty"`
+	HealthErrors []*HealthError
 
 	// The server Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The IP address of the server.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The last heartbeat received from the server.
-	LastHeartbeat *time.Time `json:"lastHeartbeat,omitempty"`
+	LastHeartbeat *time.Time
 
 	// MARS agent expiry date.
-	MarsAgentExpiryDate *time.Time `json:"marsAgentExpiryDate,omitempty"`
+	MarsAgentExpiryDate *time.Time
 
 	// MARS agent version.
-	MarsAgentVersion *string `json:"marsAgentVersion,omitempty"`
+	MarsAgentVersion *string
 
 	// Mars agent version details.
-	MarsAgentVersionDetails *VersionDetails `json:"marsAgentVersionDetails,omitempty"`
+	MarsAgentVersionDetails *VersionDetails
 
 	// The server name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The OS type of the server.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// OS Version of the master target.
-	OSVersion *string `json:"osVersion,omitempty"`
+	OSVersion *string
 
 	// The retention volumes of Master target Server.
-	RetentionVolumes []*RetentionVolume `json:"retentionVolumes,omitempty"`
+	RetentionVolumes []*RetentionVolume
 
 	// Validation errors.
-	ValidationErrors []*HealthError `json:"validationErrors,omitempty"`
+	ValidationErrors []*HealthError
 
 	// Version status.
-	VersionStatus *string `json:"versionStatus,omitempty"`
+	VersionStatus *string
 }
 
 // MigrateInput - Input for migrate.
 type MigrateInput struct {
 	// REQUIRED; Migrate input properties.
-	Properties *MigrateInputProperties `json:"properties,omitempty"`
+	Properties *MigrateInputProperties
 }
 
 // MigrateInputProperties - Migrate input properties.
 type MigrateInputProperties struct {
 	// REQUIRED; The provider specific details.
-	ProviderSpecificDetails MigrateProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails MigrateProviderSpecificInputClassification
 }
 
 // MigrateProviderSpecificInputClassification provides polymorphic access to related types.
@@ -6938,7 +6938,7 @@ type MigrateProviderSpecificInputClassification interface {
 // MigrateProviderSpecificInput - Migrate provider specific input.
 type MigrateProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetMigrateProviderSpecificInput implements the MigrateProviderSpecificInputClassification interface for type MigrateProviderSpecificInput.
@@ -6949,103 +6949,103 @@ func (m *MigrateProviderSpecificInput) GetMigrateProviderSpecificInput() *Migrat
 // MigrationItem - Migration item.
 type MigrationItem struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The migration item properties.
-	Properties *MigrationItemProperties `json:"properties,omitempty"`
+	Properties *MigrationItemProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MigrationItemCollection - Migration item collection.
 type MigrationItemCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of migration items.
-	Value []*MigrationItem `json:"value,omitempty"`
+	Value []*MigrationItem
 }
 
 // MigrationItemProperties - Migration item properties.
 type MigrationItemProperties struct {
 	// The migration provider custom settings.
-	ProviderSpecificDetails MigrationProviderSpecificSettingsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails MigrationProviderSpecificSettingsClassification
 
 	// READ-ONLY; The allowed operations on the migration item based on the current migration state of the item.
-	AllowedOperations []*MigrationItemOperation `json:"allowedOperations,omitempty" azure:"ro"`
+	AllowedOperations []*MigrationItemOperation
 
 	// READ-ONLY; The critical past job details.
-	CriticalJobHistory []*CriticalJobHistoryDetails `json:"criticalJobHistory,omitempty" azure:"ro"`
+	CriticalJobHistory []*CriticalJobHistoryDetails
 
 	// READ-ONLY; The current job details.
-	CurrentJob *CurrentJobDetails `json:"currentJob,omitempty" azure:"ro"`
+	CurrentJob *CurrentJobDetails
 
 	// READ-ONLY; The correlation Id for events associated with this migration item.
-	EventCorrelationID *string `json:"eventCorrelationId,omitempty" azure:"ro"`
+	EventCorrelationID *string
 
 	// READ-ONLY; The consolidated health.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The list of health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty" azure:"ro"`
+	HealthErrors []*HealthError
 
 	// READ-ONLY; The status of the last migration.
-	LastMigrationStatus *string `json:"lastMigrationStatus,omitempty" azure:"ro"`
+	LastMigrationStatus *string
 
 	// READ-ONLY; The last migration time.
-	LastMigrationTime *time.Time `json:"lastMigrationTime,omitempty" azure:"ro"`
+	LastMigrationTime *time.Time
 
 	// READ-ONLY; The status of the last test migration.
-	LastTestMigrationStatus *string `json:"lastTestMigrationStatus,omitempty" azure:"ro"`
+	LastTestMigrationStatus *string
 
 	// READ-ONLY; The last test migration time.
-	LastTestMigrationTime *time.Time `json:"lastTestMigrationTime,omitempty" azure:"ro"`
+	LastTestMigrationTime *time.Time
 
 	// READ-ONLY; The on-premise virtual machine name.
-	MachineName *string `json:"machineName,omitempty" azure:"ro"`
+	MachineName *string
 
 	// READ-ONLY; The migration status.
-	MigrationState *MigrationState `json:"migrationState,omitempty" azure:"ro"`
+	MigrationState *MigrationState
 
 	// READ-ONLY; The migration state description.
-	MigrationStateDescription *string `json:"migrationStateDescription,omitempty" azure:"ro"`
+	MigrationStateDescription *string
 
 	// READ-ONLY; The name of policy governing this item.
-	PolicyFriendlyName *string `json:"policyFriendlyName,omitempty" azure:"ro"`
+	PolicyFriendlyName *string
 
 	// READ-ONLY; The ARM Id of policy governing this item.
-	PolicyID *string `json:"policyId,omitempty" azure:"ro"`
+	PolicyID *string
 
 	// READ-ONLY; The recovery services provider ARM Id.
-	RecoveryServicesProviderID *string `json:"recoveryServicesProviderId,omitempty" azure:"ro"`
+	RecoveryServicesProviderID *string
 
 	// READ-ONLY; The replication status.
-	ReplicationStatus *string `json:"replicationStatus,omitempty" azure:"ro"`
+	ReplicationStatus *string
 
 	// READ-ONLY; The test migrate state.
-	TestMigrateState *TestMigrationState `json:"testMigrateState,omitempty" azure:"ro"`
+	TestMigrateState *TestMigrationState
 
 	// READ-ONLY; The test migrate state description.
-	TestMigrateStateDescription *string `json:"testMigrateStateDescription,omitempty" azure:"ro"`
+	TestMigrateStateDescription *string
 }
 
 // MigrationItemsQueryParameter - Query parameter to enumerate migration items.
 type MigrationItemsQueryParameter struct {
 	// The replication provider type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The source container name filter.
-	SourceContainerName *string `json:"sourceContainerName,omitempty"`
+	SourceContainerName *string
 
 	// The source fabric name filter.
-	SourceFabricName *string `json:"sourceFabricName,omitempty"`
+	SourceFabricName *string
 }
 
 // MigrationProviderSpecificSettingsClassification provides polymorphic access to related types.
@@ -7060,7 +7060,7 @@ type MigrationProviderSpecificSettingsClassification interface {
 // MigrationProviderSpecificSettings - Migration provider specific settings.
 type MigrationProviderSpecificSettings struct {
 	// REQUIRED; Gets the instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetMigrationProviderSpecificSettings implements the MigrationProviderSpecificSettingsClassification interface for type
@@ -7072,37 +7072,37 @@ func (m *MigrationProviderSpecificSettings) GetMigrationProviderSpecificSettings
 // MigrationRecoveryPoint - Recovery point for a migration item.
 type MigrationRecoveryPoint struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Recovery point properties.
-	Properties *MigrationRecoveryPointProperties `json:"properties,omitempty"`
+	Properties *MigrationRecoveryPointProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MigrationRecoveryPointCollection - Collection of migration recovery points.
 type MigrationRecoveryPointCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The migration recovery point details.
-	Value []*MigrationRecoveryPoint `json:"value,omitempty"`
+	Value []*MigrationRecoveryPoint
 }
 
 // MigrationRecoveryPointProperties - Migration item recovery point properties.
 type MigrationRecoveryPointProperties struct {
 	// READ-ONLY; The recovery point time.
-	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty" azure:"ro"`
+	RecoveryPointTime *time.Time
 
 	// READ-ONLY; The recovery point type.
-	RecoveryPointType *MigrationRecoveryPointType `json:"recoveryPointType,omitempty" azure:"ro"`
+	RecoveryPointType *MigrationRecoveryPointType
 }
 
 // MigrationRecoveryPointsClientGetOptions contains the optional parameters for the MigrationRecoveryPointsClient.Get method.
@@ -7110,7 +7110,7 @@ type MigrationRecoveryPointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions contains the optional parameters for the MigrationRecoveryPointsClient.ListByReplicationMigrationItems
+// MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions contains the optional parameters for the MigrationRecoveryPointsClient.NewListByReplicationMigrationItemsPager
 // method.
 type MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions struct {
 	// placeholder for future optional parameters
@@ -7119,40 +7119,40 @@ type MigrationRecoveryPointsClientListByReplicationMigrationItemsOptions struct 
 // MobilityServiceUpdate - The Mobility Service update details.
 type MobilityServiceUpdate struct {
 	// The OS type.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The reboot status of the update - whether it is required or not.
-	RebootStatus *string `json:"rebootStatus,omitempty"`
+	RebootStatus *string
 
 	// The version of the latest update.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // Network model.
 type Network struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The Network Properties.
-	Properties *NetworkProperties `json:"properties,omitempty"`
+	Properties *NetworkProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkCollection - List of networks.
 type NetworkCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The Networks list details.
-	Value []*Network `json:"value,omitempty"`
+	Value []*Network
 }
 
 // NetworkMapping - Network Mapping model. Ideally it should have been possible to inherit this class from prev version in
@@ -7162,19 +7162,19 @@ type NetworkCollection struct {
 // facilitate extensions in subsequent versions.
 type NetworkMapping struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The Network Mapping Properties.
-	Properties *NetworkMappingProperties `json:"properties,omitempty"`
+	Properties *NetworkMappingProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkMappingCollection - List of network mappings. As with NetworkMapping, it should be possible to reuse a prev version
@@ -7182,10 +7182,10 @@ type NetworkMapping struct {
 // collection of NetworkMapping. Hence it makes sense to override Load with Base.NetworkMapping instead of existing CurrentVersion.NetworkMapping.
 type NetworkMappingCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The Network Mappings list.
-	Value []*NetworkMapping `json:"value,omitempty"`
+	Value []*NetworkMapping
 }
 
 // NetworkMappingFabricSpecificSettingsClassification provides polymorphic access to related types.
@@ -7200,7 +7200,7 @@ type NetworkMappingFabricSpecificSettingsClassification interface {
 // NetworkMappingFabricSpecificSettings - Network Mapping fabric specific settings.
 type NetworkMappingFabricSpecificSettings struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
@@ -7212,67 +7212,67 @@ func (n *NetworkMappingFabricSpecificSettings) GetNetworkMappingFabricSpecificSe
 // NetworkMappingProperties - Network Mapping Properties.
 type NetworkMappingProperties struct {
 	// The fabric specific settings.
-	FabricSpecificSettings NetworkMappingFabricSpecificSettingsClassification `json:"fabricSpecificSettings,omitempty"`
+	FabricSpecificSettings NetworkMappingFabricSpecificSettingsClassification
 
 	// The primary fabric friendly name.
-	PrimaryFabricFriendlyName *string `json:"primaryFabricFriendlyName,omitempty"`
+	PrimaryFabricFriendlyName *string
 
 	// The primary network friendly name.
-	PrimaryNetworkFriendlyName *string `json:"primaryNetworkFriendlyName,omitempty"`
+	PrimaryNetworkFriendlyName *string
 
 	// The primary network id for network mapping.
-	PrimaryNetworkID *string `json:"primaryNetworkId,omitempty"`
+	PrimaryNetworkID *string
 
 	// The recovery fabric ARM id.
-	RecoveryFabricArmID *string `json:"recoveryFabricArmId,omitempty"`
+	RecoveryFabricArmID *string
 
 	// The recovery fabric friendly name.
-	RecoveryFabricFriendlyName *string `json:"recoveryFabricFriendlyName,omitempty"`
+	RecoveryFabricFriendlyName *string
 
 	// The recovery network friendly name.
-	RecoveryNetworkFriendlyName *string `json:"recoveryNetworkFriendlyName,omitempty"`
+	RecoveryNetworkFriendlyName *string
 
 	// The recovery network id for network mapping.
-	RecoveryNetworkID *string `json:"recoveryNetworkId,omitempty"`
+	RecoveryNetworkID *string
 
 	// The pairing state for network mapping.
-	State *string `json:"state,omitempty"`
+	State *string
 }
 
 // NetworkProperties - Network Properties.
 type NetworkProperties struct {
 	// The Fabric Type.
-	FabricType *string `json:"fabricType,omitempty"`
+	FabricType *string
 
 	// The Friendly Name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The Network Type.
-	NetworkType *string `json:"networkType,omitempty"`
+	NetworkType *string
 
 	// The List of subnets.
-	Subnets []*Subnet `json:"subnets,omitempty"`
+	Subnets []*Subnet
 }
 
 // NewProtectionProfile - New Protection profile input.
 type NewProtectionProfile struct {
 	// REQUIRED; A value indicating whether multi-VM sync has to be enabled. Value should be 'Enabled' or 'Disabled'.
-	MultiVMSyncStatus *SetMultiVMSyncStatus `json:"multiVmSyncStatus,omitempty"`
+	MultiVMSyncStatus *SetMultiVMSyncStatus
 
 	// REQUIRED; The protection profile input.
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The app consistent snapshot frequency (in minutes).
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency (in minutes).
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistory *int32 `json:"recoveryPointHistory,omitempty"`
+	RecoveryPointHistory *int32
 }
 
 // GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type NewProtectionProfile.
@@ -7285,14 +7285,14 @@ func (n *NewProtectionProfile) GetProtectionProfileCustomDetails() *ProtectionPr
 // NewRecoveryVirtualNetwork - Recovery virtual network input to create new virtual network from given source network.
 type NewRecoveryVirtualNetwork struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The recovery virtual network name.
-	RecoveryVirtualNetworkName *string `json:"recoveryVirtualNetworkName,omitempty"`
+	RecoveryVirtualNetworkName *string
 
 	// The name of the resource group to be used to create the recovery virtual network. If absent, target network would be created
 	// in the same resource group as target VM.
-	RecoveryVirtualNetworkResourceGroupName *string `json:"recoveryVirtualNetworkResourceGroupName,omitempty"`
+	RecoveryVirtualNetworkResourceGroupName *string
 }
 
 // GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
@@ -7306,46 +7306,46 @@ func (n *NewRecoveryVirtualNetwork) GetRecoveryVirtualNetworkCustomDetails() *Re
 // OSDetails - Disk Details.
 type OSDetails struct {
 	// The OSEdition.
-	OSEdition *string `json:"osEdition,omitempty"`
+	OSEdition *string
 
 	// The OS Major Version.
-	OSMajorVersion *string `json:"oSMajorVersion,omitempty"`
+	OSMajorVersion *string
 
 	// The OS Minor Version.
-	OSMinorVersion *string `json:"oSMinorVersion,omitempty"`
+	OSMinorVersion *string
 
 	// VM Disk details.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The OS Version.
-	OSVersion *string `json:"oSVersion,omitempty"`
+	OSVersion *string
 
 	// Product type.
-	ProductType *string `json:"productType,omitempty"`
+	ProductType *string
 }
 
 // OSDiskDetails - Details of the OS Disk.
 type OSDiskDetails struct {
 	// The type of the OS on the VM.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The id of the disk containing the OS.
-	OSVhdID *string `json:"osVhdId,omitempty"`
+	OSVhdID *string
 
 	// The OS disk VHD name.
-	VhdName *string `json:"vhdName,omitempty"`
+	VhdName *string
 }
 
 // OSVersionWrapper - Wrapper model for OSVersion to include version and service pack info.
 type OSVersionWrapper struct {
 	// The service pack.
-	ServicePack *string `json:"servicePack,omitempty"`
+	ServicePack *string
 
 	// The version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -7353,7 +7353,7 @@ type OperationsClientListOptions struct {
 // OperationsDiscovery - Operations discovery class.
 type OperationsDiscovery struct {
 	// Object type.
-	Display *Display `json:"display,omitempty"`
+	Display *Display
 
 	// Name of the API. The name of the operation being performed on this particular object. It should match the action name that
 	// appears in RBAC / the event service. Examples of operations include: *
@@ -7368,50 +7368,50 @@ type OperationsDiscovery struct {
 	// response. This API is used to register for their service, and should include details about the operation (e.g. a localized
 	// name for the resource provider + any special considerations like PII
 	// release).
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs
 	// UX. Default value is "user,system".
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties. Reserved for future use.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationsDiscoveryCollection - Collection of ClientDiscovery details.
 type OperationsDiscoveryCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The ClientDiscovery details.
-	Value []*OperationsDiscovery `json:"value,omitempty"`
+	Value []*OperationsDiscovery
 }
 
 // PauseReplicationInput - Pause replication input.
 type PauseReplicationInput struct {
 	// REQUIRED; Pause replication input properties.
-	Properties *PauseReplicationInputProperties `json:"properties,omitempty"`
+	Properties *PauseReplicationInputProperties
 }
 
 // PauseReplicationInputProperties - Pause replication input properties.
 type PauseReplicationInputProperties struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // PlannedFailoverInput - Input definition for planned failover.
 type PlannedFailoverInput struct {
 	// Planned failover input properties.
-	Properties *PlannedFailoverInputProperties `json:"properties,omitempty"`
+	Properties *PlannedFailoverInputProperties
 }
 
 // PlannedFailoverInputProperties - Input definition for planned failover input properties.
 type PlannedFailoverInputProperties struct {
 	// Failover direction.
-	FailoverDirection *string `json:"failoverDirection,omitempty"`
+	FailoverDirection *string
 
 	// Provider specific settings.
-	ProviderSpecificDetails PlannedFailoverProviderSpecificFailoverInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails PlannedFailoverProviderSpecificFailoverInputClassification
 }
 
 // PlannedFailoverProviderSpecificFailoverInputClassification provides polymorphic access to related types.
@@ -7427,7 +7427,7 @@ type PlannedFailoverProviderSpecificFailoverInputClassification interface {
 // PlannedFailoverProviderSpecificFailoverInput - Provider specific failover input.
 type PlannedFailoverProviderSpecificFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetPlannedFailoverProviderSpecificFailoverInput implements the PlannedFailoverProviderSpecificFailoverInputClassification
@@ -7439,37 +7439,37 @@ func (p *PlannedFailoverProviderSpecificFailoverInput) GetPlannedFailoverProvide
 // Policy - Protection profile details.
 type Policy struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The custom data.
-	Properties *PolicyProperties `json:"properties,omitempty"`
+	Properties *PolicyProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PolicyCollection - Protection Profile Collection details.
 type PolicyCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The policy details.
-	Value []*Policy `json:"value,omitempty"`
+	Value []*Policy
 }
 
 // PolicyProperties - Protection profile custom data details.
 type PolicyProperties struct {
 	// The FriendlyName.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The ReplicationChannelSetting.
-	ProviderSpecificDetails PolicyProviderSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails PolicyProviderSpecificDetailsClassification
 }
 
 // PolicyProviderSpecificDetailsClassification provides polymorphic access to related types.
@@ -7486,7 +7486,7 @@ type PolicyProviderSpecificDetailsClassification interface {
 // PolicyProviderSpecificDetails - Base class for Provider specific details for policies.
 type PolicyProviderSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type PolicyProviderSpecificDetails.
@@ -7508,7 +7508,7 @@ type PolicyProviderSpecificInputClassification interface {
 // PolicyProviderSpecificInput - Base class for provider specific input.
 type PolicyProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type PolicyProviderSpecificInput.
@@ -7519,382 +7519,382 @@ func (p *PolicyProviderSpecificInput) GetPolicyProviderSpecificInput() *PolicyPr
 // ProcessServer - Details of the Process Server.
 type ProcessServer struct {
 	// Agent expiry date.
-	AgentExpiryDate *time.Time `json:"agentExpiryDate,omitempty"`
+	AgentExpiryDate *time.Time
 
 	// The version of the scout component on the server.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// The agent version details.
-	AgentVersionDetails *VersionDetails `json:"agentVersionDetails,omitempty"`
+	AgentVersionDetails *VersionDetails
 
 	// The available memory.
-	AvailableMemoryInBytes *int64 `json:"availableMemoryInBytes,omitempty"`
+	AvailableMemoryInBytes *int64
 
 	// The available space.
-	AvailableSpaceInBytes *int64 `json:"availableSpaceInBytes,omitempty"`
+	AvailableSpaceInBytes *int64
 
 	// The percentage of the CPU load.
-	CPULoad *string `json:"cpuLoad,omitempty"`
+	CPULoad *string
 
 	// The CPU load status.
-	CPULoadStatus *string `json:"cpuLoadStatus,omitempty"`
+	CPULoadStatus *string
 
 	// The Process Server's friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty"`
+	HealthErrors []*HealthError
 
 	// The agent generated Id.
-	HostID *string `json:"hostId,omitempty"`
+	HostID *string
 
 	// The Process Server Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The IP address of the server.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The last heartbeat received from the server.
-	LastHeartbeat *time.Time `json:"lastHeartbeat,omitempty"`
+	LastHeartbeat *time.Time
 
 	// The servers configured with this PS.
-	MachineCount *string `json:"machineCount,omitempty"`
+	MachineCount *string
 
 	// The memory usage status.
-	MemoryUsageStatus *string `json:"memoryUsageStatus,omitempty"`
+	MemoryUsageStatus *string
 
 	// The list of the mobility service updates available on the Process Server.
-	MobilityServiceUpdates []*MobilityServiceUpdate `json:"mobilityServiceUpdates,omitempty"`
+	MobilityServiceUpdates []*MobilityServiceUpdate
 
 	// The OS type of the server.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// OS Version of the process server. Note: This will get populated if user has CS version greater than 9.12.0.0.
-	OSVersion *string `json:"osVersion,omitempty"`
+	OSVersion *string
 
 	// The PS service status.
-	PsServiceStatus *string `json:"psServiceStatus,omitempty"`
+	PsServiceStatus *string
 
 	// The number of replication pairs configured in this PS.
-	ReplicationPairCount *string `json:"replicationPairCount,omitempty"`
+	ReplicationPairCount *string
 
 	// The PS SSL cert expiry date.
-	SSLCertExpiryDate *time.Time `json:"sslCertExpiryDate,omitempty"`
+	SSLCertExpiryDate *time.Time
 
 	// CS SSL cert expiry date.
-	SSLCertExpiryRemainingDays *int32 `json:"sslCertExpiryRemainingDays,omitempty"`
+	SSLCertExpiryRemainingDays *int32
 
 	// The space usage status.
-	SpaceUsageStatus *string `json:"spaceUsageStatus,omitempty"`
+	SpaceUsageStatus *string
 
 	// The percentage of the system load.
-	SystemLoad *string `json:"systemLoad,omitempty"`
+	SystemLoad *string
 
 	// The system load status.
-	SystemLoadStatus *string `json:"systemLoadStatus,omitempty"`
+	SystemLoadStatus *string
 
 	// The total memory.
-	TotalMemoryInBytes *int64 `json:"totalMemoryInBytes,omitempty"`
+	TotalMemoryInBytes *int64
 
 	// The total space.
-	TotalSpaceInBytes *int64 `json:"totalSpaceInBytes,omitempty"`
+	TotalSpaceInBytes *int64
 
 	// Version status.
-	VersionStatus *string `json:"versionStatus,omitempty"`
+	VersionStatus *string
 
 	// READ-ONLY; The health of Process Server.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The MARS communication status.
-	MarsCommunicationStatus *string `json:"marsCommunicationStatus,omitempty" azure:"ro"`
+	MarsCommunicationStatus *string
 
 	// READ-ONLY; The MARS registration status.
-	MarsRegistrationStatus *string `json:"marsRegistrationStatus,omitempty" azure:"ro"`
+	MarsRegistrationStatus *string
 
 	// READ-ONLY; The process server stats refresh time.
-	PsStatsRefreshTime *time.Time `json:"psStatsRefreshTime,omitempty" azure:"ro"`
+	PsStatsRefreshTime *time.Time
 
 	// READ-ONLY; The throughput in bytes.
-	ThroughputInBytes *int64 `json:"throughputInBytes,omitempty" azure:"ro"`
+	ThroughputInBytes *int64
 
 	// READ-ONLY; The throughput in MBps.
-	ThroughputInMBps *int64 `json:"throughputInMBps,omitempty" azure:"ro"`
+	ThroughputInMBps *int64
 
 	// READ-ONLY; The throughput status.
-	ThroughputStatus *string `json:"throughputStatus,omitempty" azure:"ro"`
+	ThroughputStatus *string
 
 	// READ-ONLY; The uploading pending data in bytes.
-	ThroughputUploadPendingDataInBytes *int64 `json:"throughputUploadPendingDataInBytes,omitempty" azure:"ro"`
+	ThroughputUploadPendingDataInBytes *int64
 }
 
 // ProcessServerDetails - Process server details.
 type ProcessServerDetails struct {
 	// READ-ONLY; The available memory.
-	AvailableMemoryInBytes *int64 `json:"availableMemoryInBytes,omitempty" azure:"ro"`
+	AvailableMemoryInBytes *int64
 
 	// READ-ONLY; The available disk space.
-	AvailableSpaceInBytes *int64 `json:"availableSpaceInBytes,omitempty" azure:"ro"`
+	AvailableSpaceInBytes *int64
 
 	// READ-ONLY; The process server Bios Id.
-	BiosID *string `json:"biosId,omitempty" azure:"ro"`
+	BiosID *string
 
 	// READ-ONLY; The disk usage status.
-	DiskUsageStatus *RcmComponentStatus `json:"diskUsageStatus,omitempty" azure:"ro"`
+	DiskUsageStatus *RcmComponentStatus
 
 	// READ-ONLY; The fabric object Id.
-	FabricObjectID *string `json:"fabricObjectId,omitempty" azure:"ro"`
+	FabricObjectID *string
 
 	// READ-ONLY; The process server Fqdn.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; The free disk space percentage.
-	FreeSpacePercentage *float64 `json:"freeSpacePercentage,omitempty" azure:"ro"`
+	FreeSpacePercentage *float64
 
 	// READ-ONLY; The health of the process server.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty" azure:"ro"`
+	HealthErrors []*HealthError
 
 	// READ-ONLY; The historic health of the process server based on the health in last 24 hours.
-	HistoricHealth *ProtectionHealth `json:"historicHealth,omitempty" azure:"ro"`
+	HistoricHealth *ProtectionHealth
 
 	// READ-ONLY; The process server Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The list of IP addresses for communicating with the RCM component.
-	IPAddresses []*string `json:"ipAddresses,omitempty" azure:"ro"`
+	IPAddresses []*string
 
 	// READ-ONLY; The last heartbeat received from the process server.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The memory usage percentage.
-	MemoryUsagePercentage *float64 `json:"memoryUsagePercentage,omitempty" azure:"ro"`
+	MemoryUsagePercentage *float64
 
 	// READ-ONLY; The memory usage status.
-	MemoryUsageStatus *RcmComponentStatus `json:"memoryUsageStatus,omitempty" azure:"ro"`
+	MemoryUsageStatus *RcmComponentStatus
 
 	// READ-ONLY; The process server name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The processor usage percentage.
-	ProcessorUsagePercentage *float64 `json:"processorUsagePercentage,omitempty" azure:"ro"`
+	ProcessorUsagePercentage *float64
 
 	// READ-ONLY; The processor usage status.
-	ProcessorUsageStatus *RcmComponentStatus `json:"processorUsageStatus,omitempty" azure:"ro"`
+	ProcessorUsageStatus *RcmComponentStatus
 
 	// READ-ONLY; The protected item count.
-	ProtectedItemCount *int32 `json:"protectedItemCount,omitempty" azure:"ro"`
+	ProtectedItemCount *int32
 
 	// READ-ONLY; The system load.
-	SystemLoad *int64 `json:"systemLoad,omitempty" azure:"ro"`
+	SystemLoad *int64
 
 	// READ-ONLY; The system load status.
-	SystemLoadStatus *RcmComponentStatus `json:"systemLoadStatus,omitempty" azure:"ro"`
+	SystemLoadStatus *RcmComponentStatus
 
 	// READ-ONLY; The throughput in bytes.
-	ThroughputInBytes *int64 `json:"throughputInBytes,omitempty" azure:"ro"`
+	ThroughputInBytes *int64
 
 	// READ-ONLY; The throughput status.
-	ThroughputStatus *RcmComponentStatus `json:"throughputStatus,omitempty" azure:"ro"`
+	ThroughputStatus *RcmComponentStatus
 
 	// READ-ONLY; The uploading pending data in bytes.
-	ThroughputUploadPendingDataInBytes *int64 `json:"throughputUploadPendingDataInBytes,omitempty" azure:"ro"`
+	ThroughputUploadPendingDataInBytes *int64
 
 	// READ-ONLY; The total memory.
-	TotalMemoryInBytes *int64 `json:"totalMemoryInBytes,omitempty" azure:"ro"`
+	TotalMemoryInBytes *int64
 
 	// READ-ONLY; The total disk space.
-	TotalSpaceInBytes *int64 `json:"totalSpaceInBytes,omitempty" azure:"ro"`
+	TotalSpaceInBytes *int64
 
 	// READ-ONLY; The used memory.
-	UsedMemoryInBytes *int64 `json:"usedMemoryInBytes,omitempty" azure:"ro"`
+	UsedMemoryInBytes *int64
 
 	// READ-ONLY; The used disk space.
-	UsedSpaceInBytes *int64 `json:"usedSpaceInBytes,omitempty" azure:"ro"`
+	UsedSpaceInBytes *int64
 
 	// READ-ONLY; The version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // ProtectableItem - Replication protected item.
 type ProtectableItem struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The custom data.
-	Properties *ProtectableItemProperties `json:"properties,omitempty"`
+	Properties *ProtectableItemProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProtectableItemCollection - Protectable item collection.
 type ProtectableItemCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The Protectable item details.
-	Value []*ProtectableItem `json:"value,omitempty"`
+	Value []*ProtectableItem
 }
 
 // ProtectableItemProperties - Replication protected item custom data details.
 type ProtectableItemProperties struct {
 	// The Replication provider custom settings.
-	CustomDetails ConfigurationSettingsClassification `json:"customDetails,omitempty"`
+	CustomDetails ConfigurationSettingsClassification
 
 	// The name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The Current protection readiness errors.
-	ProtectionReadinessErrors []*string `json:"protectionReadinessErrors,omitempty"`
+	ProtectionReadinessErrors []*string
 
 	// The protection status.
-	ProtectionStatus *string `json:"protectionStatus,omitempty"`
+	ProtectionStatus *string
 
 	// The recovery provider ARM Id.
-	RecoveryServicesProviderID *string `json:"recoveryServicesProviderId,omitempty"`
+	RecoveryServicesProviderID *string
 
 	// The ARM resource of protected items.
-	ReplicationProtectedItemID *string `json:"replicationProtectedItemId,omitempty"`
+	ReplicationProtectedItemID *string
 
 	// The list of replication providers supported for the protectable item.
-	SupportedReplicationProviders []*string `json:"supportedReplicationProviders,omitempty"`
+	SupportedReplicationProviders []*string
 }
 
 // ProtectableItemQueryParameter - Query parameter to enumerate Protectable items.
 type ProtectableItemQueryParameter struct {
 	// State of the Protectable item query filter.
-	State *string `json:"state,omitempty"`
+	State *string
 }
 
 // ProtectedItemsQueryParameter - Query parameter to enumerate protected items.
 type ProtectedItemsQueryParameter struct {
 	// The fabric object Id filter.
-	FabricObjectID *string `json:"fabricObjectId,omitempty"`
+	FabricObjectID *string
 
 	// The replication provider type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Whether Multi VM group is auto created or specified by user.
-	MultiVMGroupCreateOption *MultiVMGroupCreateOption `json:"multiVmGroupCreateOption,omitempty"`
+	MultiVMGroupCreateOption *MultiVMGroupCreateOption
 
 	// The process server Id filter.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The recovery plan filter.
-	RecoveryPlanName *string `json:"recoveryPlanName,omitempty"`
+	RecoveryPlanName *string
 
 	// The source fabric location filter.
-	SourceFabricLocation *string `json:"sourceFabricLocation,omitempty"`
+	SourceFabricLocation *string
 
 	// The source fabric name filter.
-	SourceFabricName *string `json:"sourceFabricName,omitempty"`
+	SourceFabricName *string
 
 	// The vCenter name filter.
-	VCenterName *string `json:"vCenterName,omitempty"`
+	VCenterName *string
 }
 
 // ProtectionContainer - Protection container details.
 type ProtectionContainer struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The custom data.
-	Properties *ProtectionContainerProperties `json:"properties,omitempty"`
+	Properties *ProtectionContainerProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProtectionContainerCollection - Protection Container collection.
 type ProtectionContainerCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The Protection Container details.
-	Value []*ProtectionContainer `json:"value,omitempty"`
+	Value []*ProtectionContainer
 }
 
 // ProtectionContainerFabricSpecificDetails - Base class for fabric specific details of container.
 type ProtectionContainerFabricSpecificDetails struct {
 	// READ-ONLY; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty" azure:"ro"`
+	InstanceType *string
 }
 
 // ProtectionContainerMapping - Protection container mapping object.
 type ProtectionContainerMapping struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The custom data.
-	Properties *ProtectionContainerMappingProperties `json:"properties,omitempty"`
+	Properties *ProtectionContainerMappingProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProtectionContainerMappingCollection - Protection container mapping collection class.
 type ProtectionContainerMappingCollection struct {
 	// Link to fetch rest of the data.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of container mappings.
-	Value []*ProtectionContainerMapping `json:"value,omitempty"`
+	Value []*ProtectionContainerMapping
 }
 
 // ProtectionContainerMappingProperties - Protection container mapping properties.
 type ProtectionContainerMappingProperties struct {
 	// Health of pairing.
-	Health *string `json:"health,omitempty"`
+	Health *string
 
 	// Health error.
-	HealthErrorDetails []*HealthError `json:"healthErrorDetails,omitempty"`
+	HealthErrorDetails []*HealthError
 
 	// Friendly name of replication policy.
-	PolicyFriendlyName *string `json:"policyFriendlyName,omitempty"`
+	PolicyFriendlyName *string
 
 	// Policy ARM Id.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Provider specific provider details.
-	ProviderSpecificDetails ProtectionContainerMappingProviderSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ProtectionContainerMappingProviderSpecificDetailsClassification
 
 	// Friendly name of source fabric.
-	SourceFabricFriendlyName *string `json:"sourceFabricFriendlyName,omitempty"`
+	SourceFabricFriendlyName *string
 
 	// Friendly name of source protection container.
-	SourceProtectionContainerFriendlyName *string `json:"sourceProtectionContainerFriendlyName,omitempty"`
+	SourceProtectionContainerFriendlyName *string
 
 	// Association Status.
-	State *string `json:"state,omitempty"`
+	State *string
 
 	// Friendly name of target fabric.
-	TargetFabricFriendlyName *string `json:"targetFabricFriendlyName,omitempty"`
+	TargetFabricFriendlyName *string
 
 	// Friendly name of paired container.
-	TargetProtectionContainerFriendlyName *string `json:"targetProtectionContainerFriendlyName,omitempty"`
+	TargetProtectionContainerFriendlyName *string
 
 	// Paired protection container ARM ID.
-	TargetProtectionContainerID *string `json:"targetProtectionContainerId,omitempty"`
+	TargetProtectionContainerID *string
 }
 
 // ProtectionContainerMappingProviderSpecificDetailsClassification provides polymorphic access to related types.
@@ -7910,7 +7910,7 @@ type ProtectionContainerMappingProviderSpecificDetailsClassification interface {
 // ProtectionContainerMappingProviderSpecificDetails - Container mapping provider specific details.
 type ProtectionContainerMappingProviderSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
@@ -7922,25 +7922,25 @@ func (p *ProtectionContainerMappingProviderSpecificDetails) GetProtectionContain
 // ProtectionContainerProperties - Protection profile custom data details.
 type ProtectionContainerProperties struct {
 	// Fabric friendly name.
-	FabricFriendlyName *string `json:"fabricFriendlyName,omitempty"`
+	FabricFriendlyName *string
 
 	// Fabric specific details.
-	FabricSpecificDetails *ProtectionContainerFabricSpecificDetails `json:"fabricSpecificDetails,omitempty"`
+	FabricSpecificDetails *ProtectionContainerFabricSpecificDetails
 
 	// The fabric type.
-	FabricType *string `json:"fabricType,omitempty"`
+	FabricType *string
 
 	// The name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The pairing status of this cloud.
-	PairingStatus *string `json:"pairingStatus,omitempty"`
+	PairingStatus *string
 
 	// Number of protected PEs.
-	ProtectedItemCount *int32 `json:"protectedItemCount,omitempty"`
+	ProtectedItemCount *int32
 
 	// The role of this cloud.
-	Role *string `json:"role,omitempty"`
+	Role *string
 }
 
 // ProtectionProfileCustomDetailsClassification provides polymorphic access to related types.
@@ -7955,7 +7955,7 @@ type ProtectionProfileCustomDetailsClassification interface {
 // ProtectionProfileCustomDetails - Protection Profile custom input.
 type ProtectionProfileCustomDetails struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // GetProtectionProfileCustomDetails implements the ProtectionProfileCustomDetailsClassification interface for type ProtectionProfileCustomDetails.
@@ -7966,19 +7966,19 @@ func (p *ProtectionProfileCustomDetails) GetProtectionProfileCustomDetails() *Pr
 // ProviderError - This class contains the error details per object.
 type ProviderError struct {
 	// The Error code.
-	ErrorCode *int32 `json:"errorCode,omitempty"`
+	ErrorCode *int32
 
 	// The Provider error Id.
-	ErrorID *string `json:"errorId,omitempty"`
+	ErrorID *string
 
 	// The Error message.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// The possible causes for the error.
-	PossibleCauses *string `json:"possibleCauses,omitempty"`
+	PossibleCauses *string
 
 	// The recommended action to resolve the error.
-	RecommendedAction *string `json:"recommendedAction,omitempty"`
+	RecommendedAction *string
 }
 
 // ProviderSpecificRecoveryPointDetailsClassification provides polymorphic access to related types.
@@ -7993,7 +7993,7 @@ type ProviderSpecificRecoveryPointDetailsClassification interface {
 // ProviderSpecificRecoveryPointDetails - Replication provider specific recovery point details.
 type ProviderSpecificRecoveryPointDetails struct {
 	// REQUIRED; Gets the provider type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetProviderSpecificRecoveryPointDetails implements the ProviderSpecificRecoveryPointDetailsClassification interface for
@@ -8005,64 +8005,64 @@ func (p *ProviderSpecificRecoveryPointDetails) GetProviderSpecificRecoveryPointD
 // PushInstallerDetails - Push installer details.
 type PushInstallerDetails struct {
 	// READ-ONLY; The push installer Bios Id.
-	BiosID *string `json:"biosId,omitempty" azure:"ro"`
+	BiosID *string
 
 	// READ-ONLY; The fabric object Id.
-	FabricObjectID *string `json:"fabricObjectId,omitempty" azure:"ro"`
+	FabricObjectID *string
 
 	// READ-ONLY; The push installer Fqdn.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; The health of the push installer.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty" azure:"ro"`
+	HealthErrors []*HealthError
 
 	// READ-ONLY; The push installer Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The last heartbeat received from the push installer.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The push installer name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // RcmProxyDetails - RCM proxy details.
 type RcmProxyDetails struct {
 	// READ-ONLY; The RCM proxy Bios Id.
-	BiosID *string `json:"biosId,omitempty" azure:"ro"`
+	BiosID *string
 
 	// READ-ONLY; The client authentication type.
-	ClientAuthenticationType *string `json:"clientAuthenticationType,omitempty" azure:"ro"`
+	ClientAuthenticationType *string
 
 	// READ-ONLY; The fabric object Id.
-	FabricObjectID *string `json:"fabricObjectId,omitempty" azure:"ro"`
+	FabricObjectID *string
 
 	// READ-ONLY; The RCM proxy Fqdn.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; The health of the RCM proxy.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty" azure:"ro"`
+	HealthErrors []*HealthError
 
 	// READ-ONLY; The RCM proxy Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The last heartbeat received from the RCM proxy.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The RCM proxy name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // RecoveryAvailabilitySetCustomDetailsClassification provides polymorphic access to related types.
@@ -8077,7 +8077,7 @@ type RecoveryAvailabilitySetCustomDetailsClassification interface {
 // RecoveryAvailabilitySetCustomDetails - Recovery Availability Set custom input.
 type RecoveryAvailabilitySetCustomDetails struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // GetRecoveryAvailabilitySetCustomDetails implements the RecoveryAvailabilitySetCustomDetailsClassification interface for
@@ -8089,37 +8089,37 @@ func (r *RecoveryAvailabilitySetCustomDetails) GetRecoveryAvailabilitySetCustomD
 // RecoveryPlan - Recovery plan details.
 type RecoveryPlan struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The custom details.
-	Properties *RecoveryPlanProperties `json:"properties,omitempty"`
+	Properties *RecoveryPlanProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecoveryPlanA2ADetails - Recovery plan A2A specific details.
 type RecoveryPlanA2ADetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The primary extended location.
-	PrimaryExtendedLocation *ExtendedLocation `json:"primaryExtendedLocation,omitempty"`
+	PrimaryExtendedLocation *ExtendedLocation
 
 	// The primary zone.
-	PrimaryZone *string `json:"primaryZone,omitempty"`
+	PrimaryZone *string
 
 	// The recovery extended location.
-	RecoveryExtendedLocation *ExtendedLocation `json:"recoveryExtendedLocation,omitempty"`
+	RecoveryExtendedLocation *ExtendedLocation
 
 	// The recovery zone.
-	RecoveryZone *string `json:"recoveryZone,omitempty"`
+	RecoveryZone *string
 }
 
 // GetRecoveryPlanProviderSpecificDetails implements the RecoveryPlanProviderSpecificDetailsClassification interface for type
@@ -8133,16 +8133,16 @@ func (r *RecoveryPlanA2ADetails) GetRecoveryPlanProviderSpecificDetails() *Recov
 // RecoveryPlanA2AFailoverInput - Recovery plan A2A failover input.
 type RecoveryPlanA2AFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The recovery point type.
-	RecoveryPointType *A2ARpRecoveryPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *A2ARpRecoveryPointType
 
 	// A value indicating whether to use recovery cloud service for TFO or not.
-	CloudServiceCreationOption *string `json:"cloudServiceCreationOption,omitempty"`
+	CloudServiceCreationOption *string
 
 	// A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
-	MultiVMSyncPointOption *MultiVMSyncPointOption `json:"multiVmSyncPointOption,omitempty"`
+	MultiVMSyncPointOption *MultiVMSyncPointOption
 }
 
 // GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
@@ -8156,19 +8156,19 @@ func (r *RecoveryPlanA2AFailoverInput) GetRecoveryPlanProviderSpecificFailoverIn
 // RecoveryPlanA2AInput - Recovery plan A2A input.
 type RecoveryPlanA2AInput struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The primary extended location.
-	PrimaryExtendedLocation *ExtendedLocation `json:"primaryExtendedLocation,omitempty"`
+	PrimaryExtendedLocation *ExtendedLocation
 
 	// The primary zone.
-	PrimaryZone *string `json:"primaryZone,omitempty"`
+	PrimaryZone *string
 
 	// The recovery extended location.
-	RecoveryExtendedLocation *ExtendedLocation `json:"recoveryExtendedLocation,omitempty"`
+	RecoveryExtendedLocation *ExtendedLocation
 
 	// The recovery zone.
-	RecoveryZone *string `json:"recoveryZone,omitempty"`
+	RecoveryZone *string
 }
 
 // GetRecoveryPlanProviderSpecificInput implements the RecoveryPlanProviderSpecificInputClassification interface for type
@@ -8182,16 +8182,16 @@ func (r *RecoveryPlanA2AInput) GetRecoveryPlanProviderSpecificInput() *RecoveryP
 // RecoveryPlanAction - Recovery plan action details.
 type RecoveryPlanAction struct {
 	// REQUIRED; The action name.
-	ActionName *string `json:"actionName,omitempty"`
+	ActionName *string
 
 	// REQUIRED; The custom details.
-	CustomDetails RecoveryPlanActionDetailsClassification `json:"customDetails,omitempty"`
+	CustomDetails RecoveryPlanActionDetailsClassification
 
 	// REQUIRED; The list of failover directions.
-	FailoverDirections []*PossibleOperationsDirections `json:"failoverDirections,omitempty"`
+	FailoverDirections []*PossibleOperationsDirections
 
 	// REQUIRED; The list of failover types.
-	FailoverTypes []*ReplicationProtectedItemOperation `json:"failoverTypes,omitempty"`
+	FailoverTypes []*ReplicationProtectedItemOperation
 }
 
 // RecoveryPlanActionDetailsClassification provides polymorphic access to related types.
@@ -8206,7 +8206,7 @@ type RecoveryPlanActionDetailsClassification interface {
 // RecoveryPlanActionDetails - Recovery plan action custom details.
 type RecoveryPlanActionDetails struct {
 	// REQUIRED; Gets the type of action details (see RecoveryPlanActionDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanActionDetails.
@@ -8217,16 +8217,16 @@ func (r *RecoveryPlanActionDetails) GetRecoveryPlanActionDetails() *RecoveryPlan
 // RecoveryPlanAutomationRunbookActionDetails - Recovery plan Automation runbook action details.
 type RecoveryPlanAutomationRunbookActionDetails struct {
 	// REQUIRED; The fabric location.
-	FabricLocation *RecoveryPlanActionLocation `json:"fabricLocation,omitempty"`
+	FabricLocation *RecoveryPlanActionLocation
 
 	// REQUIRED; Gets the type of action details (see RecoveryPlanActionDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The runbook ARM Id.
-	RunbookID *string `json:"runbookId,omitempty"`
+	RunbookID *string
 
 	// The runbook timeout.
-	Timeout *string `json:"timeout,omitempty"`
+	Timeout *string
 }
 
 // GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanAutomationRunbookActionDetails.
@@ -8239,25 +8239,25 @@ func (r *RecoveryPlanAutomationRunbookActionDetails) GetRecoveryPlanActionDetail
 // RecoveryPlanCollection - Recovery plan collection details.
 type RecoveryPlanCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of recovery plans.
-	Value []*RecoveryPlan `json:"value,omitempty"`
+	Value []*RecoveryPlan
 }
 
 // RecoveryPlanGroup - Recovery plan group details.
 type RecoveryPlanGroup struct {
 	// REQUIRED; The group type.
-	GroupType *RecoveryPlanGroupType `json:"groupType,omitempty"`
+	GroupType *RecoveryPlanGroupType
 
 	// The end group actions.
-	EndGroupActions []*RecoveryPlanAction `json:"endGroupActions,omitempty"`
+	EndGroupActions []*RecoveryPlanAction
 
 	// The list of protected items.
-	ReplicationProtectedItems []*RecoveryPlanProtectedItem `json:"replicationProtectedItems,omitempty"`
+	ReplicationProtectedItems []*RecoveryPlanProtectedItem
 
 	// The start group actions.
-	StartGroupActions []*RecoveryPlanAction `json:"startGroupActions,omitempty"`
+	StartGroupActions []*RecoveryPlanAction
 }
 
 // RecoveryPlanGroupTaskDetailsClassification provides polymorphic access to related types.
@@ -8273,19 +8273,19 @@ type RecoveryPlanGroupTaskDetailsClassification interface {
 // RecoveryPlanGroupTaskDetails - This class represents the recovery plan group task.
 type RecoveryPlanGroupTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The child tasks.
-	ChildTasks []*ASRTask `json:"childTasks,omitempty"`
+	ChildTasks []*ASRTask
 
 	// The group identifier.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The group type.
-	RpGroupType *string `json:"rpGroupType,omitempty"`
+	RpGroupType *string
 }
 
 // GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type RecoveryPlanGroupTaskDetails.
@@ -8304,13 +8304,13 @@ func (r *RecoveryPlanGroupTaskDetails) GetRecoveryPlanGroupTaskDetails() *Recove
 // RecoveryPlanHyperVReplicaAzureFailbackInput - Recovery plan HVR Azure failback input.
 type RecoveryPlanHyperVReplicaAzureFailbackInput struct {
 	// REQUIRED; The data sync option.
-	DataSyncOption *DataSyncStatus `json:"dataSyncOption,omitempty"`
+	DataSyncOption *DataSyncStatus
 
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The ALR option.
-	RecoveryVMCreationOption *AlternateLocationRecoveryOption `json:"recoveryVmCreationOption,omitempty"`
+	RecoveryVMCreationOption *AlternateLocationRecoveryOption
 }
 
 // GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
@@ -8324,16 +8324,16 @@ func (r *RecoveryPlanHyperVReplicaAzureFailbackInput) GetRecoveryPlanProviderSpe
 // RecoveryPlanHyperVReplicaAzureFailoverInput - Recovery plan HVR Azure failover input.
 type RecoveryPlanHyperVReplicaAzureFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The primary KEK certificate PFX.
-	PrimaryKekCertificatePfx *string `json:"primaryKekCertificatePfx,omitempty"`
+	PrimaryKekCertificatePfx *string
 
 	// The recovery point type.
-	RecoveryPointType *HyperVReplicaAzureRpRecoveryPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *HyperVReplicaAzureRpRecoveryPointType
 
 	// The secondary KEK certificate PFX.
-	SecondaryKekCertificatePfx *string `json:"secondaryKekCertificatePfx,omitempty"`
+	SecondaryKekCertificatePfx *string
 }
 
 // GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
@@ -8347,13 +8347,13 @@ func (r *RecoveryPlanHyperVReplicaAzureFailoverInput) GetRecoveryPlanProviderSpe
 // RecoveryPlanInMageAzureV2FailoverInput - Recovery plan InMageAzureV2 failover input.
 type RecoveryPlanInMageAzureV2FailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The recovery point type.
-	RecoveryPointType *InMageV2RpRecoveryPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *InMageV2RpRecoveryPointType
 
 	// A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
-	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
+	UseMultiVMSyncPoint *string
 }
 
 // GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
@@ -8367,10 +8367,10 @@ func (r *RecoveryPlanInMageAzureV2FailoverInput) GetRecoveryPlanProviderSpecific
 // RecoveryPlanInMageFailoverInput - Recovery plan InMage failover input.
 type RecoveryPlanInMageFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The recovery point type.
-	RecoveryPointType *RpInMageRecoveryPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *RpInMageRecoveryPointType
 }
 
 // GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
@@ -8384,13 +8384,13 @@ func (r *RecoveryPlanInMageFailoverInput) GetRecoveryPlanProviderSpecificFailove
 // RecoveryPlanInMageRcmFailbackFailoverInput - Recovery plan InMageRcmFailback failover input.
 type RecoveryPlanInMageRcmFailbackFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The recovery point type.
-	RecoveryPointType *InMageRcmFailbackRecoveryPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *InMageRcmFailbackRecoveryPointType
 
 	// A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
-	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
+	UseMultiVMSyncPoint *string
 }
 
 // GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
@@ -8404,13 +8404,13 @@ func (r *RecoveryPlanInMageRcmFailbackFailoverInput) GetRecoveryPlanProviderSpec
 // RecoveryPlanInMageRcmFailoverInput - Recovery plan InMageRcm failover input.
 type RecoveryPlanInMageRcmFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The recovery point type.
-	RecoveryPointType *RecoveryPlanPointType `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *RecoveryPlanPointType
 
 	// A value indicating whether multi VM sync enabled VMs should use multi VM sync points for failover.
-	UseMultiVMSyncPoint *string `json:"useMultiVmSyncPoint,omitempty"`
+	UseMultiVMSyncPoint *string
 }
 
 // GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
@@ -8424,10 +8424,10 @@ func (r *RecoveryPlanInMageRcmFailoverInput) GetRecoveryPlanProviderSpecificFail
 // RecoveryPlanManualActionDetails - Recovery plan manual action details.
 type RecoveryPlanManualActionDetails struct {
 	// REQUIRED; Gets the type of action details (see RecoveryPlanActionDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The manual action description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanManualActionDetails.
@@ -8440,76 +8440,76 @@ func (r *RecoveryPlanManualActionDetails) GetRecoveryPlanActionDetails() *Recove
 // RecoveryPlanPlannedFailoverInput - Recovery plan planned failover input.
 type RecoveryPlanPlannedFailoverInput struct {
 	// REQUIRED; The recovery plan planned failover input properties.
-	Properties *RecoveryPlanPlannedFailoverInputProperties `json:"properties,omitempty"`
+	Properties *RecoveryPlanPlannedFailoverInputProperties
 }
 
 // RecoveryPlanPlannedFailoverInputProperties - Recovery plan planned failover input properties.
 type RecoveryPlanPlannedFailoverInputProperties struct {
 	// REQUIRED; The failover direction.
-	FailoverDirection *PossibleOperationsDirections `json:"failoverDirection,omitempty"`
+	FailoverDirection *PossibleOperationsDirections
 
 	// The provider specific properties.
-	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification
 }
 
 // RecoveryPlanProperties - Recovery plan properties.
 type RecoveryPlanProperties struct {
 	// The list of allowed operations.
-	AllowedOperations []*string `json:"allowedOperations,omitempty"`
+	AllowedOperations []*string
 
 	// The current scenario details.
-	CurrentScenario *CurrentScenarioDetails `json:"currentScenario,omitempty"`
+	CurrentScenario *CurrentScenarioDetails
 
 	// The recovery plan status.
-	CurrentScenarioStatus *string `json:"currentScenarioStatus,omitempty"`
+	CurrentScenarioStatus *string
 
 	// The recovery plan status description.
-	CurrentScenarioStatusDescription *string `json:"currentScenarioStatusDescription,omitempty"`
+	CurrentScenarioStatusDescription *string
 
 	// The failover deployment model.
-	FailoverDeploymentModel *string `json:"failoverDeploymentModel,omitempty"`
+	FailoverDeploymentModel *string
 
 	// The friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The recovery plan groups.
-	Groups []*RecoveryPlanGroup `json:"groups,omitempty"`
+	Groups []*RecoveryPlanGroup
 
 	// The start time of the last planned failover.
-	LastPlannedFailoverTime *time.Time `json:"lastPlannedFailoverTime,omitempty"`
+	LastPlannedFailoverTime *time.Time
 
 	// The start time of the last test failover.
-	LastTestFailoverTime *time.Time `json:"lastTestFailoverTime,omitempty"`
+	LastTestFailoverTime *time.Time
 
 	// The start time of the last unplanned failover.
-	LastUnplannedFailoverTime *time.Time `json:"lastUnplannedFailoverTime,omitempty"`
+	LastUnplannedFailoverTime *time.Time
 
 	// The primary fabric friendly name.
-	PrimaryFabricFriendlyName *string `json:"primaryFabricFriendlyName,omitempty"`
+	PrimaryFabricFriendlyName *string
 
 	// The primary fabric Id.
-	PrimaryFabricID *string `json:"primaryFabricId,omitempty"`
+	PrimaryFabricID *string
 
 	// The provider id and provider specific details.
-	ProviderSpecificDetails []RecoveryPlanProviderSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails []RecoveryPlanProviderSpecificDetailsClassification
 
 	// The recovery fabric friendly name.
-	RecoveryFabricFriendlyName *string `json:"recoveryFabricFriendlyName,omitempty"`
+	RecoveryFabricFriendlyName *string
 
 	// The recovery fabric Id.
-	RecoveryFabricID *string `json:"recoveryFabricId,omitempty"`
+	RecoveryFabricID *string
 
 	// The list of replication providers.
-	ReplicationProviders []*string `json:"replicationProviders,omitempty"`
+	ReplicationProviders []*string
 }
 
 // RecoveryPlanProtectedItem - Recovery plan protected item.
 type RecoveryPlanProtectedItem struct {
 	// The ARM Id of the recovery plan protected item.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The virtual machine Id.
-	VirtualMachineID *string `json:"virtualMachineId,omitempty"`
+	VirtualMachineID *string
 }
 
 // RecoveryPlanProviderSpecificDetailsClassification provides polymorphic access to related types.
@@ -8524,7 +8524,7 @@ type RecoveryPlanProviderSpecificDetailsClassification interface {
 // RecoveryPlanProviderSpecificDetails - Recovery plan provider specific details.
 type RecoveryPlanProviderSpecificDetails struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetRecoveryPlanProviderSpecificDetails implements the RecoveryPlanProviderSpecificDetailsClassification interface for type
@@ -8547,7 +8547,7 @@ type RecoveryPlanProviderSpecificFailoverInputClassification interface {
 // RecoveryPlanProviderSpecificFailoverInput - Recovery plan provider specific failover input.
 type RecoveryPlanProviderSpecificFailoverInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetRecoveryPlanProviderSpecificFailoverInput implements the RecoveryPlanProviderSpecificFailoverInputClassification interface
@@ -8568,7 +8568,7 @@ type RecoveryPlanProviderSpecificInputClassification interface {
 // RecoveryPlanProviderSpecificInput - Recovery plan provider specific input base class.
 type RecoveryPlanProviderSpecificInput struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetRecoveryPlanProviderSpecificInput implements the RecoveryPlanProviderSpecificInputClassification interface for type
@@ -8580,16 +8580,16 @@ func (r *RecoveryPlanProviderSpecificInput) GetRecoveryPlanProviderSpecificInput
 // RecoveryPlanScriptActionDetails - Recovery plan script action details.
 type RecoveryPlanScriptActionDetails struct {
 	// REQUIRED; The fabric location.
-	FabricLocation *RecoveryPlanActionLocation `json:"fabricLocation,omitempty"`
+	FabricLocation *RecoveryPlanActionLocation
 
 	// REQUIRED; Gets the type of action details (see RecoveryPlanActionDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The script path.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// The script timeout.
-	Timeout *string `json:"timeout,omitempty"`
+	Timeout *string
 }
 
 // GetRecoveryPlanActionDetails implements the RecoveryPlanActionDetailsClassification interface for type RecoveryPlanScriptActionDetails.
@@ -8602,19 +8602,19 @@ func (r *RecoveryPlanScriptActionDetails) GetRecoveryPlanActionDetails() *Recove
 // RecoveryPlanShutdownGroupTaskDetails - This class represents the recovery plan shutdown group task details.
 type RecoveryPlanShutdownGroupTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The child tasks.
-	ChildTasks []*ASRTask `json:"childTasks,omitempty"`
+	ChildTasks []*ASRTask
 
 	// The group identifier.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The group type.
-	RpGroupType *string `json:"rpGroupType,omitempty"`
+	RpGroupType *string
 }
 
 // GetGroupTaskDetails implements the GroupTaskDetailsClassification interface for type RecoveryPlanShutdownGroupTaskDetails.
@@ -8639,91 +8639,91 @@ func (r *RecoveryPlanShutdownGroupTaskDetails) GetRecoveryPlanGroupTaskDetails()
 // RecoveryPlanTestFailoverCleanupInput - Recovery plan test failover cleanup input.
 type RecoveryPlanTestFailoverCleanupInput struct {
 	// REQUIRED; The recovery plan test failover cleanup input properties.
-	Properties *RecoveryPlanTestFailoverCleanupInputProperties `json:"properties,omitempty"`
+	Properties *RecoveryPlanTestFailoverCleanupInputProperties
 }
 
 // RecoveryPlanTestFailoverCleanupInputProperties - Recovery plan test failover cleanup input properties.
 type RecoveryPlanTestFailoverCleanupInputProperties struct {
 	// The test failover cleanup comments.
-	Comments *string `json:"comments,omitempty"`
+	Comments *string
 }
 
 // RecoveryPlanTestFailoverInput - Recovery plan test failover input.
 type RecoveryPlanTestFailoverInput struct {
 	// REQUIRED; The recovery plan test failover input properties.
-	Properties *RecoveryPlanTestFailoverInputProperties `json:"properties,omitempty"`
+	Properties *RecoveryPlanTestFailoverInputProperties
 }
 
 // RecoveryPlanTestFailoverInputProperties - Recovery plan test failover input properties.
 type RecoveryPlanTestFailoverInputProperties struct {
 	// REQUIRED; The failover direction.
-	FailoverDirection *PossibleOperationsDirections `json:"failoverDirection,omitempty"`
+	FailoverDirection *PossibleOperationsDirections
 
 	// REQUIRED; The network type to be used for test failover.
-	NetworkType *string `json:"networkType,omitempty"`
+	NetworkType *string
 
 	// The Id of the network to be used for test failover.
-	NetworkID *string `json:"networkId,omitempty"`
+	NetworkID *string
 
 	// The provider specific properties.
-	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification
 }
 
 // RecoveryPlanUnplannedFailoverInput - Recovery plan unplanned failover input.
 type RecoveryPlanUnplannedFailoverInput struct {
 	// REQUIRED; The recovery plan unplanned failover input properties.
-	Properties *RecoveryPlanUnplannedFailoverInputProperties `json:"properties,omitempty"`
+	Properties *RecoveryPlanUnplannedFailoverInputProperties
 }
 
 // RecoveryPlanUnplannedFailoverInputProperties - Recovery plan unplanned failover input properties.
 type RecoveryPlanUnplannedFailoverInputProperties struct {
 	// REQUIRED; The failover direction.
-	FailoverDirection *PossibleOperationsDirections `json:"failoverDirection,omitempty"`
+	FailoverDirection *PossibleOperationsDirections
 
 	// REQUIRED; A value indicating whether source site operations are required.
-	SourceSiteOperations *SourceSiteOperations `json:"sourceSiteOperations,omitempty"`
+	SourceSiteOperations *SourceSiteOperations
 
 	// The provider specific properties.
-	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails []RecoveryPlanProviderSpecificFailoverInputClassification
 }
 
 // RecoveryPoint - Recovery point.
 type RecoveryPoint struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The recovery point properties.
-	Properties *RecoveryPointProperties `json:"properties,omitempty"`
+	Properties *RecoveryPointProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecoveryPointCollection - Collection of recovery point details.
 type RecoveryPointCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The recovery point details.
-	Value []*RecoveryPoint `json:"value,omitempty"`
+	Value []*RecoveryPoint
 }
 
 // RecoveryPointProperties - Recovery point properties.
 type RecoveryPointProperties struct {
 	// The provider specific details for the recovery point.
-	ProviderSpecificDetails ProviderSpecificRecoveryPointDetailsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ProviderSpecificRecoveryPointDetailsClassification
 
 	// The recovery point time.
-	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty"`
+	RecoveryPointTime *time.Time
 
 	// The recovery point type: ApplicationConsistent, CrashConsistent.
-	RecoveryPointType *string `json:"recoveryPointType,omitempty"`
+	RecoveryPointType *string
 }
 
 // RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
@@ -8731,7 +8731,7 @@ type RecoveryPointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecoveryPointsClientListByReplicationProtectedItemsOptions contains the optional parameters for the RecoveryPointsClient.ListByReplicationProtectedItems
+// RecoveryPointsClientListByReplicationProtectedItemsOptions contains the optional parameters for the RecoveryPointsClient.NewListByReplicationProtectedItemsPager
 // method.
 type RecoveryPointsClientListByReplicationProtectedItemsOptions struct {
 	// placeholder for future optional parameters
@@ -8749,7 +8749,7 @@ type RecoveryProximityPlacementGroupCustomDetailsClassification interface {
 // RecoveryProximityPlacementGroupCustomDetails - Recovery Proximity placement group custom input.
 type RecoveryProximityPlacementGroupCustomDetails struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // GetRecoveryProximityPlacementGroupCustomDetails implements the RecoveryProximityPlacementGroupCustomDetailsClassification
@@ -8770,7 +8770,7 @@ type RecoveryResourceGroupCustomDetailsClassification interface {
 // RecoveryResourceGroupCustomDetails - Recovery Resource Group custom input.
 type RecoveryResourceGroupCustomDetails struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // GetRecoveryResourceGroupCustomDetails implements the RecoveryResourceGroupCustomDetailsClassification interface for type
@@ -8782,91 +8782,91 @@ func (r *RecoveryResourceGroupCustomDetails) GetRecoveryResourceGroupCustomDetai
 // RecoveryServicesProvider - Provider details.
 type RecoveryServicesProvider struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Provider properties.
-	Properties *RecoveryServicesProviderProperties `json:"properties,omitempty"`
+	Properties *RecoveryServicesProviderProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecoveryServicesProviderCollection - Collection of providers.
 type RecoveryServicesProviderCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The Servers details.
-	Value []*RecoveryServicesProvider `json:"value,omitempty"`
+	Value []*RecoveryServicesProvider
 }
 
 // RecoveryServicesProviderProperties - Recovery services provider properties.
 type RecoveryServicesProviderProperties struct {
 	// The scenarios allowed on this provider.
-	AllowedScenarios []*string `json:"allowedScenarios,omitempty"`
+	AllowedScenarios []*string
 
 	// The authentication identity details.
-	AuthenticationIdentityDetails *IdentityProviderDetails `json:"authenticationIdentityDetails,omitempty"`
+	AuthenticationIdentityDetails *IdentityProviderDetails
 
 	// The Bios Id.
-	BiosID *string `json:"biosId,omitempty"`
+	BiosID *string
 
 	// A value indicating whether DRA is responsive.
-	ConnectionStatus *string `json:"connectionStatus,omitempty"`
+	ConnectionStatus *string
 
 	// The data plane authentication identity details.
-	DataPlaneAuthenticationIdentityDetails *IdentityProviderDetails `json:"dataPlaneAuthenticationIdentityDetails,omitempty"`
+	DataPlaneAuthenticationIdentityDetails *IdentityProviderDetails
 
 	// The DRA Id.
-	DraIdentifier *string `json:"draIdentifier,omitempty"`
+	DraIdentifier *string
 
 	// The fabric friendly name.
-	FabricFriendlyName *string `json:"fabricFriendlyName,omitempty"`
+	FabricFriendlyName *string
 
 	// Type of the site.
-	FabricType *string `json:"fabricType,omitempty"`
+	FabricType *string
 
 	// Friendly name of the DRA.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The recovery services provider health error details.
-	HealthErrorDetails []*HealthError `json:"healthErrorDetails,omitempty"`
+	HealthErrorDetails []*HealthError
 
 	// Time when last heartbeat was sent by the DRA.
-	LastHeartBeat *time.Time `json:"lastHeartBeat,omitempty"`
+	LastHeartBeat *time.Time
 
 	// The machine Id.
-	MachineID *string `json:"machineId,omitempty"`
+	MachineID *string
 
 	// The machine name.
-	MachineName *string `json:"machineName,omitempty"`
+	MachineName *string
 
 	// Number of protected VMs currently managed by the DRA.
-	ProtectedItemCount *int32 `json:"protectedItemCount,omitempty"`
+	ProtectedItemCount *int32
 
 	// The provider version.
-	ProviderVersion *string `json:"providerVersion,omitempty"`
+	ProviderVersion *string
 
 	// The provider version details.
-	ProviderVersionDetails *VersionDetails `json:"providerVersionDetails,omitempty"`
+	ProviderVersionDetails *VersionDetails
 
 	// Expiry date of the version.
-	ProviderVersionExpiryDate *time.Time `json:"providerVersionExpiryDate,omitempty"`
+	ProviderVersionExpiryDate *time.Time
 
 	// DRA version status.
-	ProviderVersionState *string `json:"providerVersionState,omitempty"`
+	ProviderVersionState *string
 
 	// The resource access identity details.
-	ResourceAccessIdentityDetails *IdentityProviderDetails `json:"resourceAccessIdentityDetails,omitempty"`
+	ResourceAccessIdentityDetails *IdentityProviderDetails
 
 	// The fabric provider.
-	ServerVersion *string `json:"serverVersion,omitempty"`
+	ServerVersion *string
 }
 
 // RecoveryVirtualNetworkCustomDetailsClassification provides polymorphic access to related types.
@@ -8881,7 +8881,7 @@ type RecoveryVirtualNetworkCustomDetailsClassification interface {
 // RecoveryVirtualNetworkCustomDetails - Recovery Virtual network custom input.
 type RecoveryVirtualNetworkCustomDetails struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // GetRecoveryVirtualNetworkCustomDetails implements the RecoveryVirtualNetworkCustomDetailsClassification interface for type
@@ -8893,7 +8893,7 @@ func (r *RecoveryVirtualNetworkCustomDetails) GetRecoveryVirtualNetworkCustomDet
 // RemoveDisksInput - Input for remove disk(s) operation.
 type RemoveDisksInput struct {
 	// Remove disk input properties.
-	Properties *RemoveDisksInputProperties `json:"properties,omitempty"`
+	Properties *RemoveDisksInputProperties
 }
 
 // RemoveDisksInputProperties - Remove Disk input properties.
@@ -8901,7 +8901,7 @@ type RemoveDisksInputProperties struct {
 	// The ReplicationProviderInput. For HyperVReplicaAzure provider, it will be AzureEnableProtectionInput object. For San provider,
 	// it will be SanEnableProtectionInput object. For HyperVReplicaAzure
 	// provider, it can be null.
-	ProviderSpecificDetails RemoveDisksProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails RemoveDisksProviderSpecificInputClassification
 }
 
 // RemoveDisksProviderSpecificInputClassification provides polymorphic access to related types.
@@ -8916,7 +8916,7 @@ type RemoveDisksProviderSpecificInputClassification interface {
 // RemoveDisksProviderSpecificInput - Remove Disk provider specific input.
 type RemoveDisksProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetRemoveDisksProviderSpecificInput implements the RemoveDisksProviderSpecificInputClassification interface for type RemoveDisksProviderSpecificInput.
@@ -8927,55 +8927,55 @@ func (r *RemoveDisksProviderSpecificInput) GetRemoveDisksProviderSpecificInput()
 // RemoveProtectionContainerMappingInput - Container unpairing input.
 type RemoveProtectionContainerMappingInput struct {
 	// Configure protection input properties.
-	Properties *RemoveProtectionContainerMappingInputProperties `json:"properties,omitempty"`
+	Properties *RemoveProtectionContainerMappingInputProperties
 }
 
 // RemoveProtectionContainerMappingInputProperties - Unpairing input properties.
 type RemoveProtectionContainerMappingInputProperties struct {
 	// Provider specific input for unpairing.
-	ProviderSpecificInput *ReplicationProviderContainerUnmappingInput `json:"providerSpecificInput,omitempty"`
+	ProviderSpecificInput *ReplicationProviderContainerUnmappingInput
 }
 
 // RenewCertificateInput - Certificate renewal input.
 type RenewCertificateInput struct {
 	// Renew certificate input properties.
-	Properties *RenewCertificateInputProperties `json:"properties,omitempty"`
+	Properties *RenewCertificateInputProperties
 }
 
 // RenewCertificateInputProperties - Renew Certificate input properties.
 type RenewCertificateInputProperties struct {
 	// Renew certificate type.
-	RenewCertificateType *string `json:"renewCertificateType,omitempty"`
+	RenewCertificateType *string
 }
 
 // ReplicationAgentDetails - Replication agent details.
 type ReplicationAgentDetails struct {
 	// READ-ONLY; The replication agent Bios Id.
-	BiosID *string `json:"biosId,omitempty" azure:"ro"`
+	BiosID *string
 
 	// READ-ONLY; The fabric object Id.
-	FabricObjectID *string `json:"fabricObjectId,omitempty" azure:"ro"`
+	FabricObjectID *string
 
 	// READ-ONLY; The replication agent Fqdn.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; The health of the replication agent.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty" azure:"ro"`
+	HealthErrors []*HealthError
 
 	// READ-ONLY; The replication agent Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The last heartbeat received from the replication agent.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The replication agent name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // ReplicationAlertSettingsClientCreateOptions contains the optional parameters for the ReplicationAlertSettingsClient.Create
@@ -8989,7 +8989,7 @@ type ReplicationAlertSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationAlertSettingsClientListOptions contains the optional parameters for the ReplicationAlertSettingsClient.List
+// ReplicationAlertSettingsClientListOptions contains the optional parameters for the ReplicationAlertSettingsClient.NewListPager
 // method.
 type ReplicationAlertSettingsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -8998,16 +8998,17 @@ type ReplicationAlertSettingsClientListOptions struct {
 // ReplicationAppliance - Replication appliance definition.
 type ReplicationAppliance struct {
 	// Appliance related data.
-	Properties *ReplicationApplianceProperties `json:"properties,omitempty"`
+	Properties *ReplicationApplianceProperties
 }
 
 // ReplicationApplianceProperties - Replication appliance properties.
 type ReplicationApplianceProperties struct {
 	// Provider specific settings.
-	ProviderSpecificDetails ApplianceSpecificDetailsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ApplianceSpecificDetailsClassification
 }
 
-// ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.List method.
+// ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.NewListPager
+// method.
 type ReplicationAppliancesClientListOptions struct {
 	// OData filter options.
 	Filter *string
@@ -9016,16 +9017,16 @@ type ReplicationAppliancesClientListOptions struct {
 // ReplicationEligibilityResults - Replication eligibility results response model.
 type ReplicationEligibilityResults struct {
 	// READ-ONLY; Gets Unique ARM identifier for this object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the name of this object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets properties model for replication eligibility results API.
-	Properties *ReplicationEligibilityResultsProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ReplicationEligibilityResultsProperties
 
 	// READ-ONLY; Gets the object type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReplicationEligibilityResultsClientGetOptions contains the optional parameters for the ReplicationEligibilityResultsClient.Get
@@ -9043,34 +9044,34 @@ type ReplicationEligibilityResultsClientListOptions struct {
 // ReplicationEligibilityResultsCollection - Replication eligibility results collection response model.
 type ReplicationEligibilityResultsCollection struct {
 	// The replication eligibility results details.
-	Value []*ReplicationEligibilityResults `json:"value,omitempty"`
+	Value []*ReplicationEligibilityResults
 }
 
 // ReplicationEligibilityResultsErrorInfo - Error model that can be exposed to the user.
 type ReplicationEligibilityResultsErrorInfo struct {
 	// The error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The possible causes.
-	PossibleCauses *string `json:"possibleCauses,omitempty"`
+	PossibleCauses *string
 
 	// The recommended action.
-	RecommendedAction *string `json:"recommendedAction,omitempty"`
+	RecommendedAction *string
 
 	// READ-ONLY; The error status.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // ReplicationEligibilityResultsProperties - Properties model for replication eligibility results API.
 type ReplicationEligibilityResultsProperties struct {
 	// The error details.
-	Errors []*ReplicationEligibilityResultsErrorInfo `json:"errors,omitempty"`
+	Errors []*ReplicationEligibilityResultsErrorInfo
 
 	// READ-ONLY; The client request Id.
-	ClientRequestID *string `json:"clientRequestId,omitempty" azure:"ro"`
+	ClientRequestID *string
 }
 
 // ReplicationEventsClientGetOptions contains the optional parameters for the ReplicationEventsClient.Get method.
@@ -9078,7 +9079,7 @@ type ReplicationEventsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationEventsClientListOptions contains the optional parameters for the ReplicationEventsClient.List method.
+// ReplicationEventsClientListOptions contains the optional parameters for the ReplicationEventsClient.NewListPager method.
 type ReplicationEventsClientListOptions struct {
 	// OData filter options.
 	Filter *string
@@ -9139,7 +9140,7 @@ type ReplicationFabricsClientGetOptions struct {
 	Filter *string
 }
 
-// ReplicationFabricsClientListOptions contains the optional parameters for the ReplicationFabricsClient.List method.
+// ReplicationFabricsClientListOptions contains the optional parameters for the ReplicationFabricsClient.NewListPager method.
 type ReplicationFabricsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -9147,7 +9148,7 @@ type ReplicationFabricsClientListOptions struct {
 // ReplicationGroupDetails - Replication group details. This will be used in case of San.
 type ReplicationGroupDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type ReplicationGroupDetails.
@@ -9186,7 +9187,7 @@ type ReplicationJobsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationJobsClientListOptions contains the optional parameters for the ReplicationJobsClient.List method.
+// ReplicationJobsClientListOptions contains the optional parameters for the ReplicationJobsClient.NewListPager method.
 type ReplicationJobsClientListOptions struct {
 	// OData filter options.
 	Filter *string
@@ -9198,7 +9199,7 @@ type ReplicationLogicalNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationLogicalNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationLogicalNetworksClient.ListByReplicationFabrics
+// ReplicationLogicalNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationLogicalNetworksClient.NewListByReplicationFabricsPager
 // method.
 type ReplicationLogicalNetworksClientListByReplicationFabricsOptions struct {
 	// placeholder for future optional parameters
@@ -9275,7 +9276,7 @@ type ReplicationMigrationItemsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions contains the optional parameters for the ReplicationMigrationItemsClient.ListByReplicationProtectionContainers
+// ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions contains the optional parameters for the ReplicationMigrationItemsClient.NewListByReplicationProtectionContainersPager
 // method.
 type ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions struct {
 	// OData filter options.
@@ -9286,7 +9287,7 @@ type ReplicationMigrationItemsClientListByReplicationProtectionContainersOptions
 	TakeToken *string
 }
 
-// ReplicationMigrationItemsClientListOptions contains the optional parameters for the ReplicationMigrationItemsClient.List
+// ReplicationMigrationItemsClientListOptions contains the optional parameters for the ReplicationMigrationItemsClient.NewListPager
 // method.
 type ReplicationMigrationItemsClientListOptions struct {
 	// OData filter options.
@@ -9324,13 +9325,13 @@ type ReplicationNetworkMappingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationNetworkMappingsClientListByReplicationNetworksOptions contains the optional parameters for the ReplicationNetworkMappingsClient.ListByReplicationNetworks
+// ReplicationNetworkMappingsClientListByReplicationNetworksOptions contains the optional parameters for the ReplicationNetworkMappingsClient.NewListByReplicationNetworksPager
 // method.
 type ReplicationNetworkMappingsClientListByReplicationNetworksOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationNetworkMappingsClientListOptions contains the optional parameters for the ReplicationNetworkMappingsClient.List
+// ReplicationNetworkMappingsClientListOptions contains the optional parameters for the ReplicationNetworkMappingsClient.NewListPager
 // method.
 type ReplicationNetworkMappingsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -9341,13 +9342,13 @@ type ReplicationNetworksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationNetworksClient.ListByReplicationFabrics
+// ReplicationNetworksClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationNetworksClient.NewListByReplicationFabricsPager
 // method.
 type ReplicationNetworksClientListByReplicationFabricsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationNetworksClientListOptions contains the optional parameters for the ReplicationNetworksClient.List method.
+// ReplicationNetworksClientListOptions contains the optional parameters for the ReplicationNetworksClient.NewListPager method.
 type ReplicationNetworksClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -9378,7 +9379,7 @@ type ReplicationPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationPoliciesClientListOptions contains the optional parameters for the ReplicationPoliciesClient.List method.
+// ReplicationPoliciesClientListOptions contains the optional parameters for the ReplicationPoliciesClient.NewListPager method.
 type ReplicationPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -9390,7 +9391,7 @@ type ReplicationProtectableItemsClientGetOptions struct {
 }
 
 // ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions contains the optional parameters for the
-// ReplicationProtectableItemsClient.ListByReplicationProtectionContainers method.
+// ReplicationProtectableItemsClient.NewListByReplicationProtectionContainersPager method.
 type ReplicationProtectableItemsClientListByReplicationProtectionContainersOptions struct {
 	// OData filter options.
 	Filter *string
@@ -9403,123 +9404,123 @@ type ReplicationProtectableItemsClientListByReplicationProtectionContainersOptio
 // ReplicationProtectedItem - Replication protected item.
 type ReplicationProtectedItem struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The custom data.
-	Properties *ReplicationProtectedItemProperties `json:"properties,omitempty"`
+	Properties *ReplicationProtectedItemProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReplicationProtectedItemCollection - Replication protected item collection.
 type ReplicationProtectedItemCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The Replication protected item details.
-	Value []*ReplicationProtectedItem `json:"value,omitempty"`
+	Value []*ReplicationProtectedItem
 }
 
 // ReplicationProtectedItemProperties - Replication protected item custom data details.
 type ReplicationProtectedItemProperties struct {
 	// The Current active location of the PE.
-	ActiveLocation *string `json:"activeLocation,omitempty"`
+	ActiveLocation *string
 
 	// The allowed operations on the Replication protected item.
-	AllowedOperations []*string `json:"allowedOperations,omitempty"`
+	AllowedOperations []*string
 
 	// The current scenario.
-	CurrentScenario *CurrentScenarioDetails `json:"currentScenario,omitempty"`
+	CurrentScenario *CurrentScenarioDetails
 
 	// The correlation Id for events associated with this protected item.
-	EventCorrelationID *string `json:"eventCorrelationId,omitempty"`
+	EventCorrelationID *string
 
 	// The consolidated failover health for the VM.
-	FailoverHealth *string `json:"failoverHealth,omitempty"`
+	FailoverHealth *string
 
 	// The recovery point ARM Id to which the Vm was failed over.
-	FailoverRecoveryPointID *string `json:"failoverRecoveryPointId,omitempty"`
+	FailoverRecoveryPointID *string
 
 	// The name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// List of health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty"`
+	HealthErrors []*HealthError
 
 	// The Last successful failover time.
-	LastSuccessfulFailoverTime *time.Time `json:"lastSuccessfulFailoverTime,omitempty"`
+	LastSuccessfulFailoverTime *time.Time
 
 	// The Last successful test failover time.
-	LastSuccessfulTestFailoverTime *time.Time `json:"lastSuccessfulTestFailoverTime,omitempty"`
+	LastSuccessfulTestFailoverTime *time.Time
 
 	// The name of Policy governing this PE.
-	PolicyFriendlyName *string `json:"policyFriendlyName,omitempty"`
+	PolicyFriendlyName *string
 
 	// The ID of Policy governing this PE.
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// The friendly name of the primary fabric.
-	PrimaryFabricFriendlyName *string `json:"primaryFabricFriendlyName,omitempty"`
+	PrimaryFabricFriendlyName *string
 
 	// The fabric provider of the primary fabric.
-	PrimaryFabricProvider *string `json:"primaryFabricProvider,omitempty"`
+	PrimaryFabricProvider *string
 
 	// The name of primary protection container friendly name.
-	PrimaryProtectionContainerFriendlyName *string `json:"primaryProtectionContainerFriendlyName,omitempty"`
+	PrimaryProtectionContainerFriendlyName *string
 
 	// The protected item ARM Id.
-	ProtectableItemID *string `json:"protectableItemId,omitempty"`
+	ProtectableItemID *string
 
 	// The type of protected item type.
-	ProtectedItemType *string `json:"protectedItemType,omitempty"`
+	ProtectedItemType *string
 
 	// The protection status.
-	ProtectionState *string `json:"protectionState,omitempty"`
+	ProtectionState *string
 
 	// The protection state description.
-	ProtectionStateDescription *string `json:"protectionStateDescription,omitempty"`
+	ProtectionStateDescription *string
 
 	// The Replication provider custom settings.
-	ProviderSpecificDetails ReplicationProviderSpecificSettingsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ReplicationProviderSpecificSettingsClassification
 
 	// The recovery container Id.
-	RecoveryContainerID *string `json:"recoveryContainerId,omitempty"`
+	RecoveryContainerID *string
 
 	// The friendly name of recovery fabric.
-	RecoveryFabricFriendlyName *string `json:"recoveryFabricFriendlyName,omitempty"`
+	RecoveryFabricFriendlyName *string
 
 	// The Arm Id of recovery fabric.
-	RecoveryFabricID *string `json:"recoveryFabricId,omitempty"`
+	RecoveryFabricID *string
 
 	// The name of recovery container friendly name.
-	RecoveryProtectionContainerFriendlyName *string `json:"recoveryProtectionContainerFriendlyName,omitempty"`
+	RecoveryProtectionContainerFriendlyName *string
 
 	// The recovery provider ARM Id.
-	RecoveryServicesProviderID *string `json:"recoveryServicesProviderId,omitempty"`
+	RecoveryServicesProviderID *string
 
 	// The consolidated protection health for the VM taking any issues with SRS as well as all the replication units associated
 	// with the VM's replication group into account. This is a string representation
 	// of the ProtectionHealth enumeration.
-	ReplicationHealth *string `json:"replicationHealth,omitempty"`
+	ReplicationHealth *string
 
 	// The switch provider state.
-	SwitchProviderState *string `json:"switchProviderState,omitempty"`
+	SwitchProviderState *string
 
 	// The switch provider state description.
-	SwitchProviderStateDescription *string `json:"switchProviderStateDescription,omitempty"`
+	SwitchProviderStateDescription *string
 
 	// The Test failover state.
-	TestFailoverState *string `json:"testFailoverState,omitempty"`
+	TestFailoverState *string
 
 	// The Test failover state description.
-	TestFailoverStateDescription *string `json:"testFailoverStateDescription,omitempty"`
+	TestFailoverStateDescription *string
 }
 
 // ReplicationProtectedItemsClientBeginAddDisksOptions contains the optional parameters for the ReplicationProtectedItemsClient.BeginAddDisks
@@ -9661,13 +9662,13 @@ type ReplicationProtectedItemsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions contains the optional parameters for the ReplicationProtectedItemsClient.ListByReplicationProtectionContainers
+// ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions contains the optional parameters for the ReplicationProtectedItemsClient.NewListByReplicationProtectionContainersPager
 // method.
 type ReplicationProtectedItemsClientListByReplicationProtectionContainersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationProtectedItemsClientListOptions contains the optional parameters for the ReplicationProtectedItemsClient.List
+// ReplicationProtectedItemsClientListOptions contains the optional parameters for the ReplicationProtectedItemsClient.NewListPager
 // method.
 type ReplicationProtectedItemsClientListOptions struct {
 	// OData filter options.
@@ -9711,12 +9712,12 @@ type ReplicationProtectionContainerMappingsClientGetOptions struct {
 }
 
 // ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions contains the optional parameters
-// for the ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers method.
+// for the ReplicationProtectionContainerMappingsClient.NewListByReplicationProtectionContainersPager method.
 type ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.List
+// ReplicationProtectionContainerMappingsClientListOptions contains the optional parameters for the ReplicationProtectionContainerMappingsClient.NewListPager
 // method.
 type ReplicationProtectionContainerMappingsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -9756,13 +9757,13 @@ type ReplicationProtectionContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationProtectionContainersClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationProtectionContainersClient.ListByReplicationFabrics
+// ReplicationProtectionContainersClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationProtectionContainersClient.NewListByReplicationFabricsPager
 // method.
 type ReplicationProtectionContainersClientListByReplicationFabricsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationProtectionContainersClientListOptions contains the optional parameters for the ReplicationProtectionContainersClient.List
+// ReplicationProtectionContainersClientListOptions contains the optional parameters for the ReplicationProtectionContainersClient.NewListPager
 // method.
 type ReplicationProtectionContainersClientListOptions struct {
 	// placeholder for future optional parameters
@@ -9771,49 +9772,49 @@ type ReplicationProtectionContainersClientListOptions struct {
 // ReplicationProtectionIntent - Replication protection intent.
 type ReplicationProtectionIntent struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The custom data.
-	Properties *ReplicationProtectionIntentProperties `json:"properties,omitempty"`
+	Properties *ReplicationProtectionIntentProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReplicationProtectionIntentCollection - Replication protection intent objects collection.
 type ReplicationProtectionIntentCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The Replication protection intent details.
-	Value []*ReplicationProtectionIntent `json:"value,omitempty"`
+	Value []*ReplicationProtectionIntent
 }
 
 // ReplicationProtectionIntentProperties - Replication protection intent custom data details.
 type ReplicationProtectionIntentProperties struct {
 	// The name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The Replication provider custom settings.
-	ProviderSpecificDetails ReplicationProtectionIntentProviderSpecificSettingsClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ReplicationProtectionIntentProviderSpecificSettingsClassification
 
 	// READ-ONLY; The creation time in UTC.
-	CreationTimeUTC *string `json:"creationTimeUTC,omitempty" azure:"ro"`
+	CreationTimeUTC *string
 
 	// READ-ONLY; A value indicating whether the intent object is active.
-	IsActive *bool `json:"isActive,omitempty" azure:"ro"`
+	IsActive *bool
 
 	// READ-ONLY; The job Id.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
+	JobID *string
 
 	// READ-ONLY; The job state.
-	JobState *string `json:"jobState,omitempty" azure:"ro"`
+	JobState *string
 }
 
 // ReplicationProtectionIntentProviderSpecificSettingsClassification provides polymorphic access to related types.
@@ -9828,7 +9829,7 @@ type ReplicationProtectionIntentProviderSpecificSettingsClassification interface
 // ReplicationProtectionIntentProviderSpecificSettings - Replication provider specific settings.
 type ReplicationProtectionIntentProviderSpecificSettings struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProtectionIntentProviderSpecificSettings implements the ReplicationProtectionIntentProviderSpecificSettingsClassification
@@ -9849,7 +9850,7 @@ type ReplicationProtectionIntentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationProtectionIntentsClientListOptions contains the optional parameters for the ReplicationProtectionIntentsClient.List
+// ReplicationProtectionIntentsClientListOptions contains the optional parameters for the ReplicationProtectionIntentsClient.NewListPager
 // method.
 type ReplicationProtectionIntentsClientListOptions struct {
 	// The pagination token.
@@ -9861,7 +9862,7 @@ type ReplicationProtectionIntentsClientListOptions struct {
 // ReplicationProviderContainerUnmappingInput - Provider specific input for unpairing operations.
 type ReplicationProviderContainerUnmappingInput struct {
 	// The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // ReplicationProviderSpecificContainerCreationInputClassification provides polymorphic access to related types.
@@ -9877,7 +9878,7 @@ type ReplicationProviderSpecificContainerCreationInputClassification interface {
 // ReplicationProviderSpecificContainerCreationInput - Provider specific input for container creation operation.
 type ReplicationProviderSpecificContainerCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
@@ -9898,7 +9899,7 @@ type ReplicationProviderSpecificContainerMappingInputClassification interface {
 // ReplicationProviderSpecificContainerMappingInput - Provider specific input for pairing operations.
 type ReplicationProviderSpecificContainerMappingInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
@@ -9921,7 +9922,7 @@ type ReplicationProviderSpecificSettingsClassification interface {
 // ReplicationProviderSpecificSettings - Replication provider specific settings.
 type ReplicationProviderSpecificSettings struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProviderSpecificSettings implements the ReplicationProviderSpecificSettingsClassification interface for type
@@ -9942,7 +9943,7 @@ type ReplicationProviderSpecificUpdateContainerMappingInputClassification interf
 // ReplicationProviderSpecificUpdateContainerMappingInput - Provider specific input for update pairing operations.
 type ReplicationProviderSpecificUpdateContainerMappingInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProviderSpecificUpdateContainerMappingInput implements the ReplicationProviderSpecificUpdateContainerMappingInputClassification
@@ -10026,7 +10027,7 @@ type ReplicationRecoveryPlansClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationRecoveryPlansClientListOptions contains the optional parameters for the ReplicationRecoveryPlansClient.List
+// ReplicationRecoveryPlansClientListOptions contains the optional parameters for the ReplicationRecoveryPlansClient.NewListPager
 // method.
 type ReplicationRecoveryPlansClientListOptions struct {
 	// placeholder for future optional parameters
@@ -10066,13 +10067,13 @@ type ReplicationRecoveryServicesProvidersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics
+// ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.NewListByReplicationFabricsPager
 // method.
 type ReplicationRecoveryServicesProvidersClientListByReplicationFabricsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationRecoveryServicesProvidersClientListOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.List
+// ReplicationRecoveryServicesProvidersClientListOptions contains the optional parameters for the ReplicationRecoveryServicesProvidersClient.NewListPager
 // method.
 type ReplicationRecoveryServicesProvidersClientListOptions struct {
 	// placeholder for future optional parameters
@@ -10099,12 +10100,12 @@ type ReplicationStorageClassificationMappingsClientGetOptions struct {
 }
 
 // ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions contains the optional parameters
-// for the ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications method.
+// for the ReplicationStorageClassificationMappingsClient.NewListByReplicationStorageClassificationsPager method.
 type ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationStorageClassificationMappingsClientListOptions contains the optional parameters for the ReplicationStorageClassificationMappingsClient.List
+// ReplicationStorageClassificationMappingsClientListOptions contains the optional parameters for the ReplicationStorageClassificationMappingsClient.NewListPager
 // method.
 type ReplicationStorageClassificationMappingsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -10116,13 +10117,13 @@ type ReplicationStorageClassificationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationStorageClassificationsClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationStorageClassificationsClient.ListByReplicationFabrics
+// ReplicationStorageClassificationsClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationStorageClassificationsClient.NewListByReplicationFabricsPager
 // method.
 type ReplicationStorageClassificationsClientListByReplicationFabricsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationStorageClassificationsClientListOptions contains the optional parameters for the ReplicationStorageClassificationsClient.List
+// ReplicationStorageClassificationsClientListOptions contains the optional parameters for the ReplicationStorageClassificationsClient.NewListPager
 // method.
 type ReplicationStorageClassificationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -10152,7 +10153,8 @@ type ReplicationVaultSettingClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationVaultSettingClientListOptions contains the optional parameters for the ReplicationVaultSettingClient.List method.
+// ReplicationVaultSettingClientListOptions contains the optional parameters for the ReplicationVaultSettingClient.NewListPager
+// method.
 type ReplicationVaultSettingClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10183,13 +10185,13 @@ type ReplicationvCentersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationvCentersClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationvCentersClient.ListByReplicationFabrics
+// ReplicationvCentersClientListByReplicationFabricsOptions contains the optional parameters for the ReplicationvCentersClient.NewListByReplicationFabricsPager
 // method.
 type ReplicationvCentersClientListByReplicationFabricsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReplicationvCentersClientListOptions contains the optional parameters for the ReplicationvCentersClient.List method.
+// ReplicationvCentersClientListOptions contains the optional parameters for the ReplicationvCentersClient.NewListPager method.
 type ReplicationvCentersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10197,112 +10199,112 @@ type ReplicationvCentersClientListOptions struct {
 // ReprotectAgentDetails - Reprotect agent details.
 type ReprotectAgentDetails struct {
 	// READ-ONLY; The list of accessible datastores fetched from discovery.
-	AccessibleDatastores []*string `json:"accessibleDatastores,omitempty" azure:"ro"`
+	AccessibleDatastores []*string
 
 	// READ-ONLY; The reprotect agent Bios Id.
-	BiosID *string `json:"biosId,omitempty" azure:"ro"`
+	BiosID *string
 
 	// READ-ONLY; The fabric object Id.
-	FabricObjectID *string `json:"fabricObjectId,omitempty" azure:"ro"`
+	FabricObjectID *string
 
 	// READ-ONLY; The reprotect agent Fqdn.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; The health of the reprotect agent.
-	Health *ProtectionHealth `json:"health,omitempty" azure:"ro"`
+	Health *ProtectionHealth
 
 	// READ-ONLY; The health errors.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty" azure:"ro"`
+	HealthErrors []*HealthError
 
 	// READ-ONLY; The reprotect agent Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The last time when SDS information discovered in SRS.
-	LastDiscoveryInUTC *time.Time `json:"lastDiscoveryInUtc,omitempty" azure:"ro"`
+	LastDiscoveryInUTC *time.Time
 
 	// READ-ONLY; The last heartbeat received from the reprotect agent.
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY; The reprotect agent name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The protected item count.
-	ProtectedItemCount *int32 `json:"protectedItemCount,omitempty" azure:"ro"`
+	ProtectedItemCount *int32
 
 	// READ-ONLY; The Vcenter Id.
-	VcenterID *string `json:"vcenterId,omitempty" azure:"ro"`
+	VcenterID *string
 
 	// READ-ONLY; The version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // ResolveHealthError - Resolve health errors input properties.
 type ResolveHealthError struct {
 	// Health error id.
-	HealthErrorID *string `json:"healthErrorId,omitempty"`
+	HealthErrorID *string
 }
 
 // ResolveHealthInput - Resolve health input.
 type ResolveHealthInput struct {
 	// Disable resolve health input properties.
-	Properties *ResolveHealthInputProperties `json:"properties,omitempty"`
+	Properties *ResolveHealthInputProperties
 }
 
 // ResolveHealthInputProperties - Resolve health input properties.
 type ResolveHealthInputProperties struct {
 	// Health errors.
-	HealthErrors []*ResolveHealthError `json:"healthErrors,omitempty"`
+	HealthErrors []*ResolveHealthError
 }
 
 // Resource - Azure resource.
 type Resource struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceHealthSummary - Base class to define the health summary of the resources contained under an Arm resource.
 type ResourceHealthSummary struct {
 	// The categorized resource counts.
-	CategorizedResourceCounts map[string]*int32 `json:"categorizedResourceCounts,omitempty"`
+	CategorizedResourceCounts map[string]*int32
 
 	// The list of summary of health errors across the resources under the container.
-	Issues []*HealthErrorSummary `json:"issues,omitempty"`
+	Issues []*HealthErrorSummary
 
 	// The count of total resources under the container.
-	ResourceCount *int32 `json:"resourceCount,omitempty"`
+	ResourceCount *int32
 }
 
 // ResumeJobParams - Resume job params.
 type ResumeJobParams struct {
 	// Resume job properties.
-	Properties *ResumeJobParamsProperties `json:"properties,omitempty"`
+	Properties *ResumeJobParamsProperties
 }
 
 // ResumeJobParamsProperties - Resume job properties.
 type ResumeJobParamsProperties struct {
 	// Resume job comments.
-	Comments *string `json:"comments,omitempty"`
+	Comments *string
 }
 
 // ResumeReplicationInput - Resume replication input.
 type ResumeReplicationInput struct {
 	// REQUIRED; Resume replication input properties.
-	Properties *ResumeReplicationInputProperties `json:"properties,omitempty"`
+	Properties *ResumeReplicationInputProperties
 }
 
 // ResumeReplicationInputProperties - Resume replication input properties.
 type ResumeReplicationInputProperties struct {
 	// REQUIRED; The provider specific input for resume replication.
-	ProviderSpecificDetails ResumeReplicationProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ResumeReplicationProviderSpecificInputClassification
 }
 
 // ResumeReplicationProviderSpecificInputClassification provides polymorphic access to related types.
@@ -10317,7 +10319,7 @@ type ResumeReplicationProviderSpecificInputClassification interface {
 // ResumeReplicationProviderSpecificInput - Resume replication provider specific input.
 type ResumeReplicationProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetResumeReplicationProviderSpecificInput implements the ResumeReplicationProviderSpecificInputClassification interface
@@ -10329,13 +10331,13 @@ func (r *ResumeReplicationProviderSpecificInput) GetResumeReplicationProviderSpe
 // ResyncInput - Resync input.
 type ResyncInput struct {
 	// REQUIRED; Resync input properties.
-	Properties *ResyncInputProperties `json:"properties,omitempty"`
+	Properties *ResyncInputProperties
 }
 
 // ResyncInputProperties - Resync input properties.
 type ResyncInputProperties struct {
 	// REQUIRED; The provider specific details.
-	ProviderSpecificDetails ResyncProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ResyncProviderSpecificInputClassification
 }
 
 // ResyncProviderSpecificInputClassification provides polymorphic access to related types.
@@ -10350,7 +10352,7 @@ type ResyncProviderSpecificInputClassification interface {
 // ResyncProviderSpecificInput - Resync provider specific input.
 type ResyncProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetResyncProviderSpecificInput implements the ResyncProviderSpecificInputClassification interface for type ResyncProviderSpecificInput.
@@ -10361,31 +10363,31 @@ func (r *ResyncProviderSpecificInput) GetResyncProviderSpecificInput() *ResyncPr
 // RetentionVolume - The retention details of the MT.
 type RetentionVolume struct {
 	// The volume capacity.
-	CapacityInBytes *int64 `json:"capacityInBytes,omitempty"`
+	CapacityInBytes *int64
 
 	// The free space available in this volume.
-	FreeSpaceInBytes *int64 `json:"freeSpaceInBytes,omitempty"`
+	FreeSpaceInBytes *int64
 
 	// The threshold percentage.
-	ThresholdPercentage *int32 `json:"thresholdPercentage,omitempty"`
+	ThresholdPercentage *int32
 
 	// The volume name.
-	VolumeName *string `json:"volumeName,omitempty"`
+	VolumeName *string
 }
 
 // ReverseReplicationInput - Reverse replication input.
 type ReverseReplicationInput struct {
 	// Reverse replication properties.
-	Properties *ReverseReplicationInputProperties `json:"properties,omitempty"`
+	Properties *ReverseReplicationInputProperties
 }
 
 // ReverseReplicationInputProperties - Reverse replication input properties.
 type ReverseReplicationInputProperties struct {
 	// Failover direction.
-	FailoverDirection *string `json:"failoverDirection,omitempty"`
+	FailoverDirection *string
 
 	// Provider specific reverse replication input.
-	ProviderSpecificDetails ReverseReplicationProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails ReverseReplicationProviderSpecificInputClassification
 }
 
 // ReverseReplicationProviderSpecificInputClassification provides polymorphic access to related types.
@@ -10401,7 +10403,7 @@ type ReverseReplicationProviderSpecificInputClassification interface {
 // ReverseReplicationProviderSpecificInput - Provider specific reverse replication input.
 type ReverseReplicationProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReverseReplicationProviderSpecificInput implements the ReverseReplicationProviderSpecificInputClassification interface
@@ -10413,46 +10415,46 @@ func (r *ReverseReplicationProviderSpecificInput) GetReverseReplicationProviderS
 // RoleAssignment - Azure role assignment details.
 type RoleAssignment struct {
 	// The ARM Id of the role assignment.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The name of the role assignment.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Principal Id.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// Role definition id.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+	RoleDefinitionID *string
 
 	// Role assignment scope.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 }
 
 // RunAsAccount - CS Accounts Details.
 type RunAsAccount struct {
 	// The CS RunAs account Id.
-	AccountID *string `json:"accountId,omitempty"`
+	AccountID *string
 
 	// The CS RunAs account name.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 }
 
 // ScriptActionTaskDetails - This class represents the script action task details.
 type ScriptActionTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether it is a primary side script or not.
-	IsPrimarySideScript *bool `json:"isPrimarySideScript,omitempty"`
+	IsPrimarySideScript *bool
 
 	// The name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The output.
-	Output *string `json:"output,omitempty"`
+	Output *string
 
 	// The path.
-	Path *string `json:"path,omitempty"`
+	Path *string
 }
 
 // GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type ScriptActionTaskDetails.
@@ -10465,19 +10467,19 @@ func (s *ScriptActionTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
 // ServiceError - ASR error model.
 type ServiceError struct {
 	// Activity Id.
-	ActivityID *string `json:"activityId,omitempty"`
+	ActivityID *string
 
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Possible causes of error.
-	PossibleCauses *string `json:"possibleCauses,omitempty"`
+	PossibleCauses *string
 
 	// Recommended action to resolve error.
-	RecommendedAction *string `json:"recommendedAction,omitempty"`
+	RecommendedAction *string
 }
 
 // StorageAccountCustomDetailsClassification provides polymorphic access to related types.
@@ -10492,7 +10494,7 @@ type StorageAccountCustomDetailsClassification interface {
 // StorageAccountCustomDetails - Storage account custom input.
 type StorageAccountCustomDetails struct {
 	// REQUIRED; The class type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // GetStorageAccountCustomDetails implements the StorageAccountCustomDetailsClassification interface for type StorageAccountCustomDetails.
@@ -10503,136 +10505,136 @@ func (s *StorageAccountCustomDetails) GetStorageAccountCustomDetails() *StorageA
 // StorageClassification - Storage object definition.
 type StorageClassification struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the storage object.
-	Properties *StorageClassificationProperties `json:"properties,omitempty"`
+	Properties *StorageClassificationProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageClassificationCollection - Collection of storage details.
 type StorageClassificationCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The storage details.
-	Value []*StorageClassification `json:"value,omitempty"`
+	Value []*StorageClassification
 }
 
 // StorageClassificationMapping - Storage mapping object.
 type StorageClassificationMapping struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the storage mapping object.
-	Properties *StorageClassificationMappingProperties `json:"properties,omitempty"`
+	Properties *StorageClassificationMappingProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageClassificationMappingCollection - Collection of storage mapping details.
 type StorageClassificationMappingCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The storage details.
-	Value []*StorageClassificationMapping `json:"value,omitempty"`
+	Value []*StorageClassificationMapping
 }
 
 // StorageClassificationMappingInput - Storage mapping input.
 type StorageClassificationMappingInput struct {
 	// Storage mapping input properties.
-	Properties *StorageMappingInputProperties `json:"properties,omitempty"`
+	Properties *StorageMappingInputProperties
 }
 
 // StorageClassificationMappingProperties - Storage mapping properties.
 type StorageClassificationMappingProperties struct {
 	// Target storage object Id.
-	TargetStorageClassificationID *string `json:"targetStorageClassificationId,omitempty"`
+	TargetStorageClassificationID *string
 }
 
 // StorageClassificationProperties - Storage object properties.
 type StorageClassificationProperties struct {
 	// Friendly name of the Storage classification.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 }
 
 // StorageMappingInputProperties - Storage mapping input properties.
 type StorageMappingInputProperties struct {
 	// The ID of the storage object.
-	TargetStorageClassificationID *string `json:"targetStorageClassificationId,omitempty"`
+	TargetStorageClassificationID *string
 }
 
 // Subnets of the network.
 type Subnet struct {
 	// The list of addresses for the subnet.
-	AddressList []*string `json:"addressList,omitempty"`
+	AddressList []*string
 
 	// The subnet friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The subnet name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // SupportedOSDetails - Supported operating system details.
 type SupportedOSDetails struct {
 	// The name.
-	OSName *string `json:"osName,omitempty"`
+	OSName *string
 
 	// The type.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The list of version for operating system.
-	OSVersions []*OSVersionWrapper `json:"osVersions,omitempty"`
+	OSVersions []*OSVersionWrapper
 }
 
 // SupportedOSProperties - Supported operating systems properties.
 type SupportedOSProperties struct {
 	// The supported operating systems property list.
-	SupportedOsList []*SupportedOSProperty `json:"supportedOsList,omitempty"`
+	SupportedOsList []*SupportedOSProperty
 }
 
 // SupportedOSProperty - Supported operating systems property.
 type SupportedOSProperty struct {
 	// The replication provider type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The list of supported operating systems.
-	SupportedOs []*SupportedOSDetails `json:"supportedOs,omitempty"`
+	SupportedOs []*SupportedOSDetails
 }
 
 // SupportedOperatingSystems - Supported operating systems.
 type SupportedOperatingSystems struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The supported operating systems properties.
-	Properties *SupportedOSProperties `json:"properties,omitempty"`
+	Properties *SupportedOSProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SupportedOperatingSystemsClientGetOptions contains the optional parameters for the SupportedOperatingSystemsClient.Get
@@ -10645,29 +10647,29 @@ type SupportedOperatingSystemsClientGetOptions struct {
 // SwitchProtectionInput - Switch protection input.
 type SwitchProtectionInput struct {
 	// Switch protection properties.
-	Properties *SwitchProtectionInputProperties `json:"properties,omitempty"`
+	Properties *SwitchProtectionInputProperties
 }
 
 // SwitchProtectionInputProperties - Switch protection input properties.
 type SwitchProtectionInputProperties struct {
 	// Provider specific switch protection input.
-	ProviderSpecificDetails SwitchProtectionProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails SwitchProtectionProviderSpecificInputClassification
 
 	// The unique replication protected item name.
-	ReplicationProtectedItemName *string `json:"replicationProtectedItemName,omitempty"`
+	ReplicationProtectedItemName *string
 }
 
 // SwitchProtectionJobDetails - This class represents details for switch protection job.
 type SwitchProtectionJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
-	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
+	AffectedObjectDetails map[string]*string
 
 	// ARM Id of the new replication protected item.
-	NewReplicationProtectedItemID *string `json:"newReplicationProtectedItemId,omitempty"`
+	NewReplicationProtectedItemID *string
 }
 
 // GetJobDetails implements the JobDetailsClassification interface for type SwitchProtectionJobDetails.
@@ -10690,7 +10692,7 @@ type SwitchProtectionProviderSpecificInputClassification interface {
 // SwitchProtectionProviderSpecificInput - Provider specific switch protection input.
 type SwitchProtectionProviderSpecificInput struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetSwitchProtectionProviderSpecificInput implements the SwitchProtectionProviderSpecificInputClassification interface for
@@ -10702,16 +10704,16 @@ func (s *SwitchProtectionProviderSpecificInput) GetSwitchProtectionProviderSpeci
 // SwitchProviderInput - Input definition for switch provider.
 type SwitchProviderInput struct {
 	// Switch provider input properties.
-	Properties *SwitchProviderInputProperties `json:"properties,omitempty"`
+	Properties *SwitchProviderInputProperties
 }
 
 // SwitchProviderInputProperties - Input definition for switch provider input properties.
 type SwitchProviderInputProperties struct {
 	// Provider specific settings.
-	ProviderSpecificDetails SwitchProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails SwitchProviderSpecificInputClassification
 
 	// Target provider type.
-	TargetInstanceType *string `json:"targetInstanceType,omitempty"`
+	TargetInstanceType *string
 }
 
 // SwitchProviderSpecificInputClassification provides polymorphic access to related types.
@@ -10726,7 +10728,7 @@ type SwitchProviderSpecificInputClassification interface {
 // SwitchProviderSpecificInput - Provider specific switch provider input.
 type SwitchProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetSwitchProviderSpecificInput implements the SwitchProviderSpecificInputClassification interface for type SwitchProviderSpecificInput.
@@ -10737,61 +10739,61 @@ func (s *SwitchProviderSpecificInput) GetSwitchProviderSpecificInput() *SwitchPr
 // TargetComputeSize - Represents applicable recovery vm sizes.
 type TargetComputeSize struct {
 	// The Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The custom data.
-	Properties *TargetComputeSizeProperties `json:"properties,omitempty"`
+	Properties *TargetComputeSizeProperties
 
 	// The Type of the object.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // TargetComputeSizeCollection - Target compute size collection.
 type TargetComputeSizeCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of target compute sizes.
-	Value []*TargetComputeSize `json:"value,omitempty"`
+	Value []*TargetComputeSize
 }
 
 // TargetComputeSizeProperties - Represents applicable recovery vm sizes properties.
 type TargetComputeSizeProperties struct {
 	// The maximum cpu cores count supported by target compute size.
-	CPUCoresCount *int32 `json:"cpuCoresCount,omitempty"`
+	CPUCoresCount *int32
 
 	// The reasons why the target compute size is not applicable for the protected item.
-	Errors []*ComputeSizeErrorDetails `json:"errors,omitempty"`
+	Errors []*ComputeSizeErrorDetails
 
 	// Target compute size display name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The value indicating whether the target compute size supports high Iops.
-	HighIopsSupported *string `json:"highIopsSupported,omitempty"`
+	HighIopsSupported *string
 
 	// The supported HyperV Generations.
-	HyperVGenerations []*string `json:"hyperVGenerations,omitempty"`
+	HyperVGenerations []*string
 
 	// The maximum data disks count supported by target compute size.
-	MaxDataDiskCount *int32 `json:"maxDataDiskCount,omitempty"`
+	MaxDataDiskCount *int32
 
 	// The maximum Nics count supported by target compute size.
-	MaxNicsCount *int32 `json:"maxNicsCount,omitempty"`
+	MaxNicsCount *int32
 
 	// The maximum memory in GB supported by target compute size.
-	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
+	MemoryInGB *float64
 
 	// Target compute size name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; The Available vCPUs supported by target compute size.
-	VCPUsAvailable *int32 `json:"vCPUsAvailable,omitempty" azure:"ro"`
+	VCPUsAvailable *int32
 }
 
-// TargetComputeSizesClientListByReplicationProtectedItemsOptions contains the optional parameters for the TargetComputeSizesClient.ListByReplicationProtectedItems
+// TargetComputeSizesClientListByReplicationProtectedItemsOptions contains the optional parameters for the TargetComputeSizesClient.NewListByReplicationProtectedItemsPager
 // method.
 type TargetComputeSizesClientListByReplicationProtectedItemsOptions struct {
 	// placeholder for future optional parameters
@@ -10810,7 +10812,7 @@ type TaskTypeDetailsClassification interface {
 // TaskTypeDetails - Task details based on specific task type.
 type TaskTypeDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type TaskTypeDetails.
@@ -10819,62 +10821,62 @@ func (t *TaskTypeDetails) GetTaskTypeDetails() *TaskTypeDetails { return t }
 // TestFailoverCleanupInput - Input definition for test failover cleanup.
 type TestFailoverCleanupInput struct {
 	// REQUIRED; Test failover cleanup input properties.
-	Properties *TestFailoverCleanupInputProperties `json:"properties,omitempty"`
+	Properties *TestFailoverCleanupInputProperties
 }
 
 // TestFailoverCleanupInputProperties - Input definition for test failover cleanup input properties.
 type TestFailoverCleanupInputProperties struct {
 	// Test failover cleanup comments.
-	Comments *string `json:"comments,omitempty"`
+	Comments *string
 }
 
 // TestFailoverInput - Input definition for test failover.
 type TestFailoverInput struct {
 	// REQUIRED; Test failover input properties.
-	Properties *TestFailoverInputProperties `json:"properties,omitempty"`
+	Properties *TestFailoverInputProperties
 }
 
 // TestFailoverInputProperties - Input definition for test failover input properties.
 type TestFailoverInputProperties struct {
 	// Test failover direction.
-	FailoverDirection *string `json:"failoverDirection,omitempty"`
+	FailoverDirection *string
 
 	// The id of the network to be used for test failover.
-	NetworkID *string `json:"networkId,omitempty"`
+	NetworkID *string
 
 	// Network type to be used for test failover.
-	NetworkType *string `json:"networkType,omitempty"`
+	NetworkType *string
 
 	// Provider specific settings.
-	ProviderSpecificDetails TestFailoverProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails TestFailoverProviderSpecificInputClassification
 }
 
 // TestFailoverJobDetails - This class represents the details for a test failover job.
 type TestFailoverJobDetails struct {
 	// REQUIRED; Gets the type of job details (see JobDetailsTypes enum for possible values).
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The affected object properties like source server, source cloud, target server, target cloud etc. based on the workflow
 	// object details.
-	AffectedObjectDetails map[string]*string `json:"affectedObjectDetails,omitempty"`
+	AffectedObjectDetails map[string]*string
 
 	// The test failover comments.
-	Comments *string `json:"comments,omitempty"`
+	Comments *string
 
 	// The test network friendly name.
-	NetworkFriendlyName *string `json:"networkFriendlyName,omitempty"`
+	NetworkFriendlyName *string
 
 	// The test network name.
-	NetworkName *string `json:"networkName,omitempty"`
+	NetworkName *string
 
 	// The test network type (see TestFailoverInput enum for possible values).
-	NetworkType *string `json:"networkType,omitempty"`
+	NetworkType *string
 
 	// The test VM details.
-	ProtectedItemDetails []*FailoverReplicationProtectedItemDetails `json:"protectedItemDetails,omitempty"`
+	ProtectedItemDetails []*FailoverReplicationProtectedItemDetails
 
 	// The test failover status.
-	TestFailoverStatus *string `json:"testFailoverStatus,omitempty"`
+	TestFailoverStatus *string
 }
 
 // GetJobDetails implements the JobDetailsClassification interface for type TestFailoverJobDetails.
@@ -10898,7 +10900,7 @@ type TestFailoverProviderSpecificInputClassification interface {
 // TestFailoverProviderSpecificInput - Provider specific test failover input.
 type TestFailoverProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetTestFailoverProviderSpecificInput implements the TestFailoverProviderSpecificInputClassification interface for type
@@ -10910,25 +10912,25 @@ func (t *TestFailoverProviderSpecificInput) GetTestFailoverProviderSpecificInput
 // TestMigrateCleanupInput - Input for test migrate cleanup.
 type TestMigrateCleanupInput struct {
 	// REQUIRED; Test migrate cleanup input properties.
-	Properties *TestMigrateCleanupInputProperties `json:"properties,omitempty"`
+	Properties *TestMigrateCleanupInputProperties
 }
 
 // TestMigrateCleanupInputProperties - Test migrate cleanup input properties.
 type TestMigrateCleanupInputProperties struct {
 	// Test migrate cleanup comments.
-	Comments *string `json:"comments,omitempty"`
+	Comments *string
 }
 
 // TestMigrateInput - Input for test migrate.
 type TestMigrateInput struct {
 	// REQUIRED; Test migrate input properties.
-	Properties *TestMigrateInputProperties `json:"properties,omitempty"`
+	Properties *TestMigrateInputProperties
 }
 
 // TestMigrateInputProperties - Test migrate input properties.
 type TestMigrateInputProperties struct {
 	// REQUIRED; The provider specific details.
-	ProviderSpecificDetails TestMigrateProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails TestMigrateProviderSpecificInputClassification
 }
 
 // TestMigrateProviderSpecificInputClassification provides polymorphic access to related types.
@@ -10943,7 +10945,7 @@ type TestMigrateProviderSpecificInputClassification interface {
 // TestMigrateProviderSpecificInput - Test migrate provider specific input.
 type TestMigrateProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetTestMigrateProviderSpecificInput implements the TestMigrateProviderSpecificInputClassification interface for type TestMigrateProviderSpecificInput.
@@ -10954,19 +10956,19 @@ func (t *TestMigrateProviderSpecificInput) GetTestMigrateProviderSpecificInput()
 // UnplannedFailoverInput - Input definition for unplanned failover.
 type UnplannedFailoverInput struct {
 	// REQUIRED; Unplanned failover input properties.
-	Properties *UnplannedFailoverInputProperties `json:"properties,omitempty"`
+	Properties *UnplannedFailoverInputProperties
 }
 
 // UnplannedFailoverInputProperties - Input definition for unplanned failover input properties.
 type UnplannedFailoverInputProperties struct {
 	// Failover direction.
-	FailoverDirection *string `json:"failoverDirection,omitempty"`
+	FailoverDirection *string
 
 	// Provider specific settings.
-	ProviderSpecificDetails UnplannedFailoverProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails UnplannedFailoverProviderSpecificInputClassification
 
 	// Source site operations status.
-	SourceSiteOperations *string `json:"sourceSiteOperations,omitempty"`
+	SourceSiteOperations *string
 }
 
 // UnplannedFailoverProviderSpecificInputClassification provides polymorphic access to related types.
@@ -10982,7 +10984,7 @@ type UnplannedFailoverProviderSpecificInputClassification interface {
 // UnplannedFailoverProviderSpecificInput - Provider specific unplanned failover input.
 type UnplannedFailoverProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetUnplannedFailoverProviderSpecificInput implements the UnplannedFailoverProviderSpecificInputClassification interface
@@ -10994,16 +10996,16 @@ func (u *UnplannedFailoverProviderSpecificInput) GetUnplannedFailoverProviderSpe
 // UpdateApplianceForReplicationProtectedItemInput - Update appliance for replication protected item input.
 type UpdateApplianceForReplicationProtectedItemInput struct {
 	// REQUIRED; Update appliance replication protected item properties.
-	Properties *UpdateApplianceForReplicationProtectedItemInputProperties `json:"properties,omitempty"`
+	Properties *UpdateApplianceForReplicationProtectedItemInputProperties
 }
 
 // UpdateApplianceForReplicationProtectedItemInputProperties - Update appliance for protected item input properties.
 type UpdateApplianceForReplicationProtectedItemInputProperties struct {
 	// REQUIRED; The provider specific input to update replication protected item.
-	ProviderSpecificDetails UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification
 
 	// REQUIRED; The target appliance Id.
-	TargetApplianceID *string `json:"targetApplianceId,omitempty"`
+	TargetApplianceID *string
 }
 
 // UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification provides polymorphic access to related types.
@@ -11018,7 +11020,7 @@ type UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassificati
 // UpdateApplianceForReplicationProtectedItemProviderSpecificInput - Update replication protected item provider specific input.
 type UpdateApplianceForReplicationProtectedItemProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetUpdateApplianceForReplicationProtectedItemProviderSpecificInput implements the UpdateApplianceForReplicationProtectedItemProviderSpecificInputClassification
@@ -11030,22 +11032,22 @@ func (u *UpdateApplianceForReplicationProtectedItemProviderSpecificInput) GetUpd
 // UpdateDiskInput - Disk input for update.
 type UpdateDiskInput struct {
 	// REQUIRED; The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// The target disk name.
-	TargetDiskName *string `json:"targetDiskName,omitempty"`
+	TargetDiskName *string
 }
 
 // UpdateMigrationItemInput - Update migration item input.
 type UpdateMigrationItemInput struct {
 	// Update migration item input properties.
-	Properties *UpdateMigrationItemInputProperties `json:"properties,omitempty"`
+	Properties *UpdateMigrationItemInputProperties
 }
 
 // UpdateMigrationItemInputProperties - Update migration item input properties.
 type UpdateMigrationItemInputProperties struct {
 	// REQUIRED; The provider specific input to update migration item.
-	ProviderSpecificDetails UpdateMigrationItemProviderSpecificInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails UpdateMigrationItemProviderSpecificInputClassification
 }
 
 // UpdateMigrationItemProviderSpecificInputClassification provides polymorphic access to related types.
@@ -11060,7 +11062,7 @@ type UpdateMigrationItemProviderSpecificInputClassification interface {
 // UpdateMigrationItemProviderSpecificInput - Update migration item provider specific input.
 type UpdateMigrationItemProviderSpecificInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetUpdateMigrationItemProviderSpecificInput implements the UpdateMigrationItemProviderSpecificInputClassification interface
@@ -11072,107 +11074,107 @@ func (u *UpdateMigrationItemProviderSpecificInput) GetUpdateMigrationItemProvide
 // UpdateMobilityServiceRequest - Request to update the mobility service on a protected item.
 type UpdateMobilityServiceRequest struct {
 	// The properties of the update mobility service request.
-	Properties *UpdateMobilityServiceRequestProperties `json:"properties,omitempty"`
+	Properties *UpdateMobilityServiceRequestProperties
 }
 
 // UpdateMobilityServiceRequestProperties - The properties of an update mobility service request.
 type UpdateMobilityServiceRequestProperties struct {
 	// The CS run as account Id.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 }
 
 // UpdateNetworkMappingInput - Update network mapping input.
 type UpdateNetworkMappingInput struct {
 	// The input properties needed to update network mapping.
-	Properties *UpdateNetworkMappingInputProperties `json:"properties,omitempty"`
+	Properties *UpdateNetworkMappingInputProperties
 }
 
 // UpdateNetworkMappingInputProperties - Common input details for network mapping operation.
 type UpdateNetworkMappingInputProperties struct {
 	// Fabrics specific input network Id.
-	FabricSpecificDetails FabricSpecificUpdateNetworkMappingInputClassification `json:"fabricSpecificDetails,omitempty"`
+	FabricSpecificDetails FabricSpecificUpdateNetworkMappingInputClassification
 
 	// Recovery fabric name.
-	RecoveryFabricName *string `json:"recoveryFabricName,omitempty"`
+	RecoveryFabricName *string
 
 	// Recovery network Id.
-	RecoveryNetworkID *string `json:"recoveryNetworkId,omitempty"`
+	RecoveryNetworkID *string
 }
 
 // UpdatePolicyInput - Update policy input.
 type UpdatePolicyInput struct {
 	// The ReplicationProviderSettings.
-	Properties *UpdatePolicyInputProperties `json:"properties,omitempty"`
+	Properties *UpdatePolicyInputProperties
 }
 
 // UpdatePolicyInputProperties - Policy update properties.
 type UpdatePolicyInputProperties struct {
 	// The ReplicationProviderSettings.
-	ReplicationProviderSettings PolicyProviderSpecificInputClassification `json:"replicationProviderSettings,omitempty"`
+	ReplicationProviderSettings PolicyProviderSpecificInputClassification
 }
 
 // UpdateProtectionContainerMappingInput - Container pairing update input.
 type UpdateProtectionContainerMappingInput struct {
 	// Update protection container mapping input properties.
-	Properties *UpdateProtectionContainerMappingInputProperties `json:"properties,omitempty"`
+	Properties *UpdateProtectionContainerMappingInputProperties
 }
 
 // UpdateProtectionContainerMappingInputProperties - Container pairing update input.
 type UpdateProtectionContainerMappingInputProperties struct {
 	// Provider specific input for updating protection container mapping.
-	ProviderSpecificInput ReplicationProviderSpecificUpdateContainerMappingInputClassification `json:"providerSpecificInput,omitempty"`
+	ProviderSpecificInput ReplicationProviderSpecificUpdateContainerMappingInputClassification
 }
 
 // UpdateRecoveryPlanInput - Update recovery plan input class.
 type UpdateRecoveryPlanInput struct {
 	// Recovery plan update properties.
-	Properties *UpdateRecoveryPlanInputProperties `json:"properties,omitempty"`
+	Properties *UpdateRecoveryPlanInputProperties
 }
 
 // UpdateRecoveryPlanInputProperties - Recovery plan update properties.
 type UpdateRecoveryPlanInputProperties struct {
 	// The recovery plan groups.
-	Groups []*RecoveryPlanGroup `json:"groups,omitempty"`
+	Groups []*RecoveryPlanGroup
 }
 
 // UpdateReplicationProtectedItemInput - Update replication protected item input.
 type UpdateReplicationProtectedItemInput struct {
 	// Update replication protected item properties.
-	Properties *UpdateReplicationProtectedItemInputProperties `json:"properties,omitempty"`
+	Properties *UpdateReplicationProtectedItemInputProperties
 }
 
 // UpdateReplicationProtectedItemInputProperties - Update protected item input properties.
 type UpdateReplicationProtectedItemInputProperties struct {
 	// The selected option to enable RDP\SSH on target vm after failover. String value of SrsDataContract.EnableRDPOnTargetOption
 	// enum.
-	EnableRdpOnTargetOption *string `json:"enableRdpOnTargetOption,omitempty"`
+	EnableRdpOnTargetOption *string
 
 	// License type.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// The provider specific input to update replication protected item.
-	ProviderSpecificDetails UpdateReplicationProtectedItemProviderInputClassification `json:"providerSpecificDetails,omitempty"`
+	ProviderSpecificDetails UpdateReplicationProtectedItemProviderInputClassification
 
 	// The target availability set Id.
-	RecoveryAvailabilitySetID *string `json:"recoveryAvailabilitySetId,omitempty"`
+	RecoveryAvailabilitySetID *string
 
 	// Target Azure VM name given by the user.
-	RecoveryAzureVMName *string `json:"recoveryAzureVMName,omitempty"`
+	RecoveryAzureVMName *string
 
 	// Target Azure VM size.
-	RecoveryAzureVMSize *string `json:"recoveryAzureVMSize,omitempty"`
+	RecoveryAzureVMSize *string
 
 	// Target Azure Network Id.
-	SelectedRecoveryAzureNetworkID *string `json:"selectedRecoveryAzureNetworkId,omitempty"`
+	SelectedRecoveryAzureNetworkID *string
 
 	// The selected source nic Id which will be used as the primary nic during failover.
-	SelectedSourceNicID *string `json:"selectedSourceNicId,omitempty"`
+	SelectedSourceNicID *string
 
 	// The Azure Network Id for test failover.
-	SelectedTfoAzureNetworkID *string `json:"selectedTfoAzureNetworkId,omitempty"`
+	SelectedTfoAzureNetworkID *string
 
 	// The list of VM nic details.
-	VMNics []*VMNicInputDetails `json:"vmNics,omitempty"`
+	VMNics []*VMNicInputDetails
 }
 
 // UpdateReplicationProtectedItemProviderInputClassification provides polymorphic access to related types.
@@ -11188,7 +11190,7 @@ type UpdateReplicationProtectedItemProviderInputClassification interface {
 // UpdateReplicationProtectedItemProviderInput - Update replication protected item provider specific input.
 type UpdateReplicationProtectedItemProviderInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetUpdateReplicationProtectedItemProviderInput implements the UpdateReplicationProtectedItemProviderInputClassification
@@ -11200,208 +11202,208 @@ func (u *UpdateReplicationProtectedItemProviderInput) GetUpdateReplicationProtec
 // UpdateVCenterRequest - Input required to update vCenter.
 type UpdateVCenterRequest struct {
 	// The update VCenter Request Properties.
-	Properties *UpdateVCenterRequestProperties `json:"properties,omitempty"`
+	Properties *UpdateVCenterRequestProperties
 }
 
 // UpdateVCenterRequestProperties - The properties of an update vCenter request.
 type UpdateVCenterRequestProperties struct {
 	// The friendly name of the vCenter.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The IP address of the vCenter to be discovered.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The port number for discovery.
-	Port *string `json:"port,omitempty"`
+	Port *string
 
 	// The process server Id from where the update can be orchestrated.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The CS account Id which has privileges to update the vCenter.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 }
 
 // VCenter - vCenter definition.
 type VCenter struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// VCenter related data.
-	Properties *VCenterProperties `json:"properties,omitempty"`
+	Properties *VCenterProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VCenterCollection - Collection of vCenter details.
 type VCenterCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The vCenter details.
-	Value []*VCenter `json:"value,omitempty"`
+	Value []*VCenter
 }
 
 // VCenterProperties - vCenter properties.
 type VCenterProperties struct {
 	// The VCenter discovery status.
-	DiscoveryStatus *string `json:"discoveryStatus,omitempty"`
+	DiscoveryStatus *string
 
 	// The ARM resource name of the fabric containing this VCenter.
-	FabricArmResourceName *string `json:"fabricArmResourceName,omitempty"`
+	FabricArmResourceName *string
 
 	// Friendly name of the vCenter.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// The health errors for this VCenter.
-	HealthErrors []*HealthError `json:"healthErrors,omitempty"`
+	HealthErrors []*HealthError
 
 	// The IP address of the vCenter.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The infrastructure Id of vCenter.
-	InfrastructureID *string `json:"infrastructureId,omitempty"`
+	InfrastructureID *string
 
 	// VCenter internal ID.
-	InternalID *string `json:"internalId,omitempty"`
+	InternalID *string
 
 	// The time when the last heartbeat was received by vCenter.
-	LastHeartbeat *time.Time `json:"lastHeartbeat,omitempty"`
+	LastHeartbeat *time.Time
 
 	// The port number for discovery.
-	Port *string `json:"port,omitempty"`
+	Port *string
 
 	// The process server Id.
-	ProcessServerID *string `json:"processServerId,omitempty"`
+	ProcessServerID *string
 
 	// The account Id which has privileges to discover the vCenter.
-	RunAsAccountID *string `json:"runAsAccountId,omitempty"`
+	RunAsAccountID *string
 }
 
 // VMNicDetails - Hyper V VM network details.
 type VMNicDetails struct {
 	// A value indicating whether the NIC has accelerated networking enabled.
-	EnableAcceleratedNetworkingOnRecovery *bool `json:"enableAcceleratedNetworkingOnRecovery,omitempty"`
+	EnableAcceleratedNetworkingOnRecovery *bool
 
 	// Whether the TFO NIC has accelerated networking enabled.
-	EnableAcceleratedNetworkingOnTfo *bool `json:"enableAcceleratedNetworkingOnTfo,omitempty"`
+	EnableAcceleratedNetworkingOnTfo *bool
 
 	// The IP configurations of the NIC.
-	IPConfigs []*IPConfigDetails `json:"ipConfigs,omitempty"`
+	IPConfigs []*IPConfigDetails
 
 	// The nic Id.
-	NicID *string `json:"nicId,omitempty"`
+	NicID *string
 
 	// The id of the NSG associated with the NIC.
-	RecoveryNetworkSecurityGroupID *string `json:"recoveryNetworkSecurityGroupId,omitempty"`
+	RecoveryNetworkSecurityGroupID *string
 
 	// The name of the NIC to be used when creating target NICs.
-	RecoveryNicName *string `json:"recoveryNicName,omitempty"`
+	RecoveryNicName *string
 
 	// The resource group of the NIC to be used when creating target NICs.
-	RecoveryNicResourceGroupName *string `json:"recoveryNicResourceGroupName,omitempty"`
+	RecoveryNicResourceGroupName *string
 
 	// Recovery VM network Id.
-	RecoveryVMNetworkID *string `json:"recoveryVMNetworkId,omitempty"`
+	RecoveryVMNetworkID *string
 
 	// The replica nic Id.
-	ReplicaNicID *string `json:"replicaNicId,omitempty"`
+	ReplicaNicID *string
 
 	// A value indicating whether an existing NIC is allowed to be reused during failover subject to availability.
-	ReuseExistingNic *bool `json:"reuseExistingNic,omitempty"`
+	ReuseExistingNic *bool
 
 	// Selection type for failover.
-	SelectionType *string `json:"selectionType,omitempty"`
+	SelectionType *string
 
 	// The source nic ARM Id.
-	SourceNicArmID *string `json:"sourceNicArmId,omitempty"`
+	SourceNicArmID *string
 
 	// Target NIC name.
-	TargetNicName *string `json:"targetNicName,omitempty"`
+	TargetNicName *string
 
 	// The NSG to be used by NIC during test failover.
-	TfoNetworkSecurityGroupID *string `json:"tfoNetworkSecurityGroupId,omitempty"`
+	TfoNetworkSecurityGroupID *string
 
 	// The name of the NIC to be used when creating target NICs in TFO.
-	TfoRecoveryNicName *string `json:"tfoRecoveryNicName,omitempty"`
+	TfoRecoveryNicName *string
 
 	// The resource group of the NIC to be used when creating target NICs in TFO.
-	TfoRecoveryNicResourceGroupName *string `json:"tfoRecoveryNicResourceGroupName,omitempty"`
+	TfoRecoveryNicResourceGroupName *string
 
 	// A value indicating whether an existing NIC is allowed to be reused during test failover subject to availability.
-	TfoReuseExistingNic *bool `json:"tfoReuseExistingNic,omitempty"`
+	TfoReuseExistingNic *bool
 
 	// The network to be used by NIC during test failover.
-	TfoVMNetworkID *string `json:"tfoVMNetworkId,omitempty"`
+	TfoVMNetworkID *string
 
 	// VM network name.
-	VMNetworkName *string `json:"vMNetworkName,omitempty"`
+	VMNetworkName *string
 }
 
 // VMNicInputDetails - Hyper V VM network input details.
 type VMNicInputDetails struct {
 	// Whether the NIC has accelerated networking enabled.
-	EnableAcceleratedNetworkingOnRecovery *bool `json:"enableAcceleratedNetworkingOnRecovery,omitempty"`
+	EnableAcceleratedNetworkingOnRecovery *bool
 
 	// Whether the test NIC has accelerated networking enabled.
-	EnableAcceleratedNetworkingOnTfo *bool `json:"enableAcceleratedNetworkingOnTfo,omitempty"`
+	EnableAcceleratedNetworkingOnTfo *bool
 
 	// The IP configurations to be used by NIC during test failover and failover.
-	IPConfigs []*IPConfigInputDetails `json:"ipConfigs,omitempty"`
+	IPConfigs []*IPConfigInputDetails
 
 	// The nic Id.
-	NicID *string `json:"nicId,omitempty"`
+	NicID *string
 
 	// The id of the NSG associated with the NIC.
-	RecoveryNetworkSecurityGroupID *string `json:"recoveryNetworkSecurityGroupId,omitempty"`
+	RecoveryNetworkSecurityGroupID *string
 
 	// The name of the NIC to be used when creating target NICs.
-	RecoveryNicName *string `json:"recoveryNicName,omitempty"`
+	RecoveryNicName *string
 
 	// The resource group of the NIC to be used when creating target NICs.
-	RecoveryNicResourceGroupName *string `json:"recoveryNicResourceGroupName,omitempty"`
+	RecoveryNicResourceGroupName *string
 
 	// A value indicating whether an existing NIC is allowed to be reused during failover subject to availability.
-	ReuseExistingNic *bool `json:"reuseExistingNic,omitempty"`
+	ReuseExistingNic *bool
 
 	// Selection type for failover.
-	SelectionType *string `json:"selectionType,omitempty"`
+	SelectionType *string
 
 	// Target NIC name.
-	TargetNicName *string `json:"targetNicName,omitempty"`
+	TargetNicName *string
 
 	// The NSG to be used by NIC during test failover.
-	TfoNetworkSecurityGroupID *string `json:"tfoNetworkSecurityGroupId,omitempty"`
+	TfoNetworkSecurityGroupID *string
 
 	// The name of the NIC to be used when creating target NICs in TFO.
-	TfoNicName *string `json:"tfoNicName,omitempty"`
+	TfoNicName *string
 
 	// The resource group of the NIC to be used when creating target NICs in TFO.
-	TfoNicResourceGroupName *string `json:"tfoNicResourceGroupName,omitempty"`
+	TfoNicResourceGroupName *string
 
 	// A value indicating whether an existing NIC is allowed to be reused during test failover subject to availability.
-	TfoReuseExistingNic *bool `json:"tfoReuseExistingNic,omitempty"`
+	TfoReuseExistingNic *bool
 }
 
 // VMNicUpdatesTaskDetails - This class represents the vm NicUpdates task details.
 type VMNicUpdatesTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// Name of the Nic.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Nic Id.
-	NicID *string `json:"nicId,omitempty"`
+	NicID *string
 
 	// Virtual machine Id.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 }
 
 // GetTaskTypeDetails implements the TaskTypeDetailsClassification interface for type VMNicUpdatesTaskDetails.
@@ -11414,7 +11416,7 @@ func (v *VMNicUpdatesTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
 // VMwareCbtContainerCreationInput - VMwareCbt container creation input.
 type VMwareCbtContainerCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetReplicationProviderSpecificContainerCreationInput implements the ReplicationProviderSpecificContainerCreationInputClassification
@@ -11428,25 +11430,25 @@ func (v *VMwareCbtContainerCreationInput) GetReplicationProviderSpecificContaine
 // VMwareCbtContainerMappingInput - VMwareCbt container mapping input.
 type VMwareCbtContainerMappingInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The storage account ARM Id.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// REQUIRED; The target location.
-	TargetLocation *string `json:"targetLocation,omitempty"`
+	TargetLocation *string
 
 	// The target key vault ARM Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	KeyVaultID *string
 
 	// The target key vault URL.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	KeyVaultURI *string
 
 	// The secret name of the service bus connection string.
-	ServiceBusConnectionStringSecretName *string `json:"serviceBusConnectionStringSecretName,omitempty"`
+	ServiceBusConnectionStringSecretName *string
 
 	// The secret name of the storage account.
-	StorageAccountSasSecretName *string `json:"storageAccountSasSecretName,omitempty"`
+	StorageAccountSasSecretName *string
 }
 
 // GetReplicationProviderSpecificContainerMappingInput implements the ReplicationProviderSpecificContainerMappingInputClassification
@@ -11460,97 +11462,97 @@ func (v *VMwareCbtContainerMappingInput) GetReplicationProviderSpecificContainer
 // VMwareCbtDiskInput - VMwareCbt disk input.
 type VMwareCbtDiskInput struct {
 	// REQUIRED; The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// REQUIRED; A value indicating whether the disk is the OS disk.
-	IsOSDisk *string `json:"isOSDisk,omitempty"`
+	IsOSDisk *string
 
 	// REQUIRED; The log storage account ARM Id.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty"`
+	LogStorageAccountID *string
 
 	// REQUIRED; The key vault secret name of the log storage account.
-	LogStorageAccountSasSecretName *string `json:"logStorageAccountSasSecretName,omitempty"`
+	LogStorageAccountSasSecretName *string
 
 	// The DiskEncryptionSet ARM Id.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty"`
+	DiskEncryptionSetID *string
 
 	// The disk type.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 }
 
 // VMwareCbtEnableMigrationInput - VMwareCbt specific enable migration input.
 type VMwareCbtEnableMigrationInput struct {
 	// REQUIRED; The data mover run as account Id.
-	DataMoverRunAsAccountID *string `json:"dataMoverRunAsAccountId,omitempty"`
+	DataMoverRunAsAccountID *string
 
 	// REQUIRED; The disks to include list.
-	DisksToInclude []*VMwareCbtDiskInput `json:"disksToInclude,omitempty"`
+	DisksToInclude []*VMwareCbtDiskInput
 
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The snapshot run as account Id.
-	SnapshotRunAsAccountID *string `json:"snapshotRunAsAccountId,omitempty"`
+	SnapshotRunAsAccountID *string
 
 	// REQUIRED; The target network ARM Id.
-	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	TargetNetworkID *string
 
 	// REQUIRED; The target resource group ARM Id.
-	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	TargetResourceGroupID *string
 
 	// REQUIRED; The ARM Id of the VM discovered in VMware.
-	VmwareMachineID *string `json:"vmwareMachineId,omitempty"`
+	VmwareMachineID *string
 
 	// License type.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// A value indicating whether auto resync is to be done.
-	PerformAutoResync *string `json:"performAutoResync,omitempty"`
+	PerformAutoResync *string
 
 	// A value indicating whether bulk SQL RP registration to be done.
-	PerformSQLBulkRegistration *string `json:"performSqlBulkRegistration,omitempty"`
+	PerformSQLBulkRegistration *string
 
 	// The SQL Server license type.
-	SQLServerLicenseType *SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *SQLServerLicenseType
 
 	// The tags for the seed disks.
-	SeedDiskTags map[string]*string `json:"seedDiskTags,omitempty"`
+	SeedDiskTags map[string]*string
 
 	// The target availability set ARM Id.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The target boot diagnostics storage account ARM Id.
-	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	TargetBootDiagnosticsStorageAccountID *string
 
 	// The tags for the target disks.
-	TargetDiskTags map[string]*string `json:"targetDiskTags,omitempty"`
+	TargetDiskTags map[string]*string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The target proximity placement group ARM Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target subnet name.
-	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	TargetSubnetName *string
 
 	// The target VM name.
-	TargetVMName *string `json:"targetVmName,omitempty"`
+	TargetVMName *string
 
 	// The target VM size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 
 	// The selected test network ARM Id.
-	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	TestNetworkID *string
 
 	// The selected test subnet name.
-	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	TestSubnetName *string
 }
 
 // GetEnableMigrationProviderSpecificInput implements the EnableMigrationProviderSpecificInputClassification interface for
@@ -11564,10 +11566,10 @@ func (v *VMwareCbtEnableMigrationInput) GetEnableMigrationProviderSpecificInput(
 // VMwareCbtEventDetails - Event details for VMwareCbt provider.
 type VMwareCbtEventDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// READ-ONLY; The migration item name.
-	MigrationItemName *string `json:"migrationItemName,omitempty" azure:"ro"`
+	MigrationItemName *string
 }
 
 // GetEventProviderSpecificDetails implements the EventProviderSpecificDetailsClassification interface for type VMwareCbtEventDetails.
@@ -11580,10 +11582,10 @@ func (v *VMwareCbtEventDetails) GetEventProviderSpecificDetails() *EventProvider
 // VMwareCbtMigrateInput - VMwareCbt specific migrate input.
 type VMwareCbtMigrateInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; A value indicating whether VM is to be shutdown.
-	PerformShutdown *string `json:"performShutdown,omitempty"`
+	PerformShutdown *string
 }
 
 // GetMigrateProviderSpecificInput implements the MigrateProviderSpecificInputClassification interface for type VMwareCbtMigrateInput.
@@ -11596,121 +11598,121 @@ func (v *VMwareCbtMigrateInput) GetMigrateProviderSpecificInput() *MigrateProvid
 // VMwareCbtMigrationDetails - VMwareCbt provider specific settings.
 type VMwareCbtMigrationDetails struct {
 	// REQUIRED; Gets the instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// License Type of the VM to be used.
-	LicenseType *string `json:"licenseType,omitempty"`
+	LicenseType *string
 
 	// A value indicating whether auto resync is to be done.
-	PerformAutoResync *string `json:"performAutoResync,omitempty"`
+	PerformAutoResync *string
 
 	// The list of protected disks.
-	ProtectedDisks []*VMwareCbtProtectedDiskDetails `json:"protectedDisks,omitempty"`
+	ProtectedDisks []*VMwareCbtProtectedDiskDetails
 
 	// The SQL Server license type.
-	SQLServerLicenseType *string `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *string
 
 	// The tags for the seed disks.
-	SeedDiskTags map[string]*string `json:"seedDiskTags,omitempty"`
+	SeedDiskTags map[string]*string
 
 	// The target availability set Id.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The target boot diagnostics storage account ARM Id.
-	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	TargetBootDiagnosticsStorageAccountID *string
 
 	// The tags for the target disks.
-	TargetDiskTags map[string]*string `json:"targetDiskTags,omitempty"`
+	TargetDiskTags map[string]*string
 
 	// The target network Id.
-	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	TargetNetworkID *string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The target proximity placement group Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target resource group Id.
-	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	TargetResourceGroupID *string
 
 	// Target VM name.
-	TargetVMName *string `json:"targetVmName,omitempty"`
+	TargetVMName *string
 
 	// The target VM size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 
 	// The test network Id.
-	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	TestNetworkID *string
 
 	// The network details.
-	VMNics []*VMwareCbtNicDetails `json:"vmNics,omitempty"`
+	VMNics []*VMwareCbtNicDetails
 
 	// READ-ONLY; The data mover run as account Id.
-	DataMoverRunAsAccountID *string `json:"dataMoverRunAsAccountId,omitempty" azure:"ro"`
+	DataMoverRunAsAccountID *string
 
 	// READ-ONLY; The firmware type.
-	FirmwareType *string `json:"firmwareType,omitempty" azure:"ro"`
+	FirmwareType *string
 
 	// READ-ONLY; The initial seeding progress percentage.
-	InitialSeedingProgressPercentage *int32 `json:"initialSeedingProgressPercentage,omitempty" azure:"ro"`
+	InitialSeedingProgressPercentage *int32
 
 	// READ-ONLY; The initial seeding retry count.
-	InitialSeedingRetryCount *int64 `json:"initialSeedingRetryCount,omitempty" azure:"ro"`
+	InitialSeedingRetryCount *int64
 
 	// READ-ONLY; The last recovery point Id.
-	LastRecoveryPointID *string `json:"lastRecoveryPointId,omitempty" azure:"ro"`
+	LastRecoveryPointID *string
 
 	// READ-ONLY; The last recovery point received time.
-	LastRecoveryPointReceived *time.Time `json:"lastRecoveryPointReceived,omitempty" azure:"ro"`
+	LastRecoveryPointReceived *time.Time
 
 	// READ-ONLY; The migration progress percentage.
-	MigrationProgressPercentage *int32 `json:"migrationProgressPercentage,omitempty" azure:"ro"`
+	MigrationProgressPercentage *int32
 
 	// READ-ONLY; The recovery point Id to which the VM was migrated.
-	MigrationRecoveryPointID *string `json:"migrationRecoveryPointId,omitempty" azure:"ro"`
+	MigrationRecoveryPointID *string
 
 	// READ-ONLY; The type of the OS on the VM.
-	OSType *string `json:"osType,omitempty" azure:"ro"`
+	OSType *string
 
 	// READ-ONLY; The resume progress percentage.
-	ResumeProgressPercentage *int32 `json:"resumeProgressPercentage,omitempty" azure:"ro"`
+	ResumeProgressPercentage *int32
 
 	// READ-ONLY; The resume retry count.
-	ResumeRetryCount *int64 `json:"resumeRetryCount,omitempty" azure:"ro"`
+	ResumeRetryCount *int64
 
 	// READ-ONLY; The resync progress percentage.
-	ResyncProgressPercentage *int32 `json:"resyncProgressPercentage,omitempty" azure:"ro"`
+	ResyncProgressPercentage *int32
 
 	// READ-ONLY; A value indicating whether resync is required.
-	ResyncRequired *string `json:"resyncRequired,omitempty" azure:"ro"`
+	ResyncRequired *string
 
 	// READ-ONLY; The resync retry count.
-	ResyncRetryCount *int64 `json:"resyncRetryCount,omitempty" azure:"ro"`
+	ResyncRetryCount *int64
 
 	// READ-ONLY; The resync state.
-	ResyncState *ResyncState `json:"resyncState,omitempty" azure:"ro"`
+	ResyncState *ResyncState
 
 	// READ-ONLY; The snapshot run as account Id.
-	SnapshotRunAsAccountID *string `json:"snapshotRunAsAccountId,omitempty" azure:"ro"`
+	SnapshotRunAsAccountID *string
 
 	// READ-ONLY; The replication storage account ARM Id. This is applicable only for the blob based replication test hook.
-	StorageAccountID *string `json:"storageAccountId,omitempty" azure:"ro"`
+	StorageAccountID *string
 
 	// READ-ONLY; The target generation.
-	TargetGeneration *string `json:"targetGeneration,omitempty" azure:"ro"`
+	TargetGeneration *string
 
 	// READ-ONLY; The target location.
-	TargetLocation *string `json:"targetLocation,omitempty" azure:"ro"`
+	TargetLocation *string
 
 	// READ-ONLY; The ARM Id of the VM discovered in VMware.
-	VmwareMachineID *string `json:"vmwareMachineId,omitempty" azure:"ro"`
+	VmwareMachineID *string
 }
 
 // GetMigrationProviderSpecificSettings implements the MigrationProviderSpecificSettingsClassification interface for type
@@ -11724,88 +11726,88 @@ func (v *VMwareCbtMigrationDetails) GetMigrationProviderSpecificSettings() *Migr
 // VMwareCbtNicDetails - VMwareCbt NIC details.
 type VMwareCbtNicDetails struct {
 	// A value indicating whether this is the primary NIC.
-	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
+	IsPrimaryNic *string
 
 	// A value indicating whether this NIC is selected for migration.
-	IsSelectedForMigration *string `json:"isSelectedForMigration,omitempty"`
+	IsSelectedForMigration *string
 
 	// The target IP address.
-	TargetIPAddress *string `json:"targetIPAddress,omitempty"`
+	TargetIPAddress *string
 
 	// The target IP address type.
-	TargetIPAddressType *EthernetAddressType `json:"targetIPAddressType,omitempty"`
+	TargetIPAddressType *EthernetAddressType
 
 	// Target NIC name.
-	TargetNicName *string `json:"targetNicName,omitempty"`
+	TargetNicName *string
 
 	// Target subnet name.
-	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	TargetSubnetName *string
 
 	// The test IP address.
-	TestIPAddress *string `json:"testIPAddress,omitempty"`
+	TestIPAddress *string
 
 	// The test IP address type.
-	TestIPAddressType *EthernetAddressType `json:"testIPAddressType,omitempty"`
+	TestIPAddressType *EthernetAddressType
 
 	// Source network Id.
-	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	TestNetworkID *string
 
 	// Test subnet name.
-	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	TestSubnetName *string
 
 	// READ-ONLY; The NIC Id.
-	NicID *string `json:"nicId,omitempty" azure:"ro"`
+	NicID *string
 
 	// READ-ONLY; The source IP address.
-	SourceIPAddress *string `json:"sourceIPAddress,omitempty" azure:"ro"`
+	SourceIPAddress *string
 
 	// READ-ONLY; The source IP address type.
-	SourceIPAddressType *EthernetAddressType `json:"sourceIPAddressType,omitempty" azure:"ro"`
+	SourceIPAddressType *EthernetAddressType
 
 	// READ-ONLY; Source network Id.
-	SourceNetworkID *string `json:"sourceNetworkId,omitempty" azure:"ro"`
+	SourceNetworkID *string
 }
 
 // VMwareCbtNicInput - VMwareCbt NIC input.
 type VMwareCbtNicInput struct {
 	// REQUIRED; A value indicating whether this is the primary NIC.
-	IsPrimaryNic *string `json:"isPrimaryNic,omitempty"`
+	IsPrimaryNic *string
 
 	// REQUIRED; The NIC Id.
-	NicID *string `json:"nicId,omitempty"`
+	NicID *string
 
 	// A value indicating whether this NIC is selected for migration.
-	IsSelectedForMigration *string `json:"isSelectedForMigration,omitempty"`
+	IsSelectedForMigration *string
 
 	// Target NIC name.
-	TargetNicName *string `json:"targetNicName,omitempty"`
+	TargetNicName *string
 
 	// The static IP address.
-	TargetStaticIPAddress *string `json:"targetStaticIPAddress,omitempty"`
+	TargetStaticIPAddress *string
 
 	// Target subnet name.
-	TargetSubnetName *string `json:"targetSubnetName,omitempty"`
+	TargetSubnetName *string
 
 	// The test static IP address.
-	TestStaticIPAddress *string `json:"testStaticIPAddress,omitempty"`
+	TestStaticIPAddress *string
 
 	// The test subnet name.
-	TestSubnetName *string `json:"testSubnetName,omitempty"`
+	TestSubnetName *string
 }
 
 // VMwareCbtPolicyCreationInput - VMware Cbt policy creation input.
 type VMwareCbtPolicyCreationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency (in minutes).
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency (in minutes).
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
+	RecoveryPointHistoryInMinutes *int32
 }
 
 // GetPolicyProviderSpecificInput implements the PolicyProviderSpecificInputClassification interface for type VMwareCbtPolicyCreationInput.
@@ -11818,73 +11820,73 @@ func (v *VMwareCbtPolicyCreationInput) GetPolicyProviderSpecificInput() *PolicyP
 // VMwareCbtProtectedDiskDetails - VMwareCbt protected disk details.
 type VMwareCbtProtectedDiskDetails struct {
 	// The disk type.
-	DiskType *DiskAccountType `json:"diskType,omitempty"`
+	DiskType *DiskAccountType
 
 	// The name for the target managed disk.
-	TargetDiskName *string `json:"targetDiskName,omitempty"`
+	TargetDiskName *string
 
 	// READ-ONLY; The disk capacity in bytes.
-	CapacityInBytes *int64 `json:"capacityInBytes,omitempty" azure:"ro"`
+	CapacityInBytes *int64
 
 	// READ-ONLY; The DiskEncryptionSet ARM Id.
-	DiskEncryptionSetID *string `json:"diskEncryptionSetId,omitempty" azure:"ro"`
+	DiskEncryptionSetID *string
 
 	// READ-ONLY; The disk id.
-	DiskID *string `json:"diskId,omitempty" azure:"ro"`
+	DiskID *string
 
 	// READ-ONLY; The disk name.
-	DiskName *string `json:"diskName,omitempty" azure:"ro"`
+	DiskName *string
 
 	// READ-ONLY; The disk path.
-	DiskPath *string `json:"diskPath,omitempty" azure:"ro"`
+	DiskPath *string
 
 	// READ-ONLY; A value indicating whether the disk is the OS disk.
-	IsOSDisk *string `json:"isOSDisk,omitempty" azure:"ro"`
+	IsOSDisk *string
 
 	// READ-ONLY; The log storage account ARM Id.
-	LogStorageAccountID *string `json:"logStorageAccountId,omitempty" azure:"ro"`
+	LogStorageAccountID *string
 
 	// READ-ONLY; The key vault secret name of the log storage account.
-	LogStorageAccountSasSecretName *string `json:"logStorageAccountSasSecretName,omitempty" azure:"ro"`
+	LogStorageAccountSasSecretName *string
 
 	// READ-ONLY; The uri of the seed blob.
-	SeedBlobURI *string `json:"seedBlobUri,omitempty" azure:"ro"`
+	SeedBlobURI *string
 
 	// READ-ONLY; The ARM Id of the seed managed disk.
-	SeedManagedDiskID *string `json:"seedManagedDiskId,omitempty" azure:"ro"`
+	SeedManagedDiskID *string
 
 	// READ-ONLY; The uri of the target blob.
-	TargetBlobURI *string `json:"targetBlobUri,omitempty" azure:"ro"`
+	TargetBlobURI *string
 
 	// READ-ONLY; The ARM Id of the target managed disk.
-	TargetManagedDiskID *string `json:"targetManagedDiskId,omitempty" azure:"ro"`
+	TargetManagedDiskID *string
 }
 
 // VMwareCbtProtectionContainerMappingDetails - VMwareCbt provider specific container mapping details.
 type VMwareCbtProtectionContainerMappingDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// READ-ONLY; The target key vault ARM Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty" azure:"ro"`
+	KeyVaultID *string
 
 	// READ-ONLY; The target key vault URI.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty" azure:"ro"`
+	KeyVaultURI *string
 
 	// READ-ONLY; The role size to NIC count map.
-	RoleSizeToNicCountMap map[string]*int32 `json:"roleSizeToNicCountMap,omitempty" azure:"ro"`
+	RoleSizeToNicCountMap map[string]*int32
 
 	// READ-ONLY; The secret name of the service bus connection string.
-	ServiceBusConnectionStringSecretName *string `json:"serviceBusConnectionStringSecretName,omitempty" azure:"ro"`
+	ServiceBusConnectionStringSecretName *string
 
 	// READ-ONLY; The storage account ARM Id.
-	StorageAccountID *string `json:"storageAccountId,omitempty" azure:"ro"`
+	StorageAccountID *string
 
 	// READ-ONLY; The secret name of the storage account.
-	StorageAccountSasSecretName *string `json:"storageAccountSasSecretName,omitempty" azure:"ro"`
+	StorageAccountSasSecretName *string
 
 	// READ-ONLY; The target location.
-	TargetLocation *string `json:"targetLocation,omitempty" azure:"ro"`
+	TargetLocation *string
 }
 
 // GetProtectionContainerMappingProviderSpecificDetails implements the ProtectionContainerMappingProviderSpecificDetailsClassification
@@ -11898,10 +11900,10 @@ func (v *VMwareCbtProtectionContainerMappingDetails) GetProtectionContainerMappi
 // VMwareCbtResumeReplicationInput - VMwareCbt specific resume replication input.
 type VMwareCbtResumeReplicationInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// A value indicating whether Migration resources to be deleted.
-	DeleteMigrationResources *string `json:"deleteMigrationResources,omitempty"`
+	DeleteMigrationResources *string
 }
 
 // GetResumeReplicationProviderSpecificInput implements the ResumeReplicationProviderSpecificInputClassification interface
@@ -11915,10 +11917,10 @@ func (v *VMwareCbtResumeReplicationInput) GetResumeReplicationProviderSpecificIn
 // VMwareCbtResyncInput - VMwareCbt specific resync input.
 type VMwareCbtResyncInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; A value indicating whether CBT is to be reset.
-	SkipCbtReset *string `json:"skipCbtReset,omitempty"`
+	SkipCbtReset *string
 }
 
 // GetResyncProviderSpecificInput implements the ResyncProviderSpecificInputClassification interface for type VMwareCbtResyncInput.
@@ -11931,16 +11933,16 @@ func (v *VMwareCbtResyncInput) GetResyncProviderSpecificInput() *ResyncProviderS
 // VMwareCbtTestMigrateInput - VMwareCbt specific test migrate input.
 type VMwareCbtTestMigrateInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The test network Id.
-	NetworkID *string `json:"networkId,omitempty"`
+	NetworkID *string
 
 	// REQUIRED; The recovery point Id.
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// The list of NIC details.
-	VMNics []*VMwareCbtNicInput `json:"vmNics,omitempty"`
+	VMNics []*VMwareCbtNicInput
 }
 
 // GetTestMigrateProviderSpecificInput implements the TestMigrateProviderSpecificInputClassification interface for type VMwareCbtTestMigrateInput.
@@ -11953,70 +11955,70 @@ func (v *VMwareCbtTestMigrateInput) GetTestMigrateProviderSpecificInput() *TestM
 // VMwareCbtUpdateDiskInput - VMwareCbt disk input for update.
 type VMwareCbtUpdateDiskInput struct {
 	// REQUIRED; The disk Id.
-	DiskID *string `json:"diskId,omitempty"`
+	DiskID *string
 
 	// A value indicating whether the disk is the OS disk.
-	IsOSDisk *string `json:"isOSDisk,omitempty"`
+	IsOSDisk *string
 
 	// The target disk name.
-	TargetDiskName *string `json:"targetDiskName,omitempty"`
+	TargetDiskName *string
 }
 
 // VMwareCbtUpdateMigrationItemInput - VMwareCbt specific update migration item input.
 type VMwareCbtUpdateMigrationItemInput struct {
 	// REQUIRED; The class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The license type.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// A value indicating whether auto resync is to be done.
-	PerformAutoResync *string `json:"performAutoResync,omitempty"`
+	PerformAutoResync *string
 
 	// The SQL Server license type.
-	SQLServerLicenseType *SQLServerLicenseType `json:"sqlServerLicenseType,omitempty"`
+	SQLServerLicenseType *SQLServerLicenseType
 
 	// The target availability set ARM Id.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// The target availability zone.
-	TargetAvailabilityZone *string `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *string
 
 	// The target boot diagnostics storage account ARM Id.
-	TargetBootDiagnosticsStorageAccountID *string `json:"targetBootDiagnosticsStorageAccountId,omitempty"`
+	TargetBootDiagnosticsStorageAccountID *string
 
 	// The tags for the target disks.
-	TargetDiskTags map[string]*string `json:"targetDiskTags,omitempty"`
+	TargetDiskTags map[string]*string
 
 	// The target network ARM Id.
-	TargetNetworkID *string `json:"targetNetworkId,omitempty"`
+	TargetNetworkID *string
 
 	// The tags for the target NICs.
-	TargetNicTags map[string]*string `json:"targetNicTags,omitempty"`
+	TargetNicTags map[string]*string
 
 	// The target proximity placement group ARM Id.
-	TargetProximityPlacementGroupID *string `json:"targetProximityPlacementGroupId,omitempty"`
+	TargetProximityPlacementGroupID *string
 
 	// The target resource group ARM Id.
-	TargetResourceGroupID *string `json:"targetResourceGroupId,omitempty"`
+	TargetResourceGroupID *string
 
 	// The target VM name.
-	TargetVMName *string `json:"targetVmName,omitempty"`
+	TargetVMName *string
 
 	// The target VM size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// The target VM tags.
-	TargetVMTags map[string]*string `json:"targetVmTags,omitempty"`
+	TargetVMTags map[string]*string
 
 	// The test network ARM Id.
-	TestNetworkID *string `json:"testNetworkId,omitempty"`
+	TestNetworkID *string
 
 	// The list of disk update properties.
-	VMDisks []*VMwareCbtUpdateDiskInput `json:"vmDisks,omitempty"`
+	VMDisks []*VMwareCbtUpdateDiskInput
 
 	// The list of NIC details.
-	VMNics []*VMwareCbtNicInput `json:"vmNics,omitempty"`
+	VMNics []*VMwareCbtNicInput
 }
 
 // GetUpdateMigrationItemProviderSpecificInput implements the UpdateMigrationItemProviderSpecificInputClassification interface
@@ -12030,106 +12032,106 @@ func (v *VMwareCbtUpdateMigrationItemInput) GetUpdateMigrationItemProviderSpecif
 // VMwareDetails - Store the fabric details specific to the VMware fabric.
 type VMwareDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The number of source and target servers configured to talk to this CS.
-	AgentCount *string `json:"agentCount,omitempty"`
+	AgentCount *string
 
 	// Agent expiry date.
-	AgentExpiryDate *time.Time `json:"agentExpiryDate,omitempty"`
+	AgentExpiryDate *time.Time
 
 	// The agent Version.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// The agent version details.
-	AgentVersionDetails *VersionDetails `json:"agentVersionDetails,omitempty"`
+	AgentVersionDetails *VersionDetails
 
 	// The available memory.
-	AvailableMemoryInBytes *int64 `json:"availableMemoryInBytes,omitempty"`
+	AvailableMemoryInBytes *int64
 
 	// The available space.
-	AvailableSpaceInBytes *int64 `json:"availableSpaceInBytes,omitempty"`
+	AvailableSpaceInBytes *int64
 
 	// The percentage of the CPU load.
-	CPULoad *string `json:"cpuLoad,omitempty"`
+	CPULoad *string
 
 	// The CPU load status.
-	CPULoadStatus *string `json:"cpuLoadStatus,omitempty"`
+	CPULoadStatus *string
 
 	// The CS service status.
-	CsServiceStatus *string `json:"csServiceStatus,omitempty"`
+	CsServiceStatus *string
 
 	// The database server load.
-	DatabaseServerLoad *string `json:"databaseServerLoad,omitempty"`
+	DatabaseServerLoad *string
 
 	// The database server load status.
-	DatabaseServerLoadStatus *string `json:"databaseServerLoadStatus,omitempty"`
+	DatabaseServerLoadStatus *string
 
 	// The host name.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// The IP address.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The last heartbeat received from CS server.
-	LastHeartbeat *time.Time `json:"lastHeartbeat,omitempty"`
+	LastHeartbeat *time.Time
 
 	// The list of Master Target servers associated with the fabric.
-	MasterTargetServers []*MasterTargetServer `json:"masterTargetServers,omitempty"`
+	MasterTargetServers []*MasterTargetServer
 
 	// The memory usage status.
-	MemoryUsageStatus *string `json:"memoryUsageStatus,omitempty"`
+	MemoryUsageStatus *string
 
 	// The number of process servers.
-	ProcessServerCount *string `json:"processServerCount,omitempty"`
+	ProcessServerCount *string
 
 	// The list of Process Servers associated with the fabric.
-	ProcessServers []*ProcessServer `json:"processServers,omitempty"`
+	ProcessServers []*ProcessServer
 
 	// The number of protected servers.
-	ProtectedServers *string `json:"protectedServers,omitempty"`
+	ProtectedServers *string
 
 	// PS template version.
-	PsTemplateVersion *string `json:"psTemplateVersion,omitempty"`
+	PsTemplateVersion *string
 
 	// The number of replication pairs configured in this CS.
-	ReplicationPairCount *string `json:"replicationPairCount,omitempty"`
+	ReplicationPairCount *string
 
 	// The list of run as accounts created on the server.
-	RunAsAccounts []*RunAsAccount `json:"runAsAccounts,omitempty"`
+	RunAsAccounts []*RunAsAccount
 
 	// CS SSL cert expiry date.
-	SSLCertExpiryDate *time.Time `json:"sslCertExpiryDate,omitempty"`
+	SSLCertExpiryDate *time.Time
 
 	// CS SSL cert expiry date.
-	SSLCertExpiryRemainingDays *int32 `json:"sslCertExpiryRemainingDays,omitempty"`
+	SSLCertExpiryRemainingDays *int32
 
 	// The space usage status.
-	SpaceUsageStatus *string `json:"spaceUsageStatus,omitempty"`
+	SpaceUsageStatus *string
 
 	// The switch provider blocking error information.
-	SwitchProviderBlockingErrorDetails []*InMageFabricSwitchProviderBlockingErrorDetails `json:"switchProviderBlockingErrorDetails,omitempty"`
+	SwitchProviderBlockingErrorDetails []*InMageFabricSwitchProviderBlockingErrorDetails
 
 	// The percentage of the system load.
-	SystemLoad *string `json:"systemLoad,omitempty"`
+	SystemLoad *string
 
 	// The system load status.
-	SystemLoadStatus *string `json:"systemLoadStatus,omitempty"`
+	SystemLoadStatus *string
 
 	// The total memory.
-	TotalMemoryInBytes *int64 `json:"totalMemoryInBytes,omitempty"`
+	TotalMemoryInBytes *int64
 
 	// The total space.
-	TotalSpaceInBytes *int64 `json:"totalSpaceInBytes,omitempty"`
+	TotalSpaceInBytes *int64
 
 	// Version status.
-	VersionStatus *string `json:"versionStatus,omitempty"`
+	VersionStatus *string
 
 	// The web load.
-	WebLoad *string `json:"webLoad,omitempty"`
+	WebLoad *string
 
 	// The web load status.
-	WebLoadStatus *string `json:"webLoadStatus,omitempty"`
+	WebLoadStatus *string
 }
 
 // GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VMwareDetails.
@@ -12142,16 +12144,16 @@ func (v *VMwareDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
 // VMwareV2FabricCreationInput - VMwareV2 fabric provider specific settings.
 type VMwareV2FabricCreationInput struct {
 	// REQUIRED; Gets the class type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// REQUIRED; The ARM Id of the migration solution.
-	MigrationSolutionID *string `json:"migrationSolutionId,omitempty"`
+	MigrationSolutionID *string
 
 	// The ARM Id of the physical site.
-	PhysicalSiteID *string `json:"physicalSiteId,omitempty"`
+	PhysicalSiteID *string
 
 	// The ARM Id of the VMware site.
-	VmwareSiteID *string `json:"vmwareSiteId,omitempty"`
+	VmwareSiteID *string
 }
 
 // GetFabricSpecificCreationInput implements the FabricSpecificCreationInputClassification interface for type VMwareV2FabricCreationInput.
@@ -12164,28 +12166,28 @@ func (v *VMwareV2FabricCreationInput) GetFabricSpecificCreationInput() *FabricSp
 // VMwareV2FabricSpecificDetails - VMwareV2 fabric specific details.
 type VMwareV2FabricSpecificDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// READ-ONLY; The Migration solution ARM Id.
-	MigrationSolutionID *string `json:"migrationSolutionId,omitempty" azure:"ro"`
+	MigrationSolutionID *string
 
 	// READ-ONLY; The ARM Id of the physical site.
-	PhysicalSiteID *string `json:"physicalSiteId,omitempty" azure:"ro"`
+	PhysicalSiteID *string
 
 	// READ-ONLY; The list of process servers.
-	ProcessServers []*ProcessServerDetails `json:"processServers,omitempty" azure:"ro"`
+	ProcessServers []*ProcessServerDetails
 
 	// READ-ONLY; The service container Id.
-	ServiceContainerID *string `json:"serviceContainerId,omitempty" azure:"ro"`
+	ServiceContainerID *string
 
 	// READ-ONLY; The service endpoint.
-	ServiceEndpoint *string `json:"serviceEndpoint,omitempty" azure:"ro"`
+	ServiceEndpoint *string
 
 	// READ-ONLY; The service resource Id.
-	ServiceResourceID *string `json:"serviceResourceId,omitempty" azure:"ro"`
+	ServiceResourceID *string
 
 	// READ-ONLY; The ARM Id of the VMware site.
-	VmwareSiteID *string `json:"vmwareSiteId,omitempty" azure:"ro"`
+	VmwareSiteID *string
 }
 
 // GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VMwareV2FabricSpecificDetails.
@@ -12198,37 +12200,37 @@ func (v *VMwareV2FabricSpecificDetails) GetFabricSpecificDetails() *FabricSpecif
 // VMwareVirtualMachineDetails - VMware provider specific settings.
 type VMwareVirtualMachineDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The ID generated by the InMage agent after it gets installed on guest. This is the ID to be used during InMage CreateProtection.
-	AgentGeneratedID *string `json:"agentGeneratedId,omitempty"`
+	AgentGeneratedID *string
 
 	// The value indicating if InMage scout agent is installed on guest.
-	AgentInstalled *string `json:"agentInstalled,omitempty"`
+	AgentInstalled *string
 
 	// The agent version.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// A value indicating the discovery type of the machine. Value can be vCenter or physical.
-	DiscoveryType *string `json:"discoveryType,omitempty"`
+	DiscoveryType *string
 
 	// The disk details.
-	DiskDetails []*InMageDiskDetails `json:"diskDetails,omitempty"`
+	DiskDetails []*InMageDiskDetails
 
 	// The IP address.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The OsType installed on VM.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The value indicating whether VM is powered on.
-	PoweredOn *string `json:"poweredOn,omitempty"`
+	PoweredOn *string
 
 	// The VCenter infrastructure Id.
-	VCenterInfrastructureID *string `json:"vCenterInfrastructureId,omitempty"`
+	VCenterInfrastructureID *string
 
 	// The validation errors.
-	ValidationErrors []*HealthError `json:"validationErrors,omitempty"`
+	ValidationErrors []*HealthError
 }
 
 // GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type VMwareVirtualMachineDetails.
@@ -12241,112 +12243,112 @@ func (v *VMwareVirtualMachineDetails) GetConfigurationSettings() *ConfigurationS
 // VaultHealthDetails - Vault health details definition.
 type VaultHealthDetails struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The vault health related data.
-	Properties *VaultHealthProperties `json:"properties,omitempty"`
+	Properties *VaultHealthProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VaultHealthProperties - class to define the health summary of the Vault.
 type VaultHealthProperties struct {
 	// The list of the health detail of the containers in the vault.
-	ContainersHealth *ResourceHealthSummary `json:"containersHealth,omitempty"`
+	ContainersHealth *ResourceHealthSummary
 
 	// The list of the health detail of the fabrics in the vault.
-	FabricsHealth *ResourceHealthSummary `json:"fabricsHealth,omitempty"`
+	FabricsHealth *ResourceHealthSummary
 
 	// The list of the health detail of the protected items in the vault.
-	ProtectedItemsHealth *ResourceHealthSummary `json:"protectedItemsHealth,omitempty"`
+	ProtectedItemsHealth *ResourceHealthSummary
 
 	// The list of errors on the vault.
-	VaultErrors []*HealthError `json:"vaultErrors,omitempty"`
+	VaultErrors []*HealthError
 }
 
 // VaultSetting - Vault setting.
 type VaultSetting struct {
 	// Resource Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The vault setting properties.
-	Properties *VaultSettingProperties `json:"properties,omitempty"`
+	Properties *VaultSettingProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource Type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VaultSettingCollection - Vault setting collection.
 type VaultSettingCollection struct {
 	// The value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of vault setting.
-	Value []*VaultSetting `json:"value,omitempty"`
+	Value []*VaultSetting
 }
 
 // VaultSettingCreationInput - Input to create vault setting.
 type VaultSettingCreationInput struct {
 	// REQUIRED; Vault setting creation input properties.
-	Properties *VaultSettingCreationInputProperties `json:"properties,omitempty"`
+	Properties *VaultSettingCreationInputProperties
 }
 
 // VaultSettingCreationInputProperties - Input to create vault setting.
 type VaultSettingCreationInputProperties struct {
 	// The migration solution Id.
-	MigrationSolutionID *string `json:"migrationSolutionId,omitempty"`
+	MigrationSolutionID *string
 
 	// VMware to Azure provider type.
-	VmwareToAzureProviderType *string `json:"vmwareToAzureProviderType,omitempty"`
+	VmwareToAzureProviderType *string
 }
 
 // VaultSettingProperties - Vault setting properties.
 type VaultSettingProperties struct {
 	// The migration solution ARM Id.
-	MigrationSolutionID *string `json:"migrationSolutionId,omitempty"`
+	MigrationSolutionID *string
 
 	// VMware to Azure provider type.
-	VmwareToAzureProviderType *string `json:"vmwareToAzureProviderType,omitempty"`
+	VmwareToAzureProviderType *string
 }
 
 // VersionDetails - Version related details.
 type VersionDetails struct {
 	// Version expiry date.
-	ExpiryDate *time.Time `json:"expiryDate,omitempty"`
+	ExpiryDate *time.Time
 
 	// A value indicating whether security update required.
-	Status *AgentVersionStatus `json:"status,omitempty"`
+	Status *AgentVersionStatus
 
 	// The agent version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // VirtualMachineTaskDetails - This class represents the virtual machine task details.
 type VirtualMachineTaskDetails struct {
 	// REQUIRED; The type of task details.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The job entity.
-	JobTask *JobEntity `json:"jobTask,omitempty"`
+	JobTask *JobEntity
 
 	// The skipped reason.
-	SkippedReason *string `json:"skippedReason,omitempty"`
+	SkippedReason *string
 
 	// The skipped reason string.
-	SkippedReasonString *string `json:"skippedReasonString,omitempty"`
+	SkippedReasonString *string
 }
 
 // GetJobTaskDetails implements the JobTaskDetailsClassification interface for type VirtualMachineTaskDetails.
@@ -12367,7 +12369,7 @@ func (v *VirtualMachineTaskDetails) GetTaskTypeDetails() *TaskTypeDetails {
 // VmmDetails - VMM fabric specific details.
 type VmmDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificDetails implements the FabricSpecificDetailsClassification interface for type VmmDetails.
@@ -12381,7 +12383,7 @@ func (v *VmmDetails) GetFabricSpecificDetails() *FabricSpecificDetails {
 // mapping.
 type VmmToAzureCreateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
@@ -12395,7 +12397,7 @@ func (v *VmmToAzureCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMapp
 // VmmToAzureNetworkMappingSettings - E2A Network Mapping fabric specific settings.
 type VmmToAzureNetworkMappingSettings struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
@@ -12409,7 +12411,7 @@ func (v *VmmToAzureNetworkMappingSettings) GetNetworkMappingFabricSpecificSettin
 // VmmToAzureUpdateNetworkMappingInput - Update network mappings input properties/behavior specific to vmm to azure.
 type VmmToAzureUpdateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
@@ -12423,7 +12425,7 @@ func (v *VmmToAzureUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMapp
 // VmmToVmmCreateNetworkMappingInput - Create network mappings input properties/behavior specific to vmm to vmm Network mapping.
 type VmmToVmmCreateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificCreateNetworkMappingInput implements the FabricSpecificCreateNetworkMappingInputClassification interface
@@ -12437,7 +12439,7 @@ func (v *VmmToVmmCreateNetworkMappingInput) GetFabricSpecificCreateNetworkMappin
 // VmmToVmmNetworkMappingSettings - E2E Network Mapping fabric specific settings.
 type VmmToVmmNetworkMappingSettings struct {
 	// REQUIRED; Gets the Instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetNetworkMappingFabricSpecificSettings implements the NetworkMappingFabricSpecificSettingsClassification interface for
@@ -12451,7 +12453,7 @@ func (v *VmmToVmmNetworkMappingSettings) GetNetworkMappingFabricSpecificSettings
 // VmmToVmmUpdateNetworkMappingInput - Update network mappings input properties/behavior specific to vmm to vmm.
 type VmmToVmmUpdateNetworkMappingInput struct {
 	// REQUIRED; The instance type.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 }
 
 // GetFabricSpecificUpdateNetworkMappingInput implements the FabricSpecificUpdateNetworkMappingInputClassification interface
@@ -12465,32 +12467,32 @@ func (v *VmmToVmmUpdateNetworkMappingInput) GetFabricSpecificUpdateNetworkMappin
 // VmmVirtualMachineDetails - VMM fabric provider specific VM settings.
 type VmmVirtualMachineDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The Last successful failover time.
-	DiskDetails []*DiskDetails `json:"diskDetails,omitempty"`
+	DiskDetails []*DiskDetails
 
 	// The id of the object in fabric.
-	Generation *string `json:"generation,omitempty"`
+	Generation *string
 
 	// A value indicating whether the VM has a fibre channel adapter attached. String value of SrsDataContract.PresenceStatus
 	// enum.
-	HasFibreChannelAdapter *PresenceStatus `json:"hasFibreChannelAdapter,omitempty"`
+	HasFibreChannelAdapter *PresenceStatus
 
 	// A value indicating whether the VM has a physical disk attached. String value of SrsDataContract.PresenceStatus enum.
-	HasPhysicalDisk *PresenceStatus `json:"hasPhysicalDisk,omitempty"`
+	HasPhysicalDisk *PresenceStatus
 
 	// A value indicating whether the VM has a shared VHD attached. String value of SrsDataContract.PresenceStatus enum.
-	HasSharedVhd *PresenceStatus `json:"hasSharedVhd,omitempty"`
+	HasSharedVhd *PresenceStatus
 
 	// The Id of the hyper-v host in fabric.
-	HyperVHostID *string `json:"hyperVHostId,omitempty"`
+	HyperVHostID *string
 
 	// The Last replication time.
-	OSDetails *OSDetails `json:"osDetails,omitempty"`
+	OSDetails *OSDetails
 
 	// The source id of the object.
-	SourceItemID *string `json:"sourceItemId,omitempty"`
+	SourceItemID *string
 }
 
 // GetConfigurationSettings implements the ConfigurationSettingsClassification interface for type VmmVirtualMachineDetails.
@@ -12518,16 +12520,16 @@ func (v *VmmVirtualMachineDetails) GetHyperVVirtualMachineDetails() *HyperVVirtu
 // VmwareCbtPolicyDetails - VMware Cbt specific policy details.
 type VmwareCbtPolicyDetails struct {
 	// REQUIRED; Gets the class type. Overridden in derived classes.
-	InstanceType *string `json:"instanceType,omitempty"`
+	InstanceType *string
 
 	// The app consistent snapshot frequency in minutes.
-	AppConsistentFrequencyInMinutes *int32 `json:"appConsistentFrequencyInMinutes,omitempty"`
+	AppConsistentFrequencyInMinutes *int32
 
 	// The crash consistent snapshot frequency in minutes.
-	CrashConsistentFrequencyInMinutes *int32 `json:"crashConsistentFrequencyInMinutes,omitempty"`
+	CrashConsistentFrequencyInMinutes *int32
 
 	// The duration in minutes until which the recovery points need to be stored.
-	RecoveryPointHistoryInMinutes *int32 `json:"recoveryPointHistoryInMinutes,omitempty"`
+	RecoveryPointHistoryInMinutes *int32
 }
 
 // GetPolicyProviderSpecificDetails implements the PolicyProviderSpecificDetailsClassification interface for type VmwareCbtPolicyDetails.

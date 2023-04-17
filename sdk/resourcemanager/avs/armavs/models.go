@@ -14,28 +14,28 @@ import "time"
 // Addon - An addon resource
 type Addon struct {
 	// The properties of an addon resource
-	Properties AddonPropertiesClassification `json:"properties,omitempty"`
+	Properties AddonPropertiesClassification
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AddonArcProperties - The properties of an Arc addon
 type AddonArcProperties struct {
 	// REQUIRED; The type of private cloud addon
-	AddonType *AddonType `json:"addonType,omitempty"`
+	AddonType *AddonType
 
 	// The VMware vCenter resource ID
-	VCenter *string `json:"vCenter,omitempty"`
+	VCenter *string
 
 	// READ-ONLY; The state of the addon provisioning
-	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AddonProvisioningState
 }
 
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonArcProperties.
@@ -49,13 +49,13 @@ func (a *AddonArcProperties) GetAddonProperties() *AddonProperties {
 // AddonHcxProperties - The properties of an HCX addon
 type AddonHcxProperties struct {
 	// REQUIRED; The type of private cloud addon
-	AddonType *AddonType `json:"addonType,omitempty"`
+	AddonType *AddonType
 
 	// REQUIRED; The HCX offer, example VMware MaaS Cloud Provider (Enterprise)
-	Offer *string `json:"offer,omitempty"`
+	Offer *string
 
 	// READ-ONLY; The state of the addon provisioning
-	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AddonProvisioningState
 }
 
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonHcxProperties.
@@ -69,10 +69,10 @@ func (a *AddonHcxProperties) GetAddonProperties() *AddonProperties {
 // AddonList - A paged list of addons
 type AddonList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on a page
-	Value []*Addon `json:"value,omitempty" azure:"ro"`
+	Value []*Addon
 }
 
 // AddonPropertiesClassification provides polymorphic access to related types.
@@ -87,10 +87,10 @@ type AddonPropertiesClassification interface {
 // AddonProperties - The properties of an addon
 type AddonProperties struct {
 	// REQUIRED; The type of private cloud addon
-	AddonType *AddonType `json:"addonType,omitempty"`
+	AddonType *AddonType
 
 	// READ-ONLY; The state of the addon provisioning
-	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AddonProvisioningState
 }
 
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonProperties.
@@ -99,13 +99,13 @@ func (a *AddonProperties) GetAddonProperties() *AddonProperties { return a }
 // AddonSrmProperties - The properties of a Site Recovery Manager (SRM) addon
 type AddonSrmProperties struct {
 	// REQUIRED; The type of private cloud addon
-	AddonType *AddonType `json:"addonType,omitempty"`
+	AddonType *AddonType
 
 	// The Site Recovery Manager (SRM) license
-	LicenseKey *string `json:"licenseKey,omitempty"`
+	LicenseKey *string
 
 	// READ-ONLY; The state of the addon provisioning
-	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AddonProvisioningState
 }
 
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonSrmProperties.
@@ -119,13 +119,13 @@ func (a *AddonSrmProperties) GetAddonProperties() *AddonProperties {
 // AddonVrProperties - The properties of a vSphere Replication (VR) addon
 type AddonVrProperties struct {
 	// REQUIRED; The type of private cloud addon
-	AddonType *AddonType `json:"addonType,omitempty"`
+	AddonType *AddonType
 
 	// REQUIRED; The vSphere Replication Server (VRS) count
-	VrsCount *int32 `json:"vrsCount,omitempty"`
+	VrsCount *int32
 
 	// READ-ONLY; The state of the addon provisioning
-	ProvisioningState *AddonProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AddonProvisioningState
 }
 
 // GetAddonProperties implements the AddonPropertiesClassification interface for type AddonVrProperties.
@@ -153,7 +153,7 @@ type AddonsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AddonsClientListOptions contains the optional parameters for the AddonsClient.List method.
+// AddonsClientListOptions contains the optional parameters for the AddonsClient.NewListPager method.
 type AddonsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -161,16 +161,16 @@ type AddonsClientListOptions struct {
 // AdminCredentials - Administrative credentials for accessing vCenter and NSX-T
 type AdminCredentials struct {
 	// READ-ONLY; NSX-T Manager password
-	NsxtPassword *string `json:"nsxtPassword,omitempty" azure:"ro"`
+	NsxtPassword *string
 
 	// READ-ONLY; NSX-T Manager username
-	NsxtUsername *string `json:"nsxtUsername,omitempty" azure:"ro"`
+	NsxtUsername *string
 
 	// READ-ONLY; vCenter admin password
-	VcenterPassword *string `json:"vcenterPassword,omitempty" azure:"ro"`
+	VcenterPassword *string
 
 	// READ-ONLY; vCenter admin username
-	VcenterUsername *string `json:"vcenterUsername,omitempty" azure:"ro"`
+	VcenterUsername *string
 }
 
 // AuthorizationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AuthorizationsClient.BeginCreateOrUpdate
@@ -191,7 +191,7 @@ type AuthorizationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AuthorizationsClientListOptions contains the optional parameters for the AuthorizationsClient.List method.
+// AuthorizationsClientListOptions contains the optional parameters for the AuthorizationsClient.NewListPager method.
 type AuthorizationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -199,61 +199,61 @@ type AuthorizationsClientListOptions struct {
 // AvailabilityProperties - The properties describing private cloud availability zone distribution
 type AvailabilityProperties struct {
 	// The secondary availability zone for the private cloud
-	SecondaryZone *int32 `json:"secondaryZone,omitempty"`
+	SecondaryZone *int32
 
 	// The availability strategy for the private cloud
-	Strategy *AvailabilityStrategy `json:"strategy,omitempty"`
+	Strategy *AvailabilityStrategy
 
 	// The primary availability zone for the private cloud
-	Zone *int32 `json:"zone,omitempty"`
+	Zone *int32
 }
 
 // Circuit - An ExpressRoute Circuit
 type Circuit struct {
 	// READ-ONLY; Identifier of the ExpressRoute Circuit (Microsoft Colo only)
-	ExpressRouteID *string `json:"expressRouteID,omitempty" azure:"ro"`
+	ExpressRouteID *string
 
 	// READ-ONLY; ExpressRoute Circuit private peering identifier
-	ExpressRoutePrivatePeeringID *string `json:"expressRoutePrivatePeeringID,omitempty" azure:"ro"`
+	ExpressRoutePrivatePeeringID *string
 
 	// READ-ONLY; CIDR of primary subnet
-	PrimarySubnet *string `json:"primarySubnet,omitempty" azure:"ro"`
+	PrimarySubnet *string
 
 	// READ-ONLY; CIDR of secondary subnet
-	SecondarySubnet *string `json:"secondarySubnet,omitempty" azure:"ro"`
+	SecondarySubnet *string
 }
 
 // CloudLink - A cloud link resource
 type CloudLink struct {
 	// The properties of a cloud link.
-	Properties *CloudLinkProperties `json:"properties,omitempty"`
+	Properties *CloudLinkProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CloudLinkList - A paged list of cloud links
 type CloudLinkList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on a page
-	Value []*CloudLink `json:"value,omitempty" azure:"ro"`
+	Value []*CloudLink
 }
 
 // CloudLinkProperties - The properties of a cloud link.
 type CloudLinkProperties struct {
 	// Identifier of the other private cloud participating in the link.
-	LinkedCloud *string `json:"linkedCloud,omitempty"`
+	LinkedCloud *string
 
 	// READ-ONLY; The state of the cloud link.
-	Status *CloudLinkStatus `json:"status,omitempty" azure:"ro"`
+	Status *CloudLinkStatus
 }
 
 // CloudLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the CloudLinksClient.BeginCreateOrUpdate
@@ -274,7 +274,7 @@ type CloudLinksClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CloudLinksClientListOptions contains the optional parameters for the CloudLinksClient.List method.
+// CloudLinksClientListOptions contains the optional parameters for the CloudLinksClient.NewListPager method.
 type CloudLinksClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -282,73 +282,73 @@ type CloudLinksClientListOptions struct {
 // Cluster - A cluster resource
 type Cluster struct {
 	// REQUIRED; The cluster SKU
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// The properties of a cluster resource
-	Properties *ClusterProperties `json:"properties,omitempty"`
+	Properties *ClusterProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClusterList - A paged list of clusters
 type ClusterList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on a page
-	Value []*Cluster `json:"value,omitempty" azure:"ro"`
+	Value []*Cluster
 }
 
 // ClusterProperties - The properties of a cluster
 type ClusterProperties struct {
 	// The cluster size
-	ClusterSize *int32 `json:"clusterSize,omitempty"`
+	ClusterSize *int32
 
 	// The hosts
-	Hosts []*string `json:"hosts,omitempty"`
+	Hosts []*string
 
 	// READ-ONLY; The identity
-	ClusterID *int32 `json:"clusterId,omitempty" azure:"ro"`
+	ClusterID *int32
 
 	// READ-ONLY; The state of the cluster provisioning
-	ProvisioningState *ClusterProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ClusterProvisioningState
 }
 
 // ClusterUpdate - An update of a cluster resource
 type ClusterUpdate struct {
 	// The properties of a cluster resource that may be updated
-	Properties *ClusterUpdateProperties `json:"properties,omitempty"`
+	Properties *ClusterUpdateProperties
 }
 
 // ClusterUpdateProperties - The properties of a cluster that may be updated
 type ClusterUpdateProperties struct {
 	// The cluster size
-	ClusterSize *int32 `json:"clusterSize,omitempty"`
+	ClusterSize *int32
 
 	// The hosts
-	Hosts []*string `json:"hosts,omitempty"`
+	Hosts []*string
 }
 
 // ClusterZone - Zone and associated hosts info
 type ClusterZone struct {
 	// READ-ONLY; List of hosts belonging to the availability zone in a cluster
-	Hosts []*string `json:"hosts,omitempty" azure:"ro"`
+	Hosts []*string
 
 	// READ-ONLY; Availability zone identifier
-	Zone *string `json:"zone,omitempty" azure:"ro"`
+	Zone *string
 }
 
 // ClusterZoneList - List of all zones and associated hosts for a cluster
 type ClusterZoneList struct {
 	// Zone and associated hosts info
-	Zones []*ClusterZone `json:"zones,omitempty"`
+	Zones []*ClusterZone
 }
 
 // ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
@@ -374,7 +374,7 @@ type ClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+// ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
 type ClustersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -387,55 +387,55 @@ type ClustersClientListZonesOptions struct {
 // CommonClusterProperties - The common properties of a cluster
 type CommonClusterProperties struct {
 	// The cluster size
-	ClusterSize *int32 `json:"clusterSize,omitempty"`
+	ClusterSize *int32
 
 	// The hosts
-	Hosts []*string `json:"hosts,omitempty"`
+	Hosts []*string
 
 	// READ-ONLY; The identity
-	ClusterID *int32 `json:"clusterId,omitempty" azure:"ro"`
+	ClusterID *int32
 
 	// READ-ONLY; The state of the cluster provisioning
-	ProvisioningState *ClusterProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ClusterProvisioningState
 }
 
 // Datastore - A datastore resource
 type Datastore struct {
 	// The properties of a datastore resource
-	Properties *DatastoreProperties `json:"properties,omitempty"`
+	Properties *DatastoreProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DatastoreList - A paged list of datastores
 type DatastoreList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on a page
-	Value []*Datastore `json:"value,omitempty" azure:"ro"`
+	Value []*Datastore
 }
 
 // DatastoreProperties - The properties of a datastore
 type DatastoreProperties struct {
 	// An iSCSI volume
-	DiskPoolVolume *DiskPoolVolume `json:"diskPoolVolume,omitempty"`
+	DiskPoolVolume *DiskPoolVolume
 
 	// An Azure NetApp Files volume
-	NetAppVolume *NetAppVolume `json:"netAppVolume,omitempty"`
+	NetAppVolume *NetAppVolume
 
 	// READ-ONLY; The state of the datastore provisioning
-	ProvisioningState *DatastoreProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DatastoreProvisioningState
 
 	// READ-ONLY; The operational status of the datastore
-	Status *DatastoreStatus `json:"status,omitempty" azure:"ro"`
+	Status *DatastoreStatus
 }
 
 // DatastoresClientBeginCreateOrUpdateOptions contains the optional parameters for the DatastoresClient.BeginCreateOrUpdate
@@ -456,7 +456,7 @@ type DatastoresClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DatastoresClientListOptions contains the optional parameters for the DatastoresClient.List method.
+// DatastoresClientListOptions contains the optional parameters for the DatastoresClient.NewListPager method.
 type DatastoresClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -464,170 +464,170 @@ type DatastoresClientListOptions struct {
 // DiskPoolVolume - An iSCSI volume from Microsoft.StoragePool provider
 type DiskPoolVolume struct {
 	// REQUIRED; Name of the LUN to be used for datastore
-	LunName *string `json:"lunName,omitempty"`
+	LunName *string
 
 	// REQUIRED; Azure resource ID of the iSCSI target
-	TargetID *string `json:"targetId,omitempty"`
+	TargetID *string
 
 	// Mode that describes whether the LUN has to be mounted as a datastore or attached as a LUN
-	MountOption *MountOptionEnum `json:"mountOption,omitempty"`
+	MountOption *MountOptionEnum
 
 	// READ-ONLY; Device path
-	Path *string `json:"path,omitempty" azure:"ro"`
+	Path *string
 }
 
 // Encryption - The properties of customer managed encryption key
 type Encryption struct {
 	// The key vault where the encryption key is stored
-	KeyVaultProperties *EncryptionKeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *EncryptionKeyVaultProperties
 
 	// Status of customer managed encryption key
-	Status *EncryptionState `json:"status,omitempty"`
+	Status *EncryptionState
 }
 
 // EncryptionKeyVaultProperties - An Encryption Key
 type EncryptionKeyVaultProperties struct {
 	// The name of the key.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// The URL of the vault.
-	KeyVaultURL *string `json:"keyVaultUrl,omitempty"`
+	KeyVaultURL *string
 
 	// The version of the key.
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 
 	// READ-ONLY; The auto-detected version of the key if versionType is auto-detected.
-	AutoDetectedKeyVersion *string `json:"autoDetectedKeyVersion,omitempty" azure:"ro"`
+	AutoDetectedKeyVersion *string
 
 	// READ-ONLY; The state of key provided
-	KeyState *EncryptionKeyStatus `json:"keyState,omitempty" azure:"ro"`
+	KeyState *EncryptionKeyStatus
 
 	// READ-ONLY; Property of the key if user provided or auto detected
-	VersionType *EncryptionVersionType `json:"versionType,omitempty" azure:"ro"`
+	VersionType *EncryptionVersionType
 }
 
 // Endpoints - Endpoint addresses
 type Endpoints struct {
 	// READ-ONLY; Endpoint for the HCX Cloud Manager
-	HcxCloudManager *string `json:"hcxCloudManager,omitempty" azure:"ro"`
+	HcxCloudManager *string
 
 	// READ-ONLY; Endpoint for the NSX-T Data Center manager
-	NsxtManager *string `json:"nsxtManager,omitempty" azure:"ro"`
+	NsxtManager *string
 
 	// READ-ONLY; Endpoint for Virtual Center Server Appliance
-	Vcsa *string `json:"vcsa,omitempty" azure:"ro"`
+	Vcsa *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ExpressRouteAuthorization - ExpressRoute Circuit Authorization
 type ExpressRouteAuthorization struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties of an ExpressRoute Circuit Authorization resource
-	Properties *ExpressRouteAuthorizationProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ExpressRouteAuthorizationProperties
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExpressRouteAuthorizationList - A paged list of ExpressRoute Circuit Authorizations
 type ExpressRouteAuthorizationList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on a page
-	Value []*ExpressRouteAuthorization `json:"value,omitempty" azure:"ro"`
+	Value []*ExpressRouteAuthorization
 }
 
 // ExpressRouteAuthorizationProperties - The properties of an ExpressRoute Circuit Authorization resource
 type ExpressRouteAuthorizationProperties struct {
 	// The ID of the ExpressRoute Circuit
-	ExpressRouteID *string `json:"expressRouteId,omitempty"`
+	ExpressRouteID *string
 
 	// READ-ONLY; The ID of the ExpressRoute Circuit Authorization
-	ExpressRouteAuthorizationID *string `json:"expressRouteAuthorizationId,omitempty" azure:"ro"`
+	ExpressRouteAuthorizationID *string
 
 	// READ-ONLY; The key of the ExpressRoute Circuit Authorization
-	ExpressRouteAuthorizationKey *string `json:"expressRouteAuthorizationKey,omitempty" azure:"ro"`
+	ExpressRouteAuthorizationKey *string
 
 	// READ-ONLY; The state of the ExpressRoute Circuit Authorization provisioning
-	ProvisioningState *ExpressRouteAuthorizationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ExpressRouteAuthorizationProvisioningState
 }
 
 // GlobalReachConnection - A global reach connection resource
 type GlobalReachConnection struct {
 	// The properties of a global reach connection resource
-	Properties *GlobalReachConnectionProperties `json:"properties,omitempty"`
+	Properties *GlobalReachConnectionProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GlobalReachConnectionList - A paged list of global reach connections
 type GlobalReachConnectionList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on a page
-	Value []*GlobalReachConnection `json:"value,omitempty" azure:"ro"`
+	Value []*GlobalReachConnection
 }
 
 // GlobalReachConnectionProperties - The properties of a global reach connection
 type GlobalReachConnectionProperties struct {
 	// Authorization key from the peer express route used for the global reach connection
-	AuthorizationKey *string `json:"authorizationKey,omitempty"`
+	AuthorizationKey *string
 
 	// The ID of the Private Cloud's ExpressRoute Circuit that is participating in the global reach connection
-	ExpressRouteID *string `json:"expressRouteId,omitempty"`
+	ExpressRouteID *string
 
 	// Identifier of the ExpressRoute Circuit to peer with in the global reach connection
-	PeerExpressRouteCircuit *string `json:"peerExpressRouteCircuit,omitempty"`
+	PeerExpressRouteCircuit *string
 
 	// READ-ONLY; The network used for global reach carved out from the original network block provided for the private cloud
-	AddressPrefix *string `json:"addressPrefix,omitempty" azure:"ro"`
+	AddressPrefix *string
 
 	// READ-ONLY; The connection status of the global reach connection
-	CircuitConnectionStatus *GlobalReachConnectionStatus `json:"circuitConnectionStatus,omitempty" azure:"ro"`
+	CircuitConnectionStatus *GlobalReachConnectionStatus
 
 	// READ-ONLY; The state of the ExpressRoute Circuit Authorization provisioning
-	ProvisioningState *GlobalReachConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *GlobalReachConnectionProvisioningState
 }
 
 // GlobalReachConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the GlobalReachConnectionsClient.BeginCreateOrUpdate
@@ -649,7 +649,8 @@ type GlobalReachConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GlobalReachConnectionsClientListOptions contains the optional parameters for the GlobalReachConnectionsClient.List method.
+// GlobalReachConnectionsClientListOptions contains the optional parameters for the GlobalReachConnectionsClient.NewListPager
+// method.
 type GlobalReachConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -657,34 +658,34 @@ type GlobalReachConnectionsClientListOptions struct {
 // HcxEnterpriseSite - An HCX Enterprise Site resource
 type HcxEnterpriseSite struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties of an HCX Enterprise Site resource
-	Properties *HcxEnterpriseSiteProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *HcxEnterpriseSiteProperties
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HcxEnterpriseSiteList - A paged list of HCX Enterprise Sites
 type HcxEnterpriseSiteList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on a page
-	Value []*HcxEnterpriseSite `json:"value,omitempty" azure:"ro"`
+	Value []*HcxEnterpriseSite
 }
 
 // HcxEnterpriseSiteProperties - The properties of an HCX Enterprise Site
 type HcxEnterpriseSiteProperties struct {
 	// READ-ONLY; The activation key
-	ActivationKey *string `json:"activationKey,omitempty" azure:"ro"`
+	ActivationKey *string
 
 	// READ-ONLY; The status of the HCX Enterprise Site
-	Status *HcxEnterpriseSiteStatus `json:"status,omitempty" azure:"ro"`
+	Status *HcxEnterpriseSiteStatus
 }
 
 // HcxEnterpriseSitesClientCreateOrUpdateOptions contains the optional parameters for the HcxEnterpriseSitesClient.CreateOrUpdate
@@ -703,7 +704,7 @@ type HcxEnterpriseSitesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HcxEnterpriseSitesClientListOptions contains the optional parameters for the HcxEnterpriseSitesClient.List method.
+// HcxEnterpriseSitesClientListOptions contains the optional parameters for the HcxEnterpriseSitesClient.NewListPager method.
 type HcxEnterpriseSitesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -711,34 +712,34 @@ type HcxEnterpriseSitesClientListOptions struct {
 // IdentitySource - vCenter Single Sign On Identity Source
 type IdentitySource struct {
 	// The domain's NetBIOS name
-	Alias *string `json:"alias,omitempty"`
+	Alias *string
 
 	// The base distinguished name for groups
-	BaseGroupDN *string `json:"baseGroupDN,omitempty"`
+	BaseGroupDN *string
 
 	// The base distinguished name for users
-	BaseUserDN *string `json:"baseUserDN,omitempty"`
+	BaseUserDN *string
 
 	// The domain's dns name
-	Domain *string `json:"domain,omitempty"`
+	Domain *string
 
 	// The name of the identity source
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The password of the Active Directory user with a minimum of read-only access to Base DN for users and groups.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Primary server URL
-	PrimaryServer *string `json:"primaryServer,omitempty"`
+	PrimaryServer *string
 
 	// Protect LDAP communication using SSL certificate (LDAPS)
-	SSL *SSLEnum `json:"ssl,omitempty"`
+	SSL *SSLEnum
 
 	// Secondary server URL
-	SecondaryServer *string `json:"secondaryServer,omitempty"`
+	SecondaryServer *string
 
 	// The ID of an Active Directory user with a minimum of read-only access to Base DN for users and group
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // LocationsClientCheckQuotaAvailabilityOptions contains the optional parameters for the LocationsClient.CheckQuotaAvailability
@@ -757,142 +758,142 @@ type LocationsClientCheckTrialAvailabilityOptions struct {
 // LogSpecification - Specifications of the Log for Azure Monitoring
 type LogSpecification struct {
 	// Blob duration of the log
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// Localized friendly display name of the log
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of the log
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ManagementCluster - The properties of a management cluster
 type ManagementCluster struct {
 	// The cluster size
-	ClusterSize *int32 `json:"clusterSize,omitempty"`
+	ClusterSize *int32
 
 	// The hosts
-	Hosts []*string `json:"hosts,omitempty"`
+	Hosts []*string
 
 	// READ-ONLY; The identity
-	ClusterID *int32 `json:"clusterId,omitempty" azure:"ro"`
+	ClusterID *int32
 
 	// READ-ONLY; The state of the cluster provisioning
-	ProvisioningState *ClusterProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ClusterProvisioningState
 }
 
 // MetricDimension - Specifications of the Dimension of metrics
 type MetricDimension struct {
 	// Localized friendly display name of the dimension
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of the dimension as it appears in MDM
-	InternalName *string `json:"internalName,omitempty"`
+	InternalName *string
 
 	// Name of the dimension
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// A boolean flag indicating whether this dimension should be included for the shoebox export scenario
-	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+	ToBeExportedForShoebox *bool
 }
 
 // MetricSpecification - Specifications of the Metrics for Azure Monitoring
 type MetricSpecification struct {
 	// Only provide one value for this field. Valid values: Average, Minimum, Maximum, Total, Count.
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// Name of the metric category that the metric belongs to. A metric can only belong to a single category.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// Dimensions of the metric
-	Dimensions []*MetricDimension `json:"dimensions,omitempty"`
+	Dimensions []*MetricDimension
 
 	// Localized friendly description of the metric
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// Localized friendly display name of the metric
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Whether or not the service is using regional MDM accounts.
-	EnableRegionalMdmAccount *string `json:"enableRegionalMdmAccount,omitempty"`
+	EnableRegionalMdmAccount *string
 
 	// Optional. If set to true, then zero will be returned for time duration where no metric is emitted/published.
-	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	FillGapWithZero *bool
 
 	// Name of the metric
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The name of the MDM account.
-	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
+	SourceMdmAccount *string
 
 	// The name of the MDM namespace.
-	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	SourceMdmNamespace *string
 
 	// Supported aggregation types
-	SupportedAggregationTypes []*string `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*string
 
 	// Supported time grain types
-	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty"`
+	SupportedTimeGrainTypes []*string
 
 	// Unit that makes sense for the metric
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // NetAppVolume - An Azure NetApp Files volume from Microsoft.NetApp provider
 type NetAppVolume struct {
 	// REQUIRED; Azure resource ID of the NetApp volume
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // Operation - A REST API operation
 type Operation struct {
 	// Gets or sets a value indicating whether the operation is a data action or not
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operation
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 
 	// READ-ONLY; Contains the localized display information for this operation
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Name of the operation being performed on this object
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationDisplay - Contains the localized display information for this operation
 type OperationDisplay struct {
 	// READ-ONLY; Localized friendly description for the operation
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Localized friendly name for the operation
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Localized friendly form of the resource provider name
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Localized friendly form of the resource type related to this operation
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationList - Pageable list of operations
 type OperationList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationProperties - Extra Operation properties
 type OperationProperties struct {
 	// Service specifications of the operation
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ServiceSpecification
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -900,16 +901,16 @@ type OperationsClientListOptions struct {
 // PSCredentialExecutionParameter - a powershell credential object
 type PSCredentialExecutionParameter struct {
 	// REQUIRED; The parameter name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The type of execution parameter
-	Type *ScriptExecutionParameterType `json:"type,omitempty"`
+	Type *ScriptExecutionParameterType
 
 	// password for login
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// username for login
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // GetScriptExecutionParameter implements the ScriptExecutionParameterClassification interface for type PSCredentialExecutionParameter.
@@ -946,7 +947,7 @@ type PlacementPoliciesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlacementPoliciesClientListOptions contains the optional parameters for the PlacementPoliciesClient.List method.
+// PlacementPoliciesClientListOptions contains the optional parameters for the PlacementPoliciesClient.NewListPager method.
 type PlacementPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -954,25 +955,25 @@ type PlacementPoliciesClientListOptions struct {
 // PlacementPoliciesList - Represents list of placement policies
 type PlacementPoliciesList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*PlacementPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*PlacementPolicy
 }
 
 // PlacementPolicy - A vSphere Distributed Resource Scheduler (DRS) placement policy
 type PlacementPolicy struct {
 	// placement policy properties
-	Properties PlacementPolicyPropertiesClassification `json:"properties,omitempty"`
+	Properties PlacementPolicyPropertiesClassification
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PlacementPolicyPropertiesClassification provides polymorphic access to related types.
@@ -987,16 +988,16 @@ type PlacementPolicyPropertiesClassification interface {
 // PlacementPolicyProperties - Abstract placement policy properties
 type PlacementPolicyProperties struct {
 	// REQUIRED; placement policy type
-	Type *PlacementPolicyType `json:"type,omitempty"`
+	Type *PlacementPolicyType
 
 	// Display name of the placement policy
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Whether the placement policy is enabled or disabled
-	State *PlacementPolicyState `json:"state,omitempty"`
+	State *PlacementPolicyState
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *PlacementPolicyProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PlacementPolicyProvisioningState
 }
 
 // GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type PlacementPolicyProperties.
@@ -1007,74 +1008,74 @@ func (p *PlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementPol
 // PlacementPolicyUpdate - An update of a DRS placement policy resource
 type PlacementPolicyUpdate struct {
 	// The properties of a placement policy resource that may be updated
-	Properties *PlacementPolicyUpdateProperties `json:"properties,omitempty"`
+	Properties *PlacementPolicyUpdateProperties
 }
 
 // PlacementPolicyUpdateProperties - The properties of a placement policy resource that may be updated
 type PlacementPolicyUpdateProperties struct {
 	// vm-host placement policy affinity strength (should/must)
-	AffinityStrength *AffinityStrength `json:"affinityStrength,omitempty"`
+	AffinityStrength *AffinityStrength
 
 	// placement policy azure hybrid benefit opt-in type
-	AzureHybridBenefitType *AzureHybridBenefitType `json:"azureHybridBenefitType,omitempty"`
+	AzureHybridBenefitType *AzureHybridBenefitType
 
 	// Host members list
-	HostMembers []*string `json:"hostMembers,omitempty"`
+	HostMembers []*string
 
 	// Whether the placement policy is enabled or disabled
-	State *PlacementPolicyState `json:"state,omitempty"`
+	State *PlacementPolicyState
 
 	// Virtual machine members list
-	VMMembers []*string `json:"vmMembers,omitempty"`
+	VMMembers []*string
 }
 
 // PrivateCloud - A private cloud resource
 type PrivateCloud struct {
 	// REQUIRED; The private cloud SKU
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// The identity of the private cloud, if configured.
-	Identity *PrivateCloudIdentity `json:"identity,omitempty"`
+	Identity *PrivateCloudIdentity
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of a private cloud resource
-	Properties *PrivateCloudProperties `json:"properties,omitempty"`
+	Properties *PrivateCloudProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateCloudIdentity - Identity for the virtual machine.
 type PrivateCloudIdentity struct {
 	// The type of identity used for the private cloud. The type 'SystemAssigned' refers to an implicitly created identity. The
 	// type 'None' will remove any identities from the Private Cloud.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// READ-ONLY; The principal ID of private cloud identity. This property will only be provided for a system assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID associated with the private cloud. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // PrivateCloudList - A paged list of private clouds
 type PrivateCloudList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*PrivateCloud `json:"value,omitempty" azure:"ro"`
+	Value []*PrivateCloud
 }
 
 // PrivateCloudProperties - The properties of a private cloud resource
@@ -1082,92 +1083,92 @@ type PrivateCloudProperties struct {
 	// REQUIRED; The block of addresses should be unique across VNet in your subscription as well as on-premise. Make sure the
 	// CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is
 	// between 0 and 22
-	NetworkBlock *string `json:"networkBlock,omitempty"`
+	NetworkBlock *string
 
 	// Properties describing how the cloud is distributed across availability zones
-	Availability *AvailabilityProperties `json:"availability,omitempty"`
+	Availability *AvailabilityProperties
 
 	// An ExpressRoute Circuit
-	Circuit *Circuit `json:"circuit,omitempty"`
+	Circuit *Circuit
 
 	// Customer managed key encryption, can be enabled or disabled
-	Encryption *Encryption `json:"encryption,omitempty"`
+	Encryption *Encryption
 
 	// vCenter Single Sign On Identity Sources
-	IdentitySources []*IdentitySource `json:"identitySources,omitempty"`
+	IdentitySources []*IdentitySource
 
 	// Connectivity to internet is enabled or disabled
-	Internet *InternetEnum `json:"internet,omitempty"`
+	Internet *InternetEnum
 
 	// The default cluster used for management
-	ManagementCluster *ManagementCluster `json:"managementCluster,omitempty"`
+	ManagementCluster *ManagementCluster
 
 	// Optionally, set the NSX-T Manager password when the private cloud is created
-	NsxtPassword *string `json:"nsxtPassword,omitempty"`
+	NsxtPassword *string
 
 	// A secondary expressRoute circuit from a separate AZ. Only present in a stretched private cloud
-	SecondaryCircuit *Circuit `json:"secondaryCircuit,omitempty"`
+	SecondaryCircuit *Circuit
 
 	// Optionally, set the vCenter admin password when the private cloud is created
-	VcenterPassword *string `json:"vcenterPassword,omitempty"`
+	VcenterPassword *string
 
 	// READ-ONLY; The endpoints
-	Endpoints *Endpoints `json:"endpoints,omitempty" azure:"ro"`
+	Endpoints *Endpoints
 
 	// READ-ONLY; Array of cloud link IDs from other clouds that connect to this one
-	ExternalCloudLinks []*string `json:"externalCloudLinks,omitempty" azure:"ro"`
+	ExternalCloudLinks []*string
 
 	// READ-ONLY; Network used to access vCenter Server and NSX-T Manager
-	ManagementNetwork *string `json:"managementNetwork,omitempty" azure:"ro"`
+	ManagementNetwork *string
 
 	// READ-ONLY; Flag to indicate whether the private cloud has the quota for provisioned NSX Public IP count raised from 64
 	// to 1024
-	NsxPublicIPQuotaRaised *NsxPublicIPQuotaRaisedEnum `json:"nsxPublicIpQuotaRaised,omitempty" azure:"ro"`
+	NsxPublicIPQuotaRaised *NsxPublicIPQuotaRaisedEnum
 
 	// READ-ONLY; Thumbprint of the NSX-T Manager SSL certificate
-	NsxtCertificateThumbprint *string `json:"nsxtCertificateThumbprint,omitempty" azure:"ro"`
+	NsxtCertificateThumbprint *string
 
 	// READ-ONLY; Used for virtual machine cold migration, cloning, and snapshot migration
-	ProvisioningNetwork *string `json:"provisioningNetwork,omitempty" azure:"ro"`
+	ProvisioningNetwork *string
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *PrivateCloudProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateCloudProvisioningState
 
 	// READ-ONLY; Thumbprint of the vCenter Server SSL certificate
-	VcenterCertificateThumbprint *string `json:"vcenterCertificateThumbprint,omitempty" azure:"ro"`
+	VcenterCertificateThumbprint *string
 
 	// READ-ONLY; Used for live migration of virtual machines
-	VmotionNetwork *string `json:"vmotionNetwork,omitempty" azure:"ro"`
+	VmotionNetwork *string
 }
 
 // PrivateCloudUpdate - An update to a private cloud resource
 type PrivateCloudUpdate struct {
 	// The identity of the private cloud, if configured.
-	Identity *PrivateCloudIdentity `json:"identity,omitempty"`
+	Identity *PrivateCloudIdentity
 
 	// The updatable properties of a private cloud resource
-	Properties *PrivateCloudUpdateProperties `json:"properties,omitempty"`
+	Properties *PrivateCloudUpdateProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PrivateCloudUpdateProperties - The properties of a private cloud resource that may be updated
 type PrivateCloudUpdateProperties struct {
 	// Properties describing how the cloud is distributed across availability zones
-	Availability *AvailabilityProperties `json:"availability,omitempty"`
+	Availability *AvailabilityProperties
 
 	// Customer managed key encryption, can be enabled or disabled
-	Encryption *Encryption `json:"encryption,omitempty"`
+	Encryption *Encryption
 
 	// vCenter Single Sign On Identity Sources
-	IdentitySources []*IdentitySource `json:"identitySources,omitempty"`
+	IdentitySources []*IdentitySource
 
 	// Connectivity to internet is enabled or disabled
-	Internet *InternetEnum `json:"internet,omitempty"`
+	Internet *InternetEnum
 
 	// The default cluster used for management
-	ManagementCluster *ManagementCluster `json:"managementCluster,omitempty"`
+	ManagementCluster *ManagementCluster
 }
 
 // PrivateCloudsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateCloudsClient.BeginCreateOrUpdate
@@ -1214,13 +1215,13 @@ type PrivateCloudsClientListAdminCredentialsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateCloudsClientListInSubscriptionOptions contains the optional parameters for the PrivateCloudsClient.ListInSubscription
+// PrivateCloudsClientListInSubscriptionOptions contains the optional parameters for the PrivateCloudsClient.NewListInSubscriptionPager
 // method.
 type PrivateCloudsClientListInSubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.List method.
+// PrivateCloudsClientListOptions contains the optional parameters for the PrivateCloudsClient.NewListPager method.
 type PrivateCloudsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1228,67 +1229,67 @@ type PrivateCloudsClientListOptions struct {
 // ProxyResource - The resource model definition for a ARM proxy resource
 type ProxyResource struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Quota - Subscription quotas
 type Quota struct {
 	// READ-ONLY; Remaining hosts quota by sku type
-	HostsRemaining map[string]*int32 `json:"hostsRemaining,omitempty" azure:"ro"`
+	HostsRemaining map[string]*int32
 
 	// READ-ONLY; Host quota is active for current subscription
-	QuotaEnabled *QuotaEnabled `json:"quotaEnabled,omitempty" azure:"ro"`
+	QuotaEnabled *QuotaEnabled
 }
 
 // Resource - The core properties of ARM resources
 type Resource struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKU - The resource model definition representing SKU
 type SKU struct {
 	// REQUIRED; The name of the SKU.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ScriptCmdlet - A cmdlet available for script execution
 type ScriptCmdlet struct {
 	// The properties of a script cmdlet resource
-	Properties *ScriptCmdletProperties `json:"properties,omitempty"`
+	Properties *ScriptCmdletProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScriptCmdletProperties - Properties of a pre-canned script
 type ScriptCmdletProperties struct {
 	// READ-ONLY; Description of the scripts functionality
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Parameters the script will accept
-	Parameters []*ScriptParameter `json:"parameters,omitempty" azure:"ro"`
+	Parameters []*ScriptParameter
 
 	// READ-ONLY; Recommended time limit for execution
-	Timeout *string `json:"timeout,omitempty" azure:"ro"`
+	Timeout *string
 }
 
 // ScriptCmdletsClientGetOptions contains the optional parameters for the ScriptCmdletsClient.Get method.
@@ -1296,7 +1297,7 @@ type ScriptCmdletsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptCmdletsClientListOptions contains the optional parameters for the ScriptCmdletsClient.List method.
+// ScriptCmdletsClientListOptions contains the optional parameters for the ScriptCmdletsClient.NewListPager method.
 type ScriptCmdletsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1304,25 +1305,25 @@ type ScriptCmdletsClientListOptions struct {
 // ScriptCmdletsList - Pageable list of scripts/cmdlets
 type ScriptCmdletsList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of scripts
-	Value []*ScriptCmdlet `json:"value,omitempty" azure:"ro"`
+	Value []*ScriptCmdlet
 }
 
 // ScriptExecution - An instance of a script executed by a user - custom or AVS
 type ScriptExecution struct {
 	// The properties of a script execution resource
-	Properties *ScriptExecutionProperties `json:"properties,omitempty"`
+	Properties *ScriptExecutionProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScriptExecutionParameterClassification provides polymorphic access to related types.
@@ -1337,10 +1338,10 @@ type ScriptExecutionParameterClassification interface {
 // ScriptExecutionParameter - The arguments passed in to the execution
 type ScriptExecutionParameter struct {
 	// REQUIRED; The parameter name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The type of execution parameter
-	Type *ScriptExecutionParameterType `json:"type,omitempty"`
+	Type *ScriptExecutionParameterType
 }
 
 // GetScriptExecutionParameter implements the ScriptExecutionParameterClassification interface for type ScriptExecutionParameter.
@@ -1349,49 +1350,49 @@ func (s *ScriptExecutionParameter) GetScriptExecutionParameter() *ScriptExecutio
 // ScriptExecutionProperties - Properties of a user-invoked script
 type ScriptExecutionProperties struct {
 	// REQUIRED; Time limit for execution
-	Timeout *string `json:"timeout,omitempty"`
+	Timeout *string
 
 	// Error message if the script was able to run, but if the script itself had errors or powershell threw an exception
-	FailureReason *string `json:"failureReason,omitempty"`
+	FailureReason *string
 
 	// Parameters that will be hidden/not visible to ARM, such as passwords and credentials
-	HiddenParameters []ScriptExecutionParameterClassification `json:"hiddenParameters,omitempty"`
+	HiddenParameters []ScriptExecutionParameterClassification
 
 	// User-defined dictionary.
-	NamedOutputs map[string]interface{} `json:"namedOutputs,omitempty"`
+	NamedOutputs map[string]any
 
 	// Standard output stream from the powershell execution
-	Output []*string `json:"output,omitempty"`
+	Output []*string
 
 	// Parameters the script will accept
-	Parameters []ScriptExecutionParameterClassification `json:"parameters,omitempty"`
+	Parameters []ScriptExecutionParameterClassification
 
 	// Time to live for the resource. If not provided, will be available for 60 days
-	Retention *string `json:"retention,omitempty"`
+	Retention *string
 
 	// A reference to the script cmdlet resource if user is running a AVS script
-	ScriptCmdletID *string `json:"scriptCmdletId,omitempty"`
+	ScriptCmdletID *string
 
 	// READ-ONLY; Standard error output stream from the powershell execution
-	Errors []*string `json:"errors,omitempty" azure:"ro"`
+	Errors []*string
 
 	// READ-ONLY; Time the script execution was finished
-	FinishedAt *time.Time `json:"finishedAt,omitempty" azure:"ro"`
+	FinishedAt *time.Time
 
 	// READ-ONLY; Standard information out stream from the powershell execution
-	Information []*string `json:"information,omitempty" azure:"ro"`
+	Information []*string
 
 	// READ-ONLY; The state of the script execution resource
-	ProvisioningState *ScriptExecutionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ScriptExecutionProvisioningState
 
 	// READ-ONLY; Time the script execution was started
-	StartedAt *time.Time `json:"startedAt,omitempty" azure:"ro"`
+	StartedAt *time.Time
 
 	// READ-ONLY; Time the script execution was submitted
-	SubmittedAt *time.Time `json:"submittedAt,omitempty" azure:"ro"`
+	SubmittedAt *time.Time
 
 	// READ-ONLY; Standard warning out stream from the powershell execution
-	Warnings []*string `json:"warnings,omitempty" azure:"ro"`
+	Warnings []*string
 }
 
 // ScriptExecutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScriptExecutionsClient.BeginCreateOrUpdate
@@ -1419,7 +1420,7 @@ type ScriptExecutionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.List method.
+// ScriptExecutionsClientListOptions contains the optional parameters for the ScriptExecutionsClient.NewListPager method.
 type ScriptExecutionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1427,40 +1428,40 @@ type ScriptExecutionsClientListOptions struct {
 // ScriptExecutionsList - Pageable list of script executions
 type ScriptExecutionsList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of scripts
-	Value []*ScriptExecution `json:"value,omitempty" azure:"ro"`
+	Value []*ScriptExecution
 }
 
 // ScriptPackage - Script Package resources available for execution
 type ScriptPackage struct {
 	// ScriptPackage resource properties
-	Properties *ScriptPackageProperties `json:"properties,omitempty"`
+	Properties *ScriptPackageProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScriptPackageProperties - Properties of a Script Package subresource
 type ScriptPackageProperties struct {
 	// READ-ONLY; Company that created and supports the package
-	Company *string `json:"company,omitempty" azure:"ro"`
+	Company *string
 
 	// READ-ONLY; User friendly description of the package
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Link to support by the package vendor
-	URI *string `json:"uri,omitempty" azure:"ro"`
+	URI *string
 
 	// READ-ONLY; Module version
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // ScriptPackagesClientGetOptions contains the optional parameters for the ScriptPackagesClient.Get method.
@@ -1468,7 +1469,7 @@ type ScriptPackagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScriptPackagesClientListOptions contains the optional parameters for the ScriptPackagesClient.List method.
+// ScriptPackagesClientListOptions contains the optional parameters for the ScriptPackagesClient.NewListPager method.
 type ScriptPackagesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1476,40 +1477,40 @@ type ScriptPackagesClientListOptions struct {
 // ScriptPackagesList - A list of the available script packages
 type ScriptPackagesList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of script package resources
-	Value []*ScriptPackage `json:"value,omitempty" azure:"ro"`
+	Value []*ScriptPackage
 }
 
 // ScriptParameter - An parameter that the script will accept
 type ScriptParameter struct {
 	// The parameter name that the script will expect a parameter value for
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; User friendly description of the parameter
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Is this parameter required or optional
-	Optional *OptionalParamEnum `json:"optional,omitempty" azure:"ro"`
+	Optional *OptionalParamEnum
 
 	// READ-ONLY; The type of parameter the script is expecting. psCredential is a PSCredentialObject
-	Type *ScriptParameterTypes `json:"type,omitempty" azure:"ro"`
+	Type *ScriptParameterTypes
 
 	// READ-ONLY; Should this parameter be visible to arm and passed in the parameters argument when executing
-	Visibility *VisibilityParameterEnum `json:"visibility,omitempty" azure:"ro"`
+	Visibility *VisibilityParameterEnum
 }
 
 // ScriptSecureStringExecutionParameter - a plain text value execution parameter
 type ScriptSecureStringExecutionParameter struct {
 	// REQUIRED; The parameter name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The type of execution parameter
-	Type *ScriptExecutionParameterType `json:"type,omitempty"`
+	Type *ScriptExecutionParameterType
 
 	// A secure value for the passed parameter, not to be stored in logs
-	SecureValue *string `json:"secureValue,omitempty"`
+	SecureValue *string
 }
 
 // GetScriptExecutionParameter implements the ScriptExecutionParameterClassification interface for type ScriptSecureStringExecutionParameter.
@@ -1523,13 +1524,13 @@ func (s *ScriptSecureStringExecutionParameter) GetScriptExecutionParameter() *Sc
 // ScriptStringExecutionParameter - a plain text value execution parameter
 type ScriptStringExecutionParameter struct {
 	// REQUIRED; The parameter name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The type of execution parameter
-	Type *ScriptExecutionParameterType `json:"type,omitempty"`
+	Type *ScriptExecutionParameterType
 
 	// The value for the passed parameter
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // GetScriptExecutionParameter implements the ScriptExecutionParameterClassification interface for type ScriptStringExecutionParameter.
@@ -1543,67 +1544,67 @@ func (s *ScriptStringExecutionParameter) GetScriptExecutionParameter() *ScriptEx
 // ServiceSpecification - Service specification payload
 type ServiceSpecification struct {
 	// Specifications of the Log for Azure Monitoring
-	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*LogSpecification
 
 	// Specifications of the Metrics for Azure Monitoring
-	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*MetricSpecification
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Trial - Subscription trial availability
 type Trial struct {
 	// READ-ONLY; Number of trial hosts available
-	AvailableHosts *int32 `json:"availableHosts,omitempty" azure:"ro"`
+	AvailableHosts *int32
 
 	// READ-ONLY; Trial status
-	Status *TrialStatus `json:"status,omitempty" azure:"ro"`
+	Status *TrialStatus
 }
 
 // VMHostPlacementPolicyProperties - VM-Host placement policy properties
 type VMHostPlacementPolicyProperties struct {
 	// REQUIRED; placement policy affinity type
-	AffinityType *AffinityType `json:"affinityType,omitempty"`
+	AffinityType *AffinityType
 
 	// REQUIRED; Host members list
-	HostMembers []*string `json:"hostMembers,omitempty"`
+	HostMembers []*string
 
 	// REQUIRED; placement policy type
-	Type *PlacementPolicyType `json:"type,omitempty"`
+	Type *PlacementPolicyType
 
 	// REQUIRED; Virtual machine members list
-	VMMembers []*string `json:"vmMembers,omitempty"`
+	VMMembers []*string
 
 	// vm-host placement policy affinity strength (should/must)
-	AffinityStrength *AffinityStrength `json:"affinityStrength,omitempty"`
+	AffinityStrength *AffinityStrength
 
 	// placement policy azure hybrid benefit opt-in type
-	AzureHybridBenefitType *AzureHybridBenefitType `json:"azureHybridBenefitType,omitempty"`
+	AzureHybridBenefitType *AzureHybridBenefitType
 
 	// Display name of the placement policy
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Whether the placement policy is enabled or disabled
-	State *PlacementPolicyState `json:"state,omitempty"`
+	State *PlacementPolicyState
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *PlacementPolicyProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PlacementPolicyProvisioningState
 }
 
 // GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type VMHostPlacementPolicyProperties.
@@ -1619,22 +1620,22 @@ func (v *VMHostPlacementPolicyProperties) GetPlacementPolicyProperties() *Placem
 // VMPlacementPolicyProperties - VM-VM placement policy properties
 type VMPlacementPolicyProperties struct {
 	// REQUIRED; placement policy affinity type
-	AffinityType *AffinityType `json:"affinityType,omitempty"`
+	AffinityType *AffinityType
 
 	// REQUIRED; placement policy type
-	Type *PlacementPolicyType `json:"type,omitempty"`
+	Type *PlacementPolicyType
 
 	// REQUIRED; Virtual machine members list
-	VMMembers []*string `json:"vmMembers,omitempty"`
+	VMMembers []*string
 
 	// Display name of the placement policy
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Whether the placement policy is enabled or disabled
-	State *PlacementPolicyState `json:"state,omitempty"`
+	State *PlacementPolicyState
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *PlacementPolicyProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PlacementPolicyProvisioningState
 }
 
 // GetPlacementPolicyProperties implements the PlacementPolicyPropertiesClassification interface for type VMPlacementPolicyProperties.
@@ -1650,37 +1651,37 @@ func (v *VMPlacementPolicyProperties) GetPlacementPolicyProperties() *PlacementP
 // VirtualMachine - Virtual Machine
 type VirtualMachine struct {
 	// Virtual machine properties.
-	Properties *VirtualMachineProperties `json:"properties,omitempty"`
+	Properties *VirtualMachineProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VirtualMachineProperties - Virtual Machine Properties
 type VirtualMachineProperties struct {
 	// READ-ONLY; Display name of the VM.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Path to virtual machine's folder starting from datacenter virtual machine folder
-	FolderPath *string `json:"folderPath,omitempty" azure:"ro"`
+	FolderPath *string
 
 	// READ-ONLY; Virtual machine managed object reference id
-	MoRefID *string `json:"moRefId,omitempty" azure:"ro"`
+	MoRefID *string
 
 	// READ-ONLY; Whether VM DRS-driven movement is restricted (enabled) or not (disabled)
-	RestrictMovement *VirtualMachineRestrictMovementState `json:"restrictMovement,omitempty" azure:"ro"`
+	RestrictMovement *VirtualMachineRestrictMovementState
 }
 
 // VirtualMachineRestrictMovement - Set VM DRS-driven movement to restricted (enabled) or not (disabled)
 type VirtualMachineRestrictMovement struct {
 	// Whether VM DRS-driven movement is restricted (enabled) or not (disabled)
-	RestrictMovement *VirtualMachineRestrictMovementState `json:"restrictMovement,omitempty"`
+	RestrictMovement *VirtualMachineRestrictMovementState
 }
 
 // VirtualMachinesClientBeginRestrictMovementOptions contains the optional parameters for the VirtualMachinesClient.BeginRestrictMovement
@@ -1695,7 +1696,7 @@ type VirtualMachinesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.List method.
+// VirtualMachinesClientListOptions contains the optional parameters for the VirtualMachinesClient.NewListPager method.
 type VirtualMachinesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1703,136 +1704,136 @@ type VirtualMachinesClientListOptions struct {
 // VirtualMachinesList - A list of Virtual Machines
 type VirtualMachinesList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items to be displayed on the page
-	Value []*VirtualMachine `json:"value,omitempty" azure:"ro"`
+	Value []*VirtualMachine
 }
 
 // WorkloadNetwork - Workload Network
 type WorkloadNetwork struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkDNSService - NSX DNS Service
 type WorkloadNetworkDNSService struct {
 	// DNS Service properties
-	Properties *WorkloadNetworkDNSServiceProperties `json:"properties,omitempty"`
+	Properties *WorkloadNetworkDNSServiceProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkDNSServiceProperties - NSX DNS Service Properties
 type WorkloadNetworkDNSServiceProperties struct {
 	// DNS service IP of the DNS Service.
-	DNSServiceIP *string `json:"dnsServiceIp,omitempty"`
+	DNSServiceIP *string
 
 	// Default DNS zone of the DNS Service.
-	DefaultDNSZone *string `json:"defaultDnsZone,omitempty"`
+	DefaultDNSZone *string
 
 	// Display name of the DNS Service.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// FQDN zones of the DNS Service.
-	FqdnZones []*string `json:"fqdnZones,omitempty"`
+	FqdnZones []*string
 
 	// DNS Service log level.
-	LogLevel *DNSServiceLogLevelEnum `json:"logLevel,omitempty"`
+	LogLevel *DNSServiceLogLevelEnum
 
 	// NSX revision number.
-	Revision *int64 `json:"revision,omitempty"`
+	Revision *int64
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkDNSServiceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkDNSServiceProvisioningState
 
 	// READ-ONLY; DNS Service status.
-	Status *DNSServiceStatusEnum `json:"status,omitempty" azure:"ro"`
+	Status *DNSServiceStatusEnum
 }
 
 // WorkloadNetworkDNSServicesList - A list of NSX DNS Services
 type WorkloadNetworkDNSServicesList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkDNSService `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkDNSService
 }
 
 // WorkloadNetworkDNSZone - NSX DNS Zone
 type WorkloadNetworkDNSZone struct {
 	// DNS Zone properties
-	Properties *WorkloadNetworkDNSZoneProperties `json:"properties,omitempty"`
+	Properties *WorkloadNetworkDNSZoneProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkDNSZoneProperties - NSX DNS Zone Properties
 type WorkloadNetworkDNSZoneProperties struct {
 	// DNS Server IP array of the DNS Zone.
-	DNSServerIPs []*string `json:"dnsServerIps,omitempty"`
+	DNSServerIPs []*string
 
 	// Number of DNS Services using the DNS zone.
-	DNSServices *int64 `json:"dnsServices,omitempty"`
+	DNSServices *int64
 
 	// Display name of the DNS Zone.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Domain names of the DNS Zone.
-	Domain []*string `json:"domain,omitempty"`
+	Domain []*string
 
 	// NSX revision number.
-	Revision *int64 `json:"revision,omitempty"`
+	Revision *int64
 
 	// Source IP of the DNS Zone.
-	SourceIP *string `json:"sourceIp,omitempty"`
+	SourceIP *string
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkDNSZoneProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkDNSZoneProvisioningState
 }
 
 // WorkloadNetworkDNSZonesList - A list of NSX DNS Zones
 type WorkloadNetworkDNSZonesList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkDNSZone `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkDNSZone
 }
 
 // WorkloadNetworkDhcp - NSX DHCP
 type WorkloadNetworkDhcp struct {
 	// DHCP properties.
-	Properties WorkloadNetworkDhcpEntityClassification `json:"properties,omitempty"`
+	Properties WorkloadNetworkDhcpEntityClassification
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkDhcpEntityClassification provides polymorphic access to related types.
@@ -1847,19 +1848,19 @@ type WorkloadNetworkDhcpEntityClassification interface {
 // WorkloadNetworkDhcpEntity - Base class for WorkloadNetworkDhcpServer and WorkloadNetworkDhcpRelay to inherit from
 type WorkloadNetworkDhcpEntity struct {
 	// REQUIRED; Type of DHCP: SERVER or RELAY.
-	DhcpType *DhcpTypeEnum `json:"dhcpType,omitempty"`
+	DhcpType *DhcpTypeEnum
 
 	// Display name of the DHCP entity.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// NSX revision number.
-	Revision *int64 `json:"revision,omitempty"`
+	Revision *int64
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkDhcpProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkDhcpProvisioningState
 
 	// READ-ONLY; NSX Segments consuming DHCP.
-	Segments []*string `json:"segments,omitempty" azure:"ro"`
+	Segments []*string
 }
 
 // GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpEntity.
@@ -1870,31 +1871,31 @@ func (w *WorkloadNetworkDhcpEntity) GetWorkloadNetworkDhcpEntity() *WorkloadNetw
 // WorkloadNetworkDhcpList - A list of NSX dhcp entities
 type WorkloadNetworkDhcpList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkDhcp `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkDhcp
 }
 
 // WorkloadNetworkDhcpRelay - NSX DHCP Relay
 type WorkloadNetworkDhcpRelay struct {
 	// REQUIRED; Type of DHCP: SERVER or RELAY.
-	DhcpType *DhcpTypeEnum `json:"dhcpType,omitempty"`
+	DhcpType *DhcpTypeEnum
 
 	// Display name of the DHCP entity.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// NSX revision number.
-	Revision *int64 `json:"revision,omitempty"`
+	Revision *int64
 
 	// DHCP Relay Addresses. Max 3.
-	ServerAddresses []*string `json:"serverAddresses,omitempty"`
+	ServerAddresses []*string
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkDhcpProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkDhcpProvisioningState
 
 	// READ-ONLY; NSX Segments consuming DHCP.
-	Segments []*string `json:"segments,omitempty" azure:"ro"`
+	Segments []*string
 }
 
 // GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpRelay.
@@ -1911,25 +1912,25 @@ func (w *WorkloadNetworkDhcpRelay) GetWorkloadNetworkDhcpEntity() *WorkloadNetwo
 // WorkloadNetworkDhcpServer - NSX DHCP Server
 type WorkloadNetworkDhcpServer struct {
 	// REQUIRED; Type of DHCP: SERVER or RELAY.
-	DhcpType *DhcpTypeEnum `json:"dhcpType,omitempty"`
+	DhcpType *DhcpTypeEnum
 
 	// Display name of the DHCP entity.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// DHCP Server Lease Time.
-	LeaseTime *int64 `json:"leaseTime,omitempty"`
+	LeaseTime *int64
 
 	// NSX revision number.
-	Revision *int64 `json:"revision,omitempty"`
+	Revision *int64
 
 	// DHCP Server Address.
-	ServerAddress *string `json:"serverAddress,omitempty"`
+	ServerAddress *string
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkDhcpProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkDhcpProvisioningState
 
 	// READ-ONLY; NSX Segments consuming DHCP.
-	Segments []*string `json:"segments,omitempty" azure:"ro"`
+	Segments []*string
 }
 
 // GetWorkloadNetworkDhcpEntity implements the WorkloadNetworkDhcpEntityClassification interface for type WorkloadNetworkDhcpServer.
@@ -1946,268 +1947,268 @@ func (w *WorkloadNetworkDhcpServer) GetWorkloadNetworkDhcpEntity() *WorkloadNetw
 // WorkloadNetworkGateway - NSX Gateway.
 type WorkloadNetworkGateway struct {
 	// Gateway properties.
-	Properties *WorkloadNetworkGatewayProperties `json:"properties,omitempty"`
+	Properties *WorkloadNetworkGatewayProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkGatewayList - A list of NSX Gateways
 type WorkloadNetworkGatewayList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkGateway `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkGateway
 }
 
 // WorkloadNetworkGatewayProperties - Properties of a NSX Gateway.
 type WorkloadNetworkGatewayProperties struct {
 	// Display name of the DHCP entity.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// READ-ONLY; NSX Gateway Path.
-	Path *string `json:"path,omitempty" azure:"ro"`
+	Path *string
 }
 
 // WorkloadNetworkList - A list of workload networks
 type WorkloadNetworkList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetwork `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetwork
 }
 
 // WorkloadNetworkPortMirroring - NSX Port Mirroring
 type WorkloadNetworkPortMirroring struct {
 	// Port Mirroring Properties.
-	Properties *WorkloadNetworkPortMirroringProperties `json:"properties,omitempty"`
+	Properties *WorkloadNetworkPortMirroringProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkPortMirroringList - A list of NSX Port Mirroring
 type WorkloadNetworkPortMirroringList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkPortMirroring `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkPortMirroring
 }
 
 // WorkloadNetworkPortMirroringProperties - NSX Port Mirroring Properties
 type WorkloadNetworkPortMirroringProperties struct {
 	// Destination VM Group.
-	Destination *string `json:"destination,omitempty"`
+	Destination *string
 
 	// Direction of port mirroring profile.
-	Direction *PortMirroringDirectionEnum `json:"direction,omitempty"`
+	Direction *PortMirroringDirectionEnum
 
 	// Display name of the port mirroring profile.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// NSX revision number.
-	Revision *int64 `json:"revision,omitempty"`
+	Revision *int64
 
 	// Source VM Group.
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkPortMirroringProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkPortMirroringProvisioningState
 
 	// READ-ONLY; Port Mirroring Status.
-	Status *PortMirroringStatusEnum `json:"status,omitempty" azure:"ro"`
+	Status *PortMirroringStatusEnum
 }
 
 // WorkloadNetworkPublicIP - NSX Public IP Block
 type WorkloadNetworkPublicIP struct {
 	// Public IP Block properties
-	Properties *WorkloadNetworkPublicIPProperties `json:"properties,omitempty"`
+	Properties *WorkloadNetworkPublicIPProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkPublicIPProperties - NSX Public IP Block Properties
 type WorkloadNetworkPublicIPProperties struct {
 	// Display name of the Public IP Block.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Number of Public IPs requested.
-	NumberOfPublicIPs *int64 `json:"numberOfPublicIPs,omitempty"`
+	NumberOfPublicIPs *int64
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkPublicIPProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkPublicIPProvisioningState
 
 	// READ-ONLY; CIDR Block of the Public IP Block.
-	PublicIPBlock *string `json:"publicIPBlock,omitempty" azure:"ro"`
+	PublicIPBlock *string
 }
 
 // WorkloadNetworkPublicIPsList - A list of NSX Public IP Blocks
 type WorkloadNetworkPublicIPsList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkPublicIP `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkPublicIP
 }
 
 // WorkloadNetworkSegment - NSX Segment
 type WorkloadNetworkSegment struct {
 	// The properties of a Workload Segment proxy resource.
-	Properties *WorkloadNetworkSegmentProperties `json:"properties,omitempty"`
+	Properties *WorkloadNetworkSegmentProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkSegmentPortVif - Ports and any VIF attached to segment.
 type WorkloadNetworkSegmentPortVif struct {
 	// Name of port or VIF attached to segment.
-	PortName *string `json:"portName,omitempty"`
+	PortName *string
 }
 
 // WorkloadNetworkSegmentProperties - NSX Segment Properties
 type WorkloadNetworkSegmentProperties struct {
 	// Gateway which to connect segment to.
-	ConnectedGateway *string `json:"connectedGateway,omitempty"`
+	ConnectedGateway *string
 
 	// Display name of the segment.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// NSX revision number.
-	Revision *int64 `json:"revision,omitempty"`
+	Revision *int64
 
 	// Subnet which to connect segment to.
-	Subnet *WorkloadNetworkSegmentSubnet `json:"subnet,omitempty"`
+	Subnet *WorkloadNetworkSegmentSubnet
 
 	// READ-ONLY; Port Vif which segment is associated with.
-	PortVif []*WorkloadNetworkSegmentPortVif `json:"portVif,omitempty" azure:"ro"`
+	PortVif []*WorkloadNetworkSegmentPortVif
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkSegmentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkSegmentProvisioningState
 
 	// READ-ONLY; Segment status.
-	Status *SegmentStatusEnum `json:"status,omitempty" azure:"ro"`
+	Status *SegmentStatusEnum
 }
 
 // WorkloadNetworkSegmentSubnet - Subnet configuration for segment
 type WorkloadNetworkSegmentSubnet struct {
 	// DHCP Range assigned for subnet.
-	DhcpRanges []*string `json:"dhcpRanges,omitempty"`
+	DhcpRanges []*string
 
 	// Gateway address.
-	GatewayAddress *string `json:"gatewayAddress,omitempty"`
+	GatewayAddress *string
 }
 
 // WorkloadNetworkSegmentsList - A list of NSX Segments
 type WorkloadNetworkSegmentsList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkSegment `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkSegment
 }
 
 // WorkloadNetworkVMGroup - NSX VM Group
 type WorkloadNetworkVMGroup struct {
 	// VM Group properties.
-	Properties *WorkloadNetworkVMGroupProperties `json:"properties,omitempty"`
+	Properties *WorkloadNetworkVMGroupProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkVMGroupProperties - NSX VM Group Properties
 type WorkloadNetworkVMGroupProperties struct {
 	// Display name of the VM group.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Virtual machine members of this group.
-	Members []*string `json:"members,omitempty"`
+	Members []*string
 
 	// NSX revision number.
-	Revision *int64 `json:"revision,omitempty"`
+	Revision *int64
 
 	// READ-ONLY; The provisioning state
-	ProvisioningState *WorkloadNetworkVMGroupProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkloadNetworkVMGroupProvisioningState
 
 	// READ-ONLY; VM Group status.
-	Status *VMGroupStatusEnum `json:"status,omitempty" azure:"ro"`
+	Status *VMGroupStatusEnum
 }
 
 // WorkloadNetworkVMGroupsList - A list of NSX VM Groups
 type WorkloadNetworkVMGroupsList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkVMGroup `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkVMGroup
 }
 
 // WorkloadNetworkVirtualMachine - NSX Virtual Machine
 type WorkloadNetworkVirtualMachine struct {
 	// Virtual machine properties.
-	Properties *WorkloadNetworkVirtualMachineProperties `json:"properties,omitempty"`
+	Properties *WorkloadNetworkVirtualMachineProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkloadNetworkVirtualMachineProperties - NSX Virtual Machine Properties
 type WorkloadNetworkVirtualMachineProperties struct {
 	// Display name of the VM.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// READ-ONLY; Virtual machine type.
-	VMType *VMTypeEnum `json:"vmType,omitempty" azure:"ro"`
+	VMType *VMTypeEnum
 }
 
 // WorkloadNetworkVirtualMachinesList - A list of NSX Virtual Machines
 type WorkloadNetworkVirtualMachinesList struct {
 	// READ-ONLY; URL to get the next page if any
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The items on the page
-	Value []*WorkloadNetworkVirtualMachine `json:"value,omitempty" azure:"ro"`
+	Value []*WorkloadNetworkVirtualMachine
 }
 
 // WorkloadNetworksClientBeginCreateDNSServiceOptions contains the optional parameters for the WorkloadNetworksClient.BeginCreateDNSService
@@ -2403,59 +2404,60 @@ type WorkloadNetworksClientGetVirtualMachineOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListDNSServicesOptions contains the optional parameters for the WorkloadNetworksClient.ListDNSServices
+// WorkloadNetworksClientListDNSServicesOptions contains the optional parameters for the WorkloadNetworksClient.NewListDNSServicesPager
 // method.
 type WorkloadNetworksClientListDNSServicesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListDNSZonesOptions contains the optional parameters for the WorkloadNetworksClient.ListDNSZones
+// WorkloadNetworksClientListDNSZonesOptions contains the optional parameters for the WorkloadNetworksClient.NewListDNSZonesPager
 // method.
 type WorkloadNetworksClientListDNSZonesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListDhcpOptions contains the optional parameters for the WorkloadNetworksClient.ListDhcp method.
+// WorkloadNetworksClientListDhcpOptions contains the optional parameters for the WorkloadNetworksClient.NewListDhcpPager
+// method.
 type WorkloadNetworksClientListDhcpOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListGatewaysOptions contains the optional parameters for the WorkloadNetworksClient.ListGateways
+// WorkloadNetworksClientListGatewaysOptions contains the optional parameters for the WorkloadNetworksClient.NewListGatewaysPager
 // method.
 type WorkloadNetworksClientListGatewaysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListOptions contains the optional parameters for the WorkloadNetworksClient.List method.
+// WorkloadNetworksClientListOptions contains the optional parameters for the WorkloadNetworksClient.NewListPager method.
 type WorkloadNetworksClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.ListPortMirroring
+// WorkloadNetworksClientListPortMirroringOptions contains the optional parameters for the WorkloadNetworksClient.NewListPortMirroringPager
 // method.
 type WorkloadNetworksClientListPortMirroringOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListPublicIPsOptions contains the optional parameters for the WorkloadNetworksClient.ListPublicIPs
+// WorkloadNetworksClientListPublicIPsOptions contains the optional parameters for the WorkloadNetworksClient.NewListPublicIPsPager
 // method.
 type WorkloadNetworksClientListPublicIPsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.ListSegments
+// WorkloadNetworksClientListSegmentsOptions contains the optional parameters for the WorkloadNetworksClient.NewListSegmentsPager
 // method.
 type WorkloadNetworksClientListSegmentsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListVMGroupsOptions contains the optional parameters for the WorkloadNetworksClient.ListVMGroups
+// WorkloadNetworksClientListVMGroupsOptions contains the optional parameters for the WorkloadNetworksClient.NewListVMGroupsPager
 // method.
 type WorkloadNetworksClientListVMGroupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkloadNetworksClientListVirtualMachinesOptions contains the optional parameters for the WorkloadNetworksClient.ListVirtualMachines
+// WorkloadNetworksClientListVirtualMachinesOptions contains the optional parameters for the WorkloadNetworksClient.NewListVirtualMachinesPager
 // method.
 type WorkloadNetworksClientListVirtualMachinesOptions struct {
 	// placeholder for future optional parameters

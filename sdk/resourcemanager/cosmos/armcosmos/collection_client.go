@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CollectionClient contains the methods for the Collection group.
 // Don't use this type directly, use NewCollectionClient() instead.
 type CollectionClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCollectionClient creates a new instance of CollectionClient with the specified values.
@@ -36,21 +33,13 @@ type CollectionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCollectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CollectionClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CollectionClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CollectionClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -74,7 +63,7 @@ func (client *CollectionClient) NewListMetricDefinitionsPager(resourceGroupName 
 			if err != nil {
 				return CollectionClientListMetricDefinitionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CollectionClientListMetricDefinitionsResponse{}, err
 			}
@@ -109,7 +98,7 @@ func (client *CollectionClient) listMetricDefinitionsCreateRequest(ctx context.C
 		return nil, errors.New("parameter collectionRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionRid}", url.PathEscape(collectionRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,7 +140,7 @@ func (client *CollectionClient) NewListMetricsPager(resourceGroupName string, ac
 			if err != nil {
 				return CollectionClientListMetricsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CollectionClientListMetricsResponse{}, err
 			}
@@ -186,7 +175,7 @@ func (client *CollectionClient) listMetricsCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter collectionRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionRid}", url.PathEscape(collectionRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -226,7 +215,7 @@ func (client *CollectionClient) NewListUsagesPager(resourceGroupName string, acc
 			if err != nil {
 				return CollectionClientListUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CollectionClientListUsagesResponse{}, err
 			}
@@ -261,7 +250,7 @@ func (client *CollectionClient) listUsagesCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter collectionRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionRid}", url.PathEscape(collectionRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

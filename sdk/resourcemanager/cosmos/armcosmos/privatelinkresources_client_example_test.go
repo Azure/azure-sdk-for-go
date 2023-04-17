@@ -24,11 +24,11 @@ func ExamplePrivateLinkResourcesClient_NewListByDatabaseAccountPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewPrivateLinkResourcesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByDatabaseAccountPager("rg1", "ddb1", nil)
+	pager := clientFactory.NewPrivateLinkResourcesClient().NewListByDatabaseAccountPager("rg1", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -65,11 +65,11 @@ func ExamplePrivateLinkResourcesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewPrivateLinkResourcesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "ddb1", "sql", nil)
+	res, err := clientFactory.NewPrivateLinkResourcesClient().Get(ctx, "rg1", "ddb1", "sql", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

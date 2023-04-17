@@ -5,8 +5,9 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/e99a45d498a1c7fadc18229ecba5d84a471a8771/specification/recoveryservicessiterecovery/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/e99a45d498a1c7fadc18229ecba5d84a471a8771/specification/recoveryservicessiterecovery/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/f790e624d0d080b89d962a3bd19c65bc6a6b2f5e/specification/recoveryservicessiterecovery/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.1.0
+module-version: 2.0.1
+tag: package-2022-10
 ```

@@ -25,11 +25,11 @@ func ExampleSQLResourcesClient_NewListSQLDatabasesPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSQLDatabasesPager("rgName", "ddb1", nil)
+	pager := clientFactory.NewSQLResourcesClient().NewListSQLDatabasesPager("rgName", "ddb1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -71,11 +71,11 @@ func ExampleSQLResourcesClient_GetSQLDatabase() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -109,11 +109,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLDatabase() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateSQLDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.SQLDatabaseCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.SQLDatabaseCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.SQLDatabaseCreateUpdateProperties{
@@ -158,11 +158,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLDatabase() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteSQLDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginDeleteSQLDatabase(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -179,11 +179,11 @@ func ExampleSQLResourcesClient_GetSQLDatabaseThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -217,11 +217,11 @@ func ExampleSQLResourcesClient_BeginUpdateSQLDatabaseThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateSQLDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginUpdateSQLDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
@@ -267,11 +267,11 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToAutoscale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateSQLDatabaseToAutoscale(ctx, "rg1", "ddb1", "databaseName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLDatabaseToAutoscale(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -306,11 +306,11 @@ func ExampleSQLResourcesClient_BeginMigrateSQLDatabaseToManualThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateSQLDatabaseToManualThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLDatabaseToManualThroughput(ctx, "rg1", "ddb1", "databaseName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -342,11 +342,11 @@ func ExampleSQLResourcesClient_NewListSQLContainersPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSQLContainersPager("rgName", "ddb1", "databaseName", nil)
+	pager := clientFactory.NewSQLResourcesClient().NewListSQLContainersPager("rgName", "ddb1", "databaseName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -566,11 +566,11 @@ func ExampleSQLResourcesClient_GetSQLContainer() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLContainer(ctx, "rgName", "ddb1", "databaseName", "containerName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLContainer(ctx, "rgName", "ddb1", "databaseName", "containerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -653,11 +653,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLContainer() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateSQLContainer(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.SQLContainerCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLContainer(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.SQLContainerCreateUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.SQLContainerCreateUpdateProperties{
@@ -797,11 +797,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLContainer() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteSQLContainer(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginDeleteSQLContainer(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -818,11 +818,11 @@ func ExampleSQLResourcesClient_GetSQLContainerThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLContainerThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLContainerThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -856,11 +856,11 @@ func ExampleSQLResourcesClient_BeginUpdateSQLContainerThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateSQLContainerThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.ThroughputSettingsUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginUpdateSQLContainerThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
@@ -906,11 +906,11 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToAutoscale() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateSQLContainerToAutoscale(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLContainerToAutoscale(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -945,11 +945,11 @@ func ExampleSQLResourcesClient_BeginMigrateSQLContainerToManualThroughput() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginMigrateSQLContainerToManualThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginMigrateSQLContainerToManualThroughput(ctx, "rg1", "ddb1", "databaseName", "containerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -981,11 +981,11 @@ func ExampleSQLResourcesClient_NewListClientEncryptionKeysPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListClientEncryptionKeysPager("rgName", "accountName", "databaseName", nil)
+	pager := clientFactory.NewSQLResourcesClient().NewListClientEncryptionKeysPager("rgName", "accountName", "databaseName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1051,11 +1051,11 @@ func ExampleSQLResourcesClient_GetClientEncryptionKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1092,11 +1092,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateClientEncryptionKey() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", armcosmos.ClientEncryptionKeyCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateClientEncryptionKey(ctx, "rgName", "accountName", "databaseName", "cekName", armcosmos.ClientEncryptionKeyCreateUpdateParameters{
 		Properties: &armcosmos.ClientEncryptionKeyCreateUpdateProperties{
 			Resource: &armcosmos.ClientEncryptionKeyResource{
 				EncryptionAlgorithm: to.Ptr("AEAD_AES_256_CBC_HMAC_SHA256"),
@@ -1151,11 +1151,11 @@ func ExampleSQLResourcesClient_NewListSQLStoredProceduresPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSQLStoredProceduresPager("rgName", "ddb1", "databaseName", "containerName", nil)
+	pager := clientFactory.NewSQLResourcesClient().NewListSQLStoredProceduresPager("rgName", "ddb1", "databaseName", "containerName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1193,11 +1193,11 @@ func ExampleSQLResourcesClient_GetSQLStoredProcedure() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLStoredProcedure(ctx, "rgName", "ddb1", "databaseName", "containerName", "storedProcedureName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLStoredProcedure(ctx, "rgName", "ddb1", "databaseName", "containerName", "storedProcedureName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1227,11 +1227,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLStoredProcedure() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateSQLStoredProcedure(ctx, "rg1", "ddb1", "databaseName", "containerName", "storedProcedureName", armcosmos.SQLStoredProcedureCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLStoredProcedure(ctx, "rg1", "ddb1", "databaseName", "containerName", "storedProcedureName", armcosmos.SQLStoredProcedureCreateUpdateParameters{
 		Properties: &armcosmos.SQLStoredProcedureCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.SQLStoredProcedureResource{
@@ -1273,11 +1273,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLStoredProcedure() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteSQLStoredProcedure(ctx, "rg1", "ddb1", "databaseName", "containerName", "storedProcedureName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginDeleteSQLStoredProcedure(ctx, "rg1", "ddb1", "databaseName", "containerName", "storedProcedureName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1294,11 +1294,11 @@ func ExampleSQLResourcesClient_NewListSQLUserDefinedFunctionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSQLUserDefinedFunctionsPager("rgName", "ddb1", "databaseName", "containerName", nil)
+	pager := clientFactory.NewSQLResourcesClient().NewListSQLUserDefinedFunctionsPager("rgName", "ddb1", "databaseName", "containerName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1336,11 +1336,11 @@ func ExampleSQLResourcesClient_GetSQLUserDefinedFunction() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLUserDefinedFunction(ctx, "rgName", "ddb1", "databaseName", "containerName", "userDefinedFunctionName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLUserDefinedFunction(ctx, "rgName", "ddb1", "databaseName", "containerName", "userDefinedFunctionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1370,11 +1370,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLUserDefinedFunction() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateSQLUserDefinedFunction(ctx, "rg1", "ddb1", "databaseName", "containerName", "userDefinedFunctionName", armcosmos.SQLUserDefinedFunctionCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLUserDefinedFunction(ctx, "rg1", "ddb1", "databaseName", "containerName", "userDefinedFunctionName", armcosmos.SQLUserDefinedFunctionCreateUpdateParameters{
 		Properties: &armcosmos.SQLUserDefinedFunctionCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.SQLUserDefinedFunctionResource{
@@ -1416,11 +1416,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLUserDefinedFunction() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteSQLUserDefinedFunction(ctx, "rg1", "ddb1", "databaseName", "containerName", "userDefinedFunctionName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginDeleteSQLUserDefinedFunction(ctx, "rg1", "ddb1", "databaseName", "containerName", "userDefinedFunctionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1437,11 +1437,11 @@ func ExampleSQLResourcesClient_NewListSQLTriggersPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSQLTriggersPager("rgName", "ddb1", "databaseName", "containerName", nil)
+	pager := clientFactory.NewSQLResourcesClient().NewListSQLTriggersPager("rgName", "ddb1", "databaseName", "containerName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1481,11 +1481,11 @@ func ExampleSQLResourcesClient_GetSQLTrigger() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLTrigger(ctx, "rgName", "ddb1", "databaseName", "containerName", "triggerName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLTrigger(ctx, "rgName", "ddb1", "databaseName", "containerName", "triggerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1517,11 +1517,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLTrigger() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateSQLTrigger(ctx, "rg1", "ddb1", "databaseName", "containerName", "triggerName", armcosmos.SQLTriggerCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLTrigger(ctx, "rg1", "ddb1", "databaseName", "containerName", "triggerName", armcosmos.SQLTriggerCreateUpdateParameters{
 		Properties: &armcosmos.SQLTriggerCreateUpdateProperties{
 			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.SQLTriggerResource{
@@ -1567,11 +1567,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLTrigger() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteSQLTrigger(ctx, "rg1", "ddb1", "databaseName", "containerName", "triggerName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginDeleteSQLTrigger(ctx, "rg1", "ddb1", "databaseName", "containerName", "triggerName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1588,11 +1588,11 @@ func ExampleSQLResourcesClient_GetSQLRoleDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLRoleDefinition(ctx, "myRoleDefinitionId", "myResourceGroupName", "myAccountName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLRoleDefinition(ctx, "myRoleDefinitionId", "myResourceGroupName", "myAccountName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1628,11 +1628,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateSQLRoleDefinition(ctx, "myRoleDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.SQLRoleDefinitionCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLRoleDefinition(ctx, "myRoleDefinitionId", "myResourceGroupName", "myAccountName", armcosmos.SQLRoleDefinitionCreateUpdateParameters{
 		Properties: &armcosmos.SQLRoleDefinitionResource{
 			Type: to.Ptr(armcosmos.RoleDefinitionTypeCustomRole),
 			AssignableScopes: []*string{
@@ -1685,11 +1685,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleDefinition() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteSQLRoleDefinition(ctx, "myRoleDefinitionId", "myResourceGroupName", "myAccountName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginDeleteSQLRoleDefinition(ctx, "myRoleDefinitionId", "myResourceGroupName", "myAccountName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1706,11 +1706,11 @@ func ExampleSQLResourcesClient_NewListSQLRoleDefinitionsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSQLRoleDefinitionsPager("myResourceGroupName", "myAccountName", nil)
+	pager := clientFactory.NewSQLResourcesClient().NewListSQLRoleDefinitionsPager("myResourceGroupName", "myAccountName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1754,11 +1754,11 @@ func ExampleSQLResourcesClient_GetSQLRoleAssignment() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetSQLRoleAssignment(ctx, "myRoleAssignmentId", "myResourceGroupName", "myAccountName", nil)
+	res, err := clientFactory.NewSQLResourcesClient().GetSQLRoleAssignment(ctx, "myRoleAssignmentId", "myResourceGroupName", "myAccountName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1784,11 +1784,11 @@ func ExampleSQLResourcesClient_BeginCreateUpdateSQLRoleAssignment() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdateSQLRoleAssignment(ctx, "myRoleAssignmentId", "myResourceGroupName", "myAccountName", armcosmos.SQLRoleAssignmentCreateUpdateParameters{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginCreateUpdateSQLRoleAssignment(ctx, "myRoleAssignmentId", "myResourceGroupName", "myAccountName", armcosmos.SQLRoleAssignmentCreateUpdateParameters{
 		Properties: &armcosmos.SQLRoleAssignmentResource{
 			PrincipalID:      to.Ptr("myPrincipalId"),
 			RoleDefinitionID: to.Ptr("/subscriptions/mySubscriptionId/resourceGroups/myResourceGroupName/providers/Microsoft.DocumentDB/databaseAccounts/myAccountName/sqlRoleDefinitions/myRoleDefinitionId"),
@@ -1824,11 +1824,11 @@ func ExampleSQLResourcesClient_BeginDeleteSQLRoleAssignment() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeleteSQLRoleAssignment(ctx, "myRoleAssignmentId", "myResourceGroupName", "myAccountName", nil)
+	poller, err := clientFactory.NewSQLResourcesClient().BeginDeleteSQLRoleAssignment(ctx, "myRoleAssignmentId", "myResourceGroupName", "myAccountName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1845,11 +1845,11 @@ func ExampleSQLResourcesClient_NewListSQLRoleAssignmentsPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("mySubscriptionId", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListSQLRoleAssignmentsPager("myResourceGroupName", "myAccountName", nil)
+	pager := clientFactory.NewSQLResourcesClient().NewListSQLRoleAssignmentsPager("myResourceGroupName", "myAccountName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1883,11 +1883,11 @@ func ExampleSQLResourcesClient_BeginRetrieveContinuousBackupInformation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewSQLResourcesClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginRetrieveContinuousBackupInformation(ctx, "rgName", "ddb1", "databaseName", "containerName", armcosmos.ContinuousBackupRestoreLocation{
+	poller, err := clientFactory.NewSQLResourcesClient().BeginRetrieveContinuousBackupInformation(ctx, "rgName", "ddb1", "databaseName", "containerName", armcosmos.ContinuousBackupRestoreLocation{
 		Location: to.Ptr("North Europe"),
 	}, nil)
 	if err != nil {

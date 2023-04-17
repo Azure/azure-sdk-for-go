@@ -25,11 +25,11 @@ func ExampleVirtualHubBgpConnectionClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubBgpConnectionClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "hub1", "conn1", nil)
+	res, err := clientFactory.NewVirtualHubBgpConnectionClient().Get(ctx, "rg1", "hub1", "conn1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -59,11 +59,11 @@ func ExampleVirtualHubBgpConnectionClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubBgpConnectionClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "hub1", "conn1", armnetwork.BgpConnection{
+	poller, err := clientFactory.NewVirtualHubBgpConnectionClient().BeginCreateOrUpdate(ctx, "rg1", "hub1", "conn1", armnetwork.BgpConnection{
 		Properties: &armnetwork.BgpConnectionProperties{
 			HubVirtualNetworkConnection: &armnetwork.SubResource{
 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualHubs/hub1/hubVirtualNetworkConnections/hubVnetConn1"),
@@ -105,11 +105,11 @@ func ExampleVirtualHubBgpConnectionClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualHubBgpConnectionClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "hub1", "conn1", nil)
+	poller, err := clientFactory.NewVirtualHubBgpConnectionClient().BeginDelete(ctx, "rg1", "hub1", "conn1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

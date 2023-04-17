@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,44 +25,36 @@ import (
 // PolicyTrackedResourcesClient contains the methods for the PolicyTrackedResources group.
 // Don't use this type directly, use NewPolicyTrackedResourcesClient() instead.
 type PolicyTrackedResourcesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPolicyTrackedResourcesClient creates a new instance of PolicyTrackedResourcesClient with the specified values.
-// subscriptionID - Microsoft Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Microsoft Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPolicyTrackedResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PolicyTrackedResourcesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PolicyTrackedResourcesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PolicyTrackedResourcesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListQueryResultsForManagementGroupPager - Queries policy tracked resources under the management group.
+//
 // Generated from API version 2018-07-01-preview
-// managementGroupName - Management group name.
-// policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
-// is allowed.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the
-// PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup method.
+//   - managementGroupName - Management group name.
+//   - policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
+//     is allowed.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions contains the optional parameters for the
+//     PolicyTrackedResourcesClient.NewListQueryResultsForManagementGroupPager method.
 func (client *PolicyTrackedResourcesClient) NewListQueryResultsForManagementGroupPager(managementGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForManagementGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse) bool {
@@ -81,7 +71,7 @@ func (client *PolicyTrackedResourcesClient) NewListQueryResultsForManagementGrou
 			if err != nil {
 				return PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PolicyTrackedResourcesClientListQueryResultsForManagementGroupResponse{}, err
 			}
@@ -105,7 +95,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupCr
 		return nil, errors.New("parameter policyTrackedResourcesResource cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyTrackedResourcesResource}", url.PathEscape(string(policyTrackedResourcesResource)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -132,14 +122,15 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForManagementGroupHa
 }
 
 // NewListQueryResultsForResourcePager - Queries policy tracked resources under the resource.
+//
 // Generated from API version 2018-07-01-preview
-// resourceID - Resource ID.
-// policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
-// is allowed.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForResource
-// method.
+//   - resourceID - Resource ID.
+//   - policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
+//     is allowed.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - PolicyTrackedResourcesClientListQueryResultsForResourceOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForResourcePager
+//     method.
 func (client *PolicyTrackedResourcesClient) NewListQueryResultsForResourcePager(resourceID string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForResourceOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PolicyTrackedResourcesClientListQueryResultsForResourceResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForResourceResponse) bool {
@@ -156,7 +147,7 @@ func (client *PolicyTrackedResourcesClient) NewListQueryResultsForResourcePager(
 			if err != nil {
 				return PolicyTrackedResourcesClientListQueryResultsForResourceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PolicyTrackedResourcesClientListQueryResultsForResourceResponse{}, err
 			}
@@ -176,7 +167,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceCreateReq
 		return nil, errors.New("parameter policyTrackedResourcesResource cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{policyTrackedResourcesResource}", url.PathEscape(string(policyTrackedResourcesResource)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -203,14 +194,15 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceHandleRes
 }
 
 // NewListQueryResultsForResourceGroupPager - Queries policy tracked resources under the resource group.
+//
 // Generated from API version 2018-07-01-preview
-// resourceGroupName - Resource group name.
-// policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
-// is allowed.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the
-// PolicyTrackedResourcesClient.ListQueryResultsForResourceGroup method.
+//   - resourceGroupName - Resource group name.
+//   - policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
+//     is allowed.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions contains the optional parameters for the
+//     PolicyTrackedResourcesClient.NewListQueryResultsForResourceGroupPager method.
 func (client *PolicyTrackedResourcesClient) NewListQueryResultsForResourceGroupPager(resourceGroupName string, policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForResourceGroupOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse) bool {
@@ -227,7 +219,7 @@ func (client *PolicyTrackedResourcesClient) NewListQueryResultsForResourceGroupP
 			if err != nil {
 				return PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PolicyTrackedResourcesClientListQueryResultsForResourceGroupResponse{}, err
 			}
@@ -254,7 +246,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupCrea
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,13 +273,14 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForResourceGroupHand
 }
 
 // NewListQueryResultsForSubscriptionPager - Queries policy tracked resources under the subscription.
+//
 // Generated from API version 2018-07-01-preview
-// policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
-// is allowed.
-// QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
-// method.
-// options - PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.ListQueryResultsForSubscription
-// method.
+//   - policyTrackedResourcesResource - The name of the virtual resource under PolicyTrackedResources resource type; only "default"
+//     is allowed.
+//   - QueryOptions - QueryOptions contains a group of parameters for the PolicyTrackedResourcesClient.ListQueryResultsForManagementGroup
+//     method.
+//   - options - PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions contains the optional parameters for the PolicyTrackedResourcesClient.NewListQueryResultsForSubscriptionPager
+//     method.
 func (client *PolicyTrackedResourcesClient) NewListQueryResultsForSubscriptionPager(policyTrackedResourcesResource PolicyTrackedResourcesResourceType, queryOptions *QueryOptions, options *PolicyTrackedResourcesClientListQueryResultsForSubscriptionOptions) *runtime.Pager[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse]{
 		More: func(page PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse) bool {
@@ -304,7 +297,7 @@ func (client *PolicyTrackedResourcesClient) NewListQueryResultsForSubscriptionPa
 			if err != nil {
 				return PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PolicyTrackedResourcesClientListQueryResultsForSubscriptionResponse{}, err
 			}
@@ -327,7 +320,7 @@ func (client *PolicyTrackedResourcesClient) listQueryResultsForSubscriptionCreat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

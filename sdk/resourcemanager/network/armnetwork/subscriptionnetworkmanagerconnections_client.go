@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // SubscriptionNetworkManagerConnectionsClient contains the methods for the SubscriptionNetworkManagerConnections group.
 // Don't use this type directly, use NewSubscriptionNetworkManagerConnectionsClient() instead.
 type SubscriptionNetworkManagerConnectionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSubscriptionNetworkManagerConnectionsClient creates a new instance of SubscriptionNetworkManagerConnectionsClient with the specified values.
@@ -38,21 +35,13 @@ type SubscriptionNetworkManagerConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSubscriptionNetworkManagerConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SubscriptionNetworkManagerConnectionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SubscriptionNetworkManagerConnectionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SubscriptionNetworkManagerConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,7 +59,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) CreateOrUpdate(ctx co
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
 	}
@@ -91,7 +80,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) createOrUpdateCreateR
 		return nil, errors.New("parameter networkManagerConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkManagerConnectionName}", url.PathEscape(networkManagerConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,7 +112,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) Delete(ctx context.Co
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, err
 	}
@@ -144,7 +133,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) deleteCreateRequest(c
 		return nil, errors.New("parameter networkManagerConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkManagerConnectionName}", url.PathEscape(networkManagerConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -167,7 +156,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) Get(ctx context.Conte
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientGetResponse{}, err
 	}
@@ -188,7 +177,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) getCreateRequest(ctx 
 		return nil, errors.New("parameter networkManagerConnectionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkManagerConnectionName}", url.PathEscape(networkManagerConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -229,7 +218,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) NewListPager(options 
 			if err != nil {
 				return SubscriptionNetworkManagerConnectionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SubscriptionNetworkManagerConnectionsClientListResponse{}, err
 			}
@@ -248,7 +237,7 @@ func (client *SubscriptionNetworkManagerConnectionsClient) listCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

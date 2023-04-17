@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // AutoscaleSettingsClient contains the methods for the AutoscaleSettings group.
 // Don't use this type directly, use NewAutoscaleSettingsClient() instead.
 type AutoscaleSettingsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAutoscaleSettingsClient creates a new instance of AutoscaleSettingsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAutoscaleSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutoscaleSettingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AutoscaleSettingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AutoscaleSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an autoscale setting.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// autoscaleSettingName - The autoscale setting name.
-// parameters - Parameters supplied to the operation.
-// options - AutoscaleSettingsClientCreateOrUpdateOptions contains the optional parameters for the AutoscaleSettingsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autoscaleSettingName - The autoscale setting name.
+//   - parameters - Parameters supplied to the operation.
+//   - options - AutoscaleSettingsClientCreateOrUpdateOptions contains the optional parameters for the AutoscaleSettingsClient.CreateOrUpdate
+//     method.
 func (client *AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, autoscaleSettingName string, parameters AutoscaleSettingResource, options *AutoscaleSettingsClientCreateOrUpdateOptions) (AutoscaleSettingsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, autoscaleSettingName, parameters, options)
 	if err != nil {
 		return AutoscaleSettingsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutoscaleSettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *AutoscaleSettingsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,17 +105,18 @@ func (client *AutoscaleSettingsClient) createOrUpdateHandleResponse(resp *http.R
 
 // Delete - Deletes and autoscale setting
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// autoscaleSettingName - The autoscale setting name.
-// options - AutoscaleSettingsClientDeleteOptions contains the optional parameters for the AutoscaleSettingsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autoscaleSettingName - The autoscale setting name.
+//   - options - AutoscaleSettingsClientDeleteOptions contains the optional parameters for the AutoscaleSettingsClient.Delete
+//     method.
 func (client *AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsClientDeleteOptions) (AutoscaleSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, autoscaleSettingName, options)
 	if err != nil {
 		return AutoscaleSettingsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutoscaleSettingsClientDeleteResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *AutoscaleSettingsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,16 +154,17 @@ func (client *AutoscaleSettingsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Gets an autoscale setting
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// autoscaleSettingName - The autoscale setting name.
-// options - AutoscaleSettingsClientGetOptions contains the optional parameters for the AutoscaleSettingsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autoscaleSettingName - The autoscale setting name.
+//   - options - AutoscaleSettingsClientGetOptions contains the optional parameters for the AutoscaleSettingsClient.Get method.
 func (client *AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupName string, autoscaleSettingName string, options *AutoscaleSettingsClientGetOptions) (AutoscaleSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, autoscaleSettingName, options)
 	if err != nil {
 		return AutoscaleSettingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutoscaleSettingsClientGetResponse{}, err
 	}
@@ -197,7 +189,7 @@ func (client *AutoscaleSettingsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,10 +210,11 @@ func (client *AutoscaleSettingsClient) getHandleResponse(resp *http.Response) (A
 }
 
 // NewListByResourceGroupPager - Lists the autoscale settings for a resource group
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - AutoscaleSettingsClientListByResourceGroupOptions contains the optional parameters for the AutoscaleSettingsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - AutoscaleSettingsClientListByResourceGroupOptions contains the optional parameters for the AutoscaleSettingsClient.NewListByResourceGroupPager
+//     method.
 func (client *AutoscaleSettingsClient) NewListByResourceGroupPager(resourceGroupName string, options *AutoscaleSettingsClientListByResourceGroupOptions) *runtime.Pager[AutoscaleSettingsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AutoscaleSettingsClientListByResourceGroupResponse]{
 		More: func(page AutoscaleSettingsClientListByResourceGroupResponse) bool {
@@ -238,7 +231,7 @@ func (client *AutoscaleSettingsClient) NewListByResourceGroupPager(resourceGroup
 			if err != nil {
 				return AutoscaleSettingsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AutoscaleSettingsClientListByResourceGroupResponse{}, err
 			}
@@ -261,7 +254,7 @@ func (client *AutoscaleSettingsClient) listByResourceGroupCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -282,9 +275,10 @@ func (client *AutoscaleSettingsClient) listByResourceGroupHandleResponse(resp *h
 }
 
 // NewListBySubscriptionPager - Lists the autoscale settings for a subscription
+//
 // Generated from API version 2022-10-01
-// options - AutoscaleSettingsClientListBySubscriptionOptions contains the optional parameters for the AutoscaleSettingsClient.ListBySubscription
-// method.
+//   - options - AutoscaleSettingsClientListBySubscriptionOptions contains the optional parameters for the AutoscaleSettingsClient.NewListBySubscriptionPager
+//     method.
 func (client *AutoscaleSettingsClient) NewListBySubscriptionPager(options *AutoscaleSettingsClientListBySubscriptionOptions) *runtime.Pager[AutoscaleSettingsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AutoscaleSettingsClientListBySubscriptionResponse]{
 		More: func(page AutoscaleSettingsClientListBySubscriptionResponse) bool {
@@ -301,7 +295,7 @@ func (client *AutoscaleSettingsClient) NewListBySubscriptionPager(options *Autos
 			if err != nil {
 				return AutoscaleSettingsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AutoscaleSettingsClientListBySubscriptionResponse{}, err
 			}
@@ -320,7 +314,7 @@ func (client *AutoscaleSettingsClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -342,18 +336,19 @@ func (client *AutoscaleSettingsClient) listBySubscriptionHandleResponse(resp *ht
 
 // Update - Updates an existing AutoscaleSettingsResource. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// autoscaleSettingName - The autoscale setting name.
-// autoscaleSettingResource - Parameters supplied to the operation.
-// options - AutoscaleSettingsClientUpdateOptions contains the optional parameters for the AutoscaleSettingsClient.Update
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autoscaleSettingName - The autoscale setting name.
+//   - autoscaleSettingResource - Parameters supplied to the operation.
+//   - options - AutoscaleSettingsClientUpdateOptions contains the optional parameters for the AutoscaleSettingsClient.Update
+//     method.
 func (client *AutoscaleSettingsClient) Update(ctx context.Context, resourceGroupName string, autoscaleSettingName string, autoscaleSettingResource AutoscaleSettingResourcePatch, options *AutoscaleSettingsClientUpdateOptions) (AutoscaleSettingsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, autoscaleSettingName, autoscaleSettingResource, options)
 	if err != nil {
 		return AutoscaleSettingsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AutoscaleSettingsClientUpdateResponse{}, err
 	}
@@ -378,7 +373,7 @@ func (client *AutoscaleSettingsClient) updateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter autoscaleSettingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{autoscaleSettingName}", url.PathEscape(autoscaleSettingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // NotebookWorkspacesClient contains the methods for the NotebookWorkspaces group.
 // Don't use this type directly, use NewNotebookWorkspacesClient() instead.
 type NotebookWorkspacesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewNotebookWorkspacesClient creates a new instance of NotebookWorkspacesClient with the specified values.
@@ -36,21 +33,13 @@ type NotebookWorkspacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNotebookWorkspacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NotebookWorkspacesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".NotebookWorkspacesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &NotebookWorkspacesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,9 +60,9 @@ func (client *NotebookWorkspacesClient) BeginCreateOrUpdate(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[NotebookWorkspacesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[NotebookWorkspacesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[NotebookWorkspacesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[NotebookWorkspacesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -86,7 +75,7 @@ func (client *NotebookWorkspacesClient) createOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +104,7 @@ func (client *NotebookWorkspacesClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -141,9 +130,9 @@ func (client *NotebookWorkspacesClient) BeginDelete(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[NotebookWorkspacesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[NotebookWorkspacesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[NotebookWorkspacesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[NotebookWorkspacesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -156,7 +145,7 @@ func (client *NotebookWorkspacesClient) deleteOperation(ctx context.Context, res
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -185,7 +174,7 @@ func (client *NotebookWorkspacesClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -209,7 +198,7 @@ func (client *NotebookWorkspacesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return NotebookWorkspacesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NotebookWorkspacesClientGetResponse{}, err
 	}
@@ -238,7 +227,7 @@ func (client *NotebookWorkspacesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -275,7 +264,7 @@ func (client *NotebookWorkspacesClient) NewListByDatabaseAccountPager(resourceGr
 			if err != nil {
 				return NotebookWorkspacesClientListByDatabaseAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return NotebookWorkspacesClientListByDatabaseAccountResponse{}, err
 			}
@@ -302,7 +291,7 @@ func (client *NotebookWorkspacesClient) listByDatabaseAccountCreateRequest(ctx c
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -336,7 +325,7 @@ func (client *NotebookWorkspacesClient) ListConnectionInfo(ctx context.Context, 
 	if err != nil {
 		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
 	}
@@ -365,7 +354,7 @@ func (client *NotebookWorkspacesClient) listConnectionInfoCreateRequest(ctx cont
 		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -400,9 +389,9 @@ func (client *NotebookWorkspacesClient) BeginRegenerateAuthToken(ctx context.Con
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[NotebookWorkspacesClientRegenerateAuthTokenResponse](resp, client.pl, nil)
+		return runtime.NewPoller[NotebookWorkspacesClientRegenerateAuthTokenResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[NotebookWorkspacesClientRegenerateAuthTokenResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[NotebookWorkspacesClientRegenerateAuthTokenResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -415,7 +404,7 @@ func (client *NotebookWorkspacesClient) regenerateAuthToken(ctx context.Context,
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -444,7 +433,7 @@ func (client *NotebookWorkspacesClient) regenerateAuthTokenCreateRequest(ctx con
 		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -470,9 +459,9 @@ func (client *NotebookWorkspacesClient) BeginStart(ctx context.Context, resource
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[NotebookWorkspacesClientStartResponse](resp, client.pl, nil)
+		return runtime.NewPoller[NotebookWorkspacesClientStartResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[NotebookWorkspacesClientStartResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[NotebookWorkspacesClientStartResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -485,7 +474,7 @@ func (client *NotebookWorkspacesClient) start(ctx context.Context, resourceGroup
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -514,7 +503,7 @@ func (client *NotebookWorkspacesClient) startCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter notebookWorkspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{notebookWorkspaceName}", url.PathEscape(string(notebookWorkspaceName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // InstancesClient contains the methods for the Instances group.
 // Don't use this type directly, use NewInstancesClient() instead.
 type InstancesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewInstancesClient creates a new instance of InstancesClient with the specified values.
-// subscriptionID - The Azure subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewInstancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InstancesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".InstancesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &InstancesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Creates or updates instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// instanceName - Instance name.
-// instance - Instance details.
-// options - InstancesClientBeginCreateOptions contains the optional parameters for the InstancesClient.BeginCreate method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - instanceName - Instance name.
+//   - instance - Instance details.
+//   - options - InstancesClientBeginCreateOptions contains the optional parameters for the InstancesClient.BeginCreate method.
 func (client *InstancesClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesClientBeginCreateOptions) (*runtime.Poller[InstancesClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, instanceName, instance, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[InstancesClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InstancesClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[InstancesClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InstancesClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates or updates instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *InstancesClient) create(ctx context.Context, resourceGroupName string, accountName string, instanceName string, instance Instance, options *InstancesClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, instanceName, instance, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -114,7 +105,7 @@ func (client *InstancesClient) createCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -127,34 +118,36 @@ func (client *InstancesClient) createCreateRequest(ctx context.Context, resource
 
 // BeginDelete - Deletes instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// instanceName - Instance name.
-// options - InstancesClientBeginDeleteOptions contains the optional parameters for the InstancesClient.BeginDelete method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - instanceName - Instance name.
+//   - options - InstancesClientBeginDeleteOptions contains the optional parameters for the InstancesClient.BeginDelete method.
 func (client *InstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientBeginDeleteOptions) (*runtime.Poller[InstancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, instanceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[InstancesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InstancesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[InstancesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[InstancesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *InstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, instanceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -183,7 +176,7 @@ func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,17 +189,18 @@ func (client *InstancesClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Returns instance details for the given instance and account name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// instanceName - Instance name.
-// options - InstancesClientGetOptions contains the optional parameters for the InstancesClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - instanceName - Instance name.
+//   - options - InstancesClientGetOptions contains the optional parameters for the InstancesClient.Get method.
 func (client *InstancesClient) Get(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientGetOptions) (InstancesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, instanceName, options)
 	if err != nil {
 		return InstancesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return InstancesClientGetResponse{}, err
 	}
@@ -235,7 +229,7 @@ func (client *InstancesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,17 +250,18 @@ func (client *InstancesClient) getHandleResponse(resp *http.Response) (Instances
 }
 
 // Head - Checks whether instance exists.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// instanceName - Instance name.
-// options - InstancesClientHeadOptions contains the optional parameters for the InstancesClient.Head method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - instanceName - Instance name.
+//   - options - InstancesClientHeadOptions contains the optional parameters for the InstancesClient.Head method.
 func (client *InstancesClient) Head(ctx context.Context, resourceGroupName string, accountName string, instanceName string, options *InstancesClientHeadOptions) (InstancesClientHeadResponse, error) {
 	req, err := client.headCreateRequest(ctx, resourceGroupName, accountName, instanceName, options)
 	if err != nil {
 		return InstancesClientHeadResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return InstancesClientHeadResponse{}, err
 	}
@@ -295,7 +290,7 @@ func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,11 +302,12 @@ func (client *InstancesClient) headCreateRequest(ctx context.Context, resourceGr
 }
 
 // NewListByAccountPager - Returns instances for the given account name.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// options - InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.ListByAccount method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - options - InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.NewListByAccountPager
+//     method.
 func (client *InstancesClient) NewListByAccountPager(resourceGroupName string, accountName string, options *InstancesClientListByAccountOptions) *runtime.Pager[InstancesClientListByAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[InstancesClientListByAccountResponse]{
 		More: func(page InstancesClientListByAccountResponse) bool {
@@ -328,7 +324,7 @@ func (client *InstancesClient) NewListByAccountPager(resourceGroupName string, a
 			if err != nil {
 				return InstancesClientListByAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return InstancesClientListByAccountResponse{}, err
 			}
@@ -355,7 +351,7 @@ func (client *InstancesClient) listByAccountCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -377,18 +373,19 @@ func (client *InstancesClient) listByAccountHandleResponse(resp *http.Response) 
 
 // Update - Updates instance's tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The resource group name.
-// accountName - Account name.
-// instanceName - Instance name.
-// tagUpdatePayload - Updated tags.
-// options - InstancesClientUpdateOptions contains the optional parameters for the InstancesClient.Update method.
+//   - resourceGroupName - The resource group name.
+//   - accountName - Account name.
+//   - instanceName - Instance name.
+//   - tagUpdatePayload - Updated tags.
+//   - options - InstancesClientUpdateOptions contains the optional parameters for the InstancesClient.Update method.
 func (client *InstancesClient) Update(ctx context.Context, resourceGroupName string, accountName string, instanceName string, tagUpdatePayload TagUpdate, options *InstancesClientUpdateOptions) (InstancesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, instanceName, tagUpdatePayload, options)
 	if err != nil {
 		return InstancesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return InstancesClientUpdateResponse{}, err
 	}
@@ -417,7 +414,7 @@ func (client *InstancesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter instanceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceName}", url.PathEscape(instanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

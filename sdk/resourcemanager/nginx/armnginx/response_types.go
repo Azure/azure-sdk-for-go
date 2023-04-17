@@ -9,12 +9,12 @@
 
 package armnginx
 
-// CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
+// CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.BeginCreateOrUpdate.
 type CertificatesClientCreateOrUpdateResponse struct {
 	Certificate
 }
 
-// CertificatesClientDeleteResponse contains the response from method CertificatesClient.Delete.
+// CertificatesClientDeleteResponse contains the response from method CertificatesClient.BeginDelete.
 type CertificatesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,17 +24,17 @@ type CertificatesClientGetResponse struct {
 	Certificate
 }
 
-// CertificatesClientListResponse contains the response from method CertificatesClient.List.
+// CertificatesClientListResponse contains the response from method CertificatesClient.NewListPager.
 type CertificatesClientListResponse struct {
 	CertificateListResponse
 }
 
-// ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.CreateOrUpdate.
+// ConfigurationsClientCreateOrUpdateResponse contains the response from method ConfigurationsClient.BeginCreateOrUpdate.
 type ConfigurationsClientCreateOrUpdateResponse struct {
 	Configuration
 }
 
-// ConfigurationsClientDeleteResponse contains the response from method ConfigurationsClient.Delete.
+// ConfigurationsClientDeleteResponse contains the response from method ConfigurationsClient.BeginDelete.
 type ConfigurationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -44,17 +44,17 @@ type ConfigurationsClientGetResponse struct {
 	Configuration
 }
 
-// ConfigurationsClientListResponse contains the response from method ConfigurationsClient.List.
+// ConfigurationsClientListResponse contains the response from method ConfigurationsClient.NewListPager.
 type ConfigurationsClientListResponse struct {
 	ConfigurationListResponse
 }
 
-// DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.CreateOrUpdate.
+// DeploymentsClientCreateOrUpdateResponse contains the response from method DeploymentsClient.BeginCreateOrUpdate.
 type DeploymentsClientCreateOrUpdateResponse struct {
 	Deployment
 }
 
-// DeploymentsClientDeleteResponse contains the response from method DeploymentsClient.Delete.
+// DeploymentsClientDeleteResponse contains the response from method DeploymentsClient.BeginDelete.
 type DeploymentsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -64,22 +64,22 @@ type DeploymentsClientGetResponse struct {
 	Deployment
 }
 
-// DeploymentsClientListByResourceGroupResponse contains the response from method DeploymentsClient.ListByResourceGroup.
+// DeploymentsClientListByResourceGroupResponse contains the response from method DeploymentsClient.NewListByResourceGroupPager.
 type DeploymentsClientListByResourceGroupResponse struct {
 	DeploymentListResponse
 }
 
-// DeploymentsClientListResponse contains the response from method DeploymentsClient.List.
+// DeploymentsClientListResponse contains the response from method DeploymentsClient.NewListPager.
 type DeploymentsClientListResponse struct {
 	DeploymentListResponse
 }
 
-// DeploymentsClientUpdateResponse contains the response from method DeploymentsClient.Update.
+// DeploymentsClientUpdateResponse contains the response from method DeploymentsClient.BeginUpdate.
 type DeploymentsClientUpdateResponse struct {
 	Deployment
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }

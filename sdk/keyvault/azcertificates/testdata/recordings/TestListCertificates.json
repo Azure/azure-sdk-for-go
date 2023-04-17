@@ -1,13 +1,13 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-0/create?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-0/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Content-Length": "0",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 401,
@@ -15,16 +15,16 @@
         "Cache-Control": "no-cache",
         "Content-Length": "97",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:14 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:23 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://local\u0022",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "991513c1-3a6e-4aa2-b9d8-17914e3c0b21"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "794b61c0-a9be-40d0-ba31-383e31f16758"
       },
       "ResponseBody": {
         "error": {
@@ -34,7 +34,7 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-0/create?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-0/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -42,7 +42,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "109",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "policy": {
@@ -62,32 +62,32 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1277",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:15 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:24 GMT",
         "Expires": "-1",
-        "Location": "https://fakevault.local/certificates/1374356525-0/pending?api-version=7.3\u0026request_id=017a3418527545f1b3b7daa7444e2e7b",
+        "Location": "https://fakevault.local/certificates/1374356525-0/pending?api-version=7.4\u0026request_id=c8b6f9079c544d779895b0dab03212dd",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "26b3ae60-dcc3-4722-b6ec-68d445d04a55"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "717e4bff-4678-497d-92c7-5b6b371a27cd"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/1374356525-0/pending",
         "issuer": {
           "name": "self"
         },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANONah3dYktVr6yZ8MB46aPrplHTwKepiJ008jJhOxQR0A0cM1oETsBzzBVSW9y7tcopY5QwR6CpYD1REpAWNarLEyncW4NL6icQpSm1LyTsGSo8XsrtXAuD8zwD\u002Bp1jkV3VnZLlVeDMVYK7OXS6fUU3JpaYbBMDst20yHQKKQckzzXAYsRGUKqw7XrlntUdltXSlEn4rQ4shijZHlExIEWPGD\u002BrYHWbT7f51\u002BX4COm5uVDEsWYqevRWRcs8cYq4ZnqIEPDb/0NaPH3N2ja1dn4RjGDsrASufE2iq8dc6kptSyJKrPj5aptH/9kbt55iq6IaPRfS4UhSBmiJJd2bGjECAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBG8QFb3oJ1q\u002BbbIwpffjm5NfiyhJx9hrc6y1lCYb256G2uxyINCMTx/5BVhOb8FyMY6L96KoS05FICeMkRw0DYvg8XhzzMn9en3dmixua6iwsebKcdSIFJrVbIqjGcNrVL3IFxMr49eIWzOv3MfYfO1epcM1tNCqJLN6vNbNo4riixW2iFx386EclYMNX798By1Uewy2lzKVtgv09SKpZy3pyqoiVSNLjOCNee7YHnUV8U5mssBprK69CNZQ7vBghEznGOosAVf/UzYc9my27H0id5rLBeu4pcFbkuDifILusFGiRd2P9jQ6hKBn\u002Bt06mTg2iUrzN6kkDEHM6G0pxx",
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMptyBAdsY\u002BA5pJ9GYtFJvLXZfsxAnxHztsESd4Ie4qlFKCJCbfZnAdpDWOcdmsEEGsKC3gtTek42WPJTZaCDNhGuzpXmlK/ffgyqRD9hkydfWe9vunHgCfYJzVfnwtKnI651Ae6GwpcN7lw1kzeJeAG2gNFpz7izj2csW5kloWtWPD2eRMsPALg/udznG2j7Q\u002BPt3NO4wfhgQfJg6enPXbn3mRooihQe3/SXcaUs73aeZIlUmJqLu47bM2lZVezwi3OCJ/WS0\u002B9ipwKbFrPNv4ck16Kt7Lt6XpoijPmix/EL00U5J1SNKNUUQALF9LAXnItOUsJOUDF1j\u002BPyOxPK4ECAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAy7Tbyq1Zow7amT8wDk1ZwDcTwKZb4bA2Qa/LwBwpNVBP7Y9evIMP7owk/VIIX3/oHSaZZkzf28vFWUisXsmGp5KPSNndSReGU4h1D/y\u002BGS1rhOAu\u002B86lg8YE2CgEZQ37u\u002BXDcXrJL9jNA4UUvZvPth2I7YkG6cQQKr3kTft6dr4\u002BUUZEhUHmDDic0GBMQwkpJSi2MXIrAf\u002BGlz6lyDnPdiA2FhhdIIcHjcCTzv9d74WBYG/IVsTaujsQjVBYcHtEf7ubtem5C2rHI\u002BkGMYOJ0/r0fkayJhpheWoL0oSVD7RRZua0J561HL0WdgCBuMFwq480\u002BwxiG5EJop183ojRo",
         "cancellation_requested": false,
         "status": "inProgress",
         "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
-        "request_id": "017a3418527545f1b3b7daa7444e2e7b"
+        "request_id": "c8b6f9079c544d779895b0dab03212dd"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-1/create?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-1/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -95,7 +95,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "109",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "policy": {
@@ -115,32 +115,32 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1277",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:16 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:24 GMT",
         "Expires": "-1",
-        "Location": "https://fakevault.local/certificates/1374356525-1/pending?api-version=7.3\u0026request_id=8bc2d41bd84a48d99f55f5d49dd53ccf",
+        "Location": "https://fakevault.local/certificates/1374356525-1/pending?api-version=7.4\u0026request_id=b326897fb62444e08c86ff7d6e7eac11",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "80ac09db-0834-4342-8f60-fdb43ed2cbd7"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "341f4d76-c3f5-4b12-84f0-a004e7091adf"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/1374356525-1/pending",
         "issuer": {
           "name": "self"
         },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMa1nBeuNPofct14MxFtHvGD5/NLhnZ8BQH3W1hiZ1x30Lkzm/seJYwa\u002BefgMQ523ahMrUGRe4iTAyhUbQY1M11yXRBdLSwW7lf3HayXmuUfvd/c7uvO4Nczgn5pGE1WSae3sblwSXocAr4dYFHjKq2Ga6iQqW1BfRa9EXoJa/o\u002Bm3m\u002BDk4aCxseFxPu8f4ndjgzMkWvgk6dgXsOdScSB9dgh1wjWER7EHdNBdTEtNCQ1rebWhHQyH4YlJwgkK0HJmjuQI87nbOAypq\u002BXeSH1RcitFn\u002BuMpJaxM\u002BiIfL6PnD4uklHynDXjX6MyO59VvcTRka4qWXeaeSKgf7Y\u002BY4XsUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAjWx/apuhQ29wRDEeq/a1Y6qjR0XXdV2NU3HfS532kSi\u002BAvA6OVBzGOeIir6RBnRHCR5r2CVeQ/g/2cPvijbqHBkA9XixiM19XanCIxkjb9wjFo/uArGvSiZtQZzc5uMXHGAwCRwVWpXTJ5Ktnj2NuUI/aF18O\u002BGgPrphWcj2z3FPdOqHVZZHpURBbq\u002BGAbHGE47/XEu2xAczsOF/OALqQ71phc4zRnf5LcSZE9lDfT3TFY3nPxIe\u002BjPfbnnZ7fIwKpWTp6ZJvtdtEoplqxLj0M7Upxs0XrvTr9x3DucCjzd19XaQYOg/DiDzeM/ooZKeQpdqG3BywoKEiBugGHeLK",
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMkJ82\u002Bk6BT/sCOjpPbK8Twk2fBVbelNMj9IVNfmG/yiQR6Eu7a7cY4s9UJo1\u002BSc\u002BebTf9rBNnrYpsKY4mfWDr7/VakK50J3QzviHhgJPf\u002BRMZEXgfJgUYEuK7P1\u002BvyhOP4K1uoca9Eevz\u002B7KP7RjD/GQX1sjBpDM8NIF2b9GOD5g/WSaVJUkvhHDCcDMY/lQ8zLqvPxWJy92UBFFL5eUa/Kaa3EqF09LBXMaDYZFQQvJCVc5r2V0\u002BkcEPjrwXGOPN0x2mdKKDv\u002BSymILnINpl5mVhFFwqZDxrxd43bhiEd/D0aQxaQC4jfOXTZ\u002B3WcuIJe3/F7ttmuHpFHiZT\u002B56qkCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQC0tJSMC0AVK5wrkYmPZy3fG6Og0xo4gdGoadxRJDFCQRqR1pvTovBHM75dCL6BjZPXjXJ2vZXfScv4rTwRzTDEJLVdzkEM7oEdVizjdWGf\u002B4/QRFdi5/2GAMz/uS\u002BUUnRLXlOeXYvNu4nBC7N7PkM68Hdw/oMtbNg6l6zCafm5ztdkX7N59nghY07FqzCkaE6u\u002BzUb/3GF0DMMar9KSBdEYETkpbAi\u002BUvOf1Zih4vB8DoCOWg1EMwGoKEOv8wNhRD0orqmD8tZY0gwMLCRsBzjsj3ED2jLQJU9zj\u002BqpCgV\u002BuYb1ACXnDt/6SPHMiB3/PUWF5PiRiE9yApbGJdUFEBH",
         "cancellation_requested": false,
         "status": "inProgress",
         "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
-        "request_id": "8bc2d41bd84a48d99f55f5d49dd53ccf"
+        "request_id": "b326897fb62444e08c86ff7d6e7eac11"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-2/create?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-2/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -148,7 +148,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "109",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "policy": {
@@ -168,32 +168,32 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1277",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:16 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:25 GMT",
         "Expires": "-1",
-        "Location": "https://fakevault.local/certificates/1374356525-2/pending?api-version=7.3\u0026request_id=c3368e260a5e4832a18ccd57eba2e3b9",
+        "Location": "https://fakevault.local/certificates/1374356525-2/pending?api-version=7.4\u0026request_id=a8e222fa781747028277f481ce041344",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "3e89be65-482e-4692-9715-b842e4b098c5"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "9101c86d-f1eb-43cc-9b94-25a5b984aa07"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/1374356525-2/pending",
         "issuer": {
           "name": "self"
         },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMgeUFQYUByVV\u002B7wc2tHeBC7TKd4J78et8HnrM61vELzxtMabmhfOHSYmc0OcICoQgCEKYh8NpfgMaygEhy7NT9Q01qWsIAQ286YHl9FRHXGQYRYmPvEEDYlW7OJ5CjCe5jVCufUVvJ6oLwDy6zaX/pTuFMZSdUPRdeCqXd0s17Me1A3Ebb8jaPgvgQwtqvNrQvpSg1JmKhGGFSloB\u002Bfby3krOQAy4JWkKjp5/XibB0B7CDnEHJEYpuOLH2QoONBa7BWcQwk\u002BFDc/Dgf4m\u002BlVLz/NgODuWKdR99LY3s7FcF576BLO70ZiJWNfPCv5OSkQCBqgsysbHPdWHYOG8MLJAECAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBRFnsW6My0\u002BjSfatXHpOtudEwXNIpCdaIu58ru6585R4\u002BQXvst5CZ0ZncD0AwyL5ukfFkYVxZU/8/cBP3R0MUJ4goGSovz0oMZxSV6/6uUmCHKebRpMgYL7wFEV7MZt9LrlWpGSdyCycIwbcK8E2wOxNHuwQphCfIaOvBXYQvjbW0YQAnuKGGXBXKFagAtxo0zNGG1cI8tXaUWOR1gxxn0zzj1OI9dpvuskU/7hPhEkm4VvMRAqScrSyZX\u002BOpwMzx5i128PHeAP2l48a6Pe7kwkD8PFdwi1iiIXc\u002Bg2evgu1j\u002BVW9HYqXqwnjkt1Zb9X0FrjiLjGcWALwOxoga\u002BQHr",
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANtOQRJwEYNdjoQUKirKu2pbKZcCh5IQglL3Vtrozsw2loT\u002B1hsRfFW5AF6coTmS3YMbDAmUmwm3HGYPvCij4LTBTVg1IoFqP60fjKBw9UqG8tEpuCjv4DFw/jb8NOVk2FPHARUMZbILTvlg6aTok/ctRgOxcnyvMRUSs8Lsx0B15NIhMHgNGtMowiKWV\u002B0ZxczukBEfduUP2VKBehd1x/Fgud3UlJNcO3ACavUq0wSezsAEUFwxC7kmNk8RYcw/PJiZW072muweUMtfCswm6EP5G59xAgjGjPvlTM4IZ9tK316jNM2vWDcZlOIQcwnFnNQBYVQw9390Vy1H4EKOII0CAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBRms\u002BdCYgcHotH6qWyD5kN7tClIDumE7sKPCpuEsTujwOoxerrhS\u002BMpbA8OYbD4C\u002B5EhKRNmQf5wiKZ5fPKjSHOJMviLaP7nsTc\u002BSLNLNuZYu7UuU1YXHR8pFXzrHbP2ybTX9E0PF5AoLI9TZvaekamgo\u002Bn2P7ybgP17EB7/KZrvR8K2ggOIPmPOv4hs8CqgKOozv79us1m4AFO0c8Zoeu7\u002BZaMv27X4/aSvvpY7ZlqbYtIowYniP7VDI2uRNOtOHD/E9ZKQjSx0zyNFN74XURxmo7se7IWSmJhHdh\u002B1HDcWRk7BjW\u002BB6xYKyp0tY5loMp4MBoViFZDthL/ITjPLzt",
         "cancellation_requested": false,
         "status": "inProgress",
         "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
-        "request_id": "c3368e260a5e4832a18ccd57eba2e3b9"
+        "request_id": "a8e222fa781747028277f481ce041344"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-3/create?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-3/create?api-version=7.4",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
@@ -201,7 +201,7 @@
         "Authorization": "Sanitized",
         "Content-Length": "109",
         "Content-Type": "application/json",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": {
         "policy": {
@@ -221,76 +221,38 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1277",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:17 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:25 GMT",
         "Expires": "-1",
-        "Location": "https://fakevault.local/certificates/1374356525-3/pending?api-version=7.3\u0026request_id=b3475d3acdf74dcdbbad3a44711a046f",
+        "Location": "https://fakevault.local/certificates/1374356525-3/pending?api-version=7.4\u0026request_id=e3db4683fa1f4edcac8958b8271c195c",
         "Pragma": "no-cache",
         "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "8bce0f46-3513-4e49-9986-c03b8adbd43e"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "9e7854a3-7dd8-4290-86de-70bbae21880a"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/1374356525-3/pending",
         "issuer": {
           "name": "self"
         },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMx8q0w70XScz55dcmHHuggZLA59J\u002BzPgDtxfqvoGZtk1bJOTF5d7IxH5vIpHTPD8lbkQd5PtJAQFL2DVOVt2/LaR4nvJS/aZtfZNza2YN\u002BnmMRULcYEwYDMsnHd72Ie1JdpuLbootxM\u002B\u002BPWnzrfHirB6JnfcvjUdXD2SkE5Vw13XkBN0WXEDtIksqLMexg01L4EEKcZi6esQ/8SG3JBRIp\u002BaicCSQjVyVPHGzV6fRJGjGykQNaa3iCPjH1ZxXo4e4unvi0\u002B0IuaqxTSAqr06VqQBtg4E\u002BsUzCEmGZ1F8gxLHWXV4KHaZFNOX6yzWxXhm03pqisv60ZyDPJEAjGqfnkCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBqoVjDf8QKCIn/iKs2ZMJfayxHVMX56JM47JSsJQ1uOQCe6ZOW//PTgvgbwK3tAyFh9DMcsNKgMDyIZG3O39CiHO3uXE5vWhC1RBoDJ5hg4NBH0UsMhWl1Jnnz468xeurd\u002BNwetGNJNsPGUfeldbmmXNBks1F8n9HRCToaoDozNX9D8YHYDFDPrkTw164KvNBHbv\u002BLMTvUePmyAMCuFswfDhxL\u002Bmbe2PHBtmI3R7HB3uZONjVnM6s5goIB4H8i5mMGZUcmar7EQFphCUhLOM0oiu6NZuz1SZGe3SYR9GQjDl8MADpVff\u002BOdDcoF70ikn/Mdm2U8aAZP4v6FZRVQpIV",
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKY4hZ8x/6BrQk9v/ZVuFmDfBdiFEX0rrGMNeEjQ7MUADmNnp/d8m1T\u002B2c9vZ\u002BzRhnSoGuHAbIbnezMeijfWKf5aOi7Sbstyc7IsTBe3mjWBtyrNPg8/whmNjcDsAfqDimcXBh4jdp0iIPSerrLEOpdzshsYGdE6x9lYaNdzTpmSK5xrAMyhZO0KSmo4Fhd8YJ6o9\u002B\u002BmdhGTrC/Q2ASdTmuan6T\u002BpoHzUQ0YeWl954UDF/tozpvMn/DEqvhxfLL5S5w3grqF1ow7d7RIOex6tWPY\u002BuWO/V6HnHd5HHfHuagroTJ7b0/bfEdxGG3kAhDPgLXtMkZ6omhrpzW3dYofu\u002B0CAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBwN6m1ssiXLRBH\u002B7V6lnJckGQGgn6zzX2BoQA\u002BaL\u002BtWS5Bvl07qXqD1Ry2kXtxSOvMoQn1T2sJ3UgFqbNjpFVv963\u002BM1jNwCQztla/H5JIdI1AjLB94PaQokVFOwIksHZgqXiW/pDPW7thG5/iO5h6dBGCz01ma\u002Bogn5G31CNWGul795xGMbfMQx3ZsPaPOSSL\u002BKTpPy4mEfVkyFQG4CMc3sEe84UqKOlFUDRFbGpBGLo5xjPjD8iP/x6oUxH0hsRN2tEIkLAx33kHa0EHN3DIBjZRZTIO4otGHYNIHI8eIfo\u002BZ9ZLRvxUstnt0F2oQiytX\u002BucWSClemektDnLHSfF",
         "cancellation_requested": false,
         "status": "inProgress",
         "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
-        "request_id": "b3475d3acdf74dcdbbad3a44711a046f"
+        "request_id": "e3db4683fa1f4edcac8958b8271c195c"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-0/pending?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-0/pending?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "Content-Length": "1277",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:17 GMT",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Retry-After": "10",
-        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
-        "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "66f857d9-03ed-41df-8af0-7dcb01fc452d"
-      },
-      "ResponseBody": {
-        "id": "https://fakevault.local/certificates/1374356525-0/pending",
-        "issuer": {
-          "name": "self"
-        },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANONah3dYktVr6yZ8MB46aPrplHTwKepiJ008jJhOxQR0A0cM1oETsBzzBVSW9y7tcopY5QwR6CpYD1REpAWNarLEyncW4NL6icQpSm1LyTsGSo8XsrtXAuD8zwD\u002Bp1jkV3VnZLlVeDMVYK7OXS6fUU3JpaYbBMDst20yHQKKQckzzXAYsRGUKqw7XrlntUdltXSlEn4rQ4shijZHlExIEWPGD\u002BrYHWbT7f51\u002BX4COm5uVDEsWYqevRWRcs8cYq4ZnqIEPDb/0NaPH3N2ja1dn4RjGDsrASufE2iq8dc6kptSyJKrPj5aptH/9kbt55iq6IaPRfS4UhSBmiJJd2bGjECAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBG8QFb3oJ1q\u002BbbIwpffjm5NfiyhJx9hrc6y1lCYb256G2uxyINCMTx/5BVhOb8FyMY6L96KoS05FICeMkRw0DYvg8XhzzMn9en3dmixua6iwsebKcdSIFJrVbIqjGcNrVL3IFxMr49eIWzOv3MfYfO1epcM1tNCqJLN6vNbNo4riixW2iFx386EclYMNX798By1Uewy2lzKVtgv09SKpZy3pyqoiVSNLjOCNee7YHnUV8U5mssBprK69CNZQ7vBghEznGOosAVf/UzYc9my27H0id5rLBeu4pcFbkuDifILusFGiRd2P9jQ6hKBn\u002Bt06mTg2iUrzN6kkDEHM6G0pxx",
-        "cancellation_requested": false,
-        "status": "inProgress",
-        "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
-        "request_id": "017a3418527545f1b3b7daa7444e2e7b"
-      }
-    },
-    {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-0/pending?api-version=7.3",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Accept-Encoding": "gzip",
-        "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -298,36 +260,36 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1173",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:23 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:25 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "04154395-6e9b-4034-9549-51cd1064a3ad"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "defff134-997b-471c-bf6c-829ae5bd738e"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/1374356525-0/pending",
         "issuer": {
           "name": "self"
         },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANONah3dYktVr6yZ8MB46aPrplHTwKepiJ008jJhOxQR0A0cM1oETsBzzBVSW9y7tcopY5QwR6CpYD1REpAWNarLEyncW4NL6icQpSm1LyTsGSo8XsrtXAuD8zwD\u002Bp1jkV3VnZLlVeDMVYK7OXS6fUU3JpaYbBMDst20yHQKKQckzzXAYsRGUKqw7XrlntUdltXSlEn4rQ4shijZHlExIEWPGD\u002BrYHWbT7f51\u002BX4COm5uVDEsWYqevRWRcs8cYq4ZnqIEPDb/0NaPH3N2ja1dn4RjGDsrASufE2iq8dc6kptSyJKrPj5aptH/9kbt55iq6IaPRfS4UhSBmiJJd2bGjECAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBG8QFb3oJ1q\u002BbbIwpffjm5NfiyhJx9hrc6y1lCYb256G2uxyINCMTx/5BVhOb8FyMY6L96KoS05FICeMkRw0DYvg8XhzzMn9en3dmixua6iwsebKcdSIFJrVbIqjGcNrVL3IFxMr49eIWzOv3MfYfO1epcM1tNCqJLN6vNbNo4riixW2iFx386EclYMNX798By1Uewy2lzKVtgv09SKpZy3pyqoiVSNLjOCNee7YHnUV8U5mssBprK69CNZQ7vBghEznGOosAVf/UzYc9my27H0id5rLBeu4pcFbkuDifILusFGiRd2P9jQ6hKBn\u002Bt06mTg2iUrzN6kkDEHM6G0pxx",
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMptyBAdsY\u002BA5pJ9GYtFJvLXZfsxAnxHztsESd4Ie4qlFKCJCbfZnAdpDWOcdmsEEGsKC3gtTek42WPJTZaCDNhGuzpXmlK/ffgyqRD9hkydfWe9vunHgCfYJzVfnwtKnI651Ae6GwpcN7lw1kzeJeAG2gNFpz7izj2csW5kloWtWPD2eRMsPALg/udznG2j7Q\u002BPt3NO4wfhgQfJg6enPXbn3mRooihQe3/SXcaUs73aeZIlUmJqLu47bM2lZVezwi3OCJ/WS0\u002B9ipwKbFrPNv4ck16Kt7Lt6XpoijPmix/EL00U5J1SNKNUUQALF9LAXnItOUsJOUDF1j\u002BPyOxPK4ECAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAy7Tbyq1Zow7amT8wDk1ZwDcTwKZb4bA2Qa/LwBwpNVBP7Y9evIMP7owk/VIIX3/oHSaZZkzf28vFWUisXsmGp5KPSNndSReGU4h1D/y\u002BGS1rhOAu\u002B86lg8YE2CgEZQ37u\u002BXDcXrJL9jNA4UUvZvPth2I7YkG6cQQKr3kTft6dr4\u002BUUZEhUHmDDic0GBMQwkpJSi2MXIrAf\u002BGlz6lyDnPdiA2FhhdIIcHjcCTzv9d74WBYG/IVsTaujsQjVBYcHtEf7ubtem5C2rHI\u002BkGMYOJ0/r0fkayJhpheWoL0oSVD7RRZua0J561HL0WdgCBuMFwq480\u002BwxiG5EJop183ojRo",
         "cancellation_requested": false,
         "status": "completed",
         "target": "https://fakevault.local/certificates/1374356525-0",
-        "request_id": "017a3418527545f1b3b7daa7444e2e7b"
+        "request_id": "c8b6f9079c544d779895b0dab03212dd"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-1/pending?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-1/pending?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -335,73 +297,74 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1173",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:23 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:25 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "bbac3c1e-817b-40ff-bc65-72fade79c1b6"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "4c538e33-5ea4-475e-9b80-8243c9ced0e8"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/1374356525-1/pending",
         "issuer": {
           "name": "self"
         },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMa1nBeuNPofct14MxFtHvGD5/NLhnZ8BQH3W1hiZ1x30Lkzm/seJYwa\u002BefgMQ523ahMrUGRe4iTAyhUbQY1M11yXRBdLSwW7lf3HayXmuUfvd/c7uvO4Nczgn5pGE1WSae3sblwSXocAr4dYFHjKq2Ga6iQqW1BfRa9EXoJa/o\u002Bm3m\u002BDk4aCxseFxPu8f4ndjgzMkWvgk6dgXsOdScSB9dgh1wjWER7EHdNBdTEtNCQ1rebWhHQyH4YlJwgkK0HJmjuQI87nbOAypq\u002BXeSH1RcitFn\u002BuMpJaxM\u002BiIfL6PnD4uklHynDXjX6MyO59VvcTRka4qWXeaeSKgf7Y\u002BY4XsUCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQAjWx/apuhQ29wRDEeq/a1Y6qjR0XXdV2NU3HfS532kSi\u002BAvA6OVBzGOeIir6RBnRHCR5r2CVeQ/g/2cPvijbqHBkA9XixiM19XanCIxkjb9wjFo/uArGvSiZtQZzc5uMXHGAwCRwVWpXTJ5Ktnj2NuUI/aF18O\u002BGgPrphWcj2z3FPdOqHVZZHpURBbq\u002BGAbHGE47/XEu2xAczsOF/OALqQ71phc4zRnf5LcSZE9lDfT3TFY3nPxIe\u002BjPfbnnZ7fIwKpWTp6ZJvtdtEoplqxLj0M7Upxs0XrvTr9x3DucCjzd19XaQYOg/DiDzeM/ooZKeQpdqG3BywoKEiBugGHeLK",
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMkJ82\u002Bk6BT/sCOjpPbK8Twk2fBVbelNMj9IVNfmG/yiQR6Eu7a7cY4s9UJo1\u002BSc\u002BebTf9rBNnrYpsKY4mfWDr7/VakK50J3QzviHhgJPf\u002BRMZEXgfJgUYEuK7P1\u002BvyhOP4K1uoca9Eevz\u002B7KP7RjD/GQX1sjBpDM8NIF2b9GOD5g/WSaVJUkvhHDCcDMY/lQ8zLqvPxWJy92UBFFL5eUa/Kaa3EqF09LBXMaDYZFQQvJCVc5r2V0\u002BkcEPjrwXGOPN0x2mdKKDv\u002BSymILnINpl5mVhFFwqZDxrxd43bhiEd/D0aQxaQC4jfOXTZ\u002B3WcuIJe3/F7ttmuHpFHiZT\u002B56qkCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQC0tJSMC0AVK5wrkYmPZy3fG6Og0xo4gdGoadxRJDFCQRqR1pvTovBHM75dCL6BjZPXjXJ2vZXfScv4rTwRzTDEJLVdzkEM7oEdVizjdWGf\u002B4/QRFdi5/2GAMz/uS\u002BUUnRLXlOeXYvNu4nBC7N7PkM68Hdw/oMtbNg6l6zCafm5ztdkX7N59nghY07FqzCkaE6u\u002BzUb/3GF0DMMar9KSBdEYETkpbAi\u002BUvOf1Zih4vB8DoCOWg1EMwGoKEOv8wNhRD0orqmD8tZY0gwMLCRsBzjsj3ED2jLQJU9zj\u002BqpCgV\u002BuYb1ACXnDt/6SPHMiB3/PUWF5PiRiE9yApbGJdUFEBH",
         "cancellation_requested": false,
         "status": "completed",
         "target": "https://fakevault.local/certificates/1374356525-1",
-        "request_id": "8bc2d41bd84a48d99f55f5d49dd53ccf"
+        "request_id": "b326897fb62444e08c86ff7d6e7eac11"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-2/pending?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-2/pending?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "1173",
+        "Content-Length": "1277",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:23 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:25 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
+        "Retry-After": "10",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "440ffd8a-bc1c-44c8-9cba-bf9e04ea316e"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "fab2ba33-2ea2-460e-aa31-b5635b39175b"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/1374356525-2/pending",
         "issuer": {
           "name": "self"
         },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMgeUFQYUByVV\u002B7wc2tHeBC7TKd4J78et8HnrM61vELzxtMabmhfOHSYmc0OcICoQgCEKYh8NpfgMaygEhy7NT9Q01qWsIAQ286YHl9FRHXGQYRYmPvEEDYlW7OJ5CjCe5jVCufUVvJ6oLwDy6zaX/pTuFMZSdUPRdeCqXd0s17Me1A3Ebb8jaPgvgQwtqvNrQvpSg1JmKhGGFSloB\u002Bfby3krOQAy4JWkKjp5/XibB0B7CDnEHJEYpuOLH2QoONBa7BWcQwk\u002BFDc/Dgf4m\u002BlVLz/NgODuWKdR99LY3s7FcF576BLO70ZiJWNfPCv5OSkQCBqgsysbHPdWHYOG8MLJAECAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBRFnsW6My0\u002BjSfatXHpOtudEwXNIpCdaIu58ru6585R4\u002BQXvst5CZ0ZncD0AwyL5ukfFkYVxZU/8/cBP3R0MUJ4goGSovz0oMZxSV6/6uUmCHKebRpMgYL7wFEV7MZt9LrlWpGSdyCycIwbcK8E2wOxNHuwQphCfIaOvBXYQvjbW0YQAnuKGGXBXKFagAtxo0zNGG1cI8tXaUWOR1gxxn0zzj1OI9dpvuskU/7hPhEkm4VvMRAqScrSyZX\u002BOpwMzx5i128PHeAP2l48a6Pe7kwkD8PFdwi1iiIXc\u002Bg2evgu1j\u002BVW9HYqXqwnjkt1Zb9X0FrjiLjGcWALwOxoga\u002BQHr",
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANtOQRJwEYNdjoQUKirKu2pbKZcCh5IQglL3Vtrozsw2loT\u002B1hsRfFW5AF6coTmS3YMbDAmUmwm3HGYPvCij4LTBTVg1IoFqP60fjKBw9UqG8tEpuCjv4DFw/jb8NOVk2FPHARUMZbILTvlg6aTok/ctRgOxcnyvMRUSs8Lsx0B15NIhMHgNGtMowiKWV\u002B0ZxczukBEfduUP2VKBehd1x/Fgud3UlJNcO3ACavUq0wSezsAEUFwxC7kmNk8RYcw/PJiZW072muweUMtfCswm6EP5G59xAgjGjPvlTM4IZ9tK316jNM2vWDcZlOIQcwnFnNQBYVQw9390Vy1H4EKOII0CAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBRms\u002BdCYgcHotH6qWyD5kN7tClIDumE7sKPCpuEsTujwOoxerrhS\u002BMpbA8OYbD4C\u002B5EhKRNmQf5wiKZ5fPKjSHOJMviLaP7nsTc\u002BSLNLNuZYu7UuU1YXHR8pFXzrHbP2ybTX9E0PF5AoLI9TZvaekamgo\u002Bn2P7ybgP17EB7/KZrvR8K2ggOIPmPOv4hs8CqgKOozv79us1m4AFO0c8Zoeu7\u002BZaMv27X4/aSvvpY7ZlqbYtIowYniP7VDI2uRNOtOHD/E9ZKQjSx0zyNFN74XURxmo7se7IWSmJhHdh\u002B1HDcWRk7BjW\u002BB6xYKyp0tY5loMp4MBoViFZDthL/ITjPLzt",
         "cancellation_requested": false,
-        "status": "completed",
-        "target": "https://fakevault.local/certificates/1374356525-2",
-        "request_id": "c3368e260a5e4832a18ccd57eba2e3b9"
+        "status": "inProgress",
+        "status_details": "Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.",
+        "request_id": "a8e222fa781747028277f481ce041344"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-3/pending?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-2/pending?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -409,36 +372,73 @@
         "Cache-Control": "no-cache",
         "Content-Length": "1173",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:24 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:30 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "71b1cbad-ba86-4d26-a7da-980cb92eff97"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "e9d84b72-e3b2-4570-9e53-10abf7567114"
+      },
+      "ResponseBody": {
+        "id": "https://fakevault.local/certificates/1374356525-2/pending",
+        "issuer": {
+          "name": "self"
+        },
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANtOQRJwEYNdjoQUKirKu2pbKZcCh5IQglL3Vtrozsw2loT\u002B1hsRfFW5AF6coTmS3YMbDAmUmwm3HGYPvCij4LTBTVg1IoFqP60fjKBw9UqG8tEpuCjv4DFw/jb8NOVk2FPHARUMZbILTvlg6aTok/ctRgOxcnyvMRUSs8Lsx0B15NIhMHgNGtMowiKWV\u002B0ZxczukBEfduUP2VKBehd1x/Fgud3UlJNcO3ACavUq0wSezsAEUFwxC7kmNk8RYcw/PJiZW072muweUMtfCswm6EP5G59xAgjGjPvlTM4IZ9tK316jNM2vWDcZlOIQcwnFnNQBYVQw9390Vy1H4EKOII0CAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBRms\u002BdCYgcHotH6qWyD5kN7tClIDumE7sKPCpuEsTujwOoxerrhS\u002BMpbA8OYbD4C\u002B5EhKRNmQf5wiKZ5fPKjSHOJMviLaP7nsTc\u002BSLNLNuZYu7UuU1YXHR8pFXzrHbP2ybTX9E0PF5AoLI9TZvaekamgo\u002Bn2P7ybgP17EB7/KZrvR8K2ggOIPmPOv4hs8CqgKOozv79us1m4AFO0c8Zoeu7\u002BZaMv27X4/aSvvpY7ZlqbYtIowYniP7VDI2uRNOtOHD/E9ZKQjSx0zyNFN74XURxmo7se7IWSmJhHdh\u002B1HDcWRk7BjW\u002BB6xYKyp0tY5loMp4MBoViFZDthL/ITjPLzt",
+        "cancellation_requested": false,
+        "status": "completed",
+        "target": "https://fakevault.local/certificates/1374356525-2",
+        "request_id": "a8e222fa781747028277f481ce041344"
+      }
+    },
+    {
+      "RequestUri": "https://fakevault.local/certificates/1374356525-3/pending?api-version=7.4",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Accept-Encoding": "gzip",
+        "Authorization": "Sanitized",
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1173",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "77380eef-570d-46d8-bdc6-4583f5e4a1ee"
       },
       "ResponseBody": {
         "id": "https://fakevault.local/certificates/1374356525-3/pending",
         "issuer": {
           "name": "self"
         },
-        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMx8q0w70XScz55dcmHHuggZLA59J\u002BzPgDtxfqvoGZtk1bJOTF5d7IxH5vIpHTPD8lbkQd5PtJAQFL2DVOVt2/LaR4nvJS/aZtfZNza2YN\u002BnmMRULcYEwYDMsnHd72Ie1JdpuLbootxM\u002B\u002BPWnzrfHirB6JnfcvjUdXD2SkE5Vw13XkBN0WXEDtIksqLMexg01L4EEKcZi6esQ/8SG3JBRIp\u002BaicCSQjVyVPHGzV6fRJGjGykQNaa3iCPjH1ZxXo4e4unvi0\u002B0IuaqxTSAqr06VqQBtg4E\u002BsUzCEmGZ1F8gxLHWXV4KHaZFNOX6yzWxXhm03pqisv60ZyDPJEAjGqfnkCAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBqoVjDf8QKCIn/iKs2ZMJfayxHVMX56JM47JSsJQ1uOQCe6ZOW//PTgvgbwK3tAyFh9DMcsNKgMDyIZG3O39CiHO3uXE5vWhC1RBoDJ5hg4NBH0UsMhWl1Jnnz468xeurd\u002BNwetGNJNsPGUfeldbmmXNBks1F8n9HRCToaoDozNX9D8YHYDFDPrkTw164KvNBHbv\u002BLMTvUePmyAMCuFswfDhxL\u002Bmbe2PHBtmI3R7HB3uZONjVnM6s5goIB4H8i5mMGZUcmar7EQFphCUhLOM0oiu6NZuz1SZGe3SYR9GQjDl8MADpVff\u002BOdDcoF70ikn/Mdm2U8aAZP4v6FZRVQpIV",
+        "csr": "MIICqDCCAZACAQAwGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKY4hZ8x/6BrQk9v/ZVuFmDfBdiFEX0rrGMNeEjQ7MUADmNnp/d8m1T\u002B2c9vZ\u002BzRhnSoGuHAbIbnezMeijfWKf5aOi7Sbstyc7IsTBe3mjWBtyrNPg8/whmNjcDsAfqDimcXBh4jdp0iIPSerrLEOpdzshsYGdE6x9lYaNdzTpmSK5xrAMyhZO0KSmo4Fhd8YJ6o9\u002B\u002BmdhGTrC/Q2ASdTmuan6T\u002BpoHzUQ0YeWl954UDF/tozpvMn/DEqvhxfLL5S5w3grqF1ow7d7RIOex6tWPY\u002BuWO/V6HnHd5HHfHuagroTJ7b0/bfEdxGG3kAhDPgLXtMkZ6omhrpzW3dYofu\u002B0CAwEAAaBLMEkGCSqGSIb3DQEJDjE8MDowDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjAJBgNVHRMEAjAAMA0GCSqGSIb3DQEBCwUAA4IBAQBwN6m1ssiXLRBH\u002B7V6lnJckGQGgn6zzX2BoQA\u002BaL\u002BtWS5Bvl07qXqD1Ry2kXtxSOvMoQn1T2sJ3UgFqbNjpFVv963\u002BM1jNwCQztla/H5JIdI1AjLB94PaQokVFOwIksHZgqXiW/pDPW7thG5/iO5h6dBGCz01ma\u002Bogn5G31CNWGul795xGMbfMQx3ZsPaPOSSL\u002BKTpPy4mEfVkyFQG4CMc3sEe84UqKOlFUDRFbGpBGLo5xjPjD8iP/x6oUxH0hsRN2tEIkLAx33kHa0EHN3DIBjZRZTIO4otGHYNIHI8eIfo\u002BZ9ZLRvxUstnt0F2oQiytX\u002BucWSClemektDnLHSfF",
         "cancellation_requested": false,
         "status": "completed",
         "target": "https://fakevault.local/certificates/1374356525-3",
-        "request_id": "b3475d3acdf74dcdbbad3a44711a046f"
+        "request_id": "e3db4683fa1f4edcac8958b8271c195c"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates?api-version=7.3\u0026includePending=true\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/certificates?api-version=7.4\u0026includePending=true\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -446,27 +446,27 @@
         "Cache-Control": "no-cache",
         "Content-Length": "526",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:24 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "b0398b95-1ea8-4d99-99b1-3c7a075f0d09"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "4e293ef2-835f-4cfc-9e90-cd9ad9116e37"
       },
       "ResponseBody": {
         "value": [
           {
             "id": "https://fakevault.local/certificates/1374356525-0",
-            "x5t": "RyF7epPf7FqDBbLdpsZBoamDOhM",
+            "x5t": "jF03i6XD5DSNylkhCmTMgslVWl4",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157758,
-              "exp": 1693694358,
-              "created": 1662158358,
-              "updated": 1662158358
+              "nbf": 1679604444,
+              "exp": 1711227444,
+              "created": 1679605045,
+              "updated": 1679605045
             },
             "tags": {
               "1374356525": "yes"
@@ -474,51 +474,51 @@
             "subject": ""
           }
         ],
-        "nextLink": "https://fakevault.local:443/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TVNFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TVNFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-0?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-0?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2409",
+        "Content-Length": "2418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:24 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "1b003ae0-499e-44f1-965c-a6f806ee3b29"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "1d36d32a-85e6-4210-b984-8896ead8a105"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-0",
-        "deletedDate": 1662158364,
-        "scheduledPurgeDate": 1669934364,
-        "id": "https://fakevault.local/certificates/1374356525-0/6b10f67506dc49929f16898c284620ef",
-        "kid": "https://fakevault.local/keys/1374356525-0/6b10f67506dc49929f16898c284620ef",
-        "sid": "https://fakevault.local/secrets/1374356525-0/6b10f67506dc49929f16898c284620ef",
-        "x5t": "RyF7epPf7FqDBbLdpsZBoamDOhM",
-        "cer": "MIIDNjCCAh6gAwIBAgIQGDy\u002B88BEQiWe24kYKwLePTANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIyMDkwMjIyMjkxOFoXDTIzMDkwMjIyMzkxOFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANONah3dYktVr6yZ8MB46aPrplHTwKepiJ008jJhOxQR0A0cM1oETsBzzBVSW9y7tcopY5QwR6CpYD1REpAWNarLEyncW4NL6icQpSm1LyTsGSo8XsrtXAuD8zwD\u002Bp1jkV3VnZLlVeDMVYK7OXS6fUU3JpaYbBMDst20yHQKKQckzzXAYsRGUKqw7XrlntUdltXSlEn4rQ4shijZHlExIEWPGD\u002BrYHWbT7f51\u002BX4COm5uVDEsWYqevRWRcs8cYq4ZnqIEPDb/0NaPH3N2ja1dn4RjGDsrASufE2iq8dc6kptSyJKrPj5aptH/9kbt55iq6IaPRfS4UhSBmiJJd2bGjECAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFKEXQDyA1CZVPES1bZZfWwPThwZMMB0GA1UdDgQWBBShF0A8gNQmVTxEtW2WX1sD04cGTDANBgkqhkiG9w0BAQsFAAOCAQEAbEkO1nWjVhl9YPi7r9D3ZRZyjNOuAr404\u002B0wc20ArLtir/mdiPrq0aW7NxsYB\u002BoxS3ZivSlYzZ4PF9ia8R856cTop1PC1lsbNMF3wG\u002BCq7tdzA\u002B1OMBIFlsSy6ZVHD4X4GobbjU1xJzx81uMK4j5OLMxB6aQGHlwkVME\u002BBSDtwnMEGLBUZBDmP21UOKBzJP8\u002BEINs/BOYBfgKD8JVYdBdchT3txaLpvjjOxWIozHOhKRdwEwR0thj/LmarB9PoDGUhhHdhg1b1KG1lev506OCe\u002BzNlbKF47Rd9H4hWa/QGV9bksQUM7E3YZHmSTCTnqHX5epn2F4GcPSfFg2I8HDvA==",
+        "deletedDate": 1679605051,
+        "scheduledPurgeDate": 1680209851,
+        "id": "https://fakevault.local/certificates/1374356525-0/a300d6391c3a4aa9aa8fc2dc6a238e94",
+        "kid": "https://fakevault.local/keys/1374356525-0/a300d6391c3a4aa9aa8fc2dc6a238e94",
+        "sid": "https://fakevault.local/secrets/1374356525-0/a300d6391c3a4aa9aa8fc2dc6a238e94",
+        "x5t": "jF03i6XD5DSNylkhCmTMgslVWl4",
+        "cer": "MIIDNjCCAh6gAwIBAgIQFthPQkPYSkaBrg1\u002BH9OfjzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIzMDMyMzIwNDcyNFoXDTI0MDMyMzIwNTcyNFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMptyBAdsY\u002BA5pJ9GYtFJvLXZfsxAnxHztsESd4Ie4qlFKCJCbfZnAdpDWOcdmsEEGsKC3gtTek42WPJTZaCDNhGuzpXmlK/ffgyqRD9hkydfWe9vunHgCfYJzVfnwtKnI651Ae6GwpcN7lw1kzeJeAG2gNFpz7izj2csW5kloWtWPD2eRMsPALg/udznG2j7Q\u002BPt3NO4wfhgQfJg6enPXbn3mRooihQe3/SXcaUs73aeZIlUmJqLu47bM2lZVezwi3OCJ/WS0\u002B9ipwKbFrPNv4ck16Kt7Lt6XpoijPmix/EL00U5J1SNKNUUQALF9LAXnItOUsJOUDF1j\u002BPyOxPK4ECAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFG\u002BJ6cBCu12OnkarVGrSKBGGCJ7yMB0GA1UdDgQWBBRvienAQrtdjp5Gq1Rq0igRhgie8jANBgkqhkiG9w0BAQsFAAOCAQEANPZBw1xkeXty3OL/EskJUoYUhE3XRcV32vHP7otOrIjeycUn0Sd0MPZXEZrWI/LUis4JKyQv1gBiXlj\u002BWI090B9JbgXOtPttn43fnqSXygMjar7LdNw8oOQJmk0w6KFZ33VnIxsQTY2ACTzIbOuTTHFZxJkCWzBCSwL0mWYjVPgX9\u002ByFdcOIkefBRRpQ2jxnpC2KbLYoR1mx0it454zgYyuF8zaOuU7g5n1OLACblTIYiSp26WHGZpWHVDLAO6TEcqm3ddLt78fJdsHa3OYuouAG2PXag9xht3eLpuspCuqTcPlgEMAV5xceBmHWtqWC3skXVqwaachAW9Hm0\u002BstaQ==",
         "attributes": {
           "enabled": true,
-          "nbf": 1662157758,
-          "exp": 1693694358,
-          "created": 1662158358,
-          "updated": 1662158358,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "nbf": 1679604444,
+          "exp": 1711227444,
+          "created": 1679605045,
+          "updated": 1679605045,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         },
         "tags": {
           "1374356525": "yes"
@@ -564,8 +564,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1662158355,
-            "updated": 1662158355
+            "created": 1679605044,
+            "updated": 1679605044
           }
         },
         "pending": {
@@ -574,12 +574,12 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TVNFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TVNFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -587,27 +587,27 @@
         "Cache-Control": "no-cache",
         "Content-Length": "526",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:24 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "71126c02-b719-430f-867b-c8f9e050d184"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "5ac33735-74e8-41da-b519-8c2fc3582472"
       },
       "ResponseBody": {
         "value": [
           {
             "id": "https://fakevault.local/certificates/1374356525-1",
-            "x5t": "wzlcKJ8g2lOJ_pvDndc_7nak7rw",
+            "x5t": "hlC3uU98yA0R37UPZ-oMIVWdpBk",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157758,
-              "exp": 1693694358,
-              "created": 1662158359,
-              "updated": 1662158359
+              "nbf": 1679604445,
+              "exp": 1711227445,
+              "created": 1679605045,
+              "updated": 1679605045
             },
             "tags": {
               "1374356525": "yes"
@@ -615,51 +615,51 @@
             "subject": ""
           }
         ],
-        "nextLink": "https://fakevault.local:443/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TWlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TWlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-1?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-1?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2409",
+        "Content-Length": "2418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:24 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "21ed0c06-c281-46a9-aef2-b86884fd66f9"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "5f96e93c-4398-4a9a-9c5c-7670f78abb65"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-1",
-        "deletedDate": 1662158365,
-        "scheduledPurgeDate": 1669934365,
-        "id": "https://fakevault.local/certificates/1374356525-1/b0b6cfea2da44abb9924db5226ee329d",
-        "kid": "https://fakevault.local/keys/1374356525-1/b0b6cfea2da44abb9924db5226ee329d",
-        "sid": "https://fakevault.local/secrets/1374356525-1/b0b6cfea2da44abb9924db5226ee329d",
-        "x5t": "wzlcKJ8g2lOJ_pvDndc_7nak7rw",
-        "cer": "MIIDNjCCAh6gAwIBAgIQLrLyuaSfRYOzuXWtj4zPZzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIyMDkwMjIyMjkxOFoXDTIzMDkwMjIyMzkxOFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMa1nBeuNPofct14MxFtHvGD5/NLhnZ8BQH3W1hiZ1x30Lkzm/seJYwa\u002BefgMQ523ahMrUGRe4iTAyhUbQY1M11yXRBdLSwW7lf3HayXmuUfvd/c7uvO4Nczgn5pGE1WSae3sblwSXocAr4dYFHjKq2Ga6iQqW1BfRa9EXoJa/o\u002Bm3m\u002BDk4aCxseFxPu8f4ndjgzMkWvgk6dgXsOdScSB9dgh1wjWER7EHdNBdTEtNCQ1rebWhHQyH4YlJwgkK0HJmjuQI87nbOAypq\u002BXeSH1RcitFn\u002BuMpJaxM\u002BiIfL6PnD4uklHynDXjX6MyO59VvcTRka4qWXeaeSKgf7Y\u002BY4XsUCAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFJlGKk83OYp5nz3GMrIp8q3NbK5SMB0GA1UdDgQWBBSZRipPNzmKeZ89xjKyKfKtzWyuUjANBgkqhkiG9w0BAQsFAAOCAQEAH5cU4tjyUQLccvDHwXXKxIgSd1pa/BtOCT/3TD\u002BOdYF5xECALce18K6UIdqQ1nA4rIdXfhFGvmdB9ySqqgcp1OmGGYcEXQlo3Rxt6lTgXTLO1wPBjpKOCFlElYF3mmKXzikhFNfzsrIMRgI8nAPNn2harhVWHr1l4AW6/FHH/okxigFxYTPquLMWc4VYlDi\u002BC3Q8kp6EkZXFeUBS0SbVZzdeUcZ/Bvfv1MDLwGZz9yn06gowyyw77/vPgKzTV8ludX6nj2HF9UkCNjrq7kalgsRYC81W5YKn8beFDLq2UQlXb\u002BHKybjjqgbxJHgaWYbCktJhFFgGvh9iGxP4GrXoOw==",
+        "deletedDate": 1679605051,
+        "scheduledPurgeDate": 1680209851,
+        "id": "https://fakevault.local/certificates/1374356525-1/8466743eca3843b491d38725ec668bbf",
+        "kid": "https://fakevault.local/keys/1374356525-1/8466743eca3843b491d38725ec668bbf",
+        "sid": "https://fakevault.local/secrets/1374356525-1/8466743eca3843b491d38725ec668bbf",
+        "x5t": "hlC3uU98yA0R37UPZ-oMIVWdpBk",
+        "cer": "MIIDNjCCAh6gAwIBAgIQGbOqLAV2QVGC3AFTyPRBRzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIzMDMyMzIwNDcyNVoXDTI0MDMyMzIwNTcyNVowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMkJ82\u002Bk6BT/sCOjpPbK8Twk2fBVbelNMj9IVNfmG/yiQR6Eu7a7cY4s9UJo1\u002BSc\u002BebTf9rBNnrYpsKY4mfWDr7/VakK50J3QzviHhgJPf\u002BRMZEXgfJgUYEuK7P1\u002BvyhOP4K1uoca9Eevz\u002B7KP7RjD/GQX1sjBpDM8NIF2b9GOD5g/WSaVJUkvhHDCcDMY/lQ8zLqvPxWJy92UBFFL5eUa/Kaa3EqF09LBXMaDYZFQQvJCVc5r2V0\u002BkcEPjrwXGOPN0x2mdKKDv\u002BSymILnINpl5mVhFFwqZDxrxd43bhiEd/D0aQxaQC4jfOXTZ\u002B3WcuIJe3/F7ttmuHpFHiZT\u002B56qkCAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFIiJLF/o7sCIA\u002BVAmJ0gwMy1usTlMB0GA1UdDgQWBBSIiSxf6O7AiAPlQJidIMDMtbrE5TANBgkqhkiG9w0BAQsFAAOCAQEASa4P8GNhjwq\u002BKXKdfxWAtQGV1cjsrzOX9afQIzuiarMc8t\u002BTDFiv2RgKTdxyi5Zys3DOEyrqVb4zRLrTZLw9jq3BtcrypSDMepmYT5qnU1xtvbm5\u002BJs5y4zzp/\u002B45DDQERstUHZteRfS83gCKrhBd\u002BvcKhbmCFL7NQi6Ixrv8zfqwvQ70gMsCA8B9NuuK91jSk3v\u002B72XAULPMJntc2YILqFRP1E2Jji9\u002BygyV\u002BD05793DGLr/Y0cWBg5y7x6jyD7uIiHoJEgrgo2LbOoC3a0jB\u002B/\u002BcrWP5NSZKZ3FJfIBZueQNjnnvuN/PZmoAaPOi/8vGbU4\u002BL6bd6yG5fqGI73yQ==",
         "attributes": {
           "enabled": true,
-          "nbf": 1662157758,
-          "exp": 1693694358,
-          "created": 1662158359,
-          "updated": 1662158359,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "nbf": 1679604445,
+          "exp": 1711227445,
+          "created": 1679605045,
+          "updated": 1679605045,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         },
         "tags": {
           "1374356525": "yes"
@@ -705,8 +705,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1662158356,
-            "updated": 1662158356
+            "created": 1679605044,
+            "updated": 1679605044
           }
         },
         "pending": {
@@ -715,12 +715,12 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TWlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TWlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -728,27 +728,27 @@
         "Cache-Control": "no-cache",
         "Content-Length": "526",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "6c486411-4783-4a0d-96f2-c07f186f6cab"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "5c7ebbdb-936c-49e3-8360-7ab1d4677a69"
       },
       "ResponseBody": {
         "value": [
           {
             "id": "https://fakevault.local/certificates/1374356525-2",
-            "x5t": "3zADlyEoflXhNWc1KzndqJZI1lw",
+            "x5t": "sjFA4XYFVkpxzd096G_FCgqaN7o",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157760,
-              "exp": 1693694360,
-              "created": 1662158361,
-              "updated": 1662158361
+              "nbf": 1679604445,
+              "exp": 1711227445,
+              "created": 1679605045,
+              "updated": 1679605045
             },
             "tags": {
               "1374356525": "yes"
@@ -756,51 +756,51 @@
             "subject": ""
           }
         ],
-        "nextLink": "https://fakevault.local:443/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TXlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TXlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-2?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-2?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2409",
+        "Content-Length": "2418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "8a077e8d-408a-49fe-977a-bffb4d576737"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "40bc3547-3a59-486e-8903-a3c9cae37b30"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-2",
-        "deletedDate": 1662158365,
-        "scheduledPurgeDate": 1669934365,
-        "id": "https://fakevault.local/certificates/1374356525-2/ed6c985420ad42f28d3901001d0954b6",
-        "kid": "https://fakevault.local/keys/1374356525-2/ed6c985420ad42f28d3901001d0954b6",
-        "sid": "https://fakevault.local/secrets/1374356525-2/ed6c985420ad42f28d3901001d0954b6",
-        "x5t": "3zADlyEoflXhNWc1KzndqJZI1lw",
-        "cer": "MIIDNjCCAh6gAwIBAgIQBsx5Utf8SfiIA2ZqZi2z/DANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIyMDkwMjIyMjkyMFoXDTIzMDkwMjIyMzkyMFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMgeUFQYUByVV\u002B7wc2tHeBC7TKd4J78et8HnrM61vELzxtMabmhfOHSYmc0OcICoQgCEKYh8NpfgMaygEhy7NT9Q01qWsIAQ286YHl9FRHXGQYRYmPvEEDYlW7OJ5CjCe5jVCufUVvJ6oLwDy6zaX/pTuFMZSdUPRdeCqXd0s17Me1A3Ebb8jaPgvgQwtqvNrQvpSg1JmKhGGFSloB\u002Bfby3krOQAy4JWkKjp5/XibB0B7CDnEHJEYpuOLH2QoONBa7BWcQwk\u002BFDc/Dgf4m\u002BlVLz/NgODuWKdR99LY3s7FcF576BLO70ZiJWNfPCv5OSkQCBqgsysbHPdWHYOG8MLJAECAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFDAloc8xpxV\u002Bs28DKOaG4FY419UnMB0GA1UdDgQWBBQwJaHPMacVfrNvAyjmhuBWONfVJzANBgkqhkiG9w0BAQsFAAOCAQEAWSUP8jVOMlBcl/afFWF9G/6Ec05WwfPPWHZ2gLREo04hLFkYDEIa4zmTafJpEguvheIoqSKR4R3CXsjlQQzFyc348FJ5Id1xy28qvD2Mv4gjmC\u002BtKNygL\u002BRylmjfrD6t/rvBbV65busR00325ZDMaCBghadxfggtPhrc/lFs\u002BMkgP4fs795kjb2I7INVXF8I0uLA1bSEtEXRtOVbqO7ARjZFkVSF9AasxI3ClXWYARdRc\u002B7X1jlnsY\u002BtMNeFho2k7DS03SgyE/r1ZiWCUbAGH015nJp7w9JKXKtzJSK44LmuDBfl278kNuoqVtAYxouH4dmVnDOSluWfAd1SBP/d\u002Bg==",
+        "deletedDate": 1679605051,
+        "scheduledPurgeDate": 1680209851,
+        "id": "https://fakevault.local/certificates/1374356525-2/28f639dd338a4e7089e5036a7be105ce",
+        "kid": "https://fakevault.local/keys/1374356525-2/28f639dd338a4e7089e5036a7be105ce",
+        "sid": "https://fakevault.local/secrets/1374356525-2/28f639dd338a4e7089e5036a7be105ce",
+        "x5t": "sjFA4XYFVkpxzd096G_FCgqaN7o",
+        "cer": "MIIDNjCCAh6gAwIBAgIQWERMsPl7RIWstuECC/KOzDANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIzMDMyMzIwNDcyNVoXDTI0MDMyMzIwNTcyNVowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANtOQRJwEYNdjoQUKirKu2pbKZcCh5IQglL3Vtrozsw2loT\u002B1hsRfFW5AF6coTmS3YMbDAmUmwm3HGYPvCij4LTBTVg1IoFqP60fjKBw9UqG8tEpuCjv4DFw/jb8NOVk2FPHARUMZbILTvlg6aTok/ctRgOxcnyvMRUSs8Lsx0B15NIhMHgNGtMowiKWV\u002B0ZxczukBEfduUP2VKBehd1x/Fgud3UlJNcO3ACavUq0wSezsAEUFwxC7kmNk8RYcw/PJiZW072muweUMtfCswm6EP5G59xAgjGjPvlTM4IZ9tK316jNM2vWDcZlOIQcwnFnNQBYVQw9390Vy1H4EKOII0CAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFN3ZtO1QJFwoJDC1GQVNT4KJxUIdMB0GA1UdDgQWBBTd2bTtUCRcKCQwtRkFTU\u002BCicVCHTANBgkqhkiG9w0BAQsFAAOCAQEAM\u002BGOCbj/Hms8NZBGiM\u002BrgMz5keWGLhNes04jnTxnju43CUhO305X4ehrpl55grgn\u002BpwwEsQntiv4EkgB7fr0NXvsNQkgB\u002BDMnEf0GbSx3u8NBrLTIP7xWluwAxZgYQXUyVdV\u002BVz7J2spfpEiR1Yeqax0x5\u002BNMQ0ZdAamA4\u002BdWOGNLwzpIPjd94mF0uZqJTrPvOEzOoJlA7csSvnlf1iHMKcP9vXuPGx\u002B3qxhU1TDC\u002BRApIZovpdqmVPpSjKKDMWpep5xYLflXAujVDARHSSPF14gB8uFJ8Vu\u002Bj3s5OZl0ilmJo4bmEXLVVhQbnOaJbzTaPBT/QBo95JnFHFZfDWsyA==",
         "attributes": {
           "enabled": true,
-          "nbf": 1662157760,
-          "exp": 1693694360,
-          "created": 1662158361,
-          "updated": 1662158361,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "nbf": 1679604445,
+          "exp": 1711227445,
+          "created": 1679605045,
+          "updated": 1679605045,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         },
         "tags": {
           "1374356525": "yes"
@@ -846,8 +846,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1662158357,
-            "updated": 1662158357
+            "created": 1679605045,
+            "updated": 1679605045
           }
         },
         "pending": {
@@ -856,12 +856,12 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TXlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TXlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -869,27 +869,27 @@
         "Cache-Control": "no-cache",
         "Content-Length": "520",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "dfd9f08c-c8b6-4a59-8a0c-37fe28696040"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "8c56c3c2-956c-48ee-bb4f-1cf3a2f0993e"
       },
       "ResponseBody": {
         "value": [
           {
             "id": "https://fakevault.local/certificates/1374356525-3",
-            "x5t": "EcrAm-IJKaLxvbkiXMEBDgL-RaM",
+            "x5t": "6_d_z0q2JSdmmqX7ZR65Wob3Ntw",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157760,
-              "exp": 1693694360,
-              "created": 1662158361,
-              "updated": 1662158361
+              "nbf": 1679604446,
+              "exp": 1711227446,
+              "created": 1679605046,
+              "updated": 1679605046
             },
             "tags": {
               "1374356525": "yes"
@@ -897,51 +897,51 @@
             "subject": ""
           }
         ],
-        "nextLink": "https://fakevault.local:443/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMekUxT1RNd01qSXdPVEVoTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMekUxT1RNd01qSXdPVEVoTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates/1374356525-3?api-version=7.3",
+      "RequestUri": "https://fakevault.local/certificates/1374356525-3?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2409",
+        "Content-Length": "2418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "46843efc-c089-470d-93ca-ac429128b0fe"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "cf8930e9-a042-4577-b1bc-2dcb7a9cc343"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-3",
-        "deletedDate": 1662158365,
-        "scheduledPurgeDate": 1669934365,
-        "id": "https://fakevault.local/certificates/1374356525-3/d33d3e7a73e1474eb93518c36e7f3924",
-        "kid": "https://fakevault.local/keys/1374356525-3/d33d3e7a73e1474eb93518c36e7f3924",
-        "sid": "https://fakevault.local/secrets/1374356525-3/d33d3e7a73e1474eb93518c36e7f3924",
-        "x5t": "EcrAm-IJKaLxvbkiXMEBDgL-RaM",
-        "cer": "MIIDNjCCAh6gAwIBAgIQG5TlQIG8RFGw4309ivi4\u002BzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIyMDkwMjIyMjkyMFoXDTIzMDkwMjIyMzkyMFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMx8q0w70XScz55dcmHHuggZLA59J\u002BzPgDtxfqvoGZtk1bJOTF5d7IxH5vIpHTPD8lbkQd5PtJAQFL2DVOVt2/LaR4nvJS/aZtfZNza2YN\u002BnmMRULcYEwYDMsnHd72Ie1JdpuLbootxM\u002B\u002BPWnzrfHirB6JnfcvjUdXD2SkE5Vw13XkBN0WXEDtIksqLMexg01L4EEKcZi6esQ/8SG3JBRIp\u002BaicCSQjVyVPHGzV6fRJGjGykQNaa3iCPjH1ZxXo4e4unvi0\u002B0IuaqxTSAqr06VqQBtg4E\u002BsUzCEmGZ1F8gxLHWXV4KHaZFNOX6yzWxXhm03pqisv60ZyDPJEAjGqfnkCAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFNKGaunBRHbyY6UmRi8eXTDWYIQqMB0GA1UdDgQWBBTShmrpwUR28mOlJkYvHl0w1mCEKjANBgkqhkiG9w0BAQsFAAOCAQEAf/W4/iaye5/WQaYiINKDi5i3SrK1YG5r1C1SiJ3I8issOJutySjfZYP/TgDGPNL39h6YEWKJfkattxzg5LLKx5sl6yZ\u002Bo3Tj5QDgudH8qonYUH6\u002BaucfoHtHkYdCGMzwjvGOO4xgkIBf0jBM89ww7Rz\u002BTXlbN0hDUsR/SkZeG3FqzfPFEyR\u002Buj27OKcZvxjxFBjUFHtmNBnpIZ9n22\u002B7Iz6fbNYindps03Xitcy60AOsnIuARC9GLmHMNZ5Jv/J2ayeAqTvKAVvSWigioo2l4JUF2s0J6tkFPFu5jVS2wi\u002ByyMwQhmQU2pk/pGH33eauC4k1o/1Lf5oUy3lx2GOFWw==",
+        "deletedDate": 1679605051,
+        "scheduledPurgeDate": 1680209851,
+        "id": "https://fakevault.local/certificates/1374356525-3/d417ea855c32488ea62115ad84acd7f3",
+        "kid": "https://fakevault.local/keys/1374356525-3/d417ea855c32488ea62115ad84acd7f3",
+        "sid": "https://fakevault.local/secrets/1374356525-3/d417ea855c32488ea62115ad84acd7f3",
+        "x5t": "6_d_z0q2JSdmmqX7ZR65Wob3Ntw",
+        "cer": "MIIDNjCCAh6gAwIBAgIQXxc2daiCT6SDxtZxr7KekzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIzMDMyMzIwNDcyNloXDTI0MDMyMzIwNTcyNlowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKY4hZ8x/6BrQk9v/ZVuFmDfBdiFEX0rrGMNeEjQ7MUADmNnp/d8m1T\u002B2c9vZ\u002BzRhnSoGuHAbIbnezMeijfWKf5aOi7Sbstyc7IsTBe3mjWBtyrNPg8/whmNjcDsAfqDimcXBh4jdp0iIPSerrLEOpdzshsYGdE6x9lYaNdzTpmSK5xrAMyhZO0KSmo4Fhd8YJ6o9\u002B\u002BmdhGTrC/Q2ASdTmuan6T\u002BpoHzUQ0YeWl954UDF/tozpvMn/DEqvhxfLL5S5w3grqF1ow7d7RIOex6tWPY\u002BuWO/V6HnHd5HHfHuagroTJ7b0/bfEdxGG3kAhDPgLXtMkZ6omhrpzW3dYofu\u002B0CAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFAlbeRIUea4LIENkeIidTLX7Rc3NMB0GA1UdDgQWBBQJW3kSFHmuCyBDZHiInUy1\u002B0XNzTANBgkqhkiG9w0BAQsFAAOCAQEApi0Re3b5JvE0K26O3GXAnlYHqLlTyFLLBJa16Fc4nA6JJlS32rfZbn/EYBaX01sdZpDBRujbwQ5i\u002BN\u002BUeKhxqLlHSfJ2VRW1cj/njmT2B6tK\u002BdYwL95qBdSOsHfutQIYyktp\u002BJAy0G8ryfPy/Nol0fKoPeU6FqfGSksZEoVclVUmY0A5RRaiMVspjwdo9nyZtVx98Sr\u002BXqHSOo7xPEHvYQ3tUwU5ozsU0ynsrdc95gNRbftEd8Bu6Ypq9hx7b9HJ4r\u002BYwrjBq6gjZSAXVqDOwv82T4kVvdraKX8Hr8vsYgBfbF/e8mLpoh\u002BGV984AMFc9qS0FmebGXazUxDIAZTmcg==",
         "attributes": {
           "enabled": true,
-          "nbf": 1662157760,
-          "exp": 1693694360,
-          "created": 1662158361,
-          "updated": 1662158361,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "nbf": 1679604446,
+          "exp": 1711227446,
+          "created": 1679605046,
+          "updated": 1679605046,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         },
         "tags": {
           "1374356525": "yes"
@@ -987,8 +987,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1662158358,
-            "updated": 1662158358
+            "created": 1679605045,
+            "updated": 1679605045
           }
         },
         "pending": {
@@ -997,12 +997,12 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMekUxT1RNd01qSXdPVEVoTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMekUxT1RNd01qSXdPVEVoTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -1010,28 +1010,28 @@
         "Cache-Control": "no-cache",
         "Content-Length": "279",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "381d9b42-fe14-4d30-be4e-5151ce686fa6"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "9786ef53-3850-45d3-9d6c-f41426110168"
       },
       "ResponseBody": {
         "value": [],
-        "nextLink": "https://fakevault.local:443/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMek0xTnpVME1qSTNPREloTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMek0xTnpVME1qSTNPREloTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMek0xTnpVME1qSTNPREloTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMek0xTnpVME1qSTNPREloTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -1039,28 +1039,28 @@
         "Cache-Control": "no-cache",
         "Content-Length": "279",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "21ced121-e437-400e-97f1-f21f3d05e5fc"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "62bb79ae-6696-418d-9692-8519c8aee5b9"
       },
       "ResponseBody": {
         "value": [],
-        "nextLink": "https://fakevault.local:443/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeElXTmxjblJwWm1sallYUmxMelV4T0RjeU16UTBNU0V3TURBd01qZ2hPVGs1T1MweE1pMHpNVlF5TXpvMU9UbzFPUzQ1T1RrNU9UazVXaUUtIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeElXTmxjblJwWm1sallYUmxMelV4T0RjeU16UTBNU0V3TURBd01qZ2hPVGs1T1MweE1pMHpNVlF5TXpvMU9UbzFPUzQ1T1RrNU9UazVXaUUtIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeElXTmxjblJwWm1sallYUmxMelV4T0RjeU16UTBNU0V3TURBd01qZ2hPVGs1T1MweE1pMHpNVlF5TXpvMU9UbzFPUzQ1T1RrNU9UazVXaUUtIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeElXTmxjblJwWm1sallYUmxMelV4T0RjeU16UTBNU0V3TURBd01qZ2hPVGs1T1MweE1pMHpNVlF5TXpvMU9UbzFPUzQ1T1RrNU9UazVXaUUtIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -1068,28 +1068,28 @@
         "Cache-Control": "no-cache",
         "Content-Length": "279",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "a79a72f2-e863-4341-9f49-f7260df29792"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "89b3a00b-2588-4dac-9d93-b933b17353a0"
       },
       "ResponseBody": {
         "value": [],
-        "nextLink": "https://fakevault.local:443/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXTmxjblJwWm1sallYUmxMME5QVGxSQlExUlRJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXTmxjblJwWm1sallYUmxMME5QVGxSQlExUlRJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/certificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXTmxjblJwWm1sallYUmxMME5QVGxSQlExUlRJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/certificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXTmxjblJwWm1sallYUmxMME5QVGxSQlExUlRJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -1097,15 +1097,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "28",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "ccc2868f-9220-468c-9639-ab2520dc5720"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "5134fb4a-34c1-430d-bd9a-7f88e7258ffb"
       },
       "ResponseBody": {
         "value": [],
@@ -1113,13 +1113,13 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-0?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-0?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 404,
@@ -1127,15 +1127,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "96",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:25 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:31 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "f2979a0a-ae79-4563-9d35-12dee7303bc1"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "c864367f-701f-4213-b317-88cad9b9154b"
       },
       "ResponseBody": {
         "error": {
@@ -1145,47 +1145,47 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-0?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-0?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2409",
+        "Content-Length": "2418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:35 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "e429edf7-0c03-4fbe-ad52-b40780e71b96"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "3b134037-d45f-4ed7-b672-f9804ba0e9cd"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-0",
-        "deletedDate": 1662158364,
-        "scheduledPurgeDate": 1669934364,
-        "id": "https://fakevault.local/certificates/1374356525-0/6b10f67506dc49929f16898c284620ef",
-        "kid": "https://fakevault.local/keys/1374356525-0/6b10f67506dc49929f16898c284620ef",
-        "sid": "https://fakevault.local/secrets/1374356525-0/6b10f67506dc49929f16898c284620ef",
-        "x5t": "RyF7epPf7FqDBbLdpsZBoamDOhM",
-        "cer": "MIIDNjCCAh6gAwIBAgIQGDy\u002B88BEQiWe24kYKwLePTANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIyMDkwMjIyMjkxOFoXDTIzMDkwMjIyMzkxOFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANONah3dYktVr6yZ8MB46aPrplHTwKepiJ008jJhOxQR0A0cM1oETsBzzBVSW9y7tcopY5QwR6CpYD1REpAWNarLEyncW4NL6icQpSm1LyTsGSo8XsrtXAuD8zwD\u002Bp1jkV3VnZLlVeDMVYK7OXS6fUU3JpaYbBMDst20yHQKKQckzzXAYsRGUKqw7XrlntUdltXSlEn4rQ4shijZHlExIEWPGD\u002BrYHWbT7f51\u002BX4COm5uVDEsWYqevRWRcs8cYq4ZnqIEPDb/0NaPH3N2ja1dn4RjGDsrASufE2iq8dc6kptSyJKrPj5aptH/9kbt55iq6IaPRfS4UhSBmiJJd2bGjECAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFKEXQDyA1CZVPES1bZZfWwPThwZMMB0GA1UdDgQWBBShF0A8gNQmVTxEtW2WX1sD04cGTDANBgkqhkiG9w0BAQsFAAOCAQEAbEkO1nWjVhl9YPi7r9D3ZRZyjNOuAr404\u002B0wc20ArLtir/mdiPrq0aW7NxsYB\u002BoxS3ZivSlYzZ4PF9ia8R856cTop1PC1lsbNMF3wG\u002BCq7tdzA\u002B1OMBIFlsSy6ZVHD4X4GobbjU1xJzx81uMK4j5OLMxB6aQGHlwkVME\u002BBSDtwnMEGLBUZBDmP21UOKBzJP8\u002BEINs/BOYBfgKD8JVYdBdchT3txaLpvjjOxWIozHOhKRdwEwR0thj/LmarB9PoDGUhhHdhg1b1KG1lev506OCe\u002BzNlbKF47Rd9H4hWa/QGV9bksQUM7E3YZHmSTCTnqHX5epn2F4GcPSfFg2I8HDvA==",
+        "deletedDate": 1679605051,
+        "scheduledPurgeDate": 1680209851,
+        "id": "https://fakevault.local/certificates/1374356525-0/a300d6391c3a4aa9aa8fc2dc6a238e94",
+        "kid": "https://fakevault.local/keys/1374356525-0/a300d6391c3a4aa9aa8fc2dc6a238e94",
+        "sid": "https://fakevault.local/secrets/1374356525-0/a300d6391c3a4aa9aa8fc2dc6a238e94",
+        "x5t": "jF03i6XD5DSNylkhCmTMgslVWl4",
+        "cer": "MIIDNjCCAh6gAwIBAgIQFthPQkPYSkaBrg1\u002BH9OfjzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIzMDMyMzIwNDcyNFoXDTI0MDMyMzIwNTcyNFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMptyBAdsY\u002BA5pJ9GYtFJvLXZfsxAnxHztsESd4Ie4qlFKCJCbfZnAdpDWOcdmsEEGsKC3gtTek42WPJTZaCDNhGuzpXmlK/ffgyqRD9hkydfWe9vunHgCfYJzVfnwtKnI651Ae6GwpcN7lw1kzeJeAG2gNFpz7izj2csW5kloWtWPD2eRMsPALg/udznG2j7Q\u002BPt3NO4wfhgQfJg6enPXbn3mRooihQe3/SXcaUs73aeZIlUmJqLu47bM2lZVezwi3OCJ/WS0\u002B9ipwKbFrPNv4ck16Kt7Lt6XpoijPmix/EL00U5J1SNKNUUQALF9LAXnItOUsJOUDF1j\u002BPyOxPK4ECAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFG\u002BJ6cBCu12OnkarVGrSKBGGCJ7yMB0GA1UdDgQWBBRvienAQrtdjp5Gq1Rq0igRhgie8jANBgkqhkiG9w0BAQsFAAOCAQEANPZBw1xkeXty3OL/EskJUoYUhE3XRcV32vHP7otOrIjeycUn0Sd0MPZXEZrWI/LUis4JKyQv1gBiXlj\u002BWI090B9JbgXOtPttn43fnqSXygMjar7LdNw8oOQJmk0w6KFZ33VnIxsQTY2ACTzIbOuTTHFZxJkCWzBCSwL0mWYjVPgX9\u002ByFdcOIkefBRRpQ2jxnpC2KbLYoR1mx0it454zgYyuF8zaOuU7g5n1OLACblTIYiSp26WHGZpWHVDLAO6TEcqm3ddLt78fJdsHa3OYuouAG2PXag9xht3eLpuspCuqTcPlgEMAV5xceBmHWtqWC3skXVqwaachAW9Hm0\u002BstaQ==",
         "attributes": {
           "enabled": true,
-          "nbf": 1662157758,
-          "exp": 1693694358,
-          "created": 1662158358,
-          "updated": 1662158358,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "nbf": 1679604444,
+          "exp": 1711227444,
+          "created": 1679605045,
+          "updated": 1679605045,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         },
         "tags": {
           "1374356525": "yes"
@@ -1231,8 +1231,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1662158355,
-            "updated": 1662158355
+            "created": 1679605044,
+            "updated": 1679605044
           }
         },
         "pending": {
@@ -1241,47 +1241,47 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-1?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-1?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2409",
+        "Content-Length": "2418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:35 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "5525ae92-e70b-4d04-abdb-135cc69a6cc7"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "6607ba99-48e2-4148-a11d-e353083d1830"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-1",
-        "deletedDate": 1662158365,
-        "scheduledPurgeDate": 1669934365,
-        "id": "https://fakevault.local/certificates/1374356525-1/b0b6cfea2da44abb9924db5226ee329d",
-        "kid": "https://fakevault.local/keys/1374356525-1/b0b6cfea2da44abb9924db5226ee329d",
-        "sid": "https://fakevault.local/secrets/1374356525-1/b0b6cfea2da44abb9924db5226ee329d",
-        "x5t": "wzlcKJ8g2lOJ_pvDndc_7nak7rw",
-        "cer": "MIIDNjCCAh6gAwIBAgIQLrLyuaSfRYOzuXWtj4zPZzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIyMDkwMjIyMjkxOFoXDTIzMDkwMjIyMzkxOFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMa1nBeuNPofct14MxFtHvGD5/NLhnZ8BQH3W1hiZ1x30Lkzm/seJYwa\u002BefgMQ523ahMrUGRe4iTAyhUbQY1M11yXRBdLSwW7lf3HayXmuUfvd/c7uvO4Nczgn5pGE1WSae3sblwSXocAr4dYFHjKq2Ga6iQqW1BfRa9EXoJa/o\u002Bm3m\u002BDk4aCxseFxPu8f4ndjgzMkWvgk6dgXsOdScSB9dgh1wjWER7EHdNBdTEtNCQ1rebWhHQyH4YlJwgkK0HJmjuQI87nbOAypq\u002BXeSH1RcitFn\u002BuMpJaxM\u002BiIfL6PnD4uklHynDXjX6MyO59VvcTRka4qWXeaeSKgf7Y\u002BY4XsUCAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFJlGKk83OYp5nz3GMrIp8q3NbK5SMB0GA1UdDgQWBBSZRipPNzmKeZ89xjKyKfKtzWyuUjANBgkqhkiG9w0BAQsFAAOCAQEAH5cU4tjyUQLccvDHwXXKxIgSd1pa/BtOCT/3TD\u002BOdYF5xECALce18K6UIdqQ1nA4rIdXfhFGvmdB9ySqqgcp1OmGGYcEXQlo3Rxt6lTgXTLO1wPBjpKOCFlElYF3mmKXzikhFNfzsrIMRgI8nAPNn2harhVWHr1l4AW6/FHH/okxigFxYTPquLMWc4VYlDi\u002BC3Q8kp6EkZXFeUBS0SbVZzdeUcZ/Bvfv1MDLwGZz9yn06gowyyw77/vPgKzTV8ludX6nj2HF9UkCNjrq7kalgsRYC81W5YKn8beFDLq2UQlXb\u002BHKybjjqgbxJHgaWYbCktJhFFgGvh9iGxP4GrXoOw==",
+        "deletedDate": 1679605051,
+        "scheduledPurgeDate": 1680209851,
+        "id": "https://fakevault.local/certificates/1374356525-1/8466743eca3843b491d38725ec668bbf",
+        "kid": "https://fakevault.local/keys/1374356525-1/8466743eca3843b491d38725ec668bbf",
+        "sid": "https://fakevault.local/secrets/1374356525-1/8466743eca3843b491d38725ec668bbf",
+        "x5t": "hlC3uU98yA0R37UPZ-oMIVWdpBk",
+        "cer": "MIIDNjCCAh6gAwIBAgIQGbOqLAV2QVGC3AFTyPRBRzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIzMDMyMzIwNDcyNVoXDTI0MDMyMzIwNTcyNVowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMkJ82\u002Bk6BT/sCOjpPbK8Twk2fBVbelNMj9IVNfmG/yiQR6Eu7a7cY4s9UJo1\u002BSc\u002BebTf9rBNnrYpsKY4mfWDr7/VakK50J3QzviHhgJPf\u002BRMZEXgfJgUYEuK7P1\u002BvyhOP4K1uoca9Eevz\u002B7KP7RjD/GQX1sjBpDM8NIF2b9GOD5g/WSaVJUkvhHDCcDMY/lQ8zLqvPxWJy92UBFFL5eUa/Kaa3EqF09LBXMaDYZFQQvJCVc5r2V0\u002BkcEPjrwXGOPN0x2mdKKDv\u002BSymILnINpl5mVhFFwqZDxrxd43bhiEd/D0aQxaQC4jfOXTZ\u002B3WcuIJe3/F7ttmuHpFHiZT\u002B56qkCAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFIiJLF/o7sCIA\u002BVAmJ0gwMy1usTlMB0GA1UdDgQWBBSIiSxf6O7AiAPlQJidIMDMtbrE5TANBgkqhkiG9w0BAQsFAAOCAQEASa4P8GNhjwq\u002BKXKdfxWAtQGV1cjsrzOX9afQIzuiarMc8t\u002BTDFiv2RgKTdxyi5Zys3DOEyrqVb4zRLrTZLw9jq3BtcrypSDMepmYT5qnU1xtvbm5\u002BJs5y4zzp/\u002B45DDQERstUHZteRfS83gCKrhBd\u002BvcKhbmCFL7NQi6Ixrv8zfqwvQ70gMsCA8B9NuuK91jSk3v\u002B72XAULPMJntc2YILqFRP1E2Jji9\u002BygyV\u002BD05793DGLr/Y0cWBg5y7x6jyD7uIiHoJEgrgo2LbOoC3a0jB\u002B/\u002BcrWP5NSZKZ3FJfIBZueQNjnnvuN/PZmoAaPOi/8vGbU4\u002BL6bd6yG5fqGI73yQ==",
         "attributes": {
           "enabled": true,
-          "nbf": 1662157758,
-          "exp": 1693694358,
-          "created": 1662158359,
-          "updated": 1662158359,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "nbf": 1679604445,
+          "exp": 1711227445,
+          "created": 1679605045,
+          "updated": 1679605045,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         },
         "tags": {
           "1374356525": "yes"
@@ -1327,8 +1327,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1662158356,
-            "updated": 1662158356
+            "created": 1679605044,
+            "updated": 1679605044
           }
         },
         "pending": {
@@ -1337,47 +1337,47 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-2?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-2?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2409",
+        "Content-Length": "2418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:36 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "78df8c88-13d3-47bd-acf1-8dc7d54e8144"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "d449e75c-3542-42ee-954a-ebfa09619486"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-2",
-        "deletedDate": 1662158365,
-        "scheduledPurgeDate": 1669934365,
-        "id": "https://fakevault.local/certificates/1374356525-2/ed6c985420ad42f28d3901001d0954b6",
-        "kid": "https://fakevault.local/keys/1374356525-2/ed6c985420ad42f28d3901001d0954b6",
-        "sid": "https://fakevault.local/secrets/1374356525-2/ed6c985420ad42f28d3901001d0954b6",
-        "x5t": "3zADlyEoflXhNWc1KzndqJZI1lw",
-        "cer": "MIIDNjCCAh6gAwIBAgIQBsx5Utf8SfiIA2ZqZi2z/DANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIyMDkwMjIyMjkyMFoXDTIzMDkwMjIyMzkyMFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMgeUFQYUByVV\u002B7wc2tHeBC7TKd4J78et8HnrM61vELzxtMabmhfOHSYmc0OcICoQgCEKYh8NpfgMaygEhy7NT9Q01qWsIAQ286YHl9FRHXGQYRYmPvEEDYlW7OJ5CjCe5jVCufUVvJ6oLwDy6zaX/pTuFMZSdUPRdeCqXd0s17Me1A3Ebb8jaPgvgQwtqvNrQvpSg1JmKhGGFSloB\u002Bfby3krOQAy4JWkKjp5/XibB0B7CDnEHJEYpuOLH2QoONBa7BWcQwk\u002BFDc/Dgf4m\u002BlVLz/NgODuWKdR99LY3s7FcF576BLO70ZiJWNfPCv5OSkQCBqgsysbHPdWHYOG8MLJAECAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFDAloc8xpxV\u002Bs28DKOaG4FY419UnMB0GA1UdDgQWBBQwJaHPMacVfrNvAyjmhuBWONfVJzANBgkqhkiG9w0BAQsFAAOCAQEAWSUP8jVOMlBcl/afFWF9G/6Ec05WwfPPWHZ2gLREo04hLFkYDEIa4zmTafJpEguvheIoqSKR4R3CXsjlQQzFyc348FJ5Id1xy28qvD2Mv4gjmC\u002BtKNygL\u002BRylmjfrD6t/rvBbV65busR00325ZDMaCBghadxfggtPhrc/lFs\u002BMkgP4fs795kjb2I7INVXF8I0uLA1bSEtEXRtOVbqO7ARjZFkVSF9AasxI3ClXWYARdRc\u002B7X1jlnsY\u002BtMNeFho2k7DS03SgyE/r1ZiWCUbAGH015nJp7w9JKXKtzJSK44LmuDBfl278kNuoqVtAYxouH4dmVnDOSluWfAd1SBP/d\u002Bg==",
+        "deletedDate": 1679605051,
+        "scheduledPurgeDate": 1680209851,
+        "id": "https://fakevault.local/certificates/1374356525-2/28f639dd338a4e7089e5036a7be105ce",
+        "kid": "https://fakevault.local/keys/1374356525-2/28f639dd338a4e7089e5036a7be105ce",
+        "sid": "https://fakevault.local/secrets/1374356525-2/28f639dd338a4e7089e5036a7be105ce",
+        "x5t": "sjFA4XYFVkpxzd096G_FCgqaN7o",
+        "cer": "MIIDNjCCAh6gAwIBAgIQWERMsPl7RIWstuECC/KOzDANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIzMDMyMzIwNDcyNVoXDTI0MDMyMzIwNTcyNVowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANtOQRJwEYNdjoQUKirKu2pbKZcCh5IQglL3Vtrozsw2loT\u002B1hsRfFW5AF6coTmS3YMbDAmUmwm3HGYPvCij4LTBTVg1IoFqP60fjKBw9UqG8tEpuCjv4DFw/jb8NOVk2FPHARUMZbILTvlg6aTok/ctRgOxcnyvMRUSs8Lsx0B15NIhMHgNGtMowiKWV\u002B0ZxczukBEfduUP2VKBehd1x/Fgud3UlJNcO3ACavUq0wSezsAEUFwxC7kmNk8RYcw/PJiZW072muweUMtfCswm6EP5G59xAgjGjPvlTM4IZ9tK316jNM2vWDcZlOIQcwnFnNQBYVQw9390Vy1H4EKOII0CAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFN3ZtO1QJFwoJDC1GQVNT4KJxUIdMB0GA1UdDgQWBBTd2bTtUCRcKCQwtRkFTU\u002BCicVCHTANBgkqhkiG9w0BAQsFAAOCAQEAM\u002BGOCbj/Hms8NZBGiM\u002BrgMz5keWGLhNes04jnTxnju43CUhO305X4ehrpl55grgn\u002BpwwEsQntiv4EkgB7fr0NXvsNQkgB\u002BDMnEf0GbSx3u8NBrLTIP7xWluwAxZgYQXUyVdV\u002BVz7J2spfpEiR1Yeqax0x5\u002BNMQ0ZdAamA4\u002BdWOGNLwzpIPjd94mF0uZqJTrPvOEzOoJlA7csSvnlf1iHMKcP9vXuPGx\u002B3qxhU1TDC\u002BRApIZovpdqmVPpSjKKDMWpep5xYLflXAujVDARHSSPF14gB8uFJ8Vu\u002Bj3s5OZl0ilmJo4bmEXLVVhQbnOaJbzTaPBT/QBo95JnFHFZfDWsyA==",
         "attributes": {
           "enabled": true,
-          "nbf": 1662157760,
-          "exp": 1693694360,
-          "created": 1662158361,
-          "updated": 1662158361,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "nbf": 1679604445,
+          "exp": 1711227445,
+          "created": 1679605045,
+          "updated": 1679605045,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         },
         "tags": {
           "1374356525": "yes"
@@ -1423,8 +1423,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1662158357,
-            "updated": 1662158357
+            "created": 1679605045,
+            "updated": 1679605045
           }
         },
         "pending": {
@@ -1433,47 +1433,47 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-3?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-3?api-version=7.4",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "2409",
+        "Content-Length": "2418",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:36 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "0b570740-0e54-4563-88aa-5ce766a67c6e"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "6ffd95b2-119e-443d-8afc-af414f70d2db"
       },
       "ResponseBody": {
         "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-3",
-        "deletedDate": 1662158365,
-        "scheduledPurgeDate": 1669934365,
-        "id": "https://fakevault.local/certificates/1374356525-3/d33d3e7a73e1474eb93518c36e7f3924",
-        "kid": "https://fakevault.local/keys/1374356525-3/d33d3e7a73e1474eb93518c36e7f3924",
-        "sid": "https://fakevault.local/secrets/1374356525-3/d33d3e7a73e1474eb93518c36e7f3924",
-        "x5t": "EcrAm-IJKaLxvbkiXMEBDgL-RaM",
-        "cer": "MIIDNjCCAh6gAwIBAgIQG5TlQIG8RFGw4309ivi4\u002BzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIyMDkwMjIyMjkyMFoXDTIzMDkwMjIyMzkyMFowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMx8q0w70XScz55dcmHHuggZLA59J\u002BzPgDtxfqvoGZtk1bJOTF5d7IxH5vIpHTPD8lbkQd5PtJAQFL2DVOVt2/LaR4nvJS/aZtfZNza2YN\u002BnmMRULcYEwYDMsnHd72Ie1JdpuLbootxM\u002B\u002BPWnzrfHirB6JnfcvjUdXD2SkE5Vw13XkBN0WXEDtIksqLMexg01L4EEKcZi6esQ/8SG3JBRIp\u002BaicCSQjVyVPHGzV6fRJGjGykQNaa3iCPjH1ZxXo4e4unvi0\u002B0IuaqxTSAqr06VqQBtg4E\u002BsUzCEmGZ1F8gxLHWXV4KHaZFNOX6yzWxXhm03pqisv60ZyDPJEAjGqfnkCAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFNKGaunBRHbyY6UmRi8eXTDWYIQqMB0GA1UdDgQWBBTShmrpwUR28mOlJkYvHl0w1mCEKjANBgkqhkiG9w0BAQsFAAOCAQEAf/W4/iaye5/WQaYiINKDi5i3SrK1YG5r1C1SiJ3I8issOJutySjfZYP/TgDGPNL39h6YEWKJfkattxzg5LLKx5sl6yZ\u002Bo3Tj5QDgudH8qonYUH6\u002BaucfoHtHkYdCGMzwjvGOO4xgkIBf0jBM89ww7Rz\u002BTXlbN0hDUsR/SkZeG3FqzfPFEyR\u002Buj27OKcZvxjxFBjUFHtmNBnpIZ9n22\u002B7Iz6fbNYindps03Xitcy60AOsnIuARC9GLmHMNZ5Jv/J2ayeAqTvKAVvSWigioo2l4JUF2s0J6tkFPFu5jVS2wi\u002ByyMwQhmQU2pk/pGH33eauC4k1o/1Lf5oUy3lx2GOFWw==",
+        "deletedDate": 1679605051,
+        "scheduledPurgeDate": 1680209851,
+        "id": "https://fakevault.local/certificates/1374356525-3/d417ea855c32488ea62115ad84acd7f3",
+        "kid": "https://fakevault.local/keys/1374356525-3/d417ea855c32488ea62115ad84acd7f3",
+        "sid": "https://fakevault.local/secrets/1374356525-3/d417ea855c32488ea62115ad84acd7f3",
+        "x5t": "6_d_z0q2JSdmmqX7ZR65Wob3Ntw",
+        "cer": "MIIDNjCCAh6gAwIBAgIQXxc2daiCT6SDxtZxr7KekzANBgkqhkiG9w0BAQsFADAYMRYwFAYDVQQDEw1EZWZhdWx0UG9saWN5MB4XDTIzMDMyMzIwNDcyNloXDTI0MDMyMzIwNTcyNlowGDEWMBQGA1UEAxMNRGVmYXVsdFBvbGljeTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAKY4hZ8x/6BrQk9v/ZVuFmDfBdiFEX0rrGMNeEjQ7MUADmNnp/d8m1T\u002B2c9vZ\u002BzRhnSoGuHAbIbnezMeijfWKf5aOi7Sbstyc7IsTBe3mjWBtyrNPg8/whmNjcDsAfqDimcXBh4jdp0iIPSerrLEOpdzshsYGdE6x9lYaNdzTpmSK5xrAMyhZO0KSmo4Fhd8YJ6o9\u002B\u002BmdhGTrC/Q2ASdTmuan6T\u002BpoHzUQ0YeWl954UDF/tozpvMn/DEqvhxfLL5S5w3grqF1ow7d7RIOex6tWPY\u002BuWO/V6HnHd5HHfHuagroTJ7b0/bfEdxGG3kAhDPgLXtMkZ6omhrpzW3dYofu\u002B0CAwEAAaN8MHowDgYDVR0PAQH/BAQDAgWgMAkGA1UdEwQCMAAwHQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMB8GA1UdIwQYMBaAFAlbeRIUea4LIENkeIidTLX7Rc3NMB0GA1UdDgQWBBQJW3kSFHmuCyBDZHiInUy1\u002B0XNzTANBgkqhkiG9w0BAQsFAAOCAQEApi0Re3b5JvE0K26O3GXAnlYHqLlTyFLLBJa16Fc4nA6JJlS32rfZbn/EYBaX01sdZpDBRujbwQ5i\u002BN\u002BUeKhxqLlHSfJ2VRW1cj/njmT2B6tK\u002BdYwL95qBdSOsHfutQIYyktp\u002BJAy0G8ryfPy/Nol0fKoPeU6FqfGSksZEoVclVUmY0A5RRaiMVspjwdo9nyZtVx98Sr\u002BXqHSOo7xPEHvYQ3tUwU5ozsU0ynsrdc95gNRbftEd8Bu6Ypq9hx7b9HJ4r\u002BYwrjBq6gjZSAXVqDOwv82T4kVvdraKX8Hr8vsYgBfbF/e8mLpoh\u002BGV984AMFc9qS0FmebGXazUxDIAZTmcg==",
         "attributes": {
           "enabled": true,
-          "nbf": 1662157760,
-          "exp": 1693694360,
-          "created": 1662158361,
-          "updated": 1662158361,
-          "recoveryLevel": "Recoverable\u002BPurgeable",
-          "recoverableDays": 90
+          "nbf": 1679604446,
+          "exp": 1711227446,
+          "created": 1679605046,
+          "updated": 1679605046,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7
         },
         "tags": {
           "1374356525": "yes"
@@ -1519,8 +1519,8 @@
           },
           "attributes": {
             "enabled": true,
-            "created": 1662158358,
-            "updated": 1662158358
+            "created": 1679605045,
+            "updated": 1679605045
           }
         },
         "pending": {
@@ -1529,447 +1529,447 @@
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.3\u0026includePending=true\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.4\u0026includePending=true\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "710",
+        "Content-Length": "719",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:36 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:41 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "273b2b4d-4ed8-4d19-9647-aef7418f915a"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "fde6cc2c-260f-476b-bff8-83fe0fb5055d"
       },
       "ResponseBody": {
         "value": [
           {
             "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-0",
-            "deletedDate": 1662158364,
-            "scheduledPurgeDate": 1669934364,
+            "deletedDate": 1679605051,
+            "scheduledPurgeDate": 1680209851,
             "id": "https://fakevault.local/certificates/1374356525-0",
-            "x5t": "RyF7epPf7FqDBbLdpsZBoamDOhM",
+            "x5t": "jF03i6XD5DSNylkhCmTMgslVWl4",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157758,
-              "exp": 1693694358,
-              "created": 1662158358,
-              "updated": 1662158358,
-              "recoveryLevel": "Recoverable\u002BPurgeable",
-              "recoverableDays": 90
+              "nbf": 1679604444,
+              "exp": 1711227444,
+              "created": 1679605045,
+              "updated": 1679605045,
+              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+              "recoverableDays": 7
             },
             "tags": {
               "1374356525": "yes"
             }
           }
         ],
-        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TVNFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TVNFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-0?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-0?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Date": "Fri, 02 Sep 2022 22:39:36 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "9d5c3d56-d2a4-4960-ab6c-27b513a60193"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "e2201ff4-9966-4ccb-986f-72179b1b9414"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TVNFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TVNFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "710",
+        "Content-Length": "719",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:36 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "11ab38ae-478a-4902-834a-0bc28e81e055"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "c0646c82-7a85-4107-8a98-7d497bead81f"
       },
       "ResponseBody": {
         "value": [
           {
             "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-1",
-            "deletedDate": 1662158365,
-            "scheduledPurgeDate": 1669934365,
+            "deletedDate": 1679605051,
+            "scheduledPurgeDate": 1680209851,
             "id": "https://fakevault.local/certificates/1374356525-1",
-            "x5t": "wzlcKJ8g2lOJ_pvDndc_7nak7rw",
+            "x5t": "hlC3uU98yA0R37UPZ-oMIVWdpBk",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157758,
-              "exp": 1693694358,
-              "created": 1662158359,
-              "updated": 1662158359,
-              "recoveryLevel": "Recoverable\u002BPurgeable",
-              "recoverableDays": 90
+              "nbf": 1679604445,
+              "exp": 1711227445,
+              "created": 1679605045,
+              "updated": 1679605045,
+              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+              "recoverableDays": 7
             },
             "tags": {
               "1374356525": "yes"
             }
           }
         ],
-        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TWlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TWlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-1?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-1?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "143dedee-83d5-4895-b631-0c3dcb86a7b8"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "dbd78eff-550c-4c4e-949b-07e996f40ca2"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TWlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TWlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "710",
+        "Content-Length": "719",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "16491e99-d9ee-4f56-9e3f-621778a9aacc"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "2c94feaf-3469-48a4-a242-a3907fa0d03b"
       },
       "ResponseBody": {
         "value": [
           {
             "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-2",
-            "deletedDate": 1662158365,
-            "scheduledPurgeDate": 1669934365,
+            "deletedDate": 1679605051,
+            "scheduledPurgeDate": 1680209851,
             "id": "https://fakevault.local/certificates/1374356525-2",
-            "x5t": "3zADlyEoflXhNWc1KzndqJZI1lw",
+            "x5t": "sjFA4XYFVkpxzd096G_FCgqaN7o",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157760,
-              "exp": 1693694360,
-              "created": 1662158361,
-              "updated": 1662158361,
-              "recoveryLevel": "Recoverable\u002BPurgeable",
-              "recoverableDays": 90
+              "nbf": 1679604445,
+              "exp": 1711227445,
+              "created": 1679605045,
+              "updated": 1679605045,
+              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+              "recoverableDays": 7
             },
             "tags": {
               "1374356525": "yes"
             }
           }
         ],
-        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TXlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TXlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-2?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-2?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "d69dc1fe-f141-4ca8-b1da-3dbea59b6854"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "dbb15be2-3e6b-45b6-862b-2dc811369add"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TXlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE5MiFNREF3TURJMElXTmxjblJwWm1sallYUmxMekV6TnpRek5UWTFNalV0TXlFd01EQXdNamdoT1RrNU9TMHhNaTB6TVZReU16bzFPVG8xT1M0NU9UazVPVGs1V2lFLSIsIlRhcmdldExvY2F0aW9uIjowfQ\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "704",
+        "Content-Length": "713",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "16bf34ba-8cee-4442-ae24-8dec3572f7f4"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "1ea663de-1263-4c8e-9231-55969f38603a"
       },
       "ResponseBody": {
         "value": [
           {
             "recoveryId": "https://fakevault.local/deletedcertificates/1374356525-3",
-            "deletedDate": 1662158365,
-            "scheduledPurgeDate": 1669934365,
+            "deletedDate": 1679605051,
+            "scheduledPurgeDate": 1680209851,
             "id": "https://fakevault.local/certificates/1374356525-3",
-            "x5t": "EcrAm-IJKaLxvbkiXMEBDgL-RaM",
+            "x5t": "6_d_z0q2JSdmmqX7ZR65Wob3Ntw",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157760,
-              "exp": 1693694360,
-              "created": 1662158361,
-              "updated": 1662158361,
-              "recoveryLevel": "Recoverable\u002BPurgeable",
-              "recoverableDays": 90
+              "nbf": 1679604446,
+              "exp": 1711227446,
+              "created": 1679605046,
+              "updated": 1679605046,
+              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+              "recoverableDays": 7
             },
             "tags": {
               "1374356525": "yes"
             }
           }
         ],
-        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMekUxT1RNd01qSXdPVEVoTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMekUxT1RNd01qSXdPVEVoTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-3?api-version=7.3",
+      "RequestUri": "https://fakevault.local/deletedcertificates/1374356525-3?api-version=7.4",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "07169545-3e9e-41af-ac78-f0f3baa77e45"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "e28b773e-4262-420c-a881-278e1febc372"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMekUxT1RNd01qSXdPVEVoTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMekUxT1RNd01qSXdPVEVoTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "673",
+        "Content-Length": "682",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "ddb45900-9104-4bc2-be9b-fc90d3da44b1"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "7a28531f-c9a7-414f-8d88-2b59d590960a"
       },
       "ResponseBody": {
         "value": [
           {
             "recoveryId": "https://fakevault.local/deletedcertificates/1593022091",
-            "deletedDate": 1662158354,
-            "scheduledPurgeDate": 1669934354,
+            "deletedDate": 1679605043,
+            "scheduledPurgeDate": 1680209843,
             "id": "https://fakevault.local/certificates/1593022091",
             "x5t": "7Hd8wjMNV61gvzAY4LfCGxWwi_I",
             "attributes": {
               "enabled": false,
               "nbf": 1628270437,
               "exp": 4781870437,
-              "created": 1662158354,
-              "updated": 1662158354,
-              "recoveryLevel": "Recoverable\u002BPurgeable",
-              "recoverableDays": 90
+              "created": 1679605043,
+              "updated": 1679605043,
+              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+              "recoverableDays": 7
             }
           }
         ],
-        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMek0xTnpVME1qSTNPREloTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMek0xTnpVME1qSTNPREloTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMek0xTnpVME1qSTNPREloTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeUlXTmxjblJwWm1sallYUmxMek0xTnpVME1qSTNPREloTURBd01ESTRJVGs1T1RrdE1USXRNekZVTWpNNk5UazZOVGt1T1RrNU9UazVPVm9oIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "672",
+        "Content-Length": "681",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "a75ac29a-cd8b-42a1-9c11-3e832db2fb87"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "3226f96f-66c3-4254-b1ee-9ece3c94e61f"
       },
       "ResponseBody": {
         "value": [
           {
             "recoveryId": "https://fakevault.local/deletedcertificates/3575422782",
-            "deletedDate": 1662158353,
-            "scheduledPurgeDate": 1669934353,
+            "deletedDate": 1679605043,
+            "scheduledPurgeDate": 1680209843,
             "id": "https://fakevault.local/certificates/3575422782",
-            "x5t": "uk_tnQcWjrgEqoRw8aK7hKQiQbA",
+            "x5t": "E6w2xCowSAvov_aEQt_G2qlmIQw",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157709,
-              "exp": 1693694309,
-              "created": 1662158309,
-              "updated": 1662158309,
-              "recoveryLevel": "Recoverable\u002BPurgeable",
-              "recoverableDays": 90
+              "nbf": 1679604417,
+              "exp": 1711227417,
+              "created": 1679605018,
+              "updated": 1679605018,
+              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+              "recoverableDays": 7
             }
           }
         ],
-        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeElXTmxjblJwWm1sallYUmxMelV4T0RjeU16UTBNU0V3TURBd01qZ2hPVGs1T1MweE1pMHpNVlF5TXpvMU9UbzFPUzQ1T1RrNU9UazVXaUUtIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeElXTmxjblJwWm1sallYUmxMelV4T0RjeU16UTBNU0V3TURBd01qZ2hPVGs1T1MweE1pMHpNVlF5TXpvMU9UbzFPUzQ1T1RrNU9UazVXaUUtIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeElXTmxjblJwWm1sallYUmxMelV4T0RjeU16UTBNU0V3TURBd01qZ2hPVGs1T1MweE1pMHpNVlF5TXpvMU9UbzFPUzQ1T1RrNU9UazVXaUUtIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJeElXTmxjblJwWm1sallYUmxMelV4T0RjeU16UTBNU0V3TURBd01qZ2hPVGs1T1MweE1pMHpNVlF5TXpvMU9UbzFPUzQ1T1RrNU9UazVXaUUtIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "Cache-Control": "no-cache",
-        "Content-Length": "680",
+        "Content-Length": "689",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "3abc8a6e-9c91-4638-a106-451889f93fa7"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "821853a9-e617-4191-8d3c-e18d7b318c3e"
       },
       "ResponseBody": {
         "value": [
           {
             "recoveryId": "https://fakevault.local/deletedcertificates/cert1387819847",
-            "deletedDate": 1662158286,
-            "scheduledPurgeDate": 1669934286,
+            "deletedDate": 1679605000,
+            "scheduledPurgeDate": 1680209800,
             "id": "https://fakevault.local/certificates/cert1387819847",
-            "x5t": "PwgdiJA627orgOrNXt5WzC-KY1E",
+            "x5t": "YbENAD-ZIcW6ntMIGRToZd1momg",
             "attributes": {
               "enabled": true,
-              "nbf": 1662157646,
-              "exp": 1693694246,
-              "created": 1662158246,
-              "updated": 1662158246,
-              "recoveryLevel": "Recoverable\u002BPurgeable",
-              "recoverableDays": 90
+              "nbf": 1679604375,
+              "exp": 1711227375,
+              "created": 1679604975,
+              "updated": 1679604975,
+              "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+              "recoverableDays": 7
             }
           }
         ],
-        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXTmxjblJwWm1sallYUmxMME5QVGxSQlExUlRJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
+        "nextLink": "https://fakevault.local:443/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXTmxjblJwWm1sallYUmxMME5QVGxSQlExUlRJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1"
       }
     },
     {
-      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.3\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXTmxjblJwWm1sallYUmxMME5QVGxSQlExUlRJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
+      "RequestUri": "https://fakevault.local/deletedcertificates?api-version=7.4\u0026$skiptoken=eyJOZXh0TWFya2VyIjoiMiE4OCFNREF3TURJd0lXTmxjblJwWm1sallYUmxMME5QVGxSQlExUlRJVEF3TURBeU9DRTVPVGs1TFRFeUxUTXhWREl6T2pVNU9qVTVMams1T1RrNU9UbGFJUS0tIiwiVGFyZ2V0TG9jYXRpb24iOjB9\u0026maxresults=1",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept-Encoding": "gzip",
         "Authorization": "Sanitized",
-        "User-Agent": "azsdk-go-azcertificates/v0.7.0 (go1.19; linux)"
+        "User-Agent": "azsdk-go-azcertificates/v0.9.0 (go1.19.3; linux)"
       },
       "RequestBody": null,
       "StatusCode": 200,
@@ -1977,15 +1977,15 @@
         "Cache-Control": "no-cache",
         "Content-Length": "28",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 02 Sep 2022 22:39:37 GMT",
+        "Date": "Thu, 23 Mar 2023 20:57:42 GMT",
         "Expires": "-1",
         "Pragma": "no-cache",
         "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
         "X-Content-Type-Options": "nosniff",
-        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=24.17.201.78;act_addr_fam=InterNetwork;",
-        "x-ms-keyvault-region": "westus2",
-        "x-ms-keyvault-service-version": "1.9.501.1",
-        "x-ms-request-id": "fe9acf8b-7765-403e-b331-14c5f8b5464e"
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=131.107.1.177;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "24ca4fc1-dbf1-468e-a07d-3f3143b2d536"
       },
       "ResponseBody": {
         "value": [],

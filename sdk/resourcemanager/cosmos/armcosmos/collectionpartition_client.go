@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // CollectionPartitionClient contains the methods for the CollectionPartition group.
 // Don't use this type directly, use NewCollectionPartitionClient() instead.
 type CollectionPartitionClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCollectionPartitionClient creates a new instance of CollectionPartitionClient with the specified values.
@@ -36,21 +33,13 @@ type CollectionPartitionClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewCollectionPartitionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CollectionPartitionClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CollectionPartitionClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CollectionPartitionClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -77,7 +66,7 @@ func (client *CollectionPartitionClient) NewListMetricsPager(resourceGroupName s
 			if err != nil {
 				return CollectionPartitionClientListMetricsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CollectionPartitionClientListMetricsResponse{}, err
 			}
@@ -112,7 +101,7 @@ func (client *CollectionPartitionClient) listMetricsCreateRequest(ctx context.Co
 		return nil, errors.New("parameter collectionRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionRid}", url.PathEscape(collectionRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -152,7 +141,7 @@ func (client *CollectionPartitionClient) NewListUsagesPager(resourceGroupName st
 			if err != nil {
 				return CollectionPartitionClientListUsagesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CollectionPartitionClientListUsagesResponse{}, err
 			}
@@ -187,7 +176,7 @@ func (client *CollectionPartitionClient) listUsagesCreateRequest(ctx context.Con
 		return nil, errors.New("parameter collectionRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionRid}", url.PathEscape(collectionRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

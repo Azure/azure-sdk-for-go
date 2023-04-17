@@ -30,7 +30,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 
 	// message from queue -> Abandon -> back to the queue
 	err = receiver.AbandonMessage(context.Background(), messages[0], &AbandonMessageOptions{
-		PropertiesToModify: map[string]interface{}{
+		PropertiesToModify: map[string]any{
 			"hello": "world",
 		},
 	})
@@ -67,7 +67,7 @@ func TestMessageSettlementUsingReceiver(t *testing.T) {
 
 	// deferred message from dead letter queue -> Abandon -> dead letter queue
 	err = deadLetterReceiver.AbandonMessage(ctx, messages[0], &AbandonMessageOptions{
-		PropertiesToModify: map[string]interface{}{
+		PropertiesToModify: map[string]any{
 			"hello": "world",
 		},
 	})
@@ -130,7 +130,7 @@ func TestDeferredMessages(t *testing.T) {
 
 		// abandoning the deferred message will increment its delivery count
 		err := receiver.AbandonMessage(ctx, originalDeferredMessage, &AbandonMessageOptions{
-			PropertiesToModify: map[string]interface{}{
+			PropertiesToModify: map[string]any{
 				"hello": "world",
 			},
 		})
@@ -159,7 +159,7 @@ func TestDeferredMessages(t *testing.T) {
 
 		// double defer!
 		err := receiver.DeferMessage(ctx, msg, &DeferMessageOptions{
-			PropertiesToModify: map[string]interface{}{
+			PropertiesToModify: map[string]any{
 				"hello": "world",
 			},
 		})

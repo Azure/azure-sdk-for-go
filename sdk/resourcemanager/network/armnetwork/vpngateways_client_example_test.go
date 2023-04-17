@@ -25,11 +25,11 @@ func ExampleVPNGatewaysClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "gateway1", nil)
+	res, err := clientFactory.NewVPNGatewaysClient().Get(ctx, "rg1", "gateway1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -223,11 +223,11 @@ func ExampleVPNGatewaysClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "gateway1", armnetwork.VPNGateway{
+	poller, err := clientFactory.NewVPNGatewaysClient().BeginCreateOrUpdate(ctx, "rg1", "gateway1", armnetwork.VPNGateway{
 		Location: to.Ptr("westcentralus"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -444,11 +444,11 @@ func ExampleVPNGatewaysClient_BeginUpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdateTags(ctx, "rg1", "gateway1", armnetwork.TagsObject{
+	poller, err := clientFactory.NewVPNGatewaysClient().BeginUpdateTags(ctx, "rg1", "gateway1", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -562,11 +562,11 @@ func ExampleVPNGatewaysClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "gateway1", nil)
+	poller, err := clientFactory.NewVPNGatewaysClient().BeginDelete(ctx, "rg1", "gateway1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -583,11 +583,11 @@ func ExampleVPNGatewaysClient_BeginReset() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginReset(ctx, "rg1", "vpngw", &armnetwork.VPNGatewaysClientBeginResetOptions{IPConfigurationID: nil})
+	poller, err := clientFactory.NewVPNGatewaysClient().BeginReset(ctx, "rg1", "vpngw", &armnetwork.VPNGatewaysClientBeginResetOptions{IPConfigurationID: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -694,11 +694,11 @@ func ExampleVPNGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVpnGat
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStartPacketCapture(ctx, "rg1", "vpngw", &armnetwork.VPNGatewaysClientBeginStartPacketCaptureOptions{Parameters: &armnetwork.VPNGatewayPacketCaptureStartParameters{
+	poller, err := clientFactory.NewVPNGatewaysClient().BeginStartPacketCapture(ctx, "rg1", "vpngw", &armnetwork.VPNGatewaysClientBeginStartPacketCaptureOptions{Parameters: &armnetwork.VPNGatewayPacketCaptureStartParameters{
 		FilterData: to.Ptr("{'TracingFlags': 11,'MaxPacketBufferSize': 120,'MaxFileSize': 200,'Filters': [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort': [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags': 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
 	},
 	})
@@ -722,11 +722,11 @@ func ExampleVPNGatewaysClient_BeginStartPacketCapture_startPacketCaptureOnVpnGat
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStartPacketCapture(ctx, "rg1", "vpngw", &armnetwork.VPNGatewaysClientBeginStartPacketCaptureOptions{Parameters: nil})
+	poller, err := clientFactory.NewVPNGatewaysClient().BeginStartPacketCapture(ctx, "rg1", "vpngw", &armnetwork.VPNGatewaysClientBeginStartPacketCaptureOptions{Parameters: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -747,11 +747,11 @@ func ExampleVPNGatewaysClient_BeginStopPacketCapture() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStopPacketCapture(ctx, "rg1", "vpngw", &armnetwork.VPNGatewaysClientBeginStopPacketCaptureOptions{Parameters: &armnetwork.VPNGatewayPacketCaptureStopParameters{
+	poller, err := clientFactory.NewVPNGatewaysClient().BeginStopPacketCapture(ctx, "rg1", "vpngw", &armnetwork.VPNGatewaysClientBeginStopPacketCaptureOptions{Parameters: &armnetwork.VPNGatewayPacketCaptureStopParameters{
 		SasURL: to.Ptr("https://teststorage.blob.core.windows.net/?sv=2018-03-28&ss=bfqt&srt=sco&sp=rwdlacup&se=2019-09-13T07:44:05Z&st=2019-09-06T23:44:05Z&spr=https&sig=V1h9D1riltvZMI69d6ihENnFo%2FrCvTqGgjO2lf%2FVBhE%3D"),
 	},
 	})
@@ -775,11 +775,11 @@ func ExampleVPNGatewaysClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewVPNGatewaysClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1047,11 +1047,11 @@ func ExampleVPNGatewaysClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNGatewaysClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewVPNGatewaysClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

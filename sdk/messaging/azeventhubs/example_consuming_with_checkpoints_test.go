@@ -12,7 +12,6 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/checkpoints"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 )
 
@@ -118,7 +117,7 @@ func processEventsForPartition(partitionClient *azeventhubs.ProcessorPartitionCl
 		if err != nil && !errors.Is(err, context.DeadlineExceeded) {
 			var eventHubError *azeventhubs.Error
 
-			if errors.As(err, &eventHubError) && eventHubError.Code == exported.ErrorCodeOwnershipLost {
+			if errors.As(err, &eventHubError) && eventHubError.Code == azeventhubs.ErrorCodeOwnershipLost {
 				return nil
 			}
 

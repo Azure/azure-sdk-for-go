@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SQLPoolWorkloadGroupClient contains the methods for the SQLPoolWorkloadGroup group.
 // Don't use this type directly, use NewSQLPoolWorkloadGroupClient() instead.
 type SQLPoolWorkloadGroupClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSQLPoolWorkloadGroupClient creates a new instance of SQLPoolWorkloadGroupClient with the specified values.
@@ -36,21 +33,13 @@ type SQLPoolWorkloadGroupClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSQLPoolWorkloadGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolWorkloadGroupClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SQLPoolWorkloadGroupClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SQLPoolWorkloadGroupClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -72,9 +61,9 @@ func (client *SQLPoolWorkloadGroupClient) BeginCreateOrUpdate(ctx context.Contex
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SQLPoolWorkloadGroupClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SQLPoolWorkloadGroupClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadGroupClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadGroupClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -87,7 +76,7 @@ func (client *SQLPoolWorkloadGroupClient) createOrUpdate(ctx context.Context, re
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +109,7 @@ func (client *SQLPoolWorkloadGroupClient) createOrUpdateCreateRequest(ctx contex
 		return nil, errors.New("parameter workloadGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadGroupName}", url.PathEscape(workloadGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -147,9 +136,9 @@ func (client *SQLPoolWorkloadGroupClient) BeginDelete(ctx context.Context, resou
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SQLPoolWorkloadGroupClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SQLPoolWorkloadGroupClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadGroupClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadGroupClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -162,7 +151,7 @@ func (client *SQLPoolWorkloadGroupClient) deleteOperation(ctx context.Context, r
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -195,7 +184,7 @@ func (client *SQLPoolWorkloadGroupClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter workloadGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadGroupName}", url.PathEscape(workloadGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,7 +209,7 @@ func (client *SQLPoolWorkloadGroupClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return SQLPoolWorkloadGroupClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolWorkloadGroupClientGetResponse{}, err
 	}
@@ -253,7 +242,7 @@ func (client *SQLPoolWorkloadGroupClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter workloadGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadGroupName}", url.PathEscape(workloadGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -297,7 +286,7 @@ func (client *SQLPoolWorkloadGroupClient) NewListPager(resourceGroupName string,
 			if err != nil {
 				return SQLPoolWorkloadGroupClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SQLPoolWorkloadGroupClientListResponse{}, err
 			}
@@ -328,7 +317,7 @@ func (client *SQLPoolWorkloadGroupClient) listCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter sqlPoolName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{sqlPoolName}", url.PathEscape(sqlPoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

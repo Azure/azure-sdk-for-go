@@ -25,11 +25,11 @@ func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Patch() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Patch(ctx, "rg1", "firewallPolicy", armnetwork.SignaturesOverrides{
+	res, err := clientFactory.NewFirewallPolicyIdpsSignaturesOverridesClient().Patch(ctx, "rg1", "firewallPolicy", armnetwork.SignaturesOverrides{
 		Name: to.Ptr("default"),
 		Type: to.Ptr("Microsoft.Network/firewallPolicies/signatureOverrides"),
 		ID:   to.Ptr("/subscriptions/e747cc13-97d4-4a79-b463-42d7f4e558f2/resourceGroups/rg1/providers/Microsoft.Network/firewallPolicies/firewallPolicy/signatureOverrides/default"),
@@ -66,11 +66,11 @@ func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Put() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Put(ctx, "rg1", "firewallPolicy", armnetwork.SignaturesOverrides{
+	res, err := clientFactory.NewFirewallPolicyIdpsSignaturesOverridesClient().Put(ctx, "rg1", "firewallPolicy", armnetwork.SignaturesOverrides{
 		Name: to.Ptr("default"),
 		Type: to.Ptr("Microsoft.Network/firewallPolicies/signatureOverrides"),
 		ID:   to.Ptr("/subscriptions/e747cc13-97d4-4a79-b463-42d7f4e558f2/resourceGroups/rg1/providers/Microsoft.Network/firewallPolicies/firewallPolicy/signatureOverrides/default"),
@@ -107,11 +107,11 @@ func ExampleFirewallPolicyIdpsSignaturesOverridesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "firewallPolicy", nil)
+	res, err := clientFactory.NewFirewallPolicyIdpsSignaturesOverridesClient().Get(ctx, "rg1", "firewallPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -138,11 +138,11 @@ func ExampleFirewallPolicyIdpsSignaturesOverridesClient_List() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewFirewallPolicyIdpsSignaturesOverridesClient("e747cc13-97d4-4a79-b463-42d7f4e558f2", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "rg1", "firewallPolicy", nil)
+	res, err := clientFactory.NewFirewallPolicyIdpsSignaturesOverridesClient().List(ctx, "rg1", "firewallPolicy", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

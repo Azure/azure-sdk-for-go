@@ -20,7 +20,7 @@ import (
 // DefaultConsumerGroup is the name of the default consumer group in the Event Hubs service.
 const DefaultConsumerGroup = "$Default"
 
-const defaultPrefetchSize = uint32(300)
+const defaultPrefetchSize = int32(300)
 
 // defaultLinkRxBuffer is the maximum number of transfer frames we can handle
 // on the Receiver. This matches the current default window size that go-amqp
@@ -130,7 +130,7 @@ func (pc *PartitionClient) ReceiveEvents(ctx context.Context, count int, options
 		}
 
 		for {
-			amqpMessage, err := lwid.Link.Receive(ctx)
+			amqpMessage, err := lwid.Link.Receive(ctx, nil)
 
 			if internal.IsOwnershipLostError(err) {
 				log.Writef(EventConsumer, "(%s) Error, link ownership lost: %s", lwid.String(), err)
@@ -215,9 +215,9 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 	}
 
 	receiverOptions := &amqp.ReceiverOptions{
-		SettlementMode: to.Ptr(amqp.ModeFirst),
+		SettlementMode: to.Ptr(amqp.ReceiverSettleModeFirst),
 		Filters: []amqp.LinkFilter{
-			amqp.LinkFilterSelector(pc.offsetExpression),
+			amqp.NewSelectorFilter(pc.offsetExpression),
 		},
 		Properties:    props,
 		TargetAddress: pc.instanceID,
@@ -225,7 +225,7 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 
 	if pc.prefetch > 0 {
 		log.Writef(EventConsumer, "Enabling prefetch with %d credits", pc.prefetch)
-		receiverOptions.Credit = uint32(pc.prefetch)
+		receiverOptions.Credit = pc.prefetch
 	} else if pc.prefetch == 0 {
 		log.Writef(EventConsumer, "Enabling prefetch with %d credits", defaultPrefetchSize)
 		receiverOptions.Credit = defaultPrefetchSize
@@ -233,8 +233,7 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 		// prefetch is disabled, enable manual credits and enable
 		// a reasonable default max for the buffer.
 		log.Writef(EventConsumer, "Disabling prefetch")
-		receiverOptions.ManualCredits = true
-		receiverOptions.Credit = defaultMaxCreditSize
+		receiverOptions.Credit = -1
 	}
 
 	log.Writef(EventConsumer, "Creating receiver:\n  source:%s\n  instanceID: %s\n  owner level: %d\n  offset: %s\n  manual: %v\n  prefetch: %d",
@@ -242,7 +241,7 @@ func (pc *PartitionClient) newEventHubConsumerLink(ctx context.Context, session 
 		pc.instanceID,
 		pc.ownerLevel,
 		pc.offsetExpression,
-		receiverOptions.ManualCredits,
+		receiverOptions.Credit == -1,
 		pc.prefetch)
 
 	receiver, err := session.NewReceiver(ctx, entityPath, receiverOptions)

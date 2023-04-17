@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // RulesClient contains the methods for the Rules group.
 // Don't use this type directly, use NewRulesClient() instead.
 type RulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRulesClient creates a new instance of RulesClient with the specified values.
@@ -38,21 +35,13 @@ type RulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -60,7 +49,7 @@ func NewRulesClient(subscriptionID string, credential azcore.TokenCredential, op
 // CreateOrUpdate - Creates a new rule and updates an existing rule
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -73,7 +62,7 @@ func (client *RulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return RulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RulesClientCreateOrUpdateResponse{}, err
 	}
@@ -110,12 +99,12 @@ func (client *RulesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -133,7 +122,7 @@ func (client *RulesClient) createOrUpdateHandleResponse(resp *http.Response) (Ru
 // Delete - Deletes an existing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -145,7 +134,7 @@ func (client *RulesClient) Delete(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return RulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RulesClientDeleteResponse{}, err
 	}
@@ -182,12 +171,12 @@ func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -196,7 +185,7 @@ func (client *RulesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 // Get - Retrieves the description for the specified rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -208,7 +197,7 @@ func (client *RulesClient) Get(ctx context.Context, resourceGroupName string, na
 	if err != nil {
 		return RulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RulesClientGetResponse{}, err
 	}
@@ -245,12 +234,12 @@ func (client *RulesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -267,7 +256,7 @@ func (client *RulesClient) getHandleResponse(resp *http.Response) (RulesClientGe
 
 // NewListBySubscriptionsPager - List all the rules within given topic-subscription
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -290,7 +279,7 @@ func (client *RulesClient) NewListBySubscriptionsPager(resourceGroupName string,
 			if err != nil {
 				return RulesClientListBySubscriptionsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RulesClientListBySubscriptionsResponse{}, err
 			}
@@ -325,12 +314,12 @@ func (client *RulesClient) listBySubscriptionsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}

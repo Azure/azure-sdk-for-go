@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,44 +24,36 @@ import (
 // PacketCoreControlPlaneVersionsClient contains the methods for the PacketCoreControlPlaneVersions group.
 // Don't use this type directly, use NewPacketCoreControlPlaneVersionsClient() instead.
 type PacketCoreControlPlaneVersionsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewPacketCoreControlPlaneVersionsClient creates a new instance of PacketCoreControlPlaneVersionsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPacketCoreControlPlaneVersionsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*PacketCoreControlPlaneVersionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PacketCoreControlPlaneVersionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PacketCoreControlPlaneVersionsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Gets information about the specified packet core control plane version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// versionName - The name of the packet core control plane version.
-// options - PacketCoreControlPlaneVersionsClientGetOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.Get
-// method.
+//   - versionName - The name of the packet core control plane version.
+//   - options - PacketCoreControlPlaneVersionsClientGetOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.Get
+//     method.
 func (client *PacketCoreControlPlaneVersionsClient) Get(ctx context.Context, versionName string, options *PacketCoreControlPlaneVersionsClientGetOptions) (PacketCoreControlPlaneVersionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, versionName, options)
 	if err != nil {
 		return PacketCoreControlPlaneVersionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PacketCoreControlPlaneVersionsClientGetResponse{}, err
 	}
@@ -80,7 +70,7 @@ func (client *PacketCoreControlPlaneVersionsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter versionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{versionName}", url.PathEscape(versionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -101,9 +91,10 @@ func (client *PacketCoreControlPlaneVersionsClient) getHandleResponse(resp *http
 }
 
 // NewListPager - Lists all supported packet core control planes versions.
+//
 // Generated from API version 2022-11-01
-// options - PacketCoreControlPlaneVersionsClientListOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.List
-// method.
+//   - options - PacketCoreControlPlaneVersionsClientListOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.NewListPager
+//     method.
 func (client *PacketCoreControlPlaneVersionsClient) NewListPager(options *PacketCoreControlPlaneVersionsClientListOptions) *runtime.Pager[PacketCoreControlPlaneVersionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlaneVersionsClientListResponse]{
 		More: func(page PacketCoreControlPlaneVersionsClientListResponse) bool {
@@ -120,7 +111,7 @@ func (client *PacketCoreControlPlaneVersionsClient) NewListPager(options *Packet
 			if err != nil {
 				return PacketCoreControlPlaneVersionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PacketCoreControlPlaneVersionsClientListResponse{}, err
 			}
@@ -135,7 +126,7 @@ func (client *PacketCoreControlPlaneVersionsClient) NewListPager(options *Packet
 // listCreateRequest creates the List request.
 func (client *PacketCoreControlPlaneVersionsClient) listCreateRequest(ctx context.Context, options *PacketCoreControlPlaneVersionsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.MobileNetwork/packetCoreControlPlaneVersions"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

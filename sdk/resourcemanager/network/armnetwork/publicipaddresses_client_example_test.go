@@ -25,11 +25,11 @@ func ExamplePublicIPAddressesClient_NewListCloudServicePublicIPAddressesPager() 
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCloudServicePublicIPAddressesPager("cs-tester", "cs1", nil)
+	pager := clientFactory.NewPublicIPAddressesClient().NewListCloudServicePublicIPAddressesPager("cs-tester", "cs1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -89,11 +89,11 @@ func ExamplePublicIPAddressesClient_NewListCloudServiceRoleInstancePublicIPAddre
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListCloudServiceRoleInstancePublicIPAddressesPager("cs-tester", "cs1", "Test_VM_0", "nic1", "ip1", nil)
+	pager := clientFactory.NewPublicIPAddressesClient().NewListCloudServiceRoleInstancePublicIPAddressesPager("cs-tester", "cs1", "Test_VM_0", "nic1", "ip1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -135,11 +135,11 @@ func ExamplePublicIPAddressesClient_GetCloudServicePublicIPAddress() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetCloudServicePublicIPAddress(ctx, "cs-tester", "cs1", "Test_VM_0", "nic1", "ip1", "pub1", &armnetwork.PublicIPAddressesClientGetCloudServicePublicIPAddressOptions{Expand: nil})
+	res, err := clientFactory.NewPublicIPAddressesClient().GetCloudServicePublicIPAddress(ctx, "cs-tester", "cs1", "Test_VM_0", "nic1", "ip1", "pub1", &armnetwork.PublicIPAddressesClientGetCloudServicePublicIPAddressOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -173,11 +173,11 @@ func ExamplePublicIPAddressesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "test-ip", nil)
+	poller, err := clientFactory.NewPublicIPAddressesClient().BeginDelete(ctx, "rg1", "test-ip", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -194,11 +194,11 @@ func ExamplePublicIPAddressesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testDNS-ip", &armnetwork.PublicIPAddressesClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewPublicIPAddressesClient().Get(ctx, "rg1", "testDNS-ip", &armnetwork.PublicIPAddressesClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -244,11 +244,11 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDns
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-ip", armnetwork.PublicIPAddress{
+	poller, err := clientFactory.NewPublicIPAddressesClient().BeginCreateOrUpdate(ctx, "rg1", "test-ip", armnetwork.PublicIPAddress{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.PublicIPAddressPropertiesFormat{
 			DNSSettings: &armnetwork.PublicIPAddressDNSSettings{
@@ -294,11 +294,11 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressAll
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-ip", armnetwork.PublicIPAddress{
+	poller, err := clientFactory.NewPublicIPAddressesClient().BeginCreateOrUpdate(ctx, "rg1", "test-ip", armnetwork.PublicIPAddress{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.PublicIPAddressPropertiesFormat{
 			IdleTimeoutInMinutes:     to.Ptr[int32](10),
@@ -353,11 +353,11 @@ func ExamplePublicIPAddressesClient_BeginCreateOrUpdate_createPublicIpAddressDef
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-ip", armnetwork.PublicIPAddress{
+	poller, err := clientFactory.NewPublicIPAddressesClient().BeginCreateOrUpdate(ctx, "rg1", "test-ip", armnetwork.PublicIPAddress{
 		Location: to.Ptr("eastus"),
 	}, nil)
 	if err != nil {
@@ -397,11 +397,11 @@ func ExamplePublicIPAddressesClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "test-ip", armnetwork.TagsObject{
+	res, err := clientFactory.NewPublicIPAddressesClient().UpdateTags(ctx, "rg1", "test-ip", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -444,11 +444,11 @@ func ExamplePublicIPAddressesClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewPublicIPAddressesClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -513,11 +513,11 @@ func ExamplePublicIPAddressesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewPublicIPAddressesClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -591,11 +591,11 @@ func ExamplePublicIPAddressesClient_BeginDdosProtectionStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDdosProtectionStatus(ctx, "rg1", "test-pip", nil)
+	poller, err := clientFactory.NewPublicIPAddressesClient().BeginDdosProtectionStatus(ctx, "rg1", "test-pip", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -621,11 +621,11 @@ func ExamplePublicIPAddressesClient_NewListVirtualMachineScaleSetPublicIPAddress
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVirtualMachineScaleSetPublicIPAddressesPager("vmss-tester", "vmss1", nil)
+	pager := clientFactory.NewPublicIPAddressesClient().NewListVirtualMachineScaleSetPublicIPAddressesPager("vmss-tester", "vmss1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -685,11 +685,11 @@ func ExamplePublicIPAddressesClient_NewListVirtualMachineScaleSetVMPublicIPAddre
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListVirtualMachineScaleSetVMPublicIPAddressesPager("vmss-tester", "vmss1", "1", "nic1", "ip1", nil)
+	pager := clientFactory.NewPublicIPAddressesClient().NewListVirtualMachineScaleSetVMPublicIPAddressesPager("vmss-tester", "vmss1", "1", "nic1", "ip1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -731,11 +731,11 @@ func ExamplePublicIPAddressesClient_GetVirtualMachineScaleSetPublicIPAddress() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPublicIPAddressesClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetVirtualMachineScaleSetPublicIPAddress(ctx, "vmss-tester", "vmss1", "1", "nic1", "ip1", "pub1", &armnetwork.PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions{Expand: nil})
+	res, err := clientFactory.NewPublicIPAddressesClient().GetVirtualMachineScaleSetPublicIPAddress(ctx, "vmss-tester", "vmss1", "1", "nic1", "ip1", "pub1", &armnetwork.PublicIPAddressesClientGetVirtualMachineScaleSetPublicIPAddressOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

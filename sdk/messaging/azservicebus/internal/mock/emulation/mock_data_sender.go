@@ -65,7 +65,7 @@ func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.Sen
 
 	// this should work fine even for RPC links like $cbs or $management
 	q := md.upsertQueue(target)
-	sender.EXPECT().Send(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message) error {
+	sender.EXPECT().Send(gomock.Any(), gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 		return q.Send(ctx, msg, sender.LinkEvent(), sender.Status)
 	}).AnyTimes()
 
@@ -78,7 +78,7 @@ func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.Sen
 		case <-sess.Status.Done():
 			return sess.Status.Err()
 		default:
-			sender.Status.CloseWithError(amqp.ErrLinkClosed)
+			sender.Status.CloseWithError(&amqp.LinkError{})
 		}
 
 		return nil

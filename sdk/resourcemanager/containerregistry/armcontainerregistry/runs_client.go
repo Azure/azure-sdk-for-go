@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // RunsClient contains the methods for the Runs group.
 // Don't use this type directly, use NewRunsClient() instead.
 type RunsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRunsClient creates a new instance of RunsClient with the specified values.
@@ -37,21 +34,13 @@ type RunsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RunsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RunsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RunsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -70,9 +59,9 @@ func (client *RunsClient) BeginCancel(ctx context.Context, resourceGroupName str
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[RunsClientCancelResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RunsClientCancelResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[RunsClientCancelResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RunsClientCancelResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -85,7 +74,7 @@ func (client *RunsClient) cancel(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,7 +100,7 @@ func (client *RunsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -135,7 +124,7 @@ func (client *RunsClient) Get(ctx context.Context, resourceGroupName string, reg
 	if err != nil {
 		return RunsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RunsClientGetResponse{}, err
 	}
@@ -161,7 +150,7 @@ func (client *RunsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,7 +183,7 @@ func (client *RunsClient) GetLogSasURL(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RunsClientGetLogSasURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RunsClientGetLogSasURLResponse{}, err
 	}
@@ -220,7 +209,7 @@ func (client *RunsClient) getLogSasURLCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,7 +251,7 @@ func (client *RunsClient) NewListPager(resourceGroupName string, registryName st
 			if err != nil {
 				return RunsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RunsClientListResponse{}, err
 			}
@@ -286,7 +275,7 @@ func (client *RunsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter registryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -327,9 +316,9 @@ func (client *RunsClient) BeginUpdate(ctx context.Context, resourceGroupName str
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[RunsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[RunsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[RunsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[RunsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -342,7 +331,7 @@ func (client *RunsClient) update(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -368,7 +357,7 @@ func (client *RunsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -25,11 +25,11 @@ func ExampleIPGroupsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewIPGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "ipGroups1", &armnetwork.IPGroupsClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewIPGroupsClient().Get(ctx, "myResourceGroup", "ipGroups1", &armnetwork.IPGroupsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -65,11 +65,11 @@ func ExampleIPGroupsClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewIPGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "myResourceGroup", "ipGroups1", armnetwork.IPGroup{
+	poller, err := clientFactory.NewIPGroupsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "ipGroups1", armnetwork.IPGroup{
 		Location: to.Ptr("West US"),
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
@@ -120,11 +120,11 @@ func ExampleIPGroupsClient_UpdateGroups() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewIPGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateGroups(ctx, "myResourceGroup", "ipGroups1", armnetwork.TagsObject{
+	res, err := clientFactory.NewIPGroupsClient().UpdateGroups(ctx, "myResourceGroup", "ipGroups1", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"key1": to.Ptr("value1"),
 			"key2": to.Ptr("value2"),
@@ -169,11 +169,11 @@ func ExampleIPGroupsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewIPGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "ipGroups1", nil)
+	poller, err := clientFactory.NewIPGroupsClient().BeginDelete(ctx, "myResourceGroup", "ipGroups1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -190,11 +190,11 @@ func ExampleIPGroupsClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewIPGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("myResourceGroup", nil)
+	pager := clientFactory.NewIPGroupsClient().NewListByResourceGroupPager("myResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -258,11 +258,11 @@ func ExampleIPGroupsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewIPGroupsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewIPGroupsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

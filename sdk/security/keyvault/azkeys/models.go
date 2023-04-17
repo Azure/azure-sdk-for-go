@@ -67,19 +67,19 @@ type ImportKeyOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListDeletedKeysOptions contains the optional parameters for the Client.ListDeletedKeys method.
+// ListDeletedKeysOptions contains the optional parameters for the Client.NewListDeletedKeysPager method.
 type ListDeletedKeysOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListKeyVersionsOptions contains the optional parameters for the Client.ListKeyVersions method.
+// ListKeyVersionsOptions contains the optional parameters for the Client.NewListKeyVersionsPager method.
 type ListKeyVersionsOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListKeysOptions contains the optional parameters for the Client.ListKeys method.
+// ListKeysOptions contains the optional parameters for the Client.NewListKeysPager method.
 type ListKeysOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
@@ -309,7 +309,7 @@ type KeyAttributes struct {
 	// Expiry date in UTC.
 	Expires *time.Time `json:"exp,omitempty"`
 
-	// Indicates if the private key can be exported. Release policy must be provided when creating the 1st version of an exportable
+	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable
 	// key.
 	Exportable *bool `json:"exportable,omitempty"`
 
@@ -485,7 +485,7 @@ type LifetimeActionsTrigger struct {
 // LifetimeActionsType - The action that will be executed.
 type LifetimeActionsType struct {
 	// The type of the action.
-	Type *ActionType `json:"type,omitempty"`
+	Type *KeyRotationPolicyAction `json:"type,omitempty"`
 }
 
 // RandomBytes - The get random bytes response object containing the bytes.

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // TopicsClient contains the methods for the Topics group.
 // Don't use this type directly, use NewTopicsClient() instead.
 type TopicsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTopicsClient creates a new instance of TopicsClient with the specified values.
@@ -38,21 +35,13 @@ type TopicsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewTopicsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TopicsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TopicsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TopicsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -60,7 +49,7 @@ func NewTopicsClient(subscriptionID string, credential azcore.TokenCredential, o
 // CreateOrUpdate - Creates a topic in the specified namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -71,7 +60,7 @@ func (client *TopicsClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TopicsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopicsClientCreateOrUpdateResponse{}, err
 	}
@@ -100,12 +89,12 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -123,7 +112,7 @@ func (client *TopicsClient) createOrUpdateHandleResponse(resp *http.Response) (T
 // CreateOrUpdateAuthorizationRule - Creates an authorization rule for the specified topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -136,7 +125,7 @@ func (client *TopicsClient) CreateOrUpdateAuthorizationRule(ctx context.Context,
 	if err != nil {
 		return TopicsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopicsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -169,12 +158,12 @@ func (client *TopicsClient) createOrUpdateAuthorizationRuleCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -192,7 +181,7 @@ func (client *TopicsClient) createOrUpdateAuthorizationRuleHandleResponse(resp *
 // Delete - Deletes a topic from the specified namespace and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -202,7 +191,7 @@ func (client *TopicsClient) Delete(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return TopicsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopicsClientDeleteResponse{}, err
 	}
@@ -231,12 +220,12 @@ func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +234,7 @@ func (client *TopicsClient) deleteCreateRequest(ctx context.Context, resourceGro
 // DeleteAuthorizationRule - Deletes a topic authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -257,7 +246,7 @@ func (client *TopicsClient) DeleteAuthorizationRule(ctx context.Context, resourc
 	if err != nil {
 		return TopicsClientDeleteAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopicsClientDeleteAuthorizationRuleResponse{}, err
 	}
@@ -290,12 +279,12 @@ func (client *TopicsClient) deleteAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -304,7 +293,7 @@ func (client *TopicsClient) deleteAuthorizationRuleCreateRequest(ctx context.Con
 // Get - Returns a description for the specified topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -314,7 +303,7 @@ func (client *TopicsClient) Get(ctx context.Context, resourceGroupName string, n
 	if err != nil {
 		return TopicsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopicsClientGetResponse{}, err
 	}
@@ -343,12 +332,12 @@ func (client *TopicsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -366,7 +355,7 @@ func (client *TopicsClient) getHandleResponse(resp *http.Response) (TopicsClient
 // GetAuthorizationRule - Returns the specified authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -378,7 +367,7 @@ func (client *TopicsClient) GetAuthorizationRule(ctx context.Context, resourceGr
 	if err != nil {
 		return TopicsClientGetAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopicsClientGetAuthorizationRuleResponse{}, err
 	}
@@ -411,12 +400,12 @@ func (client *TopicsClient) getAuthorizationRuleCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -433,7 +422,7 @@ func (client *TopicsClient) getAuthorizationRuleHandleResponse(resp *http.Respon
 
 // NewListAuthorizationRulesPager - Gets authorization rules for a topic.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -455,7 +444,7 @@ func (client *TopicsClient) NewListAuthorizationRulesPager(resourceGroupName str
 			if err != nil {
 				return TopicsClientListAuthorizationRulesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TopicsClientListAuthorizationRulesResponse{}, err
 			}
@@ -486,12 +475,12 @@ func (client *TopicsClient) listAuthorizationRulesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -508,7 +497,7 @@ func (client *TopicsClient) listAuthorizationRulesHandleResponse(resp *http.Resp
 
 // NewListByNamespacePager - Gets all the topics in a namespace.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - TopicsClientListByNamespaceOptions contains the optional parameters for the TopicsClient.NewListByNamespacePager
@@ -529,7 +518,7 @@ func (client *TopicsClient) NewListByNamespacePager(resourceGroupName string, na
 			if err != nil {
 				return TopicsClientListByNamespaceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return TopicsClientListByNamespaceResponse{}, err
 			}
@@ -556,12 +545,12 @@ func (client *TopicsClient) listByNamespaceCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -585,7 +574,7 @@ func (client *TopicsClient) listByNamespaceHandleResponse(resp *http.Response) (
 // ListKeys - Gets the primary and secondary connection strings for the topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -596,7 +585,7 @@ func (client *TopicsClient) ListKeys(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return TopicsClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopicsClientListKeysResponse{}, err
 	}
@@ -629,12 +618,12 @@ func (client *TopicsClient) listKeysCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -652,7 +641,7 @@ func (client *TopicsClient) listKeysHandleResponse(resp *http.Response) (TopicsC
 // RegenerateKeys - Regenerates primary or secondary connection strings for the topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - topicName - The topic name.
@@ -664,7 +653,7 @@ func (client *TopicsClient) RegenerateKeys(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TopicsClientRegenerateKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TopicsClientRegenerateKeysResponse{}, err
 	}
@@ -697,12 +686,12 @@ func (client *TopicsClient) regenerateKeysCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

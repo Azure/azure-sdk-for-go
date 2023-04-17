@@ -8,7 +8,6 @@ package azidentity
 
 import (
 	"context"
-	"errors"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -22,13 +21,15 @@ const credNameDeviceCode = "DeviceCodeCredential"
 type DeviceCodeCredentialOptions struct {
 	azcore.ClientOptions
 
+	// AdditionallyAllowedTenants specifies additional tenants for which the credential may acquire
+	// tokens. Add the wildcard value "*" to allow the credential to acquire tokens for any tenant.
+	AdditionallyAllowedTenants []string
 	// ClientID is the ID of the application users will authenticate to.
 	// Defaults to the ID of an Azure development application.
 	ClientID string
-
-	// DisableInstanceDiscovery allows disconnected cloud solutions to skip instance discovery for unknown authority hosts.
+	// DisableInstanceDiscovery should be true for applications authenticating in disconnected or private clouds.
+	// This skips a metadata request that will fail for such applications.
 	DisableInstanceDiscovery bool
-
 	// TenantID is the Azure Active Directory tenant the credential authenticates in. Defaults to the
 	// "organizations" tenant, which can authenticate work and school accounts. Required for single-tenant
 	// applications.
@@ -71,9 +72,10 @@ type DeviceCodeMessage struct {
 // If a web browser is available, InteractiveBrowserCredential is more convenient because it
 // automatically opens a browser to the login page.
 type DeviceCodeCredential struct {
-	client     publicClient
-	userPrompt func(context.Context, DeviceCodeMessage) error
-	account    public.Account
+	account public.Account
+	client  publicClient
+	s       *syncer
+	prompt  func(context.Context, DeviceCodeMessage) error
 }
 
 // NewDeviceCodeCredential creates a DeviceCodeCredential. Pass nil to accept default options.
@@ -87,37 +89,42 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	if err != nil {
 		return nil, err
 	}
-	return &DeviceCodeCredential{userPrompt: cp.UserPrompt, client: c}, nil
+	cred := DeviceCodeCredential{client: c, prompt: cp.UserPrompt}
+	cred.s = newSyncer(credNameDeviceCode, cp.TenantID, cp.AdditionallyAllowedTenants, cred.requestToken, cred.silentAuth)
+	return &cred, nil
 }
 
 // GetToken requests an access token from Azure Active Directory. It will begin the device code flow and poll until the user completes authentication.
 // This method is called automatically by Azure SDK clients.
 func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	if len(opts.Scopes) == 0 {
-		return azcore.AccessToken{}, errors.New(credNameDeviceCode + ": GetToken() requires at least one scope")
-	}
-	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes, public.WithSilentAccount(c.account))
-	if err == nil {
-		return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
-	}
+	return c.s.GetToken(ctx, opts)
+}
+
+func (c *DeviceCodeCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes)
 	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
+		return azcore.AccessToken{}, err
 	}
-	err = c.userPrompt(ctx, DeviceCodeMessage{
+	err = c.prompt(ctx, DeviceCodeMessage{
+		Message:         dc.Result.Message,
 		UserCode:        dc.Result.UserCode,
 		VerificationURL: dc.Result.VerificationURL,
-		Message:         dc.Result.Message,
 	})
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
-	ar, err = dc.AuthenticationResult(ctx)
+	ar, err := dc.AuthenticationResult(ctx)
 	if err != nil {
-		return azcore.AccessToken{}, newAuthenticationFailedErrorFromMSALError(credNameDeviceCode, err)
+		return azcore.AccessToken{}, err
 	}
 	c.account = ar.Account
-	logGetTokenSuccess(c, opts)
+	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
+}
+
+func (c *DeviceCodeCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
+		public.WithSilentAccount(c.account),
+	)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }
 

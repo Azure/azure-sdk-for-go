@@ -25,11 +25,11 @@ func ExampleWorkspacesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("resourceGroup1", nil)
+	pager := clientFactory.NewWorkspacesClient().NewListByResourceGroupPager("resourceGroup1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -99,11 +99,11 @@ func ExampleWorkspacesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "resourceGroup1", "workspace1", nil)
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "resourceGroup1", "workspace1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -185,11 +185,11 @@ func ExampleWorkspacesClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "resourceGroup1", "workspace1", armsynapse.WorkspacePatchInfo{
+	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "resourceGroup1", "workspace1", armsynapse.WorkspacePatchInfo{
 		Identity: &armsynapse.ManagedIdentity{
 			Type: to.Ptr(armsynapse.ResourceIdentityTypeSystemAssigned),
 		},
@@ -289,11 +289,11 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "resourceGroup1", "workspace1", armsynapse.Workspace{
+	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "resourceGroup1", "workspace1", armsynapse.Workspace{
 		Location: to.Ptr("East US"),
 		Tags: map[string]*string{
 			"key": to.Ptr("value"),
@@ -444,11 +444,11 @@ func ExampleWorkspacesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "resourceGroup1", "workspace1", nil)
+	poller, err := clientFactory.NewWorkspacesClient().BeginDelete(ctx, "resourceGroup1", "workspace1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -490,11 +490,11 @@ func ExampleWorkspacesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewWorkspacesClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewWorkspacesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -24,11 +24,11 @@ func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByLocationPager("West US", nil)
+	pager := clientFactory.NewRestorableDatabaseAccountsClient().NewListByLocationPager("West US", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -99,11 +99,11 @@ func ExampleRestorableDatabaseAccountsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewRestorableDatabaseAccountsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -174,11 +174,11 @@ func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableDatabaseAccountsClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.GetByLocation(ctx, "West US", "d9b26648-2f53-4541-b3d8-3044f4f9810d", nil)
+	res, err := clientFactory.NewRestorableDatabaseAccountsClient().GetByLocation(ctx, "West US", "d9b26648-2f53-4541-b3d8-3044f4f9810d", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

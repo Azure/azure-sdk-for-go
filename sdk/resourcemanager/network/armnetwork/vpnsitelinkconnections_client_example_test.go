@@ -24,11 +24,11 @@ func ExampleVPNSiteLinkConnectionsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVPNSiteLinkConnectionsClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
+	res, err := clientFactory.NewVPNSiteLinkConnectionsClient().Get(ctx, "rg1", "gateway1", "vpnConnection1", "Connection-Link1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

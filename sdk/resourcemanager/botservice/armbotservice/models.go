@@ -14,16 +14,16 @@ import "time"
 // AcsChatChannel - AcsChat channel definition
 type AcsChatChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type AcsChatChannel.
@@ -39,19 +39,19 @@ func (a *AcsChatChannel) GetChannel() *Channel {
 // AlexaChannel - Alexa channel definition
 type AlexaChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Alexa channel resource
-	Properties *AlexaChannelProperties `json:"properties,omitempty"`
+	Properties *AlexaChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type AlexaChannel.
@@ -67,82 +67,82 @@ func (a *AlexaChannel) GetChannel() *Channel {
 // AlexaChannelProperties - The parameters to provide for the Alexa channel.
 type AlexaChannelProperties struct {
 	// REQUIRED; The Alexa skill Id
-	AlexaSkillID *string `json:"alexaSkillId,omitempty"`
+	AlexaSkillID *string
 
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// READ-ONLY; Full Uri used to configured the skill in Alexa
-	ServiceEndpointURI *string `json:"serviceEndpointUri,omitempty" azure:"ro"`
+	ServiceEndpointURI *string
 
 	// READ-ONLY; Url fragment used in part of the Uri configured in Alexa
-	URLFragment *string `json:"urlFragment,omitempty" azure:"ro"`
+	URLFragment *string
 }
 
 // Bot resource definition
 type Bot struct {
 	// Entity Tag
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to bot resource
-	Properties *BotProperties `json:"properties,omitempty"`
+	Properties *BotProperties
 
 	// Gets or sets the SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Contains resource tags defined as key/value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Specifies the resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Specifies the name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Specifies the type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 
 	// READ-ONLY; Entity zones
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 // BotChannel - Bot channel resource definition
 type BotChannel struct {
 	// Entity Tag
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to bot channel resource
-	Properties ChannelClassification `json:"properties,omitempty"`
+	Properties ChannelClassification
 
 	// Gets or sets the SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Contains resource tags defined as key/value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Specifies the resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Specifies the name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Specifies the type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 
 	// READ-ONLY; Entity zones
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 // BotConnectionClientCreateOptions contains the optional parameters for the BotConnectionClient.Create method.
@@ -160,7 +160,7 @@ type BotConnectionClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotConnectionClientListByBotServiceOptions contains the optional parameters for the BotConnectionClient.ListByBotService
+// BotConnectionClientListByBotServiceOptions contains the optional parameters for the BotConnectionClient.NewListByBotServicePager
 // method.
 type BotConnectionClientListByBotServiceOptions struct {
 	// placeholder for future optional parameters
@@ -186,118 +186,118 @@ type BotConnectionClientUpdateOptions struct {
 // BotProperties - The parameters to provide for the Bot.
 type BotProperties struct {
 	// REQUIRED; The Name of the bot
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; The bot's endpoint
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string
 
 	// REQUIRED; Microsoft App Id for the bot
-	MsaAppID *string `json:"msaAppId,omitempty"`
+	MsaAppID *string
 
 	// Contains resource all settings defined as key/value pairs.
-	AllSettings map[string]*string `json:"allSettings,omitempty"`
+	AllSettings map[string]*string
 
 	// The hint (e.g. keyVault secret resourceId) on how to fetch the app secret
-	AppPasswordHint *string `json:"appPasswordHint,omitempty"`
+	AppPasswordHint *string
 
 	// The CMK Url
-	CmekKeyVaultURL *string `json:"cmekKeyVaultUrl,omitempty"`
+	CmekKeyVaultURL *string
 
 	// The description of the bot
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The Application Insights key
-	DeveloperAppInsightKey *string `json:"developerAppInsightKey,omitempty"`
+	DeveloperAppInsightKey *string
 
 	// The Application Insights Api Key
-	DeveloperAppInsightsAPIKey *string `json:"developerAppInsightsApiKey,omitempty"`
+	DeveloperAppInsightsAPIKey *string
 
 	// The Application Insights App Id
-	DeveloperAppInsightsApplicationID *string `json:"developerAppInsightsApplicationId,omitempty"`
+	DeveloperAppInsightsApplicationID *string
 
 	// Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// The Icon Url of the bot
-	IconURL *string `json:"iconUrl,omitempty"`
+	IconURL *string
 
 	// Whether Cmek is enabled
-	IsCmekEnabled *bool `json:"isCmekEnabled,omitempty"`
+	IsCmekEnabled *bool
 
 	// Whether the bot is streaming supported
-	IsStreamingSupported *bool `json:"isStreamingSupported,omitempty"`
+	IsStreamingSupported *bool
 
 	// Collection of LUIS App Ids
-	LuisAppIDs []*string `json:"luisAppIds,omitempty"`
+	LuisAppIDs []*string
 
 	// The LUIS Key
-	LuisKey *string `json:"luisKey,omitempty"`
+	LuisKey *string
 
 	// The bot's manifest url
-	ManifestURL *string `json:"manifestUrl,omitempty"`
+	ManifestURL *string
 
 	// Microsoft App Managed Identity Resource Id for the bot
-	MsaAppMSIResourceID *string `json:"msaAppMSIResourceId,omitempty"`
+	MsaAppMSIResourceID *string
 
 	// Microsoft App Tenant Id for the bot
-	MsaAppTenantID *string `json:"msaAppTenantId,omitempty"`
+	MsaAppTenantID *string
 
 	// Microsoft App Type for the bot
-	MsaAppType *MsaAppType `json:"msaAppType,omitempty"`
+	MsaAppType *MsaAppType
 
 	// The hint to browser (e.g. protocol handler) on how to open the bot for authoring
-	OpenWithHint *string `json:"openWithHint,omitempty"`
+	OpenWithHint *string
 
 	// Contains resource parameters defined as key/value pairs.
-	Parameters map[string]*string `json:"parameters,omitempty"`
+	Parameters map[string]*string
 
 	// Whether the bot is in an isolated network
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Publishing credentials of the resource
-	PublishingCredentials *string `json:"publishingCredentials,omitempty"`
+	PublishingCredentials *string
 
 	// The channel schema transformation version for the bot
-	SchemaTransformationVersion *string `json:"schemaTransformationVersion,omitempty"`
+	SchemaTransformationVersion *string
 
 	// The storage resourceId for the bot
-	StorageResourceID *string `json:"storageResourceId,omitempty"`
+	StorageResourceID *string
 
 	// The Tenant Id for the bot
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// READ-ONLY; The CMK encryption status
-	CmekEncryptionStatus *string `json:"cmekEncryptionStatus,omitempty" azure:"ro"`
+	CmekEncryptionStatus *string
 
 	// READ-ONLY; Collection of channels for which the bot is configured
-	ConfiguredChannels []*string `json:"configuredChannels,omitempty" azure:"ro"`
+	ConfiguredChannels []*string
 
 	// READ-ONLY; Collection of channels for which the bot is enabled
-	EnabledChannels []*string `json:"enabledChannels,omitempty" azure:"ro"`
+	EnabledChannels []*string
 
 	// READ-ONLY; The bot's endpoint version
-	EndpointVersion *string `json:"endpointVersion,omitempty" azure:"ro"`
+	EndpointVersion *string
 
 	// READ-ONLY; Whether the bot is developerAppInsightsApiKey set
-	IsDeveloperAppInsightsAPIKeySet *bool `json:"isDeveloperAppInsightsApiKeySet,omitempty" azure:"ro"`
+	IsDeveloperAppInsightsAPIKeySet *bool
 
 	// READ-ONLY; Token used to migrate non Azure bot to azure subscription
-	MigrationToken *string `json:"migrationToken,omitempty" azure:"ro"`
+	MigrationToken *string
 
 	// READ-ONLY; List of Private Endpoint Connections configured for the bot
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // BotResponseList - The list of bot service operation response.
 type BotResponseList struct {
 	// The link used to get the next page of bot service resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of bot service results and their properties.
-	Value []*Bot `json:"value,omitempty" azure:"ro"`
+	Value []*Bot
 }
 
 // BotsClientCreateOptions contains the optional parameters for the BotsClient.Create method.
@@ -321,12 +321,12 @@ type BotsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.ListByResourceGroup method.
+// BotsClientListByResourceGroupOptions contains the optional parameters for the BotsClient.NewListByResourceGroupPager method.
 type BotsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BotsClientListOptions contains the optional parameters for the BotsClient.List method.
+// BotsClientListOptions contains the optional parameters for the BotsClient.NewListPager method.
 type BotsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -350,16 +350,16 @@ type ChannelClassification interface {
 // Channel definition
 type Channel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type Channel.
@@ -368,43 +368,43 @@ func (c *Channel) GetChannel() *Channel { return c }
 // ChannelResponseList - The list of bot service channel operation response.
 type ChannelResponseList struct {
 	// The link used to get the next page of bot service channel resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of bot service channel results and their properties.
-	Value []*BotChannel `json:"value,omitempty" azure:"ro"`
+	Value []*BotChannel
 }
 
 // ChannelSettings - Channel settings definition
 type ChannelSettings struct {
 	// The bot id
-	BotID *string `json:"botId,omitempty"`
+	BotID *string
 
 	// The bot icon url
-	BotIconURL *string `json:"botIconUrl,omitempty"`
+	BotIconURL *string
 
 	// The channel display name
-	ChannelDisplayName *string `json:"channelDisplayName,omitempty"`
+	ChannelDisplayName *string
 
 	// The channel id
-	ChannelID *string `json:"channelId,omitempty"`
+	ChannelID *string
 
 	// Opt-out of local authentication and ensure only MSI and AAD can be used exclusively for authentication.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// The extensionKey1
-	ExtensionKey1 *string `json:"extensionKey1,omitempty"`
+	ExtensionKey1 *string
 
 	// The extensionKey2
-	ExtensionKey2 *string `json:"extensionKey2,omitempty"`
+	ExtensionKey2 *string
 
 	// Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Whether customer needs to agree to new terms.
-	RequireTermsAgreement *bool `json:"requireTermsAgreement,omitempty"`
+	RequireTermsAgreement *bool
 
 	// The list of sites
-	Sites []*Site `json:"sites,omitempty"`
+	Sites []*Site
 }
 
 // ChannelsClientCreateOptions contains the optional parameters for the ChannelsClient.Create method.
@@ -422,7 +422,8 @@ type ChannelsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.ListByResourceGroup method.
+// ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.NewListByResourceGroupPager
+// method.
 type ChannelsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -441,143 +442,143 @@ type ChannelsClientUpdateOptions struct {
 // bot name.
 type CheckNameAvailabilityRequestBody struct {
 	// the name of the bot for which availability needs to be checked.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// the type of the bot for which availability needs to be checked
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResponseBody - The response body returned for a request to Bot Service Management to check availability
 // of a bot name.
 type CheckNameAvailabilityResponseBody struct {
 	// response code from ABS
-	AbsCode *string `json:"absCode,omitempty"`
+	AbsCode *string
 
 	// additional message from the bot management api showing why a bot name is not available
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// indicates if the bot name is valid.
-	Valid *bool `json:"valid,omitempty"`
+	Valid *bool
 }
 
 // ConnectionItemName - The display name of a connection Item Setting registered with the Bot
 type ConnectionItemName struct {
 	// READ-ONLY; Connection Item name that has been added in the API
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // ConnectionSetting - Bot channel resource definition
 type ConnectionSetting struct {
 	// Entity Tag
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to bot channel resource
-	Properties *ConnectionSettingProperties `json:"properties,omitempty"`
+	Properties *ConnectionSettingProperties
 
 	// Gets or sets the SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Contains resource tags defined as key/value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Specifies the resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Specifies the name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Specifies the type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 
 	// READ-ONLY; Entity zones
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 // ConnectionSettingParameter - Extra Parameter in a Connection Setting Properties to indicate service provider specific properties
 type ConnectionSettingParameter struct {
 	// Key for the Connection Setting Parameter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// Value associated with the Connection Setting Parameter.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ConnectionSettingProperties - Properties for a Connection Setting Item
 type ConnectionSettingProperties struct {
 	// Client Id associated with the Connection Setting.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// Client Secret associated with the Connection Setting
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// Service Provider Parameters associated with the Connection Setting
-	Parameters []*ConnectionSettingParameter `json:"parameters,omitempty"`
+	Parameters []*ConnectionSettingParameter
 
 	// Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Scopes associated with the Connection Setting
-	Scopes *string `json:"scopes,omitempty"`
+	Scopes *string
 
 	// Service Provider Display Name associated with the Connection Setting
-	ServiceProviderDisplayName *string `json:"serviceProviderDisplayName,omitempty"`
+	ServiceProviderDisplayName *string
 
 	// Service Provider Id associated with the Connection Setting
-	ServiceProviderID *string `json:"serviceProviderId,omitempty"`
+	ServiceProviderID *string
 
 	// READ-ONLY; Setting Id set by the service for the Connection Setting.
-	SettingID *string `json:"settingId,omitempty" azure:"ro"`
+	SettingID *string
 }
 
 // ConnectionSettingResponseList - The list of bot service connection settings response.
 type ConnectionSettingResponseList struct {
 	// The link used to get the next page of bot service connection setting resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of bot service connection settings and their properties.
-	Value []*ConnectionSetting `json:"value,omitempty" azure:"ro"`
+	Value []*ConnectionSetting
 }
 
 // CreateEmailSignInURLResponse - The ARM create email sign in url operation response.
 type CreateEmailSignInURLResponse struct {
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to sign in url
-	Properties *CreateEmailSignInURLResponseProperties `json:"properties,omitempty"`
+	Properties *CreateEmailSignInURLResponseProperties
 
 	// READ-ONLY; Specifies the resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // CreateEmailSignInURLResponseProperties - The set of properties specific to sign in url
 type CreateEmailSignInURLResponseProperties struct {
 	// Sign in url.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // DirectLineChannel - Direct Line channel definition
 type DirectLineChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Direct Line channel resource
-	Properties *DirectLineChannelProperties `json:"properties,omitempty"`
+	Properties *DirectLineChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type DirectLineChannel.
@@ -593,16 +594,16 @@ func (d *DirectLineChannel) GetChannel() *Channel {
 // DirectLineChannelProperties - The parameters to provide for the Direct Line channel.
 type DirectLineChannelProperties struct {
 	// Direct Line embed code of the resource
-	DirectLineEmbedCode *string `json:"DirectLineEmbedCode,omitempty"`
+	DirectLineEmbedCode *string
 
 	// The extensionKey1
-	ExtensionKey1 *string `json:"extensionKey1,omitempty"`
+	ExtensionKey1 *string
 
 	// The extensionKey2
-	ExtensionKey2 *string `json:"extensionKey2,omitempty"`
+	ExtensionKey2 *string
 
 	// The list of Direct Line sites
-	Sites []*DirectLineSite `json:"sites,omitempty"`
+	Sites []*DirectLineSite
 }
 
 // DirectLineClientRegenerateKeysOptions contains the optional parameters for the DirectLineClient.RegenerateKeys method.
@@ -613,79 +614,79 @@ type DirectLineClientRegenerateKeysOptions struct {
 // DirectLineSite - A site for the Direct Line channel
 type DirectLineSite struct {
 	// REQUIRED; Whether this site is enabled for DirectLine channel
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// REQUIRED; Site name
-	SiteName *string `json:"siteName,omitempty"`
+	SiteName *string
 
 	// DirectLine application id
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// Entity Tag
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Whether this site is enabled for block user upload.
-	IsBlockUserUploadEnabled *bool `json:"isBlockUserUploadEnabled,omitempty"`
+	IsBlockUserUploadEnabled *bool
 
 	// Whether this site is disabled detailed logging for
-	IsDetailedLoggingEnabled *bool `json:"isDetailedLoggingEnabled,omitempty"`
+	IsDetailedLoggingEnabled *bool
 
 	// Whether this site is EndpointParameters enabled for channel
-	IsEndpointParametersEnabled *bool `json:"isEndpointParametersEnabled,omitempty"`
+	IsEndpointParametersEnabled *bool
 
 	// Whether this no-storage site is disabled detailed logging for
-	IsNoStorageEnabled *bool `json:"isNoStorageEnabled,omitempty"`
+	IsNoStorageEnabled *bool
 
 	// Whether this site is enabled for authentication with Bot Framework.
-	IsSecureSiteEnabled *bool `json:"isSecureSiteEnabled,omitempty"`
+	IsSecureSiteEnabled *bool
 
 	// Whether this site is enabled for Bot Framework V1 protocol.
-	IsV1Enabled *bool `json:"isV1Enabled,omitempty"`
+	IsV1Enabled *bool
 
 	// Whether this site is enabled for Bot Framework V3 protocol.
-	IsV3Enabled *bool `json:"isV3Enabled,omitempty"`
+	IsV3Enabled *bool
 
 	// Whether this site is enabled for Webchat Speech
-	IsWebChatSpeechEnabled *bool `json:"isWebChatSpeechEnabled,omitempty"`
+	IsWebChatSpeechEnabled *bool
 
 	// Whether this site is enabled for preview versions of Webchat
-	IsWebchatPreviewEnabled *bool `json:"isWebchatPreviewEnabled,omitempty"`
+	IsWebchatPreviewEnabled *bool
 
 	// Tenant Id
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True.
-	TrustedOrigins []*string `json:"trustedOrigins,omitempty"`
+	TrustedOrigins []*string
 
 	// READ-ONLY; Whether this site is token enabled for channel
-	IsTokenEnabled *bool `json:"isTokenEnabled,omitempty" azure:"ro"`
+	IsTokenEnabled *bool
 
 	// READ-ONLY; Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
-	Key *string `json:"key,omitempty" azure:"ro"`
+	Key *string
 
 	// READ-ONLY; Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
-	Key2 *string `json:"key2,omitempty" azure:"ro"`
+	Key2 *string
 
 	// READ-ONLY; Site Id
-	SiteID *string `json:"siteId,omitempty" azure:"ro"`
+	SiteID *string
 }
 
 // DirectLineSpeechChannel - DirectLine Speech channel definition
 type DirectLineSpeechChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to DirectLine Speech channel resource
-	Properties *DirectLineSpeechChannelProperties `json:"properties,omitempty"`
+	Properties *DirectLineSpeechChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type DirectLineSpeechChannel.
@@ -701,43 +702,43 @@ func (d *DirectLineSpeechChannel) GetChannel() *Channel {
 // DirectLineSpeechChannelProperties - The parameters to provide for the DirectLine Speech channel.
 type DirectLineSpeechChannelProperties struct {
 	// The cognitive service region with this channel registration.
-	CognitiveServiceRegion *string `json:"cognitiveServiceRegion,omitempty"`
+	CognitiveServiceRegion *string
 
 	// The cognitive service id with this channel registration.
-	CognitiveServiceResourceID *string `json:"cognitiveServiceResourceId,omitempty"`
+	CognitiveServiceResourceID *string
 
 	// The cognitive service subscription key to use with this channel registration.
-	CognitiveServiceSubscriptionKey *string `json:"cognitiveServiceSubscriptionKey,omitempty"`
+	CognitiveServiceSubscriptionKey *string
 
 	// Custom voice deployment id (optional).
-	CustomSpeechModelID *string `json:"customSpeechModelId,omitempty"`
+	CustomSpeechModelID *string
 
 	// Custom speech model id (optional).
-	CustomVoiceDeploymentID *string `json:"customVoiceDeploymentId,omitempty"`
+	CustomVoiceDeploymentID *string
 
 	// Make this a default bot for chosen cognitive service account.
-	IsDefaultBotForCogSvcAccount *bool `json:"isDefaultBotForCogSvcAccount,omitempty"`
+	IsDefaultBotForCogSvcAccount *bool
 
 	// Whether this channel is enabled or not.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 }
 
 // EmailChannel - Email channel definition
 type EmailChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to email channel resource
-	Properties *EmailChannelProperties `json:"properties,omitempty"`
+	Properties *EmailChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type EmailChannel.
@@ -753,19 +754,19 @@ func (e *EmailChannel) GetChannel() *Channel {
 // EmailChannelProperties - The parameters to provide for the Email channel.
 type EmailChannelProperties struct {
 	// REQUIRED; The email address
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Email channel auth method. 0 Password (Default); 1 Graph.
-	AuthMethod *EmailChannelAuthMethod `json:"authMethod,omitempty"`
+	AuthMethod *EmailChannelAuthMethod
 
 	// The magic code for setting up the modern authentication.
-	MagicCode *string `json:"magicCode,omitempty"`
+	MagicCode *string
 
 	// The password for the email address. Value only returned through POST to the action Channel List API, otherwise empty.
-	Password *string `json:"password,omitempty"`
+	Password *string
 }
 
 // EmailClientCreateSignInURLOptions contains the optional parameters for the EmailClient.CreateSignInURL method.
@@ -776,34 +777,34 @@ type EmailClientCreateSignInURLOptions struct {
 // Error - Bot Service error object.
 type Error struct {
 	// The error body.
-	Error *ErrorBody `json:"error,omitempty"`
+	Error *ErrorBody
 }
 
 // ErrorBody - Bot Service error body.
 type ErrorBody struct {
 	// REQUIRED; error code
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; error message
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // FacebookChannel - Facebook channel definition
 type FacebookChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to bot facebook channel
-	Properties *FacebookChannelProperties `json:"properties,omitempty"`
+	Properties *FacebookChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type FacebookChannel.
@@ -819,31 +820,31 @@ func (f *FacebookChannel) GetChannel() *Channel {
 // FacebookChannelProperties - The parameters to provide for the Facebook channel.
 type FacebookChannelProperties struct {
 	// REQUIRED; Facebook application id
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Facebook application secret. Value only returned through POST to the action Channel List API, otherwise empty.
-	AppSecret *string `json:"appSecret,omitempty"`
+	AppSecret *string
 
 	// The list of Facebook pages
-	Pages []*FacebookPage `json:"pages,omitempty"`
+	Pages []*FacebookPage
 
 	// READ-ONLY; Callback Url
-	CallbackURL *string `json:"callbackUrl,omitempty" azure:"ro"`
+	CallbackURL *string
 
 	// READ-ONLY; Verify token. Value only returned through POST to the action Channel List API, otherwise empty.
-	VerifyToken *string `json:"verifyToken,omitempty" azure:"ro"`
+	VerifyToken *string
 }
 
 // FacebookPage - A Facebook page for Facebook channel registration
 type FacebookPage struct {
 	// REQUIRED; Page id
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Facebook application access token. Value only returned through POST to the action Channel List API, otherwise empty.
-	AccessToken *string `json:"accessToken,omitempty"`
+	AccessToken *string
 }
 
 // HostSettingsClientGetOptions contains the optional parameters for the HostSettingsClient.Get method.
@@ -854,46 +855,46 @@ type HostSettingsClientGetOptions struct {
 // HostSettingsResponse - The response body returned for a request to Bot Service Management to check per subscription hostSettings
 type HostSettingsResponse struct {
 	// Same as toBotFromChannelOpenIdMetadataUrl, used by SDK < v4.12
-	BotOpenIDMetadata *string `json:"BotOpenIdMetadata,omitempty"`
+	BotOpenIDMetadata *string
 
 	// For in-conversation bot user authentication
-	OAuthURL *string `json:"OAuthUrl,omitempty"`
+	OAuthURL *string
 
 	// For verifying incoming tokens from the channels
-	ToBotFromChannelOpenIDMetadataURL *string `json:"ToBotFromChannelOpenIdMetadataUrl,omitempty"`
+	ToBotFromChannelOpenIDMetadataURL *string
 
 	// For verifying incoming tokens from the channels
-	ToBotFromChannelTokenIssuer *string `json:"ToBotFromChannelTokenIssuer,omitempty"`
+	ToBotFromChannelTokenIssuer *string
 
 	// For verifying incoming tokens from bot emulator
-	ToBotFromEmulatorOpenIDMetadataURL *string `json:"ToBotFromEmulatorOpenIdMetadataUrl,omitempty"`
+	ToBotFromEmulatorOpenIDMetadataURL *string
 
 	// For getting access token to channels from bot host
-	ToChannelFromBotLoginURL *string `json:"ToChannelFromBotLoginUrl,omitempty"`
+	ToChannelFromBotLoginURL *string
 
 	// For getting access token to channels from bot host
-	ToChannelFromBotOAuthScope *string `json:"ToChannelFromBotOAuthScope,omitempty"`
+	ToChannelFromBotOAuthScope *string
 
 	// Per cloud OAuth setting on whether authority is validated
-	ValidateAuthority *bool `json:"ValidateAuthority,omitempty"`
+	ValidateAuthority *bool
 }
 
 // KikChannel - Kik channel definition
 type KikChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Kik channel resource
-	Properties *KikChannelProperties `json:"properties,omitempty"`
+	Properties *KikChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type KikChannel.
@@ -909,34 +910,34 @@ func (k *KikChannel) GetChannel() *Channel {
 // KikChannelProperties - The parameters to provide for the Kik channel.
 type KikChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// REQUIRED; The Kik user name
-	UserName *string `json:"userName,omitempty"`
+	UserName *string
 
 	// Kik API key. Value only returned through POST to the action Channel List API, otherwise empty.
-	APIKey *string `json:"apiKey,omitempty"`
+	APIKey *string
 
 	// Whether this channel is validated for the bot
-	IsValidated *bool `json:"isValidated,omitempty"`
+	IsValidated *bool
 }
 
 // LineChannel - Line channel definition
 type LineChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to line channel resource
-	Properties *LineChannelProperties `json:"properties,omitempty"`
+	Properties *LineChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type LineChannel.
@@ -952,88 +953,88 @@ func (l *LineChannel) GetChannel() *Channel {
 // LineChannelProperties - The parameters to provide for the Line channel.
 type LineChannelProperties struct {
 	// REQUIRED; The list of line channel registrations
-	LineRegistrations []*LineRegistration `json:"lineRegistrations,omitempty"`
+	LineRegistrations []*LineRegistration
 
 	// READ-ONLY; Callback Url to enter in line registration.
-	CallbackURL *string `json:"callbackUrl,omitempty" azure:"ro"`
+	CallbackURL *string
 
 	// READ-ONLY; Whether this channel is validated for the bot
-	IsValidated *bool `json:"isValidated,omitempty" azure:"ro"`
+	IsValidated *bool
 }
 
 // LineRegistration - The properties corresponding to a line channel registration
 type LineRegistration struct {
 	// Access token for the line channel registration
-	ChannelAccessToken *string `json:"channelAccessToken,omitempty"`
+	ChannelAccessToken *string
 
 	// Secret for the line channel registration
-	ChannelSecret *string `json:"channelSecret,omitempty"`
+	ChannelSecret *string
 
 	// READ-ONLY; Id generated for the line channel registration
-	GeneratedID *string `json:"generatedId,omitempty" azure:"ro"`
+	GeneratedID *string
 }
 
 // ListChannelWithKeysResponse - The ARM channel of list channel with keys operation response.
 type ListChannelWithKeysResponse struct {
 	// Changed time of the resource
-	ChangedTime *string `json:"changedTime,omitempty"`
+	ChangedTime *string
 
 	// Entity tag of the resource
-	EntityTag *string `json:"entityTag,omitempty"`
+	EntityTag *string
 
 	// Entity Tag
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to bot channel resource
-	Properties ChannelClassification `json:"properties,omitempty"`
+	Properties ChannelClassification
 
 	// Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// The set of properties specific to bot channel resource
-	Resource ChannelClassification `json:"resource,omitempty"`
+	Resource ChannelClassification
 
 	// Gets or sets the SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Channel settings
-	Setting *ChannelSettings `json:"setting,omitempty"`
+	Setting *ChannelSettings
 
 	// Contains resource tags defined as key/value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Specifies the resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Specifies the name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Specifies the type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 
 	// READ-ONLY; Entity zones
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 // M365Extensions - M365 Extensions definition
 type M365Extensions struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type M365Extensions.
@@ -1049,19 +1050,19 @@ func (m *M365Extensions) GetChannel() *Channel {
 // MsTeamsChannel - Microsoft Teams channel definition
 type MsTeamsChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Microsoft Teams channel resource
-	Properties *MsTeamsChannelProperties `json:"properties,omitempty"`
+	Properties *MsTeamsChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type MsTeamsChannel.
@@ -1077,37 +1078,37 @@ func (m *MsTeamsChannel) GetChannel() *Channel {
 // MsTeamsChannelProperties - The parameters to provide for the Microsoft Teams channel.
 type MsTeamsChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Whether this channel accepted terms
-	AcceptedTerms *bool `json:"acceptedTerms,omitempty"`
+	AcceptedTerms *bool
 
 	// Webhook for Microsoft Teams channel calls
-	CallingWebhook *string `json:"callingWebhook,omitempty"`
+	CallingWebhook *string
 
 	// Deployment environment for Microsoft Teams channel calls
-	DeploymentEnvironment *string `json:"deploymentEnvironment,omitempty"`
+	DeploymentEnvironment *string
 
 	// Enable calling for Microsoft Teams channel
-	EnableCalling *bool `json:"enableCalling,omitempty"`
+	EnableCalling *bool
 
 	// Webhook for Microsoft Teams channel calls
-	IncomingCallRoute *string `json:"incomingCallRoute,omitempty"`
+	IncomingCallRoute *string
 }
 
 // Omnichannel channel definition
 type Omnichannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type Omnichannel.
@@ -1123,40 +1124,40 @@ func (o *Omnichannel) GetChannel() *Channel {
 // OperationDisplayInfo - The operation supported by Bot Service Management.
 type OperationDisplayInfo struct {
 	// The description of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The action that users can perform, based on their permission level.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft Bot Service.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationEntity - The operations supported by Bot Service Management.
 type OperationEntity struct {
 	// The operation supported by Bot Service Management.
-	Display *OperationDisplayInfo `json:"display,omitempty"`
+	Display *OperationDisplayInfo
 
 	// Operation name: {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The origin of the operation.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Additional properties.
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationEntityListResult - The list of bot service operation response.
 type OperationEntityListResult struct {
 	// The link used to get the next page of operations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of operations.
-	Value []*OperationEntity `json:"value,omitempty"`
+	Value []*OperationEntity
 }
 
 // OperationResultsClientBeginGetOptions contains the optional parameters for the OperationResultsClient.BeginGet method.
@@ -1168,19 +1169,19 @@ type OperationResultsClientBeginGetOptions struct {
 // OperationResultsDescription - The properties indicating the operation result of an operation on a service.
 type OperationResultsDescription struct {
 	// READ-ONLY; The ID of the operation returned.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the operation result.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The time that the operation was started.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; The status of the operation being performed.
-	Status *OperationResultStatus `json:"status,omitempty" azure:"ro"`
+	Status *OperationResultStatus
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1188,16 +1189,16 @@ type OperationsClientListOptions struct {
 // OutlookChannel - Outlook channel definition
 type OutlookChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type OutlookChannel.
@@ -1213,43 +1214,43 @@ func (o *OutlookChannel) GetChannel() *Channel {
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// Group ids
-	GroupIDs []*string `json:"groupIds,omitempty"`
+	GroupIDs []*string
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Create
@@ -1270,7 +1271,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1279,46 +1280,46 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceBase - Common fields that are returned in the response for all BotService Private Link Resources
 type PrivateLinkResourceBase struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientListByBotResourceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByBotResource
@@ -1331,13 +1332,13 @@ type PrivateLinkResourcesClientListByBotResourceOptions struct {
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // QnAMakerEndpointKeysClientGetOptions contains the optional parameters for the QnAMakerEndpointKeysClient.Get method.
@@ -1348,79 +1349,79 @@ type QnAMakerEndpointKeysClientGetOptions struct {
 // QnAMakerEndpointKeysRequestBody - The request body for a request to Bot Service Management to list QnA Maker endpoint keys.
 type QnAMakerEndpointKeysRequestBody struct {
 	// Subscription key which provides access to this API.
-	Authkey *string `json:"authkey,omitempty"`
+	Authkey *string
 
 	// the host name of the QnA Maker endpoint
-	Hostname *string `json:"hostname,omitempty"`
+	Hostname *string
 }
 
 // QnAMakerEndpointKeysResponse - Schema for EndpointKeys generate/refresh operations.
 type QnAMakerEndpointKeysResponse struct {
 	// Current version of runtime.
-	InstalledVersion *string `json:"installedVersion,omitempty"`
+	InstalledVersion *string
 
 	// Latest version of runtime.
-	LastStableVersion *string `json:"lastStableVersion,omitempty"`
+	LastStableVersion *string
 
 	// Primary Access Key.
-	PrimaryEndpointKey *string `json:"primaryEndpointKey,omitempty"`
+	PrimaryEndpointKey *string
 
 	// Secondary Access Key.
-	SecondaryEndpointKey *string `json:"secondaryEndpointKey,omitempty"`
+	SecondaryEndpointKey *string
 }
 
 // Resource - Azure resource
 type Resource struct {
 	// Entity Tag
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Required. Gets or sets the Kind of the resource.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets the SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Contains resource tags defined as key/value pairs.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Specifies the resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Specifies the name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Specifies the type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 
 	// READ-ONLY; Entity zones
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 // SKU - The SKU of the cognitive services account.
 type SKU struct {
 	// REQUIRED; The sku name
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 
 	// READ-ONLY; Gets the sku tier. This is based on the SKU name.
-	Tier *SKUTier `json:"tier,omitempty" azure:"ro"`
+	Tier *SKUTier
 }
 
 // SearchAssistant definition
 type SearchAssistant struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type SearchAssistant.
@@ -1436,160 +1437,160 @@ func (s *SearchAssistant) GetChannel() *Channel {
 // ServiceProvider - Service Provider Definition
 type ServiceProvider struct {
 	// The Properties of a Service Provider Object
-	Properties *ServiceProviderProperties `json:"properties,omitempty"`
+	Properties *ServiceProviderProperties
 }
 
 // ServiceProviderParameter - Extra Parameters specific to each Service Provider
 type ServiceProviderParameter struct {
 	// READ-ONLY; Default Name for the Service Provider
-	Default *string `json:"default,omitempty" azure:"ro"`
+	Default *string
 
 	// READ-ONLY; Description of the Service Provider
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Display Name of the Service Provider
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Help Url for the Service Provider
-	HelpURL *string `json:"helpUrl,omitempty" azure:"ro"`
+	HelpURL *string
 
 	// READ-ONLY; Meta data for the Service Provider
-	Metadata *ServiceProviderParameterMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *ServiceProviderParameterMetadata
 
 	// READ-ONLY; Name of the Service Provider
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the Service Provider
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceProviderParameterMetadata - Meta data for the Service Provider
 type ServiceProviderParameterMetadata struct {
 	// the constraints of the bot meta data.
-	Constraints *ServiceProviderParameterMetadataConstraints `json:"constraints,omitempty"`
+	Constraints *ServiceProviderParameterMetadataConstraints
 }
 
 // ServiceProviderParameterMetadataConstraints - the constraints of the bot meta data.
 type ServiceProviderParameterMetadataConstraints struct {
 	// Whether required the constraints of the bot meta data.
-	Required *bool `json:"required,omitempty"`
+	Required *bool
 }
 
 // ServiceProviderProperties - The Object used to describe a Service Provider supported by Bot Service
 type ServiceProviderProperties struct {
 	// The URL of icon
-	IconURL *string `json:"iconUrl,omitempty"`
+	IconURL *string
 
 	// The list of parameters for the Service Provider
-	Parameters []*ServiceProviderParameter `json:"parameters,omitempty"`
+	Parameters []*ServiceProviderParameter
 
 	// READ-ONLY; URL of Dev Portal
-	DevPortalURL *string `json:"devPortalUrl,omitempty" azure:"ro"`
+	DevPortalURL *string
 
 	// READ-ONLY; Display Name of the Service Provider
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Id for Service Provider
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the Service Provider
-	ServiceProviderName *string `json:"serviceProviderName,omitempty" azure:"ro"`
+	ServiceProviderName *string
 }
 
 // ServiceProviderResponseList - The list of bot service providers response.
 type ServiceProviderResponseList struct {
 	// The link used to get the next page of bot service providers.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of bot service providers and their properties.
-	Value []*ServiceProvider `json:"value,omitempty" azure:"ro"`
+	Value []*ServiceProvider
 }
 
 // Site - A site for the channel
 type Site struct {
 	// REQUIRED; Whether this site is enabled for DirectLine channel
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// REQUIRED; Site name
-	SiteName *string `json:"siteName,omitempty"`
+	SiteName *string
 
 	// DirectLine application id
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// Entity Tag
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Whether this site is enabled for block user upload.
-	IsBlockUserUploadEnabled *bool `json:"isBlockUserUploadEnabled,omitempty"`
+	IsBlockUserUploadEnabled *bool
 
 	// Whether this site is disabled detailed logging for
-	IsDetailedLoggingEnabled *bool `json:"isDetailedLoggingEnabled,omitempty"`
+	IsDetailedLoggingEnabled *bool
 
 	// Whether this site is EndpointParameters enabled for channel
-	IsEndpointParametersEnabled *bool `json:"isEndpointParametersEnabled,omitempty"`
+	IsEndpointParametersEnabled *bool
 
 	// Whether this no-storage site is disabled detailed logging for
-	IsNoStorageEnabled *bool `json:"isNoStorageEnabled,omitempty"`
+	IsNoStorageEnabled *bool
 
 	// Whether this site is enabled for authentication with Bot Framework.
-	IsSecureSiteEnabled *bool `json:"isSecureSiteEnabled,omitempty"`
+	IsSecureSiteEnabled *bool
 
 	// Whether this site is enabled for Bot Framework V1 protocol.
-	IsV1Enabled *bool `json:"isV1Enabled,omitempty"`
+	IsV1Enabled *bool
 
 	// Whether this site is enabled for Bot Framework V3 protocol.
-	IsV3Enabled *bool `json:"isV3Enabled,omitempty"`
+	IsV3Enabled *bool
 
 	// Whether this site is enabled for Webchat Speech
-	IsWebChatSpeechEnabled *bool `json:"isWebChatSpeechEnabled,omitempty"`
+	IsWebChatSpeechEnabled *bool
 
 	// Whether this site is enabled for preview versions of Webchat
-	IsWebchatPreviewEnabled *bool `json:"isWebchatPreviewEnabled,omitempty"`
+	IsWebchatPreviewEnabled *bool
 
 	// Tenant Id
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True.
-	TrustedOrigins []*string `json:"trustedOrigins,omitempty"`
+	TrustedOrigins []*string
 
 	// READ-ONLY; Whether this site is token enabled for channel
-	IsTokenEnabled *bool `json:"isTokenEnabled,omitempty" azure:"ro"`
+	IsTokenEnabled *bool
 
 	// READ-ONLY; Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
-	Key *string `json:"key,omitempty" azure:"ro"`
+	Key *string
 
 	// READ-ONLY; Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
-	Key2 *string `json:"key2,omitempty" azure:"ro"`
+	Key2 *string
 
 	// READ-ONLY; Site Id
-	SiteID *string `json:"siteId,omitempty" azure:"ro"`
+	SiteID *string
 }
 
 // SiteInfo - Site information for WebChat or DirectLine Channels to identify which site to regenerate keys for.
 type SiteInfo struct {
 	// REQUIRED; Determines which key is to be regenerated
-	Key *Key `json:"key,omitempty"`
+	Key *Key
 
 	// REQUIRED; The site name
-	SiteName *string `json:"siteName,omitempty"`
+	SiteName *string
 }
 
 // SkypeChannel - Skype channel definition
 type SkypeChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Skype channel resource
-	Properties *SkypeChannelProperties `json:"properties,omitempty"`
+	Properties *SkypeChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type SkypeChannel.
@@ -1605,52 +1606,52 @@ func (s *SkypeChannel) GetChannel() *Channel {
 // SkypeChannelProperties - The parameters to provide for the Microsoft Teams channel.
 type SkypeChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// Calling web hook for Skype channel
-	CallingWebHook *string `json:"callingWebHook,omitempty"`
+	CallingWebHook *string
 
 	// Enable calling for Skype channel
-	EnableCalling *bool `json:"enableCalling,omitempty"`
+	EnableCalling *bool
 
 	// Enable groups for Skype channel
-	EnableGroups *bool `json:"enableGroups,omitempty"`
+	EnableGroups *bool
 
 	// Enable media cards for Skype channel
-	EnableMediaCards *bool `json:"enableMediaCards,omitempty"`
+	EnableMediaCards *bool
 
 	// Enable messaging for Skype channel
-	EnableMessaging *bool `json:"enableMessaging,omitempty"`
+	EnableMessaging *bool
 
 	// Enable screen sharing for Skype channel
-	EnableScreenSharing *bool `json:"enableScreenSharing,omitempty"`
+	EnableScreenSharing *bool
 
 	// Enable video for Skype channel
-	EnableVideo *bool `json:"enableVideo,omitempty"`
+	EnableVideo *bool
 
 	// Group mode for Skype channel
-	GroupsMode *string `json:"groupsMode,omitempty"`
+	GroupsMode *string
 
 	// Incoming call route for Skype channel
-	IncomingCallRoute *string `json:"incomingCallRoute,omitempty"`
+	IncomingCallRoute *string
 }
 
 // SlackChannel - Slack channel definition
 type SlackChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Slack channel resource
-	Properties *SlackChannelProperties `json:"properties,omitempty"`
+	Properties *SlackChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type SlackChannel.
@@ -1666,55 +1667,55 @@ func (s *SlackChannel) GetChannel() *Channel {
 // SlackChannelProperties - The parameters to provide for the Slack channel.
 type SlackChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// The Slack client id
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The Slack client secret. Value only returned through POST to the action Channel List API, otherwise empty.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// The Slack landing page Url
-	LandingPageURL *string `json:"landingPageUrl,omitempty"`
+	LandingPageURL *string
 
 	// Whether to register the settings before OAuth validation is performed. Recommended to True.
-	RegisterBeforeOAuthFlow *bool `json:"registerBeforeOAuthFlow,omitempty"`
+	RegisterBeforeOAuthFlow *bool
 
 	// The Slack permission scopes.
-	Scopes *string `json:"scopes,omitempty"`
+	Scopes *string
 
 	// The Slack signing secret.
-	SigningSecret *string `json:"signingSecret,omitempty"`
+	SigningSecret *string
 
 	// The Slack verification token. Value only returned through POST to the action Channel List API, otherwise empty.
-	VerificationToken *string `json:"verificationToken,omitempty"`
+	VerificationToken *string
 
 	// READ-ONLY; Whether this channel is validated for the bot
-	IsValidated *bool `json:"IsValidated,omitempty" azure:"ro"`
+	IsValidated *bool
 
 	// READ-ONLY; The Sms auth token
-	LastSubmissionID *string `json:"lastSubmissionId,omitempty" azure:"ro"`
+	LastSubmissionID *string
 
 	// READ-ONLY; The Slack redirect action
-	RedirectAction *string `json:"redirectAction,omitempty" azure:"ro"`
+	RedirectAction *string
 }
 
 // SmsChannel - Sms channel definition
 type SmsChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Sms channel resource
-	Properties *SmsChannelProperties `json:"properties,omitempty"`
+	Properties *SmsChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type SmsChannel.
@@ -1730,37 +1731,37 @@ func (s *SmsChannel) GetChannel() *Channel {
 // SmsChannelProperties - The parameters to provide for the Sms channel.
 type SmsChannelProperties struct {
 	// REQUIRED; The Sms account SID. Value only returned through POST to the action Channel List API, otherwise empty.
-	AccountSID *string `json:"accountSID,omitempty"`
+	AccountSID *string
 
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// REQUIRED; The Sms phone
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// The Sms auth token. Value only returned through POST to the action Channel List API, otherwise empty.
-	AuthToken *string `json:"authToken,omitempty"`
+	AuthToken *string
 
 	// Whether this channel is validated for the bot
-	IsValidated *bool `json:"isValidated,omitempty"`
+	IsValidated *bool
 }
 
 // TelegramChannel - Telegram channel definition
 type TelegramChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Telegram channel resource
-	Properties *TelegramChannelProperties `json:"properties,omitempty"`
+	Properties *TelegramChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type TelegramChannel.
@@ -1776,31 +1777,31 @@ func (t *TelegramChannel) GetChannel() *Channel {
 // TelegramChannelProperties - The parameters to provide for the Telegram channel.
 type TelegramChannelProperties struct {
 	// REQUIRED; Whether this channel is enabled for the bot
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// The Telegram access token. Value only returned through POST to the action Channel List API, otherwise empty.
-	AccessToken *string `json:"accessToken,omitempty"`
+	AccessToken *string
 
 	// Whether this channel is validated for the bot
-	IsValidated *bool `json:"isValidated,omitempty"`
+	IsValidated *bool
 }
 
 // TelephonyChannel - Telephony channel definition
 type TelephonyChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Telephony channel resource
-	Properties *TelephonyChannelProperties `json:"properties,omitempty"`
+	Properties *TelephonyChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type TelephonyChannel.
@@ -1816,97 +1817,97 @@ func (t *TelephonyChannel) GetChannel() *Channel {
 // TelephonyChannelProperties - The parameters to provide for the Direct Line channel.
 type TelephonyChannelProperties struct {
 	// The list of Telephony api configuration
-	APIConfigurations []*TelephonyChannelResourceAPIConfiguration `json:"apiConfigurations,omitempty"`
+	APIConfigurations []*TelephonyChannelResourceAPIConfiguration
 
 	// The extensionKey2
-	CognitiveServiceRegion *string `json:"cognitiveServiceRegion,omitempty"`
+	CognitiveServiceRegion *string
 
 	// The extensionKey1
-	CognitiveServiceSubscriptionKey *string `json:"cognitiveServiceSubscriptionKey,omitempty"`
+	CognitiveServiceSubscriptionKey *string
 
 	// The default locale of the channel
-	DefaultLocale *string `json:"defaultLocale,omitempty"`
+	DefaultLocale *string
 
 	// Whether the channel is enabled
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// The list of Telephony phone numbers
-	PhoneNumbers []*TelephonyPhoneNumbers `json:"phoneNumbers,omitempty"`
+	PhoneNumbers []*TelephonyPhoneNumbers
 
 	// The premium SKU applied to the channel
-	PremiumSKU *string `json:"premiumSKU,omitempty"`
+	PremiumSKU *string
 }
 
 // TelephonyChannelResourceAPIConfiguration - A resource Api configuration for the Telephony channel
 type TelephonyChannelResourceAPIConfiguration struct {
 	// The cognitive service region.
-	CognitiveServiceRegion *string `json:"cognitiveServiceRegion,omitempty"`
+	CognitiveServiceRegion *string
 
 	// The cognitive service resourceId.
-	CognitiveServiceResourceID *string `json:"cognitiveServiceResourceId,omitempty"`
+	CognitiveServiceResourceID *string
 
 	// The cognitive service subscription key.
-	CognitiveServiceSubscriptionKey *string `json:"cognitiveServiceSubscriptionKey,omitempty"`
+	CognitiveServiceSubscriptionKey *string
 
 	// The default locale.
-	DefaultLocale *string `json:"defaultLocale,omitempty"`
+	DefaultLocale *string
 
 	// The id of config.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The provider name.
-	ProviderName *string `json:"providerName,omitempty"`
+	ProviderName *string
 }
 
 // TelephonyPhoneNumbers - A telephone number for the Telephony channel
 type TelephonyPhoneNumbers struct {
 	// The endpoint of ACS.
-	AcsEndpoint *string `json:"acsEndpoint,omitempty"`
+	AcsEndpoint *string
 
 	// The resource id of ACS.
-	AcsResourceID *string `json:"acsResourceId,omitempty"`
+	AcsResourceID *string
 
 	// The secret of ACS.
-	AcsSecret *string `json:"acsSecret,omitempty"`
+	AcsSecret *string
 
 	// The service region of cognitive service.
-	CognitiveServiceRegion *string `json:"cognitiveServiceRegion,omitempty"`
+	CognitiveServiceRegion *string
 
 	// The resource id of cognitive service.
-	CognitiveServiceResourceID *string `json:"cognitiveServiceResourceId,omitempty"`
+	CognitiveServiceResourceID *string
 
 	// The subscription key of cognitive service.
-	CognitiveServiceSubscriptionKey *string `json:"cognitiveServiceSubscriptionKey,omitempty"`
+	CognitiveServiceSubscriptionKey *string
 
 	// The default locale of the phone number.
-	DefaultLocale *string `json:"defaultLocale,omitempty"`
+	DefaultLocale *string
 
 	// The element id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Optional Property that will determine the offering type of the phone.
-	OfferType *string `json:"offerType,omitempty"`
+	OfferType *string
 
 	// The phone number.
-	PhoneNumber *string `json:"phoneNumber,omitempty"`
+	PhoneNumber *string
 }
 
 // WebChatChannel - Web Chat channel definition
 type WebChatChannel struct {
 	// REQUIRED; The channel name
-	ChannelName *string `json:"channelName,omitempty"`
+	ChannelName *string
 
 	// Entity Tag of the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The set of properties specific to Web Chat channel resource
-	Properties *WebChatChannelProperties `json:"properties,omitempty"`
+	Properties *WebChatChannelProperties
 
 	// READ-ONLY; Provisioning state of the resource
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetChannel implements the ChannelClassification interface for type WebChatChannel.
@@ -1922,68 +1923,68 @@ func (w *WebChatChannel) GetChannel() *Channel {
 // WebChatChannelProperties - The parameters to provide for the Web Chat channel.
 type WebChatChannelProperties struct {
 	// The list of Web Chat sites
-	Sites []*WebChatSite `json:"sites,omitempty"`
+	Sites []*WebChatSite
 
 	// READ-ONLY; Web chat control embed code
-	WebChatEmbedCode *string `json:"webChatEmbedCode,omitempty" azure:"ro"`
+	WebChatEmbedCode *string
 }
 
 // WebChatSite - A site for the Webchat channel
 type WebChatSite struct {
 	// REQUIRED; Whether this site is enabled for DirectLine channel
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// REQUIRED; Site name
-	SiteName *string `json:"siteName,omitempty"`
+	SiteName *string
 
 	// DirectLine application id
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// Entity Tag
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Whether this site is enabled for block user upload.
-	IsBlockUserUploadEnabled *bool `json:"isBlockUserUploadEnabled,omitempty"`
+	IsBlockUserUploadEnabled *bool
 
 	// Whether this site is disabled detailed logging for
-	IsDetailedLoggingEnabled *bool `json:"isDetailedLoggingEnabled,omitempty"`
+	IsDetailedLoggingEnabled *bool
 
 	// Whether this site is EndpointParameters enabled for channel
-	IsEndpointParametersEnabled *bool `json:"isEndpointParametersEnabled,omitempty"`
+	IsEndpointParametersEnabled *bool
 
 	// Whether this no-storage site is disabled detailed logging for
-	IsNoStorageEnabled *bool `json:"isNoStorageEnabled,omitempty"`
+	IsNoStorageEnabled *bool
 
 	// Whether this site is enabled for authentication with Bot Framework.
-	IsSecureSiteEnabled *bool `json:"isSecureSiteEnabled,omitempty"`
+	IsSecureSiteEnabled *bool
 
 	// Whether this site is enabled for Bot Framework V1 protocol.
-	IsV1Enabled *bool `json:"isV1Enabled,omitempty"`
+	IsV1Enabled *bool
 
 	// Whether this site is enabled for Bot Framework V3 protocol.
-	IsV3Enabled *bool `json:"isV3Enabled,omitempty"`
+	IsV3Enabled *bool
 
 	// Whether this site is enabled for Webchat Speech
-	IsWebChatSpeechEnabled *bool `json:"isWebChatSpeechEnabled,omitempty"`
+	IsWebChatSpeechEnabled *bool
 
 	// Whether this site is enabled for preview versions of Webchat
-	IsWebchatPreviewEnabled *bool `json:"isWebchatPreviewEnabled,omitempty"`
+	IsWebchatPreviewEnabled *bool
 
 	// Tenant Id
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// List of Trusted Origin URLs for this site. This field is applicable only if isSecureSiteEnabled is True.
-	TrustedOrigins []*string `json:"trustedOrigins,omitempty"`
+	TrustedOrigins []*string
 
 	// READ-ONLY; Whether this site is token enabled for channel
-	IsTokenEnabled *bool `json:"isTokenEnabled,omitempty" azure:"ro"`
+	IsTokenEnabled *bool
 
 	// READ-ONLY; Primary key. Value only returned through POST to the action Channel List API, otherwise empty.
-	Key *string `json:"key,omitempty" azure:"ro"`
+	Key *string
 
 	// READ-ONLY; Secondary key. Value only returned through POST to the action Channel List API, otherwise empty.
-	Key2 *string `json:"key2,omitempty" azure:"ro"`
+	Key2 *string
 
 	// READ-ONLY; Site Id
-	SiteID *string `json:"siteId,omitempty" azure:"ro"`
+	SiteID *string
 }

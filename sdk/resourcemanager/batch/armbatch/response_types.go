@@ -9,12 +9,12 @@
 
 package armbatch
 
-// AccountClientCreateResponse contains the response from method AccountClient.Create.
+// AccountClientCreateResponse contains the response from method AccountClient.BeginCreate.
 type AccountClientCreateResponse struct {
 	Account
 }
 
-// AccountClientDeleteResponse contains the response from method AccountClient.Delete.
+// AccountClientDeleteResponse contains the response from method AccountClient.BeginDelete.
 type AccountClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -34,22 +34,22 @@ type AccountClientGetResponse struct {
 	Account
 }
 
-// AccountClientListByResourceGroupResponse contains the response from method AccountClient.ListByResourceGroup.
+// AccountClientListByResourceGroupResponse contains the response from method AccountClient.NewListByResourceGroupPager.
 type AccountClientListByResourceGroupResponse struct {
 	AccountListResult
 }
 
-// AccountClientListDetectorsResponse contains the response from method AccountClient.ListDetectors.
+// AccountClientListDetectorsResponse contains the response from method AccountClient.NewListDetectorsPager.
 type AccountClientListDetectorsResponse struct {
 	DetectorListResult
 }
 
-// AccountClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method AccountClient.ListOutboundNetworkDependenciesEndpoints.
+// AccountClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method AccountClient.NewListOutboundNetworkDependenciesEndpointsPager.
 type AccountClientListOutboundNetworkDependenciesEndpointsResponse struct {
 	OutboundEnvironmentEndpointCollection
 }
 
-// AccountClientListResponse contains the response from method AccountClient.List.
+// AccountClientListResponse contains the response from method AccountClient.NewListPager.
 type AccountClientListResponse struct {
 	AccountListResult
 }
@@ -84,7 +84,7 @@ type ApplicationClientGetResponse struct {
 	Application
 }
 
-// ApplicationClientListResponse contains the response from method ApplicationClient.List.
+// ApplicationClientListResponse contains the response from method ApplicationClient.NewListPager.
 type ApplicationClientListResponse struct {
 	ListApplicationsResult
 }
@@ -114,7 +114,7 @@ type ApplicationPackageClientGetResponse struct {
 	ApplicationPackage
 }
 
-// ApplicationPackageClientListResponse contains the response from method ApplicationPackageClient.List.
+// ApplicationPackageClientListResponse contains the response from method ApplicationPackageClient.NewListPager.
 type ApplicationPackageClientListResponse struct {
 	ListApplicationPackagesResult
 }
@@ -133,7 +133,7 @@ type CertificateClientCreateResponse struct {
 	ETag *string
 }
 
-// CertificateClientDeleteResponse contains the response from method CertificateClient.Delete.
+// CertificateClientDeleteResponse contains the response from method CertificateClient.BeginDelete.
 type CertificateClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -145,7 +145,7 @@ type CertificateClientGetResponse struct {
 	ETag *string
 }
 
-// CertificateClientListByBatchAccountResponse contains the response from method CertificateClient.ListByBatchAccount.
+// CertificateClientListByBatchAccountResponse contains the response from method CertificateClient.NewListByBatchAccountPager.
 type CertificateClientListByBatchAccountResponse struct {
 	ListCertificatesResult
 }
@@ -167,17 +167,17 @@ type LocationClientGetQuotasResponse struct {
 	LocationQuota
 }
 
-// LocationClientListSupportedCloudServiceSKUsResponse contains the response from method LocationClient.ListSupportedCloudServiceSKUs.
+// LocationClientListSupportedCloudServiceSKUsResponse contains the response from method LocationClient.NewListSupportedCloudServiceSKUsPager.
 type LocationClientListSupportedCloudServiceSKUsResponse struct {
 	SupportedSKUsResult
 }
 
-// LocationClientListSupportedVirtualMachineSKUsResponse contains the response from method LocationClient.ListSupportedVirtualMachineSKUs.
+// LocationClientListSupportedVirtualMachineSKUsResponse contains the response from method LocationClient.NewListSupportedVirtualMachineSKUsPager.
 type LocationClientListSupportedVirtualMachineSKUsResponse struct {
 	SupportedSKUsResult
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -189,7 +189,7 @@ type PoolClientCreateResponse struct {
 	ETag *string
 }
 
-// PoolClientDeleteResponse contains the response from method PoolClient.Delete.
+// PoolClientDeleteResponse contains the response from method PoolClient.BeginDelete.
 type PoolClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -208,7 +208,7 @@ type PoolClientGetResponse struct {
 	ETag *string
 }
 
-// PoolClientListByBatchAccountResponse contains the response from method PoolClient.ListByBatchAccount.
+// PoolClientListByBatchAccountResponse contains the response from method PoolClient.NewListByBatchAccountPager.
 type PoolClientListByBatchAccountResponse struct {
 	ListPoolsResult
 }
@@ -227,7 +227,7 @@ type PoolClientUpdateResponse struct {
 	ETag *string
 }
 
-// PrivateEndpointConnectionClientDeleteResponse contains the response from method PrivateEndpointConnectionClient.Delete.
+// PrivateEndpointConnectionClientDeleteResponse contains the response from method PrivateEndpointConnectionClient.BeginDelete.
 type PrivateEndpointConnectionClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -237,12 +237,12 @@ type PrivateEndpointConnectionClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionClientListByBatchAccountResponse contains the response from method PrivateEndpointConnectionClient.ListByBatchAccount.
+// PrivateEndpointConnectionClientListByBatchAccountResponse contains the response from method PrivateEndpointConnectionClient.NewListByBatchAccountPager.
 type PrivateEndpointConnectionClientListByBatchAccountResponse struct {
 	ListPrivateEndpointConnectionsResult
 }
 
-// PrivateEndpointConnectionClientUpdateResponse contains the response from method PrivateEndpointConnectionClient.Update.
+// PrivateEndpointConnectionClientUpdateResponse contains the response from method PrivateEndpointConnectionClient.BeginUpdate.
 type PrivateEndpointConnectionClientUpdateResponse struct {
 	PrivateEndpointConnection
 }
@@ -252,7 +252,7 @@ type PrivateLinkResourceClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourceClientListByBatchAccountResponse contains the response from method PrivateLinkResourceClient.ListByBatchAccount.
+// PrivateLinkResourceClientListByBatchAccountResponse contains the response from method PrivateLinkResourceClient.NewListByBatchAccountPager.
 type PrivateLinkResourceClientListByBatchAccountResponse struct {
 	ListPrivateLinkResourcesResult
 }

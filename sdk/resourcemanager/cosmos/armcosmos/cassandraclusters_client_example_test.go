@@ -25,11 +25,11 @@ func ExampleCassandraClustersClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewCassandraClustersClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -110,11 +110,11 @@ func ExampleCassandraClustersClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("cassandra-prod-rg", nil)
+	pager := clientFactory.NewCassandraClustersClient().NewListByResourceGroupPager("cassandra-prod-rg", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -195,11 +195,11 @@ func ExampleCassandraClustersClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
+	res, err := clientFactory.NewCassandraClustersClient().Get(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -272,11 +272,11 @@ func ExampleCassandraClustersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
+	poller, err := clientFactory.NewCassandraClustersClient().BeginDelete(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -293,11 +293,11 @@ func ExampleCassandraClustersClient_BeginCreateUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.ClusterResource{
+	poller, err := clientFactory.NewCassandraClustersClient().BeginCreateUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.ClusterResource{
 		Location: to.Ptr("West US"),
 		Tags:     map[string]*string{},
 		Properties: &armcosmos.ClusterResourceProperties{
@@ -403,11 +403,11 @@ func ExampleCassandraClustersClient_BeginUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.ClusterResource{
+	poller, err := clientFactory.NewCassandraClustersClient().BeginUpdate(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.ClusterResource{
 		Tags: map[string]*string{
 			"owner": to.Ptr("mike"),
 		},
@@ -506,11 +506,11 @@ func ExampleCassandraClustersClient_BeginInvokeCommand() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginInvokeCommand(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.CommandPostBody{
+	poller, err := clientFactory.NewCassandraClustersClient().BeginInvokeCommand(ctx, "cassandra-prod-rg", "cassandra-prod", armcosmos.CommandPostBody{
 		Command: to.Ptr("nodetool status"),
 		Host:    to.Ptr("10.0.1.12"),
 	}, nil)
@@ -530,11 +530,11 @@ func ExampleCassandraClustersClient_BeginDeallocate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDeallocate(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
+	poller, err := clientFactory.NewCassandraClustersClient().BeginDeallocate(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -551,11 +551,11 @@ func ExampleCassandraClustersClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
+	poller, err := clientFactory.NewCassandraClustersClient().BeginStart(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -572,11 +572,11 @@ func ExampleCassandraClustersClient_Status() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewCassandraClustersClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Status(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
+	res, err := clientFactory.NewCassandraClustersClient().Status(ctx, "cassandra-prod-rg", "cassandra-prod", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

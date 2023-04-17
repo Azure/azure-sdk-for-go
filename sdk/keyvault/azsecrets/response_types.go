@@ -29,17 +29,17 @@ type GetSecretResponse struct {
 	SecretBundle
 }
 
-// ListDeletedSecretsResponse contains the response from method Client.ListDeletedSecrets.
+// ListDeletedSecretsResponse contains the response from method Client.NewListDeletedSecretsPager.
 type ListDeletedSecretsResponse struct {
 	DeletedSecretListResult
 }
 
-// ListSecretVersionsResponse contains the response from method Client.ListSecretVersions.
+// ListSecretVersionsResponse contains the response from method Client.NewListSecretVersionsPager.
 type ListSecretVersionsResponse struct {
 	SecretListResult
 }
 
-// ListSecretsResponse contains the response from method Client.ListSecrets.
+// ListSecretsResponse contains the response from method Client.NewListSecretsPager.
 type ListSecretsResponse struct {
 	SecretListResult
 }

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // PacketCoreControlPlanesClient contains the methods for the PacketCoreControlPlanes group.
 // Don't use this type directly, use NewPacketCoreControlPlanesClient() instead.
 type PacketCoreControlPlanesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPacketCoreControlPlanesClient creates a new instance of PacketCoreControlPlanesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPacketCoreControlPlanesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PacketCoreControlPlanesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PacketCoreControlPlanesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PacketCoreControlPlanesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,36 +47,38 @@ func NewPacketCoreControlPlanesClient(subscriptionID string, credential azcore.T
 // BeginCollectDiagnosticsPackage - Collect a diagnostics package for the specified packet core control plane. This action
 // will upload the diagnostics to a storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// parameters - Parameters supplied to the packet core control plane collect diagnostics package operation.
-// options - PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCollectDiagnosticsPackage
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - parameters - Parameters supplied to the packet core control plane collect diagnostics package operation.
+//   - options - PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCollectDiagnosticsPackage
+//     method.
 func (client *PacketCoreControlPlanesClient) BeginCollectDiagnosticsPackage(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlaneCollectDiagnosticsPackage, options *PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions) (*runtime.Poller[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.collectDiagnosticsPackage(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientCollectDiagnosticsPackageResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CollectDiagnosticsPackage - Collect a diagnostics package for the specified packet core control plane. This action will
 // upload the diagnostics to a storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *PacketCoreControlPlanesClient) collectDiagnosticsPackage(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlaneCollectDiagnosticsPackage, options *PacketCoreControlPlanesClientBeginCollectDiagnosticsPackageOptions) (*http.Response, error) {
 	req, err := client.collectDiagnosticsPackageCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -112,7 +103,7 @@ func (client *PacketCoreControlPlanesClient) collectDiagnosticsPackageCreateRequ
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -125,35 +116,37 @@ func (client *PacketCoreControlPlanesClient) collectDiagnosticsPackageCreateRequ
 
 // BeginCreateOrUpdate - Creates or updates a packet core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// parameters - Parameters supplied to the create or update packet core control plane operation.
-// options - PacketCoreControlPlanesClientBeginCreateOrUpdateOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - parameters - Parameters supplied to the create or update packet core control plane operation.
+//   - options - PacketCoreControlPlanesClientBeginCreateOrUpdateOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginCreateOrUpdate
+//     method.
 func (client *PacketCoreControlPlanesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlane, options *PacketCoreControlPlanesClientBeginCreateOrUpdateOptions) (*runtime.Poller[PacketCoreControlPlanesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PacketCoreControlPlanesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PacketCoreControlPlanesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a packet core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *PacketCoreControlPlanesClient) createOrUpdate(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters PacketCoreControlPlane, options *PacketCoreControlPlanesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -178,7 +171,7 @@ func (client *PacketCoreControlPlanesClient) createOrUpdateCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -191,34 +184,36 @@ func (client *PacketCoreControlPlanesClient) createOrUpdateCreateRequest(ctx con
 
 // BeginDelete - Deletes the specified packet core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// options - PacketCoreControlPlanesClientBeginDeleteOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - options - PacketCoreControlPlanesClientBeginDeleteOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginDelete
+//     method.
 func (client *PacketCoreControlPlanesClient) BeginDelete(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginDeleteOptions) (*runtime.Poller[PacketCoreControlPlanesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, packetCoreControlPlaneName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PacketCoreControlPlanesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PacketCoreControlPlanesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified packet core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *PacketCoreControlPlanesClient) deleteOperation(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -243,7 +238,7 @@ func (client *PacketCoreControlPlanesClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -256,17 +251,18 @@ func (client *PacketCoreControlPlanesClient) deleteCreateRequest(ctx context.Con
 
 // Get - Gets information about the specified packet core control plane.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// options - PacketCoreControlPlanesClientGetOptions contains the optional parameters for the PacketCoreControlPlanesClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - options - PacketCoreControlPlanesClientGetOptions contains the optional parameters for the PacketCoreControlPlanesClient.Get
+//     method.
 func (client *PacketCoreControlPlanesClient) Get(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientGetOptions) (PacketCoreControlPlanesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, options)
 	if err != nil {
 		return PacketCoreControlPlanesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PacketCoreControlPlanesClientGetResponse{}, err
 	}
@@ -291,7 +287,7 @@ func (client *PacketCoreControlPlanesClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,10 +308,11 @@ func (client *PacketCoreControlPlanesClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListByResourceGroupPager - Lists all the packet core control planes in a resource group.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - PacketCoreControlPlanesClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - PacketCoreControlPlanesClientListByResourceGroupOptions contains the optional parameters for the PacketCoreControlPlanesClient.NewListByResourceGroupPager
+//     method.
 func (client *PacketCoreControlPlanesClient) NewListByResourceGroupPager(resourceGroupName string, options *PacketCoreControlPlanesClientListByResourceGroupOptions) *runtime.Pager[PacketCoreControlPlanesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlanesClientListByResourceGroupResponse]{
 		More: func(page PacketCoreControlPlanesClientListByResourceGroupResponse) bool {
@@ -332,7 +329,7 @@ func (client *PacketCoreControlPlanesClient) NewListByResourceGroupPager(resourc
 			if err != nil {
 				return PacketCoreControlPlanesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PacketCoreControlPlanesClientListByResourceGroupResponse{}, err
 			}
@@ -355,7 +352,7 @@ func (client *PacketCoreControlPlanesClient) listByResourceGroupCreateRequest(ct
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -376,9 +373,10 @@ func (client *PacketCoreControlPlanesClient) listByResourceGroupHandleResponse(r
 }
 
 // NewListBySubscriptionPager - Lists all the packet core control planes in a subscription.
+//
 // Generated from API version 2022-11-01
-// options - PacketCoreControlPlanesClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlanesClient.ListBySubscription
-// method.
+//   - options - PacketCoreControlPlanesClientListBySubscriptionOptions contains the optional parameters for the PacketCoreControlPlanesClient.NewListBySubscriptionPager
+//     method.
 func (client *PacketCoreControlPlanesClient) NewListBySubscriptionPager(options *PacketCoreControlPlanesClientListBySubscriptionOptions) *runtime.Pager[PacketCoreControlPlanesClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PacketCoreControlPlanesClientListBySubscriptionResponse]{
 		More: func(page PacketCoreControlPlanesClientListBySubscriptionResponse) bool {
@@ -395,7 +393,7 @@ func (client *PacketCoreControlPlanesClient) NewListBySubscriptionPager(options 
 			if err != nil {
 				return PacketCoreControlPlanesClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PacketCoreControlPlanesClientListBySubscriptionResponse{}, err
 			}
@@ -414,7 +412,7 @@ func (client *PacketCoreControlPlanesClient) listBySubscriptionCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -437,35 +435,37 @@ func (client *PacketCoreControlPlanesClient) listBySubscriptionHandleResponse(re
 // BeginReinstall - Reinstall the specified packet core control plane. This action will remove any transaction state from
 // the packet core to return it to a known state. This action will cause a service outage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// options - PacketCoreControlPlanesClientBeginReinstallOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginReinstall
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - options - PacketCoreControlPlanesClientBeginReinstallOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginReinstall
+//     method.
 func (client *PacketCoreControlPlanesClient) BeginReinstall(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginReinstallOptions) (*runtime.Poller[PacketCoreControlPlanesClientReinstallResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.reinstall(ctx, resourceGroupName, packetCoreControlPlaneName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PacketCoreControlPlanesClientReinstallResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PacketCoreControlPlanesClientReinstallResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientReinstallResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientReinstallResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Reinstall - Reinstall the specified packet core control plane. This action will remove any transaction state from the packet
 // core to return it to a known state. This action will cause a service outage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *PacketCoreControlPlanesClient) reinstall(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginReinstallOptions) (*http.Response, error) {
 	req, err := client.reinstallCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -490,7 +490,7 @@ func (client *PacketCoreControlPlanesClient) reinstallCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -504,35 +504,37 @@ func (client *PacketCoreControlPlanesClient) reinstallCreateRequest(ctx context.
 // BeginRollback - Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple
 // consecutive rollbacks are not possible. This action may cause a service outage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// options - PacketCoreControlPlanesClientBeginRollbackOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginRollback
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - options - PacketCoreControlPlanesClientBeginRollbackOptions contains the optional parameters for the PacketCoreControlPlanesClient.BeginRollback
+//     method.
 func (client *PacketCoreControlPlanesClient) BeginRollback(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginRollbackOptions) (*runtime.Poller[PacketCoreControlPlanesClientRollbackResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.rollback(ctx, resourceGroupName, packetCoreControlPlaneName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[PacketCoreControlPlanesClientRollbackResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PacketCoreControlPlanesClientRollbackResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientRollbackResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PacketCoreControlPlanesClientRollbackResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Rollback - Roll back the specified packet core control plane to the previous version, "rollbackVersion". Multiple consecutive
 // rollbacks are not possible. This action may cause a service outage.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *PacketCoreControlPlanesClient) rollback(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, options *PacketCoreControlPlanesClientBeginRollbackOptions) (*http.Response, error) {
 	req, err := client.rollbackCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -557,7 +559,7 @@ func (client *PacketCoreControlPlanesClient) rollbackCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -570,18 +572,19 @@ func (client *PacketCoreControlPlanesClient) rollbackCreateRequest(ctx context.C
 
 // UpdateTags - Updates packet core control planes tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// packetCoreControlPlaneName - The name of the packet core control plane.
-// parameters - Parameters supplied to update packet core control plane tags.
-// options - PacketCoreControlPlanesClientUpdateTagsOptions contains the optional parameters for the PacketCoreControlPlanesClient.UpdateTags
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - packetCoreControlPlaneName - The name of the packet core control plane.
+//   - parameters - Parameters supplied to update packet core control plane tags.
+//   - options - PacketCoreControlPlanesClientUpdateTagsOptions contains the optional parameters for the PacketCoreControlPlanesClient.UpdateTags
+//     method.
 func (client *PacketCoreControlPlanesClient) UpdateTags(ctx context.Context, resourceGroupName string, packetCoreControlPlaneName string, parameters TagsObject, options *PacketCoreControlPlanesClientUpdateTagsOptions) (PacketCoreControlPlanesClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, packetCoreControlPlaneName, parameters, options)
 	if err != nil {
 		return PacketCoreControlPlanesClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PacketCoreControlPlanesClientUpdateTagsResponse{}, err
 	}
@@ -606,7 +609,7 @@ func (client *PacketCoreControlPlanesClient) updateTagsCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

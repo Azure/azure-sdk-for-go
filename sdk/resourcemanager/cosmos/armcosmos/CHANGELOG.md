@@ -1,5 +1,10 @@
 # Release History
 
+## 2.3.0 (2023-04-07)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+
 ## 2.2.0 (2023-02-24)
 ### Features Added
 

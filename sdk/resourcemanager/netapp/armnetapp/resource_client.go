@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,40 @@ import (
 // ResourceClient contains the methods for the NetAppResource group.
 // Don't use this type directly, use NewResourceClient() instead.
 type ResourceClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewResourceClient creates a new instance of ResourceClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ResourceClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ResourceClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckFilePathAvailability - Check if a file path is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
-// location - The location
-// body - File path availability request.
-// options - ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - The name of Azure region.
+//   - body - File path availability request.
+//   - options - ResourceClientCheckFilePathAvailabilityOptions contains the optional parameters for the ResourceClient.CheckFilePathAvailability
+//     method.
 func (client *ResourceClient) CheckFilePathAvailability(ctx context.Context, location string, body FilePathAvailabilityRequest, options *ResourceClientCheckFilePathAvailabilityOptions) (ResourceClientCheckFilePathAvailabilityResponse, error) {
 	req, err := client.checkFilePathAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
 		return ResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
@@ -89,12 +78,12 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -111,17 +100,18 @@ func (client *ResourceClient) checkFilePathAvailabilityHandleResponse(resp *http
 
 // CheckNameAvailability - Check if a resource name is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
-// location - The location
-// body - Name availability request.
-// options - ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - The name of Azure region.
+//   - body - Name availability request.
+//   - options - ResourceClientCheckNameAvailabilityOptions contains the optional parameters for the ResourceClient.CheckNameAvailability
+//     method.
 func (client *ResourceClient) CheckNameAvailability(ctx context.Context, location string, body ResourceNameAvailabilityRequest, options *ResourceClientCheckNameAvailabilityOptions) (ResourceClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
@@ -142,12 +132,12 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -164,17 +154,18 @@ func (client *ResourceClient) checkNameAvailabilityHandleResponse(resp *http.Res
 
 // CheckQuotaAvailability - Check if a quota is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
-// location - The location
-// body - Quota availability request.
-// options - ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - The name of Azure region.
+//   - body - Quota availability request.
+//   - options - ResourceClientCheckQuotaAvailabilityOptions contains the optional parameters for the ResourceClient.CheckQuotaAvailability
+//     method.
 func (client *ResourceClient) CheckQuotaAvailability(ctx context.Context, location string, body QuotaAvailabilityRequest, options *ResourceClientCheckQuotaAvailabilityOptions) (ResourceClientCheckQuotaAvailabilityResponse, error) {
 	req, err := client.checkQuotaAvailabilityCreateRequest(ctx, location, body, options)
 	if err != nil {
 		return ResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
@@ -195,12 +186,12 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -217,16 +208,17 @@ func (client *ResourceClient) checkQuotaAvailabilityHandleResponse(resp *http.Re
 
 // QueryRegionInfo - Provides storage to network proximity and logical zone mapping information.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
-// location - The location
-// options - ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - The name of Azure region.
+//   - options - ResourceClientQueryRegionInfoOptions contains the optional parameters for the ResourceClient.QueryRegionInfo
+//     method.
 func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location string, options *ResourceClientQueryRegionInfoOptions) (ResourceClientQueryRegionInfoResponse, error) {
 	req, err := client.queryRegionInfoCreateRequest(ctx, location, options)
 	if err != nil {
 		return ResourceClientQueryRegionInfoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceClientQueryRegionInfoResponse{}, err
 	}
@@ -247,12 +239,12 @@ func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

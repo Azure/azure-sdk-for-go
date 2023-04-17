@@ -25,11 +25,11 @@ func ExamplePrivateEndpointsClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "testPe", nil)
+	poller, err := clientFactory.NewPrivateEndpointsClient().BeginDelete(ctx, "rg1", "testPe", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpoint() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testPe", &armnetwork.PrivateEndpointsClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewPrivateEndpointsClient().Get(ctx, "rg1", "testPe", &armnetwork.PrivateEndpointsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -129,11 +129,11 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithApplicationSecurity
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testPe", &armnetwork.PrivateEndpointsClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewPrivateEndpointsClient().Get(ctx, "rg1", "testPe", &armnetwork.PrivateEndpointsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -196,11 +196,11 @@ func ExamplePrivateEndpointsClient_Get_getPrivateEndpointWithManualApprovalConne
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "testPe", &armnetwork.PrivateEndpointsClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewPrivateEndpointsClient().Get(ctx, "rg1", "testPe", &armnetwork.PrivateEndpointsClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -271,11 +271,11 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpoint() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testPe", armnetwork.PrivateEndpoint{
+	poller, err := clientFactory.NewPrivateEndpointsClient().BeginCreateOrUpdate(ctx, "rg1", "testPe", armnetwork.PrivateEndpoint{
 		Location: to.Ptr("eastus2euap"),
 		Properties: &armnetwork.PrivateEndpointProperties{
 			CustomNetworkInterfaceName: to.Ptr("testPeNic"),
@@ -375,11 +375,11 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWith
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testPe", armnetwork.PrivateEndpoint{
+	poller, err := clientFactory.NewPrivateEndpointsClient().BeginCreateOrUpdate(ctx, "rg1", "testPe", armnetwork.PrivateEndpoint{
 		Location: to.Ptr("eastus2euap"),
 		Properties: &armnetwork.PrivateEndpointProperties{
 			ApplicationSecurityGroups: []*armnetwork.ApplicationSecurityGroup{
@@ -465,11 +465,11 @@ func ExamplePrivateEndpointsClient_BeginCreateOrUpdate_createPrivateEndpointWith
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "testPe", armnetwork.PrivateEndpoint{
+	poller, err := clientFactory.NewPrivateEndpointsClient().BeginCreateOrUpdate(ctx, "rg1", "testPe", armnetwork.PrivateEndpoint{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.PrivateEndpointProperties{
 			CustomNetworkInterfaceName: to.Ptr("testPeNic"),
@@ -569,11 +569,11 @@ func ExamplePrivateEndpointsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewPrivateEndpointsClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -723,11 +723,11 @@ func ExamplePrivateEndpointsClient_NewListBySubscriptionPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewPrivateEndpointsClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewPrivateEndpointsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

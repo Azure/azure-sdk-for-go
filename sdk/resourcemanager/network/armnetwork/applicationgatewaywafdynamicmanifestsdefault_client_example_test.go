@@ -24,11 +24,11 @@ func ExampleApplicationGatewayWafDynamicManifestsDefaultClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewApplicationGatewayWafDynamicManifestsDefaultClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "westus", nil)
+	res, err := clientFactory.NewApplicationGatewayWafDynamicManifestsDefaultClient().Get(ctx, "westus", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

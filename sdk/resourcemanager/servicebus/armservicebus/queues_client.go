@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,9 +25,8 @@ import (
 // QueuesClient contains the methods for the Queues group.
 // Don't use this type directly, use NewQueuesClient() instead.
 type QueuesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewQueuesClient creates a new instance of QueuesClient with the specified values.
@@ -38,21 +35,13 @@ type QueuesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewQueuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QueuesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".QueuesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &QueuesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -60,7 +49,7 @@ func NewQueuesClient(subscriptionID string, credential azcore.TokenCredential, o
 // CreateOrUpdate - Creates or updates a Service Bus queue. This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -71,7 +60,7 @@ func (client *QueuesClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return QueuesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueuesClientCreateOrUpdateResponse{}, err
 	}
@@ -100,12 +89,12 @@ func (client *QueuesClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -123,7 +112,7 @@ func (client *QueuesClient) createOrUpdateHandleResponse(resp *http.Response) (Q
 // CreateOrUpdateAuthorizationRule - Creates an authorization rule for a queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -136,7 +125,7 @@ func (client *QueuesClient) CreateOrUpdateAuthorizationRule(ctx context.Context,
 	if err != nil {
 		return QueuesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueuesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -169,12 +158,12 @@ func (client *QueuesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -192,7 +181,7 @@ func (client *QueuesClient) createOrUpdateAuthorizationRuleHandleResponse(resp *
 // Delete - Deletes a queue from the specified namespace in a resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -202,7 +191,7 @@ func (client *QueuesClient) Delete(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return QueuesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueuesClientDeleteResponse{}, err
 	}
@@ -231,12 +220,12 @@ func (client *QueuesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,7 +234,7 @@ func (client *QueuesClient) deleteCreateRequest(ctx context.Context, resourceGro
 // DeleteAuthorizationRule - Deletes a queue authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -257,7 +246,7 @@ func (client *QueuesClient) DeleteAuthorizationRule(ctx context.Context, resourc
 	if err != nil {
 		return QueuesClientDeleteAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueuesClientDeleteAuthorizationRuleResponse{}, err
 	}
@@ -290,12 +279,12 @@ func (client *QueuesClient) deleteAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -304,7 +293,7 @@ func (client *QueuesClient) deleteAuthorizationRuleCreateRequest(ctx context.Con
 // Get - Returns a description for the specified queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -314,7 +303,7 @@ func (client *QueuesClient) Get(ctx context.Context, resourceGroupName string, n
 	if err != nil {
 		return QueuesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueuesClientGetResponse{}, err
 	}
@@ -343,12 +332,12 @@ func (client *QueuesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -366,7 +355,7 @@ func (client *QueuesClient) getHandleResponse(resp *http.Response) (QueuesClient
 // GetAuthorizationRule - Gets an authorization rule for a queue by rule name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -378,7 +367,7 @@ func (client *QueuesClient) GetAuthorizationRule(ctx context.Context, resourceGr
 	if err != nil {
 		return QueuesClientGetAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueuesClientGetAuthorizationRuleResponse{}, err
 	}
@@ -411,12 +400,12 @@ func (client *QueuesClient) getAuthorizationRuleCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -433,7 +422,7 @@ func (client *QueuesClient) getAuthorizationRuleHandleResponse(resp *http.Respon
 
 // NewListAuthorizationRulesPager - Gets all authorization rules for a queue.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -455,7 +444,7 @@ func (client *QueuesClient) NewListAuthorizationRulesPager(resourceGroupName str
 			if err != nil {
 				return QueuesClientListAuthorizationRulesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return QueuesClientListAuthorizationRulesResponse{}, err
 			}
@@ -486,12 +475,12 @@ func (client *QueuesClient) listAuthorizationRulesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -508,7 +497,7 @@ func (client *QueuesClient) listAuthorizationRulesHandleResponse(resp *http.Resp
 
 // NewListByNamespacePager - Gets the queues within a namespace.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - QueuesClientListByNamespaceOptions contains the optional parameters for the QueuesClient.NewListByNamespacePager
@@ -529,7 +518,7 @@ func (client *QueuesClient) NewListByNamespacePager(resourceGroupName string, na
 			if err != nil {
 				return QueuesClientListByNamespaceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return QueuesClientListByNamespaceResponse{}, err
 			}
@@ -556,12 +545,12 @@ func (client *QueuesClient) listByNamespaceCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	if options != nil && options.Skip != nil {
 		reqQP.Set("$skip", strconv.FormatInt(int64(*options.Skip), 10))
 	}
@@ -585,7 +574,7 @@ func (client *QueuesClient) listByNamespaceHandleResponse(resp *http.Response) (
 // ListKeys - Primary and secondary connection strings to the queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -596,7 +585,7 @@ func (client *QueuesClient) ListKeys(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return QueuesClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueuesClientListKeysResponse{}, err
 	}
@@ -629,12 +618,12 @@ func (client *QueuesClient) listKeysCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -652,7 +641,7 @@ func (client *QueuesClient) listKeysHandleResponse(resp *http.Response) (QueuesC
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the queue.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - queueName - The queue name.
@@ -664,7 +653,7 @@ func (client *QueuesClient) RegenerateKeys(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return QueuesClientRegenerateKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QueuesClientRegenerateKeysResponse{}, err
 	}
@@ -697,12 +686,12 @@ func (client *QueuesClient) regenerateKeysCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

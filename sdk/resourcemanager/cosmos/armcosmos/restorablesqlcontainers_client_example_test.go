@@ -25,11 +25,11 @@ func ExampleRestorableSQLContainersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableSQLContainersClient("subid", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("WestUS", "98a570f2-63db-4117-91f0-366327b7b353", &armcosmos.RestorableSQLContainersClientListOptions{RestorableSQLDatabaseRid: to.Ptr("3fu-hg=="),
+	pager := clientFactory.NewRestorableSQLContainersClient().NewListPager("WestUS", "98a570f2-63db-4117-91f0-366327b7b353", &armcosmos.RestorableSQLContainersClientListOptions{RestorableSQLDatabaseRid: to.Ptr("3fu-hg=="),
 		StartTime: nil,
 		EndTime:   nil,
 	})

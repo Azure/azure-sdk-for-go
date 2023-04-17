@@ -89,7 +89,7 @@ type SendMessageBatchOptions struct {
 // If the operation fails it can return an *azservicebus.Error type if the failure is actionable.
 func (s *Sender) SendMessageBatch(ctx context.Context, batch *MessageBatch, options *SendMessageBatchOptions) error {
 	err := s.links.Retry(ctx, EventSender, "SendMessageBatch", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		return lwid.Sender.Send(ctx, batch.toAMQPMessage())
+		return lwid.Sender.Send(ctx, batch.toAMQPMessage(), nil)
 	}, RetryOptions(s.retryOptions))
 
 	return internal.TransformError(err)
@@ -168,7 +168,7 @@ func (s *Sender) Close(ctx context.Context) error {
 
 func (s *Sender) sendMessage(ctx context.Context, message amqpCompatibleMessage) error {
 	err := s.links.Retry(ctx, EventSender, "SendMessage", func(ctx context.Context, lwid *internal.LinksWithID, args *utils.RetryFnArgs) error {
-		return lwid.Sender.Send(ctx, message.toAMQPMessage())
+		return lwid.Sender.Send(ctx, message.toAMQPMessage(), nil)
 	}, RetryOptions(s.retryOptions))
 
 	return internal.TransformError(err)
@@ -179,8 +179,8 @@ func (sender *Sender) createSenderLink(ctx context.Context, session amqpwrap.AMQ
 		ctx,
 		sender.queueOrTopic,
 		&amqp.SenderOptions{
-			SettlementMode:              amqp.ModeMixed.Ptr(),
-			RequestedReceiverSettleMode: amqp.ModeFirst.Ptr(),
+			SettlementMode:              amqp.SenderSettleModeMixed.Ptr(),
+			RequestedReceiverSettleMode: amqp.ReceiverSettleModeFirst.Ptr(),
 		})
 
 	if err != nil {

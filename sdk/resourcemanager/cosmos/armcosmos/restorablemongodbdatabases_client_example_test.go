@@ -24,11 +24,11 @@ func ExampleRestorableMongodbDatabasesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcosmos.NewRestorableMongodbDatabasesClient("2296c272-5d55-40d9-bc05-4d56dc2d7588", cred, nil)
+	clientFactory, err := armcosmos.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("WestUS", "d9b26648-2f53-4541-b3d8-3044f4f9810d", nil)
+	pager := clientFactory.NewRestorableMongodbDatabasesClient().NewListPager("WestUS", "d9b26648-2f53-4541-b3d8-3044f4f9810d", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // GovernanceRulesClient contains the methods for the GovernanceRules group.
 // Don't use this type directly, use NewGovernanceRulesClient() instead.
 type GovernanceRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGovernanceRulesClient creates a new instance of GovernanceRulesClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGovernanceRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GovernanceRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GovernanceRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GovernanceRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or update a security GovernanceRule on the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// governanceRule - GovernanceRule over a subscription scope
-// options - GovernanceRulesClientCreateOrUpdateOptions contains the optional parameters for the GovernanceRulesClient.CreateOrUpdate
-// method.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - governanceRule - GovernanceRule over a subscription scope
+//   - options - GovernanceRulesClientCreateOrUpdateOptions contains the optional parameters for the GovernanceRulesClient.CreateOrUpdate
+//     method.
 func (client *GovernanceRulesClient) CreateOrUpdate(ctx context.Context, ruleID string, governanceRule GovernanceRule, options *GovernanceRulesClientCreateOrUpdateOptions) (GovernanceRulesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, ruleID, governanceRule, options)
 	if err != nil {
 		return GovernanceRulesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GovernanceRulesClientCreateOrUpdateResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *GovernanceRulesClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,15 +100,16 @@ func (client *GovernanceRulesClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete a GovernanceRule over a given scope
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// options - GovernanceRulesClientDeleteOptions contains the optional parameters for the GovernanceRulesClient.Delete method.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - options - GovernanceRulesClientDeleteOptions contains the optional parameters for the GovernanceRulesClient.Delete method.
 func (client *GovernanceRulesClient) Delete(ctx context.Context, ruleID string, options *GovernanceRulesClientDeleteOptions) (GovernanceRulesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, ruleID, options)
 	if err != nil {
 		return GovernanceRulesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GovernanceRulesClientDeleteResponse{}, err
 	}
@@ -139,7 +130,7 @@ func (client *GovernanceRulesClient) deleteCreateRequest(ctx context.Context, ru
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,15 +142,16 @@ func (client *GovernanceRulesClient) deleteCreateRequest(ctx context.Context, ru
 
 // Get - Get a specific governanceRule for the requested scope by ruleId
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// options - GovernanceRulesClientGetOptions contains the optional parameters for the GovernanceRulesClient.Get method.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - options - GovernanceRulesClientGetOptions contains the optional parameters for the GovernanceRulesClient.Get method.
 func (client *GovernanceRulesClient) Get(ctx context.Context, ruleID string, options *GovernanceRulesClientGetOptions) (GovernanceRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, ruleID, options)
 	if err != nil {
 		return GovernanceRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GovernanceRulesClientGetResponse{}, err
 	}
@@ -180,7 +172,7 @@ func (client *GovernanceRulesClient) getCreateRequest(ctx context.Context, ruleI
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -202,33 +194,35 @@ func (client *GovernanceRulesClient) getHandleResponse(resp *http.Response) (Gov
 
 // BeginRuleIDExecuteSingleSecurityConnector - Execute a security GovernanceRule on the given security connector.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// securityConnectorName - The security connector name.
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// options - GovernanceRulesClientBeginRuleIDExecuteSingleSecurityConnectorOptions contains the optional parameters for the
-// GovernanceRulesClient.BeginRuleIDExecuteSingleSecurityConnector method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - options - GovernanceRulesClientBeginRuleIDExecuteSingleSecurityConnectorOptions contains the optional parameters for the
+//     GovernanceRulesClient.BeginRuleIDExecuteSingleSecurityConnector method.
 func (client *GovernanceRulesClient) BeginRuleIDExecuteSingleSecurityConnector(ctx context.Context, resourceGroupName string, securityConnectorName string, ruleID string, options *GovernanceRulesClientBeginRuleIDExecuteSingleSecurityConnectorOptions) (*runtime.Poller[GovernanceRulesClientRuleIDExecuteSingleSecurityConnectorResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.ruleIDExecuteSingleSecurityConnector(ctx, resourceGroupName, securityConnectorName, ruleID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GovernanceRulesClientRuleIDExecuteSingleSecurityConnectorResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GovernanceRulesClientRuleIDExecuteSingleSecurityConnectorResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GovernanceRulesClientRuleIDExecuteSingleSecurityConnectorResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GovernanceRulesClientRuleIDExecuteSingleSecurityConnectorResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RuleIDExecuteSingleSecurityConnector - Execute a security GovernanceRule on the given security connector.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
 func (client *GovernanceRulesClient) ruleIDExecuteSingleSecurityConnector(ctx context.Context, resourceGroupName string, securityConnectorName string, ruleID string, options *GovernanceRulesClientBeginRuleIDExecuteSingleSecurityConnectorOptions) (*http.Response, error) {
 	req, err := client.ruleIDExecuteSingleSecurityConnectorCreateRequest(ctx, resourceGroupName, securityConnectorName, ruleID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -257,7 +251,7 @@ func (client *GovernanceRulesClient) ruleIDExecuteSingleSecurityConnectorCreateR
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -273,31 +267,33 @@ func (client *GovernanceRulesClient) ruleIDExecuteSingleSecurityConnectorCreateR
 
 // BeginRuleIDExecuteSingleSubscription - Execute a security GovernanceRule on the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
-// ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
-// options - GovernanceRulesClientBeginRuleIDExecuteSingleSubscriptionOptions contains the optional parameters for the GovernanceRulesClient.BeginRuleIDExecuteSingleSubscription
-// method.
+//   - ruleID - The security GovernanceRule key - unique key for the standard GovernanceRule
+//   - options - GovernanceRulesClientBeginRuleIDExecuteSingleSubscriptionOptions contains the optional parameters for the GovernanceRulesClient.BeginRuleIDExecuteSingleSubscription
+//     method.
 func (client *GovernanceRulesClient) BeginRuleIDExecuteSingleSubscription(ctx context.Context, ruleID string, options *GovernanceRulesClientBeginRuleIDExecuteSingleSubscriptionOptions) (*runtime.Poller[GovernanceRulesClientRuleIDExecuteSingleSubscriptionResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.ruleIDExecuteSingleSubscription(ctx, ruleID, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GovernanceRulesClientRuleIDExecuteSingleSubscriptionResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GovernanceRulesClientRuleIDExecuteSingleSubscriptionResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GovernanceRulesClientRuleIDExecuteSingleSubscriptionResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GovernanceRulesClientRuleIDExecuteSingleSubscriptionResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // RuleIDExecuteSingleSubscription - Execute a security GovernanceRule on the given subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-01-preview
 func (client *GovernanceRulesClient) ruleIDExecuteSingleSubscription(ctx context.Context, ruleID string, options *GovernanceRulesClientBeginRuleIDExecuteSingleSubscriptionOptions) (*http.Response, error) {
 	req, err := client.ruleIDExecuteSingleSubscriptionCreateRequest(ctx, ruleID, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -318,7 +314,7 @@ func (client *GovernanceRulesClient) ruleIDExecuteSingleSubscriptionCreateReques
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

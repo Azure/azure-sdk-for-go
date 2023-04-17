@@ -59,10 +59,6 @@ type Endpoint struct {
 
 // EndpointProperties - Class representing a Traffic Manager endpoint properties.
 type EndpointProperties struct {
-	// If Always Serve is enabled, probing for endpoint health will be disabled and endpoints will be included in the traffic
-	// routing method.
-	AlwaysServe *AlwaysServe `json:"alwaysServe,omitempty"`
-
 	// List of custom headers.
 	CustomHeaders []*EndpointPropertiesCustomHeadersItem `json:"customHeaders,omitempty"`
 
@@ -375,12 +371,14 @@ type ProfilesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.ListByResourceGroup method.
+// ProfilesClientListByResourceGroupOptions contains the optional parameters for the ProfilesClient.NewListByResourceGroupPager
+// method.
 type ProfilesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProfilesClientListBySubscriptionOptions contains the optional parameters for the ProfilesClient.ListBySubscription method.
+// ProfilesClientListBySubscriptionOptions contains the optional parameters for the ProfilesClient.NewListBySubscriptionPager
+// method.
 type ProfilesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }

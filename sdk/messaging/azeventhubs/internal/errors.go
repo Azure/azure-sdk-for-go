@@ -64,6 +64,18 @@ func TransformError(err error) error {
 		return exported.NewError(exported.ErrorCodeOwnershipLost, err)
 	}
 
+	// there are a few errors that all boil down to "bad creds or unauthorized"
+	var amqpErr *amqp.Error
+
+	if errors.As(err, &amqpErr) && amqpErr.Condition == amqp.ErrCondUnauthorizedAccess {
+		return exported.NewError(exported.ErrorCodeUnauthorizedAccess, err)
+	}
+
+	var rpcErr RPCError
+	if errors.As(err, &rpcErr) && rpcErr.Resp.Code == http.StatusUnauthorized {
+		return exported.NewError(exported.ErrorCodeUnauthorizedAccess, err)
+	}
+
 	rk := GetRecoveryKind(err)
 
 	switch rk {
@@ -85,7 +97,7 @@ func IsQuickRecoveryError(err error) bool {
 		return false
 	}
 
-	var de *amqp.DetachError
+	var de *amqp.LinkError
 	return errors.As(err, &de)
 }
 
@@ -110,41 +122,30 @@ func IsDrainingError(err error) bool {
 	return strings.Contains(err.Error(), "link is currently draining")
 }
 
-const errorConditionLockLost = amqp.ErrorCondition("com.microsoft:message-lock-lost")
+const errorConditionLockLost = amqp.ErrCond("com.microsoft:message-lock-lost")
 
-var amqpConditionsToRecoveryKind = map[amqp.ErrorCondition]RecoveryKind{
+var amqpConditionsToRecoveryKind = map[amqp.ErrCond]RecoveryKind{
 	// no recovery needed, these are temporary errors.
-	amqp.ErrorCondition("com.microsoft:server-busy"):         RecoveryKindNone,
-	amqp.ErrorCondition("com.microsoft:timeout"):             RecoveryKindNone,
-	amqp.ErrorCondition("com.microsoft:operation-cancelled"): RecoveryKindNone,
+	amqp.ErrCond("com.microsoft:server-busy"):         RecoveryKindNone,
+	amqp.ErrCond("com.microsoft:timeout"):             RecoveryKindNone,
+	amqp.ErrCond("com.microsoft:operation-cancelled"): RecoveryKindNone,
 
 	// Link recovery needed
-	amqp.ErrorDetachForced:          RecoveryKindLink, // "amqp:link:detach-forced"
-	amqp.ErrorTransferLimitExceeded: RecoveryKindLink, // "amqp:link:transfer-limit-exceeded"
+	amqp.ErrCondDetachForced:          RecoveryKindLink, // "amqp:link:detach-forced"
+	amqp.ErrCondTransferLimitExceeded: RecoveryKindLink, // "amqp:link:transfer-limit-exceeded"
 
 	// Connection recovery needed
-	amqp.ErrorConnectionForced: RecoveryKindConn, // "amqp:connection:forced"
-	amqp.ErrorInternalError:    RecoveryKindConn, // "amqp:internal-error"
+	amqp.ErrCondConnectionForced: RecoveryKindConn, // "amqp:connection:forced"
+	amqp.ErrCondInternalError:    RecoveryKindConn, // "amqp:internal-error"
 
 	// No recovery possible - this operation is non retriable.
-	amqp.ErrorMessageSizeExceeded:                                 RecoveryKindFatal, // "amqp:link:message-size-exceeded"
-	amqp.ErrorUnauthorizedAccess:                                  RecoveryKindFatal, // creds are bad
-	amqp.ErrorNotFound:                                            RecoveryKindFatal, // "amqp:not-found"
-	amqp.ErrorNotAllowed:                                          RecoveryKindFatal, // "amqp:not-allowed"
-	amqp.ErrorCondition("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
-	amqp.ErrorCondition("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
-	errorConditionLockLost:                                        RecoveryKindFatal,
-}
-
-// GetRecoveryKindForSession determines the recovery type for session-based links.
-func GetRecoveryKindForSession(err error) RecoveryKind {
-	// when a session is detached there's a delay before we can reacquire the
-	// lock. So a lock lost on a session _is_ retryable.
-	if isLockLostError(err) {
-		return RecoveryKindLink
-	}
-
-	return GetRecoveryKind(err)
+	amqp.ErrCondMessageSizeExceeded:                        RecoveryKindFatal, // "amqp:link:message-size-exceeded"
+	amqp.ErrCondUnauthorizedAccess:                         RecoveryKindFatal, // creds are bad
+	amqp.ErrCondNotFound:                                   RecoveryKindFatal, // "amqp:not-found"
+	amqp.ErrCondNotAllowed:                                 RecoveryKindFatal, // "amqp:not-allowed"
+	amqp.ErrCond("com.microsoft:entity-disabled"):          RecoveryKindFatal, // entity is disabled in the portal
+	amqp.ErrCond("com.microsoft:session-cannot-be-locked"): RecoveryKindFatal,
+	errorConditionLockLost:                                 RecoveryKindFatal,
 }
 
 // GetRecoveryKind determines the recovery type for non-session based links.
@@ -157,7 +158,7 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
-	if errors.Is(err, errConnResetNeeded) {
+	if errors.Is(err, amqpwrap.ErrConnResetNeeded) {
 		return RecoveryKindConn
 	}
 
@@ -176,20 +177,31 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	// azidentity returns errors that match this for auth failures.
+	var errNonRetriableMarker interface {
+		NonRetriable()
+		error
+	}
+
+	if errors.As(err, &errNonRetriableMarker) {
+		return RecoveryKindFatal
+	}
+
 	if IsOwnershipLostError(err) {
 		return RecoveryKindFatal
 	}
 
 	// check the "special" AMQP errors that aren't condition-based.
-	if errors.Is(err, amqp.ErrLinkClosed) || IsQuickRecoveryError(err) {
+	if IsQuickRecoveryError(err) {
 		return RecoveryKindLink
 	}
 
-	var connErr *amqp.ConnectionError
+	var connErr *amqp.ConnError
+	var sessionErr *amqp.SessionError
 
 	if errors.As(err, &connErr) ||
 		// session closures appear to leak through when the connection itself is going down.
-		errors.Is(err, amqp.ErrSessionClosed) {
+		errors.As(err, &sessionErr) {
 		return RecoveryKindConn
 	}
 
@@ -220,14 +232,9 @@ func GetRecoveryKind(err error) RecoveryKind {
 		// RFC2616 is the specification for HTTP.
 		code := rpcErr.RPCCode()
 
-		if code == http.StatusNotFound || code == RPCResponseCodeLockLost {
+		if code == http.StatusNotFound ||
+			code == http.StatusUnauthorized {
 			return RecoveryKindFatal
-		}
-
-		// this can happen when we're recovering the link - the client gets closed and the old link is still being
-		// used by this instance of the client. It needs to recover and attempt it again.
-		if code == http.StatusUnauthorized {
-			return RecoveryKindLink
 		}
 
 		// simple timeouts
@@ -260,7 +267,7 @@ type (
 	ErrIncorrectType struct {
 		Key          string
 		ExpectedType reflect.Type
-		ActualValue  interface{}
+		ActualValue  any
 	}
 
 	// ErrAMQP indicates that the server communicated an AMQP error with a particular
@@ -289,7 +296,7 @@ func (e ErrMalformedMessage) Error() string {
 
 // NewErrIncorrectType lets you skip using the `reflect` package. Just provide a variable of the desired type as
 // 'expected'.
-func NewErrIncorrectType(key string, expected, actual interface{}) ErrIncorrectType {
+func NewErrIncorrectType(key string, expected, actual any) ErrIncorrectType {
 	return ErrIncorrectType{
 		Key:          key,
 		ExpectedType: reflect.TypeOf(expected),
@@ -327,38 +334,18 @@ func IsNotAllowedError(err error) bool {
 	var e *amqp.Error
 
 	return errors.As(err, &e) &&
-		e.Condition == amqp.ErrorNotAllowed
+		e.Condition == amqp.ErrCondNotAllowed
 }
 
 func (e ErrConnectionClosed) Error() string {
 	return fmt.Sprintf("the connection has been closed: %s", string(e))
 }
 
-func isLockLostError(err error) bool {
-	var rpcErr RPCError
-
-	// this is the error you get if you settle on the management$ link
-	// with an expired locktoken.
-	if errors.As(err, &rpcErr) && rpcErr.Resp.Code == RPCResponseCodeLockLost {
-		return true
-	}
-
-	var amqpErr *amqp.Error
-
-	// this is the error you get if you settle on the actual receiver link you
-	// got the message on with an expired locktoken.
-	if errors.As(err, &amqpErr) && amqpErr.Condition == errorConditionLockLost {
-		return true
-	}
-
-	return false
-}
-
 func IsOwnershipLostError(err error) bool {
-	var de *amqp.DetachError
+	var de *amqp.LinkError
 
 	if errors.As(err, &de) {
-		return de.RemoteError != nil && de.RemoteError.Condition == "amqp:link:stolen"
+		return de.RemoteErr != nil && de.RemoteErr.Condition == "amqp:link:stolen"
 	}
 
 	return false

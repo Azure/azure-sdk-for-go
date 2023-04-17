@@ -25,11 +25,11 @@ func ExampleVirtualNetworksClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "test-vnet", nil)
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginDelete(ctx, "rg1", "test-vnet", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetwork() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewVirtualNetworksClient().Get(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -94,11 +94,11 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithADelegatedSubnet() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewVirtualNetworksClient().Get(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -154,11 +154,11 @@ func ExampleVirtualNetworksClient_Get_getVirtualNetworkWithServiceAssociationLin
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewVirtualNetworksClient().Get(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -227,11 +227,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetwork() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -278,11 +278,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithBg
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -348,11 +348,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithDe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subId", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
 		Location: to.Ptr("westcentralus"),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -430,11 +430,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithEn
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -501,11 +501,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "vnetTest", "vnet1", armnetwork.VirtualNetwork{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "vnetTest", "vnet1", armnetwork.VirtualNetwork{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -580,11 +580,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSe
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "vnetTest", "vnet1", armnetwork.VirtualNetwork{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "vnetTest", "vnet1", armnetwork.VirtualNetwork{
 		Location: to.Ptr("eastus2euap"),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -667,11 +667,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSu
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -730,11 +730,11 @@ func ExampleVirtualNetworksClient_BeginCreateOrUpdate_createVirtualNetworkWithSu
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginCreateOrUpdate(ctx, "rg1", "test-vnet", armnetwork.VirtualNetwork{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.VirtualNetworkPropertiesFormat{
 			AddressSpace: &armnetwork.AddressSpace{
@@ -797,11 +797,11 @@ func ExampleVirtualNetworksClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "test-vnet", armnetwork.TagsObject{
+	res, err := clientFactory.NewVirtualNetworksClient().UpdateTags(ctx, "rg1", "test-vnet", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -843,11 +843,11 @@ func ExampleVirtualNetworksClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewVirtualNetworksClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -920,11 +920,11 @@ func ExampleVirtualNetworksClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewVirtualNetworksClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -997,11 +997,11 @@ func ExampleVirtualNetworksClient_CheckIPAddressAvailability() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.CheckIPAddressAvailability(ctx, "rg1", "test-vnet", "10.0.1.4", nil)
+	res, err := clientFactory.NewVirtualNetworksClient().CheckIPAddressAvailability(ctx, "rg1", "test-vnet", "10.0.1.4", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1026,11 +1026,11 @@ func ExampleVirtualNetworksClient_NewListUsagePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListUsagePager("rg1", "vnetName", nil)
+	pager := clientFactory.NewVirtualNetworksClient().NewListUsagePager("rg1", "vnetName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -1074,11 +1074,11 @@ func ExampleVirtualNetworksClient_BeginListDdosProtectionStatus() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewVirtualNetworksClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListDdosProtectionStatus(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientBeginListDdosProtectionStatusOptions{Top: to.Ptr[int32](75),
+	poller, err := clientFactory.NewVirtualNetworksClient().BeginListDdosProtectionStatus(ctx, "rg1", "test-vnet", &armnetwork.VirtualNetworksClientBeginListDdosProtectionStatusOptions{Top: to.Ptr[int32](75),
 		SkipToken: nil,
 	})
 	if err != nil {

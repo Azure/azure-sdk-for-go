@@ -24,11 +24,11 @@ func ExampleRestorableDroppedSQLPoolsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewRestorableDroppedSQLPoolsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "restorabledroppeddatabasetest-1257", "restorabledroppeddatabasetest-2389", "restorabledroppeddatabasetest-7654,131403269876900000", nil)
+	res, err := clientFactory.NewRestorableDroppedSQLPoolsClient().Get(ctx, "restorabledroppeddatabasetest-1257", "restorabledroppeddatabasetest-2389", "restorabledroppeddatabasetest-7654,131403269876900000", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -59,11 +59,11 @@ func ExampleRestorableDroppedSQLPoolsClient_NewListByWorkspacePager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armsynapse.NewRestorableDroppedSQLPoolsClient("00000000-1111-2222-3333-444444444444", cred, nil)
+	clientFactory, err := armsynapse.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByWorkspacePager("restorabledroppeddatabasetest-1349", "restorabledroppeddatabasetest-1840", nil)
+	pager := clientFactory.NewRestorableDroppedSQLPoolsClient().NewListByWorkspacePager("restorabledroppeddatabasetest-1349", "restorabledroppeddatabasetest-1840", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {

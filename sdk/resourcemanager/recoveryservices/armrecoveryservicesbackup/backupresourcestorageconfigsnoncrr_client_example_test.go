@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicesbackup/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupStorageConfig_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/Common/BackupStorageConfig_Get.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceStorageConfigsNonCRRClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", nil)
+	res, err := clientFactory.NewBackupResourceStorageConfigsNonCRRClient().Get(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -48,18 +48,18 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupStorageConfig_Put.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/Common/BackupStorageConfig_Put.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceStorageConfigsNonCRRClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", armrecoveryservicesbackup.BackupResourceConfigResource{
+	res, err := clientFactory.NewBackupResourceStorageConfigsNonCRRClient().Update(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", armrecoveryservicesbackup.BackupResourceConfigResource{
 		Properties: &armrecoveryservicesbackup.BackupResourceConfig{
 			StorageType:      to.Ptr(armrecoveryservicesbackup.StorageTypeLocallyRedundant),
 			StorageTypeState: to.Ptr(armrecoveryservicesbackup.StorageTypeStateUnlocked),
@@ -83,18 +83,18 @@ func ExampleBackupResourceStorageConfigsNonCRRClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/3751704f5318f1175875c94b66af769db917f2d3/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupStorageConfig_Patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a498cae6d1a93f4c33073f0747b93b22815c09b7/specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/Common/BackupStorageConfig_Patch.json
 func ExampleBackupResourceStorageConfigsNonCRRClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armrecoveryservicesbackup.NewBackupResourceStorageConfigsNonCRRClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Patch(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", armrecoveryservicesbackup.BackupResourceConfigResource{
+	_, err = clientFactory.NewBackupResourceStorageConfigsNonCRRClient().Patch(ctx, "PySDKBackupTestRsVault", "PythonSDKBackupTestRg", armrecoveryservicesbackup.BackupResourceConfigResource{
 		Properties: &armrecoveryservicesbackup.BackupResourceConfig{
 			StorageType:      to.Ptr(armrecoveryservicesbackup.StorageTypeLocallyRedundant),
 			StorageTypeState: to.Ptr(armrecoveryservicesbackup.StorageTypeStateUnlocked),

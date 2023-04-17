@@ -27,11 +27,11 @@ func ExampleCachesClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager(nil)
+	pager := clientFactory.NewCachesClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -293,11 +293,11 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListByResourceGroupPager("scgroup", nil)
+	pager := clientFactory.NewCachesClient().NewListByResourceGroupPager("scgroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -561,11 +561,11 @@ func ExampleCachesClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "scgroup", "sc", nil)
+	poller, err := clientFactory.NewCachesClient().BeginDelete(ctx, "scgroup", "sc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -582,11 +582,11 @@ func ExampleCachesClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "scgroup", "sc1", nil)
+	res, err := clientFactory.NewCachesClient().Get(ctx, "scgroup", "sc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -735,11 +735,11 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "scgroup", "sc1", armstoragecache.Cache{
+	poller, err := clientFactory.NewCachesClient().BeginCreateOrUpdate(ctx, "scgroup", "sc1", armstoragecache.Cache{
 		Identity: &armstoragecache.CacheIdentity{
 			Type: to.Ptr(armstoragecache.CacheIdentityTypeUserAssigned),
 			UserAssignedIdentities: map[string]*armstoragecache.UserAssignedIdentitiesValue{
@@ -948,11 +948,11 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "scgroup", "sc1", armstoragecache.Cache{
+	poller, err := clientFactory.NewCachesClient().BeginCreateOrUpdate(ctx, "scgroup", "sc1", armstoragecache.Cache{
 		Location: to.Ptr("westus"),
 		Properties: &armstoragecache.CacheProperties{
 			CacheSizeGB: to.Ptr[int32](3072),
@@ -1136,11 +1136,11 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "scgroup", "sc1", armstoragecache.Cache{
+	poller, err := clientFactory.NewCachesClient().BeginUpdate(ctx, "scgroup", "sc1", armstoragecache.Cache{
 		Location: to.Ptr("westus"),
 		Properties: &armstoragecache.CacheProperties{
 			CacheSizeGB: to.Ptr[int32](3072),
@@ -1392,11 +1392,11 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "scgroup", "sc1", armstoragecache.Cache{
+	poller, err := clientFactory.NewCachesClient().BeginUpdate(ctx, "scgroup", "sc1", armstoragecache.Cache{
 		Location: to.Ptr("westus"),
 		Properties: &armstoragecache.CacheProperties{
 			CacheSizeGB: to.Ptr[int32](3072),
@@ -1628,11 +1628,11 @@ func ExampleCachesClient_BeginDebugInfo() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDebugInfo(ctx, "scgroup", "sc", nil)
+	poller, err := clientFactory.NewCachesClient().BeginDebugInfo(ctx, "scgroup", "sc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1649,11 +1649,11 @@ func ExampleCachesClient_BeginFlush() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginFlush(ctx, "scgroup", "sc", nil)
+	poller, err := clientFactory.NewCachesClient().BeginFlush(ctx, "scgroup", "sc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1670,11 +1670,11 @@ func ExampleCachesClient_BeginStart() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStart(ctx, "scgroup", "sc", nil)
+	poller, err := clientFactory.NewCachesClient().BeginStart(ctx, "scgroup", "sc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1691,11 +1691,11 @@ func ExampleCachesClient_BeginStop() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStop(ctx, "scgroup", "sc", nil)
+	poller, err := clientFactory.NewCachesClient().BeginStop(ctx, "scgroup", "sc", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1712,11 +1712,11 @@ func ExampleCachesClient_BeginStartPrimingJob() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStartPrimingJob(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginStartPrimingJobOptions{Primingjob: &armstoragecache.PrimingJob{
+	poller, err := clientFactory.NewCachesClient().BeginStartPrimingJob(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginStartPrimingJobOptions{Primingjob: &armstoragecache.PrimingJob{
 		PrimingJobName:     to.Ptr("contosoJob"),
 		PrimingManifestURL: to.Ptr("https://contosostorage.blob.core.windows.net/contosoblob/00000000_00000000000000000000000000000000.00000000000.FFFFFFFF.00000000?sp=r&st=2021-08-11T19:33:35Z&se=2021-08-12T03:33:35Z&spr=https&sv=2020-08-04&sr=b&sig=<secret-value-from-key>"),
 	},
@@ -1737,11 +1737,11 @@ func ExampleCachesClient_BeginStopPrimingJob() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStopPrimingJob(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginStopPrimingJobOptions{PrimingJobID: &armstoragecache.PrimingJobIDParameter{
+	poller, err := clientFactory.NewCachesClient().BeginStopPrimingJob(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginStopPrimingJobOptions{PrimingJobID: &armstoragecache.PrimingJobIDParameter{
 		PrimingJobID: to.Ptr("00000000000_0000000000"),
 	},
 	})
@@ -1761,11 +1761,11 @@ func ExampleCachesClient_BeginPausePrimingJob() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginPausePrimingJob(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginPausePrimingJobOptions{PrimingJobID: &armstoragecache.PrimingJobIDParameter{
+	poller, err := clientFactory.NewCachesClient().BeginPausePrimingJob(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginPausePrimingJobOptions{PrimingJobID: &armstoragecache.PrimingJobIDParameter{
 		PrimingJobID: to.Ptr("00000000000_0000000000"),
 	},
 	})
@@ -1785,11 +1785,11 @@ func ExampleCachesClient_BeginResumePrimingJob() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginResumePrimingJob(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginResumePrimingJobOptions{PrimingJobID: &armstoragecache.PrimingJobIDParameter{
+	poller, err := clientFactory.NewCachesClient().BeginResumePrimingJob(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginResumePrimingJobOptions{PrimingJobID: &armstoragecache.PrimingJobIDParameter{
 		PrimingJobID: to.Ptr("00000000000_0000000000"),
 	},
 	})
@@ -1809,11 +1809,11 @@ func ExampleCachesClient_BeginUpgradeFirmware() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpgradeFirmware(ctx, "scgroup", "sc1", nil)
+	poller, err := clientFactory.NewCachesClient().BeginUpgradeFirmware(ctx, "scgroup", "sc1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -1830,11 +1830,11 @@ func ExampleCachesClient_BeginSpaceAllocation() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragecache.NewCachesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armstoragecache.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSpaceAllocation(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginSpaceAllocationOptions{SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
+	poller, err := clientFactory.NewCachesClient().BeginSpaceAllocation(ctx, "scgroup", "sc1", &armstoragecache.CachesClientBeginSpaceAllocationOptions{SpaceAllocation: []*armstoragecache.StorageTargetSpaceAllocation{
 		{
 			Name:                 to.Ptr("st1"),
 			AllocationPercentage: to.Ptr[int32](25),

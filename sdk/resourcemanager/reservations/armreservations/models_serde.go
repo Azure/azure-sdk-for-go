@@ -752,6 +752,8 @@ func (c *Catalog) UnmarshalJSON(data []byte) error {
 func (c CatalogMsrp) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "p1Y", c.P1Y)
+	populate(objectMap, "p3Y", c.P3Y)
+	populate(objectMap, "p5Y", c.P5Y)
 	return json.Marshal(objectMap)
 }
 
@@ -766,6 +768,12 @@ func (c *CatalogMsrp) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "p1Y":
 			err = unpopulate(val, "P1Y", &c.P1Y)
+			delete(rawMsg, key)
+		case "p3Y":
+			err = unpopulate(val, "P3Y", &c.P3Y)
+			delete(rawMsg, key)
+		case "p5Y":
+			err = unpopulate(val, "P5Y", &c.P5Y)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1593,7 +1601,7 @@ func (o OperationResponse) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isDataAction", o.IsDataAction)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "origin", o.Origin)
-	populate(objectMap, "properties", &o.Properties)
+	populateAny(objectMap, "properties", o.Properties)
 	return json.Marshal(objectMap)
 }
 
@@ -2285,7 +2293,7 @@ func (q QuotaProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "currentValue", q.CurrentValue)
 	populate(objectMap, "limit", q.Limit)
 	populate(objectMap, "name", q.Name)
-	populate(objectMap, "properties", &q.Properties)
+	populateAny(objectMap, "properties", q.Properties)
 	populate(objectMap, "quotaPeriod", q.QuotaPeriod)
 	populate(objectMap, "resourceType", q.ResourceType)
 	populate(objectMap, "unit", q.Unit)
@@ -4303,6 +4311,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

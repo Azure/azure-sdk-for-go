@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // NamespacesClient contains the methods for the Namespaces group.
 // Don't use this type directly, use NewNamespacesClient() instead.
 type NamespacesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewNamespacesClient creates a new instance of NamespacesClient with the specified values.
@@ -37,21 +34,13 @@ type NamespacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NamespacesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".NamespacesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &NamespacesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,7 +48,7 @@ func NewNamespacesClient(subscriptionID string, credential azcore.TokenCredentia
 // CheckNameAvailability - Check the give namespace name availability.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - parameters - Parameters to check availability of the given namespace name
 //   - options - NamespacesClientCheckNameAvailabilityOptions contains the optional parameters for the NamespacesClient.CheckNameAvailability
 //     method.
@@ -68,7 +57,7 @@ func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, param
 	if err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
@@ -85,12 +74,12 @@ func (client *NamespacesClient) checkNameAvailabilityCreateRequest(ctx context.C
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -109,7 +98,7 @@ func (client *NamespacesClient) checkNameAvailabilityHandleResponse(resp *http.R
 // This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name.
 //   - parameters - Parameters supplied to create a namespace resource.
@@ -121,9 +110,9 @@ func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[NamespacesClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[NamespacesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[NamespacesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[NamespacesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -131,13 +120,13 @@ func (client *NamespacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 // This operation is idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 func (client *NamespacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, namespaceName string, parameters SBNamespace, options *NamespacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, namespaceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -162,12 +151,12 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -176,7 +165,7 @@ func (client *NamespacesClient) createOrUpdateCreateRequest(ctx context.Context,
 // CreateOrUpdateAuthorizationRule - Creates or updates an authorization rule for a namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -188,7 +177,7 @@ func (client *NamespacesClient) CreateOrUpdateAuthorizationRule(ctx context.Cont
 	if err != nil {
 		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
@@ -217,12 +206,12 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleCreateRequest(ctx
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -240,7 +229,7 @@ func (client *NamespacesClient) createOrUpdateAuthorizationRuleHandleResponse(re
 // CreateOrUpdateNetworkRuleSet - Create or update NetworkRuleSet for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - parameters - The Namespace IpFilterRule.
@@ -251,7 +240,7 @@ func (client *NamespacesClient) CreateOrUpdateNetworkRuleSet(ctx context.Context
 	if err != nil {
 		return NamespacesClientCreateOrUpdateNetworkRuleSetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientCreateOrUpdateNetworkRuleSetResponse{}, err
 	}
@@ -276,12 +265,12 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetCreateRequest(ctx co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -299,7 +288,7 @@ func (client *NamespacesClient) createOrUpdateNetworkRuleSetHandleResponse(resp 
 // BeginDelete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
@@ -309,22 +298,22 @@ func (client *NamespacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[NamespacesClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[NamespacesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[NamespacesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[NamespacesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes an existing namespace. This operation also removes all associated resources under the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 func (client *NamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, options *NamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, namespaceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -349,12 +338,12 @@ func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -363,7 +352,7 @@ func (client *NamespacesClient) deleteCreateRequest(ctx context.Context, resourc
 // DeleteAuthorizationRule - Deletes a namespace authorization rule.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -374,7 +363,7 @@ func (client *NamespacesClient) DeleteAuthorizationRule(ctx context.Context, res
 	if err != nil {
 		return NamespacesClientDeleteAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientDeleteAuthorizationRuleResponse{}, err
 	}
@@ -403,12 +392,12 @@ func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -417,7 +406,7 @@ func (client *NamespacesClient) deleteAuthorizationRuleCreateRequest(ctx context
 // Get - Gets a description for the specified namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - NamespacesClientGetOptions contains the optional parameters for the NamespacesClient.Get method.
@@ -426,7 +415,7 @@ func (client *NamespacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return NamespacesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientGetResponse{}, err
 	}
@@ -451,12 +440,12 @@ func (client *NamespacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -474,7 +463,7 @@ func (client *NamespacesClient) getHandleResponse(resp *http.Response) (Namespac
 // GetAuthorizationRule - Gets an authorization rule for a namespace by rule name.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -485,7 +474,7 @@ func (client *NamespacesClient) GetAuthorizationRule(ctx context.Context, resour
 	if err != nil {
 		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientGetAuthorizationRuleResponse{}, err
 	}
@@ -514,12 +503,12 @@ func (client *NamespacesClient) getAuthorizationRuleCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -537,7 +526,7 @@ func (client *NamespacesClient) getAuthorizationRuleHandleResponse(resp *http.Re
 // GetNetworkRuleSet - Gets NetworkRuleSet for a Namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - NamespacesClientGetNetworkRuleSetOptions contains the optional parameters for the NamespacesClient.GetNetworkRuleSet
@@ -547,7 +536,7 @@ func (client *NamespacesClient) GetNetworkRuleSet(ctx context.Context, resourceG
 	if err != nil {
 		return NamespacesClientGetNetworkRuleSetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientGetNetworkRuleSetResponse{}, err
 	}
@@ -572,12 +561,12 @@ func (client *NamespacesClient) getNetworkRuleSetCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -594,7 +583,7 @@ func (client *NamespacesClient) getNetworkRuleSetHandleResponse(resp *http.Respo
 
 // NewListPager - Gets all the available namespaces within the subscription, irrespective of the resource groups.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - options - NamespacesClientListOptions contains the optional parameters for the NamespacesClient.NewListPager method.
 func (client *NamespacesClient) NewListPager(options *NamespacesClientListOptions) *runtime.Pager[NamespacesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[NamespacesClientListResponse]{
@@ -612,7 +601,7 @@ func (client *NamespacesClient) NewListPager(options *NamespacesClientListOption
 			if err != nil {
 				return NamespacesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return NamespacesClientListResponse{}, err
 			}
@@ -631,12 +620,12 @@ func (client *NamespacesClient) listCreateRequest(ctx context.Context, options *
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -653,7 +642,7 @@ func (client *NamespacesClient) listHandleResponse(resp *http.Response) (Namespa
 
 // NewListAuthorizationRulesPager - Gets the authorization rules for a namespace.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - NamespacesClientListAuthorizationRulesOptions contains the optional parameters for the NamespacesClient.NewListAuthorizationRulesPager
@@ -674,7 +663,7 @@ func (client *NamespacesClient) NewListAuthorizationRulesPager(resourceGroupName
 			if err != nil {
 				return NamespacesClientListAuthorizationRulesResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return NamespacesClientListAuthorizationRulesResponse{}, err
 			}
@@ -701,12 +690,12 @@ func (client *NamespacesClient) listAuthorizationRulesCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -723,7 +712,7 @@ func (client *NamespacesClient) listAuthorizationRulesHandleResponse(resp *http.
 
 // NewListByResourceGroupPager - Gets the available namespaces within a resource group.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - options - NamespacesClientListByResourceGroupOptions contains the optional parameters for the NamespacesClient.NewListByResourceGroupPager
 //     method.
@@ -743,7 +732,7 @@ func (client *NamespacesClient) NewListByResourceGroupPager(resourceGroupName st
 			if err != nil {
 				return NamespacesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return NamespacesClientListByResourceGroupResponse{}, err
 			}
@@ -766,12 +755,12 @@ func (client *NamespacesClient) listByResourceGroupCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -789,7 +778,7 @@ func (client *NamespacesClient) listByResourceGroupHandleResponse(resp *http.Res
 // ListKeys - Gets the primary and secondary connection strings for the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -799,7 +788,7 @@ func (client *NamespacesClient) ListKeys(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return NamespacesClientListKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientListKeysResponse{}, err
 	}
@@ -828,12 +817,12 @@ func (client *NamespacesClient) listKeysCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -850,7 +839,7 @@ func (client *NamespacesClient) listKeysHandleResponse(resp *http.Response) (Nam
 
 // NewListNetworkRuleSetsPager - Gets list of NetworkRuleSet for a Namespace.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - options - NamespacesClientListNetworkRuleSetsOptions contains the optional parameters for the NamespacesClient.NewListNetworkRuleSetsPager
@@ -871,7 +860,7 @@ func (client *NamespacesClient) NewListNetworkRuleSetsPager(resourceGroupName st
 			if err != nil {
 				return NamespacesClientListNetworkRuleSetsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return NamespacesClientListNetworkRuleSetsResponse{}, err
 			}
@@ -898,12 +887,12 @@ func (client *NamespacesClient) listNetworkRuleSetsCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -921,7 +910,7 @@ func (client *NamespacesClient) listNetworkRuleSetsHandleResponse(resp *http.Res
 // RegenerateKeys - Regenerates the primary or secondary connection strings for the namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - authorizationRuleName - The authorization rule name.
@@ -933,7 +922,7 @@ func (client *NamespacesClient) RegenerateKeys(ctx context.Context, resourceGrou
 	if err != nil {
 		return NamespacesClientRegenerateKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientRegenerateKeysResponse{}, err
 	}
@@ -962,12 +951,12 @@ func (client *NamespacesClient) regenerateKeysCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -986,7 +975,7 @@ func (client *NamespacesClient) regenerateKeysHandleResponse(resp *http.Response
 // idempotent.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-10-01-preview
+// Generated from API version 2021-11-01
 //   - resourceGroupName - Name of the Resource group within the Azure subscription.
 //   - namespaceName - The namespace name
 //   - parameters - Parameters supplied to update a namespace resource.
@@ -996,7 +985,7 @@ func (client *NamespacesClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return NamespacesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return NamespacesClientUpdateResponse{}, err
 	}
@@ -1021,12 +1010,12 @@ func (client *NamespacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01-preview")
+	reqQP.Set("api-version", "2021-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -14,642 +14,642 @@ import "time"
 // APIDefinitionInfo - Information about the formal API definition for the app.
 type APIDefinitionInfo struct {
 	// The URL of the API definition.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // APIKVReference - Description of site key vault references.
 type APIKVReference struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ApiKVReference resource specific properties
-	Properties *APIKVReferenceProperties `json:"properties,omitempty"`
+	Properties *APIKVReferenceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type APIKVReferenceCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*APIKVReference `json:"value,omitempty"`
+	Value []*APIKVReference
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // APIKVReferenceProperties - ApiKVReference resource specific properties
 type APIKVReferenceProperties struct {
-	ActiveVersion *string `json:"activeVersion,omitempty"`
-	Details       *string `json:"details,omitempty"`
+	ActiveVersion *string
+	Details       *string
 
 	// Managed service identity.
-	IdentityType  *ManagedServiceIdentity `json:"identityType,omitempty"`
-	Reference     *string                 `json:"reference,omitempty"`
-	SecretName    *string                 `json:"secretName,omitempty"`
-	SecretVersion *string                 `json:"secretVersion,omitempty"`
-	Source        *string                 `json:"source,omitempty"`
-	Status        *ResolveStatus          `json:"status,omitempty"`
-	VaultName     *string                 `json:"vaultName,omitempty"`
+	IdentityType  *ManagedServiceIdentity
+	Reference     *string
+	SecretName    *string
+	SecretVersion *string
+	Source        *string
+	Status        *ResolveStatus
+	VaultName     *string
 }
 
 // APIManagementConfig - Azure API management (APIM) configuration linked to the app.
 type APIManagementConfig struct {
 	// APIM-Api Identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // AbnormalTimePeriod - Class representing Abnormal Time Period identified in diagnosis
 type AbnormalTimePeriod struct {
 	// End time of the downtime
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// List of Possible Cause of downtime
-	Events []*DetectorAbnormalTimePeriod `json:"events,omitempty"`
+	Events []*DetectorAbnormalTimePeriod
 
 	// List of proposed solutions
-	Solutions []*Solution `json:"solutions,omitempty"`
+	Solutions []*Solution
 
 	// Start time of the downtime
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // Address information for domain registration.
 type Address struct {
 	// REQUIRED; First line of an Address.
-	Address1 *string `json:"address1,omitempty"`
+	Address1 *string
 
 	// REQUIRED; The city for the address.
-	City *string `json:"city,omitempty"`
+	City *string
 
 	// REQUIRED; The country for the address.
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// REQUIRED; The postal code for the address.
-	PostalCode *string `json:"postalCode,omitempty"`
+	PostalCode *string
 
 	// REQUIRED; The state or province for the address.
-	State *string `json:"state,omitempty"`
+	State *string
 
 	// The second line of the Address. Optional.
-	Address2 *string `json:"address2,omitempty"`
+	Address2 *string
 }
 
 // AddressResponse - Describes main public IP address and any extra virtual IPs.
 type AddressResponse struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// AddressResponse resource specific properties
-	Properties *AddressResponseProperties `json:"properties,omitempty"`
+	Properties *AddressResponseProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AddressResponseProperties - AddressResponse resource specific properties
 type AddressResponseProperties struct {
 	// Virtual Network internal IP address of the App Service Environment if it is in internal load-balancing mode.
-	InternalIPAddress *string `json:"internalIpAddress,omitempty"`
+	InternalIPAddress *string
 
 	// IP addresses appearing on outbound connections.
-	OutboundIPAddresses []*string `json:"outboundIpAddresses,omitempty"`
+	OutboundIPAddresses []*string
 
 	// Main public virtual IP.
-	ServiceIPAddress *string `json:"serviceIpAddress,omitempty"`
+	ServiceIPAddress *string
 
 	// Additional virtual IPs.
-	VipMappings []*VirtualIPMapping `json:"vipMappings,omitempty"`
+	VipMappings []*VirtualIPMapping
 }
 
 // AllowedAudiencesValidation - The configuration settings of the Allowed Audiences validation flow.
 type AllowedAudiencesValidation struct {
 	// The configuration settings of the allowed list of audiences from which to validate the JWT token.
-	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
+	AllowedAudiences []*string
 }
 
 // AllowedPrincipals - The configuration settings of the Azure Active Directory allowed principals.
 type AllowedPrincipals struct {
 	// The list of the allowed groups.
-	Groups []*string `json:"groups,omitempty"`
+	Groups []*string
 
 	// The list of the allowed identities.
-	Identities []*string `json:"identities,omitempty"`
+	Identities []*string
 }
 
 // AnalysisData - Class Representing Detector Evidence used for analysis
 type AnalysisData struct {
 	// Additional Source Data
-	Data [][]*NameValuePair `json:"data,omitempty"`
+	Data [][]*NameValuePair
 
 	// Detector Definition
-	DetectorDefinition *DetectorDefinition `json:"detectorDefinition,omitempty"`
+	DetectorDefinition *DetectorDefinition
 
 	// Detector Meta Data
-	DetectorMetaData *ResponseMetaData `json:"detectorMetaData,omitempty"`
+	DetectorMetaData *ResponseMetaData
 
 	// Source Metrics
-	Metrics []*DiagnosticMetricSet `json:"metrics,omitempty"`
+	Metrics []*DiagnosticMetricSet
 
 	// Name of the Detector
-	Source *string `json:"source,omitempty"`
+	Source *string
 }
 
 // AnalysisDefinition - Definition of Analysis
 type AnalysisDefinition struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// AnalysisDefinition resource specific properties
-	Properties *AnalysisDefinitionProperties `json:"properties,omitempty"`
+	Properties *AnalysisDefinitionProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AnalysisDefinitionProperties - AnalysisDefinition resource specific properties
 type AnalysisDefinitionProperties struct {
 	// READ-ONLY; Description of the Analysis
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 }
 
 // AppCertificate - SSL certificate for an app.
 type AppCertificate struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Certificate resource specific properties
-	Properties *AppCertificateProperties `json:"properties,omitempty"`
+	Properties *AppCertificateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AppCertificateCollection - Collection of certificates.
 type AppCertificateCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*AppCertificate `json:"value,omitempty"`
+	Value []*AppCertificate
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AppCertificatePatchResource - ARM resource for a certificate.
 type AppCertificatePatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// CertificatePatchResource resource specific properties
-	Properties *AppCertificatePatchResourceProperties `json:"properties,omitempty"`
+	Properties *AppCertificatePatchResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AppCertificatePatchResourceProperties - CertificatePatchResource resource specific properties
 type AppCertificatePatchResourceProperties struct {
 	// CNAME of the certificate to be issued via free certificate
-	CanonicalName *string `json:"canonicalName,omitempty"`
+	CanonicalName *string
 
 	// Method of domain validation for free cert
-	DomainValidationMethod *string `json:"domainValidationMethod,omitempty"`
+	DomainValidationMethod *string
 
 	// Host names the certificate applies to.
-	HostNames []*string `json:"hostNames,omitempty"`
+	HostNames []*string
 
 	// Key Vault Csm resource Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	KeyVaultID *string
 
 	// Key Vault secret name.
-	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+	KeyVaultSecretName *string
 
 	// Certificate password.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Pfx blob.
-	PfxBlob []byte `json:"pfxBlob,omitempty"`
+	PfxBlob []byte
 
 	// Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-	ServerFarmID *string `json:"serverFarmId,omitempty"`
+	ServerFarmID *string
 
 	// READ-ONLY; Raw bytes of .cer file
-	CerBlob []byte `json:"cerBlob,omitempty" azure:"ro"`
+	CerBlob []byte
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *time.Time
 
 	// READ-ONLY; Friendly name of the certificate.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Specification for the App Service Environment to use for the certificate.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty" azure:"ro"`
+	HostingEnvironmentProfile *HostingEnvironmentProfile
 
 	// READ-ONLY; Certificate issue Date.
-	IssueDate *time.Time `json:"issueDate,omitempty" azure:"ro"`
+	IssueDate *time.Time
 
 	// READ-ONLY; Certificate issuer.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+	Issuer *string
 
 	// READ-ONLY; Status of the Key Vault secret.
-	KeyVaultSecretStatus *KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty" azure:"ro"`
+	KeyVaultSecretStatus *KeyVaultSecretStatus
 
 	// READ-ONLY; Public key hash.
-	PublicKeyHash *string `json:"publicKeyHash,omitempty" azure:"ro"`
+	PublicKeyHash *string
 
 	// READ-ONLY; Self link.
-	SelfLink *string `json:"selfLink,omitempty" azure:"ro"`
+	SelfLink *string
 
 	// READ-ONLY; App name.
-	SiteName *string `json:"siteName,omitempty" azure:"ro"`
+	SiteName *string
 
 	// READ-ONLY; Subject name of the certificate.
-	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+	SubjectName *string
 
 	// READ-ONLY; Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 
 	// READ-ONLY; Is the certificate valid?.
-	Valid *bool `json:"valid,omitempty" azure:"ro"`
+	Valid *bool
 }
 
 // AppCertificateProperties - Certificate resource specific properties
 type AppCertificateProperties struct {
 	// CNAME of the certificate to be issued via free certificate
-	CanonicalName *string `json:"canonicalName,omitempty"`
+	CanonicalName *string
 
 	// Method of domain validation for free cert
-	DomainValidationMethod *string `json:"domainValidationMethod,omitempty"`
+	DomainValidationMethod *string
 
 	// Host names the certificate applies to.
-	HostNames []*string `json:"hostNames,omitempty"`
+	HostNames []*string
 
 	// Key Vault Csm resource Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	KeyVaultID *string
 
 	// Key Vault secret name.
-	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+	KeyVaultSecretName *string
 
 	// Certificate password.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Pfx blob.
-	PfxBlob []byte `json:"pfxBlob,omitempty"`
+	PfxBlob []byte
 
 	// Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-	ServerFarmID *string `json:"serverFarmId,omitempty"`
+	ServerFarmID *string
 
 	// READ-ONLY; Raw bytes of .cer file
-	CerBlob []byte `json:"cerBlob,omitempty" azure:"ro"`
+	CerBlob []byte
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *time.Time
 
 	// READ-ONLY; Friendly name of the certificate.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Specification for the App Service Environment to use for the certificate.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty" azure:"ro"`
+	HostingEnvironmentProfile *HostingEnvironmentProfile
 
 	// READ-ONLY; Certificate issue Date.
-	IssueDate *time.Time `json:"issueDate,omitempty" azure:"ro"`
+	IssueDate *time.Time
 
 	// READ-ONLY; Certificate issuer.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+	Issuer *string
 
 	// READ-ONLY; Status of the Key Vault secret.
-	KeyVaultSecretStatus *KeyVaultSecretStatus `json:"keyVaultSecretStatus,omitempty" azure:"ro"`
+	KeyVaultSecretStatus *KeyVaultSecretStatus
 
 	// READ-ONLY; Public key hash.
-	PublicKeyHash *string `json:"publicKeyHash,omitempty" azure:"ro"`
+	PublicKeyHash *string
 
 	// READ-ONLY; Self link.
-	SelfLink *string `json:"selfLink,omitempty" azure:"ro"`
+	SelfLink *string
 
 	// READ-ONLY; App name.
-	SiteName *string `json:"siteName,omitempty" azure:"ro"`
+	SiteName *string
 
 	// READ-ONLY; Subject name of the certificate.
-	SubjectName *string `json:"subjectName,omitempty" azure:"ro"`
+	SubjectName *string
 
 	// READ-ONLY; Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 
 	// READ-ONLY; Is the certificate valid?.
-	Valid *bool `json:"valid,omitempty" azure:"ro"`
+	Valid *bool
 }
 
 // AppInsightsWebAppStackSettings - App Insights Web App stack settings.
 type AppInsightsWebAppStackSettings struct {
 	// READ-ONLY; true if Application Insights is disabled by default for the stack; otherwise, false.
-	IsDefaultOff *bool `json:"isDefaultOff,omitempty" azure:"ro"`
+	IsDefaultOff *bool
 
 	// READ-ONLY; true if remote Application Insights is supported for the stack; otherwise, false.
-	IsSupported *bool `json:"isSupported,omitempty" azure:"ro"`
+	IsSupported *bool
 }
 
 type AppLogsConfiguration struct {
-	Destination               *string                    `json:"destination,omitempty"`
-	LogAnalyticsConfiguration *LogAnalyticsConfiguration `json:"logAnalyticsConfiguration,omitempty"`
+	Destination               *string
+	LogAnalyticsConfiguration *LogAnalyticsConfiguration
 }
 
 // AppRegistration - The configuration settings of the app registration for providers that have app ids and app secrets
 type AppRegistration struct {
 	// The App ID of the app used for login.
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// The app setting name that contains the app secret.
-	AppSecretSettingName *string `json:"appSecretSettingName,omitempty"`
+	AppSecretSettingName *string
 }
 
 // Apple - The configuration settings of the Apple provider.
 type Apple struct {
 	// false if the Apple provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the Apple registration.
-	Registration *AppleRegistration `json:"registration,omitempty"`
+	Registration *AppleRegistration
 }
 
 // AppleRegistration - The configuration settings of the registration for the Apple provider
 type AppleRegistration struct {
 	// The Client ID of the app used for login.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The app setting name that contains the client secret.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 }
 
 // ApplicationLogsConfig - Application logs configuration.
 type ApplicationLogsConfig struct {
 	// Application logs to blob storage configuration.
-	AzureBlobStorage *AzureBlobStorageApplicationLogsConfig `json:"azureBlobStorage,omitempty"`
+	AzureBlobStorage *AzureBlobStorageApplicationLogsConfig
 
 	// Application logs to azure table storage configuration.
-	AzureTableStorage *AzureTableStorageApplicationLogsConfig `json:"azureTableStorage,omitempty"`
+	AzureTableStorage *AzureTableStorageApplicationLogsConfig
 
 	// Application logs to file system configuration.
-	FileSystem *FileSystemApplicationLogsConfig `json:"fileSystem,omitempty"`
+	FileSystem *FileSystemApplicationLogsConfig
 }
 
 // ApplicationStack - Application stack.
 type ApplicationStack struct {
 	// Application stack dependency.
-	Dependency *string `json:"dependency,omitempty"`
+	Dependency *string
 
 	// Application stack display name.
-	Display *string `json:"display,omitempty"`
+	Display *string
 
 	// List of frameworks associated with application stack.
-	Frameworks []*ApplicationStack `json:"frameworks,omitempty"`
+	Frameworks []*ApplicationStack
 
 	// true if this is the stack is deprecated; otherwise, false.
-	IsDeprecated []*ApplicationStack `json:"isDeprecated,omitempty"`
+	IsDeprecated []*ApplicationStack
 
 	// List of major versions available.
-	MajorVersions []*StackMajorVersion `json:"majorVersions,omitempty"`
+	MajorVersions []*StackMajorVersion
 
 	// Application stack name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ApplicationStackCollection - Collection of Application Stacks
 type ApplicationStackCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ApplicationStackResource `json:"value,omitempty"`
+	Value []*ApplicationStackResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ApplicationStackResource - ARM resource for a ApplicationStack.
 type ApplicationStackResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *ApplicationStack `json:"properties,omitempty"`
+	Properties *ApplicationStack
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type ArcConfiguration struct {
-	ArtifactStorageAccessMode    *string                `json:"artifactStorageAccessMode,omitempty"`
-	ArtifactStorageClassName     *string                `json:"artifactStorageClassName,omitempty"`
-	ArtifactStorageMountPath     *string                `json:"artifactStorageMountPath,omitempty"`
-	ArtifactStorageNodeName      *string                `json:"artifactStorageNodeName,omitempty"`
-	ArtifactsStorageType         *StorageType           `json:"artifactsStorageType,omitempty"`
-	FrontEndServiceConfiguration *FrontEndConfiguration `json:"frontEndServiceConfiguration,omitempty"`
-	KubeConfig                   *string                `json:"kubeConfig,omitempty"`
+	ArtifactStorageAccessMode    *string
+	ArtifactStorageClassName     *string
+	ArtifactStorageMountPath     *string
+	ArtifactStorageNodeName      *string
+	ArtifactsStorageType         *StorageType
+	FrontEndServiceConfiguration *FrontEndConfiguration
+	KubeConfig                   *string
 }
 
 // ArmIDWrapper - A wrapper for an ARM resource id
 type ArmIDWrapper struct {
 	// READ-ONLY
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // ArmPlan - The plan object in Azure Resource Manager, represents a marketplace plan.
 type ArmPlan struct {
 	// The name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The product.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// The promotion code.
-	PromotionCode *string `json:"promotionCode,omitempty"`
+	PromotionCode *string
 
 	// The publisher.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// Version of product.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // AseV3NetworkingConfiguration - Full view of networking configuration for an ASE.
 type AseV3NetworkingConfiguration struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// AseV3NetworkingConfiguration resource specific properties
-	Properties *AseV3NetworkingConfigurationProperties `json:"properties,omitempty"`
+	Properties *AseV3NetworkingConfigurationProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AseV3NetworkingConfigurationProperties - AseV3NetworkingConfiguration resource specific properties
 type AseV3NetworkingConfigurationProperties struct {
 	// Property to enable and disable new private endpoint connection creation on ASE
-	AllowNewPrivateEndpointConnections *bool `json:"allowNewPrivateEndpointConnections,omitempty"`
+	AllowNewPrivateEndpointConnections *bool
 
 	// Property to enable and disable FTP on ASEV3
-	FtpEnabled *bool `json:"ftpEnabled,omitempty"`
+	FtpEnabled *bool
 
 	// Customer provided Inbound IP Address. Only able to be set on Ase create.
-	InboundIPAddressOverride *string `json:"inboundIpAddressOverride,omitempty"`
+	InboundIPAddressOverride *string
 
 	// Property to enable and disable Remote Debug on ASEV3
-	RemoteDebugEnabled *bool `json:"remoteDebugEnabled,omitempty"`
+	RemoteDebugEnabled *bool
 
 	// READ-ONLY
-	ExternalInboundIPAddresses []*string `json:"externalInboundIpAddresses,omitempty" azure:"ro"`
+	ExternalInboundIPAddresses []*string
 
 	// READ-ONLY
-	InternalInboundIPAddresses []*string `json:"internalInboundIpAddresses,omitempty" azure:"ro"`
+	InternalInboundIPAddresses []*string
 
 	// READ-ONLY
-	LinuxOutboundIPAddresses []*string `json:"linuxOutboundIpAddresses,omitempty" azure:"ro"`
+	LinuxOutboundIPAddresses []*string
 
 	// READ-ONLY
-	WindowsOutboundIPAddresses []*string `json:"windowsOutboundIpAddresses,omitempty" azure:"ro"`
+	WindowsOutboundIPAddresses []*string
 }
 
 // AuthPlatform - The configuration settings of the platform of App Service Authentication/Authorization.
 type AuthPlatform struct {
 	// The path of the config file containing auth settings if they come from a file. If the path is relative, base will the site's
 	// root directory.
-	ConfigFilePath *string `json:"configFilePath,omitempty"`
+	ConfigFilePath *string
 
 	// true if the Authentication / Authorization feature is enabled for the current app; otherwise, false.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The RuntimeVersion of the Authentication / Authorization feature in use for the current app. The setting in this value
 	// can control the behavior of certain features in the Authentication /
 	// Authorization module.
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 }
 
 // AutoHealActions - Actions which to take by the auto-heal module when a rule is triggered.
 type AutoHealActions struct {
 	// Predefined action to be taken.
-	ActionType *AutoHealActionType `json:"actionType,omitempty"`
+	ActionType *AutoHealActionType
 
 	// Custom action to be taken.
-	CustomAction *AutoHealCustomAction `json:"customAction,omitempty"`
+	CustomAction *AutoHealCustomAction
 
 	// Minimum time the process must execute before taking the action
-	MinProcessExecutionTime *string `json:"minProcessExecutionTime,omitempty"`
+	MinProcessExecutionTime *string
 }
 
 // AutoHealCustomAction - Custom action to be executed when an auto heal rule is triggered.
 type AutoHealCustomAction struct {
 	// Executable to be run.
-	Exe *string `json:"exe,omitempty"`
+	Exe *string
 
 	// Parameters for the executable.
-	Parameters *string `json:"parameters,omitempty"`
+	Parameters *string
 }
 
 // AutoHealRules - Rules that can be defined for auto-heal.
 type AutoHealRules struct {
 	// Actions to be executed when a rule is triggered.
-	Actions *AutoHealActions `json:"actions,omitempty"`
+	Actions *AutoHealActions
 
 	// Conditions that describe when to execute the auto-heal actions.
-	Triggers *AutoHealTriggers `json:"triggers,omitempty"`
+	Triggers *AutoHealTriggers
 }
 
 // AutoHealTriggers - Triggers for auto-heal.
 type AutoHealTriggers struct {
 	// A rule based on private bytes.
-	PrivateBytesInKB *int32 `json:"privateBytesInKB,omitempty"`
+	PrivateBytesInKB *int32
 
 	// A rule based on total requests.
-	Requests *RequestsBasedTrigger `json:"requests,omitempty"`
+	Requests *RequestsBasedTrigger
 
 	// A rule based on request execution time.
-	SlowRequests *SlowRequestsBasedTrigger `json:"slowRequests,omitempty"`
+	SlowRequests *SlowRequestsBasedTrigger
 
 	// A rule based on multiple Slow Requests Rule with path
-	SlowRequestsWithPath []*SlowRequestsBasedTrigger `json:"slowRequestsWithPath,omitempty"`
+	SlowRequestsWithPath []*SlowRequestsBasedTrigger
 
 	// A rule based on status codes.
-	StatusCodes []*StatusCodesBasedTrigger `json:"statusCodes,omitempty"`
+	StatusCodes []*StatusCodesBasedTrigger
 
 	// A rule based on status codes ranges.
-	StatusCodesRange []*StatusCodesRangeBasedTrigger `json:"statusCodesRange,omitempty"`
+	StatusCodesRange []*StatusCodesRangeBasedTrigger
 }
 
 // AzureActiveDirectory - The configuration settings of the Azure Active directory provider.
 type AzureActiveDirectory struct {
 	// false if the Azure Active Directory provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Gets a value indicating whether the Azure AD configuration was auto-provisioned using 1st party tooling. This is an internal
 	// flag primarily intended to support the Azure Management Portal. Users
 	// should not read or write to this property.
-	IsAutoProvisioned *bool `json:"isAutoProvisioned,omitempty"`
+	IsAutoProvisioned *bool
 
 	// The configuration settings of the Azure Active Directory login flow.
-	Login *AzureActiveDirectoryLogin `json:"login,omitempty"`
+	Login *AzureActiveDirectoryLogin
 
 	// The configuration settings of the Azure Active Directory app registration.
-	Registration *AzureActiveDirectoryRegistration `json:"registration,omitempty"`
+	Registration *AzureActiveDirectoryRegistration
 
 	// The configuration settings of the Azure Active Directory token validation flow.
-	Validation *AzureActiveDirectoryValidation `json:"validation,omitempty"`
+	Validation *AzureActiveDirectoryValidation
 }
 
 // AzureActiveDirectoryLogin - The configuration settings of the Azure Active Directory login flow.
 type AzureActiveDirectoryLogin struct {
 	// true if the www-authenticate provider should be omitted from the request; otherwise, false.
-	DisableWWWAuthenticate *bool `json:"disableWWWAuthenticate,omitempty"`
+	DisableWWWAuthenticate *bool
 
 	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the
 	// form "key=value".
-	LoginParameters []*string `json:"loginParameters,omitempty"`
+	LoginParameters []*string
 }
 
 // AzureActiveDirectoryRegistration - The configuration settings of the Azure Active Directory app registration.
@@ -657,250 +657,250 @@ type AzureActiveDirectoryRegistration struct {
 	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection
 	// authentication with Azure Active Directory or other 3rd party OpenID
 	// Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-10.html
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes. This property
 	// acts as a replacement for the Client Secret Certificate Thumbprint. It is
 	// also optional.
-	ClientSecretCertificateIssuer *string `json:"clientSecretCertificateIssuer,omitempty"`
+	ClientSecretCertificateIssuer *string
 
 	// An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for signing
 	// purposes. This property acts as a replacement for the Client Secret Certificate
 	// Thumbprint. It is also optional.
-	ClientSecretCertificateSubjectAlternativeName *string `json:"clientSecretCertificateSubjectAlternativeName,omitempty"`
+	ClientSecretCertificateSubjectAlternativeName *string
 
 	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts
 	// as a replacement for the Client Secret. It is also optional.
-	ClientSecretCertificateThumbprint *string `json:"clientSecretCertificateThumbprint,omitempty"`
+	ClientSecretCertificateThumbprint *string
 
 	// The app setting name that contains the client secret of the relying party application.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 
 	// The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application. When using Azure
 	// Active Directory, this value is the URI of the directory tenant, e.g.
 	// https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More
 	// information on OpenID Connect Discovery:
 	// http://openid.net/specs/openid-connect-discovery-1_0.html
-	OpenIDIssuer *string `json:"openIdIssuer,omitempty"`
+	OpenIDIssuer *string
 }
 
 // AzureActiveDirectoryValidation - The configuration settings of the Azure Active Directory token validation flow.
 type AzureActiveDirectoryValidation struct {
 	// The list of audiences that can make successful authentication/authorization requests.
-	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
+	AllowedAudiences []*string
 
 	// The configuration settings of the default authorization policy.
-	DefaultAuthorizationPolicy *DefaultAuthorizationPolicy `json:"defaultAuthorizationPolicy,omitempty"`
+	DefaultAuthorizationPolicy *DefaultAuthorizationPolicy
 
 	// The configuration settings of the checks that should be made while validating the JWT Claims.
-	JwtClaimChecks *JwtClaimChecks `json:"jwtClaimChecks,omitempty"`
+	JwtClaimChecks *JwtClaimChecks
 }
 
 // AzureBlobStorageApplicationLogsConfig - Application logs azure blob storage configuration.
 type AzureBlobStorageApplicationLogsConfig struct {
 	// Log level.
-	Level *LogLevel `json:"level,omitempty"`
+	Level *LogLevel
 
 	// Retention in days. Remove blobs older than X days. 0 or lower means no retention.
-	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+	RetentionInDays *int32
 
 	// SAS url to a azure blob container with read/write/list/delete permissions.
-	SasURL *string `json:"sasUrl,omitempty"`
+	SasURL *string
 }
 
 // AzureBlobStorageHTTPLogsConfig - Http logs to azure blob storage configuration.
 type AzureBlobStorageHTTPLogsConfig struct {
 	// True if configuration is enabled, false if it is disabled and null if configuration is not set.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Retention in days. Remove blobs older than X days. 0 or lower means no retention.
-	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+	RetentionInDays *int32
 
 	// SAS url to a azure blob container with read/write/list/delete permissions.
-	SasURL *string `json:"sasUrl,omitempty"`
+	SasURL *string
 }
 
 // AzureResourceErrorInfo - The azure resource error info.
 type AzureResourceErrorInfo struct {
 	// REQUIRED; The error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; The error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The error details.
-	Details []*AzureResourceErrorInfo `json:"details,omitempty"`
+	Details []*AzureResourceErrorInfo
 }
 
 // AzureStaticWebApps - The configuration settings of the Azure Static Web Apps provider.
 type AzureStaticWebApps struct {
 	// false if the Azure Static Web Apps provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the Azure Static Web Apps registration.
-	Registration *AzureStaticWebAppsRegistration `json:"registration,omitempty"`
+	Registration *AzureStaticWebAppsRegistration
 }
 
 // AzureStaticWebAppsRegistration - The configuration settings of the registration for the Azure Static Web Apps provider
 type AzureStaticWebAppsRegistration struct {
 	// The Client ID of the app used for login.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 }
 
 // AzureStorageInfoValue - Azure Files or Blob Storage access information value for dictionary storage.
 type AzureStorageInfoValue struct {
 	// Access key for the storage account.
-	AccessKey *string `json:"accessKey,omitempty"`
+	AccessKey *string
 
 	// Name of the storage account.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// Path to mount the storage within the site's runtime environment.
-	MountPath *string `json:"mountPath,omitempty"`
+	MountPath *string
 
 	// Name of the file share (container name, for Blob storage).
-	ShareName *string `json:"shareName,omitempty"`
+	ShareName *string
 
 	// Type of storage.
-	Type *AzureStorageType `json:"type,omitempty"`
+	Type *AzureStorageType
 
 	// READ-ONLY; State of the storage account.
-	State *AzureStorageState `json:"state,omitempty" azure:"ro"`
+	State *AzureStorageState
 }
 
 // AzureStoragePropertyDictionaryResource - AzureStorageInfo dictionary resource.
 type AzureStoragePropertyDictionaryResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Azure storage accounts.
-	Properties map[string]*AzureStorageInfoValue `json:"properties,omitempty"`
+	Properties map[string]*AzureStorageInfoValue
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureTableStorageApplicationLogsConfig - Application logs to Azure table storage configuration.
 type AzureTableStorageApplicationLogsConfig struct {
 	// REQUIRED; SAS URL to an Azure table with add/query/delete permissions.
-	SasURL *string `json:"sasUrl,omitempty"`
+	SasURL *string
 
 	// Log level.
-	Level *LogLevel `json:"level,omitempty"`
+	Level *LogLevel
 }
 
 // BackupItem - Backup description.
 type BackupItem struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// BackupItem resource specific properties
-	Properties *BackupItemProperties `json:"properties,omitempty"`
+	Properties *BackupItemProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupItemCollection - Collection of backup items.
 type BackupItemCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*BackupItem `json:"value,omitempty"`
+	Value []*BackupItem
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // BackupItemProperties - BackupItem resource specific properties
 type BackupItemProperties struct {
 	// READ-ONLY; Id of the backup.
-	BackupID *int32 `json:"id,omitempty" azure:"ro"`
+	BackupID *int32
 
 	// READ-ONLY; Name of the blob which contains data for this backup.
-	BlobName *string `json:"blobName,omitempty" azure:"ro"`
+	BlobName *string
 
 	// READ-ONLY; Unique correlation identifier. Please use this along with the timestamp while communicating with Azure support.
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+	CorrelationID *string
 
 	// READ-ONLY; Timestamp of the backup creation.
-	Created *time.Time `json:"created,omitempty" azure:"ro"`
+	Created *time.Time
 
 	// READ-ONLY; List of databases included in the backup.
-	Databases []*DatabaseBackupSetting `json:"databases,omitempty" azure:"ro"`
+	Databases []*DatabaseBackupSetting
 
 	// READ-ONLY; Timestamp when this backup finished.
-	FinishedTimeStamp *time.Time `json:"finishedTimeStamp,omitempty" azure:"ro"`
+	FinishedTimeStamp *time.Time
 
 	// READ-ONLY; Timestamp of a last restore operation which used this backup.
-	LastRestoreTimeStamp *time.Time `json:"lastRestoreTimeStamp,omitempty" azure:"ro"`
+	LastRestoreTimeStamp *time.Time
 
 	// READ-ONLY; Details regarding this backup. Might contain an error message.
-	Log *string `json:"log,omitempty" azure:"ro"`
+	Log *string
 
 	// READ-ONLY; Name of this backup.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; True if this backup has been created due to a schedule being triggered.
-	Scheduled *bool `json:"scheduled,omitempty" azure:"ro"`
+	Scheduled *bool
 
 	// READ-ONLY; Size of the backup in bytes.
-	SizeInBytes *int64 `json:"sizeInBytes,omitempty" azure:"ro"`
+	SizeInBytes *int64
 
 	// READ-ONLY; Backup status.
-	Status *BackupItemStatus `json:"status,omitempty" azure:"ro"`
+	Status *BackupItemStatus
 
 	// READ-ONLY; SAS URL for the storage account container which contains this backup.
-	StorageAccountURL *string `json:"storageAccountUrl,omitempty" azure:"ro"`
+	StorageAccountURL *string
 
 	// READ-ONLY; Size of the original web app which has been backed up.
-	WebsiteSizeInBytes *int64 `json:"websiteSizeInBytes,omitempty" azure:"ro"`
+	WebsiteSizeInBytes *int64
 }
 
 // BackupRequest - Description of a backup which will be performed.
 type BackupRequest struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// BackupRequest resource specific properties
-	Properties *BackupRequestProperties `json:"properties,omitempty"`
+	Properties *BackupRequestProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupRequestProperties - BackupRequest resource specific properties
 type BackupRequestProperties struct {
 	// REQUIRED; SAS URL to the container.
-	StorageAccountURL *string `json:"storageAccountUrl,omitempty"`
+	StorageAccountURL *string
 
 	// Name of the backup.
-	BackupName *string `json:"backupName,omitempty"`
+	BackupName *string
 
 	// Schedule for the backup if it is executed periodically.
-	BackupSchedule *BackupSchedule `json:"backupSchedule,omitempty"`
+	BackupSchedule *BackupSchedule
 
 	// Databases included in the backup.
-	Databases []*DatabaseBackupSetting `json:"databases,omitempty"`
+	Databases []*DatabaseBackupSetting
 
 	// True if the backup schedule is enabled (must be included in that case), false if the backup schedule should be disabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // BackupSchedule - Description of a backup schedule. Describes how often should be the backup performed and what should be
@@ -908,347 +908,347 @@ type BackupRequestProperties struct {
 type BackupSchedule struct {
 	// REQUIRED; How often the backup should be executed (e.g. for weekly backup, this should be set to 7 and FrequencyUnit should
 	// be set to Day)
-	FrequencyInterval *int32 `json:"frequencyInterval,omitempty"`
+	FrequencyInterval *int32
 
 	// REQUIRED; The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day
 	// and FrequencyInterval should be set to 7)
-	FrequencyUnit *FrequencyUnit `json:"frequencyUnit,omitempty"`
+	FrequencyUnit *FrequencyUnit
 
 	// REQUIRED; True if the retention policy should always keep at least one backup in the storage account, regardless how old
 	// it is; false otherwise.
-	KeepAtLeastOneBackup *bool `json:"keepAtLeastOneBackup,omitempty"`
+	KeepAtLeastOneBackup *bool
 
 	// REQUIRED; After how many days backups should be deleted.
-	RetentionPeriodInDays *int32 `json:"retentionPeriodInDays,omitempty"`
+	RetentionPeriodInDays *int32
 
 	// When the schedule should start working.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// READ-ONLY; Last time when this schedule was triggered.
-	LastExecutionTime *time.Time `json:"lastExecutionTime,omitempty" azure:"ro"`
+	LastExecutionTime *time.Time
 }
 
 // BillingMeter - App Service billing entity that contains information about meter which the Azure billing system utilizes
 // to charge users for services.
 type BillingMeter struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// BillingMeter resource specific properties
-	Properties *BillingMeterProperties `json:"properties,omitempty"`
+	Properties *BillingMeterProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BillingMeterCollection - Collection of Billing Meters
 type BillingMeterCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*BillingMeter `json:"value,omitempty"`
+	Value []*BillingMeter
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // BillingMeterProperties - BillingMeter resource specific properties
 type BillingMeterProperties struct {
 	// Azure Location of billable resource
-	BillingLocation *string `json:"billingLocation,omitempty"`
+	BillingLocation *string
 
 	// Friendly name of the meter
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Meter GUID onboarded in Commerce
-	MeterID *string `json:"meterId,omitempty"`
+	MeterID *string
 
 	// Meter Multiplier
-	Multiplier *float64 `json:"multiplier,omitempty"`
+	Multiplier *float64
 
 	// App Service OS type meter used for
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// App Service ResourceType meter used for
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// Short Name from App Service Azure pricing Page
-	ShortName *string `json:"shortName,omitempty"`
+	ShortName *string
 }
 
 // BlobStorageTokenStore - The configuration settings of the storage of the tokens if blob storage is used.
 type BlobStorageTokenStore struct {
 	// The name of the app setting containing the SAS URL of the blob storage containing the tokens.
-	SasURLSettingName *string `json:"sasUrlSettingName,omitempty"`
+	SasURLSettingName *string
 }
 
 // Capability - Describes the capabilities/features allowed for a specific SKU.
 type Capability struct {
 	// Name of the SKU capability.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Reason of the SKU capability.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 
 	// Value of the SKU capability.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Certificate - Key Vault container for a certificate that is purchased through Azure.
 type Certificate struct {
 	// Key Vault resource Id.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	KeyVaultID *string
 
 	// Key Vault secret name.
-	KeyVaultSecretName *string `json:"keyVaultSecretName,omitempty"`
+	KeyVaultSecretName *string
 
 	// READ-ONLY; Status of the Key Vault secret.
-	ProvisioningState *KeyVaultSecretStatus `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KeyVaultSecretStatus
 }
 
 // CertificateCollection - Collection of certificate order certificates.
 type CertificateCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*CertificateResource `json:"value,omitempty"`
+	Value []*CertificateResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // CertificateDetails - SSL certificate details.
 type CertificateDetails struct {
 	// READ-ONLY; Certificate Issuer.
-	Issuer *string `json:"issuer,omitempty" azure:"ro"`
+	Issuer *string
 
 	// READ-ONLY; Date Certificate is valid to.
-	NotAfter *time.Time `json:"notAfter,omitempty" azure:"ro"`
+	NotAfter *time.Time
 
 	// READ-ONLY; Date Certificate is valid from.
-	NotBefore *time.Time `json:"notBefore,omitempty" azure:"ro"`
+	NotBefore *time.Time
 
 	// READ-ONLY; Raw certificate data.
-	RawData *string `json:"rawData,omitempty" azure:"ro"`
+	RawData *string
 
 	// READ-ONLY; Certificate Serial Number.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; Certificate Signature algorithm.
-	SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty" azure:"ro"`
+	SignatureAlgorithm *string
 
 	// READ-ONLY; Certificate Subject.
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 
 	// READ-ONLY; Certificate Thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 
 	// READ-ONLY; Certificate Version.
-	Version *int32 `json:"version,omitempty" azure:"ro"`
+	Version *int32
 }
 
 // CertificateEmail - SSL certificate email.
 type CertificateEmail struct {
 	// Email id.
-	EmailID *string `json:"emailId,omitempty"`
+	EmailID *string
 
 	// Time stamp.
-	TimeStamp *time.Time `json:"timeStamp,omitempty"`
+	TimeStamp *time.Time
 }
 
 // CertificateOrder - SSL certificate purchase order.
 type CertificateOrder struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// AppServiceCertificateOrder resource specific properties
-	Properties *CertificateOrderProperties `json:"properties,omitempty"`
+	Properties *CertificateOrderProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificateOrderAction - Certificate order action.
 type CertificateOrderAction struct {
 	// READ-ONLY; Action type.
-	ActionType *CertificateOrderActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *CertificateOrderActionType
 
 	// READ-ONLY; Time at which the certificate action was performed.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 }
 
 // CertificateOrderCollection - Collection of certificate orders.
 type CertificateOrderCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*CertificateOrder `json:"value,omitempty"`
+	Value []*CertificateOrder
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 type CertificateOrderContact struct {
-	Email     *string `json:"email,omitempty"`
-	NameFirst *string `json:"nameFirst,omitempty"`
-	NameLast  *string `json:"nameLast,omitempty"`
-	Phone     *string `json:"phone,omitempty"`
+	Email     *string
+	NameFirst *string
+	NameLast  *string
+	Phone     *string
 }
 
 // CertificateOrderPatchResource - ARM resource for a certificate order that is purchased through Azure.
 type CertificateOrderPatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// AppServiceCertificateOrderPatchResource resource specific properties
-	Properties *CertificateOrderPatchResourceProperties `json:"properties,omitempty"`
+	Properties *CertificateOrderPatchResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificateOrderPatchResourceProperties - AppServiceCertificateOrderPatchResource resource specific properties
 type CertificateOrderPatchResourceProperties struct {
 	// REQUIRED; Certificate product type.
-	ProductType *CertificateProductType `json:"productType,omitempty"`
+	ProductType *CertificateProductType
 
 	// true if the certificate should be automatically renewed when it expires; otherwise, false.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
+	AutoRenew *bool
 
 	// State of the Key Vault secret.
-	Certificates map[string]*Certificate `json:"certificates,omitempty"`
+	Certificates map[string]*Certificate
 
 	// Last CSR that was created for this order.
-	Csr *string `json:"csr,omitempty"`
+	Csr *string
 
 	// Certificate distinguished name.
-	DistinguishedName *string `json:"distinguishedName,omitempty"`
+	DistinguishedName *string
 
 	// Certificate key size.
-	KeySize *int32 `json:"keySize,omitempty"`
+	KeySize *int32
 
 	// Duration in years (must be 1).
-	ValidityInYears *int32 `json:"validityInYears,omitempty"`
+	ValidityInYears *int32
 
 	// READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
-	AppServiceCertificateNotRenewableReasons []*ResourceNotRenewableReason `json:"appServiceCertificateNotRenewableReasons,omitempty" azure:"ro"`
+	AppServiceCertificateNotRenewableReasons []*ResourceNotRenewableReason
 
 	// READ-ONLY; Contact info
-	Contact *CertificateOrderContact `json:"contact,omitempty" azure:"ro"`
+	Contact *CertificateOrderContact
 
 	// READ-ONLY; Domain verification token.
-	DomainVerificationToken *string `json:"domainVerificationToken,omitempty" azure:"ro"`
+	DomainVerificationToken *string
 
 	// READ-ONLY; Certificate expiration time.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+	ExpirationTime *time.Time
 
 	// READ-ONLY; Intermediate certificate.
-	Intermediate *CertificateDetails `json:"intermediate,omitempty" azure:"ro"`
+	Intermediate *CertificateDetails
 
 	// READ-ONLY; true if private key is external; otherwise, false.
-	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty" azure:"ro"`
+	IsPrivateKeyExternal *bool
 
 	// READ-ONLY; Certificate last issuance time.
-	LastCertificateIssuanceTime *time.Time `json:"lastCertificateIssuanceTime,omitempty" azure:"ro"`
+	LastCertificateIssuanceTime *time.Time
 
 	// READ-ONLY; Time stamp when the certificate would be auto renewed next
-	NextAutoRenewalTimeStamp *time.Time `json:"nextAutoRenewalTimeStamp,omitempty" azure:"ro"`
+	NextAutoRenewalTimeStamp *time.Time
 
 	// READ-ONLY; Status of certificate order.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Root certificate.
-	Root *CertificateDetails `json:"root,omitempty" azure:"ro"`
+	Root *CertificateDetails
 
 	// READ-ONLY; Current serial number of the certificate.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; Signed certificate.
-	SignedCertificate *CertificateDetails `json:"signedCertificate,omitempty" azure:"ro"`
+	SignedCertificate *CertificateDetails
 
 	// READ-ONLY; Current order status.
-	Status *CertificateOrderStatus `json:"status,omitempty" azure:"ro"`
+	Status *CertificateOrderStatus
 }
 
 // CertificateOrderProperties - AppServiceCertificateOrder resource specific properties
 type CertificateOrderProperties struct {
 	// REQUIRED; Certificate product type.
-	ProductType *CertificateProductType `json:"productType,omitempty"`
+	ProductType *CertificateProductType
 
 	// true if the certificate should be automatically renewed when it expires; otherwise, false.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
+	AutoRenew *bool
 
 	// State of the Key Vault secret.
-	Certificates map[string]*Certificate `json:"certificates,omitempty"`
+	Certificates map[string]*Certificate
 
 	// Last CSR that was created for this order.
-	Csr *string `json:"csr,omitempty"`
+	Csr *string
 
 	// Certificate distinguished name.
-	DistinguishedName *string `json:"distinguishedName,omitempty"`
+	DistinguishedName *string
 
 	// Certificate key size.
-	KeySize *int32 `json:"keySize,omitempty"`
+	KeySize *int32
 
 	// Duration in years (must be 1).
-	ValidityInYears *int32 `json:"validityInYears,omitempty"`
+	ValidityInYears *int32
 
 	// READ-ONLY; Reasons why App Service Certificate is not renewable at the current moment.
-	AppServiceCertificateNotRenewableReasons []*ResourceNotRenewableReason `json:"appServiceCertificateNotRenewableReasons,omitempty" azure:"ro"`
+	AppServiceCertificateNotRenewableReasons []*ResourceNotRenewableReason
 
 	// READ-ONLY; Contact info
-	Contact *CertificateOrderContact `json:"contact,omitempty" azure:"ro"`
+	Contact *CertificateOrderContact
 
 	// READ-ONLY; Domain verification token.
-	DomainVerificationToken *string `json:"domainVerificationToken,omitempty" azure:"ro"`
+	DomainVerificationToken *string
 
 	// READ-ONLY; Certificate expiration time.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+	ExpirationTime *time.Time
 
 	// READ-ONLY; Intermediate certificate.
-	Intermediate *CertificateDetails `json:"intermediate,omitempty" azure:"ro"`
+	Intermediate *CertificateDetails
 
 	// READ-ONLY; true if private key is external; otherwise, false.
-	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty" azure:"ro"`
+	IsPrivateKeyExternal *bool
 
 	// READ-ONLY; Certificate last issuance time.
-	LastCertificateIssuanceTime *time.Time `json:"lastCertificateIssuanceTime,omitempty" azure:"ro"`
+	LastCertificateIssuanceTime *time.Time
 
 	// READ-ONLY; Time stamp when the certificate would be auto renewed next
-	NextAutoRenewalTimeStamp *time.Time `json:"nextAutoRenewalTimeStamp,omitempty" azure:"ro"`
+	NextAutoRenewalTimeStamp *time.Time
 
 	// READ-ONLY; Status of certificate order.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Root certificate.
-	Root *CertificateDetails `json:"root,omitempty" azure:"ro"`
+	Root *CertificateDetails
 
 	// READ-ONLY; Current serial number of the certificate.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; Signed certificate.
-	SignedCertificate *CertificateDetails `json:"signedCertificate,omitempty" azure:"ro"`
+	SignedCertificate *CertificateDetails
 
 	// READ-ONLY; Current order status.
-	Status *CertificateOrderStatus `json:"status,omitempty" azure:"ro"`
+	Status *CertificateOrderStatus
 }
 
 // CertificateOrdersClientBeginCreateOrUpdateCertificateOptions contains the optional parameters for the CertificateOrdersClient.BeginCreateOrUpdateCertificate
@@ -1287,19 +1287,19 @@ type CertificateOrdersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateOrdersClientListByResourceGroupOptions contains the optional parameters for the CertificateOrdersClient.ListByResourceGroup
+// CertificateOrdersClientListByResourceGroupOptions contains the optional parameters for the CertificateOrdersClient.NewListByResourceGroupPager
 // method.
 type CertificateOrdersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateOrdersClientListCertificatesOptions contains the optional parameters for the CertificateOrdersClient.ListCertificates
+// CertificateOrdersClientListCertificatesOptions contains the optional parameters for the CertificateOrdersClient.NewListCertificatesPager
 // method.
 type CertificateOrdersClientListCertificatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificateOrdersClientListOptions contains the optional parameters for the CertificateOrdersClient.List method.
+// CertificateOrdersClientListOptions contains the optional parameters for the CertificateOrdersClient.NewListPager method.
 type CertificateOrdersClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1379,7 +1379,7 @@ type CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResp
 }
 
 // CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions contains the optional parameters
-// for the CertificateOrdersDiagnosticsClient.ListAppServiceCertificateOrderDetectorResponse method.
+// for the CertificateOrdersDiagnosticsClient.NewListAppServiceCertificateOrderDetectorResponsePager method.
 type CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorResponseOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1387,22 +1387,22 @@ type CertificateOrdersDiagnosticsClientListAppServiceCertificateOrderDetectorRes
 // CertificatePatchResource - Key Vault container ARM resource for a certificate that is purchased through Azure.
 type CertificatePatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *Certificate `json:"properties,omitempty"`
+	Properties *Certificate
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
-// CertificateRegistrationProviderClientListOperationsOptions contains the optional parameters for the CertificateRegistrationProviderClient.ListOperations
+// CertificateRegistrationProviderClientListOperationsOptions contains the optional parameters for the CertificateRegistrationProviderClient.NewListOperationsPager
 // method.
 type CertificateRegistrationProviderClientListOperationsOptions struct {
 	// placeholder for future optional parameters
@@ -1411,25 +1411,25 @@ type CertificateRegistrationProviderClientListOperationsOptions struct {
 // CertificateResource - Key Vault container ARM resource for a certificate that is purchased through Azure.
 type CertificateResource struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *Certificate `json:"properties,omitempty"`
+	Properties *Certificate
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificatesClientCreateOrUpdateOptions contains the optional parameters for the CertificatesClient.CreateOrUpdate method.
@@ -1447,13 +1447,13 @@ type CertificatesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.ListByResourceGroup
+// CertificatesClientListByResourceGroupOptions contains the optional parameters for the CertificatesClient.NewListByResourceGroupPager
 // method.
 type CertificatesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.List method.
+// CertificatesClientListOptions contains the optional parameters for the CertificatesClient.NewListPager method.
 type CertificatesClientListOptions struct {
 	// Return only information specified in the filter (using OData syntax). For example: $filter=KeyVaultId eq 'KeyVaultId'
 	Filter *string
@@ -1467,10 +1467,10 @@ type CertificatesClientUpdateOptions struct {
 // ClientRegistration - The configuration settings of the app registration for providers that have client ids and client secrets
 type ClientRegistration struct {
 	// The Client ID of the app used for login.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The app setting name that contains the client secret.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 }
 
 // CloningInfo - Information needed for cloning operation.
@@ -1479,39 +1479,39 @@ type CloningInfo struct {
 	// for production slots and
 	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for
 	// other slots.
-	SourceWebAppID *string `json:"sourceWebAppId,omitempty"`
+	SourceWebAppID *string
 
 	// Application setting overrides for cloned app. If specified, these settings override the settings cloned from source app.
 	// Otherwise, application settings from source app are retained.
-	AppSettingsOverrides map[string]*string `json:"appSettingsOverrides,omitempty"`
+	AppSettingsOverrides map[string]*string
 
 	// true to clone custom hostnames from source app; otherwise, false.
-	CloneCustomHostNames *bool `json:"cloneCustomHostNames,omitempty"`
+	CloneCustomHostNames *bool
 
 	// true to clone source control from source app; otherwise, false.
-	CloneSourceControl *bool `json:"cloneSourceControl,omitempty"`
+	CloneSourceControl *bool
 
 	// true to configure load balancing for source and destination app.
-	ConfigureLoadBalancing *bool `json:"configureLoadBalancing,omitempty"`
+	ConfigureLoadBalancing *bool
 
 	// Correlation ID of cloning operation. This ID ties multiple cloning operations together to use the same snapshot.
-	CorrelationID *string `json:"correlationId,omitempty"`
+	CorrelationID *string
 
 	// App Service Environment.
-	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
+	HostingEnvironment *string
 
 	// true to overwrite destination app; otherwise, false.
-	Overwrite *bool `json:"overwrite,omitempty"`
+	Overwrite *bool
 
 	// Location of source app ex: West US or North Europe
-	SourceWebAppLocation *string `json:"sourceWebAppLocation,omitempty"`
+	SourceWebAppLocation *string
 
 	// ARM resource ID of the Traffic Manager profile to use, if it exists. Traffic Manager resource ID is of the form
 	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{profileName}.
-	TrafficManagerProfileID *string `json:"trafficManagerProfileId,omitempty"`
+	TrafficManagerProfileID *string
 
 	// Name of Traffic Manager profile to create. This is only needed if Traffic Manager profile does not already exist.
-	TrafficManagerProfileName *string `json:"trafficManagerProfileName,omitempty"`
+	TrafficManagerProfileName *string
 }
 
 // Configuration - Non versioned Container App configuration properties that define the mutable settings of a Container app
@@ -1519,170 +1519,170 @@ type Configuration struct {
 	// ActiveRevisionsMode controls how active revisions are handled for the Container app:Multiple: multiple revisions can be
 	// active. If no value if provided, this is the defaultSingle: Only one revision
 	// can be active at a time. Revision weights can not be used in this mode
-	ActiveRevisionsMode *ActiveRevisionsMode `json:"activeRevisionsMode,omitempty"`
+	ActiveRevisionsMode *ActiveRevisionsMode
 
 	// Ingress configurations.
-	Ingress *Ingress `json:"ingress,omitempty"`
+	Ingress *Ingress
 
 	// Collection of private container registry credentials for containers used by the Container app
-	Registries []*RegistryCredentials `json:"registries,omitempty"`
+	Registries []*RegistryCredentials
 
 	// Collection of secrets used by a Container app
-	Secrets []*Secret `json:"secrets,omitempty"`
+	Secrets []*Secret
 }
 
 // ConnStringInfo - Database connection string information.
 type ConnStringInfo struct {
 	// Connection string value.
-	ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string
 
 	// Name of connection string.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Type of database.
-	Type *ConnectionStringType `json:"type,omitempty"`
+	Type *ConnectionStringType
 }
 
 // ConnStringValueTypePair - Database connection string value to type pair.
 type ConnStringValueTypePair struct {
 	// REQUIRED; Type of database.
-	Type *ConnectionStringType `json:"type,omitempty"`
+	Type *ConnectionStringType
 
 	// REQUIRED; Value of pair.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ConnectionStringDictionary - String dictionary resource.
 type ConnectionStringDictionary struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Connection strings.
-	Properties map[string]*ConnStringValueTypePair `json:"properties,omitempty"`
+	Properties map[string]*ConnStringValueTypePair
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Contact information for domain registration. If 'Domain Privacy' option is not selected then the contact information is
 // made publicly available through the Whois directories as per ICANN requirements.
 type Contact struct {
 	// REQUIRED; Email address.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// REQUIRED; First name.
-	NameFirst *string `json:"nameFirst,omitempty"`
+	NameFirst *string
 
 	// REQUIRED; Last name.
-	NameLast *string `json:"nameLast,omitempty"`
+	NameLast *string
 
 	// REQUIRED; Phone number.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// Mailing address.
-	AddressMailing *Address `json:"addressMailing,omitempty"`
+	AddressMailing *Address
 
 	// Fax number.
-	Fax *string `json:"fax,omitempty"`
+	Fax *string
 
 	// Job title.
-	JobTitle *string `json:"jobTitle,omitempty"`
+	JobTitle *string
 
 	// Middle name.
-	NameMiddle *string `json:"nameMiddle,omitempty"`
+	NameMiddle *string
 
 	// Organization contact belongs to.
-	Organization *string `json:"organization,omitempty"`
+	Organization *string
 }
 
 // Container App container definition.
 type Container struct {
 	// Container start command arguments.
-	Args []*string `json:"args,omitempty"`
+	Args []*string
 
 	// Container start command.
-	Command []*string `json:"command,omitempty"`
+	Command []*string
 
 	// Container environment variables.
-	Env []*EnvironmentVar `json:"env,omitempty"`
+	Env []*EnvironmentVar
 
 	// Container image tag.
-	Image *string `json:"image,omitempty"`
+	Image *string
 
 	// Custom container name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Container resource requirements.
-	Resources *ContainerResources `json:"resources,omitempty"`
+	Resources *ContainerResources
 }
 
 // ContainerApp - Container App.
 type ContainerApp struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ContainerApp resource specific properties
-	Properties *ContainerAppProperties `json:"properties,omitempty"`
+	Properties *ContainerAppProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ContainerAppCollection - Container App collection ARM resource.
 type ContainerAppCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ContainerApp `json:"value,omitempty"`
+	Value []*ContainerApp
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ContainerAppProperties - ContainerApp resource specific properties
 type ContainerAppProperties struct {
 	// Non versioned Container App configuration properties.
-	Configuration *Configuration `json:"configuration,omitempty"`
+	Configuration *Configuration
 
 	// Resource ID of the Container App's KubeEnvironment.
-	KubeEnvironmentID *string `json:"kubeEnvironmentId,omitempty"`
+	KubeEnvironmentID *string
 
 	// Container App versioned application definition.
-	Template *Template `json:"template,omitempty"`
+	Template *Template
 
 	// READ-ONLY; Fully Qualified Domain Name of the latest revision of the Container App.
-	LatestRevisionFqdn *string `json:"latestRevisionFqdn,omitempty" azure:"ro"`
+	LatestRevisionFqdn *string
 
 	// READ-ONLY; Name of the latest revision of the Container App.
-	LatestRevisionName *string `json:"latestRevisionName,omitempty" azure:"ro"`
+	LatestRevisionName *string
 
 	// READ-ONLY; Provisioning state of the Container App.
-	ProvisioningState *ContainerAppProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ContainerAppProvisioningState
 }
 
 // ContainerAppSecret - Container App Secret.
 type ContainerAppSecret struct {
 	// READ-ONLY; Secret Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Secret Value.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // ContainerAppsClientBeginCreateOrUpdateOptions contains the optional parameters for the ContainerAppsClient.BeginCreateOrUpdate
@@ -1703,13 +1703,13 @@ type ContainerAppsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsClient.ListByResourceGroup
+// ContainerAppsClientListByResourceGroupOptions contains the optional parameters for the ContainerAppsClient.NewListByResourceGroupPager
 // method.
 type ContainerAppsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsClient.ListBySubscription
+// ContainerAppsClientListBySubscriptionOptions contains the optional parameters for the ContainerAppsClient.NewListBySubscriptionPager
 // method.
 type ContainerAppsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1724,26 +1724,26 @@ type ContainerAppsConfiguration struct {
 	// Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the subnet
 	// defined in appSubnetResourceId. Must not overlap with the IP range defined in
 	// platformReservedCidr, if defined.
-	AppSubnetResourceID *string `json:"appSubnetResourceId,omitempty"`
+	AppSubnetResourceID *string
 
 	// Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the subnet
 	// defined in appSubnetResourceId. Must not overlap with the IP range defined in
 	// platformReservedCidr, if defined.
-	ControlPlaneSubnetResourceID *string `json:"controlPlaneSubnetResourceId,omitempty"`
+	ControlPlaneSubnetResourceID *string
 
 	// Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry
-	DaprAIInstrumentationKey *string `json:"daprAIInstrumentationKey,omitempty"`
+	DaprAIInstrumentationKey *string
 
 	// CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the IP range
 	// defined in platformReservedCidr, if defined.
-	DockerBridgeCidr *string `json:"dockerBridgeCidr,omitempty"`
+	DockerBridgeCidr *string
 
 	// IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap with any
 	// other Subnet IP ranges.
-	PlatformReservedCidr *string `json:"platformReservedCidr,omitempty"`
+	PlatformReservedCidr *string
 
 	// An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS server
-	PlatformReservedDNSIP *string `json:"platformReservedDnsIP,omitempty"`
+	PlatformReservedDNSIP *string
 }
 
 // ContainerAppsRevisionsClientActivateRevisionOptions contains the optional parameters for the ContainerAppsRevisionsClient.ActivateRevision
@@ -1764,7 +1764,7 @@ type ContainerAppsRevisionsClientGetRevisionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.ListRevisions
+// ContainerAppsRevisionsClientListRevisionsOptions contains the optional parameters for the ContainerAppsRevisionsClient.NewListRevisionsPager
 // method.
 type ContainerAppsRevisionsClientListRevisionsOptions struct {
 	// placeholder for future optional parameters
@@ -1777,715 +1777,805 @@ type ContainerAppsRevisionsClientRestartRevisionOptions struct {
 }
 
 type ContainerCPUStatistics struct {
-	CPUUsage       *ContainerCPUUsage       `json:"cpuUsage,omitempty"`
-	OnlineCPUCount *int32                   `json:"onlineCpuCount,omitempty"`
-	SystemCPUUsage *int64                   `json:"systemCpuUsage,omitempty"`
-	ThrottlingData *ContainerThrottlingData `json:"throttlingData,omitempty"`
+	CPUUsage       *ContainerCPUUsage
+	OnlineCPUCount *int32
+	SystemCPUUsage *int64
+	ThrottlingData *ContainerThrottlingData
 }
 
 type ContainerCPUUsage struct {
-	KernelModeUsage *int64   `json:"kernelModeUsage,omitempty"`
-	PerCPUUsage     []*int64 `json:"perCpuUsage,omitempty"`
-	TotalUsage      *int64   `json:"totalUsage,omitempty"`
-	UserModeUsage   *int64   `json:"userModeUsage,omitempty"`
+	KernelModeUsage *int64
+	PerCPUUsage     []*int64
+	TotalUsage      *int64
+	UserModeUsage   *int64
 }
 
 type ContainerInfo struct {
-	CurrentCPUStats   *ContainerCPUStatistics              `json:"currentCpuStats,omitempty"`
-	CurrentTimeStamp  *time.Time                           `json:"currentTimeStamp,omitempty"`
-	Eth0              *ContainerNetworkInterfaceStatistics `json:"eth0,omitempty"`
-	ID                *string                              `json:"id,omitempty"`
-	MemoryStats       *ContainerMemoryStatistics           `json:"memoryStats,omitempty"`
-	Name              *string                              `json:"name,omitempty"`
-	PreviousCPUStats  *ContainerCPUStatistics              `json:"previousCpuStats,omitempty"`
-	PreviousTimeStamp *time.Time                           `json:"previousTimeStamp,omitempty"`
+	CurrentCPUStats   *ContainerCPUStatistics
+	CurrentTimeStamp  *time.Time
+	Eth0              *ContainerNetworkInterfaceStatistics
+	ID                *string
+	MemoryStats       *ContainerMemoryStatistics
+	Name              *string
+	PreviousCPUStats  *ContainerCPUStatistics
+	PreviousTimeStamp *time.Time
 }
 
 type ContainerMemoryStatistics struct {
-	Limit    *int64 `json:"limit,omitempty"`
-	MaxUsage *int64 `json:"maxUsage,omitempty"`
-	Usage    *int64 `json:"usage,omitempty"`
+	Limit    *int64
+	MaxUsage *int64
+	Usage    *int64
 }
 
 type ContainerNetworkInterfaceStatistics struct {
-	RxBytes   *int64 `json:"rxBytes,omitempty"`
-	RxDropped *int64 `json:"rxDropped,omitempty"`
-	RxErrors  *int64 `json:"rxErrors,omitempty"`
-	RxPackets *int64 `json:"rxPackets,omitempty"`
-	TxBytes   *int64 `json:"txBytes,omitempty"`
-	TxDropped *int64 `json:"txDropped,omitempty"`
-	TxErrors  *int64 `json:"txErrors,omitempty"`
-	TxPackets *int64 `json:"txPackets,omitempty"`
+	RxBytes   *int64
+	RxDropped *int64
+	RxErrors  *int64
+	RxPackets *int64
+	TxBytes   *int64
+	TxDropped *int64
+	TxErrors  *int64
+	TxPackets *int64
 }
 
 // ContainerResources - Container App container resource requirements.
 type ContainerResources struct {
 	// Required CPU in cores, e.g. 0.5
-	CPU *float64 `json:"cpu,omitempty"`
+	CPU *float64
 
 	// Required memory, e.g. "250Mb"
-	Memory *string `json:"memory,omitempty"`
+	Memory *string
 }
 
 type ContainerThrottlingData struct {
-	Periods          *int32 `json:"periods,omitempty"`
-	ThrottledPeriods *int32 `json:"throttledPeriods,omitempty"`
-	ThrottledTime    *int32 `json:"throttledTime,omitempty"`
+	Periods          *int32
+	ThrottledPeriods *int32
+	ThrottledTime    *int32
 }
 
 // ContentHash - The content hash.
 type ContentHash struct {
 	// The algorithm of the content hash.
-	Algorithm *string `json:"algorithm,omitempty"`
+	Algorithm *string
 
 	// The value of the content hash.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ContentLink - The content link.
 type ContentLink struct {
 	// The content link URI.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// READ-ONLY; The content hash.
-	ContentHash *ContentHash `json:"contentHash,omitempty" azure:"ro"`
+	ContentHash *ContentHash
 
 	// READ-ONLY; The content size.
-	ContentSize *int64 `json:"contentSize,omitempty" azure:"ro"`
+	ContentSize *int64
 
 	// READ-ONLY; The content version.
-	ContentVersion *string `json:"contentVersion,omitempty" azure:"ro"`
+	ContentVersion *string
 
 	// READ-ONLY; The metadata.
-	Metadata interface{} `json:"metadata,omitempty" azure:"ro"`
+	Metadata any
 }
 
 // ContinuousWebJob - Continuous Web Job Information.
 type ContinuousWebJob struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ContinuousWebJob resource specific properties
-	Properties *ContinuousWebJobProperties `json:"properties,omitempty"`
+	Properties *ContinuousWebJobProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ContinuousWebJobCollection - Collection of Kudu continuous web job information elements.
 type ContinuousWebJobCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ContinuousWebJob `json:"value,omitempty"`
+	Value []*ContinuousWebJob
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ContinuousWebJobProperties - ContinuousWebJob resource specific properties
 type ContinuousWebJobProperties struct {
 	// Detailed status.
-	DetailedStatus *string `json:"detailed_status,omitempty"`
+	DetailedStatus *string
 
 	// Error information.
-	Error *string `json:"error,omitempty"`
+	Error *string
 
 	// Extra Info URL.
-	ExtraInfoURL *string `json:"extra_info_url,omitempty"`
+	ExtraInfoURL *string
 
 	// Log URL.
-	LogURL *string `json:"log_url,omitempty"`
+	LogURL *string
 
 	// Run command.
-	RunCommand *string `json:"run_command,omitempty"`
+	RunCommand *string
 
 	// Job settings.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]any
 
 	// Job status.
-	Status *ContinuousWebJobStatus `json:"status,omitempty"`
+	Status *ContinuousWebJobStatus
 
 	// Job URL.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// Using SDK?
-	UsingSdk *bool `json:"using_sdk,omitempty"`
+	UsingSdk *bool
 
 	// Job type.
-	WebJobType *WebJobType `json:"web_job_type,omitempty"`
+	WebJobType *WebJobType
 }
 
 // CookieExpiration - The configuration settings of the session cookie's expiration.
 type CookieExpiration struct {
 	// The convention used when determining the session cookie's expiration.
-	Convention *CookieExpirationConvention `json:"convention,omitempty"`
+	Convention *CookieExpirationConvention
 
 	// The time after the request is made when the session cookie should expire.
-	TimeToExpiration *string `json:"timeToExpiration,omitempty"`
+	TimeToExpiration *string
 }
 
 // Correlation - The correlation property.
 type Correlation struct {
 	// The client tracking id.
-	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
+	ClientTrackingID *string
 }
 
 // CorsSettings - Cross-Origin Resource Sharing (CORS) settings for the app.
 type CorsSettings struct {
 	// Gets or sets the list of origins that should be allowed to make cross-origin calls (for example: http://example.com:12345).
 	// Use "*" to allow all.
-	AllowedOrigins []*string `json:"allowedOrigins,omitempty"`
+	AllowedOrigins []*string
 
 	// Gets or sets whether CORS requests with credentials are allowed. See https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS#Requestswithcredentials
 	// for more details.
-	SupportCredentials *bool `json:"supportCredentials,omitempty"`
+	SupportCredentials *bool
 }
 
 // CsmDeploymentStatus - Deployment status response payload.
 type CsmDeploymentStatus struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// CsmDeploymentStatus resource specific properties
-	Properties *CsmDeploymentStatusProperties `json:"properties,omitempty"`
+	Properties *CsmDeploymentStatusProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CsmDeploymentStatusCollection - Deployment status collection ARM resource.
 type CsmDeploymentStatusCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*CsmDeploymentStatus `json:"value,omitempty"`
+	Value []*CsmDeploymentStatus
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // CsmDeploymentStatusProperties - CsmDeploymentStatus resource specific properties
 type CsmDeploymentStatusProperties struct {
 	// Deployment operation id.
-	DeploymentID *string `json:"deploymentId,omitempty"`
+	DeploymentID *string
 
 	// List of errors.
-	Errors []*ErrorEntity `json:"errors,omitempty"`
+	Errors []*ErrorEntity
 
 	// List of URLs pointing to logs for instances which failed to provision.
-	FailedInstancesLogs []*string `json:"failedInstancesLogs,omitempty"`
+	FailedInstancesLogs []*string
 
 	// Number of site instances failed to provision.
-	NumberOfInstancesFailed *int32 `json:"numberOfInstancesFailed,omitempty"`
+	NumberOfInstancesFailed *int32
 
 	// Number of site instances currently being provisioned.
-	NumberOfInstancesInProgress *int32 `json:"numberOfInstancesInProgress,omitempty"`
+	NumberOfInstancesInProgress *int32
 
 	// Number of site instances provisioned successfully.
-	NumberOfInstancesSuccessful *int32 `json:"numberOfInstancesSuccessful,omitempty"`
+	NumberOfInstancesSuccessful *int32
 
 	// Deployment build status.
-	Status *DeploymentBuildStatus `json:"status,omitempty"`
+	Status *DeploymentBuildStatus
 }
 
 // CsmMoveResourceEnvelope - Object with a list of the resources that need to be moved and the resource group they should
 // be moved to.
 type CsmMoveResourceEnvelope struct {
-	Resources           []*string `json:"resources,omitempty"`
-	TargetResourceGroup *string   `json:"targetResourceGroup,omitempty"`
+	Resources           []*string
+	TargetResourceGroup *string
 }
 
 // CsmOperationCollection - Collection of Azure resource manager operation metadata.
 type CsmOperationCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*CsmOperationDescription `json:"value,omitempty"`
+	Value []*CsmOperationDescription
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // CsmOperationDescription - Description of an operation available for Microsoft.Web resource provider.
 type CsmOperationDescription struct {
 	// Meta data about operation used for display in portal.
-	Display      *CsmOperationDisplay `json:"display,omitempty"`
-	IsDataAction *bool                `json:"isDataAction,omitempty"`
-	Name         *string              `json:"name,omitempty"`
-	Origin       *string              `json:"origin,omitempty"`
+	Display      *CsmOperationDisplay
+	IsDataAction *bool
+	Name         *string
+	Origin       *string
 
 	// Properties available for a Microsoft.Web resource provider operation.
-	Properties *CsmOperationDescriptionProperties `json:"properties,omitempty"`
+	Properties *CsmOperationDescriptionProperties
 }
 
 // CsmOperationDescriptionProperties - Properties available for a Microsoft.Web resource provider operation.
 type CsmOperationDescriptionProperties struct {
 	// Resource metrics service provided by Microsoft.Insights resource provider.
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ServiceSpecification
 }
 
 // CsmOperationDisplay - Meta data about operation used for display in portal.
 type CsmOperationDisplay struct {
-	Description *string `json:"description,omitempty"`
-	Operation   *string `json:"operation,omitempty"`
-	Provider    *string `json:"provider,omitempty"`
-	Resource    *string `json:"resource,omitempty"`
+	Description *string
+	Operation   *string
+	Provider    *string
+	Resource    *string
 }
 
 // CsmPublishingCredentialsPoliciesEntity - Publishing Credentials Policies parameters.
 type CsmPublishingCredentialsPoliciesEntity struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// CsmPublishingCredentialsPoliciesEntity resource specific properties
-	Properties *CsmPublishingCredentialsPoliciesEntityProperties `json:"properties,omitempty"`
+	Properties *CsmPublishingCredentialsPoliciesEntityProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CsmPublishingCredentialsPoliciesEntityProperties - CsmPublishingCredentialsPoliciesEntity resource specific properties
 type CsmPublishingCredentialsPoliciesEntityProperties struct {
 	// REQUIRED; true to allow access to a publishing method; otherwise, false.
-	Allow *bool `json:"allow,omitempty"`
+	Allow *bool
 }
 
 // CsmPublishingProfileOptions - Publishing options for requested profile.
 type CsmPublishingProfileOptions struct {
 	// Name of the format. Valid values are: FileZilla3 WebDeploy -- default Ftp
-	Format *PublishingProfileFormat `json:"format,omitempty"`
+	Format *PublishingProfileFormat
 
 	// Include the DisasterRecover endpoint if true
-	IncludeDisasterRecoveryEndpoints *bool `json:"includeDisasterRecoveryEndpoints,omitempty"`
+	IncludeDisasterRecoveryEndpoints *bool
 }
 
 // CsmSlotEntity - Deployment slot parameters.
 type CsmSlotEntity struct {
 	// REQUIRED; true to preserve Virtual Network to the slot during swap; otherwise, false.
-	PreserveVnet *bool `json:"preserveVnet,omitempty"`
+	PreserveVnet *bool
 
 	// REQUIRED; Destination deployment slot during swap operation.
-	TargetSlot *string `json:"targetSlot,omitempty"`
+	TargetSlot *string
 }
 
 // CsmUsageQuota - Usage of the quota resource.
 type CsmUsageQuota struct {
 	// The current value of the resource counter.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
+	CurrentValue *int64
 
 	// The resource limit.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// Quota name.
-	Name *LocalizableString `json:"name,omitempty"`
+	Name *LocalizableString
 
 	// Next reset time for the resource counter.
-	NextResetTime *time.Time `json:"nextResetTime,omitempty"`
+	NextResetTime *time.Time
 
 	// Units of measurement for the quota resource.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // CsmUsageQuotaCollection - Collection of CSM usage quotas.
 type CsmUsageQuotaCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*CsmUsageQuota `json:"value,omitempty"`
+	Value []*CsmUsageQuota
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // CustomDNSSuffixConfiguration - Full view of the custom domain suffix configuration for ASEv3.
 type CustomDNSSuffixConfiguration struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// CustomDnsSuffixConfiguration resource specific properties
-	Properties *CustomDNSSuffixConfigurationProperties `json:"properties,omitempty"`
+	Properties *CustomDNSSuffixConfigurationProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomDNSSuffixConfigurationProperties - CustomDnsSuffixConfiguration resource specific properties
 type CustomDNSSuffixConfigurationProperties struct {
 	// The URL referencing the Azure Key Vault certificate secret that should be used as the default SSL/TLS certificate for sites
 	// with the custom domain suffix.
-	CertificateURL *string `json:"certificateUrl,omitempty"`
+	CertificateURL *string
 
 	// The default custom domain suffix to use for all sites deployed on the ASE.
-	DNSSuffix *string `json:"dnsSuffix,omitempty"`
+	DNSSuffix *string
 
 	// The user-assigned identity to use for resolving the key vault certificate reference. If not specified, the system-assigned
 	// ASE identity will be used if available.
-	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
+	KeyVaultReferenceIdentity *string
 
 	// READ-ONLY
-	ProvisioningDetails *string `json:"provisioningDetails,omitempty" azure:"ro"`
+	ProvisioningDetails *string
 
 	// READ-ONLY
-	ProvisioningState *CustomDNSSuffixProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CustomDNSSuffixProvisioningState
 }
 
 // CustomHostnameAnalysisResult - Custom domain analysis.
 type CustomHostnameAnalysisResult struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// CustomHostnameAnalysisResult resource specific properties
-	Properties *CustomHostnameAnalysisResultProperties `json:"properties,omitempty"`
+	Properties *CustomHostnameAnalysisResultProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomHostnameAnalysisResultProperties - CustomHostnameAnalysisResult resource specific properties
 type CustomHostnameAnalysisResultProperties struct {
 	// A records controller can see for this hostname.
-	ARecords []*string `json:"aRecords,omitempty"`
+	ARecords []*string
 
 	// Alternate CName records controller can see for this hostname.
-	AlternateCNameRecords []*string `json:"alternateCNameRecords,omitempty"`
+	AlternateCNameRecords []*string
 
 	// Alternate TXT records controller can see for this hostname.
-	AlternateTxtRecords []*string `json:"alternateTxtRecords,omitempty"`
+	AlternateTxtRecords []*string
 
 	// CName records controller can see for this hostname.
-	CNameRecords []*string `json:"cNameRecords,omitempty"`
+	CNameRecords []*string
 
 	// TXT records controller can see for this hostname.
-	TxtRecords []*string `json:"txtRecords,omitempty"`
+	TxtRecords []*string
 
 	// READ-ONLY; Name of the conflicting app on scale unit if it's within the same subscription.
-	ConflictingAppResourceID *string `json:"conflictingAppResourceId,omitempty" azure:"ro"`
+	ConflictingAppResourceID *string
 
 	// READ-ONLY; Raw failure information if DNS verification fails.
-	CustomDomainVerificationFailureInfo *ErrorEntity `json:"customDomainVerificationFailureInfo,omitempty" azure:"ro"`
+	CustomDomainVerificationFailureInfo *ErrorEntity
 
 	// READ-ONLY; DNS verification test result.
-	CustomDomainVerificationTest *DNSVerificationTestResult `json:"customDomainVerificationTest,omitempty" azure:"ro"`
+	CustomDomainVerificationTest *DNSVerificationTestResult
 
 	// READ-ONLY; true if there is a conflict across subscriptions; otherwise, false.
-	HasConflictAcrossSubscription *bool `json:"hasConflictAcrossSubscription,omitempty" azure:"ro"`
+	HasConflictAcrossSubscription *bool
 
 	// READ-ONLY; true if there is a conflict on a scale unit; otherwise, false.
-	HasConflictOnScaleUnit *bool `json:"hasConflictOnScaleUnit,omitempty" azure:"ro"`
+	HasConflictOnScaleUnit *bool
 
 	// READ-ONLY; true if hostname is already verified; otherwise, false.
-	IsHostnameAlreadyVerified *bool `json:"isHostnameAlreadyVerified,omitempty" azure:"ro"`
+	IsHostnameAlreadyVerified *bool
 }
 
 // CustomHostnameSites - A hostname and its assigned sites
 type CustomHostnameSites struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// CustomHostnameSites resource specific properties
-	Properties *CustomHostnameSitesProperties `json:"properties,omitempty"`
+	Properties *CustomHostnameSitesProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomHostnameSitesCollection - Collection of custom hostname sites
 type CustomHostnameSitesCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*CustomHostnameSites `json:"value,omitempty"`
+	Value []*CustomHostnameSites
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // CustomHostnameSitesProperties - CustomHostnameSites resource specific properties
 type CustomHostnameSitesProperties struct {
-	CustomHostname  *string       `json:"customHostname,omitempty"`
-	Region          *string       `json:"region,omitempty"`
-	SiteResourceIDs []*Identifier `json:"siteResourceIds,omitempty"`
+	CustomHostname  *string
+	Region          *string
+	SiteResourceIDs []*Identifier
 }
 
 // CustomOpenIDConnectProvider - The configuration settings of the custom Open ID Connect provider.
 type CustomOpenIDConnectProvider struct {
 	// false if the custom Open ID provider provider should not be enabled; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow of the custom Open ID Connect provider.
-	Login *OpenIDConnectLogin `json:"login,omitempty"`
+	Login *OpenIDConnectLogin
 
 	// The configuration settings of the app registration for the custom Open ID Connect provider.
-	Registration *OpenIDConnectRegistration `json:"registration,omitempty"`
+	Registration *OpenIDConnectRegistration
 }
 
 // CustomScaleRule - Container App container Custom scaling rule.
 type CustomScaleRule struct {
 	// Authentication secrets for the custom scale rule.
-	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+	Auth []*ScaleRuleAuth
 
 	// Metadata properties to describe custom scale rule.
-	Metadata map[string]*string `json:"metadata,omitempty"`
+	Metadata map[string]*string
 
 	// Type of the custom scale rule eg: azure-servicebus, redis etc.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // Dapr - Container App Dapr configuration.
 type Dapr struct {
 	// Dapr application identifier
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// Port on which the Dapr side car
-	AppPort *int32 `json:"appPort,omitempty"`
+	AppPort *int32
 
 	// Collection of Dapr components
-	Components []*DaprComponent `json:"components,omitempty"`
+	Components []*DaprComponent
 
 	// Boolean indicating if the Dapr side car is enabled
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // DaprComponent - Dapr component configuration
 type DaprComponent struct {
 	// Component metadata
-	Metadata []*DaprMetadata `json:"metadata,omitempty"`
+	Metadata []*DaprMetadata
 
 	// Component name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Component type
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Component version
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // DaprMetadata - Container App Dapr component metadata.
 type DaprMetadata struct {
 	// Metadata property name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Name of the Container App secret from which to pull the metadata property value.
-	SecretRef *string `json:"secretRef,omitempty"`
+	SecretRef *string
 
 	// Metadata property value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // DataProviderMetadata - Additional configuration for a data providers
 type DataProviderMetadata struct {
-	ProviderName *string `json:"providerName,omitempty"`
+	ProviderName *string
 
 	// READ-ONLY; Settings for the data provider
-	PropertyBag []*KeyValuePairStringObject `json:"propertyBag,omitempty" azure:"ro"`
+	PropertyBag []*KeyValuePairStringObject
 }
 
 // DataSource - Class representing data source used by the detectors
 type DataSource struct {
 	// Datasource Uri Links
-	DataSourceURI []*NameValuePair `json:"dataSourceUri,omitempty"`
+	DataSourceURI []*NameValuePair
 
 	// Instructions if any for the data source
-	Instructions []*string `json:"instructions,omitempty"`
+	Instructions []*string
 }
 
 // DataTableResponseColumn - Column definition
 type DataTableResponseColumn struct {
 	// Name of the column
-	ColumnName *string `json:"columnName,omitempty"`
+	ColumnName *string
 
 	// Column Type
-	ColumnType *string `json:"columnType,omitempty"`
+	ColumnType *string
 
 	// Data type which looks like 'String' or 'Int32'.
-	DataType *string `json:"dataType,omitempty"`
+	DataType *string
 }
 
 // DataTableResponseObject - Data Table which defines columns and raw row values
 type DataTableResponseObject struct {
 	// List of columns with data types
-	Columns []*DataTableResponseColumn `json:"columns,omitempty"`
+	Columns []*DataTableResponseColumn
 
 	// Raw row values
-	Rows [][]*string `json:"rows,omitempty"`
+	Rows [][]*string
 
 	// Name of the table
-	TableName *string `json:"tableName,omitempty"`
+	TableName *string
 }
 
 // DatabaseBackupSetting - Database backup settings.
 type DatabaseBackupSetting struct {
 	// REQUIRED; Database type (e.g. SqlAzure / MySql).
-	DatabaseType *DatabaseType `json:"databaseType,omitempty"`
+	DatabaseType *DatabaseType
 
 	// Contains a connection string to a database which is being backed up or restored. If the restore should happen to a new
 	// database, the database name inside is the new one.
-	ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string
 
 	// Contains a connection string name that is linked to the SiteConfig.ConnectionStrings. This is used during restore with
 	// overwrite connection strings options.
-	ConnectionStringName *string `json:"connectionStringName,omitempty"`
-	Name                 *string `json:"name,omitempty"`
+	ConnectionStringName *string
+	Name                 *string
+}
+
+// DatabaseConnection - Static Site Database Connection resource.
+type DatabaseConnection struct {
+	// Kind of resource.
+	Kind *string
+
+	// DatabaseConnection resource specific properties
+	Properties *DatabaseConnectionProperties
+
+	// READ-ONLY; Resource Id.
+	ID *string
+
+	// READ-ONLY; Resource Name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// DatabaseConnectionCollection - Collection of static site database connections.
+type DatabaseConnectionCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*DatabaseConnection
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// DatabaseConnectionOverview - Static Site Database Connection overview.
+type DatabaseConnectionOverview struct {
+	// READ-ONLY; A list of configuration files associated with this database connection.
+	ConfigurationFiles []*StaticSiteDatabaseConnectionConfigurationFileOverview
+
+	// READ-ONLY; If present, the identity is used in conjunction with connection string to connect to the database. Use of the
+	// system-assigned managed identity is indicated with the string 'SystemAssigned', while use
+	// of a user-assigned managed identity is indicated with the resource id of the managed identity resource.
+	ConnectionIdentity *string
+
+	// READ-ONLY; If present, the name of this database connection resource.
+	Name *string
+
+	// READ-ONLY; The region of the database resource.
+	Region *string
+
+	// READ-ONLY; The resource id of the database.
+	ResourceID *string
+}
+
+// DatabaseConnectionPatchRequest - Static Site Database Connection Request Properties resource when patching
+type DatabaseConnectionPatchRequest struct {
+	// DatabaseConnectionPatchRequest resource specific properties
+	Properties *DatabaseConnectionPatchRequestProperties
+}
+
+// DatabaseConnectionPatchRequestProperties - DatabaseConnectionPatchRequest resource specific properties
+type DatabaseConnectionPatchRequestProperties struct {
+	// If present, the identity is used in conjunction with connection string to connect to the database. Use of the system-assigned
+	// managed identity is indicated with the string 'SystemAssigned', while use
+	// of a user-assigned managed identity is indicated with the resource id of the managed identity resource.
+	ConnectionIdentity *string
+
+	// The connection string to use to connect to the database.
+	ConnectionString *string
+
+	// The region of the database resource.
+	Region *string
+
+	// The resource id of the database.
+	ResourceID *string
+}
+
+// DatabaseConnectionProperties - DatabaseConnection resource specific properties
+type DatabaseConnectionProperties struct {
+	// REQUIRED; The region of the database resource.
+	Region *string
+
+	// REQUIRED; The resource id of the database.
+	ResourceID *string
+
+	// If present, the identity is used in conjunction with connection string to connect to the database. Use of the system-assigned
+	// managed identity is indicated with the string 'SystemAssigned', while use
+	// of a user-assigned managed identity is indicated with the resource id of the managed identity resource.
+	ConnectionIdentity *string
+
+	// The connection string to use to connect to the database.
+	ConnectionString *string
+
+	// READ-ONLY; A list of configuration files associated with this database connection.
+	ConfigurationFiles []*StaticSiteDatabaseConnectionConfigurationFileOverview
 }
 
 // DefaultAuthorizationPolicy - The configuration settings of the Azure Active Directory default authorization policy.
 type DefaultAuthorizationPolicy struct {
 	// The configuration settings of the Azure Active Directory allowed applications.
-	AllowedApplications []*string `json:"allowedApplications,omitempty"`
+	AllowedApplications []*string
 
 	// The configuration settings of the Azure Active Directory allowed principals.
-	AllowedPrincipals *AllowedPrincipals `json:"allowedPrincipals,omitempty"`
+	AllowedPrincipals *AllowedPrincipals
 }
 
 // DefaultErrorResponse - App Service error response.
 type DefaultErrorResponse struct {
 	// READ-ONLY; Error model.
-	Error *DefaultErrorResponseError `json:"error,omitempty" azure:"ro"`
+	Error *DefaultErrorResponseError
 }
 
 // DefaultErrorResponseError - Error model.
 type DefaultErrorResponseError struct {
-	Details []*DefaultErrorResponseErrorDetailsItem `json:"details,omitempty"`
+	Details []*DefaultErrorResponseErrorDetailsItem
 
 	// READ-ONLY; Standardized string to programmatically identify the error.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; More information to debug error.
-	Innererror *string `json:"innererror,omitempty" azure:"ro"`
+	Innererror *string
 
 	// READ-ONLY; Detailed error description and debugging information.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Detailed error description and debugging information.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // DefaultErrorResponseErrorDetailsItem - Detailed errors.
 type DefaultErrorResponseErrorDetailsItem struct {
 	// READ-ONLY; Standardized string to programmatically identify the error.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Detailed error description and debugging information.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Detailed error description and debugging information.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // DeletedAppRestoreRequest - Details about restoring a deleted app.
 type DeletedAppRestoreRequest struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// DeletedAppRestoreRequest resource specific properties
-	Properties *DeletedAppRestoreRequestProperties `json:"properties,omitempty"`
+	Properties *DeletedAppRestoreRequestProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeletedAppRestoreRequestProperties - DeletedAppRestoreRequest resource specific properties
 type DeletedAppRestoreRequestProperties struct {
 	// ARM resource ID of the deleted app. Example: /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}
-	DeletedSiteID *string `json:"deletedSiteId,omitempty"`
+	DeletedSiteID *string
 
 	// If true, deleted site configuration, in addition to content, will be restored.
-	RecoverConfiguration *bool `json:"recoverConfiguration,omitempty"`
+	RecoverConfiguration *bool
 
 	// Point in time to restore the deleted app from, formatted as a DateTime string. If unspecified, default value is the time
 	// that the app was deleted.
-	SnapshotTime *string `json:"snapshotTime,omitempty"`
+	SnapshotTime *string
 
 	// If true, the snapshot is retrieved from DRSecondary endpoint.
-	UseDRSecondary *bool `json:"useDRSecondary,omitempty"`
+	UseDRSecondary *bool
 }
 
 // DeletedSite - A deleted app.
 type DeletedSite struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// DeletedSite resource specific properties
-	Properties *DeletedSiteProperties `json:"properties,omitempty"`
+	Properties *DeletedSiteProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeletedSiteProperties - DeletedSite resource specific properties
 type DeletedSiteProperties struct {
 	// READ-ONLY; Numeric id for the deleted site
-	DeletedSiteID *int32 `json:"deletedSiteId,omitempty" azure:"ro"`
+	DeletedSiteID *int32
 
 	// READ-ONLY; Name of the deleted site
-	DeletedSiteName *string `json:"deletedSiteName,omitempty" azure:"ro"`
+	DeletedSiteName *string
 
 	// READ-ONLY; Time in UTC when the app was deleted.
-	DeletedTimestamp *string `json:"deletedTimestamp,omitempty" azure:"ro"`
+	DeletedTimestamp *string
 
 	// READ-ONLY; Geo Region of the deleted site
-	GeoRegionName *string `json:"geoRegionName,omitempty" azure:"ro"`
+	GeoRegionName *string
 
 	// READ-ONLY; Kind of site that was deleted
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; ResourceGroup that contained the deleted site
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+	ResourceGroup *string
 
 	// READ-ONLY; Slot of the deleted site
-	Slot *string `json:"slot,omitempty" azure:"ro"`
+	Slot *string
 
 	// READ-ONLY; Subscription containing the deleted site
-	Subscription *string `json:"subscription,omitempty" azure:"ro"`
+	Subscription *string
 }
 
 // DeletedWebAppCollection - Collection of deleted apps.
 type DeletedWebAppCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*DeletedSite `json:"value,omitempty"`
+	Value []*DeletedSite
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DeletedWebAppsClientGetDeletedWebAppByLocationOptions contains the optional parameters for the DeletedWebAppsClient.GetDeletedWebAppByLocation
@@ -2494,13 +2584,13 @@ type DeletedWebAppsClientGetDeletedWebAppByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.ListByLocation
+// DeletedWebAppsClientListByLocationOptions contains the optional parameters for the DeletedWebAppsClient.NewListByLocationPager
 // method.
 type DeletedWebAppsClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.List method.
+// DeletedWebAppsClientListOptions contains the optional parameters for the DeletedWebAppsClient.NewListPager method.
 type DeletedWebAppsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2508,390 +2598,390 @@ type DeletedWebAppsClientListOptions struct {
 // Deployment - User credentials used for publishing activity.
 type Deployment struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Deployment resource specific properties
-	Properties *DeploymentProperties `json:"properties,omitempty"`
+	Properties *DeploymentProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeploymentCollection - Collection of app deployments.
 type DeploymentCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Deployment `json:"value,omitempty"`
+	Value []*Deployment
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DeploymentLocations - List of available locations (regions or App Service Environments) for deployment of App Service resources.
 type DeploymentLocations struct {
 	// Available App Service Environments with basic information.
-	HostingEnvironmentDeploymentInfos []*HostingEnvironmentDeploymentInfo `json:"hostingEnvironmentDeploymentInfos,omitempty"`
+	HostingEnvironmentDeploymentInfos []*HostingEnvironmentDeploymentInfo
 
 	// Available App Service Environments with full descriptions of the environments.
-	HostingEnvironments []*Environment `json:"hostingEnvironments,omitempty"`
+	HostingEnvironments []*Environment
 
 	// Available regions.
-	Locations []*GeoRegion `json:"locations,omitempty"`
+	Locations []*GeoRegion
 }
 
 // DeploymentProperties - Deployment resource specific properties
 type DeploymentProperties struct {
 	// True if deployment is currently active, false if completed and null if not started.
-	Active *bool `json:"active,omitempty"`
+	Active *bool
 
 	// Who authored the deployment.
-	Author *string `json:"author,omitempty"`
+	Author *string
 
 	// Author email.
-	AuthorEmail *string `json:"author_email,omitempty"`
+	AuthorEmail *string
 
 	// Who performed the deployment.
-	Deployer *string `json:"deployer,omitempty"`
+	Deployer *string
 
 	// Details on deployment.
-	Details *string `json:"details,omitempty"`
+	Details *string
 
 	// End time.
-	EndTime *time.Time `json:"end_time,omitempty"`
+	EndTime *time.Time
 
 	// Details about deployment status.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Start time.
-	StartTime *time.Time `json:"start_time,omitempty"`
+	StartTime *time.Time
 
 	// Deployment status.
-	Status *int32 `json:"status,omitempty"`
+	Status *int32
 }
 
 // DetectorAbnormalTimePeriod - Class representing Abnormal Time Period detected.
 type DetectorAbnormalTimePeriod struct {
 	// End time of the correlated event
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Message describing the event
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Downtime metadata
-	MetaData [][]*NameValuePair `json:"metaData,omitempty"`
+	MetaData [][]*NameValuePair
 
 	// Represents the rank of the Detector
-	Priority *float64 `json:"priority,omitempty"`
+	Priority *float64
 
 	// List of proposed solutions
-	Solutions []*Solution `json:"solutions,omitempty"`
+	Solutions []*Solution
 
 	// Represents the name of the Detector
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// Start time of the correlated event
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Represents the type of the Detector
-	Type *IssueType `json:"type,omitempty"`
+	Type *IssueType
 }
 
 // DetectorDefinition - Class representing detector definition
 type DetectorDefinition struct {
 	// READ-ONLY; Description of the detector
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Display name of the detector
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Flag representing whether detector is enabled or not.
-	IsEnabled *bool `json:"isEnabled,omitempty" azure:"ro"`
+	IsEnabled *bool
 
 	// READ-ONLY; Detector Rank
-	Rank *float64 `json:"rank,omitempty" azure:"ro"`
+	Rank *float64
 }
 
 // DetectorDefinitionResource - ARM resource for a detector definition
 type DetectorDefinitionResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *DetectorDefinition `json:"properties,omitempty"`
+	Properties *DetectorDefinition
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DetectorInfo - Definition of Detector
 type DetectorInfo struct {
 	// READ-ONLY; Analysis Types for which this detector should apply to.
-	AnalysisType []*string `json:"analysisType,omitempty" azure:"ro"`
+	AnalysisType []*string
 
 	// READ-ONLY; Author of the detector.
-	Author *string `json:"author,omitempty" azure:"ro"`
+	Author *string
 
 	// READ-ONLY; Problem category. This serves for organizing group for detectors.
-	Category *string `json:"category,omitempty" azure:"ro"`
+	Category *string
 
 	// READ-ONLY; Short description of the detector and its purpose.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Id of detector
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of detector
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Defines score of a detector to power ML based matching.
-	Score *float32 `json:"score,omitempty" azure:"ro"`
+	Score *float32
 
 	// READ-ONLY; List of Support Topics for which this detector is enabled.
-	SupportTopicList []*SupportTopic `json:"supportTopicList,omitempty" azure:"ro"`
+	SupportTopicList []*SupportTopic
 
 	// READ-ONLY; Whether this detector is an Analysis Detector or not.
-	Type *DetectorType `json:"type,omitempty" azure:"ro"`
+	Type *DetectorType
 }
 
 // DetectorResponse - Class representing Response from Detector
 type DetectorResponse struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// DetectorResponse resource specific properties
-	Properties *DetectorResponseProperties `json:"properties,omitempty"`
+	Properties *DetectorResponseProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DetectorResponseCollection - Collection of detector responses
 type DetectorResponseCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*DetectorResponse `json:"value,omitempty"`
+	Value []*DetectorResponse
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DetectorResponseProperties - DetectorResponse resource specific properties
 type DetectorResponseProperties struct {
 	// Additional configuration for different data providers to be used by the UI
-	DataProvidersMetadata []*DataProviderMetadata `json:"dataProvidersMetadata,omitempty"`
+	DataProvidersMetadata []*DataProviderMetadata
 
 	// Data Set
-	Dataset []*DiagnosticData `json:"dataset,omitempty"`
+	Dataset []*DiagnosticData
 
 	// metadata for the detector
-	Metadata *DetectorInfo `json:"metadata,omitempty"`
+	Metadata *DetectorInfo
 
 	// Indicates status of the most severe insight.
-	Status *Status `json:"status,omitempty"`
+	Status *Status
 
 	// Suggested utterances where the detector can be applicable.
-	SuggestedUtterances *QueryUtterancesResults `json:"suggestedUtterances,omitempty"`
+	SuggestedUtterances *QueryUtterancesResults
 }
 
 // DiagnosticAnalysis - Class representing a diagnostic analysis done on an application
 type DiagnosticAnalysis struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// DiagnosticAnalysis resource specific properties
-	Properties *DiagnosticAnalysisProperties `json:"properties,omitempty"`
+	Properties *DiagnosticAnalysisProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiagnosticAnalysisCollection - Collection of Diagnostic Analyses
 type DiagnosticAnalysisCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*AnalysisDefinition `json:"value,omitempty"`
+	Value []*AnalysisDefinition
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DiagnosticAnalysisProperties - DiagnosticAnalysis resource specific properties
 type DiagnosticAnalysisProperties struct {
 	// List of time periods.
-	AbnormalTimePeriods []*AbnormalTimePeriod `json:"abnormalTimePeriods,omitempty"`
+	AbnormalTimePeriods []*AbnormalTimePeriod
 
 	// End time of the period
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Data by each detector for detectors that did not corelate
-	NonCorrelatedDetectors []*DetectorDefinition `json:"nonCorrelatedDetectors,omitempty"`
+	NonCorrelatedDetectors []*DetectorDefinition
 
 	// Data by each detector
-	Payload []*AnalysisData `json:"payload,omitempty"`
+	Payload []*AnalysisData
 
 	// Start time of the period
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // DiagnosticCategory - Class representing detector definition
 type DiagnosticCategory struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// DiagnosticCategory resource specific properties
-	Properties *DiagnosticCategoryProperties `json:"properties,omitempty"`
+	Properties *DiagnosticCategoryProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiagnosticCategoryCollection - Collection of Diagnostic Categories
 type DiagnosticCategoryCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*DiagnosticCategory `json:"value,omitempty"`
+	Value []*DiagnosticCategory
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DiagnosticCategoryProperties - DiagnosticCategory resource specific properties
 type DiagnosticCategoryProperties struct {
 	// READ-ONLY; Description of the diagnostic category
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 }
 
 // DiagnosticData - Set of data with rendering instructions
 type DiagnosticData struct {
 	// Properties that describe how the table should be rendered
-	RenderingProperties *Rendering `json:"renderingProperties,omitempty"`
+	RenderingProperties *Rendering
 
 	// Data in table form
-	Table *DataTableResponseObject `json:"table,omitempty"`
+	Table *DataTableResponseObject
 }
 
 // DiagnosticDetectorCollection - Collection of Diagnostic Detectors
 type DiagnosticDetectorCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*DetectorDefinitionResource `json:"value,omitempty"`
+	Value []*DetectorDefinitionResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DiagnosticDetectorResponse - Class representing Response from Diagnostic Detectors
 type DiagnosticDetectorResponse struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// DiagnosticDetectorResponse resource specific properties
-	Properties *DiagnosticDetectorResponseProperties `json:"properties,omitempty"`
+	Properties *DiagnosticDetectorResponseProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiagnosticDetectorResponseProperties - DiagnosticDetectorResponse resource specific properties
 type DiagnosticDetectorResponseProperties struct {
 	// List of Correlated events found by the detector
-	AbnormalTimePeriods []*DetectorAbnormalTimePeriod `json:"abnormalTimePeriods,omitempty"`
+	AbnormalTimePeriods []*DetectorAbnormalTimePeriod
 
 	// Additional Data that detector wants to send.
-	Data [][]*NameValuePair `json:"data,omitempty"`
+	Data [][]*NameValuePair
 
 	// Detector's definition
-	DetectorDefinition *DetectorDefinition `json:"detectorDefinition,omitempty"`
+	DetectorDefinition *DetectorDefinition
 
 	// End time of the period
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Flag representing Issue was detected.
-	IssueDetected *bool `json:"issueDetected,omitempty"`
+	IssueDetected *bool
 
 	// Metrics provided by the detector
-	Metrics []*DiagnosticMetricSet `json:"metrics,omitempty"`
+	Metrics []*DiagnosticMetricSet
 
 	// Meta Data
-	ResponseMetaData *ResponseMetaData `json:"responseMetaData,omitempty"`
+	ResponseMetaData *ResponseMetaData
 
 	// Start time of the period
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // DiagnosticMetricSample - Class representing Diagnostic Metric
 type DiagnosticMetricSample struct {
 	// Whether the values are aggregates across all workers or not
-	IsAggregated *bool `json:"isAggregated,omitempty"`
+	IsAggregated *bool
 
 	// Maximum of the metric sampled during the time period
-	Maximum *float64 `json:"maximum,omitempty"`
+	Maximum *float64
 
 	// Minimum of the metric sampled during the time period
-	Minimum *float64 `json:"minimum,omitempty"`
+	Minimum *float64
 
 	// Role Instance. Null if this counter is not per instance This is returned and should be whichever instance name we desire
 	// to be returned i.e. CPU and Memory return RDWORKERNAME (LargeDed…IN0) where
 	// RDWORKERNAME is Machine name below and RoleInstance name in parenthesis
-	RoleInstance *string `json:"roleInstance,omitempty"`
+	RoleInstance *string
 
 	// Time at which metric is measured
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 
 	// Total value of the metric. If multiple measurements are made this will have sum of all.
-	Total *float64 `json:"total,omitempty"`
+	Total *float64
 }
 
 // DiagnosticMetricSet - Class representing Diagnostic Metric information
 type DiagnosticMetricSet struct {
 	// End time of the period
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Name of the metric
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Start time of the period
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Presented time grain. Supported grains at the moment are PT1M, PT1H, P1D
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 
 	// Metric's unit
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 
 	// Collection of metric values for the selected period based on the {Microsoft.Web.Hosting.Administration.DiagnosticMetricSet.TimeGrain}
-	Values []*DiagnosticMetricSample `json:"values,omitempty"`
+	Values []*DiagnosticMetricSample
 }
 
 // DiagnosticsClientExecuteSiteAnalysisOptions contains the optional parameters for the DiagnosticsClient.ExecuteSiteAnalysis
@@ -3005,54 +3095,55 @@ type DiagnosticsClientGetSiteDiagnosticCategorySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListHostingEnvironmentDetectorResponses
+// DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.NewListHostingEnvironmentDetectorResponsesPager
 // method.
 type DiagnosticsClientListHostingEnvironmentDetectorResponsesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalyses method.
+// DiagnosticsClientListSiteAnalysesOptions contains the optional parameters for the DiagnosticsClient.NewListSiteAnalysesPager
+// method.
 type DiagnosticsClientListSiteAnalysesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteAnalysesSlot
+// DiagnosticsClientListSiteAnalysesSlotOptions contains the optional parameters for the DiagnosticsClient.NewListSiteAnalysesSlotPager
 // method.
 type DiagnosticsClientListSiteAnalysesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponses
+// DiagnosticsClientListSiteDetectorResponsesOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDetectorResponsesPager
 // method.
 type DiagnosticsClientListSiteDetectorResponsesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorResponsesSlot
+// DiagnosticsClientListSiteDetectorResponsesSlotOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDetectorResponsesSlotPager
 // method.
 type DiagnosticsClientListSiteDetectorResponsesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectors
+// DiagnosticsClientListSiteDetectorsOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDetectorsPager
 // method.
 type DiagnosticsClientListSiteDetectorsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDetectorsSlot
+// DiagnosticsClientListSiteDetectorsSlotOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDetectorsSlotPager
 // method.
 type DiagnosticsClientListSiteDetectorsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategories
+// DiagnosticsClientListSiteDiagnosticCategoriesOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDiagnosticCategoriesPager
 // method.
 type DiagnosticsClientListSiteDiagnosticCategoriesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.ListSiteDiagnosticCategoriesSlot
+// DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions contains the optional parameters for the DiagnosticsClient.NewListSiteDiagnosticCategoriesSlotPager
 // method.
 type DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions struct {
 	// placeholder for future optional parameters
@@ -3061,270 +3152,270 @@ type DiagnosticsClientListSiteDiagnosticCategoriesSlotOptions struct {
 // Dimension of a resource metric. For e.g. instance specific HTTP requests for a web app, where instance name is dimension
 // of the metric HTTP request
 type Dimension struct {
-	DisplayName            *string `json:"displayName,omitempty"`
-	InternalName           *string `json:"internalName,omitempty"`
-	Name                   *string `json:"name,omitempty"`
-	ToBeExportedForShoebox *bool   `json:"toBeExportedForShoebox,omitempty"`
+	DisplayName            *string
+	InternalName           *string
+	Name                   *string
+	ToBeExportedForShoebox *bool
 }
 
 // Domain - Information about a domain.
 type Domain struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Domain resource specific properties
-	Properties *DomainProperties `json:"properties,omitempty"`
+	Properties *DomainProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DomainAvailabilityCheckResult - Domain availability check result.
 type DomainAvailabilityCheckResult struct {
 	// true if domain can be purchased using CreateDomain API; otherwise, false.
-	Available *bool `json:"available,omitempty"`
+	Available *bool
 
 	// Valid values are Regular domain: Azure will charge the full price of domain registration, SoftDeleted: Purchasing this
 	// domain will simply restore it and this operation will not cost anything.
-	DomainType *DomainType `json:"domainType,omitempty"`
+	DomainType *DomainType
 
 	// Name of the domain.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // DomainCollection - Collection of domains.
 type DomainCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Domain `json:"value,omitempty"`
+	Value []*Domain
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DomainControlCenterSsoRequest - Single sign-on request information for domain management.
 type DomainControlCenterSsoRequest struct {
 	// READ-ONLY; Post parameter key.
-	PostParameterKey *string `json:"postParameterKey,omitempty" azure:"ro"`
+	PostParameterKey *string
 
 	// READ-ONLY; Post parameter value. Client should use 'application/x-www-form-urlencoded' encoding for this value.
-	PostParameterValue *string `json:"postParameterValue,omitempty" azure:"ro"`
+	PostParameterValue *string
 
 	// READ-ONLY; URL where the single sign-on request is to be made.
-	URL *string `json:"url,omitempty" azure:"ro"`
+	URL *string
 }
 
 // DomainOwnershipIdentifier - Domain ownership Identifier.
 type DomainOwnershipIdentifier struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// DomainOwnershipIdentifier resource specific properties
-	Properties *DomainOwnershipIdentifierProperties `json:"properties,omitempty"`
+	Properties *DomainOwnershipIdentifierProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DomainOwnershipIdentifierCollection - Collection of domain ownership identifiers.
 type DomainOwnershipIdentifierCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*DomainOwnershipIdentifier `json:"value,omitempty"`
+	Value []*DomainOwnershipIdentifier
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DomainOwnershipIdentifierProperties - DomainOwnershipIdentifier resource specific properties
 type DomainOwnershipIdentifierProperties struct {
 	// Ownership Id.
-	OwnershipID *string `json:"ownershipId,omitempty"`
+	OwnershipID *string
 }
 
 // DomainPatchResource - ARM resource for a domain.
 type DomainPatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// DomainPatchResource resource specific properties
-	Properties *DomainPatchResourceProperties `json:"properties,omitempty"`
+	Properties *DomainPatchResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DomainPatchResourceProperties - DomainPatchResource resource specific properties
 type DomainPatchResourceProperties struct {
 	// REQUIRED; Legal agreement consent.
-	Consent *DomainPurchaseConsent `json:"consent,omitempty"`
+	Consent *DomainPurchaseConsent
 
 	// REQUIRED; Administrative contact.
-	ContactAdmin *Contact `json:"contactAdmin,omitempty"`
+	ContactAdmin *Contact
 
 	// REQUIRED; Billing contact.
-	ContactBilling *Contact `json:"contactBilling,omitempty"`
+	ContactBilling *Contact
 
 	// REQUIRED; Registrant contact.
-	ContactRegistrant *Contact `json:"contactRegistrant,omitempty"`
+	ContactRegistrant *Contact
 
 	// REQUIRED; Technical contact.
-	ContactTech *Contact `json:"contactTech,omitempty"`
-	AuthCode    *string  `json:"authCode,omitempty"`
+	ContactTech *Contact
+	AuthCode    *string
 
 	// true if the domain should be automatically renewed; otherwise, false.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
+	AutoRenew *bool
 
 	// Current DNS type
-	DNSType *DNSType `json:"dnsType,omitempty"`
+	DNSType *DNSType
 
 	// Azure DNS Zone to use
-	DNSZoneID *string `json:"dnsZoneId,omitempty"`
+	DNSZoneID *string
 
 	// true if domain privacy is enabled for this domain; otherwise, false.
-	Privacy *bool `json:"privacy,omitempty"`
+	Privacy *bool
 
 	// Target DNS type (would be used for migration)
-	TargetDNSType *DNSType `json:"targetDnsType,omitempty"`
+	TargetDNSType *DNSType
 
 	// READ-ONLY; Domain creation timestamp.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Reasons why domain is not renewable.
-	DomainNotRenewableReasons []*ResourceNotRenewableReason `json:"domainNotRenewableReasons,omitempty" azure:"ro"`
+	DomainNotRenewableReasons []*ResourceNotRenewableReason
 
 	// READ-ONLY; Domain expiration timestamp.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+	ExpirationTime *time.Time
 
 	// READ-ONLY; Timestamp when the domain was renewed last time.
-	LastRenewedTime *time.Time `json:"lastRenewedTime,omitempty" azure:"ro"`
+	LastRenewedTime *time.Time
 
 	// READ-ONLY; All hostnames derived from the domain and assigned to Azure resources.
-	ManagedHostNames []*HostName `json:"managedHostNames,omitempty" azure:"ro"`
+	ManagedHostNames []*HostName
 
 	// READ-ONLY; Name servers.
-	NameServers []*string `json:"nameServers,omitempty" azure:"ro"`
+	NameServers []*string
 
 	// READ-ONLY; Domain provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; true if Azure can assign this domain to App Service apps; otherwise, false. This value will be true if domain
 	// registration status is active and it is hosted on name servers Azure has programmatic
 	// access to.
-	ReadyForDNSRecordManagement *bool `json:"readyForDnsRecordManagement,omitempty" azure:"ro"`
+	ReadyForDNSRecordManagement *bool
 
 	// READ-ONLY; Domain registration status.
-	RegistrationStatus *DomainStatus `json:"registrationStatus,omitempty" azure:"ro"`
+	RegistrationStatus *DomainStatus
 }
 
 // DomainProperties - Domain resource specific properties
 type DomainProperties struct {
 	// REQUIRED; Legal agreement consent.
-	Consent *DomainPurchaseConsent `json:"consent,omitempty"`
+	Consent *DomainPurchaseConsent
 
 	// REQUIRED; Administrative contact.
-	ContactAdmin *Contact `json:"contactAdmin,omitempty"`
+	ContactAdmin *Contact
 
 	// REQUIRED; Billing contact.
-	ContactBilling *Contact `json:"contactBilling,omitempty"`
+	ContactBilling *Contact
 
 	// REQUIRED; Registrant contact.
-	ContactRegistrant *Contact `json:"contactRegistrant,omitempty"`
+	ContactRegistrant *Contact
 
 	// REQUIRED; Technical contact.
-	ContactTech *Contact `json:"contactTech,omitempty"`
-	AuthCode    *string  `json:"authCode,omitempty"`
+	ContactTech *Contact
+	AuthCode    *string
 
 	// true if the domain should be automatically renewed; otherwise, false.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
+	AutoRenew *bool
 
 	// Current DNS type
-	DNSType *DNSType `json:"dnsType,omitempty"`
+	DNSType *DNSType
 
 	// Azure DNS Zone to use
-	DNSZoneID *string `json:"dnsZoneId,omitempty"`
+	DNSZoneID *string
 
 	// true if domain privacy is enabled for this domain; otherwise, false.
-	Privacy *bool `json:"privacy,omitempty"`
+	Privacy *bool
 
 	// Target DNS type (would be used for migration)
-	TargetDNSType *DNSType `json:"targetDnsType,omitempty"`
+	TargetDNSType *DNSType
 
 	// READ-ONLY; Domain creation timestamp.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Reasons why domain is not renewable.
-	DomainNotRenewableReasons []*ResourceNotRenewableReason `json:"domainNotRenewableReasons,omitempty" azure:"ro"`
+	DomainNotRenewableReasons []*ResourceNotRenewableReason
 
 	// READ-ONLY; Domain expiration timestamp.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+	ExpirationTime *time.Time
 
 	// READ-ONLY; Timestamp when the domain was renewed last time.
-	LastRenewedTime *time.Time `json:"lastRenewedTime,omitempty" azure:"ro"`
+	LastRenewedTime *time.Time
 
 	// READ-ONLY; All hostnames derived from the domain and assigned to Azure resources.
-	ManagedHostNames []*HostName `json:"managedHostNames,omitempty" azure:"ro"`
+	ManagedHostNames []*HostName
 
 	// READ-ONLY; Name servers.
-	NameServers []*string `json:"nameServers,omitempty" azure:"ro"`
+	NameServers []*string
 
 	// READ-ONLY; Domain provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; true if Azure can assign this domain to App Service apps; otherwise, false. This value will be true if domain
 	// registration status is active and it is hosted on name servers Azure has programmatic
 	// access to.
-	ReadyForDNSRecordManagement *bool `json:"readyForDnsRecordManagement,omitempty" azure:"ro"`
+	ReadyForDNSRecordManagement *bool
 
 	// READ-ONLY; Domain registration status.
-	RegistrationStatus *DomainStatus `json:"registrationStatus,omitempty" azure:"ro"`
+	RegistrationStatus *DomainStatus
 }
 
 // DomainPurchaseConsent - Domain purchase consent object, representing acceptance of applicable legal agreements.
 type DomainPurchaseConsent struct {
 	// Timestamp when the agreements were accepted.
-	AgreedAt *time.Time `json:"agreedAt,omitempty"`
+	AgreedAt *time.Time
 
 	// Client IP address.
-	AgreedBy *string `json:"agreedBy,omitempty"`
+	AgreedBy *string
 
 	// List of applicable legal agreement keys. This list can be retrieved using ListLegalAgreements API under TopLevelDomain
 	// resource.
-	AgreementKeys []*string `json:"agreementKeys,omitempty"`
+	AgreementKeys []*string
 }
 
 // DomainRecommendationSearchParameters - Domain recommendation search parameters.
 type DomainRecommendationSearchParameters struct {
 	// Keywords to be used for generating domain recommendations.
-	Keywords *string `json:"keywords,omitempty"`
+	Keywords *string
 
 	// Maximum number of recommendations.
-	MaxDomainRecommendations *int32 `json:"maxDomainRecommendations,omitempty"`
+	MaxDomainRecommendations *int32
 }
 
-// DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.ListOperations
+// DomainRegistrationProviderClientListOperationsOptions contains the optional parameters for the DomainRegistrationProviderClient.NewListOperationsPager
 // method.
 type DomainRegistrationProviderClientListOperationsOptions struct {
 	// placeholder for future optional parameters
@@ -3376,23 +3467,25 @@ type DomainsClientGetOwnershipIdentifierOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.ListByResourceGroup method.
+// DomainsClientListByResourceGroupOptions contains the optional parameters for the DomainsClient.NewListByResourceGroupPager
+// method.
 type DomainsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsClientListOptions contains the optional parameters for the DomainsClient.List method.
+// DomainsClientListOptions contains the optional parameters for the DomainsClient.NewListPager method.
 type DomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsClientListOwnershipIdentifiersOptions contains the optional parameters for the DomainsClient.ListOwnershipIdentifiers
+// DomainsClientListOwnershipIdentifiersOptions contains the optional parameters for the DomainsClient.NewListOwnershipIdentifiersPager
 // method.
 type DomainsClientListOwnershipIdentifiersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DomainsClientListRecommendationsOptions contains the optional parameters for the DomainsClient.ListRecommendations method.
+// DomainsClientListRecommendationsOptions contains the optional parameters for the DomainsClient.NewListRecommendationsPager
+// method.
 type DomainsClientListRecommendationsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3421,160 +3514,160 @@ type DomainsClientUpdateOwnershipIdentifierOptions struct {
 // EnabledConfig - Enabled configuration.
 type EnabledConfig struct {
 	// True if configuration is enabled, false if it is disabled and null if configuration is not set.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // EndpointDependency - A domain name that a service is reached at, including details of the current connection status.
 type EndpointDependency struct {
 	// The domain name of the dependency.
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// The IP Addresses and Ports used when connecting to DomainName.
-	EndpointDetails []*EndpointDetail `json:"endpointDetails,omitempty"`
+	EndpointDetails []*EndpointDetail
 }
 
 // EndpointDetail - Current TCP connectivity information from the App Service Environment to a single endpoint.
 type EndpointDetail struct {
 	// An IP Address that Domain Name currently resolves to.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
-	IsAccessible *bool `json:"isAccessible,omitempty"`
+	IsAccessible *bool
 
 	// The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress
 	// at this Port.
-	Latency *float64 `json:"latency,omitempty"`
+	Latency *float64
 
 	// The port an endpoint is connected to.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // Environment - Description of an App Service Environment.
 type Environment struct {
 	// REQUIRED; Description of the Virtual Network.
-	VirtualNetwork *VirtualNetworkProfile `json:"virtualNetwork,omitempty"`
+	VirtualNetwork *VirtualNetworkProfile
 
 	// Custom settings for changing the behavior of the App Service Environment.
-	ClusterSettings []*NameValuePair `json:"clusterSettings,omitempty"`
+	ClusterSettings []*NameValuePair
 
 	// Full view of the custom domain suffix configuration for ASEv3.
-	CustomDNSSuffixConfiguration *CustomDNSSuffixConfiguration `json:"customDnsSuffixConfiguration,omitempty"`
+	CustomDNSSuffixConfiguration *CustomDNSSuffixConfiguration
 
 	// DNS suffix of the App Service Environment.
-	DNSSuffix *string `json:"dnsSuffix,omitempty"`
+	DNSSuffix *string
 
 	// Dedicated Host Count
-	DedicatedHostCount *int32 `json:"dedicatedHostCount,omitempty"`
+	DedicatedHostCount *int32
 
 	// Scale factor for front-ends.
-	FrontEndScaleFactor *int32 `json:"frontEndScaleFactor,omitempty"`
+	FrontEndScaleFactor *int32
 
 	// Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment.
-	InternalLoadBalancingMode *LoadBalancingMode `json:"internalLoadBalancingMode,omitempty"`
+	InternalLoadBalancingMode *LoadBalancingMode
 
 	// Number of IP SSL addresses reserved for the App Service Environment.
-	IpsslAddressCount *int32 `json:"ipsslAddressCount,omitempty"`
+	IpsslAddressCount *int32
 
 	// Front-end VM size, e.g. "Medium", "Large".
-	MultiSize *string `json:"multiSize,omitempty"`
+	MultiSize *string
 
 	// Full view of networking configuration for an ASE.
-	NetworkingConfiguration *AseV3NetworkingConfiguration `json:"networkingConfiguration,omitempty"`
+	NetworkingConfiguration *AseV3NetworkingConfiguration
 
 	// Upgrade Preference
-	UpgradePreference *UpgradePreference `json:"upgradePreference,omitempty"`
+	UpgradePreference *UpgradePreference
 
 	// User added ip ranges to whitelist on ASE db
-	UserWhitelistedIPRanges []*string `json:"userWhitelistedIpRanges,omitempty"`
+	UserWhitelistedIPRanges []*string
 
 	// Whether or not this App Service Environment is zone-redundant.
-	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	ZoneRedundant *bool
 
 	// READ-ONLY; Flag that displays whether an ASE has linux workers or not
-	HasLinuxWorkers *bool `json:"hasLinuxWorkers,omitempty" azure:"ro"`
+	HasLinuxWorkers *bool
 
 	// READ-ONLY; Maximum number of VMs in the App Service Environment.
-	MaximumNumberOfMachines *int32 `json:"maximumNumberOfMachines,omitempty" azure:"ro"`
+	MaximumNumberOfMachines *int32
 
 	// READ-ONLY; Number of front-end instances.
-	MultiRoleCount *int32 `json:"multiRoleCount,omitempty" azure:"ro"`
+	MultiRoleCount *int32
 
 	// READ-ONLY; Provisioning state of the App Service Environment.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Current status of the App Service Environment.
-	Status *HostingEnvironmentStatus `json:"status,omitempty" azure:"ro"`
+	Status *HostingEnvironmentStatus
 
 	// READ-ONLY; true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when
 	// the management endpoint is no longer available (most likely because NSG blocked the
 	// incoming traffic).
-	Suspended *bool `json:"suspended,omitempty" azure:"ro"`
+	Suspended *bool
 
 	// READ-ONLY; Whether an upgrade is available for this App Service Environment.
-	UpgradeAvailability *UpgradeAvailability `json:"upgradeAvailability,omitempty" azure:"ro"`
+	UpgradeAvailability *UpgradeAvailability
 }
 
 // EnvironmentCollection - Collection of App Service Environments.
 type EnvironmentCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*EnvironmentResource `json:"value,omitempty"`
+	Value []*EnvironmentResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // EnvironmentPatchResource - ARM resource for a app service environment.
 type EnvironmentPatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *Environment `json:"properties,omitempty"`
+	Properties *Environment
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EnvironmentResource - App Service Environment ARM resource.
 type EnvironmentResource struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *Environment `json:"properties,omitempty"`
+	Properties *Environment
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EnvironmentVar - Container App container environment variable.
 type EnvironmentVar struct {
 	// Environment variable name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Name of the Container App secret from which to pull the environment variable value.
-	SecretRef *string `json:"secretRef,omitempty"`
+	SecretRef *string
 
 	// Non-secret environment variable value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // EnvironmentsClientBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the EnvironmentsClient.BeginApproveOrRejectPrivateEndpointConnection
@@ -3668,7 +3761,7 @@ type EnvironmentsClientGetDiagnosticsItemOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.GetInboundNetworkDependenciesEndpoints
+// EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.NewGetInboundNetworkDependenciesEndpointsPager
 // method.
 type EnvironmentsClientGetInboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
@@ -3685,13 +3778,13 @@ type EnvironmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.GetOutboundNetworkDependenciesEndpoints
+// EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions contains the optional parameters for the EnvironmentsClient.NewGetOutboundNetworkDependenciesEndpointsPager
 // method.
 type EnvironmentsClientGetOutboundNetworkDependenciesEndpointsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the EnvironmentsClient.GetPrivateEndpointConnectionList
+// EnvironmentsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the EnvironmentsClient.NewGetPrivateEndpointConnectionListPager
 // method.
 type EnvironmentsClientGetPrivateEndpointConnectionListOptions struct {
 	// placeholder for future optional parameters
@@ -3719,19 +3812,20 @@ type EnvironmentsClientGetWorkerPoolOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListAppServicePlansOptions contains the optional parameters for the EnvironmentsClient.ListAppServicePlans
+// EnvironmentsClientListAppServicePlansOptions contains the optional parameters for the EnvironmentsClient.NewListAppServicePlansPager
 // method.
 type EnvironmentsClientListAppServicePlansOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListByResourceGroupOptions contains the optional parameters for the EnvironmentsClient.ListByResourceGroup
+// EnvironmentsClientListByResourceGroupOptions contains the optional parameters for the EnvironmentsClient.NewListByResourceGroupPager
 // method.
 type EnvironmentsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListCapacitiesOptions contains the optional parameters for the EnvironmentsClient.ListCapacities method.
+// EnvironmentsClientListCapacitiesOptions contains the optional parameters for the EnvironmentsClient.NewListCapacitiesPager
+// method.
 type EnvironmentsClientListCapacitiesOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3741,31 +3835,31 @@ type EnvironmentsClientListDiagnosticsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListMultiRoleMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRoleMetricDefinitions
+// EnvironmentsClientListMultiRoleMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRoleMetricDefinitionsPager
 // method.
 type EnvironmentsClientListMultiRoleMetricDefinitionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePoolInstanceMetricDefinitions
+// EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRolePoolInstanceMetricDefinitionsPager
 // method.
 type EnvironmentsClientListMultiRolePoolInstanceMetricDefinitionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListMultiRolePoolSKUsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePoolSKUs
+// EnvironmentsClientListMultiRolePoolSKUsOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRolePoolSKUsPager
 // method.
 type EnvironmentsClientListMultiRolePoolSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListMultiRolePoolsOptions contains the optional parameters for the EnvironmentsClient.ListMultiRolePools
+// EnvironmentsClientListMultiRolePoolsOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRolePoolsPager
 // method.
 type EnvironmentsClientListMultiRolePoolsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListMultiRoleUsagesOptions contains the optional parameters for the EnvironmentsClient.ListMultiRoleUsages
+// EnvironmentsClientListMultiRoleUsagesOptions contains the optional parameters for the EnvironmentsClient.NewListMultiRoleUsagesPager
 // method.
 type EnvironmentsClientListMultiRoleUsagesOptions struct {
 	// placeholder for future optional parameters
@@ -3776,12 +3870,12 @@ type EnvironmentsClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.List method.
+// EnvironmentsClientListOptions contains the optional parameters for the EnvironmentsClient.NewListPager method.
 type EnvironmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListUsagesOptions contains the optional parameters for the EnvironmentsClient.ListUsages method.
+// EnvironmentsClientListUsagesOptions contains the optional parameters for the EnvironmentsClient.NewListUsagesPager method.
 type EnvironmentsClientListUsagesOptions struct {
 	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1'
 	// or name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and
@@ -3789,37 +3883,38 @@ type EnvironmentsClientListUsagesOptions struct {
 	Filter *string
 }
 
-// EnvironmentsClientListWebAppsOptions contains the optional parameters for the EnvironmentsClient.ListWebApps method.
+// EnvironmentsClientListWebAppsOptions contains the optional parameters for the EnvironmentsClient.NewListWebAppsPager method.
 type EnvironmentsClientListWebAppsOptions struct {
 	// Comma separated list of app properties to include.
 	PropertiesToInclude *string
 }
 
-// EnvironmentsClientListWebWorkerMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListWebWorkerMetricDefinitions
+// EnvironmentsClientListWebWorkerMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.NewListWebWorkerMetricDefinitionsPager
 // method.
 type EnvironmentsClientListWebWorkerMetricDefinitionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListWebWorkerUsagesOptions contains the optional parameters for the EnvironmentsClient.ListWebWorkerUsages
+// EnvironmentsClientListWebWorkerUsagesOptions contains the optional parameters for the EnvironmentsClient.NewListWebWorkerUsagesPager
 // method.
 type EnvironmentsClientListWebWorkerUsagesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPoolInstanceMetricDefinitions
+// EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions contains the optional parameters for the EnvironmentsClient.NewListWorkerPoolInstanceMetricDefinitionsPager
 // method.
 type EnvironmentsClientListWorkerPoolInstanceMetricDefinitionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListWorkerPoolSKUsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPoolSKUs
+// EnvironmentsClientListWorkerPoolSKUsOptions contains the optional parameters for the EnvironmentsClient.NewListWorkerPoolSKUsPager
 // method.
 type EnvironmentsClientListWorkerPoolSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentsClientListWorkerPoolsOptions contains the optional parameters for the EnvironmentsClient.ListWorkerPools method.
+// EnvironmentsClientListWorkerPoolsOptions contains the optional parameters for the EnvironmentsClient.NewListWorkerPoolsPager
+// method.
 type EnvironmentsClientListWorkerPoolsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3867,535 +3962,535 @@ type EnvironmentsClientUpdateWorkerPoolOptions struct {
 // ErrorEntity - Body of the error response returned from the API.
 type ErrorEntity struct {
 	// Basic error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error Details.
-	Details []*ErrorEntity `json:"details,omitempty"`
+	Details []*ErrorEntity
 
 	// Type of error.
-	ExtendedCode *string `json:"extendedCode,omitempty"`
+	ExtendedCode *string
 
 	// Inner errors.
-	InnerErrors []*ErrorEntity `json:"innerErrors,omitempty"`
+	InnerErrors []*ErrorEntity
 
 	// Any details of the error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Message template.
-	MessageTemplate *string `json:"messageTemplate,omitempty"`
+	MessageTemplate *string
 
 	// Parameters for the template.
-	Parameters []*string `json:"parameters,omitempty"`
+	Parameters []*string
 
 	// The error target.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ErrorInfo - The error info.
 type ErrorInfo struct {
 	// REQUIRED; The error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 }
 
 // ErrorProperties - Error properties indicate why the Logic service was not able to process the incoming request. The reason
 // is provided in the error message.
 type ErrorProperties struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ErrorResponse - Error response indicates Logic service is not able to process the incoming request. The error property
 // contains the error details.
 type ErrorResponse struct {
 	// The error properties.
-	Error *ErrorProperties `json:"error,omitempty"`
+	Error *ErrorProperties
 }
 
 // Experiments - Routing rules in production experiments.
 type Experiments struct {
 	// List of ramp-up rules.
-	RampUpRules []*RampUpRule `json:"rampUpRules,omitempty"`
+	RampUpRules []*RampUpRule
 }
 
 // Expression - The expression.
 type Expression struct {
 	// The azure resource error info.
-	Error *AzureResourceErrorInfo `json:"error,omitempty"`
+	Error *AzureResourceErrorInfo
 
 	// The sub expressions.
-	Subexpressions []*Expression `json:"subexpressions,omitempty"`
+	Subexpressions []*Expression
 
 	// The text.
-	Text *string `json:"text,omitempty"`
+	Text *string
 
 	// Anything
-	Value interface{} `json:"value,omitempty"`
+	Value any
 }
 
 // ExpressionRoot - The expression root.
 type ExpressionRoot struct {
 	// The azure resource error info.
-	Error *AzureResourceErrorInfo `json:"error,omitempty"`
+	Error *AzureResourceErrorInfo
 
 	// The path.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// The sub expressions.
-	Subexpressions []*Expression `json:"subexpressions,omitempty"`
+	Subexpressions []*Expression
 
 	// The text.
-	Text *string `json:"text,omitempty"`
+	Text *string
 
 	// Anything
-	Value interface{} `json:"value,omitempty"`
+	Value any
 }
 
 // ExpressionTraces - The expression traces.
 type ExpressionTraces struct {
-	Inputs []*ExpressionRoot `json:"inputs,omitempty"`
+	Inputs []*ExpressionRoot
 
 	// The link used to get the next page of recommendations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Anything
-	Value interface{} `json:"value,omitempty"`
+	Value any
 }
 
 // ExtendedLocation - Extended Location.
 type ExtendedLocation struct {
 	// Name of extended location.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; Type of extended location.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Facebook - The configuration settings of the Facebook provider.
 type Facebook struct {
 	// false if the Facebook provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The version of the Facebook api to be used while logging in.
-	GraphAPIVersion *string `json:"graphApiVersion,omitempty"`
+	GraphAPIVersion *string
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the app registration for the Facebook provider.
-	Registration *AppRegistration `json:"registration,omitempty"`
+	Registration *AppRegistration
 }
 
 // FileSystemApplicationLogsConfig - Application logs to file system configuration.
 type FileSystemApplicationLogsConfig struct {
 	// Log level.
-	Level *LogLevel `json:"level,omitempty"`
+	Level *LogLevel
 }
 
 // FileSystemHTTPLogsConfig - Http logs to file system configuration.
 type FileSystemHTTPLogsConfig struct {
 	// True if configuration is enabled, false if it is disabled and null if configuration is not set.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Retention in days. Remove files older than X days. 0 or lower means no retention.
-	RetentionInDays *int32 `json:"retentionInDays,omitempty"`
+	RetentionInDays *int32
 
 	// Maximum size in megabytes that http log files can use. When reached old log files will be removed to make space for new
 	// ones. Value can range between 25 and 100.
-	RetentionInMb *int32 `json:"retentionInMb,omitempty"`
+	RetentionInMb *int32
 }
 
 // FileSystemTokenStore - The configuration settings of the storage of the tokens if a file system is used.
 type FileSystemTokenStore struct {
 	// The directory in which the tokens will be stored.
-	Directory *string `json:"directory,omitempty"`
+	Directory *string
 }
 
 // FlowAccessControlConfiguration - The access control configuration.
 type FlowAccessControlConfiguration struct {
 	// The access control configuration for workflow actions.
-	Actions *FlowAccessControlConfigurationPolicy `json:"actions,omitempty"`
+	Actions *FlowAccessControlConfigurationPolicy
 
 	// The access control configuration for accessing workflow run contents.
-	Contents *FlowAccessControlConfigurationPolicy `json:"contents,omitempty"`
+	Contents *FlowAccessControlConfigurationPolicy
 
 	// The access control configuration for invoking workflow triggers.
-	Triggers *FlowAccessControlConfigurationPolicy `json:"triggers,omitempty"`
+	Triggers *FlowAccessControlConfigurationPolicy
 
 	// The access control configuration for workflow management.
-	WorkflowManagement *FlowAccessControlConfigurationPolicy `json:"workflowManagement,omitempty"`
+	WorkflowManagement *FlowAccessControlConfigurationPolicy
 }
 
 // FlowAccessControlConfigurationPolicy - The access control configuration policy.
 type FlowAccessControlConfigurationPolicy struct {
 	// The allowed caller IP address ranges.
-	AllowedCallerIPAddresses []*IPAddressRange `json:"allowedCallerIpAddresses,omitempty"`
+	AllowedCallerIPAddresses []*IPAddressRange
 
 	// The authentication policies for workflow.
-	OpenAuthenticationPolicies *OpenAuthenticationAccessPolicies `json:"openAuthenticationPolicies,omitempty"`
+	OpenAuthenticationPolicies *OpenAuthenticationAccessPolicies
 }
 
 // FlowEndpoints - The flow endpoints configuration.
 type FlowEndpoints struct {
 	// The access endpoint ip address.
-	AccessEndpointIPAddresses []*IPAddress `json:"accessEndpointIpAddresses,omitempty"`
+	AccessEndpointIPAddresses []*IPAddress
 
 	// The outgoing ip address.
-	OutgoingIPAddresses []*IPAddress `json:"outgoingIpAddresses,omitempty"`
+	OutgoingIPAddresses []*IPAddress
 }
 
 // FlowEndpointsConfiguration - The endpoints configuration.
 type FlowEndpointsConfiguration struct {
 	// The connector endpoints.
-	Connector *FlowEndpoints `json:"connector,omitempty"`
+	Connector *FlowEndpoints
 
 	// The workflow endpoints.
-	Workflow *FlowEndpoints `json:"workflow,omitempty"`
+	Workflow *FlowEndpoints
 }
 
 // ForwardProxy - The configuration settings of a forward proxy used to make the requests.
 type ForwardProxy struct {
 	// The convention used to determine the url of the request made.
-	Convention *ForwardProxyConvention `json:"convention,omitempty"`
+	Convention *ForwardProxyConvention
 
 	// The name of the header containing the host of the request.
-	CustomHostHeaderName *string `json:"customHostHeaderName,omitempty"`
+	CustomHostHeaderName *string
 
 	// The name of the header containing the scheme of the request.
-	CustomProtoHeaderName *string `json:"customProtoHeaderName,omitempty"`
+	CustomProtoHeaderName *string
 }
 
 type FrontEndConfiguration struct {
-	Kind *FrontEndServiceType `json:"kind,omitempty"`
+	Kind *FrontEndServiceType
 }
 
 // FunctionAppMajorVersion - Function App stack major version.
 type FunctionAppMajorVersion struct {
 	// READ-ONLY; Function App stack major version (display only).
-	DisplayText *string `json:"displayText,omitempty" azure:"ro"`
+	DisplayText *string
 
 	// READ-ONLY; Minor versions associated with the major version.
-	MinorVersions []*FunctionAppMinorVersion `json:"minorVersions,omitempty" azure:"ro"`
+	MinorVersions []*FunctionAppMinorVersion
 
 	// READ-ONLY; Function App stack major version name.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // FunctionAppMinorVersion - Function App stack minor version.
 type FunctionAppMinorVersion struct {
 	// READ-ONLY; Function App stack (display only).
-	DisplayText *string `json:"displayText,omitempty" azure:"ro"`
+	DisplayText *string
 
 	// READ-ONLY; Settings associated with the minor version.
-	StackSettings *FunctionAppRuntimes `json:"stackSettings,omitempty" azure:"ro"`
+	StackSettings *FunctionAppRuntimes
 
 	// READ-ONLY; Function App stack name.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // FunctionAppRuntimeSettings - Function App runtime settings.
 type FunctionAppRuntimeSettings struct {
 	// READ-ONLY; Application Insights settings associated with the minor version.
-	AppInsightsSettings *AppInsightsWebAppStackSettings `json:"appInsightsSettings,omitempty" azure:"ro"`
+	AppInsightsSettings *AppInsightsWebAppStackSettings
 
 	// READ-ONLY; Application settings associated with the minor version.
-	AppSettingsDictionary map[string]*string `json:"appSettingsDictionary,omitempty" azure:"ro"`
+	AppSettingsDictionary map[string]*string
 
 	// READ-ONLY; End-of-life date for the minor version.
-	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty" azure:"ro"`
+	EndOfLifeDate *time.Time
 
 	// READ-ONLY; GitHub Actions settings associated with the minor version.
-	GitHubActionSettings *GitHubActionWebAppStackSettings `json:"gitHubActionSettings,omitempty" azure:"ro"`
+	GitHubActionSettings *GitHubActionWebAppStackSettings
 
 	// READ-ONLY; true if the stack version is auto-updated; otherwise, false.
-	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty" azure:"ro"`
+	IsAutoUpdate *bool
 
 	// READ-ONLY; true if the minor version the default; otherwise, false.
-	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
+	IsDefault *bool
 
 	// READ-ONLY; true if the stack is deprecated; otherwise, false.
-	IsDeprecated *bool `json:"isDeprecated,omitempty" azure:"ro"`
+	IsDeprecated *bool
 
 	// READ-ONLY; true if the minor version is early-access; otherwise, false.
-	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty" azure:"ro"`
+	IsEarlyAccess *bool
 
 	// READ-ONLY; true if the stack should be hidden; otherwise, false.
-	IsHidden *bool `json:"isHidden,omitempty" azure:"ro"`
+	IsHidden *bool
 
 	// READ-ONLY; true if the stack is in preview; otherwise, false.
-	IsPreview *bool `json:"isPreview,omitempty" azure:"ro"`
+	IsPreview *bool
 
 	// READ-ONLY; true if remote debugging is supported for the stack; otherwise, false.
-	RemoteDebuggingSupported *bool `json:"remoteDebuggingSupported,omitempty" azure:"ro"`
+	RemoteDebuggingSupported *bool
 
 	// READ-ONLY; Function App stack minor version (runtime only).
-	RuntimeVersion *string `json:"runtimeVersion,omitempty" azure:"ro"`
+	RuntimeVersion *string
 
 	// READ-ONLY; Configuration settings associated with the minor version.
-	SiteConfigPropertiesDictionary *SiteConfigPropertiesDictionary `json:"siteConfigPropertiesDictionary,omitempty" azure:"ro"`
+	SiteConfigPropertiesDictionary *SiteConfigPropertiesDictionary
 
 	// READ-ONLY; List of supported Functions extension versions.
-	SupportedFunctionsExtensionVersions []*string `json:"supportedFunctionsExtensionVersions,omitempty" azure:"ro"`
+	SupportedFunctionsExtensionVersions []*string
 }
 
 // FunctionAppRuntimes - Function App stack runtimes.
 type FunctionAppRuntimes struct {
 	// READ-ONLY; Linux-specific settings associated with the minor version.
-	LinuxRuntimeSettings *FunctionAppRuntimeSettings `json:"linuxRuntimeSettings,omitempty" azure:"ro"`
+	LinuxRuntimeSettings *FunctionAppRuntimeSettings
 
 	// READ-ONLY; Windows-specific settings associated with the minor version.
-	WindowsRuntimeSettings *FunctionAppRuntimeSettings `json:"windowsRuntimeSettings,omitempty" azure:"ro"`
+	WindowsRuntimeSettings *FunctionAppRuntimeSettings
 }
 
 // FunctionAppStack - Function App Stack.
 type FunctionAppStack struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// FunctionAppStack resource specific properties
-	Properties *FunctionAppStackProperties `json:"properties,omitempty"`
+	Properties *FunctionAppStackProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Function App stack location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FunctionAppStackCollection - Collection of Function app Stacks
 type FunctionAppStackCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*FunctionAppStack `json:"value,omitempty"`
+	Value []*FunctionAppStack
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // FunctionAppStackProperties - FunctionAppStack resource specific properties
 type FunctionAppStackProperties struct {
 	// READ-ONLY; Function App stack (display only).
-	DisplayText *string `json:"displayText,omitempty" azure:"ro"`
+	DisplayText *string
 
 	// READ-ONLY; List of major versions available.
-	MajorVersions []*FunctionAppMajorVersion `json:"majorVersions,omitempty" azure:"ro"`
+	MajorVersions []*FunctionAppMajorVersion
 
 	// READ-ONLY; Function App stack preferred OS.
-	PreferredOs *StackPreferredOs `json:"preferredOs,omitempty" azure:"ro"`
+	PreferredOs *StackPreferredOs
 
 	// READ-ONLY; Function App stack name.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // FunctionEnvelope - Function information.
 type FunctionEnvelope struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// FunctionEnvelope resource specific properties
-	Properties *FunctionEnvelopeProperties `json:"properties,omitempty"`
+	Properties *FunctionEnvelopeProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FunctionEnvelopeCollection - Collection of Kudu function information elements.
 type FunctionEnvelopeCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*FunctionEnvelope `json:"value,omitempty"`
+	Value []*FunctionEnvelope
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // FunctionEnvelopeProperties - FunctionEnvelope resource specific properties
 type FunctionEnvelopeProperties struct {
 	// Config information.
-	Config interface{} `json:"config,omitempty"`
+	Config any
 
 	// Config URI.
-	ConfigHref *string `json:"config_href,omitempty"`
+	ConfigHref *string
 
 	// File list.
-	Files map[string]*string `json:"files,omitempty"`
+	Files map[string]*string
 
 	// Function App ID.
-	FunctionAppID *string `json:"function_app_id,omitempty"`
+	FunctionAppID *string
 
 	// Function URI.
-	Href *string `json:"href,omitempty"`
+	Href *string
 
 	// The invocation URL
-	InvokeURLTemplate *string `json:"invoke_url_template,omitempty"`
+	InvokeURLTemplate *string
 
 	// Gets or sets a value indicating whether the function is disabled
-	IsDisabled *bool `json:"isDisabled,omitempty"`
+	IsDisabled *bool
 
 	// The function language
-	Language *string `json:"language,omitempty"`
+	Language *string
 
 	// Script URI.
-	ScriptHref *string `json:"script_href,omitempty"`
+	ScriptHref *string
 
 	// Script root path URI.
-	ScriptRootPathHref *string `json:"script_root_path_href,omitempty"`
+	ScriptRootPathHref *string
 
 	// Secrets file URI.
-	SecretsFileHref *string `json:"secrets_file_href,omitempty"`
+	SecretsFileHref *string
 
 	// Test data used when testing via the Azure Portal.
-	TestData *string `json:"test_data,omitempty"`
+	TestData *string
 
 	// Test data URI.
-	TestDataHref *string `json:"test_data_href,omitempty"`
+	TestDataHref *string
 }
 
 // FunctionSecrets - Function secrets.
 type FunctionSecrets struct {
 	// Secret key.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// Trigger URL.
-	TriggerURL *string `json:"trigger_url,omitempty"`
+	TriggerURL *string
 }
 
 // GeoRegion - Geographical region.
 type GeoRegion struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// GeoRegion resource specific properties
-	Properties *GeoRegionProperties `json:"properties,omitempty"`
+	Properties *GeoRegionProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GeoRegionCollection - Collection of geographical regions.
 type GeoRegionCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*GeoRegion `json:"value,omitempty"`
+	Value []*GeoRegion
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // GeoRegionProperties - GeoRegion resource specific properties
 type GeoRegionProperties struct {
 	// READ-ONLY; Region description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Display name for region.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Display name for region.
-	OrgDomain *string `json:"orgDomain,omitempty" azure:"ro"`
+	OrgDomain *string
 }
 
 // GitHub - The configuration settings of the GitHub provider.
 type GitHub struct {
 	// false if the GitHub provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the app registration for the GitHub provider.
-	Registration *ClientRegistration `json:"registration,omitempty"`
+	Registration *ClientRegistration
 }
 
 // GitHubActionCodeConfiguration - The GitHub action code configuration.
 type GitHubActionCodeConfiguration struct {
 	// Runtime stack is used to determine the workflow file content for code base apps.
-	RuntimeStack *string `json:"runtimeStack,omitempty"`
+	RuntimeStack *string
 
 	// Runtime version is used to determine what build version to set in the workflow file.
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 }
 
 // GitHubActionConfiguration - The GitHub action configuration.
 type GitHubActionConfiguration struct {
 	// GitHub Action code configuration.
-	CodeConfiguration *GitHubActionCodeConfiguration `json:"codeConfiguration,omitempty"`
+	CodeConfiguration *GitHubActionCodeConfiguration
 
 	// GitHub Action container configuration.
-	ContainerConfiguration *GitHubActionContainerConfiguration `json:"containerConfiguration,omitempty"`
+	ContainerConfiguration *GitHubActionContainerConfiguration
 
 	// Workflow option to determine whether the workflow file should be generated and written to the repository.
-	GenerateWorkflowFile *bool `json:"generateWorkflowFile,omitempty"`
+	GenerateWorkflowFile *bool
 
 	// This will help determine the workflow configuration to select.
-	IsLinux *bool `json:"isLinux,omitempty"`
+	IsLinux *bool
 }
 
 // GitHubActionContainerConfiguration - The GitHub action container configuration.
 type GitHubActionContainerConfiguration struct {
 	// The image name for the build.
-	ImageName *string `json:"imageName,omitempty"`
+	ImageName *string
 
 	// The password used to upload the image to the container registry.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The server URL for the container registry where the build will be hosted.
-	ServerURL *string `json:"serverUrl,omitempty"`
+	ServerURL *string
 
 	// The username used to upload the image to the container registry.
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // GitHubActionWebAppStackSettings - GitHub Actions Web App stack settings.
 type GitHubActionWebAppStackSettings struct {
 	// READ-ONLY; true if GitHub Actions is supported for the stack; otherwise, false.
-	IsSupported *bool `json:"isSupported,omitempty" azure:"ro"`
+	IsSupported *bool
 
 	// READ-ONLY; The minor version that is supported for GitHub Actions.
-	SupportedVersion *string `json:"supportedVersion,omitempty" azure:"ro"`
+	SupportedVersion *string
 }
 
 // GithubToken - Github access token for Appservice CLI github integration.
 type GithubToken struct {
 	// Github access token for Appservice CLI github integration
-	AccessToken *string `json:"accessToken,omitempty"`
+	AccessToken *string
 
 	// Error message if unable to get token
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// True if valid github token received, False otherwise
-	GotToken *bool `json:"gotToken,omitempty"`
+	GotToken *bool
 
 	// Scope of the github access token
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 
 	// token type
-	TokenType *string `json:"tokenType,omitempty"`
+	TokenType *string
 }
 
 // GithubTokenRequest - Appservice Github token request content.
 type GithubTokenRequest struct {
 	// REQUIRED; Code string to exchange for Github Access token
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; State string used for verification.
-	State *string `json:"state,omitempty"`
+	State *string
 }
 
 // GlobalClientGetDeletedWebAppOptions contains the optional parameters for the GlobalClient.GetDeletedWebApp method.
@@ -4418,94 +4513,94 @@ type GlobalClientGetSubscriptionOperationWithAsyncResponseOptions struct {
 // GlobalCsmSKUDescription - A Global SKU Description.
 type GlobalCsmSKUDescription struct {
 	// Capabilities of the SKU, e.g., is traffic manager enabled?
-	Capabilities []*Capability `json:"capabilities,omitempty"`
+	Capabilities []*Capability
 
 	// Min, max, and default scale values of the SKU.
-	Capacity *SKUCapacity `json:"capacity,omitempty"`
+	Capacity *SKUCapacity
 
 	// Family code of the resource SKU.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// Locations of the SKU.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// Name of the resource SKU.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Size specifier of the resource SKU.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// Service Tier of the resource SKU.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // GlobalValidation - The configuration settings that determines the validation flow of users using App Service Authentication/Authorization.
 type GlobalValidation struct {
 	// The paths for which unauthenticated flow would not be redirected to the login page.
-	ExcludedPaths []*string `json:"excludedPaths,omitempty"`
+	ExcludedPaths []*string
 
 	// The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple
 	// providers are configured and the unauthenticated client action is set to
 	// "RedirectToLoginPage".
-	RedirectToProvider *string `json:"redirectToProvider,omitempty"`
+	RedirectToProvider *string
 
 	// true if the authentication flow is required any request is made; otherwise, false.
-	RequireAuthentication *bool `json:"requireAuthentication,omitempty"`
+	RequireAuthentication *bool
 
 	// The action to take when an unauthenticated client attempts to access the app.
-	UnauthenticatedClientAction *UnauthenticatedClientActionV2 `json:"unauthenticatedClientAction,omitempty"`
+	UnauthenticatedClientAction *UnauthenticatedClientActionV2
 }
 
 // Google - The configuration settings of the Google provider.
 type Google struct {
 	// false if the Google provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the app registration for the Google provider.
-	Registration *ClientRegistration `json:"registration,omitempty"`
+	Registration *ClientRegistration
 
 	// The configuration settings of the Azure Active Directory token validation flow.
-	Validation *AllowedAudiencesValidation `json:"validation,omitempty"`
+	Validation *AllowedAudiencesValidation
 }
 
 // HTTPLogsConfig - Http logs configuration.
 type HTTPLogsConfig struct {
 	// Http logs to azure blob storage configuration.
-	AzureBlobStorage *AzureBlobStorageHTTPLogsConfig `json:"azureBlobStorage,omitempty"`
+	AzureBlobStorage *AzureBlobStorageHTTPLogsConfig
 
 	// Http logs to file system configuration.
-	FileSystem *FileSystemHTTPLogsConfig `json:"fileSystem,omitempty"`
+	FileSystem *FileSystemHTTPLogsConfig
 }
 
 // HTTPScaleRule - Container App container Custom scaling rule.
 type HTTPScaleRule struct {
 	// Authentication secrets for the custom scale rule.
-	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+	Auth []*ScaleRuleAuth
 
 	// Metadata properties to describe http scale rule.
-	Metadata map[string]*string `json:"metadata,omitempty"`
+	Metadata map[string]*string
 }
 
 // HTTPSettings - The configuration settings of the HTTP requests for authentication and authorization requests made against
 // App Service Authentication/Authorization.
 type HTTPSettings struct {
 	// The configuration settings of a forward proxy used to make the requests.
-	ForwardProxy *ForwardProxy `json:"forwardProxy,omitempty"`
+	ForwardProxy *ForwardProxy
 
 	// false if the authentication/authorization responses not having the HTTPS scheme are permissible; otherwise, true.
-	RequireHTTPS *bool `json:"requireHttps,omitempty"`
+	RequireHTTPS *bool
 
 	// The configuration settings of the paths HTTP requests.
-	Routes *HTTPSettingsRoutes `json:"routes,omitempty"`
+	Routes *HTTPSettingsRoutes
 }
 
 // HTTPSettingsRoutes - The configuration settings of the paths HTTP requests.
 type HTTPSettingsRoutes struct {
 	// The prefix that should precede all the authentication/authorization paths.
-	APIPrefix *string `json:"apiPrefix,omitempty"`
+	APIPrefix *string
 }
 
 // HandlerMapping - The IIS handler mappings used to define which handler processes HTTP requests with certain extension.
@@ -4513,286 +4608,286 @@ type HTTPSettingsRoutes struct {
 // extension.
 type HandlerMapping struct {
 	// Command-line arguments to be passed to the script processor.
-	Arguments *string `json:"arguments,omitempty"`
+	Arguments *string
 
 	// Requests with this extension will be handled using the specified FastCGI application.
-	Extension *string `json:"extension,omitempty"`
+	Extension *string
 
 	// The absolute path to the FastCGI application.
-	ScriptProcessor *string `json:"scriptProcessor,omitempty"`
+	ScriptProcessor *string
 }
 
 // HostKeys - Functions host level keys.
 type HostKeys struct {
 	// Host level function keys.
-	FunctionKeys map[string]*string `json:"functionKeys,omitempty"`
+	FunctionKeys map[string]*string
 
 	// Secret key.
-	MasterKey *string `json:"masterKey,omitempty"`
+	MasterKey *string
 
 	// System keys.
-	SystemKeys map[string]*string `json:"systemKeys,omitempty"`
+	SystemKeys map[string]*string
 }
 
 // HostName - Details of a hostname derived from a domain.
 type HostName struct {
 	// Name of the Azure resource the hostname is assigned to. If it is assigned to a Traffic Manager then it will be the Traffic
 	// Manager name otherwise it will be the app name.
-	AzureResourceName *string `json:"azureResourceName,omitempty"`
+	AzureResourceName *string
 
 	// Type of the Azure resource the hostname is assigned to.
-	AzureResourceType *AzureResourceType `json:"azureResourceType,omitempty"`
+	AzureResourceType *AzureResourceType
 
 	// Type of the DNS record.
-	CustomHostNameDNSRecordType *CustomHostNameDNSRecordType `json:"customHostNameDnsRecordType,omitempty"`
+	CustomHostNameDNSRecordType *CustomHostNameDNSRecordType
 
 	// Type of the hostname.
-	HostNameType *HostNameType `json:"hostNameType,omitempty"`
+	HostNameType *HostNameType
 
 	// Name of the hostname.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// List of apps the hostname is assigned to. This list will have more than one app only if the hostname is pointing to a Traffic
 	// Manager.
-	SiteNames []*string `json:"siteNames,omitempty"`
+	SiteNames []*string
 }
 
 // HostNameBinding - A hostname binding object.
 type HostNameBinding struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// HostNameBinding resource specific properties
-	Properties *HostNameBindingProperties `json:"properties,omitempty"`
+	Properties *HostNameBindingProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HostNameBindingCollection - Collection of hostname bindings.
 type HostNameBindingCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*HostNameBinding `json:"value,omitempty"`
+	Value []*HostNameBinding
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // HostNameBindingProperties - HostNameBinding resource specific properties
 type HostNameBindingProperties struct {
 	// Azure resource name.
-	AzureResourceName *string `json:"azureResourceName,omitempty"`
+	AzureResourceName *string
 
 	// Azure resource type.
-	AzureResourceType *AzureResourceType `json:"azureResourceType,omitempty"`
+	AzureResourceType *AzureResourceType
 
 	// Custom DNS record type.
-	CustomHostNameDNSRecordType *CustomHostNameDNSRecordType `json:"customHostNameDnsRecordType,omitempty"`
+	CustomHostNameDNSRecordType *CustomHostNameDNSRecordType
 
 	// Fully qualified ARM domain resource URI.
-	DomainID *string `json:"domainId,omitempty"`
+	DomainID *string
 
 	// Hostname type.
-	HostNameType *HostNameType `json:"hostNameType,omitempty"`
+	HostNameType *HostNameType
 
 	// SSL type
-	SSLState *SSLState `json:"sslState,omitempty"`
+	SSLState *SSLState
 
 	// App Service app name.
-	SiteName *string `json:"siteName,omitempty"`
+	SiteName *string
 
 	// SSL certificate thumbprint
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 
 	// READ-ONLY; Virtual IP address assigned to the hostname if IP based SSL is enabled.
-	VirtualIP *string `json:"virtualIP,omitempty" azure:"ro"`
+	VirtualIP *string
 }
 
 // HostNameSSLState - SSL-enabled hostname.
 type HostNameSSLState struct {
 	// Indicates whether the hostname is a standard or repository hostname.
-	HostType *HostType `json:"hostType,omitempty"`
+	HostType *HostType
 
 	// Hostname.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// SSL type.
-	SSLState *SSLState `json:"sslState,omitempty"`
+	SSLState *SSLState
 
 	// SSL certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 
 	// Set to true to update existing hostname.
-	ToUpdate *bool `json:"toUpdate,omitempty"`
+	ToUpdate *bool
 
 	// Virtual IP address assigned to the hostname if IP based SSL is enabled.
-	VirtualIP *string `json:"virtualIP,omitempty"`
+	VirtualIP *string
 }
 
 // HostingEnvironmentDeploymentInfo - Information needed to create resources on an App Service Environment.
 type HostingEnvironmentDeploymentInfo struct {
 	// Location of the App Service Environment.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Name of the App Service Environment.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // HostingEnvironmentDiagnostics - Diagnostics for an App Service Environment.
 type HostingEnvironmentDiagnostics struct {
 	// Diagnostics output.
-	DiagnosticsOutput *string `json:"diagnosticsOutput,omitempty"`
+	DiagnosticsOutput *string
 
 	// Name/identifier of the diagnostics.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // HostingEnvironmentProfile - Specification for an App Service Environment to use for this resource.
 type HostingEnvironmentProfile struct {
 	// Resource ID of the App Service Environment.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; Name of the App Service Environment.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type of the App Service Environment.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HybridConnection - Hybrid Connection contract. This is used to configure a Hybrid Connection.
 type HybridConnection struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// HybridConnection resource specific properties
-	Properties *HybridConnectionProperties `json:"properties,omitempty"`
+	Properties *HybridConnectionProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HybridConnectionCollection - Collection of hostname bindings.
 type HybridConnectionCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*HybridConnection `json:"value,omitempty"`
+	Value []*HybridConnection
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // HybridConnectionKey - Hybrid Connection key contract. This has the send key name and value for a Hybrid Connection.
 type HybridConnectionKey struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// HybridConnectionKey resource specific properties
-	Properties *HybridConnectionKeyProperties `json:"properties,omitempty"`
+	Properties *HybridConnectionKeyProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HybridConnectionKeyProperties - HybridConnectionKey resource specific properties
 type HybridConnectionKeyProperties struct {
 	// READ-ONLY; The name of the send key.
-	SendKeyName *string `json:"sendKeyName,omitempty" azure:"ro"`
+	SendKeyName *string
 
 	// READ-ONLY; The value of the send key.
-	SendKeyValue *string `json:"sendKeyValue,omitempty" azure:"ro"`
+	SendKeyValue *string
 }
 
 // HybridConnectionLimits - Hybrid Connection limits contract. This is used to return the plan limits of Hybrid Connections.
 type HybridConnectionLimits struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// HybridConnectionLimits resource specific properties
-	Properties *HybridConnectionLimitsProperties `json:"properties,omitempty"`
+	Properties *HybridConnectionLimitsProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HybridConnectionLimitsProperties - HybridConnectionLimits resource specific properties
 type HybridConnectionLimitsProperties struct {
 	// READ-ONLY; The current number of Hybrid Connections.
-	Current *int32 `json:"current,omitempty" azure:"ro"`
+	Current *int32
 
 	// READ-ONLY; The maximum number of Hybrid Connections allowed.
-	Maximum *int32 `json:"maximum,omitempty" azure:"ro"`
+	Maximum *int32
 }
 
 // HybridConnectionProperties - HybridConnection resource specific properties
 type HybridConnectionProperties struct {
 	// The hostname of the endpoint.
-	Hostname *string `json:"hostname,omitempty"`
+	Hostname *string
 
 	// The port of the endpoint.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 
 	// The ARM URI to the Service Bus relay.
-	RelayArmURI *string `json:"relayArmUri,omitempty"`
+	RelayArmURI *string
 
 	// The name of the Service Bus relay.
-	RelayName *string `json:"relayName,omitempty"`
+	RelayName *string
 
 	// The name of the Service Bus key which has Send permissions. This is used to authenticate to Service Bus.
-	SendKeyName *string `json:"sendKeyName,omitempty"`
+	SendKeyName *string
 
 	// The value of the Service Bus key. This is used to authenticate to Service Bus. In ARM this key will not be returned normally,
 	// use the POST /listKeys API instead.
-	SendKeyValue *string `json:"sendKeyValue,omitempty"`
+	SendKeyValue *string
 
 	// The name of the Service Bus namespace.
-	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
+	ServiceBusNamespace *string
 
 	// The suffix for the service bus endpoint. By default this is .servicebus.windows.net
-	ServiceBusSuffix *string `json:"serviceBusSuffix,omitempty"`
+	ServiceBusSuffix *string
 }
 
 // IPAddress - The ip address.
 type IPAddress struct {
 	// The address.
-	Address *string `json:"address,omitempty"`
+	Address *string
 }
 
 // IPAddressRange - The ip address range.
 type IPAddressRange struct {
 	// The IP address range.
-	AddressRange *string `json:"addressRange,omitempty"`
+	AddressRange *string
 }
 
 // IPSecurityRestriction - IP security restriction on an app.
 type IPSecurityRestriction struct {
 	// Allow or Deny access for this IP range.
-	Action *string `json:"action,omitempty"`
+	Action *string
 
 	// IP restriction rule description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// IP restriction rule headers. X-Forwarded-Host (https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Forwarded-Host#Examples).
 	// The matching logic is ..
@@ -4807,305 +4902,305 @@ type IPSecurityRestriction struct {
 	// * If the property is null or empty (default), any forwarded-for chains (or lack of) are allowed.
 	// * If any address (excluding port number) in the chain (comma separated) matches the CIDR defined by the property.
 	// X-Azure-FDID and X-FD-HealthProbe. The matching logic is exact match.
-	Headers map[string][]*string `json:"headers,omitempty"`
+	Headers map[string][]*string
 
 	// IP address the security restriction is valid for. It can be in form of pure ipv4 address (required SubnetMask property)
 	// or CIDR notation such as ipv4/mask (leading bit match). For CIDR, SubnetMask
 	// property must not be specified.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// IP restriction rule name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Priority of IP restriction rule.
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// Subnet mask for the range of IP addresses the restriction is valid for.
-	SubnetMask *string `json:"subnetMask,omitempty"`
+	SubnetMask *string
 
 	// (internal) Subnet traffic tag
-	SubnetTrafficTag *int32 `json:"subnetTrafficTag,omitempty"`
+	SubnetTrafficTag *int32
 
 	// Defines what this IP filter will be used for. This is to support IP filtering on proxies.
-	Tag *IPFilterTag `json:"tag,omitempty"`
+	Tag *IPFilterTag
 
 	// Virtual network resource id
-	VnetSubnetResourceID *string `json:"vnetSubnetResourceId,omitempty"`
+	VnetSubnetResourceID *string
 
 	// (internal) Vnet traffic tag
-	VnetTrafficTag *int32 `json:"vnetTrafficTag,omitempty"`
+	VnetTrafficTag *int32
 }
 
 // Identifier - A domain specific resource identifier.
 type Identifier struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Identifier resource specific properties
-	Properties *IdentifierProperties `json:"properties,omitempty"`
+	Properties *IdentifierProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IdentifierCollection - Collection of identifiers.
 type IdentifierCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Identifier `json:"value,omitempty"`
+	Value []*Identifier
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // IdentifierProperties - Identifier resource specific properties
 type IdentifierProperties struct {
 	// String representation of the identity.
-	Value *string `json:"id,omitempty"`
+	Value *string
 }
 
 // IdentityProviders - The configuration settings of each of the identity providers used to configure App Service Authentication/Authorization.
 type IdentityProviders struct {
 	// The configuration settings of the Apple provider.
-	Apple *Apple `json:"apple,omitempty"`
+	Apple *Apple
 
 	// The configuration settings of the Azure Active directory provider.
-	AzureActiveDirectory *AzureActiveDirectory `json:"azureActiveDirectory,omitempty"`
+	AzureActiveDirectory *AzureActiveDirectory
 
 	// The configuration settings of the Azure Static Web Apps provider.
-	AzureStaticWebApps *AzureStaticWebApps `json:"azureStaticWebApps,omitempty"`
+	AzureStaticWebApps *AzureStaticWebApps
 
 	// The map of the name of the alias of each custom Open ID Connect provider to the configuration settings of the custom Open
 	// ID Connect provider.
-	CustomOpenIDConnectProviders map[string]*CustomOpenIDConnectProvider `json:"customOpenIdConnectProviders,omitempty"`
+	CustomOpenIDConnectProviders map[string]*CustomOpenIDConnectProvider
 
 	// The configuration settings of the Facebook provider.
-	Facebook *Facebook `json:"facebook,omitempty"`
+	Facebook *Facebook
 
 	// The configuration settings of the GitHub provider.
-	GitHub *GitHub `json:"gitHub,omitempty"`
+	GitHub *GitHub
 
 	// The configuration settings of the Google provider.
-	Google *Google `json:"google,omitempty"`
+	Google *Google
 
 	// The configuration settings of the legacy Microsoft Account provider.
-	LegacyMicrosoftAccount *LegacyMicrosoftAccount `json:"legacyMicrosoftAccount,omitempty"`
+	LegacyMicrosoftAccount *LegacyMicrosoftAccount
 
 	// The configuration settings of the Twitter provider.
-	Twitter *Twitter `json:"twitter,omitempty"`
+	Twitter *Twitter
 }
 
 // InboundEnvironmentEndpoint - The IP Addresses and Ports that require inbound network access to and within the subnet of
 // the App Service Environment.
 type InboundEnvironmentEndpoint struct {
 	// Short text describing the purpose of the network traffic.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The IP addresses that network traffic will originate from in cidr notation.
-	Endpoints []*string `json:"endpoints,omitempty"`
+	Endpoints []*string
 
 	// The ports that network traffic will arrive to the App Service Environment at.
-	Ports []*string `json:"ports,omitempty"`
+	Ports []*string
 }
 
 // InboundEnvironmentEndpointCollection - Collection of Inbound Environment Endpoints
 type InboundEnvironmentEndpointCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*InboundEnvironmentEndpoint `json:"value,omitempty"`
+	Value []*InboundEnvironmentEndpoint
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // Ingress - Container App Ingress configuration.
 type Ingress struct {
 	// Bool indicating if HTTP connections to is allowed. If set to false HTTP connections are automatically redirected to HTTPS
 	// connections
-	AllowInsecure *bool `json:"allowInsecure,omitempty"`
+	AllowInsecure *bool
 
 	// Bool indicating if app exposes an external http endpoint
-	External *bool `json:"external,omitempty"`
+	External *bool
 
 	// Target Port in containers for traffic from ingress
-	TargetPort *int32           `json:"targetPort,omitempty"`
-	Traffic    []*TrafficWeight `json:"traffic,omitempty"`
+	TargetPort *int32
+	Traffic    []*TrafficWeight
 
 	// Ingress transport protocol
-	Transport *IngressTransportMethod `json:"transport,omitempty"`
+	Transport *IngressTransportMethod
 
 	// READ-ONLY; Hostname.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 }
 
 // JSONSchema - The JSON schema.
 type JSONSchema struct {
 	// The JSON content.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// The JSON title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // JwtClaimChecks - The configuration settings of the checks that should be made while validating the JWT Claims.
 type JwtClaimChecks struct {
 	// The list of the allowed client applications.
-	AllowedClientApplications []*string `json:"allowedClientApplications,omitempty"`
+	AllowedClientApplications []*string
 
 	// The list of the allowed groups.
-	AllowedGroups []*string `json:"allowedGroups,omitempty"`
+	AllowedGroups []*string
 }
 
 // KeyInfo - Function key info.
 type KeyInfo struct {
 	// Key name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Key value
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 type KeyValuePairStringObject struct {
 	// READ-ONLY
-	Key *string `json:"key,omitempty" azure:"ro"`
+	Key *string
 
 	// READ-ONLY; Anything
-	Value interface{} `json:"value,omitempty" azure:"ro"`
+	Value any
 }
 
 // KubeEnvironment - A Kubernetes cluster specialized for web workloads by Azure App Service
 type KubeEnvironment struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Extended Location.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	ExtendedLocation *ExtendedLocation
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// KubeEnvironment resource specific properties
-	Properties *KubeEnvironmentProperties `json:"properties,omitempty"`
+	Properties *KubeEnvironmentProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // KubeEnvironmentCollection - Collection of Kubernetes Environments
 type KubeEnvironmentCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*KubeEnvironment `json:"value,omitempty"`
+	Value []*KubeEnvironment
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // KubeEnvironmentPatchResource - ARM resource for a KubeEnvironment when patching
 type KubeEnvironmentPatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// KubeEnvironmentPatchResource resource specific properties
-	Properties *KubeEnvironmentPatchResourceProperties `json:"properties,omitempty"`
+	Properties *KubeEnvironmentPatchResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // KubeEnvironmentPatchResourceProperties - KubeEnvironmentPatchResource resource specific properties
 type KubeEnvironmentPatchResourceProperties struct {
-	AksResourceID *string `json:"aksResourceID,omitempty"`
+	AksResourceID *string
 
 	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics"
 	// is supported
-	AppLogsConfiguration *AppLogsConfiguration `json:"appLogsConfiguration,omitempty"`
+	AppLogsConfiguration *AppLogsConfiguration
 
 	// Cluster configuration which determines the ARC cluster components types. Eg: Choosing between BuildService kind, FrontEnd
 	// Service ArtifactsStorageType etc.
-	ArcConfiguration *ArcConfiguration `json:"arcConfiguration,omitempty"`
+	ArcConfiguration *ArcConfiguration
 
 	// Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET Configuration
-	ContainerAppsConfiguration *ContainerAppsConfiguration `json:"containerAppsConfiguration,omitempty"`
+	ContainerAppsConfiguration *ContainerAppsConfiguration
 
 	// Only visible within Vnet/Subnet
-	InternalLoadBalancerEnabled *bool `json:"internalLoadBalancerEnabled,omitempty"`
+	InternalLoadBalancerEnabled *bool
 
 	// Static IP of the KubeEnvironment
-	StaticIP *string `json:"staticIp,omitempty"`
+	StaticIP *string
 
 	// READ-ONLY; Default Domain Name for the cluster
-	DefaultDomain *string `json:"defaultDomain,omitempty" azure:"ro"`
+	DefaultDomain *string
 
 	// READ-ONLY; Any errors that occurred during deployment or deployment validation
-	DeploymentErrors *string `json:"deploymentErrors,omitempty" azure:"ro"`
+	DeploymentErrors *string
 
 	// READ-ONLY; Provisioning state of the Kubernetes Environment.
-	ProvisioningState *KubeEnvironmentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KubeEnvironmentProvisioningState
 }
 
 // KubeEnvironmentProfile - Specification for a Kubernetes Environment to use for this resource.
 type KubeEnvironmentProfile struct {
 	// Resource ID of the Kubernetes Environment.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; Name of the Kubernetes Environment.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type of the Kubernetes Environment.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // KubeEnvironmentProperties - KubeEnvironment resource specific properties
 type KubeEnvironmentProperties struct {
-	AksResourceID *string `json:"aksResourceID,omitempty"`
+	AksResourceID *string
 
 	// Cluster configuration which enables the log daemon to export app logs to a destination. Currently only "log-analytics"
 	// is supported
-	AppLogsConfiguration *AppLogsConfiguration `json:"appLogsConfiguration,omitempty"`
+	AppLogsConfiguration *AppLogsConfiguration
 
 	// Cluster configuration which determines the ARC cluster components types. Eg: Choosing between BuildService kind, FrontEnd
 	// Service ArtifactsStorageType etc.
-	ArcConfiguration *ArcConfiguration `json:"arcConfiguration,omitempty"`
+	ArcConfiguration *ArcConfiguration
 
 	// Cluster configuration for Container Apps Environments to configure Dapr Instrumentation Key and VNET Configuration
-	ContainerAppsConfiguration *ContainerAppsConfiguration `json:"containerAppsConfiguration,omitempty"`
+	ContainerAppsConfiguration *ContainerAppsConfiguration
 
 	// Type of Kubernetes Environment. Only supported for Container App Environments with value as Managed
-	EnvironmentType *string `json:"environmentType,omitempty"`
+	EnvironmentType *string
 
 	// Only visible within Vnet/Subnet
-	InternalLoadBalancerEnabled *bool `json:"internalLoadBalancerEnabled,omitempty"`
+	InternalLoadBalancerEnabled *bool
 
 	// Static IP of the KubeEnvironment
-	StaticIP *string `json:"staticIp,omitempty"`
+	StaticIP *string
 
 	// READ-ONLY; Default Domain Name for the cluster
-	DefaultDomain *string `json:"defaultDomain,omitempty" azure:"ro"`
+	DefaultDomain *string
 
 	// READ-ONLY; Any errors that occurred during deployment or deployment validation
-	DeploymentErrors *string `json:"deploymentErrors,omitempty" azure:"ro"`
+	DeploymentErrors *string
 
 	// READ-ONLY; Provisioning state of the Kubernetes Environment.
-	ProvisioningState *KubeEnvironmentProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KubeEnvironmentProvisioningState
 }
 
 // KubeEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the KubeEnvironmentsClient.BeginCreateOrUpdate
@@ -5126,13 +5221,13 @@ type KubeEnvironmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KubeEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the KubeEnvironmentsClient.ListByResourceGroup
+// KubeEnvironmentsClientListByResourceGroupOptions contains the optional parameters for the KubeEnvironmentsClient.NewListByResourceGroupPager
 // method.
 type KubeEnvironmentsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// KubeEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the KubeEnvironmentsClient.ListBySubscription
+// KubeEnvironmentsClientListBySubscriptionOptions contains the optional parameters for the KubeEnvironmentsClient.NewListBySubscriptionPager
 // method.
 type KubeEnvironmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -5146,65 +5241,65 @@ type KubeEnvironmentsClientUpdateOptions struct {
 // LegacyMicrosoftAccount - The configuration settings of the legacy Microsoft Account provider.
 type LegacyMicrosoftAccount struct {
 	// false if the legacy Microsoft Account provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the login flow.
-	Login *LoginScopes `json:"login,omitempty"`
+	Login *LoginScopes
 
 	// The configuration settings of the app registration for the legacy Microsoft Account provider.
-	Registration *ClientRegistration `json:"registration,omitempty"`
+	Registration *ClientRegistration
 
 	// The configuration settings of the legacy Microsoft Account provider token validation flow.
-	Validation *AllowedAudiencesValidation `json:"validation,omitempty"`
+	Validation *AllowedAudiencesValidation
 }
 
 // LinuxJavaContainerSettings - Linux Java Container settings.
 type LinuxJavaContainerSettings struct {
 	// READ-ONLY; End-of-life date for the minor version.
-	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty" azure:"ro"`
+	EndOfLifeDate *time.Time
 
 	// READ-ONLY; true if the stack version is auto-updated; otherwise, false.
-	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty" azure:"ro"`
+	IsAutoUpdate *bool
 
 	// READ-ONLY; true if the stack is deprecated; otherwise, false.
-	IsDeprecated *bool `json:"isDeprecated,omitempty" azure:"ro"`
+	IsDeprecated *bool
 
 	// READ-ONLY; true if the minor version is early-access; otherwise, false.
-	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty" azure:"ro"`
+	IsEarlyAccess *bool
 
 	// READ-ONLY; true if the stack should be hidden; otherwise, false.
-	IsHidden *bool `json:"isHidden,omitempty" azure:"ro"`
+	IsHidden *bool
 
 	// READ-ONLY; true if the stack is in preview; otherwise, false.
-	IsPreview *bool `json:"isPreview,omitempty" azure:"ro"`
+	IsPreview *bool
 
 	// READ-ONLY; Java 11 version (runtime only).
-	Java11Runtime *string `json:"java11Runtime,omitempty" azure:"ro"`
+	Java11Runtime *string
 
 	// READ-ONLY; Java 8 version (runtime only).
-	Java8Runtime *string `json:"java8Runtime,omitempty" azure:"ro"`
+	Java8Runtime *string
 }
 
 // LocalizableString - Localizable string object containing the name and a localized value.
 type LocalizableString struct {
 	// Localized name.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// Non-localized name.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 type LogAnalyticsConfiguration struct {
-	CustomerID *string `json:"customerId,omitempty"`
-	SharedKey  *string `json:"sharedKey,omitempty"`
+	CustomerID *string
+	SharedKey  *string
 }
 
 // LogSpecification - Log Definition of a single resource metric.
 type LogSpecification struct {
-	BlobDuration     *string `json:"blobDuration,omitempty"`
-	DisplayName      *string `json:"displayName,omitempty"`
-	LogFilterPattern *string `json:"logFilterPattern,omitempty"`
-	Name             *string `json:"name,omitempty"`
+	BlobDuration     *string
+	DisplayName      *string
+	LogFilterPattern *string
+	Name             *string
 }
 
 // Login - The configuration settings of the login flow of users using App Service Authentication/Authorization.
@@ -5212,492 +5307,492 @@ type Login struct {
 	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part
 	// of the URL is ignored. This is an advanced setting typically only needed by
 	// Windows Store application backends. Note that URLs within the current domain are always implicitly allowed.
-	AllowedExternalRedirectUrls []*string `json:"allowedExternalRedirectUrls,omitempty"`
+	AllowedExternalRedirectUrls []*string
 
 	// The configuration settings of the session cookie's expiration.
-	CookieExpiration *CookieExpiration `json:"cookieExpiration,omitempty"`
+	CookieExpiration *CookieExpiration
 
 	// The configuration settings of the nonce used in the login flow.
-	Nonce *Nonce `json:"nonce,omitempty"`
+	Nonce *Nonce
 
 	// true if the fragments from the request are preserved after the login request is made; otherwise, false.
-	PreserveURLFragmentsForLogins *bool `json:"preserveUrlFragmentsForLogins,omitempty"`
+	PreserveURLFragmentsForLogins *bool
 
 	// The routes that specify the endpoints used for login and logout requests.
-	Routes *LoginRoutes `json:"routes,omitempty"`
+	Routes *LoginRoutes
 
 	// The configuration settings of the token store.
-	TokenStore *TokenStore `json:"tokenStore,omitempty"`
+	TokenStore *TokenStore
 }
 
 // LoginRoutes - The routes that specify the endpoints used for login and logout requests.
 type LoginRoutes struct {
 	// The endpoint at which a logout request should be made.
-	LogoutEndpoint *string `json:"logoutEndpoint,omitempty"`
+	LogoutEndpoint *string
 }
 
 // LoginScopes - The configuration settings of the login flow, including the scopes that should be requested.
 type LoginScopes struct {
 	// A list of the scopes that should be requested while authenticating.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 }
 
 // MSDeploy ARM PUT information
 type MSDeploy struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *MSDeployCore `json:"properties,omitempty"`
+	Properties *MSDeployCore
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MSDeployCore - MSDeploy ARM PUT core information
 type MSDeployCore struct {
 	// Sets the AppOffline rule while the MSDeploy operation executes. Setting is false by default.
-	AppOffline *bool `json:"appOffline,omitempty"`
+	AppOffline *bool
 
 	// SQL Connection String
-	ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string
 
 	// Database Type
-	DbType *string `json:"dbType,omitempty"`
+	DbType *string
 
 	// Package URI
-	PackageURI *string `json:"packageUri,omitempty"`
+	PackageURI *string
 
 	// MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
-	SetParameters map[string]*string `json:"setParameters,omitempty"`
+	SetParameters map[string]*string
 
 	// URI of MSDeploy Parameters file. Must not be set if SetParameters is used.
-	SetParametersXMLFileURI *string `json:"setParametersXmlFileUri,omitempty"`
+	SetParametersXMLFileURI *string
 
 	// Controls whether the MSDeploy operation skips the AppData directory. If set to true, the existing AppData directory on
 	// the destination will not be deleted, and any App_Data directory in the source
 	// will be ignored. Setting is false by default.
-	SkipAppData *bool `json:"skipAppData,omitempty"`
+	SkipAppData *bool
 }
 
 // MSDeployLog - MSDeploy log
 type MSDeployLog struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// MSDeployLog resource specific properties
-	Properties *MSDeployLogProperties `json:"properties,omitempty"`
+	Properties *MSDeployLogProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MSDeployLogEntry - MSDeploy log entry
 type MSDeployLogEntry struct {
 	// READ-ONLY; Log entry message
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Timestamp of log entry
-	Time *time.Time `json:"time,omitempty" azure:"ro"`
+	Time *time.Time
 
 	// READ-ONLY; Log entry type
-	Type *MSDeployLogEntryType `json:"type,omitempty" azure:"ro"`
+	Type *MSDeployLogEntryType
 }
 
 // MSDeployLogProperties - MSDeployLog resource specific properties
 type MSDeployLogProperties struct {
 	// READ-ONLY; List of log entry messages
-	Entries []*MSDeployLogEntry `json:"entries,omitempty" azure:"ro"`
+	Entries []*MSDeployLogEntry
 }
 
 // MSDeployStatus - MSDeploy ARM response
 type MSDeployStatus struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// MSDeployStatus resource specific properties
-	Properties *MSDeployStatusProperties `json:"properties,omitempty"`
+	Properties *MSDeployStatusProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MSDeployStatusProperties - MSDeployStatus resource specific properties
 type MSDeployStatusProperties struct {
 	// READ-ONLY; Whether the deployment operation has completed
-	Complete *bool `json:"complete,omitempty" azure:"ro"`
+	Complete *bool
 
 	// READ-ONLY; Username of deployer
-	Deployer *string `json:"deployer,omitempty" azure:"ro"`
+	Deployer *string
 
 	// READ-ONLY; End time of deploy operation
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Provisioning state
-	ProvisioningState *MSDeployProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *MSDeployProvisioningState
 
 	// READ-ONLY; Start time of deploy operation
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // ManagedServiceIdentity - Managed service identity.
 type ManagedServiceIdentity struct {
 	// Type of managed service identity.
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be
 	// ARM resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; Principal Id of managed service identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; Tenant of managed service identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // MetricAvailability - Retention policy of a resource metric.
 type MetricAvailability struct {
-	BlobDuration *string `json:"blobDuration,omitempty"`
-	TimeGrain    *string `json:"timeGrain,omitempty"`
+	BlobDuration *string
+	TimeGrain    *string
 }
 
 // MetricSpecification - Definition of a single resource metric.
 type MetricSpecification struct {
-	AggregationType                  *string               `json:"aggregationType,omitempty"`
-	Availabilities                   []*MetricAvailability `json:"availabilities,omitempty"`
-	Category                         *string               `json:"category,omitempty"`
-	Dimensions                       []*Dimension          `json:"dimensions,omitempty"`
-	DisplayDescription               *string               `json:"displayDescription,omitempty"`
-	DisplayName                      *string               `json:"displayName,omitempty"`
-	EnableRegionalMdmAccount         *bool                 `json:"enableRegionalMdmAccount,omitempty"`
-	FillGapWithZero                  *bool                 `json:"fillGapWithZero,omitempty"`
-	IsInternal                       *bool                 `json:"isInternal,omitempty"`
-	MetricFilterPattern              *string               `json:"metricFilterPattern,omitempty"`
-	Name                             *string               `json:"name,omitempty"`
-	SourceMdmAccount                 *string               `json:"sourceMdmAccount,omitempty"`
-	SourceMdmNamespace               *string               `json:"sourceMdmNamespace,omitempty"`
-	SupportedAggregationTypes        []*string             `json:"supportedAggregationTypes,omitempty"`
-	SupportedTimeGrainTypes          []*string             `json:"supportedTimeGrainTypes,omitempty"`
-	SupportsInstanceLevelAggregation *bool                 `json:"supportsInstanceLevelAggregation,omitempty"`
-	Unit                             *string               `json:"unit,omitempty"`
+	AggregationType                  *string
+	Availabilities                   []*MetricAvailability
+	Category                         *string
+	Dimensions                       []*Dimension
+	DisplayDescription               *string
+	DisplayName                      *string
+	EnableRegionalMdmAccount         *bool
+	FillGapWithZero                  *bool
+	IsInternal                       *bool
+	MetricFilterPattern              *string
+	Name                             *string
+	SourceMdmAccount                 *string
+	SourceMdmNamespace               *string
+	SupportedAggregationTypes        []*string
+	SupportedTimeGrainTypes          []*string
+	SupportsInstanceLevelAggregation *bool
+	Unit                             *string
 }
 
 // MigrateMySQLRequest - MySQL migration request.
 type MigrateMySQLRequest struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// MigrateMySqlRequest resource specific properties
-	Properties *MigrateMySQLRequestProperties `json:"properties,omitempty"`
+	Properties *MigrateMySQLRequestProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MigrateMySQLRequestProperties - MigrateMySqlRequest resource specific properties
 type MigrateMySQLRequestProperties struct {
 	// REQUIRED; Connection string to the remote MySQL database.
-	ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string
 
 	// REQUIRED; The type of migration operation to be done
-	MigrationType *MySQLMigrationType `json:"migrationType,omitempty"`
+	MigrationType *MySQLMigrationType
 }
 
 // MigrateMySQLStatus - MySQL migration status.
 type MigrateMySQLStatus struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// MigrateMySqlStatus resource specific properties
-	Properties *MigrateMySQLStatusProperties `json:"properties,omitempty"`
+	Properties *MigrateMySQLStatusProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MigrateMySQLStatusProperties - MigrateMySqlStatus resource specific properties
 type MigrateMySQLStatusProperties struct {
 	// READ-ONLY; True if the web app has in app MySql enabled
-	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty" azure:"ro"`
+	LocalMySQLEnabled *bool
 
 	// READ-ONLY; Status of the migration task.
-	MigrationOperationStatus *OperationStatus `json:"migrationOperationStatus,omitempty" azure:"ro"`
+	MigrationOperationStatus *OperationStatus
 
 	// READ-ONLY; Operation ID for the migration task.
-	OperationID *string `json:"operationId,omitempty" azure:"ro"`
+	OperationID *string
 }
 
 // NameIdentifier - Identifies an object.
 type NameIdentifier struct {
 	// Name of the object.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // NameIdentifierCollection - Collection of domain name identifiers.
 type NameIdentifierCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*NameIdentifier `json:"value,omitempty"`
+	Value []*NameIdentifier
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // NameValuePair - Name value pair.
 type NameValuePair struct {
 	// Pair name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Pair value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // NetworkFeatures - Full view of network features for an app (presently VNET integration and Hybrid Connections).
 type NetworkFeatures struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// NetworkFeatures resource specific properties
-	Properties *NetworkFeaturesProperties `json:"properties,omitempty"`
+	Properties *NetworkFeaturesProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkFeaturesProperties - NetworkFeatures resource specific properties
 type NetworkFeaturesProperties struct {
 	// READ-ONLY; The Hybrid Connections summary view.
-	HybridConnections []*RelayServiceConnectionEntity `json:"hybridConnections,omitempty" azure:"ro"`
+	HybridConnections []*RelayServiceConnectionEntity
 
 	// READ-ONLY; The Hybrid Connection V2 (Service Bus) view.
-	HybridConnectionsV2 []*HybridConnection `json:"hybridConnectionsV2,omitempty" azure:"ro"`
+	HybridConnectionsV2 []*HybridConnection
 
 	// READ-ONLY; The Virtual Network summary view.
-	VirtualNetworkConnection *VnetInfo `json:"virtualNetworkConnection,omitempty" azure:"ro"`
+	VirtualNetworkConnection *VnetInfo
 
 	// READ-ONLY; The Virtual Network name.
-	VirtualNetworkName *string `json:"virtualNetworkName,omitempty" azure:"ro"`
+	VirtualNetworkName *string
 }
 
 // NetworkTrace - Network trace
 type NetworkTrace struct {
 	// Detailed message of a network trace operation, e.g. error message in case of failure.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Local file path for the captured network trace file.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Current status of the network trace operation, same as Operation.Status (InProgress/Succeeded/Failed).
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // Nonce - The configuration settings of the nonce used in the login flow.
 type Nonce struct {
 	// The time after the request is made when the nonce should expire.
-	NonceExpirationInterval *string `json:"nonceExpirationInterval,omitempty"`
+	NonceExpirationInterval *string
 
 	// false if the nonce should not be validated while completing the login flow; otherwise, true.
-	ValidateNonce *bool `json:"validateNonce,omitempty"`
+	ValidateNonce *bool
 }
 
 // OpenAuthenticationAccessPolicies - AuthenticationPolicy of type Open.
 type OpenAuthenticationAccessPolicies struct {
 	// Open authentication policies.
-	Policies map[string]*OpenAuthenticationAccessPolicy `json:"policies,omitempty"`
+	Policies map[string]*OpenAuthenticationAccessPolicy
 }
 
 // OpenAuthenticationAccessPolicy - Open authentication access policy defined by user.
 type OpenAuthenticationAccessPolicy struct {
 	// The access policy claims.
-	Claims []*OpenAuthenticationPolicyClaim `json:"claims,omitempty"`
+	Claims []*OpenAuthenticationPolicyClaim
 
 	// Type of provider for OAuth.
-	Type *OpenAuthenticationProviderType `json:"type,omitempty"`
+	Type *OpenAuthenticationProviderType
 }
 
 // OpenAuthenticationPolicyClaim - Open authentication policy claim.
 type OpenAuthenticationPolicyClaim struct {
 	// The name of the claim.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the claim.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // OpenIDConnectClientCredential - The authentication client credentials of the custom Open ID Connect provider.
 type OpenIDConnectClientCredential struct {
 	// The app setting that contains the client secret for the custom Open ID Connect provider.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 
 	// The method that should be used to authenticate the user.
-	Method *string `json:"method,omitempty"`
+	Method *string
 }
 
 // OpenIDConnectConfig - The configuration settings of the endpoints used for the custom Open ID Connect provider.
 type OpenIDConnectConfig struct {
 	// The endpoint to be used to make an authorization request.
-	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
+	AuthorizationEndpoint *string
 
 	// The endpoint that provides the keys necessary to validate the token.
-	CertificationURI *string `json:"certificationUri,omitempty"`
+	CertificationURI *string
 
 	// The endpoint that issues the token.
-	Issuer *string `json:"issuer,omitempty"`
+	Issuer *string
 
 	// The endpoint to be used to request a token.
-	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+	TokenEndpoint *string
 
 	// The endpoint that contains all the configuration endpoints for the provider.
-	WellKnownOpenIDConfiguration *string `json:"wellKnownOpenIdConfiguration,omitempty"`
+	WellKnownOpenIDConfiguration *string
 }
 
 // OpenIDConnectLogin - The configuration settings of the login flow of the custom Open ID Connect provider.
 type OpenIDConnectLogin struct {
 	// The name of the claim that contains the users name.
-	NameClaimType *string `json:"nameClaimType,omitempty"`
+	NameClaimType *string
 
 	// A list of the scopes that should be requested while authenticating.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 }
 
 // OpenIDConnectRegistration - The configuration settings of the app registration for the custom Open ID Connect provider.
 type OpenIDConnectRegistration struct {
 	// The authentication credentials of the custom Open ID Connect provider.
-	ClientCredential *OpenIDConnectClientCredential `json:"clientCredential,omitempty"`
+	ClientCredential *OpenIDConnectClientCredential
 
 	// The client id of the custom Open ID Connect provider.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The configuration settings of the endpoints used for the custom Open ID Connect provider.
-	OpenIDConnectConfiguration *OpenIDConnectConfig `json:"openIdConnectConfiguration,omitempty"`
+	OpenIDConnectConfiguration *OpenIDConnectConfig
 }
 
 // Operation - An operation on a resource.
 type Operation struct {
 	// Time when operation has started.
-	CreatedTime *time.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time
 
 	// Any errors associate with the operation.
-	Errors []*ErrorEntity `json:"errors,omitempty"`
+	Errors []*ErrorEntity
 
 	// Time when operation will expire.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty"`
+	ExpirationTime *time.Time
 
 	// Applicable only for stamp operation ids.
-	GeoMasterOperationID *string `json:"geoMasterOperationId,omitempty"`
+	GeoMasterOperationID *string
 
 	// Operation ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Time when operation has been updated.
-	ModifiedTime *time.Time `json:"modifiedTime,omitempty"`
+	ModifiedTime *time.Time
 
 	// Operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The current status of the operation.
-	Status *OperationStatus `json:"status,omitempty"`
+	Status *OperationStatus
 }
 
 // OperationResult - The operation result definition.
 type OperationResult struct {
 	// The workflow scope repetition code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The correlation properties.
-	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+	Correlation *RunActionCorrelation
 
 	// The end time of the workflow scope repetition.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Anything
-	Error          interface{} `json:"error,omitempty"`
-	IterationCount *int32      `json:"iterationCount,omitempty"`
+	Error          any
+	IterationCount *int32
 
 	// Gets the retry histories.
-	RetryHistory []*RetryHistory `json:"retryHistory,omitempty"`
+	RetryHistory []*RetryHistory
 
 	// The start time of the workflow scope repetition.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the workflow scope repetition.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the inputs.
-	Inputs interface{} `json:"inputs,omitempty" azure:"ro"`
+	Inputs any
 
 	// READ-ONLY; Gets the link to inputs.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the outputs.
-	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; Gets the link to outputs.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties interface{} `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties any
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // OperationResultProperties - The run operation result properties.
 type OperationResultProperties struct {
 	// The workflow scope repetition code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The correlation properties.
-	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+	Correlation *RunActionCorrelation
 
 	// The end time of the workflow scope repetition.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Anything
-	Error interface{} `json:"error,omitempty"`
+	Error any
 
 	// The start time of the workflow scope repetition.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the workflow scope repetition.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 }
 
 // OutboundEnvironmentEndpoint - Endpoints accessed for a common purpose that the App Service Environment requires outbound
@@ -5705,275 +5800,275 @@ type OperationResultProperties struct {
 type OutboundEnvironmentEndpoint struct {
 	// The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active
 	// Directory.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// The endpoints that the App Service Environment reaches the service at.
-	Endpoints []*EndpointDependency `json:"endpoints,omitempty"`
+	Endpoints []*EndpointDependency
 }
 
 // OutboundEnvironmentEndpointCollection - Collection of Outbound Environment Endpoints
 type OutboundEnvironmentEndpointCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*OutboundEnvironmentEndpoint `json:"value,omitempty"`
+	Value []*OutboundEnvironmentEndpoint
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PerfMonCounterCollection - Collection of performance monitor counters.
 type PerfMonCounterCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*PerfMonResponse `json:"value,omitempty"`
+	Value []*PerfMonResponse
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PerfMonResponse - Performance monitor API response.
 type PerfMonResponse struct {
 	// The response code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The performance monitor counters.
-	Data *PerfMonSet `json:"data,omitempty"`
+	Data *PerfMonSet
 
 	// The message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // PerfMonSample - Performance monitor sample in a set.
 type PerfMonSample struct {
 	// Name of the server on which the measurement is made.
-	InstanceName *string `json:"instanceName,omitempty"`
+	InstanceName *string
 
 	// Point in time for which counter was measured.
-	Time *time.Time `json:"time,omitempty"`
+	Time *time.Time
 
 	// Value of counter at a certain time.
-	Value *float64 `json:"value,omitempty"`
+	Value *float64
 }
 
 // PerfMonSet - Metric information.
 type PerfMonSet struct {
 	// End time of the period.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Unique key name of the counter.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Start time of the period.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// Presented time grain.
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 
 	// Collection of workers that are active during this time.
-	Values []*PerfMonSample `json:"values,omitempty"`
+	Values []*PerfMonSample
 }
 
 // Plan - App Service plan.
 type Plan struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Extended Location.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	ExtendedLocation *ExtendedLocation
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// AppServicePlan resource specific properties
-	Properties *PlanProperties `json:"properties,omitempty"`
+	Properties *PlanProperties
 
 	// Description of a SKU for a scalable resource.
-	SKU *SKUDescription `json:"sku,omitempty"`
+	SKU *SKUDescription
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PlanCollection - Collection of App Service plans.
 type PlanCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Plan `json:"value,omitempty"`
+	Value []*Plan
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PlanPatchResource - ARM resource for a app service plan.
 type PlanPatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// AppServicePlanPatchResource resource specific properties
-	Properties *PlanPatchResourceProperties `json:"properties,omitempty"`
+	Properties *PlanPatchResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PlanPatchResourceProperties - AppServicePlanPatchResource resource specific properties
 type PlanPatchResourceProperties struct {
 	// ServerFarm supports ElasticScale. Apps in this plan will scale as if the ServerFarm was ElasticPremium sku
-	ElasticScaleEnabled *bool `json:"elasticScaleEnabled,omitempty"`
+	ElasticScaleEnabled *bool
 
 	// The time when the server farm free offer expires.
-	FreeOfferExpirationTime *time.Time `json:"freeOfferExpirationTime,omitempty"`
+	FreeOfferExpirationTime *time.Time
 
 	// Specification for the App Service Environment to use for the App Service plan.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
+	HostingEnvironmentProfile *HostingEnvironmentProfile
 
 	// If Hyper-V container app service plan true, false otherwise.
-	HyperV *bool `json:"hyperV,omitempty"`
+	HyperV *bool
 
 	// If true, this App Service Plan owns spot instances.
-	IsSpot *bool `json:"isSpot,omitempty"`
+	IsSpot *bool
 
 	// Obsolete: If Hyper-V container app service plan true, false otherwise.
-	IsXenon *bool `json:"isXenon,omitempty"`
+	IsXenon *bool
 
 	// Specification for the Kubernetes Environment to use for the App Service plan.
-	KubeEnvironmentProfile *KubeEnvironmentProfile `json:"kubeEnvironmentProfile,omitempty"`
+	KubeEnvironmentProfile *KubeEnvironmentProfile
 
 	// Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
-	MaximumElasticWorkerCount *int32 `json:"maximumElasticWorkerCount,omitempty"`
+	MaximumElasticWorkerCount *int32
 
 	// If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service
 	// plan will scale to all instances of the plan.
-	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
+	PerSiteScaling *bool
 
 	// If Linux app service plan true, false otherwise.
-	Reserved *bool `json:"reserved,omitempty"`
+	Reserved *bool
 
 	// The time when the server farm expires. Valid only if it is a spot server farm.
-	SpotExpirationTime *time.Time `json:"spotExpirationTime,omitempty"`
+	SpotExpirationTime *time.Time
 
 	// Scaling worker count.
-	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
+	TargetWorkerCount *int32
 
 	// Scaling worker size ID.
-	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
+	TargetWorkerSizeID *int32
 
 	// Target worker tier assigned to the App Service plan.
-	WorkerTierName *string `json:"workerTierName,omitempty"`
+	WorkerTierName *string
 
 	// If true, this App Service Plan will perform availability zone balancing. If false, this App Service Plan will not perform
 	// availability zone balancing.
-	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	ZoneRedundant *bool
 
 	// READ-ONLY; Geographical location for the App Service plan.
-	GeoRegion *string `json:"geoRegion,omitempty" azure:"ro"`
+	GeoRegion *string
 
 	// READ-ONLY; Maximum number of instances that can be assigned to this App Service plan.
-	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty" azure:"ro"`
+	MaximumNumberOfWorkers *int32
 
 	// READ-ONLY; Number of apps assigned to this App Service plan.
-	NumberOfSites *int32 `json:"numberOfSites,omitempty" azure:"ro"`
+	NumberOfSites *int32
 
 	// READ-ONLY; The number of instances that are assigned to this App Service plan.
-	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty" azure:"ro"`
+	NumberOfWorkers *int32
 
 	// READ-ONLY; Provisioning state of the App Service Plan.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Resource group of the App Service plan.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+	ResourceGroup *string
 
 	// READ-ONLY; App Service plan status.
-	Status *StatusOptions `json:"status,omitempty" azure:"ro"`
+	Status *StatusOptions
 
 	// READ-ONLY; App Service plan subscription.
-	Subscription *string `json:"subscription,omitempty" azure:"ro"`
+	Subscription *string
 }
 
 // PlanProperties - AppServicePlan resource specific properties
 type PlanProperties struct {
 	// ServerFarm supports ElasticScale. Apps in this plan will scale as if the ServerFarm was ElasticPremium sku
-	ElasticScaleEnabled *bool `json:"elasticScaleEnabled,omitempty"`
+	ElasticScaleEnabled *bool
 
 	// The time when the server farm free offer expires.
-	FreeOfferExpirationTime *time.Time `json:"freeOfferExpirationTime,omitempty"`
+	FreeOfferExpirationTime *time.Time
 
 	// Specification for the App Service Environment to use for the App Service plan.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
+	HostingEnvironmentProfile *HostingEnvironmentProfile
 
 	// If Hyper-V container app service plan true, false otherwise.
-	HyperV *bool `json:"hyperV,omitempty"`
+	HyperV *bool
 
 	// If true, this App Service Plan owns spot instances.
-	IsSpot *bool `json:"isSpot,omitempty"`
+	IsSpot *bool
 
 	// Obsolete: If Hyper-V container app service plan true, false otherwise.
-	IsXenon *bool `json:"isXenon,omitempty"`
+	IsXenon *bool
 
 	// Specification for the Kubernetes Environment to use for the App Service plan.
-	KubeEnvironmentProfile *KubeEnvironmentProfile `json:"kubeEnvironmentProfile,omitempty"`
+	KubeEnvironmentProfile *KubeEnvironmentProfile
 
 	// Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan
-	MaximumElasticWorkerCount *int32 `json:"maximumElasticWorkerCount,omitempty"`
+	MaximumElasticWorkerCount *int32
 
 	// If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service
 	// plan will scale to all instances of the plan.
-	PerSiteScaling *bool `json:"perSiteScaling,omitempty"`
+	PerSiteScaling *bool
 
 	// If Linux app service plan true, false otherwise.
-	Reserved *bool `json:"reserved,omitempty"`
+	Reserved *bool
 
 	// The time when the server farm expires. Valid only if it is a spot server farm.
-	SpotExpirationTime *time.Time `json:"spotExpirationTime,omitempty"`
+	SpotExpirationTime *time.Time
 
 	// Scaling worker count.
-	TargetWorkerCount *int32 `json:"targetWorkerCount,omitempty"`
+	TargetWorkerCount *int32
 
 	// Scaling worker size ID.
-	TargetWorkerSizeID *int32 `json:"targetWorkerSizeId,omitempty"`
+	TargetWorkerSizeID *int32
 
 	// Target worker tier assigned to the App Service plan.
-	WorkerTierName *string `json:"workerTierName,omitempty"`
+	WorkerTierName *string
 
 	// If true, this App Service Plan will perform availability zone balancing. If false, this App Service Plan will not perform
 	// availability zone balancing.
-	ZoneRedundant *bool `json:"zoneRedundant,omitempty"`
+	ZoneRedundant *bool
 
 	// READ-ONLY; Geographical location for the App Service plan.
-	GeoRegion *string `json:"geoRegion,omitempty" azure:"ro"`
+	GeoRegion *string
 
 	// READ-ONLY; Maximum number of instances that can be assigned to this App Service plan.
-	MaximumNumberOfWorkers *int32 `json:"maximumNumberOfWorkers,omitempty" azure:"ro"`
+	MaximumNumberOfWorkers *int32
 
 	// READ-ONLY; Number of apps assigned to this App Service plan.
-	NumberOfSites *int32 `json:"numberOfSites,omitempty" azure:"ro"`
+	NumberOfSites *int32
 
 	// READ-ONLY; The number of instances that are assigned to this App Service plan.
-	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty" azure:"ro"`
+	NumberOfWorkers *int32
 
 	// READ-ONLY; Provisioning state of the App Service Plan.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Resource group of the App Service plan.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+	ResourceGroup *string
 
 	// READ-ONLY; App Service plan status.
-	Status *StatusOptions `json:"status,omitempty" azure:"ro"`
+	Status *StatusOptions
 
 	// READ-ONLY; App Service plan subscription.
-	Subscription *string `json:"subscription,omitempty" azure:"ro"`
+	Subscription *string
 }
 
 // PlansClientBeginCreateOrUpdateOptions contains the optional parameters for the PlansClient.BeginCreateOrUpdate method.
@@ -6039,7 +6134,8 @@ type PlansClientGetVnetGatewayOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.ListByResourceGroup method.
+// PlansClientListByResourceGroupOptions contains the optional parameters for the PlansClient.NewListByResourceGroupPager
+// method.
 type PlansClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6055,12 +6151,13 @@ type PlansClientListHybridConnectionKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.ListHybridConnections method.
+// PlansClientListHybridConnectionsOptions contains the optional parameters for the PlansClient.NewListHybridConnectionsPager
+// method.
 type PlansClientListHybridConnectionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListOptions contains the optional parameters for the PlansClient.List method.
+// PlansClientListOptions contains the optional parameters for the PlansClient.NewListPager method.
 type PlansClientListOptions struct {
 	// Specify true to return all App Service plan properties. The default is false, which returns a subset of the properties.
 	// Retrieval of all properties may increase the API latency.
@@ -6072,7 +6169,7 @@ type PlansClientListRoutesForVnetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListUsagesOptions contains the optional parameters for the PlansClient.ListUsages method.
+// PlansClientListUsagesOptions contains the optional parameters for the PlansClient.NewListUsagesPager method.
 type PlansClientListUsagesOptions struct {
 	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(name.value eq 'Metric1'
 	// or name.value eq 'Metric2').
@@ -6084,13 +6181,13 @@ type PlansClientListVnetsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the PlansClient.ListWebAppsByHybridConnection
+// PlansClientListWebAppsByHybridConnectionOptions contains the optional parameters for the PlansClient.NewListWebAppsByHybridConnectionPager
 // method.
 type PlansClientListWebAppsByHybridConnectionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.ListWebApps method.
+// PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.NewListWebAppsPager method.
 type PlansClientListWebAppsOptions struct {
 	// Supported filter: $filter=state eq running. Returns only web apps that are currently running
 	Filter *string
@@ -6132,576 +6229,577 @@ type PlansClientUpdateVnetRouteOptions struct {
 // PremierAddOn - Premier add-on.
 type PremierAddOn struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// PremierAddOn resource specific properties
-	Properties *PremierAddOnProperties `json:"properties,omitempty"`
+	Properties *PremierAddOnProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PremierAddOnOffer - Premier add-on offer.
 type PremierAddOnOffer struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// PremierAddOnOffer resource specific properties
-	Properties *PremierAddOnOfferProperties `json:"properties,omitempty"`
+	Properties *PremierAddOnOfferProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PremierAddOnOfferCollection - Collection of premier add-on offers.
 type PremierAddOnOfferCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*PremierAddOnOffer `json:"value,omitempty"`
+	Value []*PremierAddOnOffer
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PremierAddOnOfferProperties - PremierAddOnOffer resource specific properties
 type PremierAddOnOfferProperties struct {
 	// Legal terms URL.
-	LegalTermsURL *string `json:"legalTermsUrl,omitempty"`
+	LegalTermsURL *string
 
 	// Marketplace offer.
-	MarketplaceOffer *string `json:"marketplaceOffer,omitempty"`
+	MarketplaceOffer *string
 
 	// Marketplace publisher.
-	MarketplacePublisher *string `json:"marketplacePublisher,omitempty"`
+	MarketplacePublisher *string
 
 	// Privacy policy URL.
-	PrivacyPolicyURL *string `json:"privacyPolicyUrl,omitempty"`
+	PrivacyPolicyURL *string
 
 	// Premier add on offer Product.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// true if promotion code is required; otherwise, false.
-	PromoCodeRequired *bool `json:"promoCodeRequired,omitempty"`
+	PromoCodeRequired *bool
 
 	// Premier add on offer Quota.
-	Quota *int32 `json:"quota,omitempty"`
+	Quota *int32
 
 	// Premier add on SKU.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// Premier add on offer Vendor.
-	Vendor *string `json:"vendor,omitempty"`
+	Vendor *string
 
 	// App Service plans this offer is restricted to.
-	WebHostingPlanRestrictions *AppServicePlanRestrictions `json:"webHostingPlanRestrictions,omitempty"`
+	WebHostingPlanRestrictions *AppServicePlanRestrictions
 }
 
 // PremierAddOnPatchResource - ARM resource for a PremierAddOn.
 type PremierAddOnPatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// PremierAddOnPatchResource resource specific properties
-	Properties *PremierAddOnPatchResourceProperties `json:"properties,omitempty"`
+	Properties *PremierAddOnPatchResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PremierAddOnPatchResourceProperties - PremierAddOnPatchResource resource specific properties
 type PremierAddOnPatchResourceProperties struct {
 	// Premier add on Marketplace offer.
-	MarketplaceOffer *string `json:"marketplaceOffer,omitempty"`
+	MarketplaceOffer *string
 
 	// Premier add on Marketplace publisher.
-	MarketplacePublisher *string `json:"marketplacePublisher,omitempty"`
+	MarketplacePublisher *string
 
 	// Premier add on Product.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// Premier add on SKU.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// Premier add on Vendor.
-	Vendor *string `json:"vendor,omitempty"`
+	Vendor *string
 }
 
 // PremierAddOnProperties - PremierAddOn resource specific properties
 type PremierAddOnProperties struct {
 	// Premier add on Marketplace offer.
-	MarketplaceOffer *string `json:"marketplaceOffer,omitempty"`
+	MarketplaceOffer *string
 
 	// Premier add on Marketplace publisher.
-	MarketplacePublisher *string `json:"marketplacePublisher,omitempty"`
+	MarketplacePublisher *string
 
 	// Premier add on Product.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// Premier add on SKU.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// Premier add on Vendor.
-	Vendor *string `json:"vendor,omitempty"`
+	Vendor *string
 }
 
 // PrivateAccess - Description of the parameters of Private Access for a Web Site.
 type PrivateAccess struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// PrivateAccess resource specific properties
-	Properties *PrivateAccessProperties `json:"properties,omitempty"`
+	Properties *PrivateAccessProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateAccessProperties - PrivateAccess resource specific properties
 type PrivateAccessProperties struct {
 	// Whether private access is enabled or not.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The Virtual Networks (and subnets) allowed to access the site privately.
-	VirtualNetworks []*PrivateAccessVirtualNetwork `json:"virtualNetworks,omitempty"`
+	VirtualNetworks []*PrivateAccessVirtualNetwork
 }
 
 // PrivateAccessSubnet - Description of a Virtual Network subnet that is useable for private site access.
 type PrivateAccessSubnet struct {
 	// The key (ID) of the subnet.
-	Key *int32 `json:"key,omitempty"`
+	Key *int32
 
 	// The name of the subnet.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // PrivateAccessVirtualNetwork - Description of a Virtual Network that is useable for private site access.
 type PrivateAccessVirtualNetwork struct {
 	// The key (ID) of the Virtual Network.
-	Key *int32 `json:"key,omitempty"`
+	Key *int32
 
 	// The name of the Virtual Network.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The ARM uri of the Virtual Network
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// A List of subnets that access is allowed to on this Virtual Network. An empty array (but not null) is interpreted to mean
 	// that all subnets are allowed within this Virtual Network.
-	Subnets []*PrivateAccessSubnet `json:"subnets,omitempty"`
+	Subnets []*PrivateAccessSubnet
 }
 
 type PrivateEndpointConnectionCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*RemotePrivateEndpointConnectionARMResource `json:"value,omitempty"`
+	Value []*RemotePrivateEndpointConnectionARMResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateLinkConnectionApprovalRequest - A request to approve or reject a private endpoint connection
 type PrivateLinkConnectionApprovalRequest struct {
 	// The state of a private link connection
-	PrivateLinkServiceConnectionState *PrivateLinkConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkConnectionState
 }
 
 // PrivateLinkConnectionApprovalRequestResource - Private Endpoint Connection Approval ARM resource.
 type PrivateLinkConnectionApprovalRequestResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *PrivateLinkConnectionApprovalRequest `json:"properties,omitempty"`
+	Properties *PrivateLinkConnectionApprovalRequest
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkConnectionState - The state of a private link connection
 type PrivateLinkConnectionState struct {
 	// ActionsRequired for a private link connection
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// Description of a private link connection
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Status of a private link connection
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// REQUIRED
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// REQUIRED; Name of a private link resource
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Properties of a private link resource
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// REQUIRED
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; GroupId of a private link resource
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; RequiredMembers of a private link resource
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 
 	// READ-ONLY; RequiredZoneNames of a private link resource
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkResourcesWrapper - Wrapper for a collection of private link resources
 type PrivateLinkResourcesWrapper struct {
 	// REQUIRED
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // ProcessInfo - Process Information.
 type ProcessInfo struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ProcessInfo resource specific properties
-	Properties *ProcessInfoProperties `json:"properties,omitempty"`
+	Properties *ProcessInfoProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProcessInfoCollection - Collection of Kudu process information elements.
 type ProcessInfoCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ProcessInfo `json:"value,omitempty"`
+	Value []*ProcessInfo
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProcessInfoProperties - ProcessInfo resource specific properties
 type ProcessInfoProperties struct {
 	// Child process list.
-	Children []*string `json:"children,omitempty"`
+	Children []*string
 
 	// Command line.
-	CommandLine *string `json:"command_line,omitempty"`
+	CommandLine *string
 
 	// Deployment name.
-	DeploymentName *string `json:"deployment_name,omitempty"`
+	DeploymentName *string
 
 	// Description of process.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// List of environment variables.
-	EnvironmentVariables map[string]*string `json:"environment_variables,omitempty"`
+	EnvironmentVariables map[string]*string
 
 	// File name of this process.
-	FileName *string `json:"file_name,omitempty"`
+	FileName *string
 
 	// Handle count.
-	HandleCount *int32 `json:"handle_count,omitempty"`
+	HandleCount *int32
 
 	// HRef URI.
-	Href *string `json:"href,omitempty"`
+	Href *string
 
 	// IIS Profile timeout (seconds).
-	IisProfileTimeoutInSeconds *float64 `json:"iis_profile_timeout_in_seconds,omitempty"`
+	IisProfileTimeoutInSeconds *float64
 
 	// Is the IIS Profile running?
-	IsIisProfileRunning *bool `json:"is_iis_profile_running,omitempty"`
+	IsIisProfileRunning *bool
 
 	// Is profile running?
-	IsProfileRunning *bool `json:"is_profile_running,omitempty"`
+	IsProfileRunning *bool
 
 	// Is this the SCM site?
-	IsScmSite *bool `json:"is_scm_site,omitempty"`
+	IsScmSite *bool
 
 	// Is this a Web Job?
-	IsWebjob *bool `json:"is_webjob,omitempty"`
+	IsWebjob *bool
 
 	// Minidump URI.
-	Minidump *string `json:"minidump,omitempty"`
+	Minidump *string
 
 	// Module count.
-	ModuleCount *int32 `json:"module_count,omitempty"`
+	ModuleCount *int32
 
 	// List of modules.
-	Modules []*ProcessModuleInfo `json:"modules,omitempty"`
+	Modules []*ProcessModuleInfo
 
 	// Non-paged system memory.
-	NonPagedSystemMemory *int64 `json:"non_paged_system_memory,omitempty"`
+	NonPagedSystemMemory *int64
 
 	// List of open files.
-	OpenFileHandles []*string `json:"open_file_handles,omitempty"`
+	OpenFileHandles []*string
 
 	// Paged memory.
-	PagedMemory *int64 `json:"paged_memory,omitempty"`
+	PagedMemory *int64
 
 	// Paged system memory.
-	PagedSystemMemory *int64 `json:"paged_system_memory,omitempty"`
+	PagedSystemMemory *int64
 
 	// Parent process.
-	Parent *string `json:"parent,omitempty"`
+	Parent *string
 
 	// Peak paged memory.
-	PeakPagedMemory *int64 `json:"peak_paged_memory,omitempty"`
+	PeakPagedMemory *int64
 
 	// Peak virtual memory usage.
-	PeakVirtualMemory *int64 `json:"peak_virtual_memory,omitempty"`
+	PeakVirtualMemory *int64
 
 	// Peak working set.
-	PeakWorkingSet *int64 `json:"peak_working_set,omitempty"`
+	PeakWorkingSet *int64
 
 	// Private memory size.
-	PrivateMemory *int64 `json:"private_memory,omitempty"`
+	PrivateMemory *int64
 
 	// Privileged CPU time.
-	PrivilegedCPUTime *string `json:"privileged_cpu_time,omitempty"`
+	PrivilegedCPUTime *string
 
 	// Start time.
-	StartTime *time.Time `json:"start_time,omitempty"`
+	StartTime *time.Time
 
 	// Thread count.
-	ThreadCount *int32 `json:"thread_count,omitempty"`
+	ThreadCount *int32
 
 	// Thread list.
-	Threads []*ProcessThreadInfo `json:"threads,omitempty"`
+	Threads []*ProcessThreadInfo
 
 	// Time stamp.
-	TimeStamp *time.Time `json:"time_stamp,omitempty"`
+	TimeStamp *time.Time
 
 	// Total CPU time.
-	TotalCPUTime *string `json:"total_cpu_time,omitempty"`
+	TotalCPUTime *string
 
 	// User CPU time.
-	UserCPUTime *string `json:"user_cpu_time,omitempty"`
+	UserCPUTime *string
 
 	// User name.
-	UserName *string `json:"user_name,omitempty"`
+	UserName *string
 
 	// Virtual memory size.
-	VirtualMemory *int64 `json:"virtual_memory,omitempty"`
+	VirtualMemory *int64
 
 	// Working set.
-	WorkingSet *int64 `json:"working_set,omitempty"`
+	WorkingSet *int64
 
 	// READ-ONLY; ARM Identifier for deployment.
-	Identifier *int32 `json:"identifier,omitempty" azure:"ro"`
+	Identifier *int32
 }
 
 // ProcessModuleInfo - Process Module Information.
 type ProcessModuleInfo struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ProcessModuleInfo resource specific properties
-	Properties *ProcessModuleInfoProperties `json:"properties,omitempty"`
+	Properties *ProcessModuleInfoProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProcessModuleInfoCollection - Collection of Kudu thread information elements.
 type ProcessModuleInfoCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ProcessModuleInfo `json:"value,omitempty"`
+	Value []*ProcessModuleInfo
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProcessModuleInfoProperties - ProcessModuleInfo resource specific properties
 type ProcessModuleInfoProperties struct {
 	// Base address. Used as module identifier in ARM resource URI.
-	BaseAddress *string `json:"base_address,omitempty"`
+	BaseAddress *string
 
 	// File description.
-	FileDescription *string `json:"file_description,omitempty"`
+	FileDescription *string
 
 	// File name.
-	FileName *string `json:"file_name,omitempty"`
+	FileName *string
 
 	// File path.
-	FilePath *string `json:"file_path,omitempty"`
+	FilePath *string
 
 	// File version.
-	FileVersion *string `json:"file_version,omitempty"`
+	FileVersion *string
 
 	// HRef URI.
-	Href *string `json:"href,omitempty"`
+	Href *string
 
 	// Is debug?
-	IsDebug *bool `json:"is_debug,omitempty"`
+	IsDebug *bool
 
 	// Module language (locale).
-	Language *string `json:"language,omitempty"`
+	Language *string
 
 	// Module memory size.
-	ModuleMemorySize *int32 `json:"module_memory_size,omitempty"`
+	ModuleMemorySize *int32
 
 	// Product name.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// Product version.
-	ProductVersion *string `json:"product_version,omitempty"`
+	ProductVersion *string
 }
 
 // ProcessThreadInfo - Process Thread Information.
 type ProcessThreadInfo struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ProcessThreadInfo resource specific properties
-	Properties *ProcessThreadInfoProperties `json:"properties,omitempty"`
+	Properties *ProcessThreadInfoProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProcessThreadInfoCollection - Collection of Kudu thread information elements.
 type ProcessThreadInfoCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ProcessThreadInfo `json:"value,omitempty"`
+	Value []*ProcessThreadInfo
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProcessThreadInfoProperties - ProcessThreadInfo resource specific properties
 type ProcessThreadInfoProperties struct {
 	// Base priority.
-	BasePriority *int32 `json:"base_priority,omitempty"`
+	BasePriority *int32
 
 	// Current thread priority.
-	CurrentPriority *int32 `json:"current_priority,omitempty"`
+	CurrentPriority *int32
 
 	// HRef URI.
-	Href *string `json:"href,omitempty"`
+	Href *string
 
 	// Thread priority level.
-	PriorityLevel *string `json:"priority_level,omitempty"`
+	PriorityLevel *string
 
 	// Process URI.
-	Process *string `json:"process,omitempty"`
+	Process *string
 
 	// Start address.
-	StartAddress *string `json:"start_address,omitempty"`
+	StartAddress *string
 
 	// Start time.
-	StartTime *time.Time `json:"start_time,omitempty"`
+	StartTime *time.Time
 
 	// Thread state.
-	State *string `json:"state,omitempty"`
+	State *string
 
 	// Total processor time.
-	TotalProcessorTime *string `json:"total_processor_time,omitempty"`
+	TotalProcessorTime *string
 
 	// User processor time.
-	UserProcessorTime *string `json:"user_processor_time,omitempty"`
+	UserProcessorTime *string
 
 	// Wait reason.
-	WaitReason *string `json:"wait_reason,omitempty"`
+	WaitReason *string
 
 	// READ-ONLY; Site extension ID.
-	Identifier *int32 `json:"identifier,omitempty" azure:"ro"`
+	Identifier *int32
 }
 
-// ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
+// ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksOnPremPager
 // method.
 type ProviderClientGetAvailableStacksOnPremOptions struct {
 	OSTypeSelected *ProviderOsTypeSelected
 }
 
-// ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks method.
+// ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksPager
+// method.
 type ProviderClientGetAvailableStacksOptions struct {
 	OSTypeSelected *ProviderOsTypeSelected
 }
 
-// ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacksForLocation
+// ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksForLocationPager
 // method.
 type ProviderClientGetFunctionAppStacksForLocationOptions struct {
 	// Stack OS Type
 	StackOsType *ProviderStackOsType
 }
 
-// ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacks
+// ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksPager
 // method.
 type ProviderClientGetFunctionAppStacksOptions struct {
 	// Stack OS Type
 	StackOsType *ProviderStackOsType
 }
 
-// ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetWebAppStacksForLocation
+// ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksForLocationPager
 // method.
 type ProviderClientGetWebAppStacksForLocationOptions struct {
 	// Stack OS Type
 	StackOsType *ProviderStackOsType
 }
 
-// ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.GetWebAppStacks method.
+// ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksPager method.
 type ProviderClientGetWebAppStacksOptions struct {
 	// Stack OS Type
 	StackOsType *ProviderStackOsType
 }
 
-// ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.
+// ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.NewListOperationsPager method.
 type ProviderClientListOperationsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -6709,323 +6807,323 @@ type ProviderClientListOperationsOptions struct {
 // ProxyOnlyResource - Azure proxy only resource. This resource is not tracked by Azure Resource Manager.
 type ProxyOnlyResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PublicCertificate - Public certificate object
 type PublicCertificate struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// PublicCertificate resource specific properties
-	Properties *PublicCertificateProperties `json:"properties,omitempty"`
+	Properties *PublicCertificateProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PublicCertificateCollection - Collection of public certificates
 type PublicCertificateCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*PublicCertificate `json:"value,omitempty"`
+	Value []*PublicCertificate
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PublicCertificateProperties - PublicCertificate resource specific properties
 type PublicCertificateProperties struct {
 	// Public Certificate byte array
-	Blob []byte `json:"blob,omitempty"`
+	Blob []byte
 
 	// Public Certificate Location
-	PublicCertificateLocation *PublicCertificateLocation `json:"publicCertificateLocation,omitempty"`
+	PublicCertificateLocation *PublicCertificateLocation
 
 	// READ-ONLY; Certificate Thumbprint
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 }
 
 // PublishingCredentialsPoliciesCollection - Publishing Credentials Policies entity collection ARM resource.
 type PublishingCredentialsPoliciesCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*CsmPublishingCredentialsPoliciesEntity `json:"value,omitempty"`
+	Value []*CsmPublishingCredentialsPoliciesEntity
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PushSettings - Push settings for the App.
 type PushSettings struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// PushSettings resource specific properties
-	Properties *PushSettingsProperties `json:"properties,omitempty"`
+	Properties *PushSettingsProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PushSettingsProperties - PushSettings resource specific properties
 type PushSettingsProperties struct {
 	// REQUIRED; Gets or sets a flag indicating whether the Push endpoint is enabled.
-	IsPushEnabled *bool `json:"isPushEnabled,omitempty"`
+	IsPushEnabled *bool
 
 	// Gets or sets a JSON string containing a list of dynamic tags that will be evaluated from user claims in the push registration
 	// endpoint.
-	DynamicTagsJSON *string `json:"dynamicTagsJson,omitempty"`
+	DynamicTagsJSON *string
 
 	// Gets or sets a JSON string containing a list of tags that are whitelisted for use by the push registration endpoint.
-	TagWhitelistJSON *string `json:"tagWhitelistJson,omitempty"`
+	TagWhitelistJSON *string
 
 	// Gets or sets a JSON string containing a list of tags that require user authentication to be used in the push registration
 	// endpoint. Tags can consist of alphanumeric characters and the following: '_',
 	// '@', '#', '.', ':', '-'. Validation should be performed at the PushRequestHandler.
-	TagsRequiringAuth *string `json:"tagsRequiringAuth,omitempty"`
+	TagsRequiringAuth *string
 }
 
 // QueryUtterancesResult - Result for utterances query.
 type QueryUtterancesResult struct {
 	// A sample utterance.
-	SampleUtterance *SampleUtterance `json:"sampleUtterance,omitempty"`
+	SampleUtterance *SampleUtterance
 
 	// Score of a sample utterance.
-	Score *float32 `json:"score,omitempty"`
+	Score *float32
 }
 
 // QueryUtterancesResults - Suggested utterances where the detector can be applicable
 type QueryUtterancesResults struct {
 	// Search Query.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// Array of utterance results for search query.
-	Results []*QueryUtterancesResult `json:"results,omitempty"`
+	Results []*QueryUtterancesResult
 }
 
 // QueueScaleRule - Container App container Azure Queue based scaling rule.
 type QueueScaleRule struct {
 	// Authentication secrets for the queue scale rule.
-	Auth []*ScaleRuleAuth `json:"auth,omitempty"`
+	Auth []*ScaleRuleAuth
 
 	// Queue length.
-	QueueLength *int32 `json:"queueLength,omitempty"`
+	QueueLength *int32
 
 	// Queue name.
-	QueueName *string `json:"queueName,omitempty"`
+	QueueName *string
 }
 
 // RampUpRule - Routing rules for ramp up testing. This rule allows to redirect static traffic % to a slot or to gradually
 // change routing % based on performance.
 type RampUpRule struct {
 	// Hostname of a slot to which the traffic will be redirected if decided to. E.g. myapp-stage.azurewebsites.net.
-	ActionHostName *string `json:"actionHostName,omitempty"`
+	ActionHostName *string
 
 	// Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See TiPCallback site
 	// extension for the scaffold and contracts.
 	// https://www.siteextensions.net/packages/TiPCallback/
-	ChangeDecisionCallbackURL *string `json:"changeDecisionCallbackUrl,omitempty"`
+	ChangeDecisionCallbackURL *string
 
 	// Specifies interval in minutes to reevaluate ReroutePercentage.
-	ChangeIntervalInMinutes *int32 `json:"changeIntervalInMinutes,omitempty"`
+	ChangeIntervalInMinutes *int32
 
 	// In auto ramp up scenario this is the step to add/remove from ReroutePercentage until it reaches \nMinReroutePercentage
 	// orMaxReroutePercentage. Site metrics are checked every N minutes specified in
 	// ChangeIntervalInMinutes.\nCustom decision algorithm can be provided in TiPCallback site extension which URL can be specified
 	// in ChangeDecisionCallbackUrl.
-	ChangeStep *float64 `json:"changeStep,omitempty"`
+	ChangeStep *float64
 
 	// Specifies upper boundary below which ReroutePercentage will stay.
-	MaxReroutePercentage *float64 `json:"maxReroutePercentage,omitempty"`
+	MaxReroutePercentage *float64
 
 	// Specifies lower boundary above which ReroutePercentage will stay.
-	MinReroutePercentage *float64 `json:"minReroutePercentage,omitempty"`
+	MinReroutePercentage *float64
 
 	// Name of the routing rule. The recommended name would be to point to the slot which will receive the traffic in the experiment.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Percentage of the traffic which will be redirected to ActionHostName.
-	ReroutePercentage *float64 `json:"reroutePercentage,omitempty"`
+	ReroutePercentage *float64
 }
 
 // Recommendation - Represents a recommendation result generated by the recommendation engine.
 type Recommendation struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Recommendation resource specific properties
-	Properties *RecommendationProperties `json:"properties,omitempty"`
+	Properties *RecommendationProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecommendationCollection - Collection of recommendations.
 type RecommendationCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Recommendation `json:"value,omitempty"`
+	Value []*Recommendation
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // RecommendationProperties - Recommendation resource specific properties
 type RecommendationProperties struct {
 	// Name of action recommended by this object.
-	ActionName *string `json:"actionName,omitempty"`
+	ActionName *string
 
 	// Deep link to a blade on the portal.
-	BladeName *string `json:"bladeName,omitempty"`
+	BladeName *string
 
 	// List of channels that this recommendation can apply.
-	Channels *Channels `json:"channels,omitempty"`
+	Channels *Channels
 
 	// Timestamp when this instance was created.
-	CreationTime *time.Time `json:"creationTime,omitempty"`
+	CreationTime *time.Time
 
 	// UI friendly name of the rule (may not be unique).
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// True if this recommendation is still valid (i.e. "actionable"). False if it is invalid.
-	Enabled *int32 `json:"enabled,omitempty"`
+	Enabled *int32
 
 	// The end time in UTC of a range that the recommendation refers to.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Extension name of the portal if exists.
-	ExtensionName *string `json:"extensionName,omitempty"`
+	ExtensionName *string
 
 	// Forward link to an external document associated with the rule.
-	ForwardLink *string `json:"forwardLink,omitempty"`
+	ForwardLink *string
 
 	// True if this is associated with a dynamically added rule
-	IsDynamic *bool `json:"isDynamic,omitempty"`
+	IsDynamic *bool
 
 	// Level indicating how critical this recommendation can impact.
-	Level *NotificationLevel `json:"level,omitempty"`
+	Level *NotificationLevel
 
 	// Recommendation text.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// When to notify this recommendation next in UTC. Null means that this will never be notified anymore.
-	NextNotificationTime *time.Time `json:"nextNotificationTime,omitempty"`
+	NextNotificationTime *time.Time
 
 	// Date and time in UTC when this notification expires.
-	NotificationExpirationTime *time.Time `json:"notificationExpirationTime,omitempty"`
+	NotificationExpirationTime *time.Time
 
 	// Last timestamp in UTC this instance was actually notified. Null means that this recommendation hasn't been notified yet.
-	NotifiedTime *time.Time `json:"notifiedTime,omitempty"`
+	NotifiedTime *time.Time
 
 	// A GUID value that each recommendation object is associated with.
-	RecommendationID *string `json:"recommendationId,omitempty"`
+	RecommendationID *string
 
 	// Full ARM resource ID string that this recommendation object is associated with.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Name of a resource type this recommendation applies, e.g. Subscription, ServerFarm, Site.
-	ResourceScope *ResourceScopeType `json:"resourceScope,omitempty"`
+	ResourceScope *ResourceScopeType
 
 	// Unique name of the rule.
-	RuleName *string `json:"ruleName,omitempty"`
+	RuleName *string
 
 	// A metric value measured by the rule.
-	Score *float64 `json:"score,omitempty"`
+	Score *float64
 
 	// The beginning time in UTC of a range that the recommendation refers to.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The list of states of this recommendation. If it's null then it should be considered "Active".
-	States []*string `json:"states,omitempty"`
+	States []*string
 
 	// READ-ONLY; The list of category tags that this recommendation belongs to.
-	CategoryTags []*string `json:"categoryTags,omitempty" azure:"ro"`
+	CategoryTags []*string
 }
 
 // RecommendationRule - Represents a recommendation rule that the recommendation engine can perform.
 type RecommendationRule struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// RecommendationRule resource specific properties
-	Properties *RecommendationRuleProperties `json:"properties,omitempty"`
+	Properties *RecommendationRuleProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecommendationRuleProperties - RecommendationRule resource specific properties
 type RecommendationRuleProperties struct {
 	// Name of action that is recommended by this rule in string.
-	ActionName *string `json:"actionName,omitempty"`
+	ActionName *string
 
 	// Deep link to a blade on the portal. Applicable to dynamic rule only.
-	BladeName *string `json:"bladeName,omitempty"`
+	BladeName *string
 
 	// List of available channels that this rule applies.
-	Channels *Channels `json:"channels,omitempty"`
+	Channels *Channels
 
 	// Localized detailed description of the rule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// UI friendly name of the rule.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Extension name of the portal if exists. Applicable to dynamic rule only.
-	ExtensionName *string `json:"extensionName,omitempty"`
+	ExtensionName *string
 
 	// Forward link to an external document associated with the rule. Applicable to dynamic rule only.
-	ForwardLink *string `json:"forwardLink,omitempty"`
+	ForwardLink *string
 
 	// True if this is associated with a dynamically added rule
-	IsDynamic *bool `json:"isDynamic,omitempty"`
+	IsDynamic *bool
 
 	// Level of impact indicating how critical this rule is.
-	Level *NotificationLevel `json:"level,omitempty"`
+	Level *NotificationLevel
 
 	// Localized name of the rule (Good for UI).
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Recommendation ID of an associated recommendation object tied to the rule, if exists. If such an object doesn't exist,
 	// it is set to null.
-	RecommendationID *string `json:"recommendationId,omitempty"`
+	RecommendationID *string
 
 	// Unique name of the rule.
-	RecommendationName *string `json:"recommendationName,omitempty"`
+	RecommendationName *string
 
 	// READ-ONLY; The list of category tags that this recommendation rule belongs to.
-	CategoryTags []*string `json:"categoryTags,omitempty" azure:"ro"`
+	CategoryTags []*string
 }
 
 // RecommendationsClientDisableAllForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.DisableAllForHostingEnvironment
@@ -7076,7 +7174,7 @@ type RecommendationsClientGetRuleDetailsByWebAppOptions struct {
 	UpdateSeen *bool
 }
 
-// RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListHistoryForHostingEnvironment
+// RecommendationsClientListHistoryForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.NewListHistoryForHostingEnvironmentPager
 // method.
 type RecommendationsClientListHistoryForHostingEnvironmentOptions struct {
 	// Specify false to return all recommendations. The default is true, which returns only expired recommendations.
@@ -7087,7 +7185,7 @@ type RecommendationsClientListHistoryForHostingEnvironmentOptions struct {
 	Filter *string
 }
 
-// RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.ListHistoryForWebApp
+// RecommendationsClientListHistoryForWebAppOptions contains the optional parameters for the RecommendationsClient.NewListHistoryForWebAppPager
 // method.
 type RecommendationsClientListHistoryForWebAppOptions struct {
 	// Specify false to return all recommendations. The default is true, which returns only expired recommendations.
@@ -7098,7 +7196,7 @@ type RecommendationsClientListHistoryForWebAppOptions struct {
 	Filter *string
 }
 
-// RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.List method.
+// RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager method.
 type RecommendationsClientListOptions struct {
 	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
 	Featured *bool
@@ -7108,7 +7206,7 @@ type RecommendationsClientListOptions struct {
 	Filter *string
 }
 
-// RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForHostingEnvironment
+// RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions contains the optional parameters for the RecommendationsClient.NewListRecommendedRulesForHostingEnvironmentPager
 // method.
 type RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions struct {
 	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
@@ -7118,7 +7216,7 @@ type RecommendationsClientListRecommendedRulesForHostingEnvironmentOptions struc
 	Filter *string
 }
 
-// RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.ListRecommendedRulesForWebApp
+// RecommendationsClientListRecommendedRulesForWebAppOptions contains the optional parameters for the RecommendationsClient.NewListRecommendedRulesForWebAppPager
 // method.
 type RecommendationsClientListRecommendedRulesForWebAppOptions struct {
 	// Specify true to return only the most critical recommendations. The default is false, which returns all recommendations.
@@ -7149,339 +7247,339 @@ type RecommendationsClientResetAllFiltersOptions struct {
 // RecurrenceSchedule - The recurrence schedule.
 type RecurrenceSchedule struct {
 	// The hours.
-	Hours []*int32 `json:"hours,omitempty"`
+	Hours []*int32
 
 	// The minutes.
-	Minutes []*int32 `json:"minutes,omitempty"`
+	Minutes []*int32
 
 	// The month days.
-	MonthDays []*int32 `json:"monthDays,omitempty"`
+	MonthDays []*int32
 
 	// The monthly occurrences.
-	MonthlyOccurrences []*RecurrenceScheduleOccurrence `json:"monthlyOccurrences,omitempty"`
+	MonthlyOccurrences []*RecurrenceScheduleOccurrence
 
 	// The days of the week.
-	WeekDays []*DaysOfWeek `json:"weekDays,omitempty"`
+	WeekDays []*DaysOfWeek
 }
 
 // RecurrenceScheduleOccurrence - The recurrence schedule occurrence.
 type RecurrenceScheduleOccurrence struct {
 	// The day of the week.
-	Day *DayOfWeek `json:"day,omitempty"`
+	Day *DayOfWeek
 
 	// The occurrence.
-	Occurrence *int32 `json:"occurrence,omitempty"`
+	Occurrence *int32
 }
 
 // RegenerateActionParameter - The access key regenerate action content.
 type RegenerateActionParameter struct {
 	// The key type.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 }
 
 // RegistryCredentials - Container App Private Registry
 type RegistryCredentials struct {
 	// The name of the Secret that contains the registry login password
-	PasswordSecretRef *string `json:"passwordSecretRef,omitempty"`
+	PasswordSecretRef *string
 
 	// Container Registry Server
-	Server *string `json:"server,omitempty"`
+	Server *string
 
 	// Container Registry Username
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // ReissueCertificateOrderRequest - Class representing certificate reissue request.
 type ReissueCertificateOrderRequest struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ReissueCertificateOrderRequest resource specific properties
-	Properties *ReissueCertificateOrderRequestProperties `json:"properties,omitempty"`
+	Properties *ReissueCertificateOrderRequestProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReissueCertificateOrderRequestProperties - ReissueCertificateOrderRequest resource specific properties
 type ReissueCertificateOrderRequestProperties struct {
 	// Csr to be used for re-key operation.
-	Csr *string `json:"csr,omitempty"`
+	Csr *string
 
 	// Delay in hours to revoke existing certificate after the new certificate is issued.
-	DelayExistingRevokeInHours *int32 `json:"delayExistingRevokeInHours,omitempty"`
+	DelayExistingRevokeInHours *int32
 
 	// Should we change the ASC type (from managed private key to external private key and vice versa).
-	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty"`
+	IsPrivateKeyExternal *bool
 
 	// Certificate Key Size.
-	KeySize *int32 `json:"keySize,omitempty"`
+	KeySize *int32
 }
 
 // RelayServiceConnectionEntity - Hybrid Connection for an App Service app.
 type RelayServiceConnectionEntity struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// RelayServiceConnectionEntity resource specific properties
-	Properties *RelayServiceConnectionEntityProperties `json:"properties,omitempty"`
+	Properties *RelayServiceConnectionEntityProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RelayServiceConnectionEntityProperties - RelayServiceConnectionEntity resource specific properties
 type RelayServiceConnectionEntityProperties struct {
-	BiztalkURI               *string `json:"biztalkUri,omitempty"`
-	EntityConnectionString   *string `json:"entityConnectionString,omitempty"`
-	EntityName               *string `json:"entityName,omitempty"`
-	Hostname                 *string `json:"hostname,omitempty"`
-	Port                     *int32  `json:"port,omitempty"`
-	ResourceConnectionString *string `json:"resourceConnectionString,omitempty"`
-	ResourceType             *string `json:"resourceType,omitempty"`
+	BiztalkURI               *string
+	EntityConnectionString   *string
+	EntityName               *string
+	Hostname                 *string
+	Port                     *int32
+	ResourceConnectionString *string
+	ResourceType             *string
 }
 
 // RemotePrivateEndpointConnection - A remote private endpoint connection
 type RemotePrivateEndpointConnection struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// RemotePrivateEndpointConnection resource specific properties
-	Properties *RemotePrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *RemotePrivateEndpointConnectionProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RemotePrivateEndpointConnectionARMResource - Remote Private Endpoint Connection ARM resource.
 type RemotePrivateEndpointConnectionARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// RemotePrivateEndpointConnectionARMResource resource specific properties
-	Properties *RemotePrivateEndpointConnectionARMResourceProperties `json:"properties,omitempty"`
+	Properties *RemotePrivateEndpointConnectionARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RemotePrivateEndpointConnectionARMResourceProperties - RemotePrivateEndpointConnectionARMResource resource specific properties
 type RemotePrivateEndpointConnectionARMResourceProperties struct {
 	// Private IPAddresses mapped to the remote private endpoint
-	IPAddresses []*string `json:"ipAddresses,omitempty"`
+	IPAddresses []*string
 
 	// PrivateEndpoint of a remote private endpoint connection
-	PrivateEndpoint *ArmIDWrapper `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *ArmIDWrapper
 
 	// The state of a private link connection
-	PrivateLinkServiceConnectionState *PrivateLinkConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkConnectionState
 
 	// READ-ONLY
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // RemotePrivateEndpointConnectionProperties - RemotePrivateEndpointConnection resource specific properties
 type RemotePrivateEndpointConnectionProperties struct {
 	// Private IPAddresses mapped to the remote private endpoint
-	IPAddresses []*string `json:"ipAddresses,omitempty"`
+	IPAddresses []*string
 
 	// PrivateEndpoint of a remote private endpoint connection
-	PrivateEndpoint *ArmIDWrapper `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *ArmIDWrapper
 
 	// The state of a private link connection
-	PrivateLinkServiceConnectionState *PrivateLinkConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkConnectionState
 
 	// READ-ONLY
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // Rendering - Instructions for rendering the data
 type Rendering struct {
 	// Description of the data that will help it be interpreted
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Title of data
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// Rendering Type
-	Type *RenderingType `json:"type,omitempty"`
+	Type *RenderingType
 }
 
 // RenewCertificateOrderRequest - Class representing certificate renew request.
 type RenewCertificateOrderRequest struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// RenewCertificateOrderRequest resource specific properties
-	Properties *RenewCertificateOrderRequestProperties `json:"properties,omitempty"`
+	Properties *RenewCertificateOrderRequestProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RenewCertificateOrderRequestProperties - RenewCertificateOrderRequest resource specific properties
 type RenewCertificateOrderRequestProperties struct {
 	// Csr to be used for re-key operation.
-	Csr *string `json:"csr,omitempty"`
+	Csr *string
 
 	// Should we change the ASC type (from managed private key to external private key and vice versa).
-	IsPrivateKeyExternal *bool `json:"isPrivateKeyExternal,omitempty"`
+	IsPrivateKeyExternal *bool
 
 	// Certificate Key Size.
-	KeySize *int32 `json:"keySize,omitempty"`
+	KeySize *int32
 }
 
 // RepetitionIndex - The workflow run action repetition index.
 type RepetitionIndex struct {
 	// REQUIRED; The index.
-	ItemIndex *int32 `json:"itemIndex,omitempty"`
+	ItemIndex *int32
 
 	// The scope.
-	ScopeName *string `json:"scopeName,omitempty"`
+	ScopeName *string
 }
 
 // Request - A request.
 type Request struct {
 	// A list of all the headers attached to the request.
-	Headers interface{} `json:"headers,omitempty"`
+	Headers any
 
 	// The HTTP method used for the request.
-	Method *string `json:"method,omitempty"`
+	Method *string
 
 	// The destination for the request.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // RequestHistory - The request history.
 type RequestHistory struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The request history properties.
-	Properties *RequestHistoryProperties `json:"properties,omitempty"`
+	Properties *RequestHistoryProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RequestHistoryListResult - The list of workflow request histories.
 type RequestHistoryListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow request histories.
-	Value []*RequestHistory `json:"value,omitempty"`
+	Value []*RequestHistory
 }
 
 // RequestHistoryProperties - The request history.
 type RequestHistoryProperties struct {
 	// The time the request ended.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The request.
-	Request *Request `json:"request,omitempty"`
+	Request *Request
 
 	// The response.
-	Response *Response `json:"response,omitempty"`
+	Response *Response
 
 	// The time the request started.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // RequestsBasedTrigger - Trigger based on total requests.
 type RequestsBasedTrigger struct {
 	// Request Count.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// Time interval.
-	TimeInterval *string `json:"timeInterval,omitempty"`
+	TimeInterval *string
 }
 
 // Resource - Azure resource. This resource is tracked in Azure Resource Manager
 type Resource struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceCollection - Collection of resources.
 type ResourceCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*string `json:"value,omitempty"`
+	Value []*string
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ResourceHealthMetadata - Used for getting ResourceHealthCheck settings.
 type ResourceHealthMetadata struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ResourceHealthMetadata resource specific properties
-	Properties *ResourceHealthMetadataProperties `json:"properties,omitempty"`
+	Properties *ResourceHealthMetadataProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceHealthMetadataClientGetBySiteOptions contains the optional parameters for the ResourceHealthMetadataClient.GetBySite
@@ -7496,25 +7594,26 @@ type ResourceHealthMetadataClientGetBySiteSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceHealthMetadataClientListByResourceGroupOptions contains the optional parameters for the ResourceHealthMetadataClient.ListByResourceGroup
+// ResourceHealthMetadataClientListByResourceGroupOptions contains the optional parameters for the ResourceHealthMetadataClient.NewListByResourceGroupPager
 // method.
 type ResourceHealthMetadataClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceHealthMetadataClientListBySiteOptions contains the optional parameters for the ResourceHealthMetadataClient.ListBySite
+// ResourceHealthMetadataClientListBySiteOptions contains the optional parameters for the ResourceHealthMetadataClient.NewListBySitePager
 // method.
 type ResourceHealthMetadataClientListBySiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceHealthMetadataClientListBySiteSlotOptions contains the optional parameters for the ResourceHealthMetadataClient.ListBySiteSlot
+// ResourceHealthMetadataClientListBySiteSlotOptions contains the optional parameters for the ResourceHealthMetadataClient.NewListBySiteSlotPager
 // method.
 type ResourceHealthMetadataClientListBySiteSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ResourceHealthMetadataClientListOptions contains the optional parameters for the ResourceHealthMetadataClient.List method.
+// ResourceHealthMetadataClientListOptions contains the optional parameters for the ResourceHealthMetadataClient.NewListPager
+// method.
 type ResourceHealthMetadataClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -7522,73 +7621,73 @@ type ResourceHealthMetadataClientListOptions struct {
 // ResourceHealthMetadataCollection - Collection of resource health metadata.
 type ResourceHealthMetadataCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ResourceHealthMetadata `json:"value,omitempty"`
+	Value []*ResourceHealthMetadata
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ResourceHealthMetadataProperties - ResourceHealthMetadata resource specific properties
 type ResourceHealthMetadataProperties struct {
 	// The category that the resource matches in the RHC Policy File
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// Is there a health signal for the resource
-	SignalAvailability *bool `json:"signalAvailability,omitempty"`
+	SignalAvailability *bool
 }
 
 // ResourceMetricAvailability - Metrics availability and retention.
 type ResourceMetricAvailability struct {
 	// READ-ONLY; Retention period for the current time grain.
-	Retention *string `json:"retention,omitempty" azure:"ro"`
+	Retention *string
 
 	// READ-ONLY; Time grain .
-	TimeGrain *string `json:"timeGrain,omitempty" azure:"ro"`
+	TimeGrain *string
 }
 
 // ResourceMetricDefinition - Metadata for the metrics.
 type ResourceMetricDefinition struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// ResourceMetricDefinition resource specific properties
-	Properties *ResourceMetricDefinitionProperties `json:"properties,omitempty"`
+	Properties *ResourceMetricDefinitionProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceMetricDefinitionCollection - Collection of metric definitions.
 type ResourceMetricDefinitionCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ResourceMetricDefinition `json:"value,omitempty"`
+	Value []*ResourceMetricDefinition
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ResourceMetricDefinitionProperties - ResourceMetricDefinition resource specific properties
 type ResourceMetricDefinitionProperties struct {
 	// READ-ONLY; List of time grains supported for the metric together with retention period.
-	MetricAvailabilities []*ResourceMetricAvailability `json:"metricAvailabilities,omitempty" azure:"ro"`
+	MetricAvailabilities []*ResourceMetricAvailability
 
 	// READ-ONLY; Primary aggregation type.
-	PrimaryAggregationType *string `json:"primaryAggregationType,omitempty" azure:"ro"`
+	PrimaryAggregationType *string
 
 	// READ-ONLY; Resource metric definition properties.
-	Properties map[string]*string `json:"properties,omitempty" azure:"ro"`
+	Properties map[string]*string
 
 	// READ-ONLY; Resource URI.
-	ResourceURI *string `json:"resourceUri,omitempty" azure:"ro"`
+	ResourceURI *string
 
 	// READ-ONLY; Unit of the metric.
-	Unit *string `json:"unit,omitempty" azure:"ro"`
+	Unit *string
 }
 
 // ResourceNameAvailability - Information regarding availability of a resource name.
@@ -7596,1503 +7695,1521 @@ type ResourceNameAvailability struct {
 	// If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource naming requirements
 	// so that the user can select a valid name. If reason == AlreadyExists,
 	// explain that resource name is already in use, and direct them to select a different name.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// true indicates name is valid and available. false indicates the name is invalid, unavailable, or both.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// Invalid indicates the name provided does not match Azure App Service naming requirements. AlreadyExists indicates that
 	// the name is already in use and is therefore unavailable.
-	Reason *InAvailabilityReasonType `json:"reason,omitempty"`
+	Reason *InAvailabilityReasonType
 }
 
 // ResourceNameAvailabilityRequest - Resource name availability request content.
 type ResourceNameAvailabilityRequest struct {
 	// REQUIRED; Resource name to verify.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Resource type used for verification.
-	Type *CheckNameResourceTypes `json:"type,omitempty"`
+	Type *CheckNameResourceTypes
 
 	// Is fully qualified domain name.
-	IsFqdn *bool `json:"isFqdn,omitempty"`
+	IsFqdn *bool
 }
 
 // ResourceReference - The resource reference.
 type ResourceReference struct {
 	// The resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Response - A response.
 type Response struct {
 	// Details on the location of the body content.
-	BodyLink *ContentLink `json:"bodyLink,omitempty"`
+	BodyLink *ContentLink
 
 	// A list of all the headers attached to the response.
-	Headers interface{} `json:"headers,omitempty"`
+	Headers any
 
 	// The status code of the response.
-	StatusCode *int32 `json:"statusCode,omitempty"`
+	StatusCode *int32
 }
 
 // ResponseMessageEnvelopeRemotePrivateEndpointConnection - Message envelope that contains the common Azure resource manager
 // properties and the resource provider specific content.
 type ResponseMessageEnvelopeRemotePrivateEndpointConnection struct {
 	// Azure-AsyncOperation Error info.
-	Error *ErrorEntity `json:"error,omitempty"`
+	Error *ErrorEntity
 
 	// Resource Id. Typically ID is populated only for responses to GET requests. Caller is responsible for passing in this value
 	// for GET requests only. For example:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupId}/providers/Microsoft.Web/sites/{sitename}
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// MSI resource
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Geographical region resource belongs to e.g. SouthCentralUS, SouthEastAsia.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Name of resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Azure resource manager plan.
-	Plan *ArmPlan `json:"plan,omitempty"`
+	Plan *ArmPlan
 
 	// Resource specific properties.
-	Properties *RemotePrivateEndpointConnection `json:"properties,omitempty"`
+	Properties *RemotePrivateEndpointConnection
 
 	// SKU description of the resource.
-	SKU *SKUDescription `json:"sku,omitempty"`
+	SKU *SKUDescription
 
 	// Azure-AsyncOperation Status info.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Tags associated with resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Type of resource e.g "Microsoft.Web/sites".
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Logical Availability Zones the service is hosted in
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 type ResponseMetaData struct {
 	// Source of the Data
-	DataSource *DataSource `json:"dataSource,omitempty"`
+	DataSource *DataSource
 }
 
 // RestoreRequest - Description of a restore request.
 type RestoreRequest struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// RestoreRequest resource specific properties
-	Properties *RestoreRequestProperties `json:"properties,omitempty"`
+	Properties *RestoreRequestProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RestoreRequestProperties - RestoreRequest resource specific properties
 type RestoreRequestProperties struct {
 	// REQUIRED; true if the restore operation can overwrite target app; otherwise, false. true is needed if trying to restore
 	// over an existing app.
-	Overwrite *bool `json:"overwrite,omitempty"`
+	Overwrite *bool
 
 	// REQUIRED; SAS URL to the container.
-	StorageAccountURL *string `json:"storageAccountUrl,omitempty"`
+	StorageAccountURL *string
 
 	// true if SiteConfig.ConnectionStrings should be set in new app; otherwise, false.
-	AdjustConnectionStrings *bool `json:"adjustConnectionStrings,omitempty"`
+	AdjustConnectionStrings *bool
 
 	// Specify app service plan that will own restored site.
-	AppServicePlan *string `json:"appServicePlan,omitempty"`
+	AppServicePlan *string
 
 	// Name of a blob which contains the backup.
-	BlobName *string `json:"blobName,omitempty"`
+	BlobName *string
 
 	// Collection of databases which should be restored. This list has to match the list of databases included in the backup.
-	Databases []*DatabaseBackupSetting `json:"databases,omitempty"`
+	Databases []*DatabaseBackupSetting
 
 	// App Service Environment name, if needed (only when restoring an app to an App Service Environment).
-	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
+	HostingEnvironment *string
 
 	// Changes a logic when restoring an app with custom domains. true to remove custom domains automatically. If false, custom
 	// domains are added to the app's object when it is being restored, but that might
 	// fail due to conflicts during the operation.
-	IgnoreConflictingHostNames *bool `json:"ignoreConflictingHostNames,omitempty"`
+	IgnoreConflictingHostNames *bool
 
 	// Ignore the databases and only restore the site content
-	IgnoreDatabases *bool `json:"ignoreDatabases,omitempty"`
+	IgnoreDatabases *bool
 
 	// Operation type.
-	OperationType *BackupRestoreOperationType `json:"operationType,omitempty"`
+	OperationType *BackupRestoreOperationType
 
 	// Name of an app.
-	SiteName *string `json:"siteName,omitempty"`
+	SiteName *string
 }
 
 // RetryHistory - The retry history.
 type RetryHistory struct {
 	// Gets the client request Id.
-	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	ClientRequestID *string
 
 	// Gets the status code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Gets the error response.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// Gets the service request Id.
-	ServiceRequestID *string `json:"serviceRequestId,omitempty"`
+	ServiceRequestID *string
 
 	// Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // Revision - Container App Revision.
 type Revision struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Revision resource specific properties
-	Properties *RevisionProperties `json:"properties,omitempty"`
+	Properties *RevisionProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RevisionCollection - Container App Revisions collection ARM resource.
 type RevisionCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Revision `json:"value,omitempty"`
+	Value []*Revision
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // RevisionProperties - Revision resource specific properties
 type RevisionProperties struct {
 	// READ-ONLY; Boolean describing if the Revision is Active
-	Active *bool `json:"active,omitempty" azure:"ro"`
+	Active *bool
 
 	// READ-ONLY; Timestamp describing when the revision was created by controller
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Fully qualified domain name of the revision
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; Current health State of the revision
-	HealthState *RevisionHealthState `json:"healthState,omitempty" azure:"ro"`
+	HealthState *RevisionHealthState
 
 	// READ-ONLY; Optional Field - Platform Error Message
-	ProvisioningError *string `json:"provisioningError,omitempty" azure:"ro"`
+	ProvisioningError *string
 
 	// READ-ONLY; Current provisioning State of the revision
-	ProvisioningState *RevisionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *RevisionProvisioningState
 
 	// READ-ONLY; Number of pods currently running for this revision
-	Replicas *int32 `json:"replicas,omitempty" azure:"ro"`
+	Replicas *int32
 
 	// READ-ONLY; Container App Revision Template with all possible settings and the defaults if user did not provide them. The
 	// defaults are populated as they were at the creation time
-	Template *Template `json:"template,omitempty" azure:"ro"`
+	Template *Template
 
 	// READ-ONLY; Traffic weight assigned to this revision
-	TrafficWeight *int32 `json:"trafficWeight,omitempty" azure:"ro"`
+	TrafficWeight *int32
 }
 
 // RunActionCorrelation - The workflow run action correlation properties.
 type RunActionCorrelation struct {
 	// The action tracking identifier.
-	ActionTrackingID *string `json:"actionTrackingId,omitempty"`
+	ActionTrackingID *string
 
 	// The client keywords.
-	ClientKeywords []*string `json:"clientKeywords,omitempty"`
+	ClientKeywords []*string
 
 	// The client tracking identifier.
-	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
+	ClientTrackingID *string
 }
 
 // RunCorrelation - The correlation properties.
 type RunCorrelation struct {
 	// The client keywords.
-	ClientKeywords []*string `json:"clientKeywords,omitempty"`
+	ClientKeywords []*string
 
 	// The client tracking identifier.
-	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
+	ClientTrackingID *string
 }
 
 // SKUCapacity - Description of the App Service plan scale options.
 type SKUCapacity struct {
 	// Default number of workers for this App Service plan SKU.
-	Default *int32 `json:"default,omitempty"`
+	Default *int32
 
 	// Maximum number of Elastic workers for this App Service plan SKU.
-	ElasticMaximum *int32 `json:"elasticMaximum,omitempty"`
+	ElasticMaximum *int32
 
 	// Maximum number of workers for this App Service plan SKU.
-	Maximum *int32 `json:"maximum,omitempty"`
+	Maximum *int32
 
 	// Minimum number of workers for this App Service plan SKU.
-	Minimum *int32 `json:"minimum,omitempty"`
+	Minimum *int32
 
 	// Available scale configurations for an App Service plan.
-	ScaleType *string `json:"scaleType,omitempty"`
+	ScaleType *string
 }
 
 // SKUDescription - Description of a SKU for a scalable resource.
 type SKUDescription struct {
 	// Capabilities of the SKU, e.g., is traffic manager enabled?
-	Capabilities []*Capability `json:"capabilities,omitempty"`
+	Capabilities []*Capability
 
 	// Current number of instances assigned to the resource.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Family code of the resource SKU.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// Locations of the SKU.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// Name of the resource SKU.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Min, max, and default scale values of the SKU.
-	SKUCapacity *SKUCapacity `json:"skuCapacity,omitempty"`
+	SKUCapacity *SKUCapacity
 
 	// Size specifier of the resource SKU.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// Service tier of the resource SKU.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // SKUInfo - SKU discovery information.
 type SKUInfo struct {
 	// Min, max, and default scale values of the SKU.
-	Capacity *SKUCapacity `json:"capacity,omitempty"`
+	Capacity *SKUCapacity
 
 	// Resource type that this SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// Name and tier of the SKU.
-	SKU *SKUDescription `json:"sku,omitempty"`
+	SKU *SKUDescription
 }
 
 // SKUInfoCollection - Collection of SKU information.
 type SKUInfoCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*SKUInfo `json:"value,omitempty"`
+	Value []*SKUInfo
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SKUInfos - Collection of SKU information.
 type SKUInfos struct {
 	// Resource type that this SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// List of SKUs the subscription is able to use.
-	SKUs []*GlobalCsmSKUDescription `json:"skus,omitempty"`
+	SKUs []*GlobalCsmSKUDescription
 }
 
 // SampleUtterance - Sample utterance.
 type SampleUtterance struct {
 	// Links attribute of sample utterance.
-	Links []*string `json:"links,omitempty"`
+	Links []*string
 
 	// Question id of sample utterance (for stackoverflow questions titles).
-	Qid *string `json:"qid,omitempty"`
+	Qid *string
 
 	// Text attribute of sample utterance.
-	Text *string `json:"text,omitempty"`
+	Text *string
 }
 
 // Scale - Container App scaling configurations.
 type Scale struct {
 	// Optional. Maximum number of container replicas. Defaults to 10 if not set.
-	MaxReplicas *int32 `json:"maxReplicas,omitempty"`
+	MaxReplicas *int32
 
 	// Optional. Minimum number of container replicas.
-	MinReplicas *int32 `json:"minReplicas,omitempty"`
+	MinReplicas *int32
 
 	// Scaling rules.
-	Rules []*ScaleRule `json:"rules,omitempty"`
+	Rules []*ScaleRule
 }
 
 // ScaleRule - Container App container scaling rule.
 type ScaleRule struct {
 	// Azure Queue based scaling.
-	AzureQueue *QueueScaleRule `json:"azureQueue,omitempty"`
+	AzureQueue *QueueScaleRule
 
 	// Custom scale rule.
-	Custom *CustomScaleRule `json:"custom,omitempty"`
+	Custom *CustomScaleRule
 
 	// HTTP requests based scaling.
-	HTTP *HTTPScaleRule `json:"http,omitempty"`
+	HTTP *HTTPScaleRule
 
 	// Scale Rule Name
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ScaleRuleAuth - Auth Secrets for Container App Scale Rule
 type ScaleRuleAuth struct {
 	// Name of the Container App secret from which to pull the auth params.
-	SecretRef *string `json:"secretRef,omitempty"`
+	SecretRef *string
 
 	// Trigger Parameter that uses the secret
-	TriggerParameter *string `json:"triggerParameter,omitempty"`
+	TriggerParameter *string
 }
 
 // Secret - Container App Secret.
 type Secret struct {
 	// Secret Name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Secret Value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // SecretsCollection - Container App Secrets Collection ARM resource.
 type SecretsCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*ContainerAppSecret `json:"value,omitempty"`
+	Value []*ContainerAppSecret
 }
 
 // ServiceSpecification - Resource metrics service provided by Microsoft.Insights resource provider.
 type ServiceSpecification struct {
-	LogSpecifications    []*LogSpecification    `json:"logSpecifications,omitempty"`
-	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
+	LogSpecifications    []*LogSpecification
+	MetricSpecifications []*MetricSpecification
 }
 
 // Site - A web app, a mobile app backend, or an API app.
 type Site struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Extended Location.
-	ExtendedLocation *ExtendedLocation `json:"extendedLocation,omitempty"`
+	ExtendedLocation *ExtendedLocation
 
 	// Managed service identity.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Site resource specific properties
-	Properties *SiteProperties `json:"properties,omitempty"`
+	Properties *SiteProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteAuthSettings - Configuration settings for the Azure App Service Authentication / Authorization feature.
 type SiteAuthSettings struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SiteAuthSettings resource specific properties
-	Properties *SiteAuthSettingsProperties `json:"properties,omitempty"`
+	Properties *SiteAuthSettingsProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteAuthSettingsProperties - SiteAuthSettings resource specific properties
 type SiteAuthSettingsProperties struct {
 	// Gets a JSON string containing the Azure AD Acl settings.
-	AADClaimsAuthorization *string `json:"aadClaimsAuthorization,omitempty"`
+	AADClaimsAuthorization *string
 
 	// Login parameters to send to the OpenID Connect authorization endpoint when a user logs in. Each parameter must be in the
 	// form "key=value".
-	AdditionalLoginParams []*string `json:"additionalLoginParams,omitempty"`
+	AdditionalLoginParams []*string
 
-	// Allowed audience values to consider when validating JWTs issued by Azure Active Directory. Note that the ClientID value
-	// is always considered an allowed audience, regardless of this setting.
-	AllowedAudiences []*string `json:"allowedAudiences,omitempty"`
+	// Allowed audience values to consider when validating JSON Web Tokens issued by Azure Active Directory. Note that the ClientID
+	// value is always considered an allowed audience, regardless of this setting.
+	AllowedAudiences []*string
 
 	// External URLs that can be redirected to as part of logging in or logging out of the app. Note that the query string part
 	// of the URL is ignored. This is an advanced setting typically only needed by
 	// Windows Store application backends. Note that URLs within the current domain are always implicitly allowed.
-	AllowedExternalRedirectUrls []*string `json:"allowedExternalRedirectUrls,omitempty"`
+	AllowedExternalRedirectUrls []*string
 
 	// The path of the config file containing auth settings. If the path is relative, base will the site's root directory.
-	AuthFilePath *string `json:"authFilePath,omitempty"`
+	AuthFilePath *string
 
 	// The Client ID of this relying party application, known as the clientid. This setting is required for enabling OpenID Connection
 	// authentication with Azure Active Directory or other 3rd party OpenID
 	// Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-10.html
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The Client Secret of this relying party application (in Azure Active Directory, this is also referred to as the Key). This
 	// setting is optional. If no client secret is configured, the OpenID Connect
 	// implicit auth flow is used to authenticate end users. Otherwise, the OpenID Connect Authorization Code Flow is used to
 	// authenticate end users. More information on OpenID Connect:
 	// http://openid.net/specs/openid-connect-core-1_0.html
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This property acts
 	// as a replacement for the Client Secret. It is also optional.
-	ClientSecretCertificateThumbprint *string `json:"clientSecretCertificateThumbprint,omitempty"`
+	ClientSecretCertificateThumbprint *string
 
 	// The app setting name that contains the client secret of the relying party application.
-	ClientSecretSettingName *string `json:"clientSecretSettingName,omitempty"`
+	ClientSecretSettingName *string
 
 	// The ConfigVersion of the Authentication / Authorization feature in use for the current app. The setting in this value can
 	// control the behavior of the control plane for Authentication / Authorization.
-	ConfigVersion *string `json:"configVersion,omitempty"`
+	ConfigVersion *string
 
 	// The default authentication provider to use when multiple providers are configured. This setting is only needed if multiple
 	// providers are configured and the unauthenticated client action is set to
 	// "RedirectToLoginPage".
-	DefaultProvider *BuiltInAuthenticationProvider `json:"defaultProvider,omitempty"`
+	DefaultProvider *BuiltInAuthenticationProvider
 
 	// true if the Authentication / Authorization feature is enabled for the current app; otherwise, false.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The App ID of the Facebook app used for login. This setting is required for enabling Facebook Login. Facebook Login documentation:
 	// https://developers.facebook.com/docs/facebook-login
-	FacebookAppID *string `json:"facebookAppId,omitempty"`
+	FacebookAppID *string
 
 	// The App Secret of the Facebook app used for Facebook Login. This setting is required for enabling Facebook Login. Facebook
 	// Login documentation: https://developers.facebook.com/docs/facebook-login
-	FacebookAppSecret *string `json:"facebookAppSecret,omitempty"`
+	FacebookAppSecret *string
 
 	// The app setting name that contains the app secret used for Facebook Login.
-	FacebookAppSecretSettingName *string `json:"facebookAppSecretSettingName,omitempty"`
+	FacebookAppSecretSettingName *string
 
 	// The OAuth 2.0 scopes that will be requested as part of Facebook Login authentication. This setting is optional. Facebook
 	// Login documentation: https://developers.facebook.com/docs/facebook-login
-	FacebookOAuthScopes []*string `json:"facebookOAuthScopes,omitempty"`
+	FacebookOAuthScopes []*string
 
 	// The Client Id of the GitHub app used for login. This setting is required for enabling Github login
-	GitHubClientID *string `json:"gitHubClientId,omitempty"`
+	GitHubClientID *string
 
 	// The Client Secret of the GitHub app used for Github Login. This setting is required for enabling Github login.
-	GitHubClientSecret *string `json:"gitHubClientSecret,omitempty"`
+	GitHubClientSecret *string
 
 	// The app setting name that contains the client secret of the Github app used for GitHub Login.
-	GitHubClientSecretSettingName *string `json:"gitHubClientSecretSettingName,omitempty"`
+	GitHubClientSecretSettingName *string
 
 	// The OAuth 2.0 scopes that will be requested as part of GitHub Login authentication. This setting is optional
-	GitHubOAuthScopes []*string `json:"gitHubOAuthScopes,omitempty"`
+	GitHubOAuthScopes []*string
 
 	// The OpenID Connect Client ID for the Google web application. This setting is required for enabling Google Sign-In. Google
 	// Sign-In documentation: https://developers.google.com/identity/sign-in/web/
-	GoogleClientID *string `json:"googleClientId,omitempty"`
+	GoogleClientID *string
 
 	// The client secret associated with the Google web application. This setting is required for enabling Google Sign-In. Google
 	// Sign-In documentation: https://developers.google.com/identity/sign-in/web/
-	GoogleClientSecret *string `json:"googleClientSecret,omitempty"`
+	GoogleClientSecret *string
 
 	// The app setting name that contains the client secret associated with the Google web application.
-	GoogleClientSecretSettingName *string `json:"googleClientSecretSettingName,omitempty"`
+	GoogleClientSecretSettingName *string
 
 	// The OAuth 2.0 scopes that will be requested as part of Google Sign-In authentication. This setting is optional. If not
 	// specified, "openid", "profile", and "email" are used as default scopes. Google
 	// Sign-In documentation: https://developers.google.com/identity/sign-in/web/
-	GoogleOAuthScopes []*string `json:"googleOAuthScopes,omitempty"`
+	GoogleOAuthScopes []*string
 
 	// "true" if the auth config settings should be read from a file, "false" otherwise
-	IsAuthFromFile *string `json:"isAuthFromFile,omitempty"`
+	IsAuthFromFile *string
 
 	// The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application. When using Azure
 	// Active Directory, this value is the URI of the directory tenant, e.g.
 	// https://sts.windows.net/{tenant-guid}/. This URI is a case-sensitive identifier for the token issuer. More information
 	// on OpenID Connect Discovery:
 	// http://openid.net/specs/openid-connect-discovery-1_0.html
-	Issuer *string `json:"issuer,omitempty"`
+	Issuer *string
 
 	// The OAuth 2.0 client ID that was created for the app used for authentication. This setting is required for enabling Microsoft
 	// Account authentication. Microsoft Account OAuth documentation:
 	// https://dev.onedrive.com/auth/msa_oauth.htm
-	MicrosoftAccountClientID *string `json:"microsoftAccountClientId,omitempty"`
+	MicrosoftAccountClientID *string
 
 	// The OAuth 2.0 client secret that was created for the app used for authentication. This setting is required for enabling
 	// Microsoft Account authentication. Microsoft Account OAuth documentation:
 	// https://dev.onedrive.com/auth/msa_oauth.htm
-	MicrosoftAccountClientSecret *string `json:"microsoftAccountClientSecret,omitempty"`
+	MicrosoftAccountClientSecret *string
 
 	// The app setting name containing the OAuth 2.0 client secret that was created for the app used for authentication.
-	MicrosoftAccountClientSecretSettingName *string `json:"microsoftAccountClientSecretSettingName,omitempty"`
+	MicrosoftAccountClientSecretSettingName *string
 
 	// The OAuth 2.0 scopes that will be requested as part of Microsoft Account authentication. This setting is optional. If not
 	// specified, "wl.basic" is used as the default scope. Microsoft Account Scopes
 	// and permissions documentation: https://msdn.microsoft.com/en-us/library/dn631845.aspx
-	MicrosoftAccountOAuthScopes []*string `json:"microsoftAccountOAuthScopes,omitempty"`
+	MicrosoftAccountOAuthScopes []*string
 
 	// The RuntimeVersion of the Authentication / Authorization feature in use for the current app. The setting in this value
 	// can control the behavior of certain features in the Authentication /
 	// Authorization module.
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 
 	// The number of hours after session token expiration that a session token can be used to call the token refresh API. The
 	// default is 72 hours.
-	TokenRefreshExtensionHours *float64 `json:"tokenRefreshExtensionHours,omitempty"`
+	TokenRefreshExtensionHours *float64
 
 	// true to durably store platform-specific security tokens that are obtained during login flows; otherwise, false. The default
 	// is false.
-	TokenStoreEnabled *bool `json:"tokenStoreEnabled,omitempty"`
+	TokenStoreEnabled *bool
 
 	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter
 	// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
-	TwitterConsumerKey *string `json:"twitterConsumerKey,omitempty"`
+	TwitterConsumerKey *string
 
 	// The OAuth 1.0a consumer secret of the Twitter application used for sign-in. This setting is required for enabling Twitter
 	// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
-	TwitterConsumerSecret *string `json:"twitterConsumerSecret,omitempty"`
+	TwitterConsumerSecret *string
 
 	// The app setting name that contains the OAuth 1.0a consumer secret of the Twitter application used for sign-in.
-	TwitterConsumerSecretSettingName *string `json:"twitterConsumerSecretSettingName,omitempty"`
+	TwitterConsumerSecretSettingName *string
 
 	// The action to take when an unauthenticated client attempts to access the app.
-	UnauthenticatedClientAction *UnauthenticatedClientAction `json:"unauthenticatedClientAction,omitempty"`
+	UnauthenticatedClientAction *UnauthenticatedClientAction
 
 	// Gets a value indicating whether the issuer should be a valid HTTPS url and be validated as such.
-	ValidateIssuer *bool `json:"validateIssuer,omitempty"`
+	ValidateIssuer *bool
 }
 
 // SiteAuthSettingsV2 - Configuration settings for the Azure App Service Authentication / Authorization V2 feature.
 type SiteAuthSettingsV2 struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SiteAuthSettingsV2 resource specific properties
-	Properties *SiteAuthSettingsV2Properties `json:"properties,omitempty"`
+	Properties *SiteAuthSettingsV2Properties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteAuthSettingsV2Properties - SiteAuthSettingsV2 resource specific properties
 type SiteAuthSettingsV2Properties struct {
 	// The configuration settings that determines the validation flow of users using App Service Authentication/Authorization.
-	GlobalValidation *GlobalValidation `json:"globalValidation,omitempty"`
+	GlobalValidation *GlobalValidation
 
 	// The configuration settings of the HTTP requests for authentication and authorization requests made against App Service
 	// Authentication/Authorization.
-	HTTPSettings *HTTPSettings `json:"httpSettings,omitempty"`
+	HTTPSettings *HTTPSettings
 
 	// The configuration settings of each of the identity providers used to configure App Service Authentication/Authorization.
-	IdentityProviders *IdentityProviders `json:"identityProviders,omitempty"`
+	IdentityProviders *IdentityProviders
 
 	// The configuration settings of the login flow of users using App Service Authentication/Authorization.
-	Login *Login `json:"login,omitempty"`
+	Login *Login
 
 	// The configuration settings of the platform of App Service Authentication/Authorization.
-	Platform *AuthPlatform `json:"platform,omitempty"`
+	Platform *AuthPlatform
 }
 
 // SiteCloneability - Represents whether or not an app is cloneable.
 type SiteCloneability struct {
 	// List of blocking application characteristics.
-	BlockingCharacteristics []*SiteCloneabilityCriterion `json:"blockingCharacteristics,omitempty"`
+	BlockingCharacteristics []*SiteCloneabilityCriterion
 
 	// List of features enabled on app that prevent cloning.
-	BlockingFeatures []*SiteCloneabilityCriterion `json:"blockingFeatures,omitempty"`
+	BlockingFeatures []*SiteCloneabilityCriterion
 
 	// Name of app.
-	Result *CloneAbilityResult `json:"result,omitempty"`
+	Result *CloneAbilityResult
 
 	// List of features enabled on app that are non-blocking but cannot be cloned. The app can still be cloned but the features
 	// in this list will not be set up on cloned app.
-	UnsupportedFeatures []*SiteCloneabilityCriterion `json:"unsupportedFeatures,omitempty"`
+	UnsupportedFeatures []*SiteCloneabilityCriterion
 }
 
 // SiteCloneabilityCriterion - An app cloneability criterion.
 type SiteCloneabilityCriterion struct {
 	// Description of criterion.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of criterion.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // SiteConfig - Configuration of an App Service app.
 type SiteConfig struct {
 	// Information about the formal API definition for the app.
-	APIDefinition *APIDefinitionInfo `json:"apiDefinition,omitempty"`
+	APIDefinition *APIDefinitionInfo
 
 	// Azure API management settings linked to the app.
-	APIManagementConfig *APIManagementConfig `json:"apiManagementConfig,omitempty"`
+	APIManagementConfig *APIManagementConfig
 
 	// Flag to use Managed Identity Creds for ACR pull
-	AcrUseManagedIdentityCreds *bool `json:"acrUseManagedIdentityCreds,omitempty"`
+	AcrUseManagedIdentityCreds *bool
 
 	// If using user managed identity, the user managed identity ClientId
-	AcrUserManagedIdentityID *string `json:"acrUserManagedIdentityID,omitempty"`
+	AcrUserManagedIdentityID *string
 
 	// true if Always On is enabled; otherwise, false.
-	AlwaysOn *bool `json:"alwaysOn,omitempty"`
+	AlwaysOn *bool
 
 	// App command line to launch.
-	AppCommandLine *string `json:"appCommandLine,omitempty"`
+	AppCommandLine *string
 
 	// Application settings.
-	AppSettings []*NameValuePair `json:"appSettings,omitempty"`
+	AppSettings []*NameValuePair
 
 	// true if Auto Heal is enabled; otherwise, false.
-	AutoHealEnabled *bool `json:"autoHealEnabled,omitempty"`
+	AutoHealEnabled *bool
 
 	// Auto Heal rules.
-	AutoHealRules *AutoHealRules `json:"autoHealRules,omitempty"`
+	AutoHealRules *AutoHealRules
 
 	// Auto-swap slot name.
-	AutoSwapSlotName *string `json:"autoSwapSlotName,omitempty"`
+	AutoSwapSlotName *string
 
 	// List of Azure Storage Accounts.
-	AzureStorageAccounts map[string]*AzureStorageInfoValue `json:"azureStorageAccounts,omitempty"`
+	AzureStorageAccounts map[string]*AzureStorageInfoValue
 
 	// Connection strings.
-	ConnectionStrings []*ConnStringInfo `json:"connectionStrings,omitempty"`
+	ConnectionStrings []*ConnStringInfo
 
 	// Cross-Origin Resource Sharing (CORS) settings.
-	Cors *CorsSettings `json:"cors,omitempty"`
+	Cors *CorsSettings
 
 	// Default documents.
-	DefaultDocuments []*string `json:"defaultDocuments,omitempty"`
+	DefaultDocuments []*string
 
 	// true if detailed error logging is enabled; otherwise, false.
-	DetailedErrorLoggingEnabled *bool `json:"detailedErrorLoggingEnabled,omitempty"`
+	DetailedErrorLoggingEnabled *bool
 
 	// Document root.
-	DocumentRoot *string `json:"documentRoot,omitempty"`
+	DocumentRoot *string
+
+	// Maximum number of workers that a site can scale out to. This setting only applies to apps in plans where ElasticScaleEnabled
+	// is true
+	ElasticWebAppScaleLimit *int32
 
 	// This is work around for polymorphic types.
-	Experiments *Experiments `json:"experiments,omitempty"`
+	Experiments *Experiments
 
 	// State of FTP / FTPS service
-	FtpsState *FtpsState `json:"ftpsState,omitempty"`
+	FtpsState *FtpsState
 
 	// Maximum number of workers that a site can scale out to. This setting only applies to the Consumption and Elastic Premium
 	// Plans
-	FunctionAppScaleLimit *int32 `json:"functionAppScaleLimit,omitempty"`
+	FunctionAppScaleLimit *int32
 
 	// Gets or sets a value indicating whether functions runtime scale monitoring is enabled. When enabled, the ScaleController
 	// will not monitor event sources directly, but will instead call to the runtime
 	// to get scale status.
-	FunctionsRuntimeScaleMonitoringEnabled *bool `json:"functionsRuntimeScaleMonitoringEnabled,omitempty"`
+	FunctionsRuntimeScaleMonitoringEnabled *bool
 
 	// true if HTTP logging is enabled; otherwise, false.
-	HTTPLoggingEnabled *bool `json:"httpLoggingEnabled,omitempty"`
+	HTTPLoggingEnabled *bool
 
 	// Handler mappings.
-	HandlerMappings []*HandlerMapping `json:"handlerMappings,omitempty"`
+	HandlerMappings []*HandlerMapping
 
 	// Health check path
-	HealthCheckPath *string `json:"healthCheckPath,omitempty"`
+	HealthCheckPath *string
 
 	// Http20Enabled: configures a web site to allow clients to connect over http2.0
-	Http20Enabled *bool `json:"http20Enabled,omitempty"`
+	Http20Enabled *bool
 
 	// IP security restrictions for main.
-	IPSecurityRestrictions []*IPSecurityRestriction `json:"ipSecurityRestrictions,omitempty"`
+	IPSecurityRestrictions []*IPSecurityRestriction
+
+	// Default action for main access restriction if no rules are matched.
+	IPSecurityRestrictionsDefaultAction *DefaultAction
 
 	// Java container.
-	JavaContainer *string `json:"javaContainer,omitempty"`
+	JavaContainer *string
 
 	// Java container version.
-	JavaContainerVersion *string `json:"javaContainerVersion,omitempty"`
+	JavaContainerVersion *string
 
 	// Java version.
-	JavaVersion *string `json:"javaVersion,omitempty"`
+	JavaVersion *string
 
 	// Identity to use for Key Vault Reference authentication.
-	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
+	KeyVaultReferenceIdentity *string
 
 	// Site limits.
-	Limits *SiteLimits `json:"limits,omitempty"`
+	Limits *SiteLimits
 
 	// Linux App Framework and version
-	LinuxFxVersion *string `json:"linuxFxVersion,omitempty"`
+	LinuxFxVersion *string
 
 	// Site load balancing.
-	LoadBalancing *SiteLoadBalancing `json:"loadBalancing,omitempty"`
+	LoadBalancing *SiteLoadBalancing
 
 	// true to enable local MySQL; otherwise, false.
-	LocalMySQLEnabled *bool `json:"localMySqlEnabled,omitempty"`
+	LocalMySQLEnabled *bool
 
 	// HTTP logs directory size limit.
-	LogsDirectorySizeLimit *int32 `json:"logsDirectorySizeLimit,omitempty"`
+	LogsDirectorySizeLimit *int32
 
 	// Managed pipeline mode.
-	ManagedPipelineMode *ManagedPipelineMode `json:"managedPipelineMode,omitempty"`
+	ManagedPipelineMode *ManagedPipelineMode
 
 	// Managed Service Identity Id
-	ManagedServiceIdentityID *int32 `json:"managedServiceIdentityId,omitempty"`
+	ManagedServiceIdentityID *int32
+
+	// Application metadata. This property cannot be retrieved, since it may contain secrets.
+	Metadata []*NameValuePair
 
 	// MinTlsVersion: configures the minimum version of TLS required for SSL requests
-	MinTLSVersion *SupportedTLSVersions `json:"minTlsVersion,omitempty"`
+	MinTLSVersion *SupportedTLSVersions
 
 	// Number of minimum instance count for a site This setting only applies to the Elastic Plans
-	MinimumElasticInstanceCount *int32 `json:"minimumElasticInstanceCount,omitempty"`
+	MinimumElasticInstanceCount *int32
 
 	// .NET Framework version.
-	NetFrameworkVersion *string `json:"netFrameworkVersion,omitempty"`
+	NetFrameworkVersion *string
 
 	// Version of Node.js.
-	NodeVersion *string `json:"nodeVersion,omitempty"`
+	NodeVersion *string
 
 	// Number of workers.
-	NumberOfWorkers *int32 `json:"numberOfWorkers,omitempty"`
+	NumberOfWorkers *int32
 
 	// Version of PHP.
-	PhpVersion *string `json:"phpVersion,omitempty"`
+	PhpVersion *string
 
 	// Version of PowerShell.
-	PowerShellVersion *string `json:"powerShellVersion,omitempty"`
+	PowerShellVersion *string
 
 	// Number of preWarmed instances. This setting only applies to the Consumption and Elastic Plans
-	PreWarmedInstanceCount *int32 `json:"preWarmedInstanceCount,omitempty"`
+	PreWarmedInstanceCount *int32
 
 	// Property to allow or block all public traffic.
-	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *string
 
 	// Publishing user name.
-	PublishingUsername *string `json:"publishingUsername,omitempty"`
+	PublishingUsername *string
 
 	// Push endpoint settings.
-	Push *PushSettings `json:"push,omitempty"`
+	Push *PushSettings
 
 	// Version of Python.
-	PythonVersion *string `json:"pythonVersion,omitempty"`
+	PythonVersion *string
 
 	// true if remote debugging is enabled; otherwise, false.
-	RemoteDebuggingEnabled *bool `json:"remoteDebuggingEnabled,omitempty"`
+	RemoteDebuggingEnabled *bool
 
 	// Remote debugging version.
-	RemoteDebuggingVersion *string `json:"remoteDebuggingVersion,omitempty"`
+	RemoteDebuggingVersion *string
 
 	// true if request tracing is enabled; otherwise, false.
-	RequestTracingEnabled *bool `json:"requestTracingEnabled,omitempty"`
+	RequestTracingEnabled *bool
 
 	// Request tracing expiration time.
-	RequestTracingExpirationTime *time.Time `json:"requestTracingExpirationTime,omitempty"`
+	RequestTracingExpirationTime *time.Time
 
 	// IP security restrictions for scm.
-	ScmIPSecurityRestrictions []*IPSecurityRestriction `json:"scmIpSecurityRestrictions,omitempty"`
+	ScmIPSecurityRestrictions []*IPSecurityRestriction
+
+	// Default action for scm access restriction if no rules are matched.
+	ScmIPSecurityRestrictionsDefaultAction *DefaultAction
 
 	// IP security restrictions for scm to use main.
-	ScmIPSecurityRestrictionsUseMain *bool `json:"scmIpSecurityRestrictionsUseMain,omitempty"`
+	ScmIPSecurityRestrictionsUseMain *bool
 
 	// ScmMinTlsVersion: configures the minimum version of TLS required for SSL requests for SCM site
-	ScmMinTLSVersion *SupportedTLSVersions `json:"scmMinTlsVersion,omitempty"`
+	ScmMinTLSVersion *SupportedTLSVersions
 
 	// SCM type.
-	ScmType *ScmType `json:"scmType,omitempty"`
+	ScmType *ScmType
 
 	// Tracing options.
-	TracingOptions *string `json:"tracingOptions,omitempty"`
+	TracingOptions *string
 
 	// true to use 32-bit worker process; otherwise, false.
-	Use32BitWorkerProcess *bool `json:"use32BitWorkerProcess,omitempty"`
+	Use32BitWorkerProcess *bool
 
 	// Virtual applications.
-	VirtualApplications []*VirtualApplication `json:"virtualApplications,omitempty"`
+	VirtualApplications []*VirtualApplication
 
 	// Virtual Network name.
-	VnetName *string `json:"vnetName,omitempty"`
+	VnetName *string
 
 	// The number of private ports assigned to this app. These will be assigned dynamically on runtime.
-	VnetPrivatePortsCount *int32 `json:"vnetPrivatePortsCount,omitempty"`
+	VnetPrivatePortsCount *int32
 
 	// Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined
 	// Routes applied.
-	VnetRouteAllEnabled *bool `json:"vnetRouteAllEnabled,omitempty"`
+	VnetRouteAllEnabled *bool
 
 	// true if WebSocket is enabled; otherwise, false.
-	WebSocketsEnabled *bool `json:"webSocketsEnabled,omitempty"`
+	WebSocketsEnabled *bool
 
 	// Sets the time zone a site uses for generating timestamps. Compatible with Linux and Windows App Service. Setting the WEBSITETIMEZONE
 	// app setting takes precedence over this config. For Linux, expects
 	// tz database values https://www.iana.org/time-zones (for a quick reference see https://en.wikipedia.org/wiki/Listoftzdatabasetimezones).
 	// For Windows, expects one of the time zones listed under HKEY
 	// LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones
-	WebsiteTimeZone *string `json:"websiteTimeZone,omitempty"`
+	WebsiteTimeZone *string
 
 	// Xenon App Framework and version
-	WindowsFxVersion *string `json:"windowsFxVersion,omitempty"`
+	WindowsFxVersion *string
 
 	// Explicit Managed Service Identity Id
-	XManagedServiceIdentityID *int32 `json:"xManagedServiceIdentityId,omitempty"`
+	XManagedServiceIdentityID *int32
 
 	// READ-ONLY; Site MachineKey.
-	MachineKey *SiteMachineKey `json:"machineKey,omitempty" azure:"ro"`
+	MachineKey *SiteMachineKey
 }
 
 // SiteConfigPropertiesDictionary - Site config properties dictionary.
 type SiteConfigPropertiesDictionary struct {
 	// READ-ONLY; JavaVersion configuration setting.
-	JavaVersion *string `json:"javaVersion,omitempty" azure:"ro"`
+	JavaVersion *string
 
 	// READ-ONLY; LinuxFxVersion configuration setting.
-	LinuxFxVersion *string `json:"linuxFxVersion,omitempty" azure:"ro"`
+	LinuxFxVersion *string
 
 	// READ-ONLY; PowerShellVersion configuration setting.
-	PowerShellVersion *string `json:"powerShellVersion,omitempty" azure:"ro"`
+	PowerShellVersion *string
 
 	// READ-ONLY; true if use32BitWorkerProcess should be set to true for the stack; otherwise, false.
-	Use32BitWorkerProcess *bool `json:"use32BitWorkerProcess,omitempty" azure:"ro"`
+	Use32BitWorkerProcess *bool
 }
 
 // SiteConfigResource - Web app configuration ARM resource.
 type SiteConfigResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *SiteConfig `json:"properties,omitempty"`
+	Properties *SiteConfig
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteConfigResourceCollection - Collection of site configurations.
 type SiteConfigResourceCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*SiteConfigResource `json:"value,omitempty"`
+	Value []*SiteConfigResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SiteConfigurationSnapshotInfo - A snapshot of a web app configuration.
 type SiteConfigurationSnapshotInfo struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SiteConfigurationSnapshotInfo resource specific properties
-	Properties *SiteConfigurationSnapshotInfoProperties `json:"properties,omitempty"`
+	Properties *SiteConfigurationSnapshotInfoProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteConfigurationSnapshotInfoCollection - Collection of metadata for the app configuration snapshots that can be restored.
 type SiteConfigurationSnapshotInfoCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*SiteConfigurationSnapshotInfo `json:"value,omitempty"`
+	Value []*SiteConfigurationSnapshotInfo
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SiteConfigurationSnapshotInfoProperties - SiteConfigurationSnapshotInfo resource specific properties
 type SiteConfigurationSnapshotInfoProperties struct {
 	// READ-ONLY; The id of the snapshot
-	SnapshotID *int32 `json:"snapshotId,omitempty" azure:"ro"`
+	SnapshotID *int32
 
 	// READ-ONLY; The time the snapshot was taken.
-	Time *time.Time `json:"time,omitempty" azure:"ro"`
+	Time *time.Time
 }
 
 // SiteExtensionInfo - Site Extension Information.
 type SiteExtensionInfo struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SiteExtensionInfo resource specific properties
-	Properties *SiteExtensionInfoProperties `json:"properties,omitempty"`
+	Properties *SiteExtensionInfoProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteExtensionInfoCollection - Collection of Kudu site extension information elements.
 type SiteExtensionInfoCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*SiteExtensionInfo `json:"value,omitempty"`
+	Value []*SiteExtensionInfo
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SiteExtensionInfoProperties - SiteExtensionInfo resource specific properties
 type SiteExtensionInfoProperties struct {
 	// List of authors.
-	Authors []*string `json:"authors,omitempty"`
+	Authors []*string
 
 	// Site Extension comment.
-	Comment *string `json:"comment,omitempty"`
+	Comment *string
 
 	// Detailed description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Count of downloads.
-	DownloadCount *int32 `json:"download_count,omitempty"`
+	DownloadCount *int32
 
 	// Site extension ID.
-	ExtensionID *string `json:"extension_id,omitempty"`
+	ExtensionID *string
 
 	// Site extension type.
-	ExtensionType *SiteExtensionType `json:"extension_type,omitempty"`
+	ExtensionType *SiteExtensionType
 
 	// Extension URL.
-	ExtensionURL *string `json:"extension_url,omitempty"`
+	ExtensionURL *string
 
 	// Feed URL.
-	FeedURL *string `json:"feed_url,omitempty"`
+	FeedURL *string
 
 	// Icon URL.
-	IconURL *string `json:"icon_url,omitempty"`
+	IconURL *string
 
 	// Installed timestamp.
-	InstalledDateTime *time.Time `json:"installed_date_time,omitempty"`
+	InstalledDateTime *time.Time
 
 	// Installer command line parameters.
-	InstallerCommandLineParams *string `json:"installer_command_line_params,omitempty"`
+	InstallerCommandLineParams *string
 
 	// License URL.
-	LicenseURL *string `json:"license_url,omitempty"`
+	LicenseURL *string
 
 	// true if the local version is the latest version; false otherwise.
-	LocalIsLatestVersion *bool `json:"local_is_latest_version,omitempty"`
+	LocalIsLatestVersion *bool
 
 	// Local path.
-	LocalPath *string `json:"local_path,omitempty"`
+	LocalPath *string
 
 	// Project URL.
-	ProjectURL *string `json:"project_url,omitempty"`
+	ProjectURL *string
 
 	// Provisioning state.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Published timestamp.
-	PublishedDateTime *time.Time `json:"published_date_time,omitempty"`
+	PublishedDateTime *time.Time
 
 	// Summary description.
-	Summary *string `json:"summary,omitempty"`
-	Title   *string `json:"title,omitempty"`
+	Summary *string
+	Title   *string
 
 	// Version information.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // SiteLimits - Metric limits set on an app.
 type SiteLimits struct {
 	// Maximum allowed disk size usage in MB.
-	MaxDiskSizeInMb *int64 `json:"maxDiskSizeInMb,omitempty"`
+	MaxDiskSizeInMb *int64
 
 	// Maximum allowed memory usage in MB.
-	MaxMemoryInMb *int64 `json:"maxMemoryInMb,omitempty"`
+	MaxMemoryInMb *int64
 
 	// Maximum allowed CPU usage percentage.
-	MaxPercentageCPU *float64 `json:"maxPercentageCpu,omitempty"`
+	MaxPercentageCPU *float64
 }
 
 // SiteLogsConfig - Configuration of App Service site logs.
 type SiteLogsConfig struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SiteLogsConfig resource specific properties
-	Properties *SiteLogsConfigProperties `json:"properties,omitempty"`
+	Properties *SiteLogsConfigProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteLogsConfigProperties - SiteLogsConfig resource specific properties
 type SiteLogsConfigProperties struct {
 	// Application logs configuration.
-	ApplicationLogs *ApplicationLogsConfig `json:"applicationLogs,omitempty"`
+	ApplicationLogs *ApplicationLogsConfig
 
 	// Detailed error messages configuration.
-	DetailedErrorMessages *EnabledConfig `json:"detailedErrorMessages,omitempty"`
+	DetailedErrorMessages *EnabledConfig
 
 	// Failed requests tracing configuration.
-	FailedRequestsTracing *EnabledConfig `json:"failedRequestsTracing,omitempty"`
+	FailedRequestsTracing *EnabledConfig
 
 	// HTTP logs configuration.
-	HTTPLogs *HTTPLogsConfig `json:"httpLogs,omitempty"`
+	HTTPLogs *HTTPLogsConfig
 }
 
 // SiteMachineKey - MachineKey of an app.
 type SiteMachineKey struct {
 	// Algorithm used for decryption.
-	Decryption *string `json:"decryption,omitempty"`
+	Decryption *string
 
 	// Decryption key.
-	DecryptionKey *string `json:"decryptionKey,omitempty"`
+	DecryptionKey *string
 
 	// MachineKey validation.
-	Validation *string `json:"validation,omitempty"`
+	Validation *string
 
 	// Validation key.
-	ValidationKey *string `json:"validationKey,omitempty"`
+	ValidationKey *string
 }
 
 // SitePatchResource - ARM resource for a site.
 type SitePatchResource struct {
 	// Managed service identity.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SitePatchResource resource specific properties
-	Properties *SitePatchResourceProperties `json:"properties,omitempty"`
+	Properties *SitePatchResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SitePatchResourceProperties - SitePatchResource resource specific properties
 type SitePatchResourceProperties struct {
 	// true to enable client affinity; false to stop sending session affinity cookies, which route client requests in the same
 	// session to the same instance. Default is true.
-	ClientAffinityEnabled *bool `json:"clientAffinityEnabled,omitempty"`
+	ClientAffinityEnabled *bool
 
 	// true to enable client certificate authentication (TLS mutual authentication); otherwise, false. Default is false.
-	ClientCertEnabled *bool `json:"clientCertEnabled,omitempty"`
+	ClientCertEnabled *bool
 
 	// client certificate authentication comma-separated exclusion paths
-	ClientCertExclusionPaths *string `json:"clientCertExclusionPaths,omitempty"`
+	ClientCertExclusionPaths *string
 
 	// This composes with ClientCertEnabled setting.
 	// * ClientCertEnabled: false means ClientCert is ignored.
 	// * ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
 	// * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-	ClientCertMode *ClientCertMode `json:"clientCertMode,omitempty"`
+	ClientCertMode *ClientCertMode
 
 	// If specified during app creation, the app is cloned from a source app.
-	CloningInfo *CloningInfo `json:"cloningInfo,omitempty"`
+	CloningInfo *CloningInfo
 
 	// Size of the function container.
-	ContainerSize *int32 `json:"containerSize,omitempty"`
+	ContainerSize *int32
 
 	// Unique identifier that verifies the custom domains assigned to the app. Customer will add this id to a txt record for verification.
-	CustomDomainVerificationID *string `json:"customDomainVerificationId,omitempty"`
+	CustomDomainVerificationID *string
 
 	// Maximum allowed daily memory-time quota (applicable on dynamic apps only).
-	DailyMemoryTimeQuota *int32 `json:"dailyMemoryTimeQuota,omitempty"`
+	DailyMemoryTimeQuota *int32
 
 	// true if the app is enabled; otherwise, false. Setting this value to false disables the app (takes the app offline).
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// HttpsOnly: configures a web site to accept only https requests. Issues redirect for http requests
-	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+	HTTPSOnly *bool
 
 	// Hostname SSL states are used to manage the SSL bindings for app's hostnames.
-	HostNameSSLStates []*HostNameSSLState `json:"hostNameSslStates,omitempty"`
+	HostNameSSLStates []*HostNameSSLState
 
 	// true to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management
 	// process.
-	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
+	HostNamesDisabled *bool
 
 	// App Service Environment to use for the app.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
+	HostingEnvironmentProfile *HostingEnvironmentProfile
 
 	// Hyper-V sandbox.
-	HyperV *bool `json:"hyperV,omitempty"`
+	HyperV *bool
 
 	// Obsolete: Hyper-V sandbox.
-	IsXenon *bool `json:"isXenon,omitempty"`
+	IsXenon *bool
 
 	// Identity to use for Key Vault Reference authentication.
-	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
+	KeyVaultReferenceIdentity *string
 
 	// Site redundancy mode
-	RedundancyMode *RedundancyMode `json:"redundancyMode,omitempty"`
+	RedundancyMode *RedundancyMode
 
 	// true if reserved; otherwise, false.
-	Reserved *bool `json:"reserved,omitempty"`
+	Reserved *bool
 
 	// true to stop SCM (KUDU) site when the app is stopped; otherwise, false. The default is false.
-	ScmSiteAlsoStopped *bool `json:"scmSiteAlsoStopped,omitempty"`
+	ScmSiteAlsoStopped *bool
 
 	// Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-	ServerFarmID *string `json:"serverFarmId,omitempty"`
+	ServerFarmID *string
 
 	// Configuration of the app.
-	SiteConfig *SiteConfig `json:"siteConfig,omitempty"`
+	SiteConfig *SiteConfig
 
 	// Checks if Customer provided storage account is required
-	StorageAccountRequired *bool `json:"storageAccountRequired,omitempty"`
+	StorageAccountRequired *bool
 
 	// Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of
 	// the form
 	// /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
-	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
+	VirtualNetworkSubnetID *string
 
 	// READ-ONLY; Management information availability state for the app.
-	AvailabilityState *SiteAvailabilityState `json:"availabilityState,omitempty" azure:"ro"`
+	AvailabilityState *SiteAvailabilityState
 
 	// READ-ONLY; Default hostname of the app. Read-only.
-	DefaultHostName *string `json:"defaultHostName,omitempty" azure:"ro"`
+	DefaultHostName *string
 
 	// READ-ONLY; Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise, the app
 	// is not served on those hostnames.
-	EnabledHostNames []*string `json:"enabledHostNames,omitempty" azure:"ro"`
+	EnabledHostNames []*string
 
 	// READ-ONLY; Hostnames associated with the app.
-	HostNames []*string `json:"hostNames,omitempty" azure:"ro"`
+	HostNames []*string
 
 	// READ-ONLY; Specifies an operation id if this site has a pending operation.
-	InProgressOperationID *string `json:"inProgressOperationId,omitempty" azure:"ro"`
+	InProgressOperationID *string
 
 	// READ-ONLY; true if the app is a default container; otherwise, false.
-	IsDefaultContainer *bool `json:"isDefaultContainer,omitempty" azure:"ro"`
+	IsDefaultContainer *bool
 
 	// READ-ONLY; Last time the app was modified, in UTC. Read-only.
-	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
+	LastModifiedTimeUTC *time.Time
 
 	// READ-ONLY; Maximum number of workers. This only applies to Functions container.
-	MaxNumberOfWorkers *int32 `json:"maxNumberOfWorkers,omitempty" azure:"ro"`
+	MaxNumberOfWorkers *int32
 
 	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants
 	// that site can be hosted with current settings. Read-only.
-	OutboundIPAddresses *string `json:"outboundIpAddresses,omitempty" azure:"ro"`
+	OutboundIPAddresses *string
 
 	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all
 	// tenants except dataComponent. Read-only.
-	PossibleOutboundIPAddresses *string `json:"possibleOutboundIpAddresses,omitempty" azure:"ro"`
+	PossibleOutboundIPAddresses *string
 
 	// READ-ONLY; Name of the repository site.
-	RepositorySiteName *string `json:"repositorySiteName,omitempty" azure:"ro"`
+	RepositorySiteName *string
 
 	// READ-ONLY; Name of the resource group the app belongs to. Read-only.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+	ResourceGroup *string
 
 	// READ-ONLY; Status of the last deployment slot swap operation.
-	SlotSwapStatus *SlotSwapStatus `json:"slotSwapStatus,omitempty" azure:"ro"`
+	SlotSwapStatus *SlotSwapStatus
 
 	// READ-ONLY; Current state of the app.
-	State *string `json:"state,omitempty" azure:"ro"`
+	State *string
 
 	// READ-ONLY; App suspended till in case memory-time quota is exceeded.
-	SuspendedTill *time.Time `json:"suspendedTill,omitempty" azure:"ro"`
+	SuspendedTill *time.Time
 
 	// READ-ONLY; Specifies which deployment slot this app will swap into. Read-only.
-	TargetSwapSlot *string `json:"targetSwapSlot,omitempty" azure:"ro"`
+	TargetSwapSlot *string
 
 	// READ-ONLY; Azure Traffic Manager hostnames associated with the app. Read-only.
-	TrafficManagerHostNames []*string `json:"trafficManagerHostNames,omitempty" azure:"ro"`
+	TrafficManagerHostNames []*string
 
 	// READ-ONLY; State indicating whether the app has exceeded its quota usage. Read-only.
-	UsageState *UsageState `json:"usageState,omitempty" azure:"ro"`
+	UsageState *UsageState
 }
 
 // SitePhpErrorLogFlag - Used for getting PHP error logging flag.
 type SitePhpErrorLogFlag struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SitePhpErrorLogFlag resource specific properties
-	Properties *SitePhpErrorLogFlagProperties `json:"properties,omitempty"`
+	Properties *SitePhpErrorLogFlagProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SitePhpErrorLogFlagProperties - SitePhpErrorLogFlag resource specific properties
 type SitePhpErrorLogFlagProperties struct {
 	// Local log_errors setting.
-	LocalLogErrors *string `json:"localLogErrors,omitempty"`
+	LocalLogErrors *string
 
 	// Local logerrorsmax_len setting.
-	LocalLogErrorsMaxLength *string `json:"localLogErrorsMaxLength,omitempty"`
+	LocalLogErrorsMaxLength *string
 
 	// Master log_errors setting.
-	MasterLogErrors *string `json:"masterLogErrors,omitempty"`
+	MasterLogErrors *string
 
 	// Master logerrorsmax_len setting.
-	MasterLogErrorsMaxLength *string `json:"masterLogErrorsMaxLength,omitempty"`
+	MasterLogErrorsMaxLength *string
 }
 
 // SiteProperties - Site resource specific properties
 type SiteProperties struct {
 	// true to enable client affinity; false to stop sending session affinity cookies, which route client requests in the same
 	// session to the same instance. Default is true.
-	ClientAffinityEnabled *bool `json:"clientAffinityEnabled,omitempty"`
+	ClientAffinityEnabled *bool
 
 	// true to enable client certificate authentication (TLS mutual authentication); otherwise, false. Default is false.
-	ClientCertEnabled *bool `json:"clientCertEnabled,omitempty"`
+	ClientCertEnabled *bool
 
 	// client certificate authentication comma-separated exclusion paths
-	ClientCertExclusionPaths *string `json:"clientCertExclusionPaths,omitempty"`
+	ClientCertExclusionPaths *string
 
 	// This composes with ClientCertEnabled setting.
 	// * ClientCertEnabled: false means ClientCert is ignored.
 	// * ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
 	// * ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
-	ClientCertMode *ClientCertMode `json:"clientCertMode,omitempty"`
+	ClientCertMode *ClientCertMode
 
 	// If specified during app creation, the app is cloned from a source app.
-	CloningInfo *CloningInfo `json:"cloningInfo,omitempty"`
+	CloningInfo *CloningInfo
 
 	// Size of the function container.
-	ContainerSize *int32 `json:"containerSize,omitempty"`
+	ContainerSize *int32
 
 	// Unique identifier that verifies the custom domains assigned to the app. Customer will add this id to a txt record for verification.
-	CustomDomainVerificationID *string `json:"customDomainVerificationId,omitempty"`
+	CustomDomainVerificationID *string
 
 	// Maximum allowed daily memory-time quota (applicable on dynamic apps only).
-	DailyMemoryTimeQuota *int32 `json:"dailyMemoryTimeQuota,omitempty"`
+	DailyMemoryTimeQuota *int32
 
 	// true if the app is enabled; otherwise, false. Setting this value to false disables the app (takes the app offline).
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// HttpsOnly: configures a web site to accept only https requests. Issues redirect for http requests
-	HTTPSOnly *bool `json:"httpsOnly,omitempty"`
+	HTTPSOnly *bool
 
 	// Hostname SSL states are used to manage the SSL bindings for app's hostnames.
-	HostNameSSLStates []*HostNameSSLState `json:"hostNameSslStates,omitempty"`
+	HostNameSSLStates []*HostNameSSLState
 
 	// true to disable the public hostnames of the app; otherwise, false. If true, the app is only accessible via API management
 	// process.
-	HostNamesDisabled *bool `json:"hostNamesDisabled,omitempty"`
+	HostNamesDisabled *bool
 
 	// App Service Environment to use for the app.
-	HostingEnvironmentProfile *HostingEnvironmentProfile `json:"hostingEnvironmentProfile,omitempty"`
+	HostingEnvironmentProfile *HostingEnvironmentProfile
 
 	// Hyper-V sandbox.
-	HyperV *bool `json:"hyperV,omitempty"`
+	HyperV *bool
 
 	// Obsolete: Hyper-V sandbox.
-	IsXenon *bool `json:"isXenon,omitempty"`
+	IsXenon *bool
 
 	// Identity to use for Key Vault Reference authentication.
-	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty"`
+	KeyVaultReferenceIdentity *string
+
+	// Azure Resource Manager ID of the customer's selected Managed Environment on which to host this app. This must be of the
+	// form
+	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.App/managedEnvironments/{managedEnvironmentName}
+	ManagedEnvironmentID *string
 
 	// Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled' or an empty string.
-	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *string
 
 	// Site redundancy mode
-	RedundancyMode *RedundancyMode `json:"redundancyMode,omitempty"`
+	RedundancyMode *RedundancyMode
 
 	// true if reserved; otherwise, false.
-	Reserved *bool `json:"reserved,omitempty"`
+	Reserved *bool
 
 	// true to stop SCM (KUDU) site when the app is stopped; otherwise, false. The default is false.
-	ScmSiteAlsoStopped *bool `json:"scmSiteAlsoStopped,omitempty"`
+	ScmSiteAlsoStopped *bool
 
 	// Resource ID of the associated App Service plan, formatted as: "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
-	ServerFarmID *string `json:"serverFarmId,omitempty"`
+	ServerFarmID *string
 
 	// Configuration of the app.
-	SiteConfig *SiteConfig `json:"siteConfig,omitempty"`
+	SiteConfig *SiteConfig
 
 	// Checks if Customer provided storage account is required
-	StorageAccountRequired *bool `json:"storageAccountRequired,omitempty"`
+	StorageAccountRequired *bool
 
 	// Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of
 	// the form
 	// /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
-	VirtualNetworkSubnetID *string `json:"virtualNetworkSubnetId,omitempty"`
+	VirtualNetworkSubnetID *string
 
 	// To enable accessing content over virtual network
-	VnetContentShareEnabled *bool `json:"vnetContentShareEnabled,omitempty"`
+	VnetContentShareEnabled *bool
 
 	// To enable pulling image over Virtual Network
-	VnetImagePullEnabled *bool `json:"vnetImagePullEnabled,omitempty"`
+	VnetImagePullEnabled *bool
 
 	// Virtual Network Route All enabled. This causes all outbound traffic to have Virtual Network Security Groups and User Defined
 	// Routes applied.
-	VnetRouteAllEnabled *bool `json:"vnetRouteAllEnabled,omitempty"`
+	VnetRouteAllEnabled *bool
 
 	// READ-ONLY; Management information availability state for the app.
-	AvailabilityState *SiteAvailabilityState `json:"availabilityState,omitempty" azure:"ro"`
+	AvailabilityState *SiteAvailabilityState
 
 	// READ-ONLY; Default hostname of the app. Read-only.
-	DefaultHostName *string `json:"defaultHostName,omitempty" azure:"ro"`
+	DefaultHostName *string
 
 	// READ-ONLY; Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise, the app
 	// is not served on those hostnames.
-	EnabledHostNames []*string `json:"enabledHostNames,omitempty" azure:"ro"`
+	EnabledHostNames []*string
 
 	// READ-ONLY; Hostnames associated with the app.
-	HostNames []*string `json:"hostNames,omitempty" azure:"ro"`
+	HostNames []*string
 
 	// READ-ONLY; Specifies an operation id if this site has a pending operation.
-	InProgressOperationID *string `json:"inProgressOperationId,omitempty" azure:"ro"`
+	InProgressOperationID *string
 
 	// READ-ONLY; true if the app is a default container; otherwise, false.
-	IsDefaultContainer *bool `json:"isDefaultContainer,omitempty" azure:"ro"`
+	IsDefaultContainer *bool
 
 	// READ-ONLY; Last time the app was modified, in UTC. Read-only.
-	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
+	LastModifiedTimeUTC *time.Time
 
 	// READ-ONLY; Maximum number of workers. This only applies to Functions container.
-	MaxNumberOfWorkers *int32 `json:"maxNumberOfWorkers,omitempty" azure:"ro"`
+	MaxNumberOfWorkers *int32
 
 	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from tenants
 	// that site can be hosted with current settings. Read-only.
-	OutboundIPAddresses *string `json:"outboundIpAddresses,omitempty" azure:"ro"`
+	OutboundIPAddresses *string
 
 	// READ-ONLY; List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all
 	// tenants except dataComponent. Read-only.
-	PossibleOutboundIPAddresses *string `json:"possibleOutboundIpAddresses,omitempty" azure:"ro"`
+	PossibleOutboundIPAddresses *string
 
 	// READ-ONLY; Name of the repository site.
-	RepositorySiteName *string `json:"repositorySiteName,omitempty" azure:"ro"`
+	RepositorySiteName *string
 
 	// READ-ONLY; Name of the resource group the app belongs to. Read-only.
-	ResourceGroup *string `json:"resourceGroup,omitempty" azure:"ro"`
+	ResourceGroup *string
 
 	// READ-ONLY; Status of the last deployment slot swap operation.
-	SlotSwapStatus *SlotSwapStatus `json:"slotSwapStatus,omitempty" azure:"ro"`
+	SlotSwapStatus *SlotSwapStatus
 
 	// READ-ONLY; Current state of the app.
-	State *string `json:"state,omitempty" azure:"ro"`
+	State *string
 
 	// READ-ONLY; App suspended till in case memory-time quota is exceeded.
-	SuspendedTill *time.Time `json:"suspendedTill,omitempty" azure:"ro"`
+	SuspendedTill *time.Time
 
 	// READ-ONLY; Specifies which deployment slot this app will swap into. Read-only.
-	TargetSwapSlot *string `json:"targetSwapSlot,omitempty" azure:"ro"`
+	TargetSwapSlot *string
 
 	// READ-ONLY; Azure Traffic Manager hostnames associated with the app. Read-only.
-	TrafficManagerHostNames []*string `json:"trafficManagerHostNames,omitempty" azure:"ro"`
+	TrafficManagerHostNames []*string
 
 	// READ-ONLY; State indicating whether the app has exceeded its quota usage. Read-only.
-	UsageState *UsageState `json:"usageState,omitempty" azure:"ro"`
+	UsageState *UsageState
 }
 
 // SiteSeal - Site seal
 type SiteSeal struct {
 	// REQUIRED; HTML snippet
-	HTML *string `json:"html,omitempty"`
+	HTML *string
 }
 
 // SiteSealRequest - Site seal request.
 type SiteSealRequest struct {
 	// If true use the light color theme for site seal; otherwise, use the default color theme.
-	LightTheme *bool `json:"lightTheme,omitempty"`
+	LightTheme *bool
 
 	// Locale of site seal.
-	Locale *string `json:"locale,omitempty"`
+	Locale *string
 }
 
 // SiteSourceControl - Source control configuration for an app.
 type SiteSourceControl struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SiteSourceControl resource specific properties
-	Properties *SiteSourceControlProperties `json:"properties,omitempty"`
+	Properties *SiteSourceControlProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteSourceControlProperties - SiteSourceControl resource specific properties
 type SiteSourceControlProperties struct {
 	// Name of branch to use for deployment.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// true to enable deployment rollback; otherwise, false.
-	DeploymentRollbackEnabled *bool `json:"deploymentRollbackEnabled,omitempty"`
+	DeploymentRollbackEnabled *bool
 
 	// If GitHub Action is selected, than the associated configuration.
-	GitHubActionConfiguration *GitHubActionConfiguration `json:"gitHubActionConfiguration,omitempty"`
+	GitHubActionConfiguration *GitHubActionConfiguration
 
 	// true if this is deployed via GitHub action.
-	IsGitHubAction *bool `json:"isGitHubAction,omitempty"`
+	IsGitHubAction *bool
 
 	// true to limit to manual integration; false to enable continuous integration (which configures webhooks into online repos
 	// like GitHub).
-	IsManualIntegration *bool `json:"isManualIntegration,omitempty"`
+	IsManualIntegration *bool
 
 	// true for a Mercurial repository; false for a Git repository.
-	IsMercurial *bool `json:"isMercurial,omitempty"`
+	IsMercurial *bool
 
 	// Repository or source control URL.
-	RepoURL *string `json:"repoUrl,omitempty"`
+	RepoURL *string
 }
 
 // SlotConfigNames - Names for connection strings, application settings, and external Azure storage account configuration
@@ -9100,142 +9217,142 @@ type SiteSourceControlProperties struct {
 // This is valid for all deployment slots in an app.
 type SlotConfigNames struct {
 	// List of application settings names.
-	AppSettingNames []*string `json:"appSettingNames,omitempty"`
+	AppSettingNames []*string
 
 	// List of external Azure storage account identifiers.
-	AzureStorageConfigNames []*string `json:"azureStorageConfigNames,omitempty"`
+	AzureStorageConfigNames []*string
 
 	// List of connection string names.
-	ConnectionStringNames []*string `json:"connectionStringNames,omitempty"`
+	ConnectionStringNames []*string
 }
 
 // SlotConfigNamesResource - Slot Config names azure resource.
 type SlotConfigNamesResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *SlotConfigNames `json:"properties,omitempty"`
+	Properties *SlotConfigNames
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SlotDifference - A setting difference between two deployment slots of an app.
 type SlotDifference struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SlotDifference resource specific properties
-	Properties *SlotDifferenceProperties `json:"properties,omitempty"`
+	Properties *SlotDifferenceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SlotDifferenceCollection - Collection of slot differences.
 type SlotDifferenceCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*SlotDifference `json:"value,omitempty"`
+	Value []*SlotDifference
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SlotDifferenceProperties - SlotDifference resource specific properties
 type SlotDifferenceProperties struct {
 	// READ-ONLY; Description of the setting difference.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Rule that describes how to process the setting difference during a slot swap.
-	DiffRule *string `json:"diffRule,omitempty" azure:"ro"`
+	DiffRule *string
 
 	// READ-ONLY; Level of the difference: Information, Warning or Error.
-	Level *string `json:"level,omitempty" azure:"ro"`
+	Level *string
 
 	// READ-ONLY; Name of the setting.
-	SettingName *string `json:"settingName,omitempty" azure:"ro"`
+	SettingName *string
 
 	// READ-ONLY; The type of the setting: General, AppSetting or ConnectionString.
-	SettingType *string `json:"settingType,omitempty" azure:"ro"`
+	SettingType *string
 
 	// READ-ONLY; Value of the setting in the current slot.
-	ValueInCurrentSlot *string `json:"valueInCurrentSlot,omitempty" azure:"ro"`
+	ValueInCurrentSlot *string
 
 	// READ-ONLY; Value of the setting in the target slot.
-	ValueInTargetSlot *string `json:"valueInTargetSlot,omitempty" azure:"ro"`
+	ValueInTargetSlot *string
 }
 
 // SlotSwapStatus - The status of the last successful slot swap operation.
 type SlotSwapStatus struct {
 	// READ-ONLY; The destination slot of the last swap operation.
-	DestinationSlotName *string `json:"destinationSlotName,omitempty" azure:"ro"`
+	DestinationSlotName *string
 
 	// READ-ONLY; The source slot of the last swap operation.
-	SourceSlotName *string `json:"sourceSlotName,omitempty" azure:"ro"`
+	SourceSlotName *string
 
 	// READ-ONLY; The time the last successful slot swap completed.
-	TimestampUTC *time.Time `json:"timestampUtc,omitempty" azure:"ro"`
+	TimestampUTC *time.Time
 }
 
 // SlowRequestsBasedTrigger - Trigger based on request execution time.
 type SlowRequestsBasedTrigger struct {
 	// Request Count.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// Request Path.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Time interval.
-	TimeInterval *string `json:"timeInterval,omitempty"`
+	TimeInterval *string
 
 	// Time taken.
-	TimeTaken *string `json:"timeTaken,omitempty"`
+	TimeTaken *string
 }
 
 // Snapshot - A snapshot of an app.
 type Snapshot struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Snapshot resource specific properties
-	Properties *SnapshotProperties `json:"properties,omitempty"`
+	Properties *SnapshotProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SnapshotCollection - Collection of snapshots which can be used to revert an app to a previous time.
 type SnapshotCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Snapshot `json:"value,omitempty"`
+	Value []*Snapshot
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SnapshotProperties - Snapshot resource specific properties
 type SnapshotProperties struct {
 	// READ-ONLY; The time the snapshot was taken.
-	Time *string `json:"time,omitempty" azure:"ro"`
+	Time *string
 }
 
 // SnapshotRecoverySource - Specifies the web app that snapshot contents will be retrieved from.
@@ -9244,825 +9361,888 @@ type SnapshotRecoverySource struct {
 	// for production slots and
 	// /subscriptions/{subId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slotName} for
 	// other slots.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Geographical location of the source web app, e.g. SouthEastAsia, SouthCentralUS
-	Location *string `json:"location,omitempty"`
+	Location *string
 }
 
 // SnapshotRestoreRequest - Details about app recovery operation.
 type SnapshotRestoreRequest struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SnapshotRestoreRequest resource specific properties
-	Properties *SnapshotRestoreRequestProperties `json:"properties,omitempty"`
+	Properties *SnapshotRestoreRequestProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SnapshotRestoreRequestProperties - SnapshotRestoreRequest resource specific properties
 type SnapshotRestoreRequestProperties struct {
 	// REQUIRED; If true the restore operation can overwrite source app; otherwise, false.
-	Overwrite *bool `json:"overwrite,omitempty"`
+	Overwrite *bool
 
 	// If true, custom hostname conflicts will be ignored when recovering to a target web app. This setting is only necessary
 	// when RecoverConfiguration is enabled.
-	IgnoreConflictingHostNames *bool `json:"ignoreConflictingHostNames,omitempty"`
+	IgnoreConflictingHostNames *bool
 
 	// If true, site configuration, in addition to content, will be reverted.
-	RecoverConfiguration *bool `json:"recoverConfiguration,omitempty"`
+	RecoverConfiguration *bool
 
 	// Optional. Specifies the web app that snapshot contents will be retrieved from. If empty, the targeted web app will be used
 	// as the source.
-	RecoverySource *SnapshotRecoverySource `json:"recoverySource,omitempty"`
+	RecoverySource *SnapshotRecoverySource
 
 	// Point in time in which the app restore should be done, formatted as a DateTime string.
-	SnapshotTime *string `json:"snapshotTime,omitempty"`
+	SnapshotTime *string
 
 	// If true, the snapshot is retrieved from DRSecondary endpoint.
-	UseDRSecondary *bool `json:"useDRSecondary,omitempty"`
+	UseDRSecondary *bool
 }
 
 // Solution - Class Representing Solution for problems detected.
 type Solution struct {
 	// Solution Data.
-	Data [][]*NameValuePair `json:"data,omitempty"`
+	Data [][]*NameValuePair
 
 	// Description of the solution
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Display Name of the solution
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Solution Id.
-	ID *float64 `json:"id,omitempty"`
+	ID *float64
 
 	// Solution Metadata.
-	Metadata [][]*NameValuePair `json:"metadata,omitempty"`
+	Metadata [][]*NameValuePair
 
 	// Order of the solution.
-	Order *float64 `json:"order,omitempty"`
+	Order *float64
 
 	// Type of Solution
-	Type *SolutionType `json:"type,omitempty"`
+	Type *SolutionType
 }
 
 // SourceControl - The source control OAuth token.
 type SourceControl struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SourceControl resource specific properties
-	Properties *SourceControlProperties `json:"properties,omitempty"`
+	Properties *SourceControlProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SourceControlCollection - Collection of source controls.
 type SourceControlCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*SourceControl `json:"value,omitempty"`
+	Value []*SourceControl
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SourceControlProperties - SourceControl resource specific properties
 type SourceControlProperties struct {
 	// OAuth token expiration.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty"`
+	ExpirationTime *time.Time
 
 	// OAuth refresh token.
-	RefreshToken *string `json:"refreshToken,omitempty"`
+	RefreshToken *string
 
 	// OAuth access token.
-	Token *string `json:"token,omitempty"`
+	Token *string
 
 	// OAuth access token secret.
-	TokenSecret *string `json:"tokenSecret,omitempty"`
+	TokenSecret *string
 }
 
 // StackMajorVersion - Application stack major version.
 type StackMajorVersion struct {
 	// Example: All the function apps need AppSetting: "FUNCTIONSWORKERRUNTIME" to be set stack name
-	AppSettingsDictionary map[string]interface{} `json:"appSettingsDictionary,omitempty"`
+	AppSettingsDictionary map[string]any
 
 	// true if this supports Application Insights; otherwise, false.
-	ApplicationInsights *bool `json:"applicationInsights,omitempty"`
+	ApplicationInsights *bool
 
 	// Application stack major version (display only).
-	DisplayVersion *string `json:"displayVersion,omitempty"`
+	DisplayVersion *string
 
 	// true if this is the default major version; otherwise, false.
-	IsDefault *bool `json:"isDefault,omitempty"`
+	IsDefault *bool
 
 	// true if this stack has been deprecated, otherwise false.
-	IsDeprecated *bool `json:"isDeprecated,omitempty"`
+	IsDeprecated *bool
 
 	// true if this stack should be hidden for new customers on portal, otherwise false.
-	IsHidden *bool `json:"isHidden,omitempty"`
+	IsHidden *bool
 
 	// true if this stack is in Preview, otherwise false.
-	IsPreview *bool `json:"isPreview,omitempty"`
+	IsPreview *bool
 
 	// Minor versions associated with the major version.
-	MinorVersions []*StackMinorVersion `json:"minorVersions,omitempty"`
+	MinorVersions []*StackMinorVersion
 
 	// Application stack major version (runtime only).
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 
 	// Example: All Linux Function Apps, need Use32BitWorkerProcess to be set to 0
-	SiteConfigPropertiesDictionary map[string]interface{} `json:"siteConfigPropertiesDictionary,omitempty"`
+	SiteConfigPropertiesDictionary map[string]any
 }
 
 // StackMinorVersion - Application stack minor version.
 type StackMinorVersion struct {
 	// Application stack minor version (display only).
-	DisplayVersion *string `json:"displayVersion,omitempty"`
+	DisplayVersion *string
 
 	// true if this is the default minor version; otherwise, false.
-	IsDefault *bool `json:"isDefault,omitempty"`
+	IsDefault *bool
 
 	// true if this supports Remote Debugging, otherwise false.
-	IsRemoteDebuggingEnabled *bool `json:"isRemoteDebuggingEnabled,omitempty"`
+	IsRemoteDebuggingEnabled *bool
 
 	// Application stack minor version (runtime only).
-	RuntimeVersion *string `json:"runtimeVersion,omitempty"`
+	RuntimeVersion *string
 }
 
 // StampCapacity - Stamp capacity information.
 type StampCapacity struct {
 	// Available capacity (# of machines, bytes of storage etc…).
-	AvailableCapacity *int64 `json:"availableCapacity,omitempty"`
+	AvailableCapacity *int64
 
 	// Shared/dedicated workers.
-	ComputeMode *ComputeModeOptions `json:"computeMode,omitempty"`
+	ComputeMode *ComputeModeOptions
 
 	// If true, it includes basic apps. Basic apps are not used for capacity allocation.
-	ExcludeFromCapacityAllocation *bool `json:"excludeFromCapacityAllocation,omitempty"`
+	ExcludeFromCapacityAllocation *bool
 
 	// true if capacity is applicable for all apps; otherwise, false.
-	IsApplicableForAllComputeModes *bool `json:"isApplicableForAllComputeModes,omitempty"`
+	IsApplicableForAllComputeModes *bool
 
 	// Is this a linux stamp capacity
-	IsLinux *bool `json:"isLinux,omitempty"`
+	IsLinux *bool
 
 	// Name of the stamp.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Shared or Dedicated.
-	SiteMode *string `json:"siteMode,omitempty"`
+	SiteMode *string
 
 	// Total capacity (# of machines, bytes of storage etc…).
-	TotalCapacity *int64 `json:"totalCapacity,omitempty"`
+	TotalCapacity *int64
 
 	// Name of the unit.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 
 	// Size of the machines.
-	WorkerSize *WorkerSizeOptions `json:"workerSize,omitempty"`
+	WorkerSize *WorkerSizeOptions
 
 	// Size ID of machines: 0 - Small 1 - Medium 2 - Large
-	WorkerSizeID *int32 `json:"workerSizeId,omitempty"`
+	WorkerSizeID *int32
 }
 
 // StampCapacityCollection - Collection of stamp capacities.
 type StampCapacityCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*StampCapacity `json:"value,omitempty"`
+	Value []*StampCapacity
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // StaticSite - A static site.
 type StaticSite struct {
 	// false if config file is locked for this static web app; otherwise, true.
-	AllowConfigFileUpdates *bool `json:"allowConfigFileUpdates,omitempty"`
+	AllowConfigFileUpdates *bool
 
 	// The target branch in the repository.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// Build properties to configure on the repository.
-	BuildProperties *StaticSiteBuildProperties `json:"buildProperties,omitempty"`
+	BuildProperties *StaticSiteBuildProperties
 
 	// State indicating the status of the enterprise grade CDN serving traffic to the static web app.
-	EnterpriseGradeCdnStatus *EnterpriseGradeCdnStatus `json:"enterpriseGradeCdnStatus,omitempty"`
+	EnterpriseGradeCdnStatus *EnterpriseGradeCdnStatus
 
 	// The provider that submitted the last deployment to the primary environment of the static site.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// State indicating whether public traffic are allowed or not for a static web app. Allowed Values: 'Enabled', 'Disabled'
 	// or an empty string.
-	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *string
 
 	// A user's github repository token. This is used to setup the Github Actions workflow file and API secrets.
-	RepositoryToken *string `json:"repositoryToken,omitempty"`
+	RepositoryToken *string
 
 	// URL for the repository of the static site.
-	RepositoryURL *string `json:"repositoryUrl,omitempty"`
+	RepositoryURL *string
 
 	// State indicating whether staging environments are allowed or not allowed for a static web app.
-	StagingEnvironmentPolicy *StagingEnvironmentPolicy `json:"stagingEnvironmentPolicy,omitempty"`
+	StagingEnvironmentPolicy *StagingEnvironmentPolicy
 
 	// Template options for generating a new repository.
-	TemplateProperties *StaticSiteTemplateOptions `json:"templateProperties,omitempty"`
+	TemplateProperties *StaticSiteTemplateOptions
 
 	// READ-ONLY; The content distribution endpoint for the static site.
-	ContentDistributionEndpoint *string `json:"contentDistributionEndpoint,omitempty" azure:"ro"`
+	ContentDistributionEndpoint *string
 
 	// READ-ONLY; The custom domains associated with this static site.
-	CustomDomains []*string `json:"customDomains,omitempty" azure:"ro"`
+	CustomDomains []*string
+
+	// READ-ONLY; Database connections for the static site
+	DatabaseConnections []*DatabaseConnectionOverview
 
 	// READ-ONLY; The default autogenerated hostname for the static site.
-	DefaultHostname *string `json:"defaultHostname,omitempty" azure:"ro"`
+	DefaultHostname *string
 
 	// READ-ONLY; Identity to use for Key Vault Reference authentication.
-	KeyVaultReferenceIdentity *string `json:"keyVaultReferenceIdentity,omitempty" azure:"ro"`
+	KeyVaultReferenceIdentity *string
 
 	// READ-ONLY; Backends linked to the static side
-	LinkedBackends []*StaticSiteLinkedBackend `json:"linkedBackends,omitempty" azure:"ro"`
+	LinkedBackends []*StaticSiteLinkedBackend
 
 	// READ-ONLY; Private endpoint connections
-	PrivateEndpointConnections []*ResponseMessageEnvelopeRemotePrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*ResponseMessageEnvelopeRemotePrivateEndpointConnection
 
 	// READ-ONLY; User provided function apps registered with the static site
-	UserProvidedFunctionApps []*StaticSiteUserProvidedFunctionApp `json:"userProvidedFunctionApps,omitempty" azure:"ro"`
+	UserProvidedFunctionApps []*StaticSiteUserProvidedFunctionApp
 }
 
 // StaticSiteARMResource - Static Site ARM resource.
 type StaticSiteARMResource struct {
 	// REQUIRED; Resource Location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Managed service identity.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *StaticSite `json:"properties,omitempty"`
+	Properties *StaticSite
 
 	// Description of a SKU for a scalable resource.
-	SKU *SKUDescription `json:"sku,omitempty"`
+	SKU *SKUDescription
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// StaticSiteBasicAuthPropertiesARMResource - Static site basic auth properties ARM resource.
+type StaticSiteBasicAuthPropertiesARMResource struct {
+	// Kind of resource.
+	Kind *string
+
+	// StaticSiteBasicAuthPropertiesARMResource resource specific properties
+	Properties *StaticSiteBasicAuthPropertiesARMResourceProperties
+
+	// READ-ONLY; Resource Id.
+	ID *string
+
+	// READ-ONLY; Resource Name.
+	Name *string
+
+	// READ-ONLY; Resource type.
+	Type *string
+}
+
+// StaticSiteBasicAuthPropertiesARMResourceProperties - StaticSiteBasicAuthPropertiesARMResource resource specific properties
+type StaticSiteBasicAuthPropertiesARMResourceProperties struct {
+	// REQUIRED; State indicating if basic auth is enabled and for what environments it is active.
+	ApplicableEnvironmentsMode *string
+
+	// The list of enabled environments for Basic Auth if ApplicableEnvironmentsMode is set to SpecifiedEnvironments.
+	Environments []*string
+
+	// The password for basic auth.
+	Password *string
+
+	// Url to the secret in Key Vault.
+	SecretURL *string
+
+	// READ-ONLY; State indicating if basic auth has a secret and what type it is.
+	SecretState *string
+}
+
+// StaticSiteBasicAuthPropertiesCollection - Collection of static site basic auth.
+type StaticSiteBasicAuthPropertiesCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*StaticSiteBasicAuthPropertiesARMResource
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
 }
 
 // StaticSiteBuildARMResource - Static Site Build ARM resource.
 type StaticSiteBuildARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteBuildARMResource resource specific properties
-	Properties *StaticSiteBuildARMResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteBuildARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteBuildARMResourceProperties - StaticSiteBuildARMResource resource specific properties
 type StaticSiteBuildARMResourceProperties struct {
 	// READ-ONLY; An identifier for the static site build.
-	BuildID *string `json:"buildId,omitempty" azure:"ro"`
+	BuildID *string
 
 	// READ-ONLY; When this build was created.
-	CreatedTimeUTC *time.Time `json:"createdTimeUtc,omitempty" azure:"ro"`
+	CreatedTimeUTC *time.Time
+
+	// READ-ONLY; Database connections for the static site build
+	DatabaseConnections []*DatabaseConnectionOverview
 
 	// READ-ONLY; The hostname for a static site build.
-	Hostname *string `json:"hostname,omitempty" azure:"ro"`
+	Hostname *string
 
 	// READ-ONLY; When this build was updated.
-	LastUpdatedOn *time.Time `json:"lastUpdatedOn,omitempty" azure:"ro"`
+	LastUpdatedOn *time.Time
 
 	// READ-ONLY; Backends linked to the static side build
-	LinkedBackends []*StaticSiteLinkedBackend `json:"linkedBackends,omitempty" azure:"ro"`
+	LinkedBackends []*StaticSiteLinkedBackend
 
 	// READ-ONLY; The title of a pull request that a static site build is related to.
-	PullRequestTitle *string `json:"pullRequestTitle,omitempty" azure:"ro"`
+	PullRequestTitle *string
 
 	// READ-ONLY; The source branch.
-	SourceBranch *string `json:"sourceBranch,omitempty" azure:"ro"`
+	SourceBranch *string
 
 	// READ-ONLY; The status of the static site build.
-	Status *BuildStatus `json:"status,omitempty" azure:"ro"`
+	Status *BuildStatus
 
 	// READ-ONLY; User provided function apps registered with the static site build
-	UserProvidedFunctionApps []*StaticSiteUserProvidedFunctionApp `json:"userProvidedFunctionApps,omitempty" azure:"ro"`
+	UserProvidedFunctionApps []*StaticSiteUserProvidedFunctionApp
 }
 
 // StaticSiteBuildCollection - Collection of static site builds.
 type StaticSiteBuildCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*StaticSiteBuildARMResource `json:"value,omitempty"`
+	Value []*StaticSiteBuildARMResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // StaticSiteBuildProperties - Build properties for the static site.
 type StaticSiteBuildProperties struct {
 	// A custom command to run during deployment of the Azure Functions API application.
-	APIBuildCommand *string `json:"apiBuildCommand,omitempty"`
+	APIBuildCommand *string
 
 	// The path to the api code within the repository.
-	APILocation *string `json:"apiLocation,omitempty"`
+	APILocation *string
 
 	// Deprecated: The path of the app artifacts after building (deprecated in favor of OutputLocation)
-	AppArtifactLocation *string `json:"appArtifactLocation,omitempty"`
+	AppArtifactLocation *string
 
 	// A custom command to run during deployment of the static content application.
-	AppBuildCommand *string `json:"appBuildCommand,omitempty"`
+	AppBuildCommand *string
 
 	// The path to the app code within the repository.
-	AppLocation *string `json:"appLocation,omitempty"`
+	AppLocation *string
 
 	// Github Action secret name override.
-	GithubActionSecretNameOverride *string `json:"githubActionSecretNameOverride,omitempty"`
+	GithubActionSecretNameOverride *string
 
 	// The output path of the app after building.
-	OutputLocation *string `json:"outputLocation,omitempty"`
+	OutputLocation *string
 
 	// Skip Github Action workflow generation.
-	SkipGithubActionWorkflowGeneration *bool `json:"skipGithubActionWorkflowGeneration,omitempty"`
+	SkipGithubActionWorkflowGeneration *bool
 }
 
 // StaticSiteCollection - Collection of static sites.
 type StaticSiteCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*StaticSiteARMResource `json:"value,omitempty"`
+	Value []*StaticSiteARMResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // StaticSiteCustomDomainOverviewARMResource - Static Site Custom Domain Overview ARM resource.
 type StaticSiteCustomDomainOverviewARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteCustomDomainOverviewARMResource resource specific properties
-	Properties *StaticSiteCustomDomainOverviewARMResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteCustomDomainOverviewARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteCustomDomainOverviewARMResourceProperties - StaticSiteCustomDomainOverviewARMResource resource specific properties
 type StaticSiteCustomDomainOverviewARMResourceProperties struct {
 	// READ-ONLY; The date and time on which the custom domain was created for the static site.
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// READ-ONLY; The domain name for the static site custom domain.
-	DomainName *string `json:"domainName,omitempty" azure:"ro"`
+	DomainName *string
 
 	// READ-ONLY
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; The status of the custom domain
-	Status *CustomDomainStatus `json:"status,omitempty" azure:"ro"`
+	Status *CustomDomainStatus
 
 	// READ-ONLY; The TXT record validation token
-	ValidationToken *string `json:"validationToken,omitempty" azure:"ro"`
+	ValidationToken *string
 }
 
 // StaticSiteCustomDomainOverviewCollection - Collection of static site custom domains.
 type StaticSiteCustomDomainOverviewCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*StaticSiteCustomDomainOverviewARMResource `json:"value,omitempty"`
+	Value []*StaticSiteCustomDomainOverviewARMResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // StaticSiteCustomDomainRequestPropertiesARMResource - Static Site Custom Domain Request Properties ARM resource.
 type StaticSiteCustomDomainRequestPropertiesARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteCustomDomainRequestPropertiesARMResource resource specific properties
-	Properties *StaticSiteCustomDomainRequestPropertiesARMResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteCustomDomainRequestPropertiesARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteCustomDomainRequestPropertiesARMResourceProperties - StaticSiteCustomDomainRequestPropertiesARMResource resource
 // specific properties
 type StaticSiteCustomDomainRequestPropertiesARMResourceProperties struct {
 	// Validation method for adding a custom domain
-	ValidationMethod *string `json:"validationMethod,omitempty"`
+	ValidationMethod *string
+}
+
+// StaticSiteDatabaseConnectionConfigurationFileOverview - A database connection configuration file
+type StaticSiteDatabaseConnectionConfigurationFileOverview struct {
+	// READ-ONLY; The Base64 encoding of the file contents.
+	Contents *string
+
+	// READ-ONLY; The name of the configuration file.
+	FileName *string
+
+	// READ-ONLY; The type of configuration file.
+	Type *string
 }
 
 // StaticSiteFunctionOverviewARMResource - Static Site Function Overview ARM resource.
 type StaticSiteFunctionOverviewARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteFunctionOverviewARMResource resource specific properties
-	Properties *StaticSiteFunctionOverviewARMResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteFunctionOverviewARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteFunctionOverviewARMResourceProperties - StaticSiteFunctionOverviewARMResource resource specific properties
 type StaticSiteFunctionOverviewARMResourceProperties struct {
 	// READ-ONLY; The name for the function
-	FunctionName *string `json:"functionName,omitempty" azure:"ro"`
+	FunctionName *string
 
 	// READ-ONLY; The trigger type of the function
-	TriggerType *TriggerTypes `json:"triggerType,omitempty" azure:"ro"`
+	TriggerType *TriggerTypes
 }
 
 // StaticSiteFunctionOverviewCollection - Collection of static site functions.
 type StaticSiteFunctionOverviewCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*StaticSiteFunctionOverviewARMResource `json:"value,omitempty"`
+	Value []*StaticSiteFunctionOverviewARMResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // StaticSiteLinkedBackend - Static Site Linked Backend ARM resource.
 type StaticSiteLinkedBackend struct {
 	// The resource id of the backend linked to the static site
-	BackendResourceID *string `json:"backendResourceId,omitempty"`
+	BackendResourceID *string
 
 	// The region of the backend linked to the static site
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// READ-ONLY; The date and time on which the backend was linked to the static site.
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// READ-ONLY; The provisioning state of the linking process.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // StaticSiteLinkedBackendARMResource - Static Site Linked Backend ARM resource.
 type StaticSiteLinkedBackendARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteLinkedBackendARMResource resource specific properties
-	Properties *StaticSiteLinkedBackendARMResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteLinkedBackendARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteLinkedBackendARMResourceProperties - StaticSiteLinkedBackendARMResource resource specific properties
 type StaticSiteLinkedBackendARMResourceProperties struct {
 	// The resource id of the backend linked to the static site
-	BackendResourceID *string `json:"backendResourceId,omitempty"`
+	BackendResourceID *string
 
 	// The region of the backend linked to the static site
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// READ-ONLY; The date and time on which the backend was linked to the static site.
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// READ-ONLY; The provisioning state of the linking process.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // StaticSiteLinkedBackendsCollection - Collection of static site linked backends.
 type StaticSiteLinkedBackendsCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*StaticSiteLinkedBackendARMResource `json:"value,omitempty"`
+	Value []*StaticSiteLinkedBackendARMResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // StaticSitePatchResource - ARM resource for a static site when patching
 type StaticSitePatchResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *StaticSite `json:"properties,omitempty"`
+	Properties *StaticSite
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteResetPropertiesARMResource - Static Site Reset Properties ARM resource.
 type StaticSiteResetPropertiesARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteResetPropertiesARMResource resource specific properties
-	Properties *StaticSiteResetPropertiesARMResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteResetPropertiesARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteResetPropertiesARMResourceProperties - StaticSiteResetPropertiesARMResource resource specific properties
 type StaticSiteResetPropertiesARMResourceProperties struct {
 	// The token which proves admin privileges to the repository.
-	RepositoryToken *string `json:"repositoryToken,omitempty"`
+	RepositoryToken *string
 
 	// Determines whether the repository should be updated with the new properties.
-	ShouldUpdateRepository *bool `json:"shouldUpdateRepository,omitempty"`
+	ShouldUpdateRepository *bool
 }
 
 // StaticSiteTemplateOptions - Template Options for the static site.
 type StaticSiteTemplateOptions struct {
 	// Description of the newly generated repository.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Whether or not the newly generated repository is a private repository. Defaults to false (i.e. public).
-	IsPrivate *bool `json:"isPrivate,omitempty"`
+	IsPrivate *bool
 
 	// Owner of the newly generated repository.
-	Owner *string `json:"owner,omitempty"`
+	Owner *string
 
 	// Name of the newly generated repository.
-	RepositoryName *string `json:"repositoryName,omitempty"`
+	RepositoryName *string
 
 	// URL of the template repository. The newly generated repository will be based on this one.
-	TemplateRepositoryURL *string `json:"templateRepositoryUrl,omitempty"`
+	TemplateRepositoryURL *string
 }
 
 // StaticSiteUserARMResource - Static Site User ARM resource.
 type StaticSiteUserARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteUserARMResource resource specific properties
-	Properties *StaticSiteUserARMResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteUserARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteUserARMResourceProperties - StaticSiteUserARMResource resource specific properties
 type StaticSiteUserARMResourceProperties struct {
 	// The roles for the static site user, in free-form string format
-	Roles *string `json:"roles,omitempty"`
+	Roles *string
 
 	// READ-ONLY; The display name for the static site user.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The identity provider for the static site user.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The user id for the static site user.
-	UserID *string `json:"userId,omitempty" azure:"ro"`
+	UserID *string
 }
 
 // StaticSiteUserCollection - Collection of static site custom users.
 type StaticSiteUserCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*StaticSiteUserARMResource `json:"value,omitempty"`
+	Value []*StaticSiteUserARMResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // StaticSiteUserInvitationRequestResource - Static sites user roles invitation resource.
 type StaticSiteUserInvitationRequestResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteUserInvitationRequestResource resource specific properties
-	Properties *StaticSiteUserInvitationRequestResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteUserInvitationRequestResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteUserInvitationRequestResourceProperties - StaticSiteUserInvitationRequestResource resource specific properties
 type StaticSiteUserInvitationRequestResourceProperties struct {
 	// The domain name for the static site custom domain.
-	Domain *string `json:"domain,omitempty"`
+	Domain *string
 
 	// The number of hours the sas token stays valid
-	NumHoursToExpiration *int32 `json:"numHoursToExpiration,omitempty"`
+	NumHoursToExpiration *int32
 
 	// The identity provider for the static site user.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// The roles for the static site user, in free-form string format
-	Roles *string `json:"roles,omitempty"`
+	Roles *string
 
 	// The user id for the static site user.
-	UserDetails *string `json:"userDetails,omitempty"`
+	UserDetails *string
 }
 
 // StaticSiteUserInvitationResponseResource - Static sites user roles invitation link resource.
 type StaticSiteUserInvitationResponseResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteUserInvitationResponseResource resource specific properties
-	Properties *StaticSiteUserInvitationResponseResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteUserInvitationResponseResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteUserInvitationResponseResourceProperties - StaticSiteUserInvitationResponseResource resource specific properties
 type StaticSiteUserInvitationResponseResourceProperties struct {
 	// READ-ONLY; The expiration time of the invitation
-	ExpiresOn *time.Time `json:"expiresOn,omitempty" azure:"ro"`
+	ExpiresOn *time.Time
 
 	// READ-ONLY; The url for the invitation link
-	InvitationURL *string `json:"invitationUrl,omitempty" azure:"ro"`
+	InvitationURL *string
 }
 
 // StaticSiteUserProvidedFunctionApp - A static site user provided function.
 type StaticSiteUserProvidedFunctionApp struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteUserProvidedFunctionApp resource specific properties
-	Properties *StaticSiteUserProvidedFunctionAppProperties `json:"properties,omitempty"`
+	Properties *StaticSiteUserProvidedFunctionAppProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteUserProvidedFunctionAppARMResource - Static Site User Provided Function App ARM resource.
 type StaticSiteUserProvidedFunctionAppARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSiteUserProvidedFunctionAppARMResource resource specific properties
-	Properties *StaticSiteUserProvidedFunctionAppARMResourceProperties `json:"properties,omitempty"`
+	Properties *StaticSiteUserProvidedFunctionAppARMResourceProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSiteUserProvidedFunctionAppARMResourceProperties - StaticSiteUserProvidedFunctionAppARMResource resource specific
 // properties
 type StaticSiteUserProvidedFunctionAppARMResourceProperties struct {
 	// The region of the function app registered with the static site
-	FunctionAppRegion *string `json:"functionAppRegion,omitempty"`
+	FunctionAppRegion *string
 
 	// The resource id of the function app registered with the static site
-	FunctionAppResourceID *string `json:"functionAppResourceId,omitempty"`
+	FunctionAppResourceID *string
 
 	// READ-ONLY; The date and time on which the function app was registered with the static site.
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 }
 
 // StaticSiteUserProvidedFunctionAppProperties - StaticSiteUserProvidedFunctionApp resource specific properties
 type StaticSiteUserProvidedFunctionAppProperties struct {
 	// The region of the function app registered with the static site
-	FunctionAppRegion *string `json:"functionAppRegion,omitempty"`
+	FunctionAppRegion *string
 
 	// The resource id of the function app registered with the static site
-	FunctionAppResourceID *string `json:"functionAppResourceId,omitempty"`
+	FunctionAppResourceID *string
 
 	// READ-ONLY; The date and time on which the function app was registered with the static site.
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 }
 
 // StaticSiteUserProvidedFunctionAppsCollection - Collection of static site user provided function apps.
 type StaticSiteUserProvidedFunctionAppsCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*StaticSiteUserProvidedFunctionAppARMResource `json:"value,omitempty"`
+	Value []*StaticSiteUserProvidedFunctionAppARMResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // StaticSiteZipDeployment - A static site zip deployment.
 type StaticSiteZipDeployment struct {
 	// URL for the zipped api content
-	APIZipURL *string `json:"apiZipUrl,omitempty"`
+	APIZipURL *string
 
 	// URL for the zipped app content
-	AppZipURL *string `json:"appZipUrl,omitempty"`
+	AppZipURL *string
 
 	// A title to label the deployment
-	DeploymentTitle *string `json:"deploymentTitle,omitempty"`
+	DeploymentTitle *string
 
 	// The language of the api content, if it exists
-	FunctionLanguage *string `json:"functionLanguage,omitempty"`
+	FunctionLanguage *string
 
 	// The provider submitting this deployment
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 }
 
 // StaticSiteZipDeploymentARMResource - Static site zip deployment ARM resource.
 type StaticSiteZipDeploymentARMResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *StaticSiteZipDeployment `json:"properties,omitempty"`
+	Properties *StaticSiteZipDeployment
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSitesClientBeginApproveOrRejectPrivateEndpointConnectionOptions contains the optional parameters for the StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection
@@ -10189,6 +10369,24 @@ type StaticSitesClientBeginValidateCustomDomainCanBeAddedToStaticSiteOptions str
 	ResumeToken string
 }
 
+// StaticSitesClientCreateOrUpdateBasicAuthOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateBasicAuth
+// method.
+type StaticSitesClientCreateOrUpdateBasicAuthOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientCreateOrUpdateBuildDatabaseConnectionOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateBuildDatabaseConnection
+// method.
+type StaticSitesClientCreateOrUpdateBuildDatabaseConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientCreateOrUpdateDatabaseConnectionOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateDatabaseConnection
+// method.
+type StaticSitesClientCreateOrUpdateDatabaseConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions contains the optional parameters for the StaticSitesClient.CreateOrUpdateStaticSiteAppSettings
 // method.
 type StaticSitesClientCreateOrUpdateStaticSiteAppSettingsOptions struct {
@@ -10219,6 +10417,18 @@ type StaticSitesClientCreateUserRolesInvitationLinkOptions struct {
 	// placeholder for future optional parameters
 }
 
+// StaticSitesClientDeleteBuildDatabaseConnectionOptions contains the optional parameters for the StaticSitesClient.DeleteBuildDatabaseConnection
+// method.
+type StaticSitesClientDeleteBuildDatabaseConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientDeleteDatabaseConnectionOptions contains the optional parameters for the StaticSitesClient.DeleteDatabaseConnection
+// method.
+type StaticSitesClientDeleteDatabaseConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StaticSitesClientDeleteStaticSiteUserOptions contains the optional parameters for the StaticSitesClient.DeleteStaticSiteUser
 // method.
 type StaticSitesClientDeleteStaticSiteUserOptions struct {
@@ -10237,6 +10447,59 @@ type StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteOptions struct 
 	// placeholder for future optional parameters
 }
 
+// StaticSitesClientGetBasicAuthOptions contains the optional parameters for the StaticSitesClient.GetBasicAuth method.
+type StaticSitesClientGetBasicAuthOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientGetBuildDatabaseConnectionOptions contains the optional parameters for the StaticSitesClient.GetBuildDatabaseConnection
+// method.
+type StaticSitesClientGetBuildDatabaseConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientGetBuildDatabaseConnectionWithDetailsOptions contains the optional parameters for the StaticSitesClient.GetBuildDatabaseConnectionWithDetails
+// method.
+type StaticSitesClientGetBuildDatabaseConnectionWithDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientGetBuildDatabaseConnectionsOptions contains the optional parameters for the StaticSitesClient.NewGetBuildDatabaseConnectionsPager
+// method.
+type StaticSitesClientGetBuildDatabaseConnectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientGetBuildDatabaseConnectionsWithDetailsOptions contains the optional parameters for the StaticSitesClient.NewGetBuildDatabaseConnectionsWithDetailsPager
+// method.
+type StaticSitesClientGetBuildDatabaseConnectionsWithDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientGetDatabaseConnectionOptions contains the optional parameters for the StaticSitesClient.GetDatabaseConnection
+// method.
+type StaticSitesClientGetDatabaseConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientGetDatabaseConnectionWithDetailsOptions contains the optional parameters for the StaticSitesClient.GetDatabaseConnectionWithDetails
+// method.
+type StaticSitesClientGetDatabaseConnectionWithDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientGetDatabaseConnectionsOptions contains the optional parameters for the StaticSitesClient.NewGetDatabaseConnectionsPager
+// method.
+type StaticSitesClientGetDatabaseConnectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientGetDatabaseConnectionsWithDetailsOptions contains the optional parameters for the StaticSitesClient.NewGetDatabaseConnectionsWithDetailsPager
+// method.
+type StaticSitesClientGetDatabaseConnectionsWithDetailsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StaticSitesClientGetLinkedBackendForBuildOptions contains the optional parameters for the StaticSitesClient.GetLinkedBackendForBuild
 // method.
 type StaticSitesClientGetLinkedBackendForBuildOptions struct {
@@ -10248,19 +10511,19 @@ type StaticSitesClientGetLinkedBackendOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientGetLinkedBackendsForBuildOptions contains the optional parameters for the StaticSitesClient.GetLinkedBackendsForBuild
+// StaticSitesClientGetLinkedBackendsForBuildOptions contains the optional parameters for the StaticSitesClient.NewGetLinkedBackendsForBuildPager
 // method.
 type StaticSitesClientGetLinkedBackendsForBuildOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientGetLinkedBackendsOptions contains the optional parameters for the StaticSitesClient.GetLinkedBackends
+// StaticSitesClientGetLinkedBackendsOptions contains the optional parameters for the StaticSitesClient.NewGetLinkedBackendsPager
 // method.
 type StaticSitesClientGetLinkedBackendsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the StaticSitesClient.GetPrivateEndpointConnectionList
+// StaticSitesClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the StaticSitesClient.NewGetPrivateEndpointConnectionListPager
 // method.
 type StaticSitesClientGetPrivateEndpointConnectionListOptions struct {
 	// placeholder for future optional parameters
@@ -10284,7 +10547,7 @@ type StaticSitesClientGetStaticSiteBuildOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientGetStaticSiteBuildsOptions contains the optional parameters for the StaticSitesClient.GetStaticSiteBuilds
+// StaticSitesClientGetStaticSiteBuildsOptions contains the optional parameters for the StaticSitesClient.NewGetStaticSiteBuildsPager
 // method.
 type StaticSitesClientGetStaticSiteBuildsOptions struct {
 	// placeholder for future optional parameters
@@ -10301,7 +10564,7 @@ type StaticSitesClientGetStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientGetStaticSitesByResourceGroupOptions contains the optional parameters for the StaticSitesClient.GetStaticSitesByResourceGroup
+// StaticSitesClientGetStaticSitesByResourceGroupOptions contains the optional parameters for the StaticSitesClient.NewGetStaticSitesByResourceGroupPager
 // method.
 type StaticSitesClientGetStaticSitesByResourceGroupOptions struct {
 	// placeholder for future optional parameters
@@ -10319,19 +10582,25 @@ type StaticSitesClientGetUserProvidedFunctionAppForStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppsForStaticSiteBuild
+// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions contains the optional parameters for the StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSiteBuildPager
 // method.
 type StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions contains the optional parameters for the StaticSitesClient.GetUserProvidedFunctionAppsForStaticSite
+// StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions contains the optional parameters for the StaticSitesClient.NewGetUserProvidedFunctionAppsForStaticSitePager
 // method.
 type StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientListOptions contains the optional parameters for the StaticSitesClient.List method.
+// StaticSitesClientListBasicAuthOptions contains the optional parameters for the StaticSitesClient.NewListBasicAuthPager
+// method.
+type StaticSitesClientListBasicAuthOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientListOptions contains the optional parameters for the StaticSitesClient.NewListPager method.
 type StaticSitesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10354,7 +10623,7 @@ type StaticSitesClientListStaticSiteBuildFunctionAppSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientListStaticSiteBuildFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteBuildFunctions
+// StaticSitesClientListStaticSiteBuildFunctionsOptions contains the optional parameters for the StaticSitesClient.NewListStaticSiteBuildFunctionsPager
 // method.
 type StaticSitesClientListStaticSiteBuildFunctionsOptions struct {
 	// placeholder for future optional parameters
@@ -10366,7 +10635,7 @@ type StaticSitesClientListStaticSiteConfiguredRolesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientListStaticSiteCustomDomainsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteCustomDomains
+// StaticSitesClientListStaticSiteCustomDomainsOptions contains the optional parameters for the StaticSitesClient.NewListStaticSiteCustomDomainsPager
 // method.
 type StaticSitesClientListStaticSiteCustomDomainsOptions struct {
 	// placeholder for future optional parameters
@@ -10378,7 +10647,7 @@ type StaticSitesClientListStaticSiteFunctionAppSettingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientListStaticSiteFunctionsOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteFunctions
+// StaticSitesClientListStaticSiteFunctionsOptions contains the optional parameters for the StaticSitesClient.NewListStaticSiteFunctionsPager
 // method.
 type StaticSitesClientListStaticSiteFunctionsOptions struct {
 	// placeholder for future optional parameters
@@ -10390,7 +10659,7 @@ type StaticSitesClientListStaticSiteSecretsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StaticSitesClientListStaticSiteUsersOptions contains the optional parameters for the StaticSitesClient.ListStaticSiteUsers
+// StaticSitesClientListStaticSiteUsersOptions contains the optional parameters for the StaticSitesClient.NewListStaticSiteUsersPager
 // method.
 type StaticSitesClientListStaticSiteUsersOptions struct {
 	// placeholder for future optional parameters
@@ -10420,6 +10689,18 @@ type StaticSitesClientUnlinkBackendOptions struct {
 	IsCleaningAuthConfig *bool
 }
 
+// StaticSitesClientUpdateBuildDatabaseConnectionOptions contains the optional parameters for the StaticSitesClient.UpdateBuildDatabaseConnection
+// method.
+type StaticSitesClientUpdateBuildDatabaseConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// StaticSitesClientUpdateDatabaseConnectionOptions contains the optional parameters for the StaticSitesClient.UpdateDatabaseConnection
+// method.
+type StaticSitesClientUpdateDatabaseConnectionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StaticSitesClientUpdateStaticSiteOptions contains the optional parameters for the StaticSitesClient.UpdateStaticSite method.
 type StaticSitesClientUpdateStaticSiteOptions struct {
 	// placeholder for future optional parameters
@@ -10434,338 +10715,338 @@ type StaticSitesClientUpdateStaticSiteUserOptions struct {
 // StaticSitesWorkflowPreview - Preview for the Static Site Workflow to be generated
 type StaticSitesWorkflowPreview struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSitesWorkflowPreview resource specific properties
-	Properties *StaticSitesWorkflowPreviewProperties `json:"properties,omitempty"`
+	Properties *StaticSitesWorkflowPreviewProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSitesWorkflowPreviewProperties - StaticSitesWorkflowPreview resource specific properties
 type StaticSitesWorkflowPreviewProperties struct {
 	// READ-ONLY; The contents for the workflow file to be generated
-	Contents *string `json:"contents,omitempty" azure:"ro"`
+	Contents *string
 
 	// READ-ONLY; The path for the workflow file to be generated
-	Path *string `json:"path,omitempty" azure:"ro"`
+	Path *string
 }
 
 // StaticSitesWorkflowPreviewRequest - Request entity for previewing the Static Site workflow
 type StaticSitesWorkflowPreviewRequest struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StaticSitesWorkflowPreviewRequest resource specific properties
-	Properties *StaticSitesWorkflowPreviewRequestProperties `json:"properties,omitempty"`
+	Properties *StaticSitesWorkflowPreviewRequestProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StaticSitesWorkflowPreviewRequestProperties - StaticSitesWorkflowPreviewRequest resource specific properties
 type StaticSitesWorkflowPreviewRequestProperties struct {
 	// The target branch in the repository.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// Build properties to configure on the repository.
-	BuildProperties *StaticSiteBuildProperties `json:"buildProperties,omitempty"`
+	BuildProperties *StaticSiteBuildProperties
 
 	// URL for the repository of the static site.
-	RepositoryURL *string `json:"repositoryUrl,omitempty"`
+	RepositoryURL *string
 }
 
 // Status - Identify the status of the most severe insight generated by the detector.
 type Status struct {
 	// Descriptive message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Level of the most severe insight generated by the detector.
-	StatusID *InsightStatus `json:"statusId,omitempty"`
+	StatusID *InsightStatus
 }
 
 // StatusCodesBasedTrigger - Trigger based on status code.
 type StatusCodesBasedTrigger struct {
 	// Request Count.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// Request Path
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// HTTP status code.
-	Status *int32 `json:"status,omitempty"`
+	Status *int32
 
 	// Request Sub Status.
-	SubStatus *int32 `json:"subStatus,omitempty"`
+	SubStatus *int32
 
 	// Time interval.
-	TimeInterval *string `json:"timeInterval,omitempty"`
+	TimeInterval *string
 
 	// Win32 error code.
-	Win32Status *int32 `json:"win32Status,omitempty"`
+	Win32Status *int32
 }
 
 // StatusCodesRangeBasedTrigger - Trigger based on range of status codes.
 type StatusCodesRangeBasedTrigger struct {
 	// Request Count.
-	Count *int32  `json:"count,omitempty"`
-	Path  *string `json:"path,omitempty"`
+	Count *int32
+	Path  *string
 
 	// HTTP status code.
-	StatusCodes *string `json:"statusCodes,omitempty"`
+	StatusCodes *string
 
 	// Time interval.
-	TimeInterval *string `json:"timeInterval,omitempty"`
+	TimeInterval *string
 }
 
 // StorageMigrationOptions - Options for app content migration.
 type StorageMigrationOptions struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StorageMigrationOptions resource specific properties
-	Properties *StorageMigrationOptionsProperties `json:"properties,omitempty"`
+	Properties *StorageMigrationOptionsProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageMigrationOptionsProperties - StorageMigrationOptions resource specific properties
 type StorageMigrationOptionsProperties struct {
 	// REQUIRED; AzureFiles connection string.
-	AzurefilesConnectionString *string `json:"azurefilesConnectionString,omitempty"`
+	AzurefilesConnectionString *string
 
 	// REQUIRED; AzureFiles share.
-	AzurefilesShare *string `json:"azurefilesShare,omitempty"`
+	AzurefilesShare *string
 
 	// true if the app should be read only during copy operation; otherwise, false.
-	BlockWriteAccessToSite *bool `json:"blockWriteAccessToSite,omitempty"`
+	BlockWriteAccessToSite *bool
 
 	// trueif the app should be switched over; otherwise, false.
-	SwitchSiteAfterMigration *bool `json:"switchSiteAfterMigration,omitempty"`
+	SwitchSiteAfterMigration *bool
 }
 
 // StorageMigrationResponse - Response for a migration of app content request.
 type StorageMigrationResponse struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// StorageMigrationResponse resource specific properties
-	Properties *StorageMigrationResponseProperties `json:"properties,omitempty"`
+	Properties *StorageMigrationResponseProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageMigrationResponseProperties - StorageMigrationResponse resource specific properties
 type StorageMigrationResponseProperties struct {
 	// READ-ONLY; When server starts the migration process, it will return an operation ID identifying that particular migration
 	// operation.
-	OperationID *string `json:"operationId,omitempty" azure:"ro"`
+	OperationID *string
 }
 
 // StringDictionary - String dictionary resource.
 type StringDictionary struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Settings.
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StringList - String list resource.
 type StringList struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// List of string resources.
-	Properties []*string `json:"properties,omitempty"`
+	Properties []*string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SubResource - The sub resource type.
 type SubResource struct {
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // SupportTopic - Defines a unique Support Topic
 type SupportTopic struct {
 	// READ-ONLY; Support Topic Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Unique resource Id
-	PesID *string `json:"pesId,omitempty" azure:"ro"`
+	PesID *string
 }
 
 // SwiftVirtualNetwork - Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network
 // integration.
 type SwiftVirtualNetwork struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// SwiftVirtualNetwork resource specific properties
-	Properties *SwiftVirtualNetworkProperties `json:"properties,omitempty"`
+	Properties *SwiftVirtualNetworkProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SwiftVirtualNetworkProperties - SwiftVirtualNetwork resource specific properties
 type SwiftVirtualNetworkProperties struct {
 	// The Virtual Network subnet's resource ID. This is the subnet that this Web App will join. This subnet must have a delegation
 	// to Microsoft.Web/serverFarms defined first.
-	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
+	SubnetResourceID *string
 
 	// A flag that specifies if the scale unit this Web App is on supports Swift integration.
-	SwiftSupported *bool `json:"swiftSupported,omitempty"`
+	SwiftSupported *bool
 }
 
 // Template - Container App versioned application definition. Defines the desired state of an immutable revision. Any changes
 // to this section Will result in a new revision being created
 type Template struct {
 	// List of container definitions for the Container App.
-	Containers []*Container `json:"containers,omitempty"`
+	Containers []*Container
 
 	// Dapr configuration for the Container App.
-	Dapr *Dapr `json:"dapr,omitempty"`
+	Dapr *Dapr
 
 	// User friendly suffix that is appended to the revision name
-	RevisionSuffix *string `json:"revisionSuffix,omitempty"`
+	RevisionSuffix *string
 
 	// Scaling properties for the Container App.
-	Scale *Scale `json:"scale,omitempty"`
+	Scale *Scale
 }
 
 // TldLegalAgreement - Legal agreement for a top level domain.
 type TldLegalAgreement struct {
 	// REQUIRED; Unique identifier for the agreement.
-	AgreementKey *string `json:"agreementKey,omitempty"`
+	AgreementKey *string
 
 	// REQUIRED; Agreement details.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// REQUIRED; Agreement title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// URL where a copy of the agreement details is hosted.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // TldLegalAgreementCollection - Collection of top-level domain legal agreements.
 type TldLegalAgreementCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*TldLegalAgreement `json:"value,omitempty"`
+	Value []*TldLegalAgreement
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // TokenStore - The configuration settings of the token store.
 type TokenStore struct {
 	// The configuration settings of the storage of the tokens if blob storage is used.
-	AzureBlobStorage *BlobStorageTokenStore `json:"azureBlobStorage,omitempty"`
+	AzureBlobStorage *BlobStorageTokenStore
 
 	// true to durably store platform-specific security tokens that are obtained during login flows; otherwise, false. The default
 	// is false.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the storage of the tokens if a file system is used.
-	FileSystem *FileSystemTokenStore `json:"fileSystem,omitempty"`
+	FileSystem *FileSystemTokenStore
 
 	// The number of hours after session token expiration that a session token can be used to call the token refresh API. The
 	// default is 72 hours.
-	TokenRefreshExtensionHours *float64 `json:"tokenRefreshExtensionHours,omitempty"`
+	TokenRefreshExtensionHours *float64
 }
 
 // TopLevelDomain - A top level domain object.
 type TopLevelDomain struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// TopLevelDomain resource specific properties
-	Properties *TopLevelDomainProperties `json:"properties,omitempty"`
+	Properties *TopLevelDomainProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TopLevelDomainAgreementOption - Options for retrieving the list of top level domain legal agreements.
 type TopLevelDomainAgreementOption struct {
 	// If true, then the list of agreements will include agreements for domain transfer as well; otherwise, false.
-	ForTransfer *bool `json:"forTransfer,omitempty"`
+	ForTransfer *bool
 
 	// If true, then the list of agreements will include agreements for domain privacy as well; otherwise, false.
-	IncludePrivacy *bool `json:"includePrivacy,omitempty"`
+	IncludePrivacy *bool
 }
 
 // TopLevelDomainCollection - Collection of Top-level domains.
 type TopLevelDomainCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*TopLevelDomain `json:"value,omitempty"`
+	Value []*TopLevelDomain
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // TopLevelDomainProperties - TopLevelDomain resource specific properties
 type TopLevelDomainProperties struct {
 	// If true, then the top level domain supports domain privacy; otherwise, false.
-	Privacy *bool `json:"privacy,omitempty"`
+	Privacy *bool
 }
 
 // TopLevelDomainsClientGetOptions contains the optional parameters for the TopLevelDomainsClient.Get method.
@@ -10773,13 +11054,13 @@ type TopLevelDomainsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopLevelDomainsClientListAgreementsOptions contains the optional parameters for the TopLevelDomainsClient.ListAgreements
+// TopLevelDomainsClientListAgreementsOptions contains the optional parameters for the TopLevelDomainsClient.NewListAgreementsPager
 // method.
 type TopLevelDomainsClientListAgreementsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.List method.
+// TopLevelDomainsClientListOptions contains the optional parameters for the TopLevelDomainsClient.NewListPager method.
 type TopLevelDomainsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -10787,732 +11068,732 @@ type TopLevelDomainsClientListOptions struct {
 // TrafficWeight - Traffic weight assigned to a revision
 type TrafficWeight struct {
 	// Indicates that the traffic weight belongs to a latest stable revision
-	LatestRevision *bool `json:"latestRevision,omitempty"`
+	LatestRevision *bool
 
 	// Name of a revision
-	RevisionName *string `json:"revisionName,omitempty"`
+	RevisionName *string
 
 	// Traffic weight assigned to a revision
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *int32
 }
 
 // TriggeredJobHistory - Triggered Web Job History. List of Triggered Web Job Run Information elements.
 type TriggeredJobHistory struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// TriggeredJobHistory resource specific properties
-	Properties *TriggeredJobHistoryProperties `json:"properties,omitempty"`
+	Properties *TriggeredJobHistoryProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TriggeredJobHistoryCollection - Collection of Kudu continuous web job information elements.
 type TriggeredJobHistoryCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*TriggeredJobHistory `json:"value,omitempty"`
+	Value []*TriggeredJobHistory
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // TriggeredJobHistoryProperties - TriggeredJobHistory resource specific properties
 type TriggeredJobHistoryProperties struct {
 	// List of triggered web job runs.
-	Runs []*TriggeredJobRun `json:"runs,omitempty"`
+	Runs []*TriggeredJobRun
 }
 
 // TriggeredJobRun - Triggered Web Job Run Information.
 type TriggeredJobRun struct {
 	// Job duration.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// End time.
-	EndTime *time.Time `json:"end_time,omitempty"`
+	EndTime *time.Time
 
 	// Error URL.
-	ErrorURL *string `json:"error_url,omitempty"`
+	ErrorURL *string
 
 	// Job name.
-	JobName *string `json:"job_name,omitempty"`
+	JobName *string
 
 	// Output URL.
-	OutputURL *string `json:"output_url,omitempty"`
+	OutputURL *string
 
 	// Start time.
-	StartTime *time.Time `json:"start_time,omitempty"`
+	StartTime *time.Time
 
 	// Job status.
-	Status *TriggeredWebJobStatus `json:"status,omitempty"`
+	Status *TriggeredWebJobStatus
 
 	// Job trigger.
-	Trigger *string `json:"trigger,omitempty"`
+	Trigger *string
 
 	// Job URL.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// Job ID.
-	WebJobID *string `json:"web_job_id,omitempty"`
+	WebJobID *string
 
 	// Job name.
-	WebJobName *string `json:"web_job_name,omitempty"`
+	WebJobName *string
 }
 
 // TriggeredWebJob - Triggered Web Job Information.
 type TriggeredWebJob struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// TriggeredWebJob resource specific properties
-	Properties *TriggeredWebJobProperties `json:"properties,omitempty"`
+	Properties *TriggeredWebJobProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TriggeredWebJobCollection - Collection of Kudu continuous web job information elements.
 type TriggeredWebJobCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*TriggeredWebJob `json:"value,omitempty"`
+	Value []*TriggeredWebJob
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // TriggeredWebJobProperties - TriggeredWebJob resource specific properties
 type TriggeredWebJobProperties struct {
 	// Error information.
-	Error *string `json:"error,omitempty"`
+	Error *string
 
 	// Extra Info URL.
-	ExtraInfoURL *string `json:"extra_info_url,omitempty"`
+	ExtraInfoURL *string
 
 	// History URL.
-	HistoryURL *string `json:"history_url,omitempty"`
+	HistoryURL *string
 
 	// Latest job run information.
-	LatestRun *TriggeredJobRun `json:"latest_run,omitempty"`
+	LatestRun *TriggeredJobRun
 
 	// Property to allow or block all public traffic. Allowed Values: 'Enabled', 'Disabled' or an empty string.
-	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *string
 
 	// Run command.
-	RunCommand *string `json:"run_command,omitempty"`
+	RunCommand *string
 
 	// Scheduler Logs URL.
-	SchedulerLogsURL *string `json:"scheduler_logs_url,omitempty"`
+	SchedulerLogsURL *string
 
 	// Job settings.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]any
 
 	// Checks if Customer provided storage account is required
-	StorageAccountRequired *bool `json:"storageAccountRequired,omitempty"`
+	StorageAccountRequired *bool
 
 	// Job URL.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// Using SDK?
-	UsingSdk *bool `json:"using_sdk,omitempty"`
+	UsingSdk *bool
 
 	// Job type.
-	WebJobType *WebJobType `json:"web_job_type,omitempty"`
+	WebJobType *WebJobType
 }
 
 // Twitter - The configuration settings of the Twitter provider.
 type Twitter struct {
 	// false if the Twitter provider should not be enabled despite the set registration; otherwise, true.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The configuration settings of the app registration for the Twitter provider.
-	Registration *TwitterRegistration `json:"registration,omitempty"`
+	Registration *TwitterRegistration
 }
 
 // TwitterRegistration - The configuration settings of the app registration for the Twitter provider.
 type TwitterRegistration struct {
 	// The OAuth 1.0a consumer key of the Twitter application used for sign-in. This setting is required for enabling Twitter
 	// Sign-In. Twitter Sign-In documentation: https://dev.twitter.com/web/sign-in
-	ConsumerKey *string `json:"consumerKey,omitempty"`
+	ConsumerKey *string
 
 	// The app setting name that contains the OAuth 1.0a consumer secret of the Twitter application used for sign-in.
-	ConsumerSecretSettingName *string `json:"consumerSecretSettingName,omitempty"`
+	ConsumerSecretSettingName *string
 }
 
 // Usage of the quota resource.
 type Usage struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Usage resource specific properties
-	Properties *UsageProperties `json:"properties,omitempty"`
+	Properties *UsageProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UsageCollection - Collection of usages.
 type UsageCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Usage `json:"value,omitempty"`
+	Value []*Usage
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // UsageProperties - Usage resource specific properties
 type UsageProperties struct {
 	// READ-ONLY; Compute mode used for this usage.
-	ComputeMode *ComputeModeOptions `json:"computeMode,omitempty" azure:"ro"`
+	ComputeMode *ComputeModeOptions
 
 	// READ-ONLY; The current value of the resource counter.
-	CurrentValue *int64 `json:"currentValue,omitempty" azure:"ro"`
+	CurrentValue *int64
 
 	// READ-ONLY; Friendly name shown in the UI.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The resource limit.
-	Limit *int64 `json:"limit,omitempty" azure:"ro"`
+	Limit *int64
 
 	// READ-ONLY; Next reset time for the resource counter.
-	NextResetTime *time.Time `json:"nextResetTime,omitempty" azure:"ro"`
+	NextResetTime *time.Time
 
 	// READ-ONLY; Name of the quota resource.
-	ResourceName *string `json:"resourceName,omitempty" azure:"ro"`
+	ResourceName *string
 
 	// READ-ONLY; Site mode used for this usage.
-	SiteMode *string `json:"siteMode,omitempty" azure:"ro"`
+	SiteMode *string
 
 	// READ-ONLY; Units of measurement for the quota resource.
-	Unit *string `json:"unit,omitempty" azure:"ro"`
+	Unit *string
 }
 
 // User credentials used for publishing activity.
 type User struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// User resource specific properties
-	Properties *UserProperties `json:"properties,omitempty"`
+	Properties *UserProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserAssignedIdentity - User Assigned identity.
 type UserAssignedIdentity struct {
 	// READ-ONLY; Client Id of user assigned identity
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; Principal Id of user assigned identity
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // UserProperties - User resource specific properties
 type UserProperties struct {
 	// REQUIRED; Username used for publishing.
-	PublishingUserName *string `json:"publishingUserName,omitempty"`
+	PublishingUserName *string
 
 	// Password used for publishing.
-	PublishingPassword *string `json:"publishingPassword,omitempty"`
+	PublishingPassword *string
 
 	// Password hash used for publishing.
-	PublishingPasswordHash *string `json:"publishingPasswordHash,omitempty"`
+	PublishingPasswordHash *string
 
 	// Password hash salt used for publishing.
-	PublishingPasswordHashSalt *string `json:"publishingPasswordHashSalt,omitempty"`
+	PublishingPasswordHashSalt *string
 
 	// Url of SCM site.
-	ScmURI *string `json:"scmUri,omitempty"`
+	ScmURI *string
 }
 
 // ValidateProperties - App properties used for validation.
 type ValidateProperties struct {
 	// App Service Environment Properties
-	AppServiceEnvironment *Environment `json:"appServiceEnvironment,omitempty"`
+	AppServiceEnvironment *Environment
 
 	// Target capacity of the App Service plan (number of VMs).
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Platform (windows or linux)
-	ContainerImagePlatform *string `json:"containerImagePlatform,omitempty"`
+	ContainerImagePlatform *string
 
 	// Repository name (image name)
-	ContainerImageRepository *string `json:"containerImageRepository,omitempty"`
+	ContainerImageRepository *string
 
 	// Image tag
-	ContainerImageTag *string `json:"containerImageTag,omitempty"`
+	ContainerImageTag *string
 
 	// Base URL of the container registry
-	ContainerRegistryBaseURL *string `json:"containerRegistryBaseUrl,omitempty"`
+	ContainerRegistryBaseURL *string
 
 	// Password for to access the container registry
-	ContainerRegistryPassword *string `json:"containerRegistryPassword,omitempty"`
+	ContainerRegistryPassword *string
 
 	// Username for to access the container registry
-	ContainerRegistryUsername *string `json:"containerRegistryUsername,omitempty"`
+	ContainerRegistryUsername *string
 
 	// Name of App Service Environment where app or App Service plan should be created.
-	HostingEnvironment *string `json:"hostingEnvironment,omitempty"`
+	HostingEnvironment *string
 
 	// true if App Service plan is for Spot instances; otherwise, false.
-	IsSpot *bool `json:"isSpot,omitempty"`
+	IsSpot *bool
 
 	// true if App Service plan is running as a windows container
-	IsXenon *bool `json:"isXenon,omitempty"`
+	IsXenon *bool
 
 	// true if App Service plan is for Linux workers; otherwise, false.
-	NeedLinuxWorkers *bool `json:"needLinuxWorkers,omitempty"`
+	NeedLinuxWorkers *bool
 
 	// Name of the target SKU for the App Service plan.
-	SKUName *string `json:"skuName,omitempty"`
+	SKUName *string
 
 	// ARM resource ID of an App Service plan that would host the app.
-	ServerFarmID *string `json:"serverFarmId,omitempty"`
+	ServerFarmID *string
 }
 
 // ValidateRequest - Resource validation request content.
 type ValidateRequest struct {
 	// REQUIRED; Expected location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Resource name to verify.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Properties of the resource to validate.
-	Properties *ValidateProperties `json:"properties,omitempty"`
+	Properties *ValidateProperties
 
 	// REQUIRED; Resource type used for verification.
-	Type *ValidateResourceTypes `json:"type,omitempty"`
+	Type *ValidateResourceTypes
 }
 
 // ValidateResponse - Describes the result of resource validation.
 type ValidateResponse struct {
 	// Error details for the case when validation fails.
-	Error *ValidateResponseError `json:"error,omitempty"`
+	Error *ValidateResponseError
 
 	// Result of validation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // ValidateResponseError - Error details for when validation fails.
 type ValidateResponseError struct {
 	// Validation error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Validation error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // VirtualApplication - Virtual application in an app.
 type VirtualApplication struct {
 	// Physical path.
-	PhysicalPath *string `json:"physicalPath,omitempty"`
+	PhysicalPath *string
 
 	// true if preloading is enabled; otherwise, false.
-	PreloadEnabled *bool `json:"preloadEnabled,omitempty"`
+	PreloadEnabled *bool
 
 	// Virtual directories for virtual application.
-	VirtualDirectories []*VirtualDirectory `json:"virtualDirectories,omitempty"`
+	VirtualDirectories []*VirtualDirectory
 
 	// Virtual path.
-	VirtualPath *string `json:"virtualPath,omitempty"`
+	VirtualPath *string
 }
 
 // VirtualDirectory - Directory for virtual application.
 type VirtualDirectory struct {
 	// Physical path.
-	PhysicalPath *string `json:"physicalPath,omitempty"`
+	PhysicalPath *string
 
 	// Path to virtual application.
-	VirtualPath *string `json:"virtualPath,omitempty"`
+	VirtualPath *string
 }
 
 // VirtualIPMapping - Virtual IP mapping.
 type VirtualIPMapping struct {
 	// Is virtual IP mapping in use.
-	InUse *bool `json:"inUse,omitempty"`
+	InUse *bool
 
 	// Internal HTTP port.
-	InternalHTTPPort *int32 `json:"internalHttpPort,omitempty"`
+	InternalHTTPPort *int32
 
 	// Internal HTTPS port.
-	InternalHTTPSPort *int32 `json:"internalHttpsPort,omitempty"`
+	InternalHTTPSPort *int32
 
 	// name of the service that virtual IP is assigned to
-	ServiceName *string `json:"serviceName,omitempty"`
+	ServiceName *string
 
 	// Virtual IP address.
-	VirtualIP *string `json:"virtualIP,omitempty"`
+	VirtualIP *string
 }
 
 // VirtualNetworkProfile - Specification for using a Virtual Network.
 type VirtualNetworkProfile struct {
 	// REQUIRED; Resource id of the Virtual Network.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Subnet within the Virtual Network.
-	Subnet *string `json:"subnet,omitempty"`
+	Subnet *string
 
 	// READ-ONLY; Name of the Virtual Network (read-only).
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type of the Virtual Network (read-only).
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VnetGateway - The Virtual Network gateway contract. This is used to give the Virtual Network gateway access to the VPN
 // package.
 type VnetGateway struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// VnetGateway resource specific properties
-	Properties *VnetGatewayProperties `json:"properties,omitempty"`
+	Properties *VnetGatewayProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VnetGatewayProperties - VnetGateway resource specific properties
 type VnetGatewayProperties struct {
 	// REQUIRED; The URI where the VPN package can be downloaded.
-	VPNPackageURI *string `json:"vpnPackageUri,omitempty"`
+	VPNPackageURI *string
 
 	// The Virtual Network name.
-	VnetName *string `json:"vnetName,omitempty"`
+	VnetName *string
 }
 
 // VnetInfo - Virtual Network information contract.
 type VnetInfo struct {
 	// A certificate file (.cer) blob containing the public key of the private key used to authenticate a Point-To-Site VPN connection.
-	CertBlob *string `json:"certBlob,omitempty"`
+	CertBlob *string
 
 	// DNS servers to be used by this Virtual Network. This should be a comma-separated list of IP addresses.
-	DNSServers *string `json:"dnsServers,omitempty"`
+	DNSServers *string
 
 	// Flag that is used to denote if this is VNET injection
-	IsSwift *bool `json:"isSwift,omitempty"`
+	IsSwift *bool
 
 	// The Virtual Network's resource ID.
-	VnetResourceID *string `json:"vnetResourceId,omitempty"`
+	VnetResourceID *string
 
 	// READ-ONLY; The client certificate thumbprint.
-	CertThumbprint *string `json:"certThumbprint,omitempty" azure:"ro"`
+	CertThumbprint *string
 
 	// READ-ONLY; true if a resync is required; otherwise, false.
-	ResyncRequired *bool `json:"resyncRequired,omitempty" azure:"ro"`
+	ResyncRequired *bool
 
 	// READ-ONLY; The routes that this Virtual Network connection uses.
-	Routes []*VnetRoute `json:"routes,omitempty" azure:"ro"`
+	Routes []*VnetRoute
 }
 
 // VnetInfoResource - Virtual Network information ARM resource.
 type VnetInfoResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *VnetInfo `json:"properties,omitempty"`
+	Properties *VnetInfo
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VnetParameters - The required set of inputs to validate a VNET
 type VnetParameters struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// VnetParameters resource specific properties
-	Properties *VnetParametersProperties `json:"properties,omitempty"`
+	Properties *VnetParametersProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VnetParametersProperties - VnetParameters resource specific properties
 type VnetParametersProperties struct {
 	// The ARM Resource ID of the subnet to validate
-	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
+	SubnetResourceID *string
 
 	// The name of the VNET to be validated
-	VnetName *string `json:"vnetName,omitempty"`
+	VnetName *string
 
 	// The Resource Group of the VNET to be validated
-	VnetResourceGroup *string `json:"vnetResourceGroup,omitempty"`
+	VnetResourceGroup *string
 
 	// The subnet name to be validated
-	VnetSubnetName *string `json:"vnetSubnetName,omitempty"`
+	VnetSubnetName *string
 }
 
 // VnetRoute - Virtual Network route contract used to pass routing information for a Virtual Network.
 type VnetRoute struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// VnetRoute resource specific properties
-	Properties *VnetRouteProperties `json:"properties,omitempty"`
+	Properties *VnetRouteProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VnetRouteProperties - VnetRoute resource specific properties
 type VnetRouteProperties struct {
 	// The ending address for this route. If the start address is specified in CIDR notation, this must be omitted.
-	EndAddress *string `json:"endAddress,omitempty"`
+	EndAddress *string
 
 	// The type of route this is: DEFAULT - By default, every app has routes to the local address ranges specified by RFC1918
 	// INHERITED - Routes inherited from the real Virtual Network routes STATIC - Static
 	// route set on the app only
 	// These values will be used for syncing an app's routes with those from a Virtual Network.
-	RouteType *RouteType `json:"routeType,omitempty"`
+	RouteType *RouteType
 
 	// The starting address for this route. This may also include a CIDR notation, in which case the end address must not be specified.
-	StartAddress *string `json:"startAddress,omitempty"`
+	StartAddress *string
 }
 
 // VnetValidationFailureDetails - A class that describes the reason for a validation failure.
 type VnetValidationFailureDetails struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// VnetValidationFailureDetails resource specific properties
-	Properties *VnetValidationFailureDetailsProperties `json:"properties,omitempty"`
+	Properties *VnetValidationFailureDetailsProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VnetValidationFailureDetailsProperties - VnetValidationFailureDetails resource specific properties
 type VnetValidationFailureDetailsProperties struct {
 	// A flag describing whether or not validation failed.
-	Failed *bool `json:"failed,omitempty"`
+	Failed *bool
 
 	// A list of tests that failed in the validation.
-	FailedTests []*VnetValidationTestFailure `json:"failedTests,omitempty"`
+	FailedTests []*VnetValidationTestFailure
 
 	// Text describing the validation outcome.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// A list of warnings generated during validation.
-	Warnings []*VnetValidationTestFailure `json:"warnings,omitempty"`
+	Warnings []*VnetValidationTestFailure
 }
 
 // VnetValidationTestFailure - A class that describes a test that failed during NSG and UDR validation.
 type VnetValidationTestFailure struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// VnetValidationTestFailure resource specific properties
-	Properties *VnetValidationTestFailureProperties `json:"properties,omitempty"`
+	Properties *VnetValidationTestFailureProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VnetValidationTestFailureProperties - VnetValidationTestFailure resource specific properties
 type VnetValidationTestFailureProperties struct {
 	// The details of what caused the failure, e.g. the blocking rule name, etc.
-	Details *string `json:"details,omitempty"`
+	Details *string
 
 	// The name of the test that failed.
-	TestName *string `json:"testName,omitempty"`
+	TestName *string
 }
 
 // WebAppCollection - Collection of App Service apps.
 type WebAppCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*Site `json:"value,omitempty"`
+	Value []*Site
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // WebAppInstanceStatusCollection - Collection of app instances.
 type WebAppInstanceStatusCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*WebSiteInstanceStatus `json:"value,omitempty"`
+	Value []*WebSiteInstanceStatus
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // WebAppMajorVersion - Web App stack major version.
 type WebAppMajorVersion struct {
 	// READ-ONLY; Web App stack major version (display only).
-	DisplayText *string `json:"displayText,omitempty" azure:"ro"`
+	DisplayText *string
 
 	// READ-ONLY; Minor versions associated with the major version.
-	MinorVersions []*WebAppMinorVersion `json:"minorVersions,omitempty" azure:"ro"`
+	MinorVersions []*WebAppMinorVersion
 
 	// READ-ONLY; Web App stack major version name.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // WebAppMinorVersion - Web App stack minor version.
 type WebAppMinorVersion struct {
 	// READ-ONLY; Web App stack minor version (display only).
-	DisplayText *string `json:"displayText,omitempty" azure:"ro"`
+	DisplayText *string
 
 	// READ-ONLY; Settings associated with the minor version.
-	StackSettings *WebAppRuntimes `json:"stackSettings,omitempty" azure:"ro"`
+	StackSettings *WebAppRuntimes
 
 	// READ-ONLY; Web App stack major version name.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // WebAppRuntimeSettings - Web App runtime settings.
 type WebAppRuntimeSettings struct {
 	// READ-ONLY; Application Insights settings associated with the minor version.
-	AppInsightsSettings *AppInsightsWebAppStackSettings `json:"appInsightsSettings,omitempty" azure:"ro"`
+	AppInsightsSettings *AppInsightsWebAppStackSettings
 
 	// READ-ONLY; End-of-life date for the minor version.
-	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty" azure:"ro"`
+	EndOfLifeDate *time.Time
 
 	// READ-ONLY; GitHub Actions settings associated with the minor version.
-	GitHubActionSettings *GitHubActionWebAppStackSettings `json:"gitHubActionSettings,omitempty" azure:"ro"`
+	GitHubActionSettings *GitHubActionWebAppStackSettings
 
 	// READ-ONLY; true if the stack version is auto-updated; otherwise, false.
-	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty" azure:"ro"`
+	IsAutoUpdate *bool
 
 	// READ-ONLY; true if the stack is deprecated; otherwise, false.
-	IsDeprecated *bool `json:"isDeprecated,omitempty" azure:"ro"`
+	IsDeprecated *bool
 
 	// READ-ONLY; true if the minor version is early-access; otherwise, false.
-	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty" azure:"ro"`
+	IsEarlyAccess *bool
 
 	// READ-ONLY; true if the stack should be hidden; otherwise, false.
-	IsHidden *bool `json:"isHidden,omitempty" azure:"ro"`
+	IsHidden *bool
 
 	// READ-ONLY; true if the stack is in preview; otherwise, false.
-	IsPreview *bool `json:"isPreview,omitempty" azure:"ro"`
+	IsPreview *bool
 
 	// READ-ONLY; true if remote debugging is supported for the stack; otherwise, false.
-	RemoteDebuggingSupported *bool `json:"remoteDebuggingSupported,omitempty" azure:"ro"`
+	RemoteDebuggingSupported *bool
 
 	// READ-ONLY; Web App stack minor version (runtime only).
-	RuntimeVersion *string `json:"runtimeVersion,omitempty" azure:"ro"`
+	RuntimeVersion *string
 }
 
 // WebAppRuntimes - Web App stack runtimes.
 type WebAppRuntimes struct {
 	// READ-ONLY; Linux-specific settings associated with the Java container minor version.
-	LinuxContainerSettings *LinuxJavaContainerSettings `json:"linuxContainerSettings,omitempty" azure:"ro"`
+	LinuxContainerSettings *LinuxJavaContainerSettings
 
 	// READ-ONLY; Linux-specific settings associated with the minor version.
-	LinuxRuntimeSettings *WebAppRuntimeSettings `json:"linuxRuntimeSettings,omitempty" azure:"ro"`
+	LinuxRuntimeSettings *WebAppRuntimeSettings
 
 	// READ-ONLY; Windows-specific settings associated with the Java container minor version.
-	WindowsContainerSettings *WindowsJavaContainerSettings `json:"windowsContainerSettings,omitempty" azure:"ro"`
+	WindowsContainerSettings *WindowsJavaContainerSettings
 
 	// READ-ONLY; Windows-specific settings associated with the minor version.
-	WindowsRuntimeSettings *WebAppRuntimeSettings `json:"windowsRuntimeSettings,omitempty" azure:"ro"`
+	WindowsRuntimeSettings *WebAppRuntimeSettings
 }
 
 // WebAppStack - Web App stack.
 type WebAppStack struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// WebAppStack resource specific properties
-	Properties *WebAppStackProperties `json:"properties,omitempty"`
+	Properties *WebAppStackProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Web App stack location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WebAppStackCollection - Collection of Web app Stacks
 type WebAppStackCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*WebAppStack `json:"value,omitempty"`
+	Value []*WebAppStack
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // WebAppStackProperties - WebAppStack resource specific properties
 type WebAppStackProperties struct {
 	// READ-ONLY; Web App stack (display only).
-	DisplayText *string `json:"displayText,omitempty" azure:"ro"`
+	DisplayText *string
 
 	// READ-ONLY; List of major versions available.
-	MajorVersions []*WebAppMajorVersion `json:"majorVersions,omitempty" azure:"ro"`
+	MajorVersions []*WebAppMajorVersion
 
 	// READ-ONLY; Web App stack preferred OS.
-	PreferredOs *StackPreferredOs `json:"preferredOs,omitempty" azure:"ro"`
+	PreferredOs *StackPreferredOs
 
 	// READ-ONLY; Web App stack name.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // WebAppsClientAddPremierAddOnOptions contains the optional parameters for the WebAppsClient.AddPremierAddOn method.
@@ -12219,6 +12500,20 @@ type WebAppsClientDeleteVnetConnectionSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WebAppsClientDeployWorkflowArtifactsOptions contains the optional parameters for the WebAppsClient.DeployWorkflowArtifacts
+// method.
+type WebAppsClientDeployWorkflowArtifactsOptions struct {
+	// Application settings and files of the workflow.
+	WorkflowArtifacts *WorkflowArtifacts
+}
+
+// WebAppsClientDeployWorkflowArtifactsSlotOptions contains the optional parameters for the WebAppsClient.DeployWorkflowArtifactsSlot
+// method.
+type WebAppsClientDeployWorkflowArtifactsSlotOptions struct {
+	// Application settings and files of the workflow.
+	WorkflowArtifacts *WorkflowArtifacts
+}
+
 // WebAppsClientDiscoverBackupOptions contains the optional parameters for the WebAppsClient.DiscoverBackup method.
 type WebAppsClientDiscoverBackupOptions struct {
 	// placeholder for future optional parameters
@@ -12253,13 +12548,13 @@ type WebAppsClientGetAppSettingKeyVaultReferenceSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientGetAppSettingsKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.GetAppSettingsKeyVaultReferences
+// WebAppsClientGetAppSettingsKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.NewGetAppSettingsKeyVaultReferencesPager
 // method.
 type WebAppsClientGetAppSettingsKeyVaultReferencesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.GetAppSettingsKeyVaultReferencesSlot
+// WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.NewGetAppSettingsKeyVaultReferencesSlotPager
 // method.
 type WebAppsClientGetAppSettingsKeyVaultReferencesSlotOptions struct {
 	// placeholder for future optional parameters
@@ -12522,6 +12817,12 @@ type WebAppsClientGetInstanceProcessSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WebAppsClientGetInstanceWorkflowSlotOptions contains the optional parameters for the WebAppsClient.GetInstanceWorkflowSlot
+// method.
+type WebAppsClientGetInstanceWorkflowSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WebAppsClientGetMSDeployLogOptions contains the optional parameters for the WebAppsClient.GetMSDeployLog method.
 type WebAppsClientGetMSDeployLogOptions struct {
 	// placeholder for future optional parameters
@@ -12630,13 +12931,13 @@ type WebAppsClientGetPrivateAccessSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnectionList
+// WebAppsClientGetPrivateEndpointConnectionListOptions contains the optional parameters for the WebAppsClient.NewGetPrivateEndpointConnectionListPager
 // method.
 type WebAppsClientGetPrivateEndpointConnectionListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientGetPrivateEndpointConnectionListSlotOptions contains the optional parameters for the WebAppsClient.GetPrivateEndpointConnectionListSlot
+// WebAppsClientGetPrivateEndpointConnectionListSlotOptions contains the optional parameters for the WebAppsClient.NewGetPrivateEndpointConnectionListSlotPager
 // method.
 type WebAppsClientGetPrivateEndpointConnectionListSlotOptions struct {
 	// placeholder for future optional parameters
@@ -12741,13 +13042,13 @@ type WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReferences
+// WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions contains the optional parameters for the WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesPager
 // method.
 type WebAppsClientGetSiteConnectionStringKeyVaultReferencesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.GetSiteConnectionStringKeyVaultReferencesSlot
+// WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions contains the optional parameters for the WebAppsClient.NewGetSiteConnectionStringKeyVaultReferencesSlotPager
 // method.
 type WebAppsClientGetSiteConnectionStringKeyVaultReferencesSlotOptions struct {
 	// placeholder for future optional parameters
@@ -12870,6 +13171,11 @@ type WebAppsClientGetWebSiteContainerLogsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
+// WebAppsClientGetWorkflowOptions contains the optional parameters for the WebAppsClient.GetWorkflow method.
+type WebAppsClientGetWorkflowOptions struct {
+	// placeholder for future optional parameters
+}
+
 // WebAppsClientIsCloneableOptions contains the optional parameters for the WebAppsClient.IsCloneable method.
 type WebAppsClientIsCloneableOptions struct {
 	// placeholder for future optional parameters
@@ -12916,53 +13222,55 @@ type WebAppsClientListBackupStatusSecretsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.ListBackups method.
+// WebAppsClientListBackupsOptions contains the optional parameters for the WebAppsClient.NewListBackupsPager method.
 type WebAppsClientListBackupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListBackupsSlotOptions contains the optional parameters for the WebAppsClient.ListBackupsSlot method.
+// WebAppsClientListBackupsSlotOptions contains the optional parameters for the WebAppsClient.NewListBackupsSlotPager method.
 type WebAppsClientListBackupsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListBasicPublishingCredentialsPoliciesOptions contains the optional parameters for the WebAppsClient.ListBasicPublishingCredentialsPolicies
+// WebAppsClientListBasicPublishingCredentialsPoliciesOptions contains the optional parameters for the WebAppsClient.NewListBasicPublishingCredentialsPoliciesPager
 // method.
 type WebAppsClientListBasicPublishingCredentialsPoliciesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions contains the optional parameters for the WebAppsClient.ListBasicPublishingCredentialsPoliciesSlot
+// WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions contains the optional parameters for the WebAppsClient.NewListBasicPublishingCredentialsPoliciesSlotPager
 // method.
 type WebAppsClientListBasicPublishingCredentialsPoliciesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.ListByResourceGroup method.
+// WebAppsClientListByResourceGroupOptions contains the optional parameters for the WebAppsClient.NewListByResourceGroupPager
+// method.
 type WebAppsClientListByResourceGroupOptions struct {
 	// Specify true to include deployment slots in results. The default is false, which only gives you the production slot of
 	// all apps.
 	IncludeSlots *bool
 }
 
-// WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfo
+// WebAppsClientListConfigurationSnapshotInfoOptions contains the optional parameters for the WebAppsClient.NewListConfigurationSnapshotInfoPager
 // method.
 type WebAppsClientListConfigurationSnapshotInfoOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationSnapshotInfoSlot
+// WebAppsClientListConfigurationSnapshotInfoSlotOptions contains the optional parameters for the WebAppsClient.NewListConfigurationSnapshotInfoSlotPager
 // method.
 type WebAppsClientListConfigurationSnapshotInfoSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.ListConfigurations method.
+// WebAppsClientListConfigurationsOptions contains the optional parameters for the WebAppsClient.NewListConfigurationsPager
+// method.
 type WebAppsClientListConfigurationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListConfigurationsSlotOptions contains the optional parameters for the WebAppsClient.ListConfigurationsSlot
+// WebAppsClientListConfigurationsSlotOptions contains the optional parameters for the WebAppsClient.NewListConfigurationsSlotPager
 // method.
 type WebAppsClientListConfigurationsSlotOptions struct {
 	// placeholder for future optional parameters
@@ -12980,13 +13288,13 @@ type WebAppsClientListConnectionStringsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobs
+// WebAppsClientListContinuousWebJobsOptions contains the optional parameters for the WebAppsClient.NewListContinuousWebJobsPager
 // method.
 type WebAppsClientListContinuousWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListContinuousWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListContinuousWebJobsSlot
+// WebAppsClientListContinuousWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListContinuousWebJobsSlotPager
 // method.
 type WebAppsClientListContinuousWebJobsSlotOptions struct {
 	// placeholder for future optional parameters
@@ -13003,23 +13311,24 @@ type WebAppsClientListDeploymentLogSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.ListDeployments method.
+// WebAppsClientListDeploymentsOptions contains the optional parameters for the WebAppsClient.NewListDeploymentsPager method.
 type WebAppsClientListDeploymentsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListDeploymentsSlotOptions contains the optional parameters for the WebAppsClient.ListDeploymentsSlot method.
+// WebAppsClientListDeploymentsSlotOptions contains the optional parameters for the WebAppsClient.NewListDeploymentsSlotPager
+// method.
 type WebAppsClientListDeploymentsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiers
+// WebAppsClientListDomainOwnershipIdentifiersOptions contains the optional parameters for the WebAppsClient.NewListDomainOwnershipIdentifiersPager
 // method.
 type WebAppsClientListDomainOwnershipIdentifiersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListDomainOwnershipIdentifiersSlot
+// WebAppsClientListDomainOwnershipIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.NewListDomainOwnershipIdentifiersSlotPager
 // method.
 type WebAppsClientListDomainOwnershipIdentifiersSlotOptions struct {
 	// placeholder for future optional parameters
@@ -13046,7 +13355,7 @@ type WebAppsClientListFunctionSecretsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.ListFunctions method.
+// WebAppsClientListFunctionsOptions contains the optional parameters for the WebAppsClient.NewListFunctionsPager method.
 type WebAppsClientListFunctionsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -13061,12 +13370,13 @@ type WebAppsClientListHostKeysSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.ListHostNameBindings method.
+// WebAppsClientListHostNameBindingsOptions contains the optional parameters for the WebAppsClient.NewListHostNameBindingsPager
+// method.
 type WebAppsClientListHostNameBindingsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListHostNameBindingsSlotOptions contains the optional parameters for the WebAppsClient.ListHostNameBindingsSlot
+// WebAppsClientListHostNameBindingsSlotOptions contains the optional parameters for the WebAppsClient.NewListHostNameBindingsSlotPager
 // method.
 type WebAppsClientListHostNameBindingsSlotOptions struct {
 	// placeholder for future optional parameters
@@ -13084,57 +13394,63 @@ type WebAppsClientListHybridConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceFunctionsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceFunctionsSlot
+// WebAppsClientListInstanceFunctionsSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceFunctionsSlotPager
 // method.
 type WebAppsClientListInstanceFunctionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiers
+// WebAppsClientListInstanceIdentifiersOptions contains the optional parameters for the WebAppsClient.NewListInstanceIdentifiersPager
 // method.
 type WebAppsClientListInstanceIdentifiersOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceIdentifiersSlot
+// WebAppsClientListInstanceIdentifiersSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceIdentifiersSlotPager
 // method.
 type WebAppsClientListInstanceIdentifiersSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModules
+// WebAppsClientListInstanceProcessModulesOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessModulesPager
 // method.
 type WebAppsClientListInstanceProcessModulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessModulesSlot
+// WebAppsClientListInstanceProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessModulesSlotPager
 // method.
 type WebAppsClientListInstanceProcessModulesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreads
+// WebAppsClientListInstanceProcessThreadsOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessThreadsPager
 // method.
 type WebAppsClientListInstanceProcessThreadsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessThreadsSlot
+// WebAppsClientListInstanceProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessThreadsSlotPager
 // method.
 type WebAppsClientListInstanceProcessThreadsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessesOptions contains the optional parameters for the WebAppsClient.ListInstanceProcesses
+// WebAppsClientListInstanceProcessesOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessesPager
 // method.
 type WebAppsClientListInstanceProcessesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListInstanceProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListInstanceProcessesSlot
+// WebAppsClientListInstanceProcessesSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceProcessesSlotPager
 // method.
 type WebAppsClientListInstanceProcessesSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListInstanceWorkflowsSlotOptions contains the optional parameters for the WebAppsClient.NewListInstanceWorkflowsSlotPager
+// method.
+type WebAppsClientListInstanceWorkflowsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -13159,12 +13475,13 @@ type WebAppsClientListNetworkFeaturesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListOptions contains the optional parameters for the WebAppsClient.List method.
+// WebAppsClientListOptions contains the optional parameters for the WebAppsClient.NewListPager method.
 type WebAppsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.ListPerfMonCounters method.
+// WebAppsClientListPerfMonCountersOptions contains the optional parameters for the WebAppsClient.NewListPerfMonCountersPager
+// method.
 type WebAppsClientListPerfMonCountersOptions struct {
 	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z
 	// and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
@@ -13172,7 +13489,7 @@ type WebAppsClientListPerfMonCountersOptions struct {
 	Filter *string
 }
 
-// WebAppsClientListPerfMonCountersSlotOptions contains the optional parameters for the WebAppsClient.ListPerfMonCountersSlot
+// WebAppsClientListPerfMonCountersSlotOptions contains the optional parameters for the WebAppsClient.NewListPerfMonCountersSlotPager
 // method.
 type WebAppsClientListPerfMonCountersSlotOptions struct {
 	// Return only usages/metrics specified in the filter. Filter conforms to odata syntax. Example: $filter=(startTime eq 2014-01-01T00:00:00Z
@@ -13192,51 +13509,54 @@ type WebAppsClientListPremierAddOnsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessModulesOptions contains the optional parameters for the WebAppsClient.ListProcessModules method.
+// WebAppsClientListProcessModulesOptions contains the optional parameters for the WebAppsClient.NewListProcessModulesPager
+// method.
 type WebAppsClientListProcessModulesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessModulesSlot
+// WebAppsClientListProcessModulesSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessModulesSlotPager
 // method.
 type WebAppsClientListProcessModulesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessThreadsOptions contains the optional parameters for the WebAppsClient.ListProcessThreads method.
+// WebAppsClientListProcessThreadsOptions contains the optional parameters for the WebAppsClient.NewListProcessThreadsPager
+// method.
 type WebAppsClientListProcessThreadsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.ListProcessThreadsSlot
+// WebAppsClientListProcessThreadsSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessThreadsSlotPager
 // method.
 type WebAppsClientListProcessThreadsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.ListProcesses method.
+// WebAppsClientListProcessesOptions contains the optional parameters for the WebAppsClient.NewListProcessesPager method.
 type WebAppsClientListProcessesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProcessesSlotOptions contains the optional parameters for the WebAppsClient.ListProcessesSlot method.
+// WebAppsClientListProcessesSlotOptions contains the optional parameters for the WebAppsClient.NewListProcessesSlotPager
+// method.
 type WebAppsClientListProcessesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListProductionSiteDeploymentStatusesOptions contains the optional parameters for the WebAppsClient.ListProductionSiteDeploymentStatuses
+// WebAppsClientListProductionSiteDeploymentStatusesOptions contains the optional parameters for the WebAppsClient.NewListProductionSiteDeploymentStatusesPager
 // method.
 type WebAppsClientListProductionSiteDeploymentStatusesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.ListPublicCertificates
+// WebAppsClientListPublicCertificatesOptions contains the optional parameters for the WebAppsClient.NewListPublicCertificatesPager
 // method.
 type WebAppsClientListPublicCertificatesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListPublicCertificatesSlotOptions contains the optional parameters for the WebAppsClient.ListPublicCertificatesSlot
+// WebAppsClientListPublicCertificatesSlotOptions contains the optional parameters for the WebAppsClient.NewListPublicCertificatesSlotPager
 // method.
 type WebAppsClientListPublicCertificatesSlotOptions struct {
 	// placeholder for future optional parameters
@@ -13266,22 +13586,24 @@ type WebAppsClientListRelayServiceConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSiteBackupsOptions contains the optional parameters for the WebAppsClient.ListSiteBackups method.
+// WebAppsClientListSiteBackupsOptions contains the optional parameters for the WebAppsClient.NewListSiteBackupsPager method.
 type WebAppsClientListSiteBackupsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSiteBackupsSlotOptions contains the optional parameters for the WebAppsClient.ListSiteBackupsSlot method.
+// WebAppsClientListSiteBackupsSlotOptions contains the optional parameters for the WebAppsClient.NewListSiteBackupsSlotPager
+// method.
 type WebAppsClientListSiteBackupsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.ListSiteExtensions method.
+// WebAppsClientListSiteExtensionsOptions contains the optional parameters for the WebAppsClient.NewListSiteExtensionsPager
+// method.
 type WebAppsClientListSiteExtensionsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSiteExtensionsSlotOptions contains the optional parameters for the WebAppsClient.ListSiteExtensionsSlot
+// WebAppsClientListSiteExtensionsSlotOptions contains the optional parameters for the WebAppsClient.NewListSiteExtensionsSlotPager
 // method.
 type WebAppsClientListSiteExtensionsSlotOptions struct {
 	// placeholder for future optional parameters
@@ -13304,47 +13626,48 @@ type WebAppsClientListSlotConfigurationNamesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSlotDifferencesFromProductionOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesFromProduction
+// WebAppsClientListSlotDifferencesFromProductionOptions contains the optional parameters for the WebAppsClient.NewListSlotDifferencesFromProductionPager
 // method.
 type WebAppsClientListSlotDifferencesFromProductionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSlotDifferencesSlotOptions contains the optional parameters for the WebAppsClient.ListSlotDifferencesSlot
+// WebAppsClientListSlotDifferencesSlotOptions contains the optional parameters for the WebAppsClient.NewListSlotDifferencesSlotPager
 // method.
 type WebAppsClientListSlotDifferencesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSlotSiteDeploymentStatusesSlotOptions contains the optional parameters for the WebAppsClient.ListSlotSiteDeploymentStatusesSlot
+// WebAppsClientListSlotSiteDeploymentStatusesSlotOptions contains the optional parameters for the WebAppsClient.NewListSlotSiteDeploymentStatusesSlotPager
 // method.
 type WebAppsClientListSlotSiteDeploymentStatusesSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.ListSlots method.
+// WebAppsClientListSlotsOptions contains the optional parameters for the WebAppsClient.NewListSlotsPager method.
 type WebAppsClientListSlotsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondary
+// WebAppsClientListSnapshotsFromDRSecondaryOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsFromDRSecondaryPager
 // method.
 type WebAppsClientListSnapshotsFromDRSecondaryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsFromDRSecondarySlot
+// WebAppsClientListSnapshotsFromDRSecondarySlotOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsFromDRSecondarySlotPager
 // method.
 type WebAppsClientListSnapshotsFromDRSecondarySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.ListSnapshots method.
+// WebAppsClientListSnapshotsOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsPager method.
 type WebAppsClientListSnapshotsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListSnapshotsSlotOptions contains the optional parameters for the WebAppsClient.ListSnapshotsSlot method.
+// WebAppsClientListSnapshotsSlotOptions contains the optional parameters for the WebAppsClient.NewListSnapshotsSlotPager
+// method.
 type WebAppsClientListSnapshotsSlotOptions struct {
 	// placeholder for future optional parameters
 }
@@ -13371,30 +13694,31 @@ type WebAppsClientListSyncStatusSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistory
+// WebAppsClientListTriggeredWebJobHistoryOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobHistoryPager
 // method.
 type WebAppsClientListTriggeredWebJobHistoryOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobHistorySlot
+// WebAppsClientListTriggeredWebJobHistorySlotOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobHistorySlotPager
 // method.
 type WebAppsClientListTriggeredWebJobHistorySlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobs method.
+// WebAppsClientListTriggeredWebJobsOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobsPager
+// method.
 type WebAppsClientListTriggeredWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListTriggeredWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListTriggeredWebJobsSlot
+// WebAppsClientListTriggeredWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListTriggeredWebJobsSlotPager
 // method.
 type WebAppsClientListTriggeredWebJobsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.ListUsages method.
+// WebAppsClientListUsagesOptions contains the optional parameters for the WebAppsClient.NewListUsagesPager method.
 type WebAppsClientListUsagesOptions struct {
 	// Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or
 	// name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
@@ -13402,7 +13726,7 @@ type WebAppsClientListUsagesOptions struct {
 	Filter *string
 }
 
-// WebAppsClientListUsagesSlotOptions contains the optional parameters for the WebAppsClient.ListUsagesSlot method.
+// WebAppsClientListUsagesSlotOptions contains the optional parameters for the WebAppsClient.NewListUsagesSlotPager method.
 type WebAppsClientListUsagesSlotOptions struct {
 	// Return only information specified in the filter (using OData syntax). For example: $filter=(name.value eq 'Metric1' or
 	// name.value eq 'Metric2') and startTime eq 2014-01-01T00:00:00Z and endTime eq
@@ -13421,13 +13745,30 @@ type WebAppsClientListVnetConnectionsSlotOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.ListWebJobs method.
+// WebAppsClientListWebJobsOptions contains the optional parameters for the WebAppsClient.NewListWebJobsPager method.
 type WebAppsClientListWebJobsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebAppsClientListWebJobsSlotOptions contains the optional parameters for the WebAppsClient.ListWebJobsSlot method.
+// WebAppsClientListWebJobsSlotOptions contains the optional parameters for the WebAppsClient.NewListWebJobsSlotPager method.
 type WebAppsClientListWebJobsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListWorkflowsConnectionsOptions contains the optional parameters for the WebAppsClient.ListWorkflowsConnections
+// method.
+type WebAppsClientListWorkflowsConnectionsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListWorkflowsConnectionsSlotOptions contains the optional parameters for the WebAppsClient.ListWorkflowsConnectionsSlot
+// method.
+type WebAppsClientListWorkflowsConnectionsSlotOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WebAppsClientListWorkflowsOptions contains the optional parameters for the WebAppsClient.NewListWorkflowsPager method.
+type WebAppsClientListWorkflowsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -13860,88 +14201,88 @@ type WebAppsClientUpdateVnetConnectionSlotOptions struct {
 // WebJob - Web Job Information.
 type WebJob struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// WebJob resource specific properties
-	Properties *WebJobProperties `json:"properties,omitempty"`
+	Properties *WebJobProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WebJobCollection - Collection of Kudu web job information elements.
 type WebJobCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*WebJob `json:"value,omitempty"`
+	Value []*WebJob
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // WebJobProperties - WebJob resource specific properties
 type WebJobProperties struct {
 	// Error information.
-	Error *string `json:"error,omitempty"`
+	Error *string
 
 	// Extra Info URL.
-	ExtraInfoURL *string `json:"extra_info_url,omitempty"`
+	ExtraInfoURL *string
 
 	// Run command.
-	RunCommand *string `json:"run_command,omitempty"`
+	RunCommand *string
 
 	// Job settings.
-	Settings map[string]interface{} `json:"settings,omitempty"`
+	Settings map[string]any
 
 	// Job URL.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// Using SDK?
-	UsingSdk *bool `json:"using_sdk,omitempty"`
+	UsingSdk *bool
 
 	// Job type.
-	WebJobType *WebJobType `json:"web_job_type,omitempty"`
+	WebJobType *WebJobType
 }
 
 type WebSiteInstanceStatus struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// WebSiteInstanceStatus resource specific properties
-	Properties *WebSiteInstanceStatusProperties `json:"properties,omitempty"`
+	Properties *WebSiteInstanceStatusProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WebSiteInstanceStatusProperties - WebSiteInstanceStatus resource specific properties
 type WebSiteInstanceStatusProperties struct {
 	// Link to the console to web app instance
-	ConsoleURL *string `json:"consoleUrl,omitempty"`
+	ConsoleURL *string
 
 	// Dictionary of
-	Containers map[string]*ContainerInfo `json:"containers,omitempty"`
+	Containers map[string]*ContainerInfo
 
 	// Link to the Diagnose and Solve Portal
-	DetectorURL *string `json:"detectorUrl,omitempty"`
+	DetectorURL *string
 
 	// Link to the console to web app instance
-	HealthCheckURL *string           `json:"healthCheckUrl,omitempty"`
-	State          *SiteRuntimeState `json:"state,omitempty"`
+	HealthCheckURL *string
+	State          *SiteRuntimeState
 
 	// Link to the GetStatusApi in Kudu
-	StatusURL *string `json:"statusUrl,omitempty"`
+	StatusURL *string
 }
 
 // WebSiteManagementClientCheckNameAvailabilityOptions contains the optional parameters for the WebSiteManagementClient.CheckNameAvailability
@@ -13968,7 +14309,7 @@ type WebSiteManagementClientGetSubscriptionDeploymentLocationsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.ListBillingMeters
+// WebSiteManagementClientListBillingMetersOptions contains the optional parameters for the WebSiteManagementClient.NewListBillingMetersPager
 // method.
 type WebSiteManagementClientListBillingMetersOptions struct {
 	// Azure Location of billable resource
@@ -13977,14 +14318,14 @@ type WebSiteManagementClientListBillingMetersOptions struct {
 	OSType *string
 }
 
-// WebSiteManagementClientListCustomHostNameSitesOptions contains the optional parameters for the WebSiteManagementClient.ListCustomHostNameSites
+// WebSiteManagementClientListCustomHostNameSitesOptions contains the optional parameters for the WebSiteManagementClient.NewListCustomHostNameSitesPager
 // method.
 type WebSiteManagementClientListCustomHostNameSitesOptions struct {
 	// Specific hostname
 	Hostname *string
 }
 
-// WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.ListGeoRegions
+// WebSiteManagementClientListGeoRegionsOptions contains the optional parameters for the WebSiteManagementClient.NewListGeoRegionsPager
 // method.
 type WebSiteManagementClientListGeoRegionsOptions struct {
 	// Specify true if you want to filter to only regions that support Linux Consumption Workers.
@@ -13997,7 +14338,7 @@ type WebSiteManagementClientListGeoRegionsOptions struct {
 	XenonWorkersEnabled *bool
 }
 
-// WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.ListPremierAddOnOffers
+// WebSiteManagementClientListPremierAddOnOffersOptions contains the optional parameters for the WebSiteManagementClient.NewListPremierAddOnOffersPager
 // method.
 type WebSiteManagementClientListPremierAddOnOffersOptions struct {
 	// placeholder for future optional parameters
@@ -14008,13 +14349,13 @@ type WebSiteManagementClientListSKUsOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions contains the optional parameters for the WebSiteManagementClient.ListSiteIdentifiersAssignedToHostName
+// WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions contains the optional parameters for the WebSiteManagementClient.NewListSiteIdentifiersAssignedToHostNamePager
 // method.
 type WebSiteManagementClientListSiteIdentifiersAssignedToHostNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.ListSourceControls
+// WebSiteManagementClientListSourceControlsOptions contains the optional parameters for the WebSiteManagementClient.NewListSourceControlsPager
 // method.
 type WebSiteManagementClientListSourceControlsOptions struct {
 	// placeholder for future optional parameters
@@ -14057,366 +14398,429 @@ type WebSiteManagementClientVerifyHostingEnvironmentVnetOptions struct {
 // WindowsJavaContainerSettings - Windows Java Container settings.
 type WindowsJavaContainerSettings struct {
 	// READ-ONLY; End-of-life date for the minor version.
-	EndOfLifeDate *time.Time `json:"endOfLifeDate,omitempty" azure:"ro"`
+	EndOfLifeDate *time.Time
 
 	// READ-ONLY; true if the stack version is auto-updated; otherwise, false.
-	IsAutoUpdate *bool `json:"isAutoUpdate,omitempty" azure:"ro"`
+	IsAutoUpdate *bool
 
 	// READ-ONLY; true if the stack is deprecated; otherwise, false.
-	IsDeprecated *bool `json:"isDeprecated,omitempty" azure:"ro"`
+	IsDeprecated *bool
 
 	// READ-ONLY; true if the minor version is early-access; otherwise, false.
-	IsEarlyAccess *bool `json:"isEarlyAccess,omitempty" azure:"ro"`
+	IsEarlyAccess *bool
 
 	// READ-ONLY; true if the stack should be hidden; otherwise, false.
-	IsHidden *bool `json:"isHidden,omitempty" azure:"ro"`
+	IsHidden *bool
 
 	// READ-ONLY; true if the stack is in preview; otherwise, false.
-	IsPreview *bool `json:"isPreview,omitempty" azure:"ro"`
+	IsPreview *bool
 
 	// READ-ONLY; Java container (runtime only).
-	JavaContainer *string `json:"javaContainer,omitempty" azure:"ro"`
+	JavaContainer *string
 
 	// READ-ONLY; Java container version (runtime only).
-	JavaContainerVersion *string `json:"javaContainerVersion,omitempty" azure:"ro"`
+	JavaContainerVersion *string
 }
 
 // WorkerPool - Worker pool of an App Service Environment.
 type WorkerPool struct {
 	// Shared or dedicated app hosting.
-	ComputeMode *ComputeModeOptions `json:"computeMode,omitempty"`
+	ComputeMode *ComputeModeOptions
 
 	// Number of instances in the worker pool.
-	WorkerCount *int32 `json:"workerCount,omitempty"`
+	WorkerCount *int32
 
 	// VM size of the worker pool instances.
-	WorkerSize *string `json:"workerSize,omitempty"`
+	WorkerSize *string
 
 	// Worker size ID for referencing this worker pool.
-	WorkerSizeID *int32 `json:"workerSizeId,omitempty"`
+	WorkerSizeID *int32
 
 	// READ-ONLY; Names of all instances in the worker pool (read only).
-	InstanceNames []*string `json:"instanceNames,omitempty" azure:"ro"`
+	InstanceNames []*string
 }
 
 // WorkerPoolCollection - Collection of worker pools.
 type WorkerPoolCollection struct {
 	// REQUIRED; Collection of resources.
-	Value []*WorkerPoolResource `json:"value,omitempty"`
+	Value []*WorkerPoolResource
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // WorkerPoolResource - Worker pool of an App Service Environment ARM resource.
 type WorkerPoolResource struct {
 	// Kind of resource.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Core resource properties
-	Properties *WorkerPool `json:"properties,omitempty"`
+	Properties *WorkerPool
 
 	// Description of a SKU for a scalable resource.
-	SKU *SKUDescription `json:"sku,omitempty"`
+	SKU *SKUDescription
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Workflow - The workflow type.
 type Workflow struct {
 	// Managed service identity.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The workflow properties.
-	Properties *WorkflowProperties `json:"properties,omitempty"`
+	Properties *WorkflowProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// WorkflowArtifacts - The workflow filter.
+type WorkflowArtifacts struct {
+	// Application settings of the workflow.
+	AppSettings any
+
+	// Files of the app.
+	Files map[string]any
+
+	// Files of the app to delete.
+	FilesToDelete []*string
+}
+
+// WorkflowEnvelope - Workflow properties definition.
+type WorkflowEnvelope struct {
+	// The resource kind.
+	Kind *string
+
+	// The resource location.
+	Location *string
+
+	// Additional workflow properties.
+	Properties *WorkflowEnvelopeProperties
+
+	// READ-ONLY; The resource id.
+	ID *string
+
+	// READ-ONLY; Gets the resource name.
+	Name *string
+
+	// READ-ONLY; Gets the resource type.
+	Type *string
+}
+
+// WorkflowEnvelopeCollection - Collection of Kudu workflow information elements.
+type WorkflowEnvelopeCollection struct {
+	// REQUIRED; Collection of resources.
+	Value []*WorkflowEnvelope
+
+	// READ-ONLY; Link to next page of resources.
+	NextLink *string
+}
+
+// WorkflowEnvelopeProperties - Additional workflow properties.
+type WorkflowEnvelopeProperties struct {
+	// Gets or sets the files.
+	Files map[string]any
+
+	// Gets or sets the state of the workflow.
+	FlowState *WorkflowState
+
+	// Gets or sets workflow health.
+	Health *WorkflowHealth
 }
 
 // WorkflowFilter - The workflow filter.
 type WorkflowFilter struct {
 	// The state of workflows.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
+}
+
+// WorkflowHealth - Represents the workflow health.
+type WorkflowHealth struct {
+	// REQUIRED; Gets or sets the workflow health state.
+	State *WorkflowHealthState
+
+	// Gets or sets the workflow error.
+	Error *ErrorEntity
 }
 
 // WorkflowListResult - The list of workflows.
 type WorkflowListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of workflows.
-	Value []*Workflow `json:"value,omitempty"`
+	Value []*Workflow
 }
 
 // WorkflowOutputParameter - The workflow output parameter.
 type WorkflowOutputParameter struct {
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The metadata.
-	Metadata interface{} `json:"metadata,omitempty"`
+	Metadata any
 
 	// The type.
-	Type *ParameterType `json:"type,omitempty"`
+	Type *ParameterType
 
 	// The value.
-	Value interface{} `json:"value,omitempty"`
+	Value any
 
 	// READ-ONLY; Gets the error.
-	Error interface{} `json:"error,omitempty" azure:"ro"`
+	Error any
 }
 
 // WorkflowParameter - The workflow parameters.
 type WorkflowParameter struct {
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The metadata.
-	Metadata interface{} `json:"metadata,omitempty"`
+	Metadata any
 
 	// The type.
-	Type *ParameterType `json:"type,omitempty"`
+	Type *ParameterType
 
 	// The value.
-	Value interface{} `json:"value,omitempty"`
+	Value any
 }
 
 // WorkflowProperties - The workflow properties.
 type WorkflowProperties struct {
 	// The access control configuration.
-	AccessControl *FlowAccessControlConfiguration `json:"accessControl,omitempty"`
+	AccessControl *FlowAccessControlConfiguration
 
 	// The definition.
-	Definition interface{} `json:"definition,omitempty"`
+	Definition any
 
 	// The endpoints configuration.
-	EndpointsConfiguration *FlowEndpointsConfiguration `json:"endpointsConfiguration,omitempty"`
+	EndpointsConfiguration *FlowEndpointsConfiguration
 
 	// The integration account.
-	IntegrationAccount *ResourceReference `json:"integrationAccount,omitempty"`
+	IntegrationAccount *ResourceReference
 
 	// The integration service environment.
-	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
+	IntegrationServiceEnvironment *ResourceReference
 
 	// The workflow kind.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// The parameters.
-	Parameters map[string]*WorkflowParameter `json:"parameters,omitempty"`
+	Parameters map[string]*WorkflowParameter
 
 	// The state.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 
 	// READ-ONLY; Gets the access endpoint.
-	AccessEndpoint *string `json:"accessEndpoint,omitempty" azure:"ro"`
+	AccessEndpoint *string
 
 	// READ-ONLY; Gets the changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; Gets the created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Gets the provisioning state.
-	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkflowProvisioningState
 
 	// READ-ONLY; The sku.
-	SKU *WorkflowSKU `json:"sku,omitempty" azure:"ro"`
+	SKU *WorkflowSKU
 
 	// READ-ONLY; Gets the version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // WorkflowResource - The base resource type.
 type WorkflowResource struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowRun - The workflow run.
 type WorkflowRun struct {
 	// The workflow run properties.
-	Properties *WorkflowRunProperties `json:"properties,omitempty"`
+	Properties *WorkflowRunProperties
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the workflow run name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the workflow run type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowRunAction - The workflow run action.
 type WorkflowRunAction struct {
 	// The workflow run action properties.
-	Properties *WorkflowRunActionProperties `json:"properties,omitempty"`
+	Properties *WorkflowRunActionProperties
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the workflow run action name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the workflow run action type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowRunActionFilter - The workflow run action filter.
 type WorkflowRunActionFilter struct {
 	// The status of workflow run action.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 }
 
 // WorkflowRunActionListResult - The list of workflow run actions.
 type WorkflowRunActionListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow run actions.
-	Value []*WorkflowRunAction `json:"value,omitempty"`
+	Value []*WorkflowRunAction
 }
 
 // WorkflowRunActionProperties - The workflow run action properties.
 type WorkflowRunActionProperties struct {
 	// The correlation properties.
-	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+	Correlation *RunActionCorrelation
 
 	// Gets the retry histories.
-	RetryHistory []*RetryHistory `json:"retryHistory,omitempty"`
+	RetryHistory []*RetryHistory
 
 	// READ-ONLY; Gets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the error.
-	Error interface{} `json:"error,omitempty" azure:"ro"`
+	Error any
 
 	// READ-ONLY; Gets the link to inputs.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the link to outputs.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties interface{} `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties any
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // WorkflowRunActionRepetitionDefinition - The workflow run action repetition definition.
 type WorkflowRunActionRepetitionDefinition struct {
 	// REQUIRED; The workflow run action repetition properties definition.
-	Properties *WorkflowRunActionRepetitionProperties `json:"properties,omitempty"`
+	Properties *WorkflowRunActionRepetitionProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowRunActionRepetitionDefinitionCollection - A collection of workflow run action repetitions.
 type WorkflowRunActionRepetitionDefinitionCollection struct {
 	// The link used to get the next page of recommendations.
-	NextLink *string                                  `json:"nextLink,omitempty"`
-	Value    []*WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
+	NextLink *string
+	Value    []*WorkflowRunActionRepetitionDefinition
 }
 
 // WorkflowRunActionRepetitionProperties - The workflow run action repetition properties definition.
 type WorkflowRunActionRepetitionProperties struct {
 	// The workflow scope repetition code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The correlation properties.
-	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+	Correlation *RunActionCorrelation
 
 	// The end time of the workflow scope repetition.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Anything
-	Error          interface{} `json:"error,omitempty"`
-	IterationCount *int32      `json:"iterationCount,omitempty"`
+	Error          any
+	IterationCount *int32
 
 	// The repetition indexes.
-	RepetitionIndexes []*RepetitionIndex `json:"repetitionIndexes,omitempty"`
+	RepetitionIndexes []*RepetitionIndex
 
 	// Gets the retry histories.
-	RetryHistory []*RetryHistory `json:"retryHistory,omitempty"`
+	RetryHistory []*RetryHistory
 
 	// The start time of the workflow scope repetition.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the workflow scope repetition.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the inputs.
-	Inputs interface{} `json:"inputs,omitempty" azure:"ro"`
+	Inputs any
 
 	// READ-ONLY; Gets the link to inputs.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the outputs.
-	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; Gets the link to outputs.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties interface{} `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties any
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // WorkflowRunActionRepetitionsClientGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.Get
@@ -14425,13 +14829,13 @@ type WorkflowRunActionRepetitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRepetitionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.ListExpressionTraces
+// WorkflowRunActionRepetitionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.NewListExpressionTracesPager
 // method.
 type WorkflowRunActionRepetitionsClientListExpressionTracesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.List
+// WorkflowRunActionRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.NewListPager
 // method.
 type WorkflowRunActionRepetitionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -14443,7 +14847,7 @@ type WorkflowRunActionRepetitionsRequestHistoriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionRepetitionsRequestHistoriesClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.List
+// WorkflowRunActionRepetitionsRequestHistoriesClientListOptions contains the optional parameters for the WorkflowRunActionRepetitionsRequestHistoriesClient.NewListPager
 // method.
 type WorkflowRunActionRepetitionsRequestHistoriesClientListOptions struct {
 	// placeholder for future optional parameters
@@ -14455,7 +14859,7 @@ type WorkflowRunActionScopeRepetitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionScopeRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionScopeRepetitionsClient.List
+// WorkflowRunActionScopeRepetitionsClientListOptions contains the optional parameters for the WorkflowRunActionScopeRepetitionsClient.NewListPager
 // method.
 type WorkflowRunActionScopeRepetitionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -14466,13 +14870,13 @@ type WorkflowRunActionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.ListExpressionTraces
+// WorkflowRunActionsClientListExpressionTracesOptions contains the optional parameters for the WorkflowRunActionsClient.NewListExpressionTracesPager
 // method.
 type WorkflowRunActionsClientListExpressionTracesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunActionsClientListOptions contains the optional parameters for the WorkflowRunActionsClient.List method.
+// WorkflowRunActionsClientListOptions contains the optional parameters for the WorkflowRunActionsClient.NewListPager method.
 type WorkflowRunActionsClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: Status.
 	Filter *string
@@ -14483,100 +14887,100 @@ type WorkflowRunActionsClientListOptions struct {
 // WorkflowRunFilter - The workflow run filter.
 type WorkflowRunFilter struct {
 	// The status of workflow run.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 }
 
 // WorkflowRunListResult - The list of workflow runs.
 type WorkflowRunListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow runs.
-	Value []*WorkflowRun `json:"value,omitempty"`
+	Value []*WorkflowRun
 }
 
 // WorkflowRunProperties - The workflow run properties.
 type WorkflowRunProperties struct {
 	// The run correlation.
-	Correlation *Correlation `json:"correlation,omitempty"`
+	Correlation *Correlation
 
 	// READ-ONLY; Gets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets the correlation id.
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+	CorrelationID *string
 
 	// READ-ONLY; Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the error.
-	Error interface{} `json:"error,omitempty" azure:"ro"`
+	Error any
 
 	// READ-ONLY; Gets the outputs.
-	Outputs map[string]*WorkflowOutputParameter `json:"outputs,omitempty" azure:"ro"`
+	Outputs map[string]*WorkflowOutputParameter
 
 	// READ-ONLY; Gets the response of the flow run.
-	Response *WorkflowRunTrigger `json:"response,omitempty" azure:"ro"`
+	Response *WorkflowRunTrigger
 
 	// READ-ONLY; Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the fired trigger.
-	Trigger *WorkflowRunTrigger `json:"trigger,omitempty" azure:"ro"`
+	Trigger *WorkflowRunTrigger
 
 	// READ-ONLY; Gets the wait end time.
-	WaitEndTime *time.Time `json:"waitEndTime,omitempty" azure:"ro"`
+	WaitEndTime *time.Time
 
 	// READ-ONLY; Gets the reference to workflow version.
-	Workflow *ResourceReference `json:"workflow,omitempty" azure:"ro"`
+	Workflow *ResourceReference
 }
 
 // WorkflowRunTrigger - The workflow run trigger.
 type WorkflowRunTrigger struct {
 	// The run correlation.
-	Correlation *Correlation `json:"correlation,omitempty"`
+	Correlation *Correlation
 
 	// READ-ONLY; Gets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the error.
-	Error interface{} `json:"error,omitempty" azure:"ro"`
+	Error any
 
 	// READ-ONLY; Gets the inputs.
-	Inputs interface{} `json:"inputs,omitempty" azure:"ro"`
+	Inputs any
 
 	// READ-ONLY; Gets the link to inputs.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the outputs.
-	Outputs interface{} `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; Gets the link to outputs.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the scheduled time.
-	ScheduledTime *time.Time `json:"scheduledTime,omitempty" azure:"ro"`
+	ScheduledTime *time.Time
 
 	// READ-ONLY; Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties interface{} `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties any
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // WorkflowRunsClientCancelOptions contains the optional parameters for the WorkflowRunsClient.Cancel method.
@@ -14589,7 +14993,7 @@ type WorkflowRunsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.List method.
+// WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.NewListPager method.
 type WorkflowRunsClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
 	Filter *string
@@ -14600,52 +15004,52 @@ type WorkflowRunsClientListOptions struct {
 // WorkflowSKU - The sku type.
 type WorkflowSKU struct {
 	// REQUIRED; The name.
-	Name *WorkflowSKUName `json:"name,omitempty"`
+	Name *WorkflowSKUName
 
 	// The reference to plan.
-	Plan *ResourceReference `json:"plan,omitempty"`
+	Plan *ResourceReference
 }
 
 // WorkflowTrigger - The workflow trigger.
 type WorkflowTrigger struct {
 	// The workflow trigger properties.
-	Properties *WorkflowTriggerProperties `json:"properties,omitempty"`
+	Properties *WorkflowTriggerProperties
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the workflow trigger name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the workflow trigger type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowTriggerCallbackURL - The workflow trigger callback URL.
 type WorkflowTriggerCallbackURL struct {
 	// Gets the workflow trigger callback URL query parameters.
-	Queries *WorkflowTriggerListCallbackURLQueries `json:"queries,omitempty"`
+	Queries *WorkflowTriggerListCallbackURLQueries
 
 	// Gets the workflow trigger callback URL relative path parameters.
-	RelativePathParameters []*string `json:"relativePathParameters,omitempty"`
+	RelativePathParameters []*string
 
 	// READ-ONLY; Gets the workflow trigger callback URL base path.
-	BasePath *string `json:"basePath,omitempty" azure:"ro"`
+	BasePath *string
 
 	// READ-ONLY; Gets the workflow trigger callback URL HTTP method.
-	Method *string `json:"method,omitempty" azure:"ro"`
+	Method *string
 
 	// READ-ONLY; Gets the workflow trigger callback URL relative path.
-	RelativePath *string `json:"relativePath,omitempty" azure:"ro"`
+	RelativePath *string
 
 	// READ-ONLY; Gets the workflow trigger callback URL.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // WorkflowTriggerFilter - The workflow trigger filter.
 type WorkflowTriggerFilter struct {
 	// The state of workflow trigger.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 }
 
 // WorkflowTriggerHistoriesClientBeginResubmitOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.BeginResubmit
@@ -14660,7 +15064,7 @@ type WorkflowTriggerHistoriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowTriggerHistoriesClientListOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.List
+// WorkflowTriggerHistoriesClientListOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.NewListPager
 // method.
 type WorkflowTriggerHistoriesClientListOptions struct {
 	// The filter to apply on the operation. Options for filters include: Status, StartTime, and ClientTrackingId.
@@ -14672,148 +15076,148 @@ type WorkflowTriggerHistoriesClientListOptions struct {
 // WorkflowTriggerHistory - The workflow trigger history.
 type WorkflowTriggerHistory struct {
 	// Gets the workflow trigger history properties.
-	Properties *WorkflowTriggerHistoryProperties `json:"properties,omitempty"`
+	Properties *WorkflowTriggerHistoryProperties
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the workflow trigger history name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the workflow trigger history type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowTriggerHistoryFilter - The workflow trigger history filter.
 type WorkflowTriggerHistoryFilter struct {
 	// The status of workflow trigger history.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 }
 
 // WorkflowTriggerHistoryListResult - The list of workflow trigger histories.
 type WorkflowTriggerHistoryListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow trigger histories.
-	Value []*WorkflowTriggerHistory `json:"value,omitempty"`
+	Value []*WorkflowTriggerHistory
 }
 
 // WorkflowTriggerHistoryProperties - The workflow trigger history properties.
 type WorkflowTriggerHistoryProperties struct {
 	// The run correlation.
-	Correlation *Correlation `json:"correlation,omitempty"`
+	Correlation *Correlation
 
 	// READ-ONLY; Gets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the error.
-	Error interface{} `json:"error,omitempty" azure:"ro"`
+	Error any
 
 	// READ-ONLY; The value indicating whether trigger was fired.
-	Fired *bool `json:"fired,omitempty" azure:"ro"`
+	Fired *bool
 
 	// READ-ONLY; Gets the link to input parameters.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the link to output parameters.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the reference to workflow run.
-	Run *ResourceReference `json:"run,omitempty" azure:"ro"`
+	Run *ResourceReference
 
 	// READ-ONLY; The scheduled time.
-	ScheduledTime *time.Time `json:"scheduledTime,omitempty" azure:"ro"`
+	ScheduledTime *time.Time
 
 	// READ-ONLY; Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // WorkflowTriggerListCallbackURLQueries - Gets the workflow trigger callback URL query parameters.
 type WorkflowTriggerListCallbackURLQueries struct {
 	// The api version.
-	APIVersion *string `json:"api-version,omitempty"`
+	APIVersion *string
 
 	// The SAS timestamp.
-	Se *string `json:"se,omitempty"`
+	Se *string
 
 	// The SAS signature.
-	Sig *string `json:"sig,omitempty"`
+	Sig *string
 
 	// The SAS permissions.
-	Sp *string `json:"sp,omitempty"`
+	Sp *string
 
 	// The SAS version.
-	Sv *string `json:"sv,omitempty"`
+	Sv *string
 }
 
 // WorkflowTriggerListResult - The list of workflow triggers.
 type WorkflowTriggerListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow triggers.
-	Value []*WorkflowTrigger `json:"value,omitempty"`
+	Value []*WorkflowTrigger
 }
 
 // WorkflowTriggerProperties - The workflow trigger properties.
 type WorkflowTriggerProperties struct {
 	// READ-ONLY; Gets the changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; Gets the created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Gets the last execution time.
-	LastExecutionTime *time.Time `json:"lastExecutionTime,omitempty" azure:"ro"`
+	LastExecutionTime *time.Time
 
 	// READ-ONLY; Gets the next execution time.
-	NextExecutionTime *time.Time `json:"nextExecutionTime,omitempty" azure:"ro"`
+	NextExecutionTime *time.Time
 
 	// READ-ONLY; Gets the provisioning state.
-	ProvisioningState *WorkflowTriggerProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkflowTriggerProvisioningState
 
 	// READ-ONLY; Gets the workflow trigger recurrence.
-	Recurrence *WorkflowTriggerRecurrence `json:"recurrence,omitempty" azure:"ro"`
+	Recurrence *WorkflowTriggerRecurrence
 
 	// READ-ONLY; Gets the state.
-	State *WorkflowState `json:"state,omitempty" azure:"ro"`
+	State *WorkflowState
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the reference to workflow.
-	Workflow *ResourceReference `json:"workflow,omitempty" azure:"ro"`
+	Workflow *ResourceReference
 }
 
 // WorkflowTriggerRecurrence - The workflow trigger recurrence.
 type WorkflowTriggerRecurrence struct {
 	// The end time.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// The frequency.
-	Frequency *RecurrenceFrequency `json:"frequency,omitempty"`
+	Frequency *RecurrenceFrequency
 
 	// The interval.
-	Interval *int32 `json:"interval,omitempty"`
+	Interval *int32
 
 	// The recurrence schedule.
-	Schedule *RecurrenceSchedule `json:"schedule,omitempty"`
+	Schedule *RecurrenceSchedule
 
 	// The start time.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 
 	// The time zone.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // WorkflowTriggersClientBeginRunOptions contains the optional parameters for the WorkflowTriggersClient.BeginRun method.
@@ -14839,7 +15243,7 @@ type WorkflowTriggersClientListCallbackURLOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowTriggersClientListOptions contains the optional parameters for the WorkflowTriggersClient.List method.
+// WorkflowTriggersClientListOptions contains the optional parameters for the WorkflowTriggersClient.NewListPager method.
 type WorkflowTriggersClientListOptions struct {
 	// The filter to apply on the operation.
 	Filter *string
@@ -14850,70 +15254,70 @@ type WorkflowTriggersClientListOptions struct {
 // WorkflowVersion - The workflow version.
 type WorkflowVersion struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The workflow version properties.
-	Properties *WorkflowVersionProperties `json:"properties,omitempty"`
+	Properties *WorkflowVersionProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowVersionListResult - The list of workflow versions.
 type WorkflowVersionListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow versions.
-	Value []*WorkflowVersion `json:"value,omitempty"`
+	Value []*WorkflowVersion
 }
 
 // WorkflowVersionProperties - The workflow version properties.
 type WorkflowVersionProperties struct {
 	// The access control configuration.
-	AccessControl *FlowAccessControlConfiguration `json:"accessControl,omitempty"`
+	AccessControl *FlowAccessControlConfiguration
 
 	// The definition.
-	Definition interface{} `json:"definition,omitempty"`
+	Definition any
 
 	// The endpoints configuration.
-	EndpointsConfiguration *FlowEndpointsConfiguration `json:"endpointsConfiguration,omitempty"`
+	EndpointsConfiguration *FlowEndpointsConfiguration
 
 	// The integration account.
-	IntegrationAccount *ResourceReference `json:"integrationAccount,omitempty"`
+	IntegrationAccount *ResourceReference
 
 	// The parameters.
-	Parameters map[string]*WorkflowParameter `json:"parameters,omitempty"`
+	Parameters map[string]*WorkflowParameter
 
 	// The state.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 
 	// READ-ONLY; Gets the access endpoint.
-	AccessEndpoint *string `json:"accessEndpoint,omitempty" azure:"ro"`
+	AccessEndpoint *string
 
 	// READ-ONLY; Gets the changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; Gets the created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; The provisioning state.
-	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkflowProvisioningState
 
 	// READ-ONLY; The sku.
-	SKU *WorkflowSKU `json:"sku,omitempty" azure:"ro"`
+	SKU *WorkflowSKU
 
 	// READ-ONLY; Gets the version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // WorkflowVersionsClientGetOptions contains the optional parameters for the WorkflowVersionsClient.Get method.
@@ -14921,7 +15325,7 @@ type WorkflowVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// WorkflowVersionsClientListOptions contains the optional parameters for the WorkflowVersionsClient.List method.
+// WorkflowVersionsClientListOptions contains the optional parameters for the WorkflowVersionsClient.NewListPager method.
 type WorkflowVersionsClientListOptions struct {
 	// The number of items to be included in the result.
 	Top *int32

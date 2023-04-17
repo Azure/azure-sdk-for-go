@@ -14,7 +14,7 @@ import "time"
 // Action - The action that will be executed.
 type Action struct {
 	// The type of the action.
-	ActionType *ActionType `json:"action_type,omitempty"`
+	ActionType *CertificatePolicyAction `json:"action_type,omitempty"`
 }
 
 // AdministratorDetails - Details of the organization administrator of the certificate issuer.
@@ -147,7 +147,7 @@ type CertificateOperation struct {
 	CancellationRequested *bool `json:"cancellation_requested,omitempty"`
 
 	// Error encountered, if any, during the certificate operation.
-	Error *Error `json:"error,omitempty"`
+	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Parameters for the issuer of the X509 component of a certificate.
 	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
@@ -257,19 +257,19 @@ type ImportCertificateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ListCertificateIssuersOptions contains the optional parameters for the Client.ListCertificateIssuers method.
+// ListCertificateIssuersOptions contains the optional parameters for the Client.NewListCertificateIssuersPager method.
 type ListCertificateIssuersOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListCertificateVersionsOptions contains the optional parameters for the Client.ListCertificateVersions method.
+// ListCertificateVersionsOptions contains the optional parameters for the Client.NewListCertificateVersionsPager method.
 type ListCertificateVersionsOptions struct {
 	// Maximum number of results to return in a page. If not specified the service will return up to 25 results.
 	MaxResults *int32
 }
 
-// ListCertificatesOptions contains the optional parameters for the Client.ListCertificates method.
+// ListCertificatesOptions contains the optional parameters for the Client.NewListCertificatesPager method.
 type ListCertificatesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
@@ -277,7 +277,7 @@ type ListCertificatesOptions struct {
 	MaxResults *int32
 }
 
-// ListDeletedCertificatesOptions contains the optional parameters for the Client.ListDeletedCertificates method.
+// ListDeletedCertificatesOptions contains the optional parameters for the Client.NewListDeletedCertificatesPager method.
 type ListDeletedCertificatesOptions struct {
 	// Specifies whether to include certificates which are not completely provisioned.
 	IncludePending *bool
@@ -442,18 +442,6 @@ type DeletedCertificateListResult struct {
 	Value []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
 }
 
-// Error - The key vault server error.
-type Error struct {
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The key vault server error.
-	InnerError *Error `json:"innererror,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
-}
-
 // ImportCertificateParameters - The certificate import parameters.
 type ImportCertificateParameters struct {
 	// REQUIRED; Base64 encoded representation of the certificate object to import. This certificate needs to contain the private
@@ -529,7 +517,8 @@ type KeyProperties struct {
 	// Elliptic curve name. For valid values, see JsonWebKeyCurveName.
 	Curve *JSONWebKeyCurveName `json:"crv,omitempty"`
 
-	// Indicates if the private key can be exported.
+	// Indicates if the private key can be exported. Release policy must be provided when creating the first version of an exportable
+	// key.
 	Exportable *bool `json:"exportable,omitempty"`
 
 	// The key size in bits. For example: 2048, 3072, or 4096 for RSA.
@@ -659,7 +648,7 @@ type X509CertificateProperties struct {
 	// The enhanced key usage.
 	EKUs []*string `json:"ekus,omitempty"`
 
-	// List of key usages.
+	// Defines how the certificate's key may be used.
 	KeyUsage []*KeyUsageType `json:"key_usage,omitempty"`
 
 	// The subject name. Should be a valid X509 distinguished Name.

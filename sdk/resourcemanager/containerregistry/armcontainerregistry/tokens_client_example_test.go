@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenList.json
 func ExampleTokensClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTokensClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "myRegistry", nil)
+	pager := clientFactory.NewTokensClient().NewListPager("myResourceGroup", "myRegistry", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -57,18 +57,18 @@ func ExampleTokensClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenGet.json
 func ExampleTokensClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTokensClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "myRegistry", "myToken", nil)
+	res, err := clientFactory.NewTokensClient().Get(ctx, "myResourceGroup", "myRegistry", "myToken", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -88,18 +88,18 @@ func ExampleTokensClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenCreate.json
 func ExampleTokensClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTokensClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "myRegistry", "myToken", armcontainerregistry.Token{
+	poller, err := clientFactory.NewTokensClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myToken", armcontainerregistry.Token{
 		Properties: &armcontainerregistry.TokenProperties{
 			Credentials: &armcontainerregistry.TokenCredentialsProperties{
 				Certificates: []*armcontainerregistry.TokenCertificate{
@@ -143,18 +143,18 @@ func ExampleTokensClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenDelete.json
 func ExampleTokensClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTokensClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "myRegistry", "myToken", nil)
+	poller, err := clientFactory.NewTokensClient().BeginDelete(ctx, "myResourceGroup", "myRegistry", "myToken", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -164,18 +164,18 @@ func ExampleTokensClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/270d3cd664cca3ddc8511f92d3851a715e2c61db/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/969fd0c2634fbcc1975d7abe3749330a5145a97c/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2023-01-01-preview/examples/TokenUpdate.json
 func ExampleTokensClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armcontainerregistry.NewTokensClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armcontainerregistry.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myToken", armcontainerregistry.TokenUpdateParameters{
+	poller, err := clientFactory.NewTokensClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myToken", armcontainerregistry.TokenUpdateParameters{
 		Properties: &armcontainerregistry.TokenUpdateProperties{
 			Credentials: &armcontainerregistry.TokenCredentialsProperties{
 				Certificates: []*armcontainerregistry.TokenCertificate{

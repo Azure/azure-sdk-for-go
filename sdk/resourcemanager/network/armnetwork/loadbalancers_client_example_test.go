@@ -25,11 +25,11 @@ func ExampleLoadBalancersClient_BeginDelete() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "rg1", "lb", nil)
+	poller, err := clientFactory.NewLoadBalancersClient().BeginDelete(ctx, "rg1", "lb", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -46,11 +46,11 @@ func ExampleLoadBalancersClient_Get_getLoadBalancer() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "lb", &armnetwork.LoadBalancersClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewLoadBalancersClient().Get(ctx, "rg1", "lb", &armnetwork.LoadBalancersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -186,11 +186,11 @@ func ExampleLoadBalancersClient_Get_getLoadBalancerWithInboundNatRulePortMapping
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "rg1", "lb", &armnetwork.LoadBalancersClientGetOptions{Expand: nil})
+	res, err := clientFactory.NewLoadBalancersClient().Get(ctx, "rg1", "lb", &armnetwork.LoadBalancersClientGetOptions{Expand: nil})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -347,11 +347,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancer() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{
@@ -558,11 +558,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithFronte
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{
@@ -775,11 +775,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{
@@ -994,11 +994,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{
@@ -1204,11 +1204,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGatewa
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{
@@ -1425,11 +1425,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithGlobal
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{
@@ -1621,11 +1621,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithStanda
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{
@@ -1834,11 +1834,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithInboun
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{},
@@ -1962,11 +1962,11 @@ func ExampleLoadBalancersClient_BeginCreateOrUpdate_createLoadBalancerWithOutbou
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginCreateOrUpdate(ctx, "rg1", "lb", armnetwork.LoadBalancer{
 		Location: to.Ptr("eastus"),
 		Properties: &armnetwork.LoadBalancerPropertiesFormat{
 			BackendAddressPools: []*armnetwork.BackendAddressPool{
@@ -2218,11 +2218,11 @@ func ExampleLoadBalancersClient_UpdateTags() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.UpdateTags(ctx, "rg1", "lb", armnetwork.TagsObject{
+	res, err := clientFactory.NewLoadBalancersClient().UpdateTags(ctx, "rg1", "lb", armnetwork.TagsObject{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 			"tag2": to.Ptr("value2"),
@@ -2351,11 +2351,11 @@ func ExampleLoadBalancersClient_NewListAllPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListAllPager(nil)
+	pager := clientFactory.NewLoadBalancersClient().NewListAllPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2524,11 +2524,11 @@ func ExampleLoadBalancersClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("rg1", nil)
+	pager := clientFactory.NewLoadBalancersClient().NewListPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -2697,11 +2697,11 @@ func ExampleLoadBalancersClient_BeginSwapPublicIPAddresses() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginSwapPublicIPAddresses(ctx, "westus", armnetwork.LoadBalancerVipSwapRequest{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginSwapPublicIPAddresses(ctx, "westus", armnetwork.LoadBalancerVipSwapRequest{
 		FrontendIPConfigurations: []*armnetwork.LoadBalancerVipSwapRequestFrontendIPConfiguration{
 			{
 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/loadBalancers/lb1/frontendIPConfigurations/lbfe1"),
@@ -2736,11 +2736,11 @@ func ExampleLoadBalancersClient_BeginListInboundNatRulePortMappings() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armnetwork.NewLoadBalancersClient("subid", cred, nil)
+	clientFactory, err := armnetwork.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginListInboundNatRulePortMappings(ctx, "rg1", "lb1", "bp1", armnetwork.QueryInboundNatRulePortMappingRequest{
+	poller, err := clientFactory.NewLoadBalancersClient().BeginListInboundNatRulePortMappings(ctx, "rg1", "lb1", "bp1", armnetwork.QueryInboundNatRulePortMappingRequest{
 		IPAddress: to.Ptr("10.0.0.4"),
 	}, nil)
 	if err != nil {

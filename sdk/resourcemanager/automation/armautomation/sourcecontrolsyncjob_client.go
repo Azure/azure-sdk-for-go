@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,52 +24,44 @@ import (
 // SourceControlSyncJobClient contains the methods for the SourceControlSyncJob group.
 // Don't use this type directly, use NewSourceControlSyncJobClient() instead.
 type SourceControlSyncJobClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSourceControlSyncJobClient creates a new instance of SourceControlSyncJobClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSourceControlSyncJobClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlSyncJobClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SourceControlSyncJobClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SourceControlSyncJobClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Creates the sync job for a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// sourceControlName - The source control name.
-// sourceControlSyncJobID - The source control sync job id.
-// parameters - The parameters supplied to the create source control sync job operation.
-// options - SourceControlSyncJobClientCreateOptions contains the optional parameters for the SourceControlSyncJobClient.Create
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - sourceControlName - The source control name.
+//   - sourceControlSyncJobID - The source control sync job id.
+//   - parameters - The parameters supplied to the create source control sync job operation.
+//   - options - SourceControlSyncJobClientCreateOptions contains the optional parameters for the SourceControlSyncJobClient.Create
+//     method.
 func (client *SourceControlSyncJobClient) Create(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, parameters SourceControlSyncJobCreateParameters, options *SourceControlSyncJobClientCreateOptions) (SourceControlSyncJobClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID, parameters, options)
 	if err != nil {
 		return SourceControlSyncJobClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlSyncJobClientCreateResponse{}, err
 	}
@@ -101,7 +91,7 @@ func (client *SourceControlSyncJobClient) createCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,19 +113,20 @@ func (client *SourceControlSyncJobClient) createHandleResponse(resp *http.Respon
 
 // Get - Retrieve the source control sync job identified by job id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// sourceControlName - The source control name.
-// sourceControlSyncJobID - The source control sync job id.
-// options - SourceControlSyncJobClientGetOptions contains the optional parameters for the SourceControlSyncJobClient.Get
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - sourceControlName - The source control name.
+//   - sourceControlSyncJobID - The source control sync job id.
+//   - options - SourceControlSyncJobClientGetOptions contains the optional parameters for the SourceControlSyncJobClient.Get
+//     method.
 func (client *SourceControlSyncJobClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, sourceControlSyncJobID string, options *SourceControlSyncJobClientGetOptions) (SourceControlSyncJobClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, sourceControlSyncJobID, options)
 	if err != nil {
 		return SourceControlSyncJobClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlSyncJobClientGetResponse{}, err
 	}
@@ -165,7 +156,7 @@ func (client *SourceControlSyncJobClient) getCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,13 +177,13 @@ func (client *SourceControlSyncJobClient) getHandleResponse(resp *http.Response)
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of source control sync jobs.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// sourceControlName - The source control name.
-// options - SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - sourceControlName - The source control name.
+//   - options - SourceControlSyncJobClientListByAutomationAccountOptions contains the optional parameters for the SourceControlSyncJobClient.NewListByAutomationAccountPager
+//     method.
 func (client *SourceControlSyncJobClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlSyncJobClientListByAutomationAccountOptions) *runtime.Pager[SourceControlSyncJobClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SourceControlSyncJobClientListByAutomationAccountResponse]{
 		More: func(page SourceControlSyncJobClientListByAutomationAccountResponse) bool {
@@ -209,7 +200,7 @@ func (client *SourceControlSyncJobClient) NewListByAutomationAccountPager(resour
 			if err != nil {
 				return SourceControlSyncJobClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SourceControlSyncJobClientListByAutomationAccountResponse{}, err
 			}
@@ -240,7 +231,7 @@ func (client *SourceControlSyncJobClient) listByAutomationAccountCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

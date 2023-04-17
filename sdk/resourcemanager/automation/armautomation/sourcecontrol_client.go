@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // SourceControlClient contains the methods for the SourceControl group.
 // Don't use this type directly, use NewSourceControlClient() instead.
 type SourceControlClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSourceControlClient creates a new instance of SourceControlClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSourceControlClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SourceControlClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SourceControlClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SourceControlClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// sourceControlName - The source control name.
-// parameters - The parameters supplied to the create or update source control operation.
-// options - SourceControlClientCreateOrUpdateOptions contains the optional parameters for the SourceControlClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - sourceControlName - The source control name.
+//   - parameters - The parameters supplied to the create or update source control operation.
+//   - options - SourceControlClientCreateOrUpdateOptions contains the optional parameters for the SourceControlClient.CreateOrUpdate
+//     method.
 func (client *SourceControlClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlCreateOrUpdateParameters, options *SourceControlClientCreateOrUpdateOptions) (SourceControlClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, parameters, options)
 	if err != nil {
 		return SourceControlClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *SourceControlClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +111,18 @@ func (client *SourceControlClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Delete the source control.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// sourceControlName - The name of source control.
-// options - SourceControlClientDeleteOptions contains the optional parameters for the SourceControlClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - sourceControlName - The name of source control.
+//   - options - SourceControlClientDeleteOptions contains the optional parameters for the SourceControlClient.Delete method.
 func (client *SourceControlClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlClientDeleteOptions) (SourceControlClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
 	if err != nil {
 		return SourceControlClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,17 +164,18 @@ func (client *SourceControlClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Retrieve the source control identified by source control name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// sourceControlName - The name of source control.
-// options - SourceControlClientGetOptions contains the optional parameters for the SourceControlClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - sourceControlName - The name of source control.
+//   - options - SourceControlClientGetOptions contains the optional parameters for the SourceControlClient.Get method.
 func (client *SourceControlClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, options *SourceControlClientGetOptions) (SourceControlClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, options)
 	if err != nil {
 		return SourceControlClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *SourceControlClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,12 +225,12 @@ func (client *SourceControlClient) getHandleResponse(resp *http.Response) (Sourc
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of source controls.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - SourceControlClientListByAutomationAccountOptions contains the optional parameters for the SourceControlClient.NewListByAutomationAccountPager
+//     method.
 func (client *SourceControlClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *SourceControlClientListByAutomationAccountOptions) *runtime.Pager[SourceControlClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SourceControlClientListByAutomationAccountResponse]{
 		More: func(page SourceControlClientListByAutomationAccountResponse) bool {
@@ -255,7 +247,7 @@ func (client *SourceControlClient) NewListByAutomationAccountPager(resourceGroup
 			if err != nil {
 				return SourceControlClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SourceControlClientListByAutomationAccountResponse{}, err
 			}
@@ -282,7 +274,7 @@ func (client *SourceControlClient) listByAutomationAccountCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,18 +299,19 @@ func (client *SourceControlClient) listByAutomationAccountHandleResponse(resp *h
 
 // Update - Update a source control.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// sourceControlName - The source control name.
-// parameters - The parameters supplied to the update source control operation.
-// options - SourceControlClientUpdateOptions contains the optional parameters for the SourceControlClient.Update method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - sourceControlName - The source control name.
+//   - parameters - The parameters supplied to the update source control operation.
+//   - options - SourceControlClientUpdateOptions contains the optional parameters for the SourceControlClient.Update method.
 func (client *SourceControlClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, sourceControlName string, parameters SourceControlUpdateParameters, options *SourceControlClientUpdateOptions) (SourceControlClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, sourceControlName, parameters, options)
 	if err != nil {
 		return SourceControlClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SourceControlClientUpdateResponse{}, err
 	}
@@ -347,7 +340,7 @@ func (client *SourceControlClient) updateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

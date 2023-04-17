@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // SQLPoolWorkloadClassifierClient contains the methods for the SQLPoolWorkloadClassifier group.
 // Don't use this type directly, use NewSQLPoolWorkloadClassifierClient() instead.
 type SQLPoolWorkloadClassifierClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSQLPoolWorkloadClassifierClient creates a new instance of SQLPoolWorkloadClassifierClient with the specified values.
@@ -36,21 +33,13 @@ type SQLPoolWorkloadClassifierClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewSQLPoolWorkloadClassifierClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SQLPoolWorkloadClassifierClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SQLPoolWorkloadClassifierClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SQLPoolWorkloadClassifierClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -73,9 +62,9 @@ func (client *SQLPoolWorkloadClassifierClient) BeginCreateOrUpdate(ctx context.C
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SQLPoolWorkloadClassifierClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SQLPoolWorkloadClassifierClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadClassifierClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadClassifierClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -88,7 +77,7 @@ func (client *SQLPoolWorkloadClassifierClient) createOrUpdate(ctx context.Contex
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +114,7 @@ func (client *SQLPoolWorkloadClassifierClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter workloadClassifierName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadClassifierName}", url.PathEscape(workloadClassifierName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -153,9 +142,9 @@ func (client *SQLPoolWorkloadClassifierClient) BeginDelete(ctx context.Context, 
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[SQLPoolWorkloadClassifierClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[SQLPoolWorkloadClassifierClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadClassifierClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SQLPoolWorkloadClassifierClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -168,7 +157,7 @@ func (client *SQLPoolWorkloadClassifierClient) deleteOperation(ctx context.Conte
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -205,7 +194,7 @@ func (client *SQLPoolWorkloadClassifierClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter workloadClassifierName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadClassifierName}", url.PathEscape(workloadClassifierName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,7 +220,7 @@ func (client *SQLPoolWorkloadClassifierClient) Get(ctx context.Context, resource
 	if err != nil {
 		return SQLPoolWorkloadClassifierClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SQLPoolWorkloadClassifierClientGetResponse{}, err
 	}
@@ -268,7 +257,7 @@ func (client *SQLPoolWorkloadClassifierClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter workloadClassifierName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadClassifierName}", url.PathEscape(workloadClassifierName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -313,7 +302,7 @@ func (client *SQLPoolWorkloadClassifierClient) NewListPager(resourceGroupName st
 			if err != nil {
 				return SQLPoolWorkloadClassifierClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SQLPoolWorkloadClassifierClientListResponse{}, err
 			}
@@ -348,7 +337,7 @@ func (client *SQLPoolWorkloadClassifierClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter workloadGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workloadGroupName}", url.PathEscape(workloadGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

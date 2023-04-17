@@ -672,6 +672,48 @@ func TestRetryPolicySuccessWithPerTryTimeoutNoRetryWithBodyDownload(t *testing.T
 	require.Equal(t, largeBody, body)
 }
 
+func TestRetryPolicyWithShouldRetryNoRetry(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+
+	pl := exported.NewPipeline(srv, NewRetryPolicy(&policy.RetryOptions{
+		RetryDelay: time.Millisecond,
+		ShouldRetry: func(r *http.Response, err error) bool {
+			return r.StatusCode != http.StatusRequestTimeout
+		},
+	}))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.EqualValues(t, http.StatusRequestTimeout, resp.StatusCode)
+	require.EqualValues(t, 1, srv.Requests())
+}
+
+func TestRetryPolicyWithShouldRetryRetry(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+	srv.AppendResponse(mock.WithStatusCode(http.StatusRequestTimeout))
+	srv.AppendResponse()
+
+	shouldRetryCalled := false
+	pl := exported.NewPipeline(srv, NewRetryPolicy(&policy.RetryOptions{
+		RetryDelay: time.Millisecond,
+		ShouldRetry: func(r *http.Response, err error) bool {
+			shouldRetryCalled = true
+			return r.StatusCode == http.StatusRequestTimeout
+		},
+	}))
+	req, err := NewRequest(context.Background(), http.MethodGet, srv.URL())
+	require.NoError(t, err)
+	resp, err := pl.Do(req)
+	require.NoError(t, err)
+	require.True(t, shouldRetryCalled)
+	require.EqualValues(t, http.StatusOK, resp.StatusCode)
+	require.EqualValues(t, 2, srv.Requests())
+}
+
 func TestPipelineNoRetryOn429(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()

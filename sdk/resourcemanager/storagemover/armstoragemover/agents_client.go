@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // AgentsClient contains the methods for the Agents group.
 // Don't use this type directly, use NewAgentsClient() instead.
 type AgentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAgentsClient creates a new instance of AgentsClient with the specified values.
@@ -36,21 +33,13 @@ type AgentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewAgentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AgentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AgentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AgentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -68,7 +57,7 @@ func (client *AgentsClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return AgentsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentsClientCreateOrUpdateResponse{}, err
 	}
@@ -97,7 +86,7 @@ func (client *AgentsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter agentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentName}", url.PathEscape(agentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,11 +120,11 @@ func (client *AgentsClient) BeginDelete(ctx context.Context, resourceGroupName s
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[AgentsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AgentsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[AgentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AgentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -148,7 +137,7 @@ func (client *AgentsClient) deleteOperation(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +166,7 @@ func (client *AgentsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter agentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentName}", url.PathEscape(agentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -201,7 +190,7 @@ func (client *AgentsClient) Get(ctx context.Context, resourceGroupName string, s
 	if err != nil {
 		return AgentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentsClientGetResponse{}, err
 	}
@@ -230,7 +219,7 @@ func (client *AgentsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter agentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentName}", url.PathEscape(agentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -272,7 +261,7 @@ func (client *AgentsClient) NewListPager(resourceGroupName string, storageMoverN
 			if err != nil {
 				return AgentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AgentsClientListResponse{}, err
 			}
@@ -299,7 +288,7 @@ func (client *AgentsClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter storageMoverName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{storageMoverName}", url.PathEscape(storageMoverName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -332,7 +321,7 @@ func (client *AgentsClient) Update(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return AgentsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AgentsClientUpdateResponse{}, err
 	}
@@ -361,7 +350,7 @@ func (client *AgentsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter agentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{agentName}", url.PathEscape(agentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

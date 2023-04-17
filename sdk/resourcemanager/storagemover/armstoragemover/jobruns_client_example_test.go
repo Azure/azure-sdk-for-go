@@ -24,11 +24,11 @@ func ExampleJobRunsClient_NewListPager() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewJobRunsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("examples-rg", "examples-storageMoverName", "examples-projectName", "examples-jobDefinitionName", nil)
+	pager := clientFactory.NewJobRunsClient().NewListPager("examples-rg", "examples-storageMoverName", "examples-projectName", "examples-jobDefinitionName", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -157,11 +157,11 @@ func ExampleJobRunsClient_Get() {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armstoragemover.NewJobRunsClient("11111111-2222-3333-4444-555555555555", cred, nil)
+	clientFactory, err := armstoragemover.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", "examples-jobDefinitionName", "examples-jobRunName", nil)
+	res, err := clientFactory.NewJobRunsClient().Get(ctx, "examples-rg", "examples-storageMoverName", "examples-projectName", "examples-jobDefinitionName", "examples-jobRunName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

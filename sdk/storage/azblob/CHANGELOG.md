@@ -5,10 +5,16 @@
 ### Features Added
 
 * Added [Blob Batch API](https://learn.microsoft.com/rest/api/storageservices/blob-batch).
+* Added support for bearer challenge for identity based managed disks.
+* Added support for GetAccountInfo to container and blob level clients. 
+* Added [UploadBlobFromURL API](https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url).
+* Added support for CopySourceAuthorization to appendblob.AppendBlockFromURL
 
 ### Breaking Changes
 
 ### Bugs Fixed
+
+* Fixed time formatting for the conditional request headers. Fixes [#20475](https://github.com/Azure/azure-sdk-for-go/issues/20475).
 
 ### Other Changes
 

@@ -24,7 +24,7 @@ type ExtensionsClientGetResponse struct {
 	Extension
 }
 
-// ExtensionsClientListByFarmBeatsResponse contains the response from method ExtensionsClient.ListByFarmBeats.
+// ExtensionsClientListByFarmBeatsResponse contains the response from method ExtensionsClient.NewListByFarmBeatsPager.
 type ExtensionsClientListByFarmBeatsResponse struct {
 	ExtensionListResponse
 }
@@ -39,7 +39,7 @@ type FarmBeatsExtensionsClientGetResponse struct {
 	FarmBeatsExtension
 }
 
-// FarmBeatsExtensionsClientListResponse contains the response from method FarmBeatsExtensionsClient.List.
+// FarmBeatsExtensionsClientListResponse contains the response from method FarmBeatsExtensionsClient.NewListPager.
 type FarmBeatsExtensionsClientListResponse struct {
 	FarmBeatsExtensionListResponse
 }
@@ -64,17 +64,17 @@ type FarmBeatsModelsClientGetResponse struct {
 	FarmBeats
 }
 
-// FarmBeatsModelsClientListByResourceGroupResponse contains the response from method FarmBeatsModelsClient.ListByResourceGroup.
+// FarmBeatsModelsClientListByResourceGroupResponse contains the response from method FarmBeatsModelsClient.NewListByResourceGroupPager.
 type FarmBeatsModelsClientListByResourceGroupResponse struct {
 	FarmBeatsListResponse
 }
 
-// FarmBeatsModelsClientListBySubscriptionResponse contains the response from method FarmBeatsModelsClient.ListBySubscription.
+// FarmBeatsModelsClientListBySubscriptionResponse contains the response from method FarmBeatsModelsClient.NewListBySubscriptionPager.
 type FarmBeatsModelsClientListBySubscriptionResponse struct {
 	FarmBeatsListResponse
 }
 
-// FarmBeatsModelsClientUpdateResponse contains the response from method FarmBeatsModelsClient.Update.
+// FarmBeatsModelsClientUpdateResponse contains the response from method FarmBeatsModelsClient.BeginUpdate.
 type FarmBeatsModelsClientUpdateResponse struct {
 	FarmBeats
 }
@@ -84,7 +84,7 @@ type LocationsClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResponse
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -94,7 +94,7 @@ type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -104,7 +104,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListByResourceResponse contains the response from method PrivateEndpointConnectionsClient.ListByResource.
+// PrivateEndpointConnectionsClientListByResourceResponse contains the response from method PrivateEndpointConnectionsClient.NewListByResourcePager.
 type PrivateEndpointConnectionsClientListByResourceResponse struct {
 	PrivateEndpointConnectionListResult
 }
@@ -114,7 +114,7 @@ type PrivateLinkResourcesClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesClientListByResourceResponse contains the response from method PrivateLinkResourcesClient.ListByResource.
+// PrivateLinkResourcesClientListByResourceResponse contains the response from method PrivateLinkResourcesClient.NewListByResourcePager.
 type PrivateLinkResourcesClientListByResourceResponse struct {
 	PrivateLinkResourceListResult
 }

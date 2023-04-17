@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,66 +24,59 @@ import (
 // MobileNetworksClient contains the methods for the MobileNetworks group.
 // Don't use this type directly, use NewMobileNetworksClient() instead.
 type MobileNetworksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMobileNetworksClient creates a new instance of MobileNetworksClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMobileNetworksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MobileNetworksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MobileNetworksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MobileNetworksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// parameters - Parameters supplied to the create or update mobile network operation.
-// options - MobileNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the MobileNetworksClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - parameters - Parameters supplied to the create or update mobile network operation.
+//   - options - MobileNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the MobileNetworksClient.BeginCreateOrUpdate
+//     method.
 func (client *MobileNetworksClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters MobileNetwork, options *MobileNetworksClientBeginCreateOrUpdateOptions) (*runtime.Poller[MobileNetworksClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MobileNetworksClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MobileNetworksClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MobileNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MobileNetworksClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *MobileNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters MobileNetwork, options *MobileNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, mobileNetworkName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -110,7 +101,7 @@ func (client *MobileNetworksClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter mobileNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mobileNetworkName}", url.PathEscape(mobileNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,34 +114,36 @@ func (client *MobileNetworksClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Deletes the specified mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// options - MobileNetworksClientBeginDeleteOptions contains the optional parameters for the MobileNetworksClient.BeginDelete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - options - MobileNetworksClientBeginDeleteOptions contains the optional parameters for the MobileNetworksClient.BeginDelete
+//     method.
 func (client *MobileNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginDeleteOptions) (*runtime.Poller[MobileNetworksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[MobileNetworksClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MobileNetworksClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[MobileNetworksClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MobileNetworksClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *MobileNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +168,7 @@ func (client *MobileNetworksClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter mobileNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mobileNetworkName}", url.PathEscape(mobileNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,16 +181,17 @@ func (client *MobileNetworksClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets information about the specified mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// options - MobileNetworksClientGetOptions contains the optional parameters for the MobileNetworksClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - options - MobileNetworksClientGetOptions contains the optional parameters for the MobileNetworksClient.Get method.
 func (client *MobileNetworksClient) Get(ctx context.Context, resourceGroupName string, mobileNetworkName string, options *MobileNetworksClientGetOptions) (MobileNetworksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, mobileNetworkName, options)
 	if err != nil {
 		return MobileNetworksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MobileNetworksClientGetResponse{}, err
 	}
@@ -222,7 +216,7 @@ func (client *MobileNetworksClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter mobileNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mobileNetworkName}", url.PathEscape(mobileNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -243,10 +237,11 @@ func (client *MobileNetworksClient) getHandleResponse(resp *http.Response) (Mobi
 }
 
 // NewListByResourceGroupPager - Lists all the mobile networks in a resource group.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - MobileNetworksClientListByResourceGroupOptions contains the optional parameters for the MobileNetworksClient.NewListByResourceGroupPager
+//     method.
 func (client *MobileNetworksClient) NewListByResourceGroupPager(resourceGroupName string, options *MobileNetworksClientListByResourceGroupOptions) *runtime.Pager[MobileNetworksClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MobileNetworksClientListByResourceGroupResponse]{
 		More: func(page MobileNetworksClientListByResourceGroupResponse) bool {
@@ -263,7 +258,7 @@ func (client *MobileNetworksClient) NewListByResourceGroupPager(resourceGroupNam
 			if err != nil {
 				return MobileNetworksClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MobileNetworksClientListByResourceGroupResponse{}, err
 			}
@@ -286,7 +281,7 @@ func (client *MobileNetworksClient) listByResourceGroupCreateRequest(ctx context
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -307,9 +302,10 @@ func (client *MobileNetworksClient) listByResourceGroupHandleResponse(resp *http
 }
 
 // NewListBySubscriptionPager - Lists all the mobile networks in a subscription.
+//
 // Generated from API version 2022-11-01
-// options - MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.ListBySubscription
-// method.
+//   - options - MobileNetworksClientListBySubscriptionOptions contains the optional parameters for the MobileNetworksClient.NewListBySubscriptionPager
+//     method.
 func (client *MobileNetworksClient) NewListBySubscriptionPager(options *MobileNetworksClientListBySubscriptionOptions) *runtime.Pager[MobileNetworksClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MobileNetworksClientListBySubscriptionResponse]{
 		More: func(page MobileNetworksClientListBySubscriptionResponse) bool {
@@ -326,7 +322,7 @@ func (client *MobileNetworksClient) NewListBySubscriptionPager(options *MobileNe
 			if err != nil {
 				return MobileNetworksClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MobileNetworksClientListBySubscriptionResponse{}, err
 			}
@@ -345,7 +341,7 @@ func (client *MobileNetworksClient) listBySubscriptionCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -367,18 +363,19 @@ func (client *MobileNetworksClient) listBySubscriptionHandleResponse(resp *http.
 
 // UpdateTags - Updates mobile network tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// parameters - Parameters supplied to update mobile network tags.
-// options - MobileNetworksClientUpdateTagsOptions contains the optional parameters for the MobileNetworksClient.UpdateTags
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - parameters - Parameters supplied to update mobile network tags.
+//   - options - MobileNetworksClientUpdateTagsOptions contains the optional parameters for the MobileNetworksClient.UpdateTags
+//     method.
 func (client *MobileNetworksClient) UpdateTags(ctx context.Context, resourceGroupName string, mobileNetworkName string, parameters TagsObject, options *MobileNetworksClientUpdateTagsOptions) (MobileNetworksClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, mobileNetworkName, parameters, options)
 	if err != nil {
 		return MobileNetworksClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MobileNetworksClientUpdateTagsResponse{}, err
 	}
@@ -403,7 +400,7 @@ func (client *MobileNetworksClient) updateTagsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter mobileNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mobileNetworkName}", url.PathEscape(mobileNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

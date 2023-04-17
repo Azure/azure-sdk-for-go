@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // JobDefinitionsClient contains the methods for the JobDefinitions group.
 // Don't use this type directly, use NewJobDefinitionsClient() instead.
 type JobDefinitionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewJobDefinitionsClient creates a new instance of JobDefinitionsClient with the specified values.
@@ -36,21 +33,13 @@ type JobDefinitionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewJobDefinitionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobDefinitionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".JobDefinitionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &JobDefinitionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -71,7 +60,7 @@ func (client *JobDefinitionsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return JobDefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JobDefinitionsClientCreateOrUpdateResponse{}, err
 	}
@@ -104,7 +93,7 @@ func (client *JobDefinitionsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter jobDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -140,11 +129,11 @@ func (client *JobDefinitionsClient) BeginDelete(ctx context.Context, resourceGro
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[JobDefinitionsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobDefinitionsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[JobDefinitionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[JobDefinitionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -157,7 +146,7 @@ func (client *JobDefinitionsClient) deleteOperation(ctx context.Context, resourc
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +179,7 @@ func (client *JobDefinitionsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter jobDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -215,7 +204,7 @@ func (client *JobDefinitionsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return JobDefinitionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JobDefinitionsClientGetResponse{}, err
 	}
@@ -248,7 +237,7 @@ func (client *JobDefinitionsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter jobDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -291,7 +280,7 @@ func (client *JobDefinitionsClient) NewListPager(resourceGroupName string, stora
 			if err != nil {
 				return JobDefinitionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return JobDefinitionsClientListResponse{}, err
 			}
@@ -322,7 +311,7 @@ func (client *JobDefinitionsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter projectName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -356,7 +345,7 @@ func (client *JobDefinitionsClient) StartJob(ctx context.Context, resourceGroupN
 	if err != nil {
 		return JobDefinitionsClientStartJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JobDefinitionsClientStartJobResponse{}, err
 	}
@@ -389,7 +378,7 @@ func (client *JobDefinitionsClient) startJobCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter jobDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -423,7 +412,7 @@ func (client *JobDefinitionsClient) StopJob(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return JobDefinitionsClientStopJobResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JobDefinitionsClientStopJobResponse{}, err
 	}
@@ -456,7 +445,7 @@ func (client *JobDefinitionsClient) stopJobCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter jobDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -490,7 +479,7 @@ func (client *JobDefinitionsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return JobDefinitionsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return JobDefinitionsClientUpdateResponse{}, err
 	}
@@ -523,7 +512,7 @@ func (client *JobDefinitionsClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter jobDefinitionName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

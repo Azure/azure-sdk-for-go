@@ -1,13 +1,14 @@
 // Copyright (C) 2017 Kale Blankenship
 // Portions Copyright (c) Microsoft Corporation
+
 package amqp
 
 import (
 	"fmt"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/debug"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/encoding"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/frames"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp/internal/log"
 )
 
 // SASL Mechanisms
@@ -18,13 +19,8 @@ const (
 	saslMechanismXOAUTH2   encoding.Symbol = "XOAUTH2"
 )
 
-const (
-	frameTypeAMQP = 0x0
-	frameTypeSASL = 0x1
-)
-
 // SASLType represents a SASL configuration to use during authentication.
-type SASLType func(c *conn) error
+type SASLType func(c *Conn) error
 
 // ConnSASLPlain enables SASL PLAIN authentication for the connection.
 //
@@ -32,7 +28,7 @@ type SASLType func(c *conn) error
 // on TLS/SSL enabled connection.
 func SASLTypePlain(username, password string) SASLType {
 	// TODO: how widely used is hostname? should it be supported
-	return func(c *conn) error {
+	return func(c *Conn) error {
 		// make handlers map if no other mechanism has
 		if c.saslHandlers == nil {
 			c.saslHandlers = make(map[encoding.Symbol]stateFunc)
@@ -46,11 +42,12 @@ func SASLTypePlain(username, password string) SASLType {
 				InitialResponse: []byte("\x00" + username + "\x00" + password),
 				Hostname:        "",
 			}
-			log.Debug(1, "TX (ConnSASLPlain): %s", init)
-			err := c.writeFrame(frames.Frame{
-				Type: frameTypeSASL,
+			fr := frames.Frame{
+				Type: frames.TypeSASL,
 				Body: init,
-			})
+			}
+			debug.Log(1, "TX (ConnSASLPlain): %s", fr)
+			err := c.writeFrame(fr)
 			if err != nil {
 				return nil, err
 			}
@@ -64,7 +61,7 @@ func SASLTypePlain(username, password string) SASLType {
 
 // ConnSASLAnonymous enables SASL ANONYMOUS authentication for the connection.
 func SASLTypeAnonymous() SASLType {
-	return func(c *conn) error {
+	return func(c *Conn) error {
 		// make handlers map if no other mechanism has
 		if c.saslHandlers == nil {
 			c.saslHandlers = make(map[encoding.Symbol]stateFunc)
@@ -76,11 +73,12 @@ func SASLTypeAnonymous() SASLType {
 				Mechanism:       saslMechanismANONYMOUS,
 				InitialResponse: []byte("anonymous"),
 			}
-			log.Debug(1, "TX (ConnSASLAnonymous): %s", init)
-			err := c.writeFrame(frames.Frame{
-				Type: frameTypeSASL,
+			fr := frames.Frame{
+				Type: frames.TypeSASL,
 				Body: init,
-			})
+			}
+			debug.Log(1, "TX (ConnSASLAnonymous): %s", fr)
+			err := c.writeFrame(fr)
 			if err != nil {
 				return nil, err
 			}
@@ -96,7 +94,7 @@ func SASLTypeAnonymous() SASLType {
 // The value for resp is dependent on the type of authentication (empty string is common for TLS).
 // See https://datatracker.ietf.org/doc/html/rfc4422#appendix-A for additional info.
 func SASLTypeExternal(resp string) SASLType {
-	return func(c *conn) error {
+	return func(c *Conn) error {
 		// make handlers map if no other mechanism has
 		if c.saslHandlers == nil {
 			c.saslHandlers = make(map[encoding.Symbol]stateFunc)
@@ -108,11 +106,12 @@ func SASLTypeExternal(resp string) SASLType {
 				Mechanism:       saslMechanismEXTERNAL,
 				InitialResponse: []byte(resp),
 			}
-			log.Debug(1, "TX (ConnSASLExternal): %s", init)
-			err := c.writeFrame(frames.Frame{
-				Type: frameTypeSASL,
+			fr := frames.Frame{
+				Type: frames.TypeSASL,
 				Body: init,
-			})
+			}
+			debug.Log(1, "TX (ConnSASLExternal): %s", fr)
+			err := c.writeFrame(fr)
 			if err != nil {
 				return nil, err
 			}
@@ -135,7 +134,7 @@ func SASLTypeExternal(resp string) SASLType {
 // SASL XOAUTH2 transmits the bearer in plain text and should only be used
 // on TLS/SSL enabled connection.
 func SASLTypeXOAUTH2(username, bearer string, saslMaxFrameSizeOverride uint32) SASLType {
-	return func(c *conn) error {
+	return func(c *Conn) error {
 		// make handlers map if no other mechanism has
 		if c.saslHandlers == nil {
 			c.saslHandlers = make(map[encoding.Symbol]stateFunc)
@@ -158,25 +157,25 @@ func SASLTypeXOAUTH2(username, bearer string, saslMaxFrameSizeOverride uint32) S
 }
 
 type saslXOAUTH2Handler struct {
-	conn                 *conn
+	conn                 *Conn
 	maxFrameSizeOverride uint32
 	response             []byte
 	errorResponse        []byte // https://developers.google.com/gmail/imap/xoauth2-protocol#error_response
 }
 
 func (s saslXOAUTH2Handler) init() (stateFunc, error) {
-	originalPeerMaxFrameSize := s.conn.PeerMaxFrameSize
-	if s.maxFrameSizeOverride > s.conn.PeerMaxFrameSize {
-		s.conn.PeerMaxFrameSize = s.maxFrameSizeOverride
+	originalPeerMaxFrameSize := s.conn.peerMaxFrameSize
+	if s.maxFrameSizeOverride > s.conn.peerMaxFrameSize {
+		s.conn.peerMaxFrameSize = s.maxFrameSizeOverride
 	}
 	err := s.conn.writeFrame(frames.Frame{
-		Type: frameTypeSASL,
+		Type: frames.TypeSASL,
 		Body: &frames.SASLInit{
 			Mechanism:       saslMechanismXOAUTH2,
 			InitialResponse: s.response,
 		},
 	})
-	s.conn.PeerMaxFrameSize = originalPeerMaxFrameSize
+	s.conn.peerMaxFrameSize = originalPeerMaxFrameSize
 	if err != nil {
 		return nil, err
 	}
@@ -208,7 +207,7 @@ func (s saslXOAUTH2Handler) step() (stateFunc, error) {
 
 			// The SASL protocol requires clients to send an empty response to this challenge.
 			err := s.conn.writeFrame(frames.Frame{
-				Type: frameTypeSASL,
+				Type: frames.TypeSASL,
 				Body: &frames.SASLResponse{
 					Response: []byte{},
 				},

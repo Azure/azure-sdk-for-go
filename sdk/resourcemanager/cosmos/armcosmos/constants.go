@@ -11,7 +11,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v2.2.0"
+	moduleVersion = "v2.3.0"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.

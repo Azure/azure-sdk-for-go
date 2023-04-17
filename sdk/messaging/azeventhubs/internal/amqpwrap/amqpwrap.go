@@ -7,6 +7,7 @@ package amqpwrap
 
 import (
 	"context"
+	"errors"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
@@ -14,7 +15,7 @@ import (
 // AMQPReceiver is implemented by *amqp.Receiver
 type AMQPReceiver interface {
 	IssueCredit(credit uint32) error
-	Receive(ctx context.Context) (*amqp.Message, error)
+	Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error)
 	Prefetched() *amqp.Message
 
 	// settlement functions
@@ -24,7 +25,7 @@ type AMQPReceiver interface {
 	ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error
 
 	LinkName() string
-	LinkSourceFilterValue(name string) interface{}
+	LinkSourceFilterValue(name string) any
 
 	// wrapper only functions,
 
@@ -40,7 +41,7 @@ type AMQPReceiverCloser interface {
 
 // AMQPSender is implemented by *amqp.Sender
 type AMQPSender interface {
-	Send(ctx context.Context, msg *amqp.Message) error
+	Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error
 	MaxMessageSize() uint64
 	LinkName() string
 }
@@ -80,11 +81,38 @@ type RPCResponse struct {
 	Message     *amqp.Message
 }
 
+type goamqpConn interface {
+	NewSession(ctx context.Context, opts *amqp.SessionOptions) (*amqp.Session, error)
+	Close() error
+}
+
+type goamqpSession interface {
+	Close(ctx context.Context) error
+	NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (*amqp.Receiver, error)
+	NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (*amqp.Sender, error)
+}
+
+type goamqpReceiver interface {
+	IssueCredit(credit uint32) error
+	Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error)
+	Prefetched() *amqp.Message
+
+	// settlement functions
+	AcceptMessage(ctx context.Context, msg *amqp.Message) error
+	RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error
+	ReleaseMessage(ctx context.Context, msg *amqp.Message) error
+	ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error
+
+	LinkName() string
+	LinkSourceFilterValue(name string) any
+	Close(ctx context.Context) error
+}
+
 // AMQPClientWrapper is a simple interface, implemented by *AMQPClientWrapper
 // It exists only so we can return AMQPSession, which itself only exists so we can
 // return interfaces for AMQPSender and AMQPReceiver from AMQPSession.
 type AMQPClientWrapper struct {
-	Inner *amqp.Client
+	Inner goamqpConn
 }
 
 func (w *AMQPClientWrapper) Close() error {
@@ -95,7 +123,7 @@ func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOp
 	sess, err := w.Inner.NewSession(ctx, opts)
 
 	if err != nil {
-		return nil, err
+		return nil, HandleNewOrCloseError(err)
 	}
 
 	return &AMQPSessionWrapper{
@@ -104,18 +132,22 @@ func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOp
 }
 
 type AMQPSessionWrapper struct {
-	Inner *amqp.Session
+	Inner goamqpSession
 }
 
 func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
-	return w.Inner.Close(ctx)
+	if err := w.Inner.Close(ctx); err != nil {
+		return HandleNewOrCloseError(err)
+	}
+
+	return nil
 }
 
 func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
 	receiver, err := w.Inner.NewReceiver(ctx, source, opts)
 
 	if err != nil {
-		return nil, err
+		return nil, HandleNewOrCloseError(err)
 	}
 
 	return &AMQPReceiverWrapper{inner: receiver}, nil
@@ -125,14 +157,14 @@ func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, opts 
 	sender, err := w.Inner.NewSender(ctx, target, opts)
 
 	if err != nil {
-		return nil, err
+		return nil, HandleNewOrCloseError(err)
 	}
 
 	return sender, nil
 }
 
 type AMQPReceiverWrapper struct {
-	inner   *amqp.Receiver
+	inner   goamqpReceiver
 	credits uint32
 }
 
@@ -150,8 +182,8 @@ func (rw *AMQPReceiverWrapper) IssueCredit(credit uint32) error {
 	return err
 }
 
-func (rw *AMQPReceiverWrapper) Receive(ctx context.Context) (*amqp.Message, error) {
-	message, err := rw.inner.Receive(ctx)
+func (rw *AMQPReceiverWrapper) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+	message, err := rw.inner.Receive(ctx, o)
 
 	if err != nil {
 		return nil, err
@@ -193,10 +225,50 @@ func (rw *AMQPReceiverWrapper) LinkName() string {
 	return rw.inner.LinkName()
 }
 
-func (rw *AMQPReceiverWrapper) LinkSourceFilterValue(name string) interface{} {
+func (rw *AMQPReceiverWrapper) LinkSourceFilterValue(name string) any {
 	return rw.inner.LinkSourceFilterValue(name)
 }
 
 func (rw *AMQPReceiverWrapper) Close(ctx context.Context) error {
-	return rw.inner.Close(ctx)
+	if err := rw.inner.Close(ctx); err != nil {
+		return HandleNewOrCloseError(err)
+	}
+
+	return nil
 }
+
+type AMQPSenderWrapper struct {
+	inner AMQPSenderCloser
+}
+
+func (sw *AMQPSenderWrapper) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
+	return sw.inner.Send(ctx, msg, o)
+}
+
+func (sw *AMQPSenderWrapper) MaxMessageSize() uint64 {
+	return sw.inner.MaxMessageSize()
+}
+
+func (sw *AMQPSenderWrapper) LinkName() string {
+	return sw.inner.LinkName()
+}
+
+func (sw *AMQPSenderWrapper) Close(ctx context.Context) error {
+	if err := sw.inner.Close(ctx); err != nil {
+		return HandleNewOrCloseError(err)
+	}
+
+	return nil
+}
+
+func HandleNewOrCloseError(err error) error {
+	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+		// we treat this a bit differently when creating or closing entities. The big concern here is
+		// that failing to cleanup stray
+		return ErrConnResetNeeded
+	}
+
+	return err
+}
+
+var ErrConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")

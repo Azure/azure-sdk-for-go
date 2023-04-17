@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,31 +25,22 @@ import (
 // CertificateClient contains the methods for the Certificate group.
 // Don't use this type directly, use NewCertificateClient() instead.
 type CertificateClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCertificateClient creates a new instance of CertificateClient with the specified values.
-// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCertificateClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CertificateClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CertificateClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CertificateClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -65,19 +54,20 @@ func NewCertificateClient(subscriptionID string, credential azcore.TokenCredenti
 // [https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide]
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
-// and must match the certificate data in the request. For example SHA1-a3d1c5.
-// options - CertificateClientCancelDeletionOptions contains the optional parameters for the CertificateClient.CancelDeletion
-// method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
+//     and must match the certificate data in the request. For example SHA1-a3d1c5.
+//   - options - CertificateClientCancelDeletionOptions contains the optional parameters for the CertificateClient.CancelDeletion
+//     method.
 func (client *CertificateClient) CancelDeletion(ctx context.Context, resourceGroupName string, accountName string, certificateName string, options *CertificateClientCancelDeletionOptions) (CertificateClientCancelDeletionResponse, error) {
 	req, err := client.cancelDeletionCreateRequest(ctx, resourceGroupName, accountName, certificateName, options)
 	if err != nil {
 		return CertificateClientCancelDeletionResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateClientCancelDeletionResponse{}, err
 	}
@@ -106,7 +96,7 @@ func (client *CertificateClient) cancelDeletionCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -133,19 +123,20 @@ func (client *CertificateClient) cancelDeletionHandleResponse(resp *http.Respons
 // Extension [https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide]
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
-// and must match the certificate data in the request. For example SHA1-a3d1c5.
-// parameters - Additional parameters for certificate creation.
-// options - CertificateClientCreateOptions contains the optional parameters for the CertificateClient.Create method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
+//     and must match the certificate data in the request. For example SHA1-a3d1c5.
+//   - parameters - Additional parameters for certificate creation.
+//   - options - CertificateClientCreateOptions contains the optional parameters for the CertificateClient.Create method.
 func (client *CertificateClient) Create(ctx context.Context, resourceGroupName string, accountName string, certificateName string, parameters CertificateCreateOrUpdateParameters, options *CertificateClientCreateOptions) (CertificateClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, certificateName, parameters, options)
 	if err != nil {
 		return CertificateClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateClientCreateResponse{}, err
 	}
@@ -174,7 +165,7 @@ func (client *CertificateClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -207,23 +198,24 @@ func (client *CertificateClient) createHandleResponse(resp *http.Response) (Cert
 // Extension [https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide]
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
-// and must match the certificate data in the request. For example SHA1-a3d1c5.
-// options - CertificateClientBeginDeleteOptions contains the optional parameters for the CertificateClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
+//     and must match the certificate data in the request. For example SHA1-a3d1c5.
+//   - options - CertificateClientBeginDeleteOptions contains the optional parameters for the CertificateClient.BeginDelete method.
 func (client *CertificateClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, certificateName string, options *CertificateClientBeginDeleteOptions) (*runtime.Poller[CertificateClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, certificateName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[CertificateClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CertificateClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[CertificateClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[CertificateClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
@@ -231,13 +223,14 @@ func (client *CertificateClient) BeginDelete(ctx context.Context, resourceGroupN
 // Extension [https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide]
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
 func (client *CertificateClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, certificateName string, options *CertificateClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, certificateName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -266,7 +259,7 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -281,18 +274,19 @@ func (client *CertificateClient) deleteCreateRequest(ctx context.Context, resour
 // [https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide]
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
-// and must match the certificate data in the request. For example SHA1-a3d1c5.
-// options - CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
+//     and must match the certificate data in the request. For example SHA1-a3d1c5.
+//   - options - CertificateClientGetOptions contains the optional parameters for the CertificateClient.Get method.
 func (client *CertificateClient) Get(ctx context.Context, resourceGroupName string, accountName string, certificateName string, options *CertificateClientGetOptions) (CertificateClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, certificateName, options)
 	if err != nil {
 		return CertificateClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateClientGetResponse{}, err
 	}
@@ -321,7 +315,7 @@ func (client *CertificateClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -347,11 +341,12 @@ func (client *CertificateClient) getHandleResponse(resp *http.Response) (Certifi
 // NewListByBatchAccountPager - Warning: This operation is deprecated and will be removed after February, 2024. Please use
 // the Azure KeyVault Extension [https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide]
 // instead.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - CertificateClientListByBatchAccountOptions contains the optional parameters for the CertificateClient.ListByBatchAccount
-// method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - CertificateClientListByBatchAccountOptions contains the optional parameters for the CertificateClient.NewListByBatchAccountPager
+//     method.
 func (client *CertificateClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *CertificateClientListByBatchAccountOptions) *runtime.Pager[CertificateClientListByBatchAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CertificateClientListByBatchAccountResponse]{
 		More: func(page CertificateClientListByBatchAccountResponse) bool {
@@ -368,7 +363,7 @@ func (client *CertificateClient) NewListByBatchAccountPager(resourceGroupName st
 			if err != nil {
 				return CertificateClientListByBatchAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CertificateClientListByBatchAccountResponse{}, err
 			}
@@ -395,7 +390,7 @@ func (client *CertificateClient) listByBatchAccountCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -428,19 +423,20 @@ func (client *CertificateClient) listByBatchAccountHandleResponse(resp *http.Res
 // Extension [https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide]
 // instead.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
-// and must match the certificate data in the request. For example SHA1-a3d1c5.
-// parameters - Certificate entity to update.
-// options - CertificateClientUpdateOptions contains the optional parameters for the CertificateClient.Update method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - certificateName - The identifier for the certificate. This must be made up of algorithm and thumbprint separated by a dash,
+//     and must match the certificate data in the request. For example SHA1-a3d1c5.
+//   - parameters - Certificate entity to update.
+//   - options - CertificateClientUpdateOptions contains the optional parameters for the CertificateClient.Update method.
 func (client *CertificateClient) Update(ctx context.Context, resourceGroupName string, accountName string, certificateName string, parameters CertificateCreateOrUpdateParameters, options *CertificateClientUpdateOptions) (CertificateClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, certificateName, parameters, options)
 	if err != nil {
 		return CertificateClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CertificateClientUpdateResponse{}, err
 	}
@@ -469,7 +465,7 @@ func (client *CertificateClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -69,7 +69,7 @@ type ServiceUnrecordedTestsSuite struct {
 	suite.Suite
 }
 
-func (s *ServiceRecordedTestsSuite) TestGetAccountInfo() {
+func (s *ServiceRecordedTestsSuite) TestServiceGetAccountInfo() {
 	_require := require.New(s.T())
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)

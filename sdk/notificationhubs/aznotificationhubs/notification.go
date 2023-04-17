@@ -6,17 +6,11 @@
 
 package aznotificationhubs
 
-import "github.com/Azure/azure-sdk-for-go/sdk/notificationhubs/aznotificationhubs/auth"
+import (
+	"strings"
+)
 
 type (
-	// Represents a client for interacting with the Azure Notification Hubs service.
-	NotificationHubClient struct {
-		hubName       string
-		hostName      string
-		endpointUrl   string
-		tokenProvider auth.TokenProvider
-	}
-
 	// Represents a request to send a notification to Azure Notification Hubs.
 	NotificationRequest struct {
 		Message     string            // The message body to send.
@@ -39,3 +33,8 @@ type (
 		NotificationId string // The notification ID for the request.
 	}
 )
+
+// Creates a tag expression
+func CreateTagExpression(tags []string) string {
+	return strings.Join(tags, "||")
+}

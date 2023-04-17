@@ -7,6 +7,7 @@
 package aznotificationhubs
 
 import (
+	"context"
 	"os"
 	"testing"
 	"time"
@@ -39,9 +40,9 @@ func TestDirectSend(t *testing.T) {
 		t.Skip(`Skipping test due to missing environment variables`)
 	}
 
-	client, err := NewNotificationHubClientWithConnectionString(connectionString, hubName)
+	client, err := NewNotificationHubClientFromConnectionString(connectionString, hubName, nil)
 	if client == nil || err != nil {
-		t.Fatalf(`NewNotificationHubClientWithConnectionString %v`, err)
+		t.Fatalf(`NewNotificationHubClientFromConnectionString %v`, err)
 	}
 
 	headers := make(map[string]string)
@@ -58,7 +59,7 @@ func TestDirectSend(t *testing.T) {
 		ContentType: contentType,
 	}
 
-	response, err := client.SendDirectNotification(request, deviceToken)
+	response, err := client.SendDirectNotification(context.TODO(), request, deviceToken)
 	if response == nil || err != nil {
 		t.Fatalf(`SendDirectNotification %v`, err)
 	}
@@ -72,9 +73,9 @@ func TestTagExpression(t *testing.T) {
 		t.Skip(`Skipping test due to missing environment variables`)
 	}
 
-	client, err := NewNotificationHubClientWithConnectionString(connectionString, hubName)
+	client, err := NewNotificationHubClientFromConnectionString(connectionString, hubName, nil)
 	if client == nil || err != nil {
-		t.Fatalf(`NewNotificationHubClientWithConnectionString %v`, err)
+		t.Fatalf(`NewNotificationHubClientFromConnectionString %v`, err)
 	}
 
 	headers := make(map[string]string)
@@ -93,7 +94,7 @@ func TestTagExpression(t *testing.T) {
 
 	tagExpression := "language_en&&country_US"
 
-	response, err := client.SendNotification(request, tagExpression)
+	response, err := client.SendNotification(context.TODO(), request, tagExpression)
 	if response == nil || err != nil {
 		t.Fatalf(`SendNotificationWithTagExpression %v`, err)
 	}
@@ -107,9 +108,9 @@ func TestScheduledSend(t *testing.T) {
 		t.Skip(`Skipping test due to missing environment variables`)
 	}
 
-	client, err := NewNotificationHubClientWithConnectionString(connectionString, hubName)
+	client, err := NewNotificationHubClientFromConnectionString(connectionString, hubName, nil)
 	if client == nil || err != nil {
-		t.Fatalf(`NewNotificationHubClientWithConnectionString %v`, err)
+		t.Fatalf(`NewNotificationHubClientFromConnectionString %v`, err)
 	}
 
 	headers := make(map[string]string)
@@ -130,25 +131,16 @@ func TestScheduledSend(t *testing.T) {
 	scheduleTime := time.Now().Add(time.Hour * 8)
 
 	// Schedule a notification
-	response, err := client.SendScheduledNotification(request, tagExpression, scheduleTime)
+	response, err := client.SendScheduledNotification(context.TODO(), request, tagExpression, scheduleTime)
 	if response == nil || err != nil {
 		t.Fatalf(`SendScheduledNotification %v`, err)
 	}
 
 	// Cancel the scheduled notification
 	notificationId := response.NotificationId
-	res, err := client.CancelScheduledNotification(notificationId)
+	res, err := client.CancelScheduledNotification(context.TODO(), notificationId)
 	if res == nil || err != nil {
 		t.Fatalf(`CancelScheduledNotification %v`, err)
-	}
-}
-
-func TestCreateTagExpression(t *testing.T) {
-	tags := []string{"language_en", "country_US"}
-	tagExpression := CreateTagExpression(tags)
-
-	if tagExpression != "language_en||country_US" {
-		t.Fatalf(`CreateTagExpression %v`, tagExpression)
 	}
 }
 
@@ -156,25 +148,25 @@ func TestCreateInstallation(t *testing.T) {
 	connectionString := os.Getenv(anhConnectionStringVariable)
 	hubName := os.Getenv(anhHubVariable)
 	deviceToken := getEnvWithFallback(anhAppleDeviceVariable, anhAppleDeviceToken)
-	installationId := getEnvWithFallback(anhInstallationIdVariable, anhInstallationId)
+	installationID := getEnvWithFallback(anhInstallationIdVariable, anhInstallationId)
 
 	if connectionString == "" || hubName == "" || deviceToken == "" {
 		t.Skip(`Skipping test due to missing environment variables`)
 	}
 
-	client, err := NewNotificationHubClientWithConnectionString(connectionString, hubName)
+	client, err := NewNotificationHubClientFromConnectionString(connectionString, hubName, nil)
 	if client == nil || err != nil {
-		t.Fatalf(`NewNotificationHubClientWithConnectionString %v`, err)
+		t.Fatalf(`NewNotificationHubClientFromConnectionString %v`, err)
 	}
 
 	installation := &Installation{
-		InstallationId: installationId,
+		InstallationID: installationID,
 		PushChannel:    deviceToken,
 		Platform:       "apns",
 		Tags:           []string{"language_en", "country_US"},
 	}
 
-	response, err := client.CreateOrUpdateInstallation(installation)
+	response, err := client.CreateOrUpdateInstallation(context.TODO(), installation)
 	if response == nil || err != nil {
 		t.Fatalf(`CreateOrUpdateInstallation %v`, err)
 	}
@@ -189,12 +181,12 @@ func TestUpdateInstallation(t *testing.T) {
 		t.Skip(`Skipping test due to missing environment variables`)
 	}
 
-	client, err := NewNotificationHubClientWithConnectionString(connectionString, hubName)
+	client, err := NewNotificationHubClientFromConnectionString(connectionString, hubName, nil)
 	if client == nil || err != nil {
-		t.Fatalf(`NewNotificationHubClientWithConnectionString %v`, err)
+		t.Fatalf(`NewNotificationHubClientFromConnectionString %v`, err)
 	}
 
-	installation, err := client.GetInstallation(installationId)
+	installation, err := client.GetInstallation(context.TODO(), installationId)
 	if installation == nil || err != nil {
 		t.Fatalf(`GetInstallation %v`, err)
 	}
@@ -203,7 +195,7 @@ func TestUpdateInstallation(t *testing.T) {
 		{Op: "add", Path: "/tags", Value: "likes_dogs"},
 	}
 
-	response, err := client.UpdateInstallation(installationId, updates)
+	response, err := client.UpdateInstallation(context.TODO(), installationId, updates)
 	if response == nil || err != nil {
 		t.Fatalf(`UpdateInstallation %v`, err)
 	}

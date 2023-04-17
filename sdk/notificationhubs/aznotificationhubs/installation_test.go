@@ -39,8 +39,8 @@ func TestInstallationSimple(t *testing.T) {
 		t.Errorf("error unmarshalling JSON: %v", err)
 	}
 
-	if installation.InstallationId != "123" {
-		t.Errorf("expected InstallationId to be 123, got %s", installation.InstallationId)
+	if installation.InstallationID != "123" {
+		t.Errorf("expected InstallationId to be 123, got %s", installation.InstallationID)
 	}
 
 	if installation.UserId != "456" {
@@ -102,8 +102,8 @@ func TestInstallationWebPush(t *testing.T) {
 		t.Errorf("error unmarshalling JSON: %v", err)
 	}
 
-	if installation.InstallationId != "123" {
-		t.Errorf("expected InstallationId to be 123, got %s", installation.InstallationId)
+	if installation.InstallationID != "123" {
+		t.Errorf("expected InstallationId to be 123, got %s", installation.InstallationID)
 	}
 
 	if installation.UserId != "456" {

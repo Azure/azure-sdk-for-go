@@ -8,13 +8,18 @@ package aznotificationhubs
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"regexp"
+	"net/url"
 	"strings"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/notificationhubs/aznotificationhubs/auth"
 )
 
@@ -22,18 +27,34 @@ const (
 	AZNHApiVersion = "2020-06"
 )
 
-// Creates a tag expression
-func CreateTagExpression(tags []string) string {
-	return strings.Join(tags, "||")
-}
+type (
+	// Represents a client for interacting with the Azure Notification Hubs service.
+	NotificationHubClient struct {
+		hubName       string
+		hostName      string
+		endpointUrl   string
+		tokenProvider auth.TokenProvider
+		pl            runtime.Pipeline
+	}
+
+	// NotificationHubsClientOptions contains optional settings for NotificationHubClient.
+	NotificationHubsClientOptions struct {
+		azcore.ClientOptions
+	}
+)
 
 // Creates a new Notification Hubs client with Access Policy connection string and hub name.
-func NewNotificationHubClientWithConnectionString(connectionString string, hubName string) (*NotificationHubClient, error) {
+func NewNotificationHubClientFromConnectionString(connectionString string, hubName string, options *NotificationHubsClientOptions) (*NotificationHubClient, error) {
+	if options == nil {
+		options = &NotificationHubsClientOptions{}
+	}
+
 	parsedConnection, err := auth.FromConnectionString(connectionString)
 	if err != nil {
 		return nil, err
 	}
 
+	pl := runtime.NewPipeline(moduleName, moduleVersion, runtime.PipelineOptions{}, &options.ClientOptions)
 	tokenProvider := auth.NewNotificationHubsTokenProvider(parsedConnection.KeyName, parsedConnection.KeyValue)
 
 	return &NotificationHubClient{
@@ -41,55 +62,59 @@ func NewNotificationHubClientWithConnectionString(connectionString string, hubNa
 		hostName:      parsedConnection.Endpoint,
 		endpointUrl:   strings.Replace(parsedConnection.Endpoint, "sb://", "https://", -1),
 		tokenProvider: tokenProvider,
+		pl:            pl,
 	}, nil
 }
 
 // Cancels the scheduled notification
-func (n *NotificationHubClient) CancelScheduledNotification(notificationId string) (*NotificationResponse, error) {
+func (n *NotificationHubClient) CancelScheduledNotification(ctx context.Context, notificationId string) (*NotificationResponse, error) {
 	requestUri := fmt.Sprintf("%v%v/schedulednotifications/%v?api-version=%v", n.endpointUrl, n.hubName, notificationId, AZNHApiVersion)
 
-	client := &http.Client{Timeout: time.Second * 15}
-	req, err := http.NewRequest(http.MethodDelete, requestUri, nil)
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, requestUri)
 	if err != nil {
 		return nil, err
 	}
 
-	n.addRequestHeaders(req)
+	n.setRequestHeaders(req)
 
-	res, err := client.Do(req)
+	res, err := n.pl.Do(req)
 	if err != nil {
 		return nil, err
+	}
+
+	if res.StatusCode != 200 {
+		return nil, fmt.Errorf("invalid response from Azure Notification Hubs: %v", res.StatusCode)
 	}
 
 	return createNotificationResponse(res)
 }
 
 // Schedules a notification to be sent at a specified time.
-func (n *NotificationHubClient) SendScheduledNotification(notificationRequest *NotificationRequest, tagExpression string, scheduledTime time.Time) (*NotificationMessageResponse, error) {
+func (n *NotificationHubClient) SendScheduledNotification(ctx context.Context, notificationRequest *NotificationRequest, tagExpression string, scheduledTime time.Time) (*NotificationMessageResponse, error) {
 	requestUri := fmt.Sprintf("%v%v/schedulednotifications/?api-version=%v", n.endpointUrl, n.hubName, AZNHApiVersion)
 
-	messageBody := []byte(notificationRequest.Message)
-
-	client := &http.Client{Timeout: time.Second * 15}
-	req, err := http.NewRequest(http.MethodPost, requestUri, bytes.NewBuffer(messageBody))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, requestUri)
 	if err != nil {
 		return nil, err
 	}
 
+	body := streaming.NopCloser(strings.NewReader(notificationRequest.Message))
+	req.SetBody(body, notificationRequest.ContentType)
+
 	for headerName, headerValue := range notificationRequest.Headers {
-		req.Header.Add(headerName, headerValue)
+		req.Raw().Header.Add(headerName, headerValue)
 	}
 
 	if tagExpression != "" {
-		req.Header.Add("ServiceBusNotification-Tags", tagExpression)
+		req.Raw().Header.Add("ServiceBusNotification-Tags", tagExpression)
 	}
 
-	n.addRequestHeaders(req)
-	req.Header.Add("Content-Type", notificationRequest.ContentType)
-	req.Header.Add("ServiceBusNotification-Format", notificationRequest.Platform)
-	req.Header.Add("ServiceBusNotification-ScheduleTime", scheduledTime.Format(time.RFC3339))
+	n.setRequestHeaders(req)
+	req.Raw().Header.Add("Content-Type", notificationRequest.ContentType)
+	req.Raw().Header.Add("ServiceBusNotification-Format", notificationRequest.Platform)
+	req.Raw().Header.Add("ServiceBusNotification-ScheduleTime", scheduledTime.Format(time.RFC3339))
 
-	res, err := client.Do(req)
+	res, err := n.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -102,31 +127,31 @@ func (n *NotificationHubClient) SendScheduledNotification(notificationRequest *N
 }
 
 // Sends a direct notification to a device.
-func (n *NotificationHubClient) SendDirectNotification(notificationRequest *NotificationRequest, deviceToken interface{}) (*NotificationMessageResponse, error) {
-	return n.sendNotification(notificationRequest, deviceToken, nil)
+func (n *NotificationHubClient) SendDirectNotification(ctx context.Context, notificationRequest *NotificationRequest, deviceToken interface{}) (*NotificationMessageResponse, error) {
+	return n.sendNotification(ctx, notificationRequest, deviceToken, nil)
 }
 
 // Sends a notification to a tag expression or if not specified, to all devices.
-func (n *NotificationHubClient) SendNotification(notificationRequest *NotificationRequest, tagExpression string) (*NotificationMessageResponse, error) {
-	return n.sendNotification(notificationRequest, nil, &tagExpression)
+func (n *NotificationHubClient) SendNotification(ctx context.Context, notificationRequest *NotificationRequest, tagExpression string) (*NotificationMessageResponse, error) {
+	return n.sendNotification(ctx, notificationRequest, nil, &tagExpression)
 }
 
-func (n *NotificationHubClient) sendNotification(notificationRequest *NotificationRequest, deviceHandle interface{}, tagExpression *string) (*NotificationMessageResponse, error) {
+func (n *NotificationHubClient) sendNotification(ctx context.Context, notificationRequest *NotificationRequest, deviceHandle interface{}, tagExpression *string) (*NotificationMessageResponse, error) {
 	requestUri := fmt.Sprintf("%v%v/messages/?api-version=%v", n.endpointUrl, n.hubName, AZNHApiVersion)
 	if deviceHandle != nil {
 		requestUri += "&direct=true"
 	}
 
-	messageBody := []byte(notificationRequest.Message)
-
-	client := &http.Client{Timeout: time.Second * 15}
-	req, err := http.NewRequest(http.MethodPost, requestUri, bytes.NewBuffer(messageBody))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, requestUri)
 	if err != nil {
 		return nil, err
 	}
 
+	body := streaming.NopCloser(strings.NewReader(notificationRequest.Message))
+	req.SetBody(body, notificationRequest.ContentType)
+
 	for headerName, headerValue := range notificationRequest.Headers {
-		req.Header.Add(headerName, headerValue)
+		req.Raw().Header.Add(headerName, headerValue)
 	}
 
 	if deviceHandle != nil {
@@ -137,14 +162,14 @@ func (n *NotificationHubClient) sendNotification(notificationRequest *Notificati
 	}
 
 	if tagExpression != nil {
-		req.Header.Add("ServiceBusNotification-Tags", *tagExpression)
+		req.Raw().Header.Add("ServiceBusNotification-Tags", *tagExpression)
 	}
 
-	n.addRequestHeaders(req)
-	req.Header.Add("Content-Type", notificationRequest.ContentType)
-	req.Header.Add("ServiceBusNotification-Format", notificationRequest.Platform)
+	n.setRequestHeaders(req)
+	req.Raw().Header.Add("Content-Type", notificationRequest.ContentType)
+	req.Raw().Header.Add("ServiceBusNotification-Format", notificationRequest.Platform)
 
-	res, err := client.Do(req)
+	res, err := n.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -157,18 +182,17 @@ func (n *NotificationHubClient) sendNotification(notificationRequest *Notificati
 }
 
 // Gets the installation for the specified installation ID.
-func (n *NotificationHubClient) GetInstallation(installationId string) (*Installation, error) {
+func (n *NotificationHubClient) GetInstallation(ctx context.Context, installationId string) (*Installation, error) {
 	requestUri := fmt.Sprintf("%v%v/installations/%v?api-version=%v", n.endpointUrl, n.hubName, installationId, AZNHApiVersion)
 
-	client := &http.Client{Timeout: time.Second * 15}
-	req, err := http.NewRequest(http.MethodGet, requestUri, nil)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, requestUri)
 	if err != nil {
 		return nil, err
 	}
 
-	n.addRequestHeaders(req)
+	n.setRequestHeaders(req)
 
-	res, err := client.Do(req)
+	res, err := n.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -190,24 +214,26 @@ func (n *NotificationHubClient) GetInstallation(installationId string) (*Install
 }
 
 // Creates or updates an installation.
-func (n *NotificationHubClient) CreateOrUpdateInstallation(installation *Installation) (*NotificationResponse, error) {
-	requestUri := fmt.Sprintf("%v%v/installations/%v?api-version=%v", n.endpointUrl, n.hubName, installation.InstallationId, AZNHApiVersion)
+func (n *NotificationHubClient) CreateOrUpdateInstallation(ctx context.Context, installation *Installation) (*NotificationResponse, error) {
+	requestUri := fmt.Sprintf("%v%v/installations/%v?api-version=%v", n.endpointUrl, n.hubName, installation.InstallationID, AZNHApiVersion)
 
 	installationJSON, err := json.Marshal(installation)
 	if err != nil {
 		return nil, err
 	}
 
-	client := &http.Client{Timeout: time.Second * 15}
-	req, err := http.NewRequest(http.MethodPut, requestUri, bytes.NewBuffer(installationJSON))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, requestUri)
 	if err != nil {
 		return nil, err
 	}
 
-	n.addRequestHeaders(req)
-	req.Header.Add("Content-Type", "application/json")
+	body := streaming.NopCloser(bytes.NewReader(installationJSON))
+	req.SetBody(body, "application/json")
 
-	res, err := client.Do(req)
+	n.setRequestHeaders(req)
+	req.Raw().Header.Add("Content-Type", "application/json")
+
+	res, err := n.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -220,7 +246,7 @@ func (n *NotificationHubClient) CreateOrUpdateInstallation(installation *Install
 }
 
 // Updates an installation with the specified patches.
-func (n *NotificationHubClient) UpdateInstallation(installationId string, patches []InstallationPatch) (*NotificationResponse, error) {
+func (n *NotificationHubClient) UpdateInstallation(ctx context.Context, installationId string, patches []InstallationPatch) (*NotificationResponse, error) {
 	requestUri := fmt.Sprintf("%v%v/installations/%v?api-version=%v", n.endpointUrl, n.hubName, installationId, AZNHApiVersion)
 
 	patchesJSON, err := json.Marshal(patches)
@@ -228,16 +254,18 @@ func (n *NotificationHubClient) UpdateInstallation(installationId string, patche
 		return nil, err
 	}
 
-	client := &http.Client{Timeout: time.Second * 15}
-	req, err := http.NewRequest(http.MethodPatch, requestUri, bytes.NewBuffer(patchesJSON))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, requestUri)
 	if err != nil {
 		return nil, err
 	}
 
-	n.addRequestHeaders(req)
-	req.Header.Add("Content-Type", "application/json-patch+json")
+	body := streaming.NopCloser(bytes.NewReader(patchesJSON))
+	req.SetBody(body, "application/json-patch+json")
 
-	res, err := client.Do(req)
+	n.setRequestHeaders(req)
+	req.Raw().Header.Add("Content-Type", "application/json-patch+json")
+
+	res, err := n.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -250,18 +278,17 @@ func (n *NotificationHubClient) UpdateInstallation(installationId string, patche
 }
 
 // Deletes an installation from Azure Notification Hubs.
-func (n *NotificationHubClient) DeleteInstallation(installationId string) (*NotificationResponse, error) {
+func (n *NotificationHubClient) DeleteInstallation(ctx context.Context, installationId string) (*NotificationResponse, error) {
 	requestUri := fmt.Sprintf("%v%v/installations/%v?api-version=%v", n.endpointUrl, n.hubName, installationId, AZNHApiVersion)
 
-	client := &http.Client{Timeout: time.Second * 15}
-	req, err := http.NewRequest(http.MethodDelete, requestUri, nil)
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, requestUri)
 	if err != nil {
 		return nil, err
 	}
 
-	n.addRequestHeaders(req)
+	n.setRequestHeaders(req)
 
-	res, err := client.Do(req)
+	res, err := n.pl.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -273,18 +300,13 @@ func (n *NotificationHubClient) DeleteInstallation(installationId string) (*Noti
 	return createNotificationResponse(res)
 }
 
-func generateUserAgent() string {
-	return fmt.Sprintf("NHub/%v} (api-origin=GoSDK;)", AZNHApiVersion)
-}
-
-func (n *NotificationHubClient) addRequestHeaders(req *http.Request) {
+func (n *NotificationHubClient) setRequestHeaders(req *policy.Request) {
 	sasToken, _ := n.tokenProvider.GetToken(n.hostName)
 
-	req.Header.Add("Authorization", sasToken.Token)
-	req.Header.Set("User-Agent", generateUserAgent())
+	req.Raw().Header.Add("Authorization", sasToken.Token)
 }
 
-func setDeviceHandle(deviceHandle interface{}, req *http.Request) error {
+func setDeviceHandle(deviceHandle interface{}, req *policy.Request) error {
 	var (
 		endpoint, p256dh, auth string
 		ok                     bool
@@ -292,7 +314,7 @@ func setDeviceHandle(deviceHandle interface{}, req *http.Request) error {
 
 	switch v := deviceHandle.(type) {
 	case string:
-		req.Header.Set("ServiceBusNotification-DeviceHandle", v)
+		req.Raw().Header.Add("ServiceBusNotification-DeviceHandle", v)
 	case map[string]interface{}:
 		if endpoint, ok = v["endpoint"].(string); !ok {
 			return fmt.Errorf("missing endpoint")
@@ -303,9 +325,9 @@ func setDeviceHandle(deviceHandle interface{}, req *http.Request) error {
 		if auth, ok = v["auth"].(string); !ok {
 			return fmt.Errorf("missing auth")
 		}
-		req.Header.Set("ServiceBusNotification-DeviceHandle", endpoint)
-		req.Header.Set("p256", p256dh)
-		req.Header.Set("auth", auth)
+		req.Raw().Header.Add("ServiceBusNotification-DeviceHandle", endpoint)
+		req.Raw().Header.Add("p256", p256dh)
+		req.Raw().Header.Add("auth", auth)
 	default:
 		return fmt.Errorf("invalid deviceHandle type")
 	}
@@ -320,11 +342,14 @@ func createNotificationMessageResponse(res *http.Response) (*NotificationMessage
 	location := res.Header.Get("Location")
 
 	if location != "" {
-		re := regexp.MustCompile(`/messages/(\w+-\d+-\w+-\d{2})\?`)
-		match := re.FindStringSubmatch(location)
-		if len(match) == 2 {
-			notificationId = match[1]
+		parsedLocation, err := url.Parse(location)
+		if err != nil {
+			return nil, err
 		}
+
+		path := parsedLocation.Path
+		parts := strings.Split(path, "/")
+		notificationId = parts[len(parts)-1]
 	}
 
 	return &NotificationMessageResponse{

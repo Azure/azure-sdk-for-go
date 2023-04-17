@@ -18,14 +18,12 @@ import (
 )
 
 const (
-	// AZNHTokenTypeJWT is the type of token to be used for JWTs. For example Azure Active Directory tokens.
-	AZNHTokenTypeJWT TokenType = "jwt"
-	// AZNHTokenTypeSAS is the type of token to be used for SAS tokens.
-	AZNHTokenTypeSAS TokenType = "servicebus.windows.net:sastoken"
+	// aznhTokenTypeSAS is the type of token to be used for SAS tokens.
+	aznhTokenTypeSAS TokenType = "servicebus.windows.net:sastoken"
 
-	AZNHEndpointKey            = "Endpoint"
-	AZNHSharedAccessKeyNameKey = "SharedAccessKeyName"
-	AZNHSharedAccessKeyKey     = "SharedAccessKey"
+	aznhEndpointKey            = "Endpoint"
+	aznhSharedAccessKeyNameKey = "SharedAccessKeyName"
+	aznhSharedAccessKeyKey     = "SharedAccessKey"
 )
 
 type (
@@ -34,7 +32,7 @@ type (
 
 	// Token contains all of the information to negotiate authentication
 	Token struct {
-		// TokenType is the type of AZNH token
+		// TokenType is the type of aznh token
 		TokenType TokenType
 		Token     string
 		Expiry    string
@@ -90,7 +88,7 @@ func (t *NotificationHubsTokenProvider) GetToken(uri string) (*Token, error) {
 	}
 
 	return &Token{
-		TokenType: AZNHTokenTypeSAS,
+		TokenType: aznhTokenTypeSAS,
 		Token:     fmt.Sprintf("SharedAccessSignature %s", tokenParams.Encode()),
 		Expiry:    fmt.Sprintf("%d", expiry),
 	}, nil
@@ -119,25 +117,25 @@ func FromConnectionString(connectionString string) (*ParsedConnection, error) {
 		key := keyValuePair[0]
 		value := keyValuePair[1]
 		switch {
-		case strings.EqualFold(AZNHEndpointKey, key):
+		case strings.EqualFold(aznhEndpointKey, key):
 			endpoint = value
-		case strings.EqualFold(AZNHSharedAccessKeyNameKey, key):
+		case strings.EqualFold(aznhSharedAccessKeyNameKey, key):
 			keyName = value
-		case strings.EqualFold(AZNHSharedAccessKeyKey, key):
+		case strings.EqualFold(aznhSharedAccessKeyKey, key):
 			keyValue = value
 		}
 	}
 
 	if endpoint == "" {
-		return nil, fmt.Errorf("key %q must not be empty", AZNHEndpointKey)
+		return nil, fmt.Errorf("key %q must not be empty", aznhEndpointKey)
 	}
 
 	if keyName == "" {
-		return nil, fmt.Errorf("key %q must not be empty", AZNHSharedAccessKeyNameKey)
+		return nil, fmt.Errorf("key %q must not be empty", aznhSharedAccessKeyNameKey)
 	}
 
 	if keyValue == "" {
-		return nil, fmt.Errorf("key %q must not be empty", AZNHSharedAccessKeyKey)
+		return nil, fmt.Errorf("key %q must not be empty", aznhSharedAccessKeyKey)
 	}
 
 	return &ParsedConnection{

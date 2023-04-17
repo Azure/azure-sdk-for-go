@@ -12,5 +12,5 @@ const (
 	moduleName = "aznotificationhubs"
 
 	// moduleVersion is the semantic version (see http://semver.org) of this module.
-	moduleVersion = "v1.0.0-beta1"
+	moduleVersion = "v0.1.0"
 )

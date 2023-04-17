@@ -9,7 +9,7 @@ package aznotificationhubs
 type (
 	// Represents an installation in Azure Notification Hubs.
 	Installation struct {
-		InstallationId     string                           `json:"installationId"`               // The installation ID
+		InstallationID     string                           `json:"installationId"`               // The installation ID
 		UserId             string                           `json:"userId,omitempty"`             // The user ID
 		LastActiveOn       string                           `json:"lastActiveOn,omitempty"`       // The date the installation was last active
 		ExpirationTime     string                           `json:"expirationTime,omitempty"`     // The installation expiration time

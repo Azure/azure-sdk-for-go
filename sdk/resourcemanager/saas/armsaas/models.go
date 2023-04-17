@@ -12,100 +12,100 @@ package armsaas
 // AccessTokenResult - the ISV access token result response.
 type AccessTokenResult struct {
 	// The Publisher Offer Base Uri
-	PublisherOfferBaseURI *string `json:"publisherOfferBaseUri,omitempty"`
+	PublisherOfferBaseURI *string
 
 	// The generated token
-	Token *string `json:"token,omitempty"`
+	Token *string
 }
 
 // App - the saasApp resource.
 type App struct {
 	// the resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// the resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// the resource properties.
-	Properties *AppProperties `json:"properties,omitempty"`
+	Properties *AppProperties
 
 	// the resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// the resource type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// READ-ONLY; the resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // AppOperation - saas app operations
 type AppOperation struct {
 	// the operation display
-	Display *AppOperationDisplay `json:"display,omitempty"`
+	Display *AppOperationDisplay
 
 	// whether the operation is a data action or not.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// the operation name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// the operation origin
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // AppOperationDisplay - Saas app operation display
 type AppOperationDisplay struct {
 	// Description of the operation for display purposes
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the operation for display purposes
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the provider for display purposes
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Name of the resource type for display purposes
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // AppOperationsResponseWithContinuation - saas app operation response with continuation.
 type AppOperationsResponseWithContinuation struct {
 	// the next link to query to get the remaining results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// the value of response.
-	Value []*AppOperation `json:"value,omitempty"`
+	Value []*AppOperation
 }
 
 // AppPlan - Saas resource plan.
 type AppPlan struct {
 	// the plan id.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// the offer id.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// the publisher id.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 }
 
 // AppProperties - Saas resource properties.
 type AppProperties struct {
 	// the resource plan details.
-	SaasAppPlan *AppPlan `json:"saasAppPlan,omitempty"`
+	SaasAppPlan *AppPlan
 
 	// the Saas resource status.
-	Status *SaasAppStatus `json:"status,omitempty"`
+	Status *SaasAppStatus
 }
 
 // AppResponseWithContinuation - saas app response with continuation.
 type AppResponseWithContinuation struct {
 	// the next link to query to get the remaining results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// the value of response.
-	Value []*App `json:"value,omitempty"`
+	Value []*App
 }
 
 // ApplicationsClientListOptions contains the optional parameters for the ApplicationsClient.NewListPager method.
@@ -139,95 +139,95 @@ type ClientGetResourceOptions struct {
 // CreationProperties - properties for creation saas
 type CreationProperties struct {
 	// Whether the SaaS subscription will auto renew upon term end.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
+	AutoRenew *bool
 
 	// The offer id.
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// The metadata about the SaaS subscription such as the AzureSubscriptionId and ResourceUri.
-	PaymentChannelMetadata map[string]*string `json:"paymentChannelMetadata,omitempty"`
+	PaymentChannelMetadata map[string]*string
 
 	// The Payment channel for the SaasSubscription.
-	PaymentChannelType *PaymentChannelType `json:"paymentChannelType,omitempty"`
+	PaymentChannelType *PaymentChannelType
 
 	// The publisher id.
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 
 	// The environment in the publisher side for this resource.
-	PublisherTestEnvironment *string `json:"publisherTestEnvironment,omitempty"`
+	PublisherTestEnvironment *string
 
 	// The seat count.
-	Quantity *float32 `json:"quantity,omitempty"`
+	Quantity *float32
 
 	// The plan id.
-	SKUID *string `json:"skuId,omitempty"`
+	SKUID *string
 
 	// The SaaS resource name.
-	SaasResourceName *string `json:"saasResourceName,omitempty"`
+	SaasResourceName *string
 
 	// The saas session id used for dev service migration request.
-	SaasSessionID *string `json:"saasSessionId,omitempty"`
+	SaasSessionID *string
 
 	// The saas subscription id used for tenant to subscription level migration request.
-	SaasSubscriptionID *string `json:"saasSubscriptionId,omitempty"`
+	SaasSubscriptionID *string
 
 	// The current Term id.
-	TermID *string `json:"termId,omitempty"`
+	TermID *string
 }
 
 // DeleteOptions - delete Options
 type DeleteOptions struct {
 	// the feedback
-	Feedback *string `json:"feedback,omitempty"`
+	Feedback *string
 
 	// The reasonCode
-	ReasonCode *float32 `json:"reasonCode,omitempty"`
+	ReasonCode *float32
 
 	// whether it is unsubscribeOnly
-	UnsubscribeOnly *bool `json:"unsubscribeOnly,omitempty"`
+	UnsubscribeOnly *bool
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // MoveResource - Resource Move Options
 type MoveResource struct {
 	// The resource uris to move
-	Resources []*string `json:"resources,omitempty"`
+	Resources []*string
 
 	// The target resource group uri for the move
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+	TargetResourceGroup *string
 }
 
 // OperationClientBeginGetOptions contains the optional parameters for the OperationClient.BeginGet method.
@@ -244,133 +244,133 @@ type OperationsClientListOptions struct {
 // Properties - saas resource properties
 type Properties struct {
 	// Whether the current term is a Free Trial term
-	IsFreeTrial *bool `json:"isFreeTrial,omitempty"`
+	IsFreeTrial *bool
 
 	// The last modifier date if this resource.
-	LastModified *string `json:"lastModified,omitempty"`
+	LastModified *string
 
 	// The SaaS Subscription Status.
-	Status *SaasResourceStatus `json:"status,omitempty"`
+	Status *SaasResourceStatus
 
 	// The current Term object.
-	Term *PropertiesTerm `json:"term,omitempty"`
+	Term *PropertiesTerm
 
 	// READ-ONLY; The created date of this resource.
-	Created *string `json:"created,omitempty" azure:"ro"`
+	Created *string
 }
 
 // PropertiesTerm - The current Term object.
 type PropertiesTerm struct {
 	// The end date of the current term
-	EndDate *string `json:"endDate,omitempty"`
+	EndDate *string
 
 	// The start date of the current term
-	StartDate *string `json:"startDate,omitempty"`
+	StartDate *string
 
 	// The unit indicating Monthly / Yearly
-	TermUnit *string `json:"termUnit,omitempty"`
+	TermUnit *string
 }
 
 // Resource - SaaS REST API resource definition.
 type Resource struct {
 	// saas properties
-	Properties *ResourceProperties `json:"properties,omitempty"`
+	Properties *ResourceProperties
 
 	// the resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource uri
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceCreation - SaaS REST API resource definition for creation.
 type ResourceCreation struct {
 	// Resource location. Only value allowed for SaaS is 'global'
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the SaaS resource that are relevant for creation.
-	Properties *CreationProperties `json:"properties,omitempty"`
+	Properties *CreationProperties
 
 	// the resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource uri
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceProperties - saas properties
 type ResourceProperties struct {
 	// Whether the SaaS subscription will auto renew upon term end.
-	AutoRenew *bool `json:"autoRenew,omitempty"`
+	AutoRenew *bool
 
 	// Whether the current term is a Free Trial term
-	IsFreeTrial *bool `json:"isFreeTrial,omitempty"`
+	IsFreeTrial *bool
 
 	// The last modifier date if this resource.
-	LastModified *string `json:"lastModified,omitempty"`
+	LastModified *string
 
 	// The offer id.
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// The metadata about the SaaS subscription such as the AzureSubscriptionId and ResourceUri.
-	PaymentChannelMetadata map[string]*string `json:"paymentChannelMetadata,omitempty"`
+	PaymentChannelMetadata map[string]*string
 
 	// The Payment channel for the SaasSubscription.
-	PaymentChannelType *PaymentChannelType `json:"paymentChannelType,omitempty"`
+	PaymentChannelType *PaymentChannelType
 
 	// The publisher id.
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 
 	// The environment in the publisher side for this resource.
-	PublisherTestEnvironment *string `json:"publisherTestEnvironment,omitempty"`
+	PublisherTestEnvironment *string
 
 	// The seat count.
-	Quantity *float32 `json:"quantity,omitempty"`
+	Quantity *float32
 
 	// The plan id.
-	SKUID *string `json:"skuId,omitempty"`
+	SKUID *string
 
 	// The SaaS resource name.
-	SaasResourceName *string `json:"saasResourceName,omitempty"`
+	SaasResourceName *string
 
 	// The saas session id used for dev service migration request.
-	SaasSessionID *string `json:"saasSessionId,omitempty"`
+	SaasSessionID *string
 
 	// The saas subscription id used for tenant to subscription level migration request.
-	SaasSubscriptionID *string `json:"saasSubscriptionId,omitempty"`
+	SaasSubscriptionID *string
 
 	// The SaaS Subscription Status.
-	Status *SaasResourceStatus `json:"status,omitempty"`
+	Status *SaasResourceStatus
 
 	// The current Term object.
-	Term *PropertiesTerm `json:"term,omitempty"`
+	Term *PropertiesTerm
 
 	// The current Term id.
-	TermID *string `json:"termId,omitempty"`
+	TermID *string
 
 	// READ-ONLY; The created date of this resource.
-	Created *string `json:"created,omitempty" azure:"ro"`
+	Created *string
 }
 
 // ResourceResponseWithContinuation - saas resources response with continuation.
 type ResourceResponseWithContinuation struct {
 	// the next link to query to get the remaining results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// the value of response.
-	Value []*Resource `json:"value,omitempty"`
+	Value []*Resource
 }
 
 // ResourcesClientListAccessTokenOptions contains the optional parameters for the ResourcesClient.ListAccessToken method.
@@ -386,7 +386,7 @@ type ResourcesClientListOptions struct {
 // Result - Sample result definition
 type Result struct {
 	// Sample property of type string
-	SampleProperty *string `json:"sampleProperty,omitempty"`
+	SampleProperty *string
 }
 
 // SubscriptionLevelClientBeginCreateOrUpdateOptions contains the optional parameters for the SubscriptionLevelClient.BeginCreateOrUpdate

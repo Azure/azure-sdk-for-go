@@ -15,208 +15,208 @@ import "time"
 // via ARM.
 type AgentConfiguration struct {
 	// READ-ONLY; Array of extensions that are allowed to be installed or updated.
-	ExtensionsAllowList []*ConfigurationExtension `json:"extensionsAllowList,omitempty" azure:"ro"`
+	ExtensionsAllowList []*ConfigurationExtension
 
 	// READ-ONLY; Array of extensions that are blocked (cannot be installed or updated)
-	ExtensionsBlockList []*ConfigurationExtension `json:"extensionsBlockList,omitempty" azure:"ro"`
+	ExtensionsBlockList []*ConfigurationExtension
 
 	// READ-ONLY; Specifies whether the extension service is enabled or disabled.
-	ExtensionsEnabled *string `json:"extensionsEnabled,omitempty" azure:"ro"`
+	ExtensionsEnabled *string
 
 	// READ-ONLY; Specified whether the guest configuration service is enabled or disabled.
-	GuestConfigurationEnabled *string `json:"guestConfigurationEnabled,omitempty" azure:"ro"`
+	GuestConfigurationEnabled *string
 
 	// READ-ONLY; Specifies the list of ports that the agent will be able to listen on.
-	IncomingConnectionsPorts []*string `json:"incomingConnectionsPorts,omitempty" azure:"ro"`
+	IncomingConnectionsPorts []*string
 
 	// READ-ONLY; List of service names which should not use the specified proxy server.
-	ProxyBypass []*string `json:"proxyBypass,omitempty" azure:"ro"`
+	ProxyBypass []*string
 
 	// READ-ONLY; Specifies the URL of the proxy to be used.
-	ProxyURL *string `json:"proxyUrl,omitempty" azure:"ro"`
+	ProxyURL *string
 }
 
 // CloudMetadata - The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
 type CloudMetadata struct {
 	// READ-ONLY; Specifies the cloud provider (Azure/AWS/GCP…).
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 }
 
 // ConfigurationExtension - Describes properties that can identify extensions.
 type ConfigurationExtension struct {
 	// READ-ONLY; Publisher of the extension.
-	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+	Publisher *string
 
 	// READ-ONLY; Type of the extension.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type ConnectionDetail struct {
 	// READ-ONLY; The private endpoint connection group id
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The private endpoint connection link identifier
-	LinkIdentifier *string `json:"linkIdentifier,omitempty" azure:"ro"`
+	LinkIdentifier *string
 
 	// READ-ONLY; The private endpoint connection member name
-	MemberName *string `json:"memberName,omitempty" azure:"ro"`
+	MemberName *string
 
 	// READ-ONLY; The private endpoint connection private ip address
-	PrivateIPAddress *string `json:"privateIpAddress,omitempty" azure:"ro"`
+	PrivateIPAddress *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // ExtensionTargetProperties - Describes the Machine Extension Target Version Properties
 type ExtensionTargetProperties struct {
 	// Properties for the specified Extension to Upgrade.
-	TargetVersion *string `json:"targetVersion,omitempty"`
+	TargetVersion *string
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // LocationData - Metadata pertaining to the geographic location of the resource.
 type LocationData struct {
 	// REQUIRED; A canonical name for the geographic or physical location.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The city or locality where the resource is located.
-	City *string `json:"city,omitempty"`
+	City *string
 
 	// The country or region where the resource is located
-	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
+	CountryOrRegion *string
 
 	// The district, state, or province where the resource is located.
-	District *string `json:"district,omitempty"`
+	District *string
 }
 
 // Machine - Describes a hybrid machine.
 type Machine struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Hybrid Compute Machine properties
-	Properties *MachineProperties `json:"properties,omitempty"`
+	Properties *MachineProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MachineExtension - Describes a Machine Extension.
 type MachineExtension struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Describes Machine Extension Properties.
-	Properties *MachineExtensionProperties `json:"properties,omitempty"`
+	Properties *MachineExtensionProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MachineExtensionInstanceView - Describes the Machine Extension Instance View.
 type MachineExtensionInstanceView struct {
 	// The machine extension name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Instance view status.
-	Status *MachineExtensionInstanceViewStatus `json:"status,omitempty"`
+	Status *MachineExtensionInstanceViewStatus
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Specifies the version of the script handler.
-	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
+	TypeHandlerVersion *string
 }
 
 // MachineExtensionInstanceViewStatus - Instance view status.
 type MachineExtensionInstanceViewStatus struct {
 	// The status code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The short localizable label for the status.
-	DisplayStatus *string `json:"displayStatus,omitempty"`
+	DisplayStatus *string
 
 	// The level code.
-	Level *StatusLevelTypes `json:"level,omitempty"`
+	Level *StatusLevelTypes
 
 	// The detailed status message, including for alerts and error messages.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The time of the status.
-	Time *time.Time `json:"time,omitempty"`
+	Time *time.Time
 }
 
 // MachineExtensionProperties - Describes the properties of a Machine Extension.
@@ -224,43 +224,43 @@ type MachineExtensionProperties struct {
 	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
 	// however, the extension will not upgrade minor versions unless redeployed, even
 	// with this property set to true.
-	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
+	AutoUpgradeMinorVersion *bool
 
 	// Indicates whether the extension should be automatically upgraded by the platform if there is a newer version available.
-	EnableAutomaticUpgrade *bool `json:"enableAutomaticUpgrade,omitempty"`
+	EnableAutomaticUpgrade *bool
 
 	// How the extension handler should be forced to update even if the extension configuration has not changed.
-	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+	ForceUpdateTag *string
 
 	// The machine extension instance view.
-	InstanceView *MachineExtensionInstanceView `json:"instanceView,omitempty"`
+	InstanceView *MachineExtensionInstanceView
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings any `json:"protectedSettings,omitempty"`
+	ProtectedSettings any
 
 	// The name of the extension handler publisher.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// Json formatted public settings for the extension.
-	Settings any `json:"settings,omitempty"`
+	Settings any
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Specifies the version of the script handler.
-	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
+	TypeHandlerVersion *string
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // MachineExtensionUpdate - Describes a Machine Extension Update.
 type MachineExtensionUpdate struct {
 	// Describes Machine Extension Update Properties.
-	Properties *MachineExtensionUpdateProperties `json:"properties,omitempty"`
+	Properties *MachineExtensionUpdateProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // MachineExtensionUpdateProperties - Describes the properties of a Machine Extension.
@@ -268,31 +268,31 @@ type MachineExtensionUpdateProperties struct {
 	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
 	// however, the extension will not upgrade minor versions unless redeployed, even
 	// with this property set to true.
-	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
+	AutoUpgradeMinorVersion *bool
 
 	// How the extension handler should be forced to update even if the extension configuration has not changed.
-	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+	ForceUpdateTag *string
 
 	// The extension can contain either protectedSettings or protectedSettingsFromKeyVault or no protected settings at all.
-	ProtectedSettings any `json:"protectedSettings,omitempty"`
+	ProtectedSettings any
 
 	// The name of the extension handler publisher.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// Json formatted public settings for the extension.
-	Settings any `json:"settings,omitempty"`
+	Settings any
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Specifies the version of the script handler.
-	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
+	TypeHandlerVersion *string
 }
 
 // MachineExtensionUpgrade - Describes the Machine Extension Upgrade Properties
 type MachineExtensionUpgrade struct {
 	// Describes the Extension Target Properties.
-	ExtensionTargets map[string]*ExtensionTargetProperties `json:"extensionTargets,omitempty"`
+	ExtensionTargets map[string]*ExtensionTargetProperties
 }
 
 // MachineExtensionsClientBeginCreateOrUpdateOptions contains the optional parameters for the MachineExtensionsClient.BeginCreateOrUpdate
@@ -330,133 +330,133 @@ type MachineExtensionsClientListOptions struct {
 // MachineExtensionsListResult - Describes the Machine Extensions List Result.
 type MachineExtensionsListResult struct {
 	// The uri to fetch the next page of machine extensions. Call ListNext() with this to fetch the next page of extensions.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of extensions
-	Value []*MachineExtension `json:"value,omitempty"`
+	Value []*MachineExtension
 }
 
 // MachineListResult - The List hybrid machine operation response.
 type MachineListResult struct {
 	// REQUIRED; The list of hybrid machines.
-	Value []*Machine `json:"value,omitempty"`
+	Value []*Machine
 
 	// The URI to fetch the next page of Machines. Call ListNext() with this URI to fetch the next page of hybrid machines.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // MachineProperties - Describes the properties of a hybrid machine.
 type MachineProperties struct {
 	// Public Key that the client provides to be used during initial resource onboarding
-	ClientPublicKey *string `json:"clientPublicKey,omitempty"`
+	ClientPublicKey *string
 
 	// The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
-	CloudMetadata *CloudMetadata `json:"cloudMetadata,omitempty"`
+	CloudMetadata *CloudMetadata
 
 	// Machine Extensions information
-	Extensions []*MachineExtensionInstanceView `json:"extensions,omitempty"`
+	Extensions []*MachineExtensionInstanceView
 
 	// Metadata pertaining to the geographic location of the resource.
-	LocationData *LocationData `json:"locationData,omitempty"`
+	LocationData *LocationData
 
 	// Specifies whether any MS SQL instance is discovered on the machine.
-	MssqlDiscovered *string `json:"mssqlDiscovered,omitempty"`
+	MssqlDiscovered *string
 
 	// Specifies the operating system settings for the hybrid machine.
-	OSProfile *OSProfile `json:"osProfile,omitempty"`
+	OSProfile *OSProfile
 
 	// The type of Operating System (windows/linux).
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The resource id of the parent cluster (Azure HCI) this machine is assigned to, if any.
-	ParentClusterResourceID *string `json:"parentClusterResourceId,omitempty"`
+	ParentClusterResourceID *string
 
 	// The resource id of the private link scope this machine is assigned to, if any.
-	PrivateLinkScopeResourceID *string `json:"privateLinkScopeResourceId,omitempty"`
+	PrivateLinkScopeResourceID *string
 
 	// Statuses of dependent services that are reported back to ARM.
-	ServiceStatuses *ServiceStatuses `json:"serviceStatuses,omitempty"`
+	ServiceStatuses *ServiceStatuses
 
 	// Specifies the hybrid machine unique ID.
-	VMID *string `json:"vmId,omitempty"`
+	VMID *string
 
 	// READ-ONLY; Specifies the AD fully qualified display name.
-	AdFqdn *string `json:"adFqdn,omitempty" azure:"ro"`
+	AdFqdn *string
 
 	// READ-ONLY; Configurable properties that the user can set locally via the azcmagent config command, or remotely via ARM.
-	AgentConfiguration *AgentConfiguration `json:"agentConfiguration,omitempty" azure:"ro"`
+	AgentConfiguration *AgentConfiguration
 
 	// READ-ONLY; The hybrid machine agent full version.
-	AgentVersion *string `json:"agentVersion,omitempty" azure:"ro"`
+	AgentVersion *string
 
 	// READ-ONLY; Specifies the DNS fully qualified display name.
-	DNSFqdn *string `json:"dnsFqdn,omitempty" azure:"ro"`
+	DNSFqdn *string
 
 	// READ-ONLY; Detected properties from the machine.
-	DetectedProperties map[string]*string `json:"detectedProperties,omitempty" azure:"ro"`
+	DetectedProperties map[string]*string
 
 	// READ-ONLY; Specifies the hybrid machine display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Specifies the Windows domain name.
-	DomainName *string `json:"domainName,omitempty" azure:"ro"`
+	DomainName *string
 
 	// READ-ONLY; Details about the error state.
-	ErrorDetails []*ErrorDetail `json:"errorDetails,omitempty" azure:"ro"`
+	ErrorDetails []*ErrorDetail
 
 	// READ-ONLY; The time of the last status change.
-	LastStatusChange *time.Time `json:"lastStatusChange,omitempty" azure:"ro"`
+	LastStatusChange *time.Time
 
 	// READ-ONLY; Specifies the hybrid machine FQDN.
-	MachineFqdn *string `json:"machineFqdn,omitempty" azure:"ro"`
+	MachineFqdn *string
 
 	// READ-ONLY; The Operating System running on the hybrid machine.
-	OSName *string `json:"osName,omitempty" azure:"ro"`
+	OSName *string
 
 	// READ-ONLY; Specifies the Operating System product SKU.
-	OSSKU *string `json:"osSku,omitempty" azure:"ro"`
+	OSSKU *string
 
 	// READ-ONLY; The version of Operating System running on the hybrid machine.
-	OSVersion *string `json:"osVersion,omitempty" azure:"ro"`
+	OSVersion *string
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The status of the hybrid machine agent.
-	Status *StatusTypes `json:"status,omitempty" azure:"ro"`
+	Status *StatusTypes
 
 	// READ-ONLY; Specifies the Arc Machine's unique SMBIOS ID
-	VMUUID *string `json:"vmUuid,omitempty" azure:"ro"`
+	VMUUID *string
 }
 
 // MachineUpdate - Describes a hybrid machine Update.
 type MachineUpdate struct {
 	// Identity for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Hybrid Compute Machine properties
-	Properties *MachineUpdateProperties `json:"properties,omitempty"`
+	Properties *MachineUpdateProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // MachineUpdateProperties - Describes the ARM updatable properties of a hybrid machine.
 type MachineUpdateProperties struct {
 	// The metadata of the cloud environment (Azure/GCP/AWS/OCI…).
-	CloudMetadata *CloudMetadata `json:"cloudMetadata,omitempty"`
+	CloudMetadata *CloudMetadata
 
 	// Metadata pertaining to the geographic location of the resource.
-	LocationData *LocationData `json:"locationData,omitempty"`
+	LocationData *LocationData
 
 	// Specifies the operating system settings for the hybrid machine.
-	OSProfile *OSProfile `json:"osProfile,omitempty"`
+	OSProfile *OSProfile
 
 	// The resource id of the parent cluster (Azure HCI) this machine is assigned to, if any.
-	ParentClusterResourceID *string `json:"parentClusterResourceId,omitempty"`
+	ParentClusterResourceID *string
 
 	// The resource id of the private link scope this machine is assigned to, if any.
-	PrivateLinkScopeResourceID *string `json:"privateLinkScopeResourceId,omitempty"`
+	PrivateLinkScopeResourceID *string
 }
 
 // MachinesClientCreateOrUpdateOptions contains the optional parameters for the MachinesClient.CreateOrUpdate method.
@@ -502,61 +502,61 @@ type ManagementClientBeginUpgradeExtensionsOptions struct {
 // OSProfile - Specifies the operating system settings for the hybrid machine.
 type OSProfile struct {
 	// Specifies the linux configuration for update management.
-	LinuxConfiguration *OSProfileLinuxConfiguration `json:"linuxConfiguration,omitempty"`
+	LinuxConfiguration *OSProfileLinuxConfiguration
 
 	// Specifies the windows configuration for update management.
-	WindowsConfiguration *OSProfileWindowsConfiguration `json:"windowsConfiguration,omitempty"`
+	WindowsConfiguration *OSProfileWindowsConfiguration
 
 	// READ-ONLY; Specifies the host OS name of the hybrid machine.
-	ComputerName *string `json:"computerName,omitempty" azure:"ro"`
+	ComputerName *string
 }
 
 // OSProfileLinuxConfiguration - Specifies the linux configuration for update management.
 type OSProfileLinuxConfiguration struct {
 	// Specifies the patch settings.
-	PatchSettings *PatchSettings `json:"patchSettings,omitempty"`
+	PatchSettings *PatchSettings
 }
 
 // OSProfileWindowsConfiguration - Specifies the windows configuration for update management.
 type OSProfileWindowsConfiguration struct {
 	// Specifies the patch settings.
-	PatchSettings *PatchSettings `json:"patchSettings,omitempty"`
+	PatchSettings *PatchSettings
 }
 
 // OperationListResult - The List Compute Operation operation response.
 type OperationListResult struct {
 	// READ-ONLY; The list of compute operations
-	Value []*OperationValue `json:"value,omitempty" azure:"ro"`
+	Value []*OperationValue
 }
 
 // OperationValue - Describes the properties of a Compute Operation value.
 type OperationValue struct {
 	// Display properties
-	Display *OperationValueDisplay `json:"display,omitempty"`
+	Display *OperationValueDisplay
 
 	// READ-ONLY; This property indicates if the operation is an action or a data action
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the compute operation.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The origin of the compute operation.
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // OperationValueDisplay - Describes the properties of a Hybrid Compute Operation Value Display.
 type OperationValueDisplay struct {
 	// READ-ONLY; The description of the operation.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The display name of the compute operation.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The resource provider for the operation.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The display name of the resource the operation applies to.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -567,67 +567,67 @@ type OperationsClientListOptions struct {
 // PatchSettings - Specifies the patch settings.
 type PatchSettings struct {
 	// Specifies the assessment mode.
-	AssessmentMode *AssessmentModeTypes `json:"assessmentMode,omitempty"`
+	AssessmentMode *AssessmentModeTypes
 
 	// Specifies the patch mode.
-	PatchMode *PatchModeTypes `json:"patchMode,omitempty"`
+	PatchMode *PatchModeTypes
 }
 
 // PrivateEndpointConnection - A private endpoint connection
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionDataModel - The Data Model for a Private Endpoint Connection associated with a Private Link Scope
 type PrivateEndpointConnectionDataModel struct {
 	// The Private Endpoint Connection properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; The ARM Resource Id of the Private Endpoint.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The Name of the Private Endpoint.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - A list of private endpoint connections.
 type PrivateEndpointConnectionListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*PrivateEndpointConnection `json:"value,omitempty" azure:"ro"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of a private endpoint connection.
 type PrivateEndpointConnectionProperties struct {
 	// Private endpoint which the connection belongs to.
-	PrivateEndpoint *PrivateEndpointProperty `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpointProperty
 
 	// Connection state of the private endpoint connection.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionStateProperty
 
 	// READ-ONLY; List of group IDs.
-	GroupIDs []*string `json:"groupIds,omitempty" azure:"ro"`
+	GroupIDs []*string
 
 	// READ-ONLY; State of the private endpoint connection.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
@@ -659,46 +659,46 @@ type PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions struct {
 // PrivateEndpointProperty - Private endpoint which the connection belongs to.
 type PrivateEndpointProperty struct {
 	// Resource id of the private endpoint.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*PrivateLinkResource `json:"value,omitempty" azure:"ro"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 
 	// READ-ONLY; Required DNS zone names of the the private link resource.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -715,63 +715,63 @@ type PrivateLinkResourcesClientListByPrivateLinkScopeOptions struct {
 // PrivateLinkScope - An Azure Arc PrivateLinkScope definition.
 type PrivateLinkScope struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties that define a Azure Arc PrivateLinkScope resource.
-	Properties *PrivateLinkScopeProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkScopeProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkScopeListResult - Describes the list of Azure Arc PrivateLinkScope resources.
 type PrivateLinkScopeListResult struct {
 	// REQUIRED; List of Azure Arc PrivateLinkScope definitions.
-	Value []*PrivateLinkScope `json:"value,omitempty"`
+	Value []*PrivateLinkScope
 
 	// The URI to get the next set of Azure Arc PrivateLinkScope definitions if too many PrivateLinkScopes where returned in the
 	// result set.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PrivateLinkScopeProperties - Properties that define a Azure Arc PrivateLinkScope resource.
 type PrivateLinkScopeProperties struct {
 	// Indicates whether machines associated with the private link scope can also use public Azure Arc service endpoints.
-	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccessType
 
 	// READ-ONLY; The collection of associated Private Endpoint Connections.
-	PrivateEndpointConnections []*PrivateEndpointConnectionDataModel `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnectionDataModel
 
 	// READ-ONLY; The Guid id of the private link scope.
-	PrivateLinkScopeID *string `json:"privateLinkScopeId,omitempty" azure:"ro"`
+	PrivateLinkScopeID *string
 
 	// READ-ONLY; Current state of this PrivateLinkScope: whether or not is has been provisioned within the resource group it
 	// is defined. Users cannot change this value but are able to read from it. Values will include
 	// Provisioning ,Succeeded, Canceled and Failed.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 type PrivateLinkScopeValidationDetails struct {
 	// List of Private Endpoint Connection details.
-	ConnectionDetails []*ConnectionDetail `json:"connectionDetails,omitempty"`
+	ConnectionDetails []*ConnectionDetail
 
 	// Indicates whether machines associated with the private link scope can also use public Azure Arc service endpoints.
-	PublicNetworkAccess *PublicNetworkAccessType `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccessType
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateLinkScopesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkScopesClient.BeginDelete
@@ -823,125 +823,125 @@ type PrivateLinkScopesClientUpdateTagsOptions struct {
 // PrivateLinkScopesResource - An azure resource object
 type PrivateLinkScopesResource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkServiceConnectionStateProperty - State of the private endpoint connection.
 type PrivateLinkServiceConnectionStateProperty struct {
 	// REQUIRED; The private link service connection description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// REQUIRED; The private link service connection status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// READ-ONLY; The actions required for private link service connection.
-	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
+	ActionsRequired *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceUpdate - The Update Resource model definition.
 type ResourceUpdate struct {
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ServiceStatus - Describes the status and behavior of a service.
 type ServiceStatus struct {
 	// The behavior of the service when the Arc-enabled machine starts up.
-	StartupType *string `json:"startupType,omitempty"`
+	StartupType *string
 
 	// The current status of the service.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // ServiceStatuses - Reports the state and behavior of dependent services.
 type ServiceStatuses struct {
 	// The state of the extension service on the Arc-enabled machine.
-	ExtensionService *ServiceStatus `json:"extensionService,omitempty"`
+	ExtensionService *ServiceStatus
 
 	// The state of the guest configuration service on the Arc-enabled machine.
-	GuestConfigurationService *ServiceStatus `json:"guestConfigurationService,omitempty"`
+	GuestConfigurationService *ServiceStatus
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a PrivateLinkScope
 // instance.
 type TagsResource struct {
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

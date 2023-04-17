@@ -372,14 +372,14 @@ func (a ApplicationDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "artifacts", a.Artifacts)
 	populate(objectMap, "authorizations", a.Authorizations)
-	populate(objectMap, "createUiDefinition", &a.CreateUIDefinition)
+	populateAny(objectMap, "createUiDefinition", a.CreateUIDefinition)
 	populate(objectMap, "deploymentPolicy", a.DeploymentPolicy)
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "displayName", a.DisplayName)
 	populate(objectMap, "isEnabled", a.IsEnabled)
 	populate(objectMap, "lockLevel", a.LockLevel)
 	populate(objectMap, "lockingPolicy", a.LockingPolicy)
-	populate(objectMap, "mainTemplate", &a.MainTemplate)
+	populateAny(objectMap, "mainTemplate", a.MainTemplate)
 	populate(objectMap, "managementPolicy", a.ManagementPolicy)
 	populate(objectMap, "notificationPolicy", a.NotificationPolicy)
 	populate(objectMap, "packageFileUri", a.PackageFileURI)
@@ -847,8 +847,8 @@ func (a ApplicationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "jitAccessPolicy", a.JitAccessPolicy)
 	populate(objectMap, "managedResourceGroupId", a.ManagedResourceGroupID)
 	populate(objectMap, "managementMode", a.ManagementMode)
-	populate(objectMap, "outputs", &a.Outputs)
-	populate(objectMap, "parameters", &a.Parameters)
+	populateAny(objectMap, "outputs", a.Outputs)
+	populateAny(objectMap, "parameters", a.Parameters)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	populate(objectMap, "publisherTenantId", a.PublisherTenantID)
 	populate(objectMap, "supportUrls", a.SupportUrls)
@@ -923,8 +923,8 @@ func (a ApplicationPropertiesPatchable) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "applicationDefinitionId", a.ApplicationDefinitionID)
 	populate(objectMap, "managedResourceGroupId", a.ManagedResourceGroupID)
-	populate(objectMap, "outputs", &a.Outputs)
-	populate(objectMap, "parameters", &a.Parameters)
+	populateAny(objectMap, "outputs", a.Outputs)
+	populateAny(objectMap, "parameters", a.Parameters)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	return json.Marshal(objectMap)
 }
@@ -964,7 +964,7 @@ func (a *ApplicationPropertiesPatchable) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -1798,6 +1798,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

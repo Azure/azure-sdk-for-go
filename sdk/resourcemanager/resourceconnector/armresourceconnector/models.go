@@ -31,7 +31,7 @@ type Appliance struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
-	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
 	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
@@ -47,13 +47,10 @@ type ApplianceCredentialKubeconfig struct {
 	Value *string
 }
 
-// ApplianceListClusterCustomerUserCredentialResults - The List Cluster Customer User Credential Results appliance.
-type ApplianceListClusterCustomerUserCredentialResults struct {
-	// READ-ONLY; The list of appliance kubeconfigs.
-	Kubeconfigs []*ApplianceCredentialKubeconfig
-
-	// READ-ONLY; Map of Customer User Public and Private SSH Keys
-	SSHKeys map[string]*SSHKey
+// ApplianceGetTelemetryConfigResult - The Get Telemetry Config Result appliance.
+type ApplianceGetTelemetryConfigResult struct {
+	// READ-ONLY; Telemetry instrumentation key.
+	TelemetryInstrumentationKey *string
 }
 
 // ApplianceListCredentialResults - The List Cluster User Credential appliance.
@@ -63,6 +60,18 @@ type ApplianceListCredentialResults struct {
 
 	// READ-ONLY; The list of appliance kubeconfigs.
 	Kubeconfigs []*ApplianceCredentialKubeconfig
+}
+
+// ApplianceListKeysResults - The List Cluster Keys Results appliance.
+type ApplianceListKeysResults struct {
+	// READ-ONLY; Map of artifacts that contains a list of ArtifactProfile used to upload artifacts such as logs.
+	ArtifactProfiles map[string]*ArtifactProfile
+
+	// READ-ONLY; The list of appliance kubeconfigs.
+	Kubeconfigs []*ApplianceCredentialKubeconfig
+
+	// READ-ONLY; Map of Customer User Public, Private SSH Keys and Certificate when available.
+	SSHKeys map[string]*SSHKey
 }
 
 // ApplianceListResult - The List Appliances operation response.
@@ -121,7 +130,7 @@ type ApplianceProperties struct {
 	// Contains infrastructure information about the Appliance
 	InfrastructureConfig *AppliancePropertiesInfrastructureConfig
 
-	// Certificates pair used to download MSI certificate from HIS
+	// Certificates pair used to download MSI certificate from HIS. Can only be set once.
 	PublicKey *string
 
 	// Version of the Appliance
@@ -158,6 +167,12 @@ type AppliancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
+// AppliancesClientGetTelemetryConfigOptions contains the optional parameters for the AppliancesClient.GetTelemetryConfig
+// method.
+type AppliancesClientGetTelemetryConfigOptions struct {
+	// placeholder for future optional parameters
+}
+
 // AppliancesClientGetUpgradeGraphOptions contains the optional parameters for the AppliancesClient.GetUpgradeGraph method.
 type AppliancesClientGetUpgradeGraphOptions struct {
 	// placeholder for future optional parameters
@@ -175,15 +190,14 @@ type AppliancesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppliancesClientListClusterCustomerUserCredentialOptions contains the optional parameters for the AppliancesClient.ListClusterCustomerUserCredential
-// method.
-type AppliancesClientListClusterCustomerUserCredentialOptions struct {
-	// placeholder for future optional parameters
-}
-
 // AppliancesClientListClusterUserCredentialOptions contains the optional parameters for the AppliancesClient.ListClusterUserCredential
 // method.
 type AppliancesClientListClusterUserCredentialOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AppliancesClientListKeysOptions contains the optional parameters for the AppliancesClient.ListKeys method.
+type AppliancesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -196,6 +210,12 @@ type AppliancesClientListOperationsOptions struct {
 // AppliancesClientUpdateOptions contains the optional parameters for the AppliancesClient.Update method.
 type AppliancesClientUpdateOptions struct {
 	// placeholder for future optional parameters
+}
+
+// ArtifactProfile - Appliance ArtifactProfile definition.
+type ArtifactProfile struct {
+	// READ-ONLY; Endpoint is the URL to upload artifacts to.
+	Endpoint *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
@@ -273,16 +293,28 @@ type Resource struct {
 	// READ-ONLY; The name of the resource
 	Name *string
 
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
 }
 
 // SSHKey - Appliance SSHKey definition.
 type SSHKey struct {
-	// User Private Key.
+	// READ-ONLY; Certificate associated with the public key if the key is signed.
+	Certificate *string
+
+	// READ-ONLY; Certificate creation timestamp (Unix).
+	CreationTimeStamp *int64
+
+	// READ-ONLY; Certificate expiration timestamp (Unix).
+	ExpirationTimeStamp *int64
+
+	// READ-ONLY; Private Key.
 	PrivateKey *string
 
-	// User Public Key.
+	// READ-ONLY; Public Key.
 	PublicKey *string
 }
 
@@ -363,6 +395,9 @@ type TrackedResource struct {
 
 	// READ-ONLY; The name of the resource
 	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string

@@ -84,40 +84,40 @@ type APIClientUpdateOptions struct {
 // APICollection - Paged API list representation.
 type APICollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*APIContract `json:"value,omitempty" azure:"ro"`
+	Value []*APIContract
 }
 
 // APIContactInformation - API contact information
 type APIContactInformation struct {
 	// The email address of the contact person/organization. MUST be in the format of an email address
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// The identifying name of the contact person/organization
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The URL pointing to the contact information. MUST be in the format of a URL
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // APIContract - API details.
 type APIContract struct {
 	// API entity contract properties.
-	Properties *APIContractProperties `json:"properties,omitempty"`
+	Properties *APIContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // APIContractProperties - API Entity Properties
@@ -125,135 +125,135 @@ type APIContractProperties struct {
 	// REQUIRED; Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance.
 	// It is appended to the API endpoint base URL specified during the service instance
 	// creation to form a public URL for this API.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Describes the revision of the API. If no value is provided, default revision 1 is created
-	APIRevision *string `json:"apiRevision,omitempty"`
+	APIRevision *string
 
 	// Description of the API Revision.
-	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	APIRevisionDescription *string
 
 	// Type of API.
-	APIType *APIType `json:"type,omitempty"`
+	APIType *APIType
 
 	// Indicates the version identifier of the API if the API is versioned
-	APIVersion *string `json:"apiVersion,omitempty"`
+	APIVersion *string
 
 	// Description of the API Version.
-	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
+	APIVersionDescription *string
 
 	// Version set details
-	APIVersionSet *APIVersionSetContractDetails `json:"apiVersionSet,omitempty"`
+	APIVersionSet *APIVersionSetContractDetails
 
 	// A resource identifier for the related ApiVersionSet.
-	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	APIVersionSetID *string
 
 	// Collection of authentication settings included into this API.
-	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+	AuthenticationSettings *AuthenticationSettingsContract
 
 	// Contact information for the API.
-	Contact *APIContactInformation `json:"contact,omitempty"`
+	Contact *APIContactInformation
 
 	// Description of the API. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// API name. Must be 1 to 300 characters long.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Indicates if API revision is current api revision.
-	IsCurrent *bool `json:"isCurrent,omitempty"`
+	IsCurrent *bool
 
 	// License information for the API.
-	License *APILicenseInformation `json:"license,omitempty"`
+	License *APILicenseInformation
 
 	// Describes on which protocols the operations in this API can be invoked.
-	Protocols []*Protocol `json:"protocols,omitempty"`
+	Protocols []*Protocol
 
 	// Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long.
-	ServiceURL *string `json:"serviceUrl,omitempty"`
+	ServiceURL *string
 
 	// API identifier of the source API.
-	SourceAPIID *string `json:"sourceApiId,omitempty"`
+	SourceAPIID *string
 
 	// Protocols over which API is made available.
-	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract
 
 	// Specifies whether an API or Product subscription is required for accessing the API.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
-	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+	TermsOfServiceURL *string
 
 	// READ-ONLY; Indicates if API revision is accessible via the gateway.
-	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
+	IsOnline *bool
 }
 
 // APIContractUpdateProperties - API update contract properties.
 type APIContractUpdateProperties struct {
 	// Describes the revision of the API. If no value is provided, default revision 1 is created
-	APIRevision *string `json:"apiRevision,omitempty"`
+	APIRevision *string
 
 	// Description of the API Revision.
-	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	APIRevisionDescription *string
 
 	// Type of API.
-	APIType *APIType `json:"type,omitempty"`
+	APIType *APIType
 
 	// Indicates the version identifier of the API if the API is versioned
-	APIVersion *string `json:"apiVersion,omitempty"`
+	APIVersion *string
 
 	// Description of the API Version.
-	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
+	APIVersionDescription *string
 
 	// A resource identifier for the related ApiVersionSet.
-	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	APIVersionSetID *string
 
 	// Collection of authentication settings included into this API.
-	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+	AuthenticationSettings *AuthenticationSettingsContract
 
 	// Contact information for the API.
-	Contact *APIContactInformation `json:"contact,omitempty"`
+	Contact *APIContactInformation
 
 	// Description of the API. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// API name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Indicates if API revision is current api revision.
-	IsCurrent *bool `json:"isCurrent,omitempty"`
+	IsCurrent *bool
 
 	// License information for the API.
-	License *APILicenseInformation `json:"license,omitempty"`
+	License *APILicenseInformation
 
 	// Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It
 	// is appended to the API endpoint base URL specified during the service instance
 	// creation to form a public URL for this API.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Describes on which protocols the operations in this API can be invoked.
-	Protocols []*Protocol `json:"protocols,omitempty"`
+	Protocols []*Protocol
 
 	// Absolute URL of the backend service implementing this API.
-	ServiceURL *string `json:"serviceUrl,omitempty"`
+	ServiceURL *string
 
 	// Protocols over which API is made available.
-	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract
 
 	// Specifies whether an API or Product subscription is required for accessing the API.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
-	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+	TermsOfServiceURL *string
 
 	// READ-ONLY; Indicates if API revision is accessible via the gateway.
-	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
+	IsOnline *bool
 }
 
 // APICreateOrUpdateParameter - API Create or Update Parameters.
 type APICreateOrUpdateParameter struct {
 	// API entity create of update properties.
-	Properties *APICreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *APICreateOrUpdateProperties
 }
 
 // APICreateOrUpdateProperties - API Create or Update Properties.
@@ -261,92 +261,92 @@ type APICreateOrUpdateProperties struct {
 	// REQUIRED; Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance.
 	// It is appended to the API endpoint base URL specified during the service instance
 	// creation to form a public URL for this API.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Describes the revision of the API. If no value is provided, default revision 1 is created
-	APIRevision *string `json:"apiRevision,omitempty"`
+	APIRevision *string
 
 	// Description of the API Revision.
-	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	APIRevisionDescription *string
 
 	// Type of API.
-	APIType *APIType `json:"type,omitempty"`
+	APIType *APIType
 
 	// Indicates the version identifier of the API if the API is versioned
-	APIVersion *string `json:"apiVersion,omitempty"`
+	APIVersion *string
 
 	// Description of the API Version.
-	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
+	APIVersionDescription *string
 
 	// Version set details
-	APIVersionSet *APIVersionSetContractDetails `json:"apiVersionSet,omitempty"`
+	APIVersionSet *APIVersionSetContractDetails
 
 	// A resource identifier for the related ApiVersionSet.
-	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	APIVersionSetID *string
 
 	// Collection of authentication settings included into this API.
-	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+	AuthenticationSettings *AuthenticationSettingsContract
 
 	// Contact information for the API.
-	Contact *APIContactInformation `json:"contact,omitempty"`
+	Contact *APIContactInformation
 
 	// Description of the API. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// API name. Must be 1 to 300 characters long.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Format of the Content in which the API is getting imported.
-	Format *ContentFormat `json:"format,omitempty"`
+	Format *ContentFormat
 
 	// Indicates if API revision is current api revision.
-	IsCurrent *bool `json:"isCurrent,omitempty"`
+	IsCurrent *bool
 
 	// License information for the API.
-	License *APILicenseInformation `json:"license,omitempty"`
+	License *APILicenseInformation
 
 	// Describes on which protocols the operations in this API can be invoked.
-	Protocols []*Protocol `json:"protocols,omitempty"`
+	Protocols []*Protocol
 
 	// Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long.
-	ServiceURL *string `json:"serviceUrl,omitempty"`
+	ServiceURL *string
 
 	// Type of API to create.
 	// * http creates a REST API
 	// * soap creates a SOAP pass-through API
 	// * websocket creates websocket API
 	// * graphql creates GraphQL API.
-	SoapAPIType *SoapAPIType `json:"apiType,omitempty"`
+	SoapAPIType *SoapAPIType
 
 	// API identifier of the source API.
-	SourceAPIID *string `json:"sourceApiId,omitempty"`
+	SourceAPIID *string
 
 	// Protocols over which API is made available.
-	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract
 
 	// Specifies whether an API or Product subscription is required for accessing the API.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
-	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+	TermsOfServiceURL *string
 
 	// Content value when Importing an API.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// Criteria to limit import of WSDL to a subset of the document.
-	WsdlSelector *APICreateOrUpdatePropertiesWsdlSelector `json:"wsdlSelector,omitempty"`
+	WsdlSelector *APICreateOrUpdatePropertiesWsdlSelector
 
 	// READ-ONLY; Indicates if API revision is accessible via the gateway.
-	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
+	IsOnline *bool
 }
 
 // APICreateOrUpdatePropertiesWsdlSelector - Criteria to limit import of WSDL to a subset of the document.
 type APICreateOrUpdatePropertiesWsdlSelector struct {
 	// Name of endpoint(port) to import from WSDL
-	WsdlEndpointName *string `json:"wsdlEndpointName,omitempty"`
+	WsdlEndpointName *string
 
 	// Name of service to import from WSDL
-	WsdlServiceName *string `json:"wsdlServiceName,omitempty"`
+	WsdlServiceName *string
 }
 
 // APIDiagnosticClientCreateOrUpdateOptions contains the optional parameters for the APIDiagnosticClient.CreateOrUpdate method.
@@ -391,49 +391,49 @@ type APIDiagnosticClientUpdateOptions struct {
 // APIEntityBaseContract - API base contract details.
 type APIEntityBaseContract struct {
 	// Describes the revision of the API. If no value is provided, default revision 1 is created
-	APIRevision *string `json:"apiRevision,omitempty"`
+	APIRevision *string
 
 	// Description of the API Revision.
-	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	APIRevisionDescription *string
 
 	// Type of API.
-	APIType *APIType `json:"type,omitempty"`
+	APIType *APIType
 
 	// Indicates the version identifier of the API if the API is versioned
-	APIVersion *string `json:"apiVersion,omitempty"`
+	APIVersion *string
 
 	// Description of the API Version.
-	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
+	APIVersionDescription *string
 
 	// A resource identifier for the related ApiVersionSet.
-	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	APIVersionSetID *string
 
 	// Collection of authentication settings included into this API.
-	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+	AuthenticationSettings *AuthenticationSettingsContract
 
 	// Contact information for the API.
-	Contact *APIContactInformation `json:"contact,omitempty"`
+	Contact *APIContactInformation
 
 	// Description of the API. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates if API revision is current api revision.
-	IsCurrent *bool `json:"isCurrent,omitempty"`
+	IsCurrent *bool
 
 	// License information for the API.
-	License *APILicenseInformation `json:"license,omitempty"`
+	License *APILicenseInformation
 
 	// Protocols over which API is made available.
-	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract
 
 	// Specifies whether an API or Product subscription is required for accessing the API.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
-	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+	TermsOfServiceURL *string
 
 	// READ-ONLY; Indicates if API revision is accessible via the gateway.
-	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
+	IsOnline *bool
 }
 
 // APIExportClientGetOptions contains the optional parameters for the APIExportClient.Get method.
@@ -444,19 +444,19 @@ type APIExportClientGetOptions struct {
 // APIExportResult - API Export result.
 type APIExportResult struct {
 	// Format in which the API Details are exported to the Storage Blob with Sas Key valid for 5 minutes.
-	ExportResultFormat *ExportResultFormat `json:"format,omitempty"`
+	ExportResultFormat *ExportResultFormat
 
 	// ResourceId of the API which was exported.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The object defining the schema of the exported API Detail
-	Value *APIExportResultValue `json:"value,omitempty"`
+	Value *APIExportResultValue
 }
 
 // APIExportResultValue - The object defining the schema of the exported API Detail
 type APIExportResultValue struct {
 	// Link to the Storage Blob containing the result of the export operation. The Blob Uri is only valid for 5 minutes.
-	Link *string `json:"link,omitempty"`
+	Link *string
 }
 
 // APIIssueAttachmentClientCreateOrUpdateOptions contains the optional parameters for the APIIssueAttachmentClient.CreateOrUpdate
@@ -578,10 +578,10 @@ type APIIssueCommentClientListByServiceOptions struct {
 // APILicenseInformation - API license information
 type APILicenseInformation struct {
 	// The license name used for the API
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// A URL to the license used for the API. MUST be in the format of a URL
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // APIOperationClientCreateOrUpdateOptions contains the optional parameters for the APIOperationClient.CreateOrUpdate method.
@@ -738,44 +738,44 @@ type APIReleaseClientUpdateOptions struct {
 // APIReleaseCollection - Paged ApiRelease list representation.
 type APIReleaseCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*APIReleaseContract `json:"value,omitempty" azure:"ro"`
+	Value []*APIReleaseContract
 }
 
 // APIReleaseContract - ApiRelease details.
 type APIReleaseContract struct {
 	// ApiRelease entity contract properties.
-	Properties *APIReleaseContractProperties `json:"properties,omitempty"`
+	Properties *APIReleaseContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // APIReleaseContractProperties - API Release details
 type APIReleaseContractProperties struct {
 	// Identifier of the API the release belongs to.
-	APIID *string `json:"apiId,omitempty"`
+	APIID *string
 
 	// Release Notes
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// READ-ONLY; The time the API was released. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
+	CreatedDateTime *time.Time
 
 	// READ-ONLY; The time the API release was updated.
-	UpdatedDateTime *time.Time `json:"updatedDateTime,omitempty" azure:"ro"`
+	UpdatedDateTime *time.Time
 }
 
 // APIRevisionClientListByServiceOptions contains the optional parameters for the APIRevisionClient.NewListByServicePager
@@ -794,57 +794,57 @@ type APIRevisionClientListByServiceOptions struct {
 // APIRevisionCollection - Paged API Revision list representation.
 type APIRevisionCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*APIRevisionContract `json:"value,omitempty" azure:"ro"`
+	Value []*APIRevisionContract
 }
 
 // APIRevisionContract - Summary of revision metadata.
 type APIRevisionContract struct {
 	// READ-ONLY; Identifier of the API Revision.
-	APIID *string `json:"apiId,omitempty" azure:"ro"`
+	APIID *string
 
 	// READ-ONLY; Revision number of API.
-	APIRevision *string `json:"apiRevision,omitempty" azure:"ro"`
+	APIRevision *string
 
 	// READ-ONLY; The time the API Revision was created. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
+	CreatedDateTime *time.Time
 
 	// READ-ONLY; Description of the API Revision.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Indicates if API revision is accessible via the gateway.
-	IsCurrent *bool `json:"isCurrent,omitempty" azure:"ro"`
+	IsCurrent *bool
 
 	// READ-ONLY; Indicates if API revision is the current api revision.
-	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
+	IsOnline *bool
 
 	// READ-ONLY; Gateway URL for accessing the non-current API Revision.
-	PrivateURL *string `json:"privateUrl,omitempty" azure:"ro"`
+	PrivateURL *string
 
 	// READ-ONLY; The time the API Revision were updated. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	UpdatedDateTime *time.Time `json:"updatedDateTime,omitempty" azure:"ro"`
+	UpdatedDateTime *time.Time
 }
 
 // APIRevisionInfoContract - Object used to create an API Revision or Version based on an existing API Revision
 type APIRevisionInfoContract struct {
 	// Description of new API Revision.
-	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	APIRevisionDescription *string
 
 	// Version identifier for the new API Version.
-	APIVersionName *string `json:"apiVersionName,omitempty"`
+	APIVersionName *string
 
 	// Version set details
-	APIVersionSet *APIVersionSetContractDetails `json:"apiVersionSet,omitempty"`
+	APIVersionSet *APIVersionSetContractDetails
 
 	// Resource identifier of API to be used to create the revision from.
-	SourceAPIID *string `json:"sourceApiId,omitempty"`
+	SourceAPIID *string
 }
 
 // APISchemaClientBeginCreateOrUpdateOptions contains the optional parameters for the APISchemaClient.BeginCreateOrUpdate
@@ -924,78 +924,78 @@ type APITagDescriptionClientListByServiceOptions struct {
 // APITagResourceContractProperties - API contract properties for the Tag Resources.
 type APITagResourceContractProperties struct {
 	// Describes the revision of the API. If no value is provided, default revision 1 is created
-	APIRevision *string `json:"apiRevision,omitempty"`
+	APIRevision *string
 
 	// Description of the API Revision.
-	APIRevisionDescription *string `json:"apiRevisionDescription,omitempty"`
+	APIRevisionDescription *string
 
 	// Type of API.
-	APIType *APIType `json:"type,omitempty"`
+	APIType *APIType
 
 	// Indicates the version identifier of the API if the API is versioned
-	APIVersion *string `json:"apiVersion,omitempty"`
+	APIVersion *string
 
 	// Description of the API Version.
-	APIVersionDescription *string `json:"apiVersionDescription,omitempty"`
+	APIVersionDescription *string
 
 	// A resource identifier for the related ApiVersionSet.
-	APIVersionSetID *string `json:"apiVersionSetId,omitempty"`
+	APIVersionSetID *string
 
 	// Collection of authentication settings included into this API.
-	AuthenticationSettings *AuthenticationSettingsContract `json:"authenticationSettings,omitempty"`
+	AuthenticationSettings *AuthenticationSettingsContract
 
 	// Contact information for the API.
-	Contact *APIContactInformation `json:"contact,omitempty"`
+	Contact *APIContactInformation
 
 	// Description of the API. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// API identifier in the form /apis/{apiId}.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Indicates if API revision is current api revision.
-	IsCurrent *bool `json:"isCurrent,omitempty"`
+	IsCurrent *bool
 
 	// License information for the API.
-	License *APILicenseInformation `json:"license,omitempty"`
+	License *APILicenseInformation
 
 	// API name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Relative URL uniquely identifying this API and all of its resource paths within the API Management service instance. It
 	// is appended to the API endpoint base URL specified during the service instance
 	// creation to form a public URL for this API.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Describes on which protocols the operations in this API can be invoked.
-	Protocols []*Protocol `json:"protocols,omitempty"`
+	Protocols []*Protocol
 
 	// Absolute URL of the backend service implementing this API.
-	ServiceURL *string `json:"serviceUrl,omitempty"`
+	ServiceURL *string
 
 	// Protocols over which API is made available.
-	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract `json:"subscriptionKeyParameterNames,omitempty"`
+	SubscriptionKeyParameterNames *SubscriptionKeyParameterNamesContract
 
 	// Specifies whether an API or Product subscription is required for accessing the API.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// A URL to the Terms of Service for the API. MUST be in the format of a URL.
-	TermsOfServiceURL *string `json:"termsOfServiceUrl,omitempty"`
+	TermsOfServiceURL *string
 
 	// READ-ONLY; Indicates if API revision is accessible via the gateway.
-	IsOnline *bool `json:"isOnline,omitempty" azure:"ro"`
+	IsOnline *bool
 }
 
 // APIUpdateContract - API update contract details.
 type APIUpdateContract struct {
 	// Properties of the API entity that can be updated.
-	Properties *APIContractUpdateProperties `json:"properties,omitempty"`
+	Properties *APIContractUpdateProperties
 }
 
 // APIVersionConstraint - Control Plane Apis version constraint for the API Management service.
 type APIVersionConstraint struct {
 	// Limit control plane API calls to API Management service with version equal to or newer than this value.
-	MinAPIVersion *string `json:"minApiVersion,omitempty"`
+	MinAPIVersion *string
 }
 
 // APIVersionSetClientCreateOrUpdateOptions contains the optional parameters for the APIVersionSetClient.CreateOrUpdate method.
@@ -1039,284 +1039,284 @@ type APIVersionSetClientUpdateOptions struct {
 // APIVersionSetCollection - Paged API Version Set list representation.
 type APIVersionSetCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*APIVersionSetContract `json:"value,omitempty"`
+	Value []*APIVersionSetContract
 }
 
 // APIVersionSetContract - API Version Set Contract details.
 type APIVersionSetContract struct {
 	// API VersionSet contract properties.
-	Properties *APIVersionSetContractProperties `json:"properties,omitempty"`
+	Properties *APIVersionSetContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // APIVersionSetContractDetails - An API Version Set contains the common configuration for a set of API Versions relating
 type APIVersionSetContractDetails struct {
 	// Description of API Version Set.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Identifier for existing API Version Set. Omit this value to create a new Version Set.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The display Name of the API Version Set.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Name of HTTP header parameter that indicates the API Version if versioningScheme is set to header.
-	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
+	VersionHeaderName *string
 
 	// Name of query parameter that indicates the API Version if versioningScheme is set to query.
-	VersionQueryName *string `json:"versionQueryName,omitempty"`
+	VersionQueryName *string
 
 	// An value that determines where the API Version identifier will be located in a HTTP request.
-	VersioningScheme *APIVersionSetContractDetailsVersioningScheme `json:"versioningScheme,omitempty"`
+	VersioningScheme *APIVersionSetContractDetailsVersioningScheme
 }
 
 // APIVersionSetContractProperties - Properties of an API Version Set.
 type APIVersionSetContractProperties struct {
 	// REQUIRED; Name of API Version Set
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; An value that determines where the API Version identifier will be located in a HTTP request.
-	VersioningScheme *VersioningScheme `json:"versioningScheme,omitempty"`
+	VersioningScheme *VersioningScheme
 
 	// Description of API Version Set.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of HTTP header parameter that indicates the API Version if versioningScheme is set to header.
-	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
+	VersionHeaderName *string
 
 	// Name of query parameter that indicates the API Version if versioningScheme is set to query.
-	VersionQueryName *string `json:"versionQueryName,omitempty"`
+	VersionQueryName *string
 }
 
 // APIVersionSetEntityBase - API Version set base parameters
 type APIVersionSetEntityBase struct {
 	// Description of API Version Set.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of HTTP header parameter that indicates the API Version if versioningScheme is set to header.
-	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
+	VersionHeaderName *string
 
 	// Name of query parameter that indicates the API Version if versioningScheme is set to query.
-	VersionQueryName *string `json:"versionQueryName,omitempty"`
+	VersionQueryName *string
 }
 
 // APIVersionSetUpdateParameters - Parameters to update or create an API Version Set Contract.
 type APIVersionSetUpdateParameters struct {
 	// Parameters to update or create an API Version Set Contract.
-	Properties *APIVersionSetUpdateParametersProperties `json:"properties,omitempty"`
+	Properties *APIVersionSetUpdateParametersProperties
 }
 
 // APIVersionSetUpdateParametersProperties - Properties used to create or update an API Version Set.
 type APIVersionSetUpdateParametersProperties struct {
 	// Description of API Version Set.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of API Version Set
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of HTTP header parameter that indicates the API Version if versioningScheme is set to header.
-	VersionHeaderName *string `json:"versionHeaderName,omitempty"`
+	VersionHeaderName *string
 
 	// Name of query parameter that indicates the API Version if versioningScheme is set to query.
-	VersionQueryName *string `json:"versionQueryName,omitempty"`
+	VersionQueryName *string
 
 	// An value that determines where the API Version identifier will be located in a HTTP request.
-	VersioningScheme *VersioningScheme `json:"versioningScheme,omitempty"`
+	VersioningScheme *VersioningScheme
 }
 
 // AccessInformationCollection - Paged AccessInformation list representation.
 type AccessInformationCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*AccessInformationContract `json:"value,omitempty" azure:"ro"`
+	Value []*AccessInformationContract
 }
 
 // AccessInformationContract - Tenant Settings.
 type AccessInformationContract struct {
 	// AccessInformation entity contract properties.
-	Properties *AccessInformationContractProperties `json:"properties,omitempty"`
+	Properties *AccessInformationContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccessInformationContractProperties - Tenant access information contract of the API Management service.
 type AccessInformationContractProperties struct {
 	// Determines whether direct access is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Access Information type ('access' or 'gitAccess')
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Principal (User) Identifier.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 }
 
 // AccessInformationCreateParameterProperties - Tenant access information update parameters of the API Management service
 type AccessInformationCreateParameterProperties struct {
 	// Determines whether direct access is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Primary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Principal (User) Identifier.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the
 	// value.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 }
 
 // AccessInformationCreateParameters - Tenant access information update parameters.
 type AccessInformationCreateParameters struct {
 	// Tenant access information update parameter properties.
-	Properties *AccessInformationCreateParameterProperties `json:"properties,omitempty"`
+	Properties *AccessInformationCreateParameterProperties
 }
 
 // AccessInformationSecretsContract - Tenant access information contract of the API Management service.
 type AccessInformationSecretsContract struct {
 	// Determines whether direct access is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Access Information type ('access' or 'gitAccess')
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Primary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Principal (User) Identifier.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// Secondary access key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the
 	// value.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 }
 
 // AccessInformationUpdateParameterProperties - Tenant access information update parameters of the API Management service
 type AccessInformationUpdateParameterProperties struct {
 	// Determines whether direct access is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // AccessInformationUpdateParameters - Tenant access information update parameters.
 type AccessInformationUpdateParameters struct {
 	// Tenant access information update parameter properties.
-	Properties *AccessInformationUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *AccessInformationUpdateParameterProperties
 }
 
 // AdditionalLocation - Description of an additional API Management resource location.
 type AdditionalLocation struct {
 	// REQUIRED; The location name of the additional region among Azure Data center regions.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; SKU properties of the API Management service.
-	SKU *ServiceSKUProperties `json:"sku,omitempty"`
+	SKU *ServiceSKUProperties
 
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
 	// in this additional location.
-	DisableGateway *bool `json:"disableGateway,omitempty"`
+	DisableGateway *bool
 
 	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the location. Supported
 	// only for Premium SKU being deployed in Virtual Network.
-	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+	PublicIPAddressID *string
 
 	// Virtual network configuration for the location.
-	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
+	VirtualNetworkConfiguration *VirtualNetworkConfiguration
 
 	// A list of availability zones denoting where the resource needs to come from.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 
 	// READ-ONLY; Gateway URL of the API Management service in the Region.
-	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty" azure:"ro"`
+	GatewayRegionalURL *string
 
 	// READ-ONLY; Compute Platform Version running the service.
-	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
+	PlatformVersion *PlatformVersion
 
 	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service which is deployed in an Internal Virtual
 	// Network in a particular additional location. Available only for Basic, Standard,
 	// Premium and Isolated SKU.
-	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
+	PrivateIPAddresses []*string
 
 	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in the additional location. Available
 	// only for Basic, Standard, Premium and Isolated SKU.
-	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
+	PublicIPAddresses []*string
 }
 
 // ApimResource - The Resource definition.
 type ApimResource struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type for API Management resource is set to Microsoft.ApiManagement.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ArmIDWrapper - A wrapper for an ARM resource id
 type ArmIDWrapper struct {
 	// READ-ONLY
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // AssociationContract - Association entity details.
 type AssociationContract struct {
 	// Association entity contract properties.
-	Properties *AssociationContractProperties `json:"properties,omitempty"`
+	Properties *AssociationContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssociationContractProperties - Association entity contract properties.
 type AssociationContractProperties struct {
 	// Provisioning state.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 }
 
 // AuthenticationSettingsContract - API Authentication Settings.
 type AuthenticationSettingsContract struct {
 	// OAuth2 Authentication settings
-	OAuth2 *OAuth2AuthenticationSettingsContract `json:"oAuth2,omitempty"`
+	OAuth2 *OAuth2AuthenticationSettingsContract
 
 	// OpenID Connect Authentication Settings
-	Openid *OpenIDAuthenticationSettingsContract `json:"openid,omitempty"`
+	Openid *OpenIDAuthenticationSettingsContract
 }
 
 // AuthorizationServerClientCreateOrUpdateOptions contains the optional parameters for the AuthorizationServerClient.CreateOrUpdate
@@ -1370,254 +1370,254 @@ type AuthorizationServerClientUpdateOptions struct {
 // AuthorizationServerCollection - Paged OAuth2 Authorization Servers list representation.
 type AuthorizationServerCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*AuthorizationServerContract `json:"value,omitempty"`
+	Value []*AuthorizationServerContract
 }
 
 // AuthorizationServerContract - External OAuth authorization server settings.
 type AuthorizationServerContract struct {
 	// Properties of the External OAuth authorization server Contract.
-	Properties *AuthorizationServerContractProperties `json:"properties,omitempty"`
+	Properties *AuthorizationServerContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AuthorizationServerContractBaseProperties - External OAuth authorization server Update settings contract.
 type AuthorizationServerContractBaseProperties struct {
 	// HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
-	AuthorizationMethods []*AuthorizationMethod `json:"authorizationMethods,omitempty"`
+	AuthorizationMethods []*AuthorizationMethod
 
 	// Specifies the mechanism by which access token is passed to the API.
-	BearerTokenSendingMethods []*BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
+	BearerTokenSendingMethods []*BearerTokenSendingMethod
 
 	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
 	// Body. When Body is specified, client credentials and other parameters are passed
 	// within the request body in the application/x-www-form-urlencoded format.
-	ClientAuthenticationMethod []*ClientAuthenticationMethod `json:"clientAuthenticationMethod,omitempty"`
+	ClientAuthenticationMethod []*ClientAuthenticationMethod
 
 	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
 	// the form of a string containing space-delimited values.
-	DefaultScope *string `json:"defaultScope,omitempty"`
+	DefaultScope *string
 
 	// Description of the authorization server. Can contain HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
 	// resource owner password.
-	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
+	ResourceOwnerPassword *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
 	// resource owner username.
-	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
+	ResourceOwnerUsername *string
 
 	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
 	// state parameter to raise protocol security.
-	SupportState *bool `json:"supportState,omitempty"`
+	SupportState *bool
 
 	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
 	// with name and value string properties, i.e. {"name" : "name value", "value":
 	// "a value"}.
-	TokenBodyParameters []*TokenBodyParameterContract `json:"tokenBodyParameters,omitempty"`
+	TokenBodyParameters []*TokenBodyParameterContract
 
 	// OAuth token endpoint. Contains absolute URI to entity being referenced.
-	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+	TokenEndpoint *string
 }
 
 // AuthorizationServerContractProperties - External OAuth authorization server settings Properties.
 type AuthorizationServerContractProperties struct {
 	// REQUIRED; OAuth authorization endpoint. See http://tools.ietf.org/html/rfc6749#section-3.2.
-	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
+	AuthorizationEndpoint *string
 
 	// REQUIRED; Client or app id registered with this authorization server.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// REQUIRED; Optional reference to a page where client or app registration for this authorization server is performed. Contains
 	// absolute URL to entity being referenced.
-	ClientRegistrationEndpoint *string `json:"clientRegistrationEndpoint,omitempty"`
+	ClientRegistrationEndpoint *string
 
 	// REQUIRED; User-friendly authorization server name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; Form of an authorization grant, which the client uses to request the access token.
-	GrantTypes []*GrantType `json:"grantTypes,omitempty"`
+	GrantTypes []*GrantType
 
 	// HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
-	AuthorizationMethods []*AuthorizationMethod `json:"authorizationMethods,omitempty"`
+	AuthorizationMethods []*AuthorizationMethod
 
 	// Specifies the mechanism by which access token is passed to the API.
-	BearerTokenSendingMethods []*BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
+	BearerTokenSendingMethods []*BearerTokenSendingMethod
 
 	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
 	// Body. When Body is specified, client credentials and other parameters are passed
 	// within the request body in the application/x-www-form-urlencoded format.
-	ClientAuthenticationMethod []*ClientAuthenticationMethod `json:"clientAuthenticationMethod,omitempty"`
+	ClientAuthenticationMethod []*ClientAuthenticationMethod
 
 	// Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use
 	// '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
 	// the form of a string containing space-delimited values.
-	DefaultScope *string `json:"defaultScope,omitempty"`
+	DefaultScope *string
 
 	// Description of the authorization server. Can contain HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
 	// resource owner password.
-	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
+	ResourceOwnerPassword *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
 	// resource owner username.
-	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
+	ResourceOwnerUsername *string
 
 	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
 	// state parameter to raise protocol security.
-	SupportState *bool `json:"supportState,omitempty"`
+	SupportState *bool
 
 	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
 	// with name and value string properties, i.e. {"name" : "name value", "value":
 	// "a value"}.
-	TokenBodyParameters []*TokenBodyParameterContract `json:"tokenBodyParameters,omitempty"`
+	TokenBodyParameters []*TokenBodyParameterContract
 
 	// OAuth token endpoint. Contains absolute URI to entity being referenced.
-	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+	TokenEndpoint *string
 }
 
 // AuthorizationServerSecretsContract - OAuth Server Secrets Contract.
 type AuthorizationServerSecretsContract struct {
 	// oAuth Authorization Server Secrets.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
 	// resource owner password.
-	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
+	ResourceOwnerPassword *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
 	// resource owner username.
-	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
+	ResourceOwnerUsername *string
 }
 
 // AuthorizationServerUpdateContract - External OAuth authorization server settings.
 type AuthorizationServerUpdateContract struct {
 	// Properties of the External OAuth authorization server update Contract.
-	Properties *AuthorizationServerUpdateContractProperties `json:"properties,omitempty"`
+	Properties *AuthorizationServerUpdateContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AuthorizationServerUpdateContractProperties - External OAuth authorization server Update settings contract.
 type AuthorizationServerUpdateContractProperties struct {
 	// OAuth authorization endpoint. See http://tools.ietf.org/html/rfc6749#section-3.2.
-	AuthorizationEndpoint *string `json:"authorizationEndpoint,omitempty"`
+	AuthorizationEndpoint *string
 
 	// HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional.
-	AuthorizationMethods []*AuthorizationMethod `json:"authorizationMethods,omitempty"`
+	AuthorizationMethods []*AuthorizationMethod
 
 	// Specifies the mechanism by which access token is passed to the API.
-	BearerTokenSendingMethods []*BearerTokenSendingMethod `json:"bearerTokenSendingMethods,omitempty"`
+	BearerTokenSendingMethods []*BearerTokenSendingMethod
 
 	// Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or
 	// Body. When Body is specified, client credentials and other parameters are passed
 	// within the request body in the application/x-www-form-urlencoded format.
-	ClientAuthenticationMethod []*ClientAuthenticationMethod `json:"clientAuthenticationMethod,omitempty"`
+	ClientAuthenticationMethod []*ClientAuthenticationMethod
 
 	// Client or app id registered with this authorization server.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute
 	// URL to entity being referenced.
-	ClientRegistrationEndpoint *string `json:"clientRegistrationEndpoint,omitempty"`
+	ClientRegistrationEndpoint *string
 
 	// Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use
 	// '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in
 	// the form of a string containing space-delimited values.
-	DefaultScope *string `json:"defaultScope,omitempty"`
+	DefaultScope *string
 
 	// Description of the authorization server. Can contain HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// User-friendly authorization server name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Form of an authorization grant, which the client uses to request the access token.
-	GrantTypes []*GrantType `json:"grantTypes,omitempty"`
+	GrantTypes []*GrantType
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
 	// resource owner password.
-	ResourceOwnerPassword *string `json:"resourceOwnerPassword,omitempty"`
+	ResourceOwnerPassword *string
 
 	// Can be optionally specified when resource owner password grant type is supported by this authorization server. Default
 	// resource owner username.
-	ResourceOwnerUsername *string `json:"resourceOwnerUsername,omitempty"`
+	ResourceOwnerUsername *string
 
 	// If true, authorization server will include state parameter from the authorization request to its response. Client may use
 	// state parameter to raise protocol security.
-	SupportState *bool `json:"supportState,omitempty"`
+	SupportState *bool
 
 	// Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects
 	// with name and value string properties, i.e. {"name" : "name value", "value":
 	// "a value"}.
-	TokenBodyParameters []*TokenBodyParameterContract `json:"tokenBodyParameters,omitempty"`
+	TokenBodyParameters []*TokenBodyParameterContract
 
 	// OAuth token endpoint. Contains absolute URI to entity being referenced.
-	TokenEndpoint *string `json:"tokenEndpoint,omitempty"`
+	TokenEndpoint *string
 }
 
 // BackendAuthorizationHeaderCredentials - Authorization header information.
 type BackendAuthorizationHeaderCredentials struct {
 	// REQUIRED; Authentication Parameter value.
-	Parameter *string `json:"parameter,omitempty"`
+	Parameter *string
 
 	// REQUIRED; Authentication Scheme name.
-	Scheme *string `json:"scheme,omitempty"`
+	Scheme *string
 }
 
 // BackendBaseParameters - Backend entity base Parameter set.
 type BackendBaseParameters struct {
 	// Backend Credentials Contract Properties
-	Credentials *BackendCredentialsContract `json:"credentials,omitempty"`
+	Credentials *BackendCredentialsContract
 
 	// Backend Description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Backend Properties contract
-	Properties *BackendProperties `json:"properties,omitempty"`
+	Properties *BackendProperties
 
 	// Backend Proxy Contract Properties
-	Proxy *BackendProxyContract `json:"proxy,omitempty"`
+	Proxy *BackendProxyContract
 
 	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or
 	// API Apps.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Backend TLS Properties
-	TLS *BackendTLSProperties `json:"tls,omitempty"`
+	TLS *BackendTLSProperties
 
 	// Backend Title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // BackendClientCreateOrUpdateOptions contains the optional parameters for the BackendClient.CreateOrUpdate method.
@@ -1669,192 +1669,192 @@ type BackendClientUpdateOptions struct {
 // BackendCollection - Paged Backend list representation.
 type BackendCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Backend values.
-	Value []*BackendContract `json:"value,omitempty"`
+	Value []*BackendContract
 }
 
 // BackendContract - Backend details.
 type BackendContract struct {
 	// Backend entity contract properties.
-	Properties *BackendContractProperties `json:"properties,omitempty"`
+	Properties *BackendContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackendContractProperties - Parameters supplied to the Create Backend operation.
 type BackendContractProperties struct {
 	// REQUIRED; Backend communication protocol.
-	Protocol *BackendProtocol `json:"protocol,omitempty"`
+	Protocol *BackendProtocol
 
 	// REQUIRED; Runtime Url of the Backend.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// Backend Credentials Contract Properties
-	Credentials *BackendCredentialsContract `json:"credentials,omitempty"`
+	Credentials *BackendCredentialsContract
 
 	// Backend Description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Backend Properties contract
-	Properties *BackendProperties `json:"properties,omitempty"`
+	Properties *BackendProperties
 
 	// Backend Proxy Contract Properties
-	Proxy *BackendProxyContract `json:"proxy,omitempty"`
+	Proxy *BackendProxyContract
 
 	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or
 	// API Apps.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Backend TLS Properties
-	TLS *BackendTLSProperties `json:"tls,omitempty"`
+	TLS *BackendTLSProperties
 
 	// Backend Title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // BackendCredentialsContract - Details of the Credentials used to connect to Backend.
 type BackendCredentialsContract struct {
 	// Authorization header authentication
-	Authorization *BackendAuthorizationHeaderCredentials `json:"authorization,omitempty"`
+	Authorization *BackendAuthorizationHeaderCredentials
 
 	// List of Client Certificate Thumbprints. Will be ignored if certificatesIds are provided.
-	Certificate []*string `json:"certificate,omitempty"`
+	Certificate []*string
 
 	// List of Client Certificate Ids.
-	CertificateIDs []*string `json:"certificateIds,omitempty"`
+	CertificateIDs []*string
 
 	// Header Parameter description.
-	Header map[string][]*string `json:"header,omitempty"`
+	Header map[string][]*string
 
 	// Query Parameter description.
-	Query map[string][]*string `json:"query,omitempty"`
+	Query map[string][]*string
 }
 
 // BackendProperties - Properties specific to the Backend Type.
 type BackendProperties struct {
 	// Backend Service Fabric Cluster Properties
-	ServiceFabricCluster *BackendServiceFabricClusterProperties `json:"serviceFabricCluster,omitempty"`
+	ServiceFabricCluster *BackendServiceFabricClusterProperties
 }
 
 // BackendProxyContract - Details of the Backend WebProxy Server to use in the Request to Backend.
 type BackendProxyContract struct {
 	// REQUIRED; WebProxy Server AbsoluteUri property which includes the entire URI stored in the Uri instance, including all
 	// fragments and query strings.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// Password to connect to the WebProxy Server
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Username to connect to the WebProxy server
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // BackendReconnectContract - Reconnect request parameters.
 type BackendReconnectContract struct {
 	// Reconnect request properties.
-	Properties *BackendReconnectProperties `json:"properties,omitempty"`
+	Properties *BackendReconnectProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackendReconnectProperties - Properties to control reconnect requests.
 type BackendReconnectProperties struct {
 	// Duration in ISO8601 format after which reconnect will be initiated. Minimum duration of the Reconnect is PT2M.
-	After *string `json:"after,omitempty"`
+	After *string
 }
 
 // BackendServiceFabricClusterProperties - Properties of the Service Fabric Type Backend.
 type BackendServiceFabricClusterProperties struct {
 	// REQUIRED; The cluster management endpoint.
-	ManagementEndpoints []*string `json:"managementEndpoints,omitempty"`
+	ManagementEndpoints []*string
 
 	// The client certificate id for the management endpoint.
-	ClientCertificateID *string `json:"clientCertificateId,omitempty"`
+	ClientCertificateID *string
 
 	// The client certificate thumbprint for the management endpoint. Will be ignored if certificatesIds are provided
-	ClientCertificatethumbprint *string `json:"clientCertificatethumbprint,omitempty"`
+	ClientCertificatethumbprint *string
 
 	// Maximum number of retries while attempting resolve the partition.
-	MaxPartitionResolutionRetries *int32 `json:"maxPartitionResolutionRetries,omitempty"`
+	MaxPartitionResolutionRetries *int32
 
 	// Thumbprints of certificates cluster management service uses for tls communication
-	ServerCertificateThumbprints []*string `json:"serverCertificateThumbprints,omitempty"`
+	ServerCertificateThumbprints []*string
 
 	// Server X509 Certificate Names Collection
-	ServerX509Names []*X509CertificateName `json:"serverX509Names,omitempty"`
+	ServerX509Names []*X509CertificateName
 }
 
 // BackendTLSProperties - Properties controlling TLS Certificate Validation.
 type BackendTLSProperties struct {
 	// Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for this backend
 	// host.
-	ValidateCertificateChain *bool `json:"validateCertificateChain,omitempty"`
+	ValidateCertificateChain *bool
 
 	// Flag indicating whether SSL certificate name validation should be done when using self-signed certificates for this backend
 	// host.
-	ValidateCertificateName *bool `json:"validateCertificateName,omitempty"`
+	ValidateCertificateName *bool
 }
 
 // BackendUpdateParameterProperties - Parameters supplied to the Update Backend operation.
 type BackendUpdateParameterProperties struct {
 	// Backend Credentials Contract Properties
-	Credentials *BackendCredentialsContract `json:"credentials,omitempty"`
+	Credentials *BackendCredentialsContract
 
 	// Backend Description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Backend Properties contract
-	Properties *BackendProperties `json:"properties,omitempty"`
+	Properties *BackendProperties
 
 	// Backend communication protocol.
-	Protocol *BackendProtocol `json:"protocol,omitempty"`
+	Protocol *BackendProtocol
 
 	// Backend Proxy Contract Properties
-	Proxy *BackendProxyContract `json:"proxy,omitempty"`
+	Proxy *BackendProxyContract
 
 	// Management Uri of the Resource in External System. This url can be the Arm Resource Id of Logic Apps, Function Apps or
 	// API Apps.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Backend TLS Properties
-	TLS *BackendTLSProperties `json:"tls,omitempty"`
+	TLS *BackendTLSProperties
 
 	// Backend Title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// Runtime Url of the Backend.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // BackendUpdateParameters - Backend update parameters.
 type BackendUpdateParameters struct {
 	// Backend entity update contract properties.
-	Properties *BackendUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *BackendUpdateParameterProperties
 }
 
 // BodyDiagnosticSettings - Body logging settings.
 type BodyDiagnosticSettings struct {
 	// Number of request body bytes to log.
-	Bytes *int32 `json:"bytes,omitempty"`
+	Bytes *int32
 }
 
 // CacheClientCreateOrUpdateOptions contains the optional parameters for the CacheClient.CreateOrUpdate method.
@@ -1894,64 +1894,64 @@ type CacheClientUpdateOptions struct {
 // CacheCollection - Paged Caches list representation.
 type CacheCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*CacheContract `json:"value,omitempty"`
+	Value []*CacheContract
 }
 
 // CacheContract - Cache details.
 type CacheContract struct {
 	// Cache properties details.
-	Properties *CacheContractProperties `json:"properties,omitempty"`
+	Properties *CacheContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CacheContractProperties - Properties of the Cache contract.
 type CacheContractProperties struct {
 	// REQUIRED; Runtime connection string to cache
-	ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string
 
 	// REQUIRED; Location identifier to use cache from (should be either 'default' or valid Azure region identifier)
-	UseFromLocation *string `json:"useFromLocation,omitempty"`
+	UseFromLocation *string
 
 	// Cache description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Original uri of entity in external system cache points to
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // CacheUpdateParameters - Cache update details.
 type CacheUpdateParameters struct {
 	// Cache update properties details.
-	Properties *CacheUpdateProperties `json:"properties,omitempty"`
+	Properties *CacheUpdateProperties
 }
 
 // CacheUpdateProperties - Parameters supplied to the Update Cache operation.
 type CacheUpdateProperties struct {
 	// Runtime connection string to cache
-	ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string
 
 	// Cache description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Original uri of entity in external system cache points to
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Location identifier to use cache from (should be either 'default' or valid Azure region identifier)
-	UseFromLocation *string `json:"useFromLocation,omitempty"`
+	UseFromLocation *string
 }
 
 // CertificateClientCreateOrUpdateOptions contains the optional parameters for the CertificateClient.CreateOrUpdate method.
@@ -2001,91 +2001,91 @@ type CertificateClientRefreshSecretOptions struct {
 // CertificateCollection - Paged Certificates list representation.
 type CertificateCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*CertificateContract `json:"value,omitempty"`
+	Value []*CertificateContract
 }
 
 // CertificateConfiguration - Certificate configuration which consist of non-trusted intermediates and root certificates.
 type CertificateConfiguration struct {
 	// REQUIRED; The System.Security.Cryptography.x509certificates.StoreName certificate store location. Only Root and CertificateAuthority
 	// are valid locations.
-	StoreName *CertificateConfigurationStoreName `json:"storeName,omitempty"`
+	StoreName *CertificateConfigurationStoreName
 
 	// Certificate information.
-	Certificate *CertificateInformation `json:"certificate,omitempty"`
+	Certificate *CertificateInformation
 
 	// Certificate Password.
-	CertificatePassword *string `json:"certificatePassword,omitempty"`
+	CertificatePassword *string
 
 	// Base64 Encoded certificate.
-	EncodedCertificate *string `json:"encodedCertificate,omitempty"`
+	EncodedCertificate *string
 }
 
 // CertificateContract - Certificate details.
 type CertificateContract struct {
 	// Certificate properties details.
-	Properties *CertificateContractProperties `json:"properties,omitempty"`
+	Properties *CertificateContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificateContractProperties - Properties of the Certificate contract.
 type CertificateContractProperties struct {
 	// REQUIRED; Expiration date of the certificate. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time
 
 	// REQUIRED; Subject attribute of the certificate.
-	Subject *string `json:"subject,omitempty"`
+	Subject *string
 
 	// REQUIRED; Thumbprint of the certificate.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 
 	// KeyVault location details of the certificate.
-	KeyVault *KeyVaultContractProperties `json:"keyVault,omitempty"`
+	KeyVault *KeyVaultContractProperties
 }
 
 // CertificateCreateOrUpdateParameters - Certificate create or update details.
 type CertificateCreateOrUpdateParameters struct {
 	// Certificate create or update properties details.
-	Properties *CertificateCreateOrUpdateProperties `json:"properties,omitempty"`
+	Properties *CertificateCreateOrUpdateProperties
 }
 
 // CertificateCreateOrUpdateProperties - Parameters supplied to the CreateOrUpdate certificate operation.
 type CertificateCreateOrUpdateProperties struct {
 	// Base 64 encoded certificate using the application/x-pkcs12 representation.
-	Data *string `json:"data,omitempty"`
+	Data *string
 
 	// KeyVault location details of the certificate.
-	KeyVault *KeyVaultContractCreateProperties `json:"keyVault,omitempty"`
+	KeyVault *KeyVaultContractCreateProperties
 
 	// Password for the Certificate
-	Password *string `json:"password,omitempty"`
+	Password *string
 }
 
 // CertificateInformation - SSL certificate information.
 type CertificateInformation struct {
 	// REQUIRED; Expiration date of the certificate. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	Expiry *time.Time `json:"expiry,omitempty"`
+	Expiry *time.Time
 
 	// REQUIRED; Subject of the certificate.
-	Subject *string `json:"subject,omitempty"`
+	Subject *string
 
 	// REQUIRED; Thumbprint of the certificate.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 }
 
 // ClientBeginPerformConnectivityCheckAsyncOptions contains the optional parameters for the Client.BeginPerformConnectivityCheckAsync
@@ -2098,152 +2098,152 @@ type ClientBeginPerformConnectivityCheckAsyncOptions struct {
 // ClientSecretContract - Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
 type ClientSecretContract struct {
 	// Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 }
 
 // ConnectivityCheckRequest - A request to perform the connectivity check operation on a API Management service.
 type ConnectivityCheckRequest struct {
 	// REQUIRED; The connectivity check operation destination.
-	Destination *ConnectivityCheckRequestDestination `json:"destination,omitempty"`
+	Destination *ConnectivityCheckRequestDestination
 
 	// REQUIRED; Definitions about the connectivity check origin.
-	Source *ConnectivityCheckRequestSource `json:"source,omitempty"`
+	Source *ConnectivityCheckRequestSource
 
 	// The IP version to be used. Only IPv4 is supported for now.
-	PreferredIPVersion *PreferredIPVersion `json:"preferredIPVersion,omitempty"`
+	PreferredIPVersion *PreferredIPVersion
 
 	// The request's protocol. Specific protocol configuration can be available based on this selection. The specified destination
 	// address must be coherent with this value.
-	Protocol *ConnectivityCheckProtocol `json:"protocol,omitempty"`
+	Protocol *ConnectivityCheckProtocol
 
 	// Protocol-specific configuration.
-	ProtocolConfiguration *ConnectivityCheckRequestProtocolConfiguration `json:"protocolConfiguration,omitempty"`
+	ProtocolConfiguration *ConnectivityCheckRequestProtocolConfiguration
 }
 
 // ConnectivityCheckRequestDestination - The connectivity check operation destination.
 type ConnectivityCheckRequestDestination struct {
 	// REQUIRED; Destination address. Can either be an IP address or a FQDN.
-	Address *string `json:"address,omitempty"`
+	Address *string
 
 	// REQUIRED; Destination port.
-	Port *int64 `json:"port,omitempty"`
+	Port *int64
 }
 
 // ConnectivityCheckRequestProtocolConfiguration - Protocol-specific configuration.
 type ConnectivityCheckRequestProtocolConfiguration struct {
 	// Configuration for HTTP or HTTPS requests.
-	HTTPConfiguration *ConnectivityCheckRequestProtocolConfigurationHTTPConfiguration `json:"HTTPConfiguration,omitempty"`
+	HTTPConfiguration *ConnectivityCheckRequestProtocolConfigurationHTTPConfiguration
 }
 
 // ConnectivityCheckRequestProtocolConfigurationHTTPConfiguration - Configuration for HTTP or HTTPS requests.
 type ConnectivityCheckRequestProtocolConfigurationHTTPConfiguration struct {
 	// List of headers to be included in the request.
-	Headers []*HTTPHeader `json:"headers,omitempty"`
+	Headers []*HTTPHeader
 
 	// The HTTP method to be used.
-	Method *Method `json:"method,omitempty"`
+	Method *Method
 
 	// List of HTTP status codes considered valid for the request response.
-	ValidStatusCodes []*int64 `json:"validStatusCodes,omitempty"`
+	ValidStatusCodes []*int64
 }
 
 // ConnectivityCheckRequestSource - Definitions about the connectivity check origin.
 type ConnectivityCheckRequestSource struct {
 	// REQUIRED; The API Management service region from where to start the connectivity check operation.
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// The particular VMSS instance from which to fire the request.
-	Instance *int64 `json:"instance,omitempty"`
+	Instance *int64
 }
 
 // ConnectivityCheckResponse - Information on the connectivity status.
 type ConnectivityCheckResponse struct {
 	// READ-ONLY; Average latency in milliseconds.
-	AvgLatencyInMs *int64 `json:"avgLatencyInMs,omitempty" azure:"ro"`
+	AvgLatencyInMs *int64
 
 	// READ-ONLY; The connection status.
-	ConnectionStatus *ConnectionStatus `json:"connectionStatus,omitempty" azure:"ro"`
+	ConnectionStatus *ConnectionStatus
 
 	// READ-ONLY; List of hops between the source and the destination.
-	Hops []*ConnectivityHop `json:"hops,omitempty" azure:"ro"`
+	Hops []*ConnectivityHop
 
 	// READ-ONLY; Maximum latency in milliseconds.
-	MaxLatencyInMs *int64 `json:"maxLatencyInMs,omitempty" azure:"ro"`
+	MaxLatencyInMs *int64
 
 	// READ-ONLY; Minimum latency in milliseconds.
-	MinLatencyInMs *int64 `json:"minLatencyInMs,omitempty" azure:"ro"`
+	MinLatencyInMs *int64
 
 	// READ-ONLY; Number of failed probes.
-	ProbesFailed *int64 `json:"probesFailed,omitempty" azure:"ro"`
+	ProbesFailed *int64
 
 	// READ-ONLY; Total number of probes sent.
-	ProbesSent *int64 `json:"probesSent,omitempty" azure:"ro"`
+	ProbesSent *int64
 }
 
 // ConnectivityHop - Information about a hop between the source and the destination.
 type ConnectivityHop struct {
 	// READ-ONLY; The IP address of the hop.
-	Address *string `json:"address,omitempty" azure:"ro"`
+	Address *string
 
 	// READ-ONLY; The ID of the hop.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; List of issues.
-	Issues []*ConnectivityIssue `json:"issues,omitempty" azure:"ro"`
+	Issues []*ConnectivityIssue
 
 	// READ-ONLY; List of next hop identifiers.
-	NextHopIDs []*string `json:"nextHopIds,omitempty" azure:"ro"`
+	NextHopIDs []*string
 
 	// READ-ONLY; The ID of the resource corresponding to this hop.
-	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+	ResourceID *string
 
 	// READ-ONLY; The type of the hop.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConnectivityIssue - Information about an issue encountered in the process of checking for connectivity.
 type ConnectivityIssue struct {
 	// READ-ONLY; Provides additional context on the issue.
-	Context []map[string]*string `json:"context,omitempty" azure:"ro"`
+	Context []map[string]*string
 
 	// READ-ONLY; The origin of the issue.
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 
 	// READ-ONLY; The severity of the issue.
-	Severity *Severity `json:"severity,omitempty" azure:"ro"`
+	Severity *Severity
 
 	// READ-ONLY; The type of issue.
-	Type *IssueType `json:"type,omitempty" azure:"ro"`
+	Type *IssueType
 }
 
 // ConnectivityStatusContract - Details about connectivity to a resource.
 type ConnectivityStatusContract struct {
 	// REQUIRED; Whether this is optional.
-	IsOptional *bool `json:"isOptional,omitempty"`
+	IsOptional *bool
 
 	// REQUIRED; The date when the resource connectivity status last Changed from success to failure or vice-versa. The date conforms
 	// to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
 	// standard.
-	LastStatusChange *time.Time `json:"lastStatusChange,omitempty"`
+	LastStatusChange *time.Time
 
 	// REQUIRED; The date when the resource connectivity status was last updated. This status should be updated every 15 minutes.
 	// If this status has not been updated, then it means that the service has lost network
 	// connectivity to the resource, from inside the Virtual Network.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
 	// as specified by the ISO 8601 standard.
-	LastUpdated *time.Time `json:"lastUpdated,omitempty"`
+	LastUpdated *time.Time
 
 	// REQUIRED; The hostname of the resource which the service depends on. This can be the database, storage or any other azure
 	// resource on which the service depends upon.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Resource Type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Resource Connectivity Status Type identifier.
-	Status *ConnectivityStatusType `json:"status,omitempty"`
+	Status *ConnectivityStatusType
 
 	// Error details of the connectivity to the resource.
-	Error *string `json:"error,omitempty"`
+	Error *string
 }
 
 // ContentItemClientCreateOrUpdateOptions contains the optional parameters for the ContentItemClient.CreateOrUpdate method.
@@ -2276,25 +2276,25 @@ type ContentItemClientListByServiceOptions struct {
 // ContentItemCollection - Paged list of content items.
 type ContentItemCollection struct {
 	// READ-ONLY; Next page link, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Collection of content items.
-	Value []*ContentItemContract `json:"value,omitempty" azure:"ro"`
+	Value []*ContentItemContract
 }
 
 // ContentItemContract - Content type contract details.
 type ContentItemContract struct {
 	// Properties of the content item.
-	Properties map[string]any `json:"properties,omitempty"`
+	Properties map[string]any
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ContentTypeClientCreateOrUpdateOptions contains the optional parameters for the ContentTypeClient.CreateOrUpdate method.
@@ -2322,58 +2322,58 @@ type ContentTypeClientListByServiceOptions struct {
 // ContentTypeCollection - Paged list of content types.
 type ContentTypeCollection struct {
 	// READ-ONLY; Next page link, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Collection of content types.
-	Value []*ContentTypeContract `json:"value,omitempty" azure:"ro"`
+	Value []*ContentTypeContract
 }
 
 // ContentTypeContract - Content type contract details.
 type ContentTypeContract struct {
 	// Properties of the content type.
-	Properties *ContentTypeContractProperties `json:"properties,omitempty"`
+	Properties *ContentTypeContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type ContentTypeContractProperties struct {
 	// Content type description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Content type identifier
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Content type name. Must be 1 to 250 characters long.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Content type schema.
-	Schema any `json:"schema,omitempty"`
+	Schema any
 
 	// Content type version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 type DataMasking struct {
 	// Masking settings for headers
-	Headers []*DataMaskingEntity `json:"headers,omitempty"`
+	Headers []*DataMaskingEntity
 
 	// Masking settings for Url query parameters
-	QueryParams []*DataMaskingEntity `json:"queryParams,omitempty"`
+	QueryParams []*DataMaskingEntity
 }
 
 type DataMaskingEntity struct {
 	// Data masking mode.
-	Mode *DataMaskingMode `json:"mode,omitempty"`
+	Mode *DataMaskingMode
 
 	// The name of an entity to mask (e.g. a name of a header or a query parameter).
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // DelegationSettingsClientCreateOrUpdateOptions contains the optional parameters for the DelegationSettingsClient.CreateOrUpdate
@@ -2408,32 +2408,32 @@ type DelegationSettingsClientUpdateOptions struct {
 // DeletedServiceContract - Deleted API Management Service information.
 type DeletedServiceContract struct {
 	// Deleted API Management Service details.
-	Properties *DeletedServiceContractProperties `json:"properties,omitempty"`
+	Properties *DeletedServiceContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; API Management Service Master Location.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type DeletedServiceContractProperties struct {
 	// UTC Timestamp when the service was soft-deleted. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	DeletionDate *time.Time `json:"deletionDate,omitempty"`
+	DeletionDate *time.Time
 
 	// UTC Date and Time when the service will be automatically purged. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
 	// as specified by the ISO 8601 standard.
-	ScheduledPurgeDate *time.Time `json:"scheduledPurgeDate,omitempty"`
+	ScheduledPurgeDate *time.Time
 
 	// Fully-qualified API Management Service Resource ID
-	ServiceID *string `json:"serviceId,omitempty"`
+	ServiceID *string
 }
 
 // DeletedServicesClientBeginPurgeOptions contains the optional parameters for the DeletedServicesClient.BeginPurge method.
@@ -2456,25 +2456,25 @@ type DeletedServicesClientListBySubscriptionOptions struct {
 // DeletedServicesCollection - Paged deleted API Management Services List Representation.
 type DeletedServicesCollection struct {
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*DeletedServiceContract `json:"value,omitempty" azure:"ro"`
+	Value []*DeletedServiceContract
 }
 
 // DeployConfigurationParameterProperties - Parameters supplied to the Deploy Configuration operation.
 type DeployConfigurationParameterProperties struct {
 	// REQUIRED; The name of the Git branch from which the configuration is to be deployed to the configuration database.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// The value enforcing deleting subscriptions to products that are deleted in this update.
-	Force *bool `json:"force,omitempty"`
+	Force *bool
 }
 
 // DeployConfigurationParameters - Deploy Tenant Configuration Contract.
 type DeployConfigurationParameters struct {
 	// Deploy Configuration Parameter contract properties.
-	Properties *DeployConfigurationParameterProperties `json:"properties,omitempty"`
+	Properties *DeployConfigurationParameterProperties
 }
 
 // DiagnosticClientCreateOrUpdateOptions contains the optional parameters for the DiagnosticClient.CreateOrUpdate method.
@@ -2518,58 +2518,58 @@ type DiagnosticClientUpdateOptions struct {
 // DiagnosticCollection - Paged Diagnostic list representation.
 type DiagnosticCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*DiagnosticContract `json:"value,omitempty"`
+	Value []*DiagnosticContract
 }
 
 // DiagnosticContract - Diagnostic details.
 type DiagnosticContract struct {
 	// Diagnostic entity contract properties.
-	Properties *DiagnosticContractProperties `json:"properties,omitempty"`
+	Properties *DiagnosticContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiagnosticContractProperties - Diagnostic Entity Properties
 type DiagnosticContractProperties struct {
 	// REQUIRED; Resource Id of a target logger.
-	LoggerID *string `json:"loggerId,omitempty"`
+	LoggerID *string
 
 	// Specifies for what type of messages sampling settings should not apply.
-	AlwaysLog *AlwaysLog `json:"alwaysLog,omitempty"`
+	AlwaysLog *AlwaysLog
 
 	// Diagnostic settings for incoming/outgoing HTTP messages to the Backend
-	Backend *PipelineDiagnosticSettings `json:"backend,omitempty"`
+	Backend *PipelineDiagnosticSettings
 
 	// Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
-	Frontend *PipelineDiagnosticSettings `json:"frontend,omitempty"`
+	Frontend *PipelineDiagnosticSettings
 
 	// Sets correlation protocol to use for Application Insights diagnostics.
-	HTTPCorrelationProtocol *HTTPCorrelationProtocol `json:"httpCorrelationProtocol,omitempty"`
+	HTTPCorrelationProtocol *HTTPCorrelationProtocol
 
 	// Log the ClientIP. Default is false.
-	LogClientIP *bool `json:"logClientIp,omitempty"`
+	LogClientIP *bool
 
 	// The format of the Operation Name for Application Insights telemetries. Default is Name.
-	OperationNameFormat *OperationNameFormat `json:"operationNameFormat,omitempty"`
+	OperationNameFormat *OperationNameFormat
 
 	// Sampling settings for Diagnostic.
-	Sampling *SamplingSettings `json:"sampling,omitempty"`
+	Sampling *SamplingSettings
 
 	// The verbosity level applied to traces emitted by trace policies.
-	Verbosity *Verbosity `json:"verbosity,omitempty"`
+	Verbosity *Verbosity
 }
 
 // EmailTemplateClientCreateOrUpdateOptions contains the optional parameters for the EmailTemplateClient.CreateOrUpdate method.
@@ -2614,133 +2614,133 @@ type EmailTemplateClientUpdateOptions struct {
 // EmailTemplateCollection - Paged email template list representation.
 type EmailTemplateCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*EmailTemplateContract `json:"value,omitempty"`
+	Value []*EmailTemplateContract
 }
 
 // EmailTemplateContract - Email Template details.
 type EmailTemplateContract struct {
 	// Email Template entity contract properties.
-	Properties *EmailTemplateContractProperties `json:"properties,omitempty"`
+	Properties *EmailTemplateContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EmailTemplateContractProperties - Email Template Contract properties.
 type EmailTemplateContractProperties struct {
 	// REQUIRED; Email Template Body. This should be a valid XDocument
-	Body *string `json:"body,omitempty"`
+	Body *string
 
 	// REQUIRED; Subject of the Template.
-	Subject *string `json:"subject,omitempty"`
+	Subject *string
 
 	// Description of the Email Template.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Email Template Parameter values.
-	Parameters []*EmailTemplateParametersContractProperties `json:"parameters,omitempty"`
+	Parameters []*EmailTemplateParametersContractProperties
 
 	// Title of the Template.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// READ-ONLY; Whether the template is the default template provided by API Management or has been edited.
-	IsDefault *bool `json:"isDefault,omitempty" azure:"ro"`
+	IsDefault *bool
 }
 
 // EmailTemplateParametersContractProperties - Email Template Parameter contract.
 type EmailTemplateParametersContractProperties struct {
 	// Template parameter description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Template parameter name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Template parameter title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // EmailTemplateUpdateParameterProperties - Email Template Update Contract properties.
 type EmailTemplateUpdateParameterProperties struct {
 	// Email Template Body. This should be a valid XDocument
-	Body *string `json:"body,omitempty"`
+	Body *string
 
 	// Description of the Email Template.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Email Template Parameter values.
-	Parameters []*EmailTemplateParametersContractProperties `json:"parameters,omitempty"`
+	Parameters []*EmailTemplateParametersContractProperties
 
 	// Subject of the Template.
-	Subject *string `json:"subject,omitempty"`
+	Subject *string
 
 	// Title of the Template.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // EmailTemplateUpdateParameters - Email Template update Parameters.
 type EmailTemplateUpdateParameters struct {
 	// Email Template Update contract properties.
-	Properties *EmailTemplateUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *EmailTemplateUpdateParameterProperties
 }
 
 // EndpointDependency - A domain name that a service is reached at.
 type EndpointDependency struct {
 	// The domain name of the dependency.
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// The Ports used when connecting to DomainName.
-	EndpointDetails []*EndpointDetail `json:"endpointDetails,omitempty"`
+	EndpointDetails []*EndpointDetail
 }
 
 // EndpointDetail - Current TCP connectivity information from the Api Management Service to a single endpoint.
 type EndpointDetail struct {
 	// The port an endpoint is connected to.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 
 	// The region of the dependency.
-	Region *string `json:"region,omitempty"`
+	Region *string
 }
 
 // ErrorFieldContract - Error Field contract.
 type ErrorFieldContract struct {
 	// Property level error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Human-readable representation of property-level error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Property name.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ErrorResponse - Error Response.
 type ErrorResponse struct {
 	// Properties of the Error Response.
-	Error *ErrorResponseBody `json:"error,omitempty"`
+	Error *ErrorResponseBody
 }
 
 // ErrorResponseBody - Error Body contract.
 type ErrorResponseBody struct {
 	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The list of invalid fields send in request, in case of validation error.
-	Details []*ErrorFieldContract `json:"details,omitempty"`
+	Details []*ErrorFieldContract
 
 	// Human-readable representation of the error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // GatewayAPIClientCreateOrUpdateOptions contains the optional parameters for the GatewayAPIClient.CreateOrUpdate method.
@@ -2811,31 +2811,31 @@ type GatewayCertificateAuthorityClientListByServiceOptions struct {
 // GatewayCertificateAuthorityCollection - Paged Gateway certificate authority list representation.
 type GatewayCertificateAuthorityCollection struct {
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*GatewayCertificateAuthorityContract `json:"value,omitempty" azure:"ro"`
+	Value []*GatewayCertificateAuthorityContract
 }
 
 // GatewayCertificateAuthorityContract - Gateway certificate authority details.
 type GatewayCertificateAuthorityContract struct {
 	// Gateway certificate authority details.
-	Properties *GatewayCertificateAuthorityContractProperties `json:"properties,omitempty"`
+	Properties *GatewayCertificateAuthorityContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GatewayCertificateAuthorityContractProperties - Gateway certificate authority details.
 type GatewayCertificateAuthorityContractProperties struct {
 	// Determines whether certificate authority is trusted.
-	IsTrusted *bool `json:"isTrusted,omitempty"`
+	IsTrusted *bool
 }
 
 // GatewayClientCreateOrUpdateOptions contains the optional parameters for the GatewayClient.CreateOrUpdate method.
@@ -2896,37 +2896,37 @@ type GatewayClientUpdateOptions struct {
 // GatewayCollection - Paged Gateway list representation.
 type GatewayCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*GatewayContract `json:"value,omitempty" azure:"ro"`
+	Value []*GatewayContract
 }
 
 // GatewayContract - Gateway details.
 type GatewayContract struct {
 	// Gateway details.
-	Properties *GatewayContractProperties `json:"properties,omitempty"`
+	Properties *GatewayContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GatewayContractProperties - Properties of the Gateway contract.
 type GatewayContractProperties struct {
 	// Gateway description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gateway location.
-	LocationData *ResourceLocationDataContract `json:"locationData,omitempty"`
+	LocationData *ResourceLocationDataContract
 }
 
 // GatewayHostnameConfigurationClientCreateOrUpdateOptions contains the optional parameters for the GatewayHostnameConfigurationClient.CreateOrUpdate
@@ -2971,83 +2971,83 @@ type GatewayHostnameConfigurationClientListByServiceOptions struct {
 // GatewayHostnameConfigurationCollection - Paged Gateway hostname configuration list representation.
 type GatewayHostnameConfigurationCollection struct {
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*GatewayHostnameConfigurationContract `json:"value,omitempty" azure:"ro"`
+	Value []*GatewayHostnameConfigurationContract
 }
 
 // GatewayHostnameConfigurationContract - Gateway hostname configuration details.
 type GatewayHostnameConfigurationContract struct {
 	// Gateway hostname configuration details.
-	Properties *GatewayHostnameConfigurationContractProperties `json:"properties,omitempty"`
+	Properties *GatewayHostnameConfigurationContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GatewayHostnameConfigurationContractProperties - Gateway hostname configuration details.
 type GatewayHostnameConfigurationContractProperties struct {
 	// Identifier of Certificate entity that will be used for TLS connection establishment
-	CertificateID *string `json:"certificateId,omitempty"`
+	CertificateID *string
 
 	// Specifies if HTTP/2.0 is supported
-	HTTP2Enabled *bool `json:"http2Enabled,omitempty"`
+	HTTP2Enabled *bool
 
 	// Hostname value. Supports valid domain name, partial or full wildcard
-	Hostname *string `json:"hostname,omitempty"`
+	Hostname *string
 
 	// Determines whether gateway requests client certificate
-	NegotiateClientCertificate *bool `json:"negotiateClientCertificate,omitempty"`
+	NegotiateClientCertificate *bool
 
 	// Specifies if TLS 1.0 is supported
-	Tls10Enabled *bool `json:"tls10Enabled,omitempty"`
+	Tls10Enabled *bool
 
 	// Specifies if TLS 1.1 is supported
-	Tls11Enabled *bool `json:"tls11Enabled,omitempty"`
+	Tls11Enabled *bool
 }
 
 // GatewayKeyRegenerationRequestContract - Gateway key regeneration request contract properties.
 type GatewayKeyRegenerationRequestContract struct {
 	// REQUIRED; The Key being regenerated.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 }
 
 // GatewayKeysContract - Gateway authentication keys.
 type GatewayKeysContract struct {
 	// Primary gateway key.
-	Primary *string `json:"primary,omitempty"`
+	Primary *string
 
 	// Secondary gateway key.
-	Secondary *string `json:"secondary,omitempty"`
+	Secondary *string
 }
 
 // GatewayTokenContract - Gateway access token.
 type GatewayTokenContract struct {
 	// Shared Access Authentication token value for the Gateway.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // GatewayTokenRequestContract - Gateway token request contract properties.
 type GatewayTokenRequestContract struct {
 	// REQUIRED; The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following
 	// format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-	Expiry *time.Time `json:"expiry,omitempty"`
+	Expiry *time.Time
 
 	// REQUIRED; The Key to be used to generate gateway token.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 }
 
 // GenerateSsoURLResult - Generate SSO Url operations response details.
 type GenerateSsoURLResult struct {
 	// Redirect Url containing the SSO URL value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // GlobalSchemaClientBeginCreateOrUpdateOptions contains the optional parameters for the GlobalSchemaClient.BeginCreateOrUpdate
@@ -3090,43 +3090,43 @@ type GlobalSchemaClientListByServiceOptions struct {
 // GlobalSchemaCollection - The response of the list schema operation.
 type GlobalSchemaCollection struct {
 	// Total record count number.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Global Schema Contract value.
-	Value []*GlobalSchemaContract `json:"value,omitempty" azure:"ro"`
+	Value []*GlobalSchemaContract
 }
 
 // GlobalSchemaContract - Global Schema Contract details.
 type GlobalSchemaContract struct {
 	// Properties of the Global Schema.
-	Properties *GlobalSchemaContractProperties `json:"properties,omitempty"`
+	Properties *GlobalSchemaContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GlobalSchemaContractProperties - Schema create or update contract Properties.
 type GlobalSchemaContractProperties struct {
 	// REQUIRED; Schema Type. Immutable.
-	SchemaType *SchemaType `json:"schemaType,omitempty"`
+	SchemaType *SchemaType
 
 	// Free-form schema entity description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Global Schema document object for json-based schema formats(e.g. json schema).
-	Document any `json:"document,omitempty"`
+	Document any
 
 	// Json-encoded string for non json-based schema.
-	Value any `json:"value,omitempty"`
+	Value any
 }
 
 // GroupClientCreateOrUpdateOptions contains the optional parameters for the GroupClient.CreateOrUpdate method.
@@ -3173,94 +3173,94 @@ type GroupClientUpdateOptions struct {
 // GroupCollection - Paged Group list representation.
 type GroupCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*GroupContract `json:"value,omitempty"`
+	Value []*GroupContract
 }
 
 // GroupContract - Contract details.
 type GroupContract struct {
 	// Group entity contract properties.
-	Properties *GroupContractProperties `json:"properties,omitempty"`
+	Properties *GroupContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GroupContractProperties - Group contract Properties.
 type GroupContractProperties struct {
 	// REQUIRED; Group name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Group description. Can contain HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// For external groups, this property contains the id of the group from the external identity provider, e.g. for Azure Active
 	// Directory aad://<tenant>.onmicrosoft.com/groups/<group object id>; otherwise
 	// the value is null.
-	ExternalID *string `json:"externalId,omitempty"`
+	ExternalID *string
 
 	// Group type.
-	Type *GroupType `json:"type,omitempty"`
+	Type *GroupType
 
 	// READ-ONLY; true if the group is one of the three system groups (Administrators, Developers, or Guests); otherwise false.
-	BuiltIn *bool `json:"builtIn,omitempty" azure:"ro"`
+	BuiltIn *bool
 }
 
 // GroupCreateParameters - Parameters supplied to the Create Group operation.
 type GroupCreateParameters struct {
 	// Properties supplied to Create Group operation.
-	Properties *GroupCreateParametersProperties `json:"properties,omitempty"`
+	Properties *GroupCreateParametersProperties
 }
 
 // GroupCreateParametersProperties - Parameters supplied to the Create Group operation.
 type GroupCreateParametersProperties struct {
 	// REQUIRED; Group name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Group description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g.
 	// for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object
 	// id>; otherwise the value is null.
-	ExternalID *string `json:"externalId,omitempty"`
+	ExternalID *string
 
 	// Group type.
-	Type *GroupType `json:"type,omitempty"`
+	Type *GroupType
 }
 
 // GroupUpdateParameters - Parameters supplied to the Update Group operation.
 type GroupUpdateParameters struct {
 	// Group entity update contract properties.
-	Properties *GroupUpdateParametersProperties `json:"properties,omitempty"`
+	Properties *GroupUpdateParametersProperties
 }
 
 // GroupUpdateParametersProperties - Parameters supplied to the Update Group operation.
 type GroupUpdateParametersProperties struct {
 	// Group description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Group name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Identifier of the external groups, this property contains the id of the group from the external identity provider, e.g.
 	// for Azure Active Directory aad://<tenant>.onmicrosoft.com/groups/<group object
 	// id>; otherwise the value is null.
-	ExternalID *string `json:"externalId,omitempty"`
+	ExternalID *string
 
 	// Group type.
-	Type *GroupType `json:"type,omitempty"`
+	Type *GroupType
 }
 
 // GroupUserClientCheckEntityExistsOptions contains the optional parameters for the GroupUserClient.CheckEntityExists method.
@@ -3298,91 +3298,91 @@ type GroupUserClientListOptions struct {
 // HTTPHeader - HTTP header and it's value.
 type HTTPHeader struct {
 	// REQUIRED; Header name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Header value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // HTTPMessageDiagnostic - Http message diagnostic settings.
 type HTTPMessageDiagnostic struct {
 	// Body logging settings.
-	Body *BodyDiagnosticSettings `json:"body,omitempty"`
+	Body *BodyDiagnosticSettings
 
 	// Data masking settings.
-	DataMasking *DataMasking `json:"dataMasking,omitempty"`
+	DataMasking *DataMasking
 
 	// Array of HTTP Headers to log.
-	Headers []*string `json:"headers,omitempty"`
+	Headers []*string
 }
 
 // HostnameConfiguration - Custom hostname configuration.
 type HostnameConfiguration struct {
 	// REQUIRED; Hostname to configure on the Api Management service.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// REQUIRED; Hostname type.
-	Type *HostnameType `json:"type,omitempty"`
+	Type *HostnameType
 
 	// Certificate information.
-	Certificate *CertificateInformation `json:"certificate,omitempty"`
+	Certificate *CertificateInformation
 
 	// Certificate Password.
-	CertificatePassword *string `json:"certificatePassword,omitempty"`
+	CertificatePassword *string
 
 	// Certificate Source.
-	CertificateSource *CertificateSource `json:"certificateSource,omitempty"`
+	CertificateSource *CertificateSource
 
 	// Certificate Status.
-	CertificateStatus *CertificateStatus `json:"certificateStatus,omitempty"`
+	CertificateStatus *CertificateStatus
 
 	// Specify true to setup the certificate associated with this Hostname as the Default SSL Certificate. If a client does not
 	// send the SNI header, then this will be the certificate that will be challenged.
 	// The property is useful if a service has multiple custom hostname enabled and it needs to decide on the default ssl certificate.
 	// The setting only applied to Proxy Hostname Type.
-	DefaultSSLBinding *bool `json:"defaultSslBinding,omitempty"`
+	DefaultSSLBinding *bool
 
 	// Base64 Encoded certificate.
-	EncodedCertificate *string `json:"encodedCertificate,omitempty"`
+	EncodedCertificate *string
 
 	// System or User Assigned Managed identity clientId as generated by Azure AD, which has GET access to the keyVault containing
 	// the SSL certificate.
-	IdentityClientID *string `json:"identityClientId,omitempty"`
+	IdentityClientID *string
 
 	// Url to the KeyVault Secret containing the Ssl Certificate. If absolute Url containing version is provided, auto-update
 	// of ssl certificate will not work. This requires Api Management service to be
 	// configured with aka.ms/apimmsi. The secret should be of type application/x-pkcs12
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	KeyVaultID *string
 
 	// Specify true to always negotiate client certificate on the hostname. Default Value is false.
-	NegotiateClientCertificate *bool `json:"negotiateClientCertificate,omitempty"`
+	NegotiateClientCertificate *bool
 }
 
 // IdentityProviderBaseParameters - Identity Provider Base Parameter Properties.
 type IdentityProviderBaseParameters struct {
 	// List of Allowed Tenants when configuring Azure Active Directory login.
-	AllowedTenants []*string `json:"allowedTenants,omitempty"`
+	AllowedTenants []*string
 
 	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-	Authority *string `json:"authority,omitempty"`
+	Authority *string
 
 	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+	PasswordResetPolicyName *string
 
 	// Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
-	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+	ProfileEditingPolicyName *string
 
 	// Signin Policy Name. Only applies to AAD B2C Identity Provider.
-	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+	SigninPolicyName *string
 
 	// The TenantId to use instead of Common when logging into Active Directory
-	SigninTenant *string `json:"signinTenant,omitempty"`
+	SigninTenant *string
 
 	// Signup Policy Name. Only applies to AAD B2C Identity Provider.
-	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+	SignupPolicyName *string
 
 	// Identity Provider Type identifier.
-	Type *IdentityProviderType `json:"type,omitempty"`
+	Type *IdentityProviderType
 }
 
 // IdentityProviderClientCreateOrUpdateOptions contains the optional parameters for the IdentityProviderClient.CreateOrUpdate
@@ -3427,16 +3427,16 @@ type IdentityProviderClientUpdateOptions struct {
 // IdentityProviderContract - Identity Provider details.
 type IdentityProviderContract struct {
 	// Identity Provider contract properties.
-	Properties *IdentityProviderContractProperties `json:"properties,omitempty"`
+	Properties *IdentityProviderContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IdentityProviderContractProperties - The external Identity Providers like Facebook, Google, Microsoft, Twitter or Azure
@@ -3444,51 +3444,51 @@ type IdentityProviderContract struct {
 type IdentityProviderContractProperties struct {
 	// REQUIRED; Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
 	// Google login, App ID for Microsoft.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// List of Allowed Tenants when configuring Azure Active Directory login.
-	AllowedTenants []*string `json:"allowedTenants,omitempty"`
+	AllowedTenants []*string
 
 	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-	Authority *string `json:"authority,omitempty"`
+	Authority *string
 
 	// Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is
 	// App Secret for Facebook login, API Key for Google login, Public Key for
 	// Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+	PasswordResetPolicyName *string
 
 	// Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
-	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+	ProfileEditingPolicyName *string
 
 	// Signin Policy Name. Only applies to AAD B2C Identity Provider.
-	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+	SigninPolicyName *string
 
 	// The TenantId to use instead of Common when logging into Active Directory
-	SigninTenant *string `json:"signinTenant,omitempty"`
+	SigninTenant *string
 
 	// Signup Policy Name. Only applies to AAD B2C Identity Provider.
-	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+	SignupPolicyName *string
 
 	// Identity Provider Type identifier.
-	Type *IdentityProviderType `json:"type,omitempty"`
+	Type *IdentityProviderType
 }
 
 // IdentityProviderCreateContract - Identity Provider details.
 type IdentityProviderCreateContract struct {
 	// Identity Provider contract properties.
-	Properties *IdentityProviderCreateContractProperties `json:"properties,omitempty"`
+	Properties *IdentityProviderCreateContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IdentityProviderCreateContractProperties - The external Identity Providers like Facebook, Google, Microsoft, Twitter or
@@ -3496,130 +3496,130 @@ type IdentityProviderCreateContract struct {
 type IdentityProviderCreateContractProperties struct {
 	// REQUIRED; Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for
 	// Google login, App ID for Microsoft.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// REQUIRED; Client secret of the Application in external Identity Provider, used to authenticate login request. For example,
 	// it is App Secret for Facebook login, API Key for Google login, Public Key for
 	// Microsoft. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// List of Allowed Tenants when configuring Azure Active Directory login.
-	AllowedTenants []*string `json:"allowedTenants,omitempty"`
+	AllowedTenants []*string
 
 	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-	Authority *string `json:"authority,omitempty"`
+	Authority *string
 
 	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+	PasswordResetPolicyName *string
 
 	// Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
-	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+	ProfileEditingPolicyName *string
 
 	// Signin Policy Name. Only applies to AAD B2C Identity Provider.
-	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+	SigninPolicyName *string
 
 	// The TenantId to use instead of Common when logging into Active Directory
-	SigninTenant *string `json:"signinTenant,omitempty"`
+	SigninTenant *string
 
 	// Signup Policy Name. Only applies to AAD B2C Identity Provider.
-	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+	SignupPolicyName *string
 
 	// Identity Provider Type identifier.
-	Type *IdentityProviderType `json:"type,omitempty"`
+	Type *IdentityProviderType
 }
 
 // IdentityProviderList - List of all the Identity Providers configured on the service instance.
 type IdentityProviderList struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Identity Provider configuration values.
-	Value []*IdentityProviderContract `json:"value,omitempty"`
+	Value []*IdentityProviderContract
 }
 
 // IdentityProviderUpdateParameters - Parameters supplied to update Identity Provider
 type IdentityProviderUpdateParameters struct {
 	// Identity Provider update properties.
-	Properties *IdentityProviderUpdateProperties `json:"properties,omitempty"`
+	Properties *IdentityProviderUpdateProperties
 }
 
 // IdentityProviderUpdateProperties - Parameters supplied to the Update Identity Provider operation.
 type IdentityProviderUpdateProperties struct {
 	// List of Allowed Tenants when configuring Azure Active Directory login.
-	AllowedTenants []*string `json:"allowedTenants,omitempty"`
+	AllowedTenants []*string
 
 	// OpenID Connect discovery endpoint hostname for AAD or AAD B2C.
-	Authority *string `json:"authority,omitempty"`
+	Authority *string
 
 	// Client Id of the Application in the external Identity Provider. It is App ID for Facebook login, Client ID for Google login,
 	// App ID for Microsoft.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// Client secret of the Application in external Identity Provider, used to authenticate login request. For example, it is
 	// App Secret for Facebook login, API Key for Google login, Public Key for
 	// Microsoft.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// Password Reset Policy Name. Only applies to AAD B2C Identity Provider.
-	PasswordResetPolicyName *string `json:"passwordResetPolicyName,omitempty"`
+	PasswordResetPolicyName *string
 
 	// Profile Editing Policy Name. Only applies to AAD B2C Identity Provider.
-	ProfileEditingPolicyName *string `json:"profileEditingPolicyName,omitempty"`
+	ProfileEditingPolicyName *string
 
 	// Signin Policy Name. Only applies to AAD B2C Identity Provider.
-	SigninPolicyName *string `json:"signinPolicyName,omitempty"`
+	SigninPolicyName *string
 
 	// The TenantId to use instead of Common when logging into Active Directory
-	SigninTenant *string `json:"signinTenant,omitempty"`
+	SigninTenant *string
 
 	// Signup Policy Name. Only applies to AAD B2C Identity Provider.
-	SignupPolicyName *string `json:"signupPolicyName,omitempty"`
+	SignupPolicyName *string
 
 	// Identity Provider Type identifier.
-	Type *IdentityProviderType `json:"type,omitempty"`
+	Type *IdentityProviderType
 }
 
 // IssueAttachmentCollection - Paged Issue Attachment list representation.
 type IssueAttachmentCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Issue Attachment values.
-	Value []*IssueAttachmentContract `json:"value,omitempty" azure:"ro"`
+	Value []*IssueAttachmentContract
 }
 
 // IssueAttachmentContract - Issue Attachment Contract details.
 type IssueAttachmentContract struct {
 	// Properties of the Issue Attachment.
-	Properties *IssueAttachmentContractProperties `json:"properties,omitempty"`
+	Properties *IssueAttachmentContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IssueAttachmentContractProperties - Issue Attachment contract Properties.
 type IssueAttachmentContractProperties struct {
 	// REQUIRED; An HTTP link or Base64-encoded binary data.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// REQUIRED; Either 'link' if content is provided via an HTTP link or the MIME type of the Base64-encoded binary data provided
 	// in the 'content' property.
-	ContentFormat *string `json:"contentFormat,omitempty"`
+	ContentFormat *string
 
 	// REQUIRED; Filename by which the binary data will be saved.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // IssueClientGetOptions contains the optional parameters for the IssueClient.Get method.
@@ -3647,163 +3647,163 @@ type IssueClientListByServiceOptions struct {
 // IssueCollection - Paged Issue list representation.
 type IssueCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Issue values.
-	Value []*IssueContract `json:"value,omitempty" azure:"ro"`
+	Value []*IssueContract
 }
 
 // IssueCommentCollection - Paged Issue Comment list representation.
 type IssueCommentCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Issue Comment values.
-	Value []*IssueCommentContract `json:"value,omitempty" azure:"ro"`
+	Value []*IssueCommentContract
 }
 
 // IssueCommentContract - Issue Comment Contract details.
 type IssueCommentContract struct {
 	// Properties of the Issue Comment.
-	Properties *IssueCommentContractProperties `json:"properties,omitempty"`
+	Properties *IssueCommentContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IssueCommentContractProperties - Issue Comment contract Properties.
 type IssueCommentContractProperties struct {
 	// REQUIRED; Comment text.
-	Text *string `json:"text,omitempty"`
+	Text *string
 
 	// REQUIRED; A resource identifier for the user who left the comment.
-	UserID *string `json:"userId,omitempty"`
+	UserID *string
 
 	// Date and time when the comment was created.
-	CreatedDate *time.Time `json:"createdDate,omitempty"`
+	CreatedDate *time.Time
 }
 
 // IssueContract - Issue Contract details.
 type IssueContract struct {
 	// Properties of the Issue.
-	Properties *IssueContractProperties `json:"properties,omitempty"`
+	Properties *IssueContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IssueContractBaseProperties - Issue contract Base Properties.
 type IssueContractBaseProperties struct {
 	// A resource identifier for the API the issue was created for.
-	APIID *string `json:"apiId,omitempty"`
+	APIID *string
 
 	// Date and time when the issue was created.
-	CreatedDate *time.Time `json:"createdDate,omitempty"`
+	CreatedDate *time.Time
 
 	// Status of the issue.
-	State *State `json:"state,omitempty"`
+	State *State
 }
 
 // IssueContractProperties - Issue contract Properties.
 type IssueContractProperties struct {
 	// REQUIRED; Text describing the issue.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// REQUIRED; The issue title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// REQUIRED; A resource identifier for the user created the issue.
-	UserID *string `json:"userId,omitempty"`
+	UserID *string
 
 	// A resource identifier for the API the issue was created for.
-	APIID *string `json:"apiId,omitempty"`
+	APIID *string
 
 	// Date and time when the issue was created.
-	CreatedDate *time.Time `json:"createdDate,omitempty"`
+	CreatedDate *time.Time
 
 	// Status of the issue.
-	State *State `json:"state,omitempty"`
+	State *State
 }
 
 // IssueUpdateContract - Issue update Parameters.
 type IssueUpdateContract struct {
 	// Issue entity Update contract properties.
-	Properties *IssueUpdateContractProperties `json:"properties,omitempty"`
+	Properties *IssueUpdateContractProperties
 }
 
 // IssueUpdateContractProperties - Issue contract Update Properties.
 type IssueUpdateContractProperties struct {
 	// A resource identifier for the API the issue was created for.
-	APIID *string `json:"apiId,omitempty"`
+	APIID *string
 
 	// Date and time when the issue was created.
-	CreatedDate *time.Time `json:"createdDate,omitempty"`
+	CreatedDate *time.Time
 
 	// Text describing the issue.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Status of the issue.
-	State *State `json:"state,omitempty"`
+	State *State
 
 	// The issue title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// A resource identifier for the user created the issue.
-	UserID *string `json:"userId,omitempty"`
+	UserID *string
 }
 
 // KeyVaultContractCreateProperties - Create keyVault contract details.
 type KeyVaultContractCreateProperties struct {
 	// Null for SystemAssignedIdentity or Client Id for UserAssignedIdentity , which will be used to access key vault secret.
-	IdentityClientID *string `json:"identityClientId,omitempty"`
+	IdentityClientID *string
 
 	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires
 	// API Management service to be configured with aka.ms/apimmsi
-	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
+	SecretIdentifier *string
 }
 
 // KeyVaultContractProperties - KeyVault contract details.
 type KeyVaultContractProperties struct {
 	// Null for SystemAssignedIdentity or Client Id for UserAssignedIdentity , which will be used to access key vault secret.
-	IdentityClientID *string `json:"identityClientId,omitempty"`
+	IdentityClientID *string
 
 	// Last time sync and refresh status of secret from key vault.
-	LastStatus *KeyVaultLastAccessStatusContractProperties `json:"lastStatus,omitempty"`
+	LastStatus *KeyVaultLastAccessStatusContractProperties
 
 	// Key vault secret identifier for fetching secret. Providing a versioned secret will prevent auto-refresh. This requires
 	// API Management service to be configured with aka.ms/apimmsi
-	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
+	SecretIdentifier *string
 }
 
 // KeyVaultLastAccessStatusContractProperties - Issue contract Update Properties.
 type KeyVaultLastAccessStatusContractProperties struct {
 	// Last status code for sync and refresh of secret from key vault.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Details of the error else empty.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Last time secret was accessed. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO
 	// 8601 standard.
-	TimeStampUTC *time.Time `json:"timeStampUtc,omitempty"`
+	TimeStampUTC *time.Time
 }
 
 // LoggerClientCreateOrUpdateOptions contains the optional parameters for the LoggerClient.CreateOrUpdate method.
@@ -3850,69 +3850,69 @@ type LoggerClientUpdateOptions struct {
 // LoggerCollection - Paged Logger list representation.
 type LoggerCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Logger values.
-	Value []*LoggerContract `json:"value,omitempty"`
+	Value []*LoggerContract
 }
 
 // LoggerContract - Logger details.
 type LoggerContract struct {
 	// Logger entity contract properties.
-	Properties *LoggerContractProperties `json:"properties,omitempty"`
+	Properties *LoggerContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LoggerContractProperties - The Logger entity in API Management represents an event sink that you can use to log API Management
 // events. Currently the Logger entity supports logging API Management events to Azure Event Hubs.
 type LoggerContractProperties struct {
 	// REQUIRED; Logger type.
-	LoggerType *LoggerType `json:"loggerType,omitempty"`
+	LoggerType *LoggerType
 
 	// The name and SendRule connection string of the event hub for azureEventHub logger. Instrumentation key for applicationInsights
 	// logger.
-	Credentials map[string]*string `json:"credentials,omitempty"`
+	Credentials map[string]*string
 
 	// Logger description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Whether records are buffered in the logger before publishing. Default is assumed to be true.
-	IsBuffered *bool `json:"isBuffered,omitempty"`
+	IsBuffered *bool
 
 	// Azure Resource Id of a log target (either Azure Event Hub resource or Azure Application Insights resource).
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // LoggerUpdateContract - Logger update contract.
 type LoggerUpdateContract struct {
 	// Logger entity update contract properties.
-	Properties *LoggerUpdateParameters `json:"properties,omitempty"`
+	Properties *LoggerUpdateParameters
 }
 
 // LoggerUpdateParameters - Parameters supplied to the Update Logger operation.
 type LoggerUpdateParameters struct {
 	// Logger credentials.
-	Credentials map[string]*string `json:"credentials,omitempty"`
+	Credentials map[string]*string
 
 	// Logger description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Whether records are buffered in the logger before publishing. Default is assumed to be true.
-	IsBuffered *bool `json:"isBuffered,omitempty"`
+	IsBuffered *bool
 
 	// Logger type.
-	LoggerType *LoggerType `json:"loggerType,omitempty"`
+	LoggerType *LoggerType
 }
 
 // NamedValueClientBeginCreateOrUpdateOptions contains the optional parameters for the NamedValueClient.BeginCreateOrUpdate
@@ -3975,122 +3975,122 @@ type NamedValueClientListValueOptions struct {
 // NamedValueCollection - Paged NamedValue list representation.
 type NamedValueCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*NamedValueContract `json:"value,omitempty"`
+	Value []*NamedValueContract
 }
 
 // NamedValueContract - NamedValue details.
 type NamedValueContract struct {
 	// NamedValue entity contract properties.
-	Properties *NamedValueContractProperties `json:"properties,omitempty"`
+	Properties *NamedValueContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NamedValueContractProperties - NamedValue Contract properties.
 type NamedValueContractProperties struct {
 	// REQUIRED; Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// KeyVault location details of the namedValue.
-	KeyVault *KeyVaultContractProperties `json:"keyVault,omitempty"`
+	KeyVault *KeyVaultContractProperties
 
 	// Determines whether the value is a secret and should be encrypted or not. Default value is false.
-	Secret *bool `json:"secret,omitempty"`
+	Secret *bool
 
 	// Optional tags that when provided can be used to filter the NamedValue list.
-	Tags []*string `json:"tags,omitempty"`
+	Tags []*string
 
 	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property
 	// will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
 	// the value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // NamedValueCreateContract - NamedValue details.
 type NamedValueCreateContract struct {
 	// NamedValue entity contract properties for PUT operation.
-	Properties *NamedValueCreateContractProperties `json:"properties,omitempty"`
+	Properties *NamedValueCreateContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NamedValueCreateContractProperties - NamedValue Contract properties.
 type NamedValueCreateContractProperties struct {
 	// REQUIRED; Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// KeyVault location details of the namedValue.
-	KeyVault *KeyVaultContractCreateProperties `json:"keyVault,omitempty"`
+	KeyVault *KeyVaultContractCreateProperties
 
 	// Determines whether the value is a secret and should be encrypted or not. Default value is false.
-	Secret *bool `json:"secret,omitempty"`
+	Secret *bool
 
 	// Optional tags that when provided can be used to filter the NamedValue list.
-	Tags []*string `json:"tags,omitempty"`
+	Tags []*string
 
 	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property
 	// will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
 	// the value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // NamedValueEntityBaseParameters - NamedValue Entity Base Parameters set.
 type NamedValueEntityBaseParameters struct {
 	// Determines whether the value is a secret and should be encrypted or not. Default value is false.
-	Secret *bool `json:"secret,omitempty"`
+	Secret *bool
 
 	// Optional tags that when provided can be used to filter the NamedValue list.
-	Tags []*string `json:"tags,omitempty"`
+	Tags []*string
 }
 
 // NamedValueSecretContract - Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
 type NamedValueSecretContract struct {
 	// This is secret value of the NamedValue entity.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // NamedValueUpdateParameterProperties - NamedValue Contract properties.
 type NamedValueUpdateParameterProperties struct {
 	// Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// KeyVault location details of the namedValue.
-	KeyVault *KeyVaultContractCreateProperties `json:"keyVault,omitempty"`
+	KeyVault *KeyVaultContractCreateProperties
 
 	// Determines whether the value is a secret and should be encrypted or not. Default value is false.
-	Secret *bool `json:"secret,omitempty"`
+	Secret *bool
 
 	// Optional tags that when provided can be used to filter the NamedValue list.
-	Tags []*string `json:"tags,omitempty"`
+	Tags []*string
 
 	// Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // NamedValueUpdateParameters - NamedValue update Parameters.
 type NamedValueUpdateParameters struct {
 	// NamedValue entity Update contract properties.
-	Properties *NamedValueUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *NamedValueUpdateParameterProperties
 }
 
 // NetworkStatusClientListByLocationOptions contains the optional parameters for the NetworkStatusClient.ListByLocation method.
@@ -4106,19 +4106,19 @@ type NetworkStatusClientListByServiceOptions struct {
 // NetworkStatusContract - Network Status details.
 type NetworkStatusContract struct {
 	// REQUIRED; Gets the list of Connectivity Status to the Resources on which the service depends upon.
-	ConnectivityStatus []*ConnectivityStatusContract `json:"connectivityStatus,omitempty"`
+	ConnectivityStatus []*ConnectivityStatusContract
 
 	// REQUIRED; Gets the list of DNS servers IPV4 addresses.
-	DNSServers []*string `json:"dnsServers,omitempty"`
+	DNSServers []*string
 }
 
 // NetworkStatusContractByLocation - Network Status in the Location
 type NetworkStatusContractByLocation struct {
 	// Location of service
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Network status in Location
-	NetworkStatus *NetworkStatusContract `json:"networkStatus,omitempty"`
+	NetworkStatus *NetworkStatusContract
 }
 
 // NotificationClientCreateOrUpdateOptions contains the optional parameters for the NotificationClient.CreateOrUpdate method.
@@ -4144,40 +4144,40 @@ type NotificationClientListByServiceOptions struct {
 // NotificationCollection - Paged Notification list representation.
 type NotificationCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*NotificationContract `json:"value,omitempty"`
+	Value []*NotificationContract
 }
 
 // NotificationContract - Notification details.
 type NotificationContract struct {
 	// Notification entity contract properties.
-	Properties *NotificationContractProperties `json:"properties,omitempty"`
+	Properties *NotificationContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NotificationContractProperties - Notification Contract properties.
 type NotificationContractProperties struct {
 	// REQUIRED; Title of the Notification.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// Description of the Notification.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Recipient Parameter values.
-	Recipients *RecipientsContractProperties `json:"recipients,omitempty"`
+	Recipients *RecipientsContractProperties
 }
 
 // NotificationRecipientEmailClientCheckEntityExistsOptions contains the optional parameters for the NotificationRecipientEmailClient.CheckEntityExists
@@ -4231,19 +4231,19 @@ type NotificationRecipientUserClientListByNotificationOptions struct {
 // OAuth2AuthenticationSettingsContract - API OAuth2 Authentication settings details.
 type OAuth2AuthenticationSettingsContract struct {
 	// OAuth authorization server identifier.
-	AuthorizationServerID *string `json:"authorizationServerId,omitempty"`
+	AuthorizationServerID *string
 
 	// operations scope.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 }
 
 // OpenIDAuthenticationSettingsContract - API OAuth2 Authentication settings details.
 type OpenIDAuthenticationSettingsContract struct {
 	// How to send token to the server.
-	BearerTokenSendingMethods []*BearerTokenSendingMethods `json:"bearerTokenSendingMethods,omitempty"`
+	BearerTokenSendingMethods []*BearerTokenSendingMethods
 
 	// OAuth authorization server identifier.
-	OpenidProviderID *string `json:"openidProviderId,omitempty"`
+	OpenidProviderID *string
 }
 
 // OpenIDConnectProviderClientCreateOrUpdateOptions contains the optional parameters for the OpenIDConnectProviderClient.CreateOrUpdate
@@ -4297,85 +4297,85 @@ type OpenIDConnectProviderClientUpdateOptions struct {
 // OpenIDConnectProviderCollection - Paged OpenIdProviders list representation.
 type OpenIDConnectProviderCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*OpenidConnectProviderContract `json:"value,omitempty"`
+	Value []*OpenidConnectProviderContract
 }
 
 // OpenidConnectProviderContract - OpenId Connect Provider details.
 type OpenidConnectProviderContract struct {
 	// OpenId Connect Provider contract properties.
-	Properties *OpenidConnectProviderContractProperties `json:"properties,omitempty"`
+	Properties *OpenidConnectProviderContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OpenidConnectProviderContractProperties - OpenID Connect Providers Contract.
 type OpenidConnectProviderContractProperties struct {
 	// REQUIRED; Client ID of developer console which is the client application.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// REQUIRED; User-friendly OpenID Connect Provider name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; Metadata endpoint URI.
-	MetadataEndpoint *string `json:"metadataEndpoint,omitempty"`
+	MetadataEndpoint *string
 
 	// Client Secret of developer console which is the client application.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// User-friendly description of OpenID Connect Provider.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // OpenidConnectProviderUpdateContract - Parameters supplied to the Update OpenID Connect Provider operation.
 type OpenidConnectProviderUpdateContract struct {
 	// OpenId Connect Provider Update contract properties.
-	Properties *OpenidConnectProviderUpdateContractProperties `json:"properties,omitempty"`
+	Properties *OpenidConnectProviderUpdateContractProperties
 }
 
 // OpenidConnectProviderUpdateContractProperties - Parameters supplied to the Update OpenID Connect Provider operation.
 type OpenidConnectProviderUpdateContractProperties struct {
 	// Client ID of developer console which is the client application.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// Client Secret of developer console which is the client application.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 
 	// User-friendly description of OpenID Connect Provider.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// User-friendly OpenID Connect Provider name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Metadata endpoint URI.
-	MetadataEndpoint *string `json:"metadataEndpoint,omitempty"`
+	MetadataEndpoint *string
 }
 
 // Operation - REST API operation
 type Operation struct {
 	// The object that describes the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operation origin.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// The operation properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationClientListByTagsOptions contains the optional parameters for the OperationClient.NewListByTagsPager method.
@@ -4400,213 +4400,213 @@ type OperationClientListByTagsOptions struct {
 // OperationCollection - Paged Operation list representation.
 type OperationCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*OperationContract `json:"value,omitempty" azure:"ro"`
+	Value []*OperationContract
 }
 
 // OperationContract - API Operation details.
 type OperationContract struct {
 	// Properties of the Operation Contract.
-	Properties *OperationContractProperties `json:"properties,omitempty"`
+	Properties *OperationContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OperationContractProperties - Operation Contract Properties
 type OperationContractProperties struct {
 	// REQUIRED; Operation Name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
-	Method *string `json:"method,omitempty"`
+	Method *string
 
 	// REQUIRED; Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}
-	URLTemplate *string `json:"urlTemplate,omitempty"`
+	URLTemplate *string
 
 	// Description of the operation. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation Policies
-	Policies *string `json:"policies,omitempty"`
+	Policies *string
 
 	// An entity containing request details.
-	Request *RequestContract `json:"request,omitempty"`
+	Request *RequestContract
 
 	// Array of Operation responses.
-	Responses []*ResponseContract `json:"responses,omitempty"`
+	Responses []*ResponseContract
 
 	// Collection of URL template parameters.
-	TemplateParameters []*ParameterContract `json:"templateParameters,omitempty"`
+	TemplateParameters []*ParameterContract
 }
 
 // OperationDisplay - The object that describes the operation.
 type OperationDisplay struct {
 	// Friendly name of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: read, write, delete, listKeys/action, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Friendly name of the resource provider
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource type on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationEntityBaseContract - API Operation Entity Base Contract details.
 type OperationEntityBaseContract struct {
 	// Description of the operation. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation Policies
-	Policies *string `json:"policies,omitempty"`
+	Policies *string
 
 	// An entity containing request details.
-	Request *RequestContract `json:"request,omitempty"`
+	Request *RequestContract
 
 	// Array of Operation responses.
-	Responses []*ResponseContract `json:"responses,omitempty"`
+	Responses []*ResponseContract
 
 	// Collection of URL template parameters.
-	TemplateParameters []*ParameterContract `json:"templateParameters,omitempty"`
+	TemplateParameters []*ParameterContract
 }
 
 // OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
 // to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of operations supported by the resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationResultContract - Long Running Git Operation Results.
 type OperationResultContract struct {
 	// Properties of the Operation Contract.
-	Properties *OperationResultContractProperties `json:"properties,omitempty"`
+	Properties *OperationResultContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OperationResultContractProperties - Operation Result.
 type OperationResultContractProperties struct {
 	// Error Body Contract
-	Error *ErrorResponseBody `json:"error,omitempty"`
+	Error *ErrorResponseBody
 
 	// Operation result identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Optional result info.
-	ResultInfo *string `json:"resultInfo,omitempty"`
+	ResultInfo *string
 
 	// Start time of an async operation. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO
 	// 8601 standard.
-	Started *time.Time `json:"started,omitempty"`
+	Started *time.Time
 
 	// Status of an async operation.
-	Status *AsyncOperationStatus `json:"status,omitempty"`
+	Status *AsyncOperationStatus
 
 	// Last update time of an async operation. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
 	// the ISO 8601 standard.
-	Updated *time.Time `json:"updated,omitempty"`
+	Updated *time.Time
 
 	// READ-ONLY; This property if only provided as part of the TenantConfigurationValidate operation. It contains the log the
 	// entities which will be updated/created/deleted as part of the TenantConfigurationDeploy
 	// operation.
-	ActionLog []*OperationResultLogItemContract `json:"actionLog,omitempty" azure:"ro"`
+	ActionLog []*OperationResultLogItemContract
 }
 
 // OperationResultLogItemContract - Log of the entity being created, updated or deleted.
 type OperationResultLogItemContract struct {
 	// Action like create/update/delete.
-	Action *string `json:"action,omitempty"`
+	Action *string
 
 	// Identifier of the entity being created/updated/deleted.
-	ObjectKey *string `json:"objectKey,omitempty"`
+	ObjectKey *string
 
 	// The type of entity contract.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // OperationTagResourceContractProperties - Operation Entity contract Properties.
 type OperationTagResourceContractProperties struct {
 	// Identifier of the operation in form /operations/{operationId}.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; API Name.
-	APIName *string `json:"apiName,omitempty" azure:"ro"`
+	APIName *string
 
 	// READ-ONLY; API Revision.
-	APIRevision *string `json:"apiRevision,omitempty" azure:"ro"`
+	APIRevision *string
 
 	// READ-ONLY; API Version.
-	APIVersion *string `json:"apiVersion,omitempty" azure:"ro"`
+	APIVersion *string
 
 	// READ-ONLY; Operation Description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
-	Method *string `json:"method,omitempty" azure:"ro"`
+	Method *string
 
 	// READ-ONLY; Operation name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}
-	URLTemplate *string `json:"urlTemplate,omitempty" azure:"ro"`
+	URLTemplate *string
 }
 
 // OperationUpdateContract - API Operation Update Contract details.
 type OperationUpdateContract struct {
 	// Properties of the API Operation entity that can be updated.
-	Properties *OperationUpdateContractProperties `json:"properties,omitempty"`
+	Properties *OperationUpdateContractProperties
 }
 
 // OperationUpdateContractProperties - Operation Update Contract Properties.
 type OperationUpdateContractProperties struct {
 	// Description of the operation. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation Name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// A Valid HTTP Operation Method. Typical Http Methods like GET, PUT, POST but not limited by only them.
-	Method *string `json:"method,omitempty"`
+	Method *string
 
 	// Operation Policies
-	Policies *string `json:"policies,omitempty"`
+	Policies *string
 
 	// An entity containing request details.
-	Request *RequestContract `json:"request,omitempty"`
+	Request *RequestContract
 
 	// Array of Operation responses.
-	Responses []*ResponseContract `json:"responses,omitempty"`
+	Responses []*ResponseContract
 
 	// Collection of URL template parameters.
-	TemplateParameters []*ParameterContract `json:"templateParameters,omitempty"`
+	TemplateParameters []*ParameterContract
 
 	// Relative URL template identifying the target resource for this operation. May include parameters. Example: /customers/{cid}/orders/{oid}/?date={date}
-	URLTemplate *string `json:"urlTemplate,omitempty"`
+	URLTemplate *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -4618,19 +4618,19 @@ type OperationsClientListOptions struct {
 // network access to.
 type OutboundEnvironmentEndpoint struct {
 	// The type of service accessed by the Api Management Service, e.g., Azure Storage, Azure SQL Database, and Azure Active Directory.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// The endpoints that the Api Management Service reaches the service at.
-	Endpoints []*EndpointDependency `json:"endpoints,omitempty"`
+	Endpoints []*EndpointDependency
 }
 
 // OutboundEnvironmentEndpointList - Collection of Outbound Environment Endpoints
 type OutboundEnvironmentEndpointList struct {
 	// REQUIRED; Collection of resources.
-	Value []*OutboundEnvironmentEndpoint `json:"value,omitempty"`
+	Value []*OutboundEnvironmentEndpoint
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // OutboundNetworkDependenciesEndpointsClientListByServiceOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.ListByService
@@ -4642,55 +4642,55 @@ type OutboundNetworkDependenciesEndpointsClientListByServiceOptions struct {
 // ParameterContract - Operation parameters details.
 type ParameterContract struct {
 	// REQUIRED; Parameter name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Parameter type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Default parameter value.
-	DefaultValue *string `json:"defaultValue,omitempty"`
+	DefaultValue *string
 
 	// Parameter description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Exampled defined for the parameter.
-	Examples map[string]*ParameterExampleContract `json:"examples,omitempty"`
+	Examples map[string]*ParameterExampleContract
 
 	// Specifies whether parameter is required or not.
-	Required *bool `json:"required,omitempty"`
+	Required *bool
 
 	// Schema identifier.
-	SchemaID *string `json:"schemaId,omitempty"`
+	SchemaID *string
 
 	// Type name defined by the schema.
-	TypeName *string `json:"typeName,omitempty"`
+	TypeName *string
 
 	// Parameter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // ParameterExampleContract - Parameter example.
 type ParameterExampleContract struct {
 	// Long description for the example
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// A URL that points to the literal example
-	ExternalValue *string `json:"externalValue,omitempty"`
+	ExternalValue *string
 
 	// Short description for the example
-	Summary *string `json:"summary,omitempty"`
+	Summary *string
 
 	// Example value. May be a primitive value, or an object.
-	Value any `json:"value,omitempty"`
+	Value any
 }
 
 // PipelineDiagnosticSettings - Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
 type PipelineDiagnosticSettings struct {
 	// Diagnostic settings for request.
-	Request *HTTPMessageDiagnostic `json:"request,omitempty"`
+	Request *HTTPMessageDiagnostic
 
 	// Diagnostic settings for response.
-	Response *HTTPMessageDiagnostic `json:"response,omitempty"`
+	Response *HTTPMessageDiagnostic
 }
 
 // PolicyClientCreateOrUpdateOptions contains the optional parameters for the PolicyClient.CreateOrUpdate method.
@@ -4723,37 +4723,37 @@ type PolicyClientListByServiceOptions struct {
 // PolicyCollection - The response of the list policy operation.
 type PolicyCollection struct {
 	// Total record count number.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Policy Contract value.
-	Value []*PolicyContract `json:"value,omitempty"`
+	Value []*PolicyContract
 }
 
 // PolicyContract - Policy Contract details.
 type PolicyContract struct {
 	// Properties of the Policy.
-	Properties *PolicyContractProperties `json:"properties,omitempty"`
+	Properties *PolicyContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PolicyContractProperties - Policy contract Properties.
 type PolicyContractProperties struct {
 	// REQUIRED; Contents of the Policy as defined by the format.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// Format of the policyContent.
-	Format *PolicyContentFormat `json:"format,omitempty"`
+	Format *PolicyContentFormat
 }
 
 // PolicyDescriptionClientListByServiceOptions contains the optional parameters for the PolicyDescriptionClient.ListByService
@@ -4766,64 +4766,64 @@ type PolicyDescriptionClientListByServiceOptions struct {
 // PolicyDescriptionCollection - Descriptions of APIM policies.
 type PolicyDescriptionCollection struct {
 	// Total record count number.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Descriptions of APIM policies.
-	Value []*PolicyDescriptionContract `json:"value,omitempty"`
+	Value []*PolicyDescriptionContract
 }
 
 // PolicyDescriptionContract - Policy description details.
 type PolicyDescriptionContract struct {
 	// Policy description contract properties.
-	Properties *PolicyDescriptionContractProperties `json:"properties,omitempty"`
+	Properties *PolicyDescriptionContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PolicyDescriptionContractProperties - Policy description properties.
 type PolicyDescriptionContractProperties struct {
 	// READ-ONLY; Policy description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Binary OR value of the Snippet scope.
-	Scope *int64 `json:"scope,omitempty" azure:"ro"`
+	Scope *int64
 }
 
 // PortalDelegationSettings - Delegation settings for a developer portal.
 type PortalDelegationSettings struct {
 	// Delegation settings contract properties.
-	Properties *PortalDelegationSettingsProperties `json:"properties,omitempty"`
+	Properties *PortalDelegationSettingsProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PortalDelegationSettingsProperties - Delegation settings contract properties.
 type PortalDelegationSettingsProperties struct {
 	// Subscriptions delegation settings.
-	Subscriptions *SubscriptionsDelegationSettingsProperties `json:"subscriptions,omitempty"`
+	Subscriptions *SubscriptionsDelegationSettingsProperties
 
 	// A delegation Url.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// User registration delegation settings.
-	UserRegistration *RegistrationDelegationSettingsProperties `json:"userRegistration,omitempty"`
+	UserRegistration *RegistrationDelegationSettingsProperties
 
 	// A base64-encoded validation key to validate, that a request is coming from Azure API Management.
-	ValidationKey *string `json:"validationKey,omitempty"`
+	ValidationKey *string
 }
 
 // PortalRevisionClientBeginCreateOrUpdateOptions contains the optional parameters for the PortalRevisionClient.BeginCreateOrUpdate
@@ -4865,51 +4865,51 @@ type PortalRevisionClientListByServiceOptions struct {
 // PortalRevisionCollection - Paged list of portal revisions.
 type PortalRevisionCollection struct {
 	// READ-ONLY; Next page link, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Collection of portal revisions.
-	Value []*PortalRevisionContract `json:"value,omitempty" azure:"ro"`
+	Value []*PortalRevisionContract
 }
 
 // PortalRevisionContract - Portal Revision's contract details.
 type PortalRevisionContract struct {
 	// Properties of the portal revisions.
-	Properties *PortalRevisionContractProperties `json:"properties,omitempty"`
+	Properties *PortalRevisionContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type PortalRevisionContractProperties struct {
 	// Portal revision description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates if the portal's revision is public.
-	IsCurrent *bool `json:"isCurrent,omitempty"`
+	IsCurrent *bool
 
 	// READ-ONLY; Portal's revision creation date and time.
-	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
+	CreatedDateTime *time.Time
 
 	// READ-ONLY; Status of the portal's revision.
-	Status *PortalRevisionStatus `json:"status,omitempty" azure:"ro"`
+	Status *PortalRevisionStatus
 
 	// READ-ONLY; Portal revision publishing status details.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 
 	// READ-ONLY; Last updated date and time.
-	UpdatedDateTime *time.Time `json:"updatedDateTime,omitempty" azure:"ro"`
+	UpdatedDateTime *time.Time
 }
 
 // PortalSettingValidationKeyContract - Client or app secret used in IdentityProviders, Aad, OpenID or OAuth.
 type PortalSettingValidationKeyContract struct {
 	// This is secret value of the validation key in portal settings.
-	ValidationKey *string `json:"validationKey,omitempty"`
+	ValidationKey *string
 }
 
 // PortalSettingsClientListByServiceOptions contains the optional parameters for the PortalSettingsClient.ListByService method.
@@ -4920,112 +4920,112 @@ type PortalSettingsClientListByServiceOptions struct {
 // PortalSettingsCollection - Descriptions of APIM policies.
 type PortalSettingsCollection struct {
 	// Total record count number.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Descriptions of APIM policies.
-	Value []*PortalSettingsContract `json:"value,omitempty"`
+	Value []*PortalSettingsContract
 }
 
 // PortalSettingsContract - Portal Settings for the Developer Portal.
 type PortalSettingsContract struct {
 	// Portal Settings contract properties.
-	Properties *PortalSettingsContractProperties `json:"properties,omitempty"`
+	Properties *PortalSettingsContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PortalSettingsContractProperties - Sign-in settings contract properties.
 type PortalSettingsContractProperties struct {
 	// Redirect Anonymous users to the Sign-In page.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Subscriptions delegation settings.
-	Subscriptions *SubscriptionsDelegationSettingsProperties `json:"subscriptions,omitempty"`
+	Subscriptions *SubscriptionsDelegationSettingsProperties
 
 	// Terms of service contract properties.
-	TermsOfService *TermsOfServiceProperties `json:"termsOfService,omitempty"`
+	TermsOfService *TermsOfServiceProperties
 
 	// A delegation Url.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// User registration delegation settings.
-	UserRegistration *RegistrationDelegationSettingsProperties `json:"userRegistration,omitempty"`
+	UserRegistration *RegistrationDelegationSettingsProperties
 
 	// A base64-encoded validation key to validate, that a request is coming from Azure API Management.
-	ValidationKey *string `json:"validationKey,omitempty"`
+	ValidationKey *string
 }
 
 // PortalSigninSettingProperties - Sign-in settings contract properties.
 type PortalSigninSettingProperties struct {
 	// Redirect Anonymous users to the Sign-In page.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // PortalSigninSettings - Sign-In settings for the Developer Portal.
 type PortalSigninSettings struct {
 	// Sign-in settings contract properties.
-	Properties *PortalSigninSettingProperties `json:"properties,omitempty"`
+	Properties *PortalSigninSettingProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PortalSignupSettings - Sign-Up settings for a developer portal.
 type PortalSignupSettings struct {
 	// Sign-up settings contract properties.
-	Properties *PortalSignupSettingsProperties `json:"properties,omitempty"`
+	Properties *PortalSignupSettingsProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PortalSignupSettingsProperties - Sign-up settings contract properties.
 type PortalSignupSettingsProperties struct {
 	// Allow users to sign up on a developer portal.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Terms of service contract properties.
-	TermsOfService *TermsOfServiceProperties `json:"termsOfService,omitempty"`
+	TermsOfService *TermsOfServiceProperties
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionClient.BeginCreateOrUpdate
@@ -5069,95 +5069,95 @@ type PrivateEndpointConnectionClientListPrivateLinkResourcesOptions struct {
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionRequest - A request to approve or reject a private endpoint connection
 type PrivateEndpointConnectionRequest struct {
 	// Private Endpoint Connection Resource Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The connection state of the private endpoint connection.
-	Properties *PrivateEndpointConnectionRequestProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionRequestProperties
 }
 
 // PrivateEndpointConnectionRequestProperties - The connection state of the private endpoint connection.
 type PrivateEndpointConnectionRequestProperties struct {
 	// A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 }
 
 // PrivateEndpointConnectionWrapperProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionWrapperProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The resource of private end point.
-	PrivateEndpoint *ArmIDWrapper `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *ArmIDWrapper
 
 	// READ-ONLY; All the Group ids.
-	GroupIDs []*string `json:"groupIds,omitempty" azure:"ro"`
+	GroupIDs []*string
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // ProductAPIClientCheckEntityExistsOptions contains the optional parameters for the ProductAPIClient.CheckEntityExists method.
@@ -5260,64 +5260,64 @@ type ProductClientUpdateOptions struct {
 // ProductCollection - Paged Products list representation.
 type ProductCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*ProductContract `json:"value,omitempty"`
+	Value []*ProductContract
 }
 
 // ProductContract - Product details.
 type ProductContract struct {
 	// Product entity contract properties.
-	Properties *ProductContractProperties `json:"properties,omitempty"`
+	Properties *ProductContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProductContractProperties - Product profile.
 type ProductContractProperties struct {
 	// REQUIRED; Product name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
 	// to call the product’s APIs immediately after subscribing. If true,
 	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
 	// only if subscriptionRequired property is present and has a value of false.
-	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
+	ApprovalRequired *bool
 
 	// Product description. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
 	// are visible only to administrators. Default state of Product is
 	// notPublished.
-	State *ProductState `json:"state,omitempty"`
+	State *ProductState
 
 	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
 	// to as "protected" and a valid subscription key is required for a request to an
 	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
 	// in the product can be made without a subscription key. If property is omitted
 	// when creating a new product it's value is assumed to be true.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
 	// per user subscriptions. Can be present only if subscriptionRequired
 	// property is present and has a value of false.
-	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
+	SubscriptionsLimit *int32
 
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
 	// before they can complete the subscription process.
-	Terms *string `json:"terms,omitempty"`
+	Terms *string
 }
 
 // ProductEntityBaseParameters - Product Entity Base Parameters
@@ -5326,31 +5326,31 @@ type ProductEntityBaseParameters struct {
 	// to call the product’s APIs immediately after subscribing. If true,
 	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
 	// only if subscriptionRequired property is present and has a value of false.
-	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
+	ApprovalRequired *bool
 
 	// Product description. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
 	// are visible only to administrators. Default state of Product is
 	// notPublished.
-	State *ProductState `json:"state,omitempty"`
+	State *ProductState
 
 	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
 	// to as "protected" and a valid subscription key is required for a request to an
 	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
 	// in the product can be made without a subscription key. If property is omitted
 	// when creating a new product it's value is assumed to be true.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
 	// per user subscriptions. Can be present only if subscriptionRequired
 	// property is present and has a value of false.
-	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
+	SubscriptionsLimit *int32
 
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
 	// before they can complete the subscription process.
-	Terms *string `json:"terms,omitempty"`
+	Terms *string
 }
 
 // ProductGroupClientCheckEntityExistsOptions contains the optional parameters for the ProductGroupClient.CheckEntityExists
@@ -5435,46 +5435,46 @@ type ProductSubscriptionsClientListOptions struct {
 // ProductTagResourceContractProperties - Product profile.
 type ProductTagResourceContractProperties struct {
 	// REQUIRED; Product name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers
 	// to call the product’s APIs immediately after subscribing. If true,
 	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
 	// only if subscriptionRequired property is present and has a value of false.
-	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
+	ApprovalRequired *bool
 
 	// Product description. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Identifier of the product in the form of /products/{productId}
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
 	// are visible only to administrators. Default state of Product is
 	// notPublished.
-	State *ProductState `json:"state,omitempty"`
+	State *ProductState
 
 	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
 	// to as "protected" and a valid subscription key is required for a request to an
 	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
 	// in the product can be made without a subscription key. If property is omitted
 	// when creating a new product it's value is assumed to be true.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
 	// per user subscriptions. Can be present only if subscriptionRequired
 	// property is present and has a value of false.
-	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
+	SubscriptionsLimit *int32
 
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
 	// before they can complete the subscription process.
-	Terms *string `json:"terms,omitempty"`
+	Terms *string
 }
 
 // ProductUpdateParameters - Product Update parameters.
 type ProductUpdateParameters struct {
 	// Product entity Update contract properties.
-	Properties *ProductUpdateProperties `json:"properties,omitempty"`
+	Properties *ProductUpdateProperties
 }
 
 // ProductUpdateProperties - Parameters supplied to the Update Product operation.
@@ -5483,34 +5483,34 @@ type ProductUpdateProperties struct {
 	// to call the product’s APIs immediately after subscribing. If true,
 	// administrators must manually approve the subscription before the developer can any of the product’s APIs. Can be present
 	// only if subscriptionRequired property is present and has a value of false.
-	ApprovalRequired *bool `json:"approvalRequired,omitempty"`
+	ApprovalRequired *bool
 
 	// Product description. May include HTML formatting tags.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Product name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// whether product is published or not. Published products are discoverable by users of developer portal. Non published products
 	// are visible only to administrators. Default state of Product is
 	// notPublished.
-	State *ProductState `json:"state,omitempty"`
+	State *ProductState
 
 	// Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred
 	// to as "protected" and a valid subscription key is required for a request to an
 	// API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included
 	// in the product can be made without a subscription key. If property is omitted
 	// when creating a new product it's value is assumed to be true.
-	SubscriptionRequired *bool `json:"subscriptionRequired,omitempty"`
+	SubscriptionRequired *bool
 
 	// Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited
 	// per user subscriptions. Can be present only if subscriptionRequired
 	// property is present and has a value of false.
-	SubscriptionsLimit *int32 `json:"subscriptionsLimit,omitempty"`
+	SubscriptionsLimit *int32
 
 	// Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms
 	// before they can complete the subscription process.
-	Terms *string `json:"terms,omitempty"`
+	Terms *string
 }
 
 // QuotaByCounterKeysClientListByServiceOptions contains the optional parameters for the QuotaByCounterKeysClient.ListByService
@@ -5537,129 +5537,129 @@ type QuotaByPeriodKeysClientUpdateOptions struct {
 // QuotaCounterCollection - Paged Quota Counter list representation.
 type QuotaCounterCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Quota counter values.
-	Value []*QuotaCounterContract `json:"value,omitempty"`
+	Value []*QuotaCounterContract
 }
 
 // QuotaCounterContract - Quota counter details.
 type QuotaCounterContract struct {
 	// REQUIRED; The Key value of the Counter. Must not be empty.
-	CounterKey *string `json:"counterKey,omitempty"`
+	CounterKey *string
 
 	// REQUIRED; The date of the end of Counter Period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	PeriodEndTime *time.Time `json:"periodEndTime,omitempty"`
+	PeriodEndTime *time.Time
 
 	// REQUIRED; Identifier of the Period for which the counter was collected. Must not be empty.
-	PeriodKey *string `json:"periodKey,omitempty"`
+	PeriodKey *string
 
 	// REQUIRED; The date of the start of Counter Period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	PeriodStartTime *time.Time `json:"periodStartTime,omitempty"`
+	PeriodStartTime *time.Time
 
 	// Quota Value Properties
-	Value *QuotaCounterValueContractProperties `json:"value,omitempty"`
+	Value *QuotaCounterValueContractProperties
 }
 
 // QuotaCounterValueContract - Quota counter value details.
 type QuotaCounterValueContract struct {
 	// Quota counter Value Properties.
-	Value *QuotaCounterValueContractProperties `json:"value,omitempty"`
+	Value *QuotaCounterValueContractProperties
 }
 
 // QuotaCounterValueContractProperties - Quota counter value details.
 type QuotaCounterValueContractProperties struct {
 	// Number of times Counter was called.
-	CallsCount *int32 `json:"callsCount,omitempty"`
+	CallsCount *int32
 
 	// Data Transferred in KiloBytes.
-	KbTransferred *float64 `json:"kbTransferred,omitempty"`
+	KbTransferred *float64
 }
 
 // QuotaCounterValueUpdateContract - Quota counter value details.
 type QuotaCounterValueUpdateContract struct {
 	// Quota counter value details.
-	Properties *QuotaCounterValueContractProperties `json:"properties,omitempty"`
+	Properties *QuotaCounterValueContractProperties
 }
 
 // RecipientEmailCollection - Paged Recipient User list representation.
 type RecipientEmailCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*RecipientEmailContract `json:"value,omitempty"`
+	Value []*RecipientEmailContract
 }
 
 // RecipientEmailContract - Recipient Email details.
 type RecipientEmailContract struct {
 	// Recipient Email contract properties.
-	Properties *RecipientEmailContractProperties `json:"properties,omitempty"`
+	Properties *RecipientEmailContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecipientEmailContractProperties - Recipient Email Contract Properties.
 type RecipientEmailContractProperties struct {
 	// User Email subscribed to notification.
-	Email *string `json:"email,omitempty"`
+	Email *string
 }
 
 // RecipientUserCollection - Paged Recipient User list representation.
 type RecipientUserCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*RecipientUserContract `json:"value,omitempty"`
+	Value []*RecipientUserContract
 }
 
 // RecipientUserContract - Recipient User details.
 type RecipientUserContract struct {
 	// Recipient User entity contract properties.
-	Properties *RecipientUsersContractProperties `json:"properties,omitempty"`
+	Properties *RecipientUsersContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecipientUsersContractProperties - Recipient User Contract Properties.
 type RecipientUsersContractProperties struct {
 	// API Management UserId subscribed to notification.
-	UserID *string `json:"userId,omitempty"`
+	UserID *string
 }
 
 // RecipientsContractProperties - Notification Parameter contract.
 type RecipientsContractProperties struct {
 	// List of Emails subscribed for the notification.
-	Emails []*string `json:"emails,omitempty"`
+	Emails []*string
 
 	// List of Users subscribed for the notification.
-	Users []*string `json:"users,omitempty"`
+	Users []*string
 }
 
 // RegionClientListByServiceOptions contains the optional parameters for the RegionClient.NewListByServicePager method.
@@ -5670,143 +5670,143 @@ type RegionClientListByServiceOptions struct {
 // RegionContract - Region profile.
 type RegionContract struct {
 	// whether Region is deleted.
-	IsDeleted *bool `json:"isDeleted,omitempty"`
+	IsDeleted *bool
 
 	// whether Region is the master region.
-	IsMasterRegion *bool `json:"isMasterRegion,omitempty"`
+	IsMasterRegion *bool
 
 	// READ-ONLY; Region name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // RegionListResult - Lists Regions operation response details.
 type RegionListResult struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Lists of Regions.
-	Value []*RegionContract `json:"value,omitempty"`
+	Value []*RegionContract
 }
 
 // RegistrationDelegationSettingsProperties - User registration delegation settings properties.
 type RegistrationDelegationSettingsProperties struct {
 	// Enable or disable delegation for user registration.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // RemotePrivateEndpointConnectionWrapper - Remote Private Endpoint Connection resource.
 type RemotePrivateEndpointConnectionWrapper struct {
 	// Private Endpoint connection resource id
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Private Endpoint Connection Name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Resource properties.
-	Properties *PrivateEndpointConnectionWrapperProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionWrapperProperties
 
 	// Private Endpoint Connection Resource Type
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ReportCollection - Paged Report records list representation.
 type ReportCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*ReportRecordContract `json:"value,omitempty"`
+	Value []*ReportRecordContract
 }
 
 // ReportRecordContract - Report data.
 type ReportRecordContract struct {
 	// API identifier path. /apis/{apiId}
-	APIID *string `json:"apiId,omitempty"`
+	APIID *string
 
 	// API region identifier.
-	APIRegion *string `json:"apiRegion,omitempty"`
+	APIRegion *string
 
 	// Average time it took to process request.
-	APITimeAvg *float64 `json:"apiTimeAvg,omitempty"`
+	APITimeAvg *float64
 
 	// Maximum time it took to process request.
-	APITimeMax *float64 `json:"apiTimeMax,omitempty"`
+	APITimeMax *float64
 
 	// Minimum time it took to process request.
-	APITimeMin *float64 `json:"apiTimeMin,omitempty"`
+	APITimeMin *float64
 
 	// Bandwidth consumed.
-	Bandwidth *int64 `json:"bandwidth,omitempty"`
+	Bandwidth *int64
 
 	// Number of times when content was served from cache policy.
-	CacheHitCount *int32 `json:"cacheHitCount,omitempty"`
+	CacheHitCount *int32
 
 	// Number of times content was fetched from backend.
-	CacheMissCount *int32 `json:"cacheMissCount,omitempty"`
+	CacheMissCount *int32
 
 	// Number of calls blocked due to invalid credentials. This includes calls returning HttpStatusCode.Unauthorized and HttpStatusCode.Forbidden
 	// and HttpStatusCode.TooManyRequests
-	CallCountBlocked *int32 `json:"callCountBlocked,omitempty"`
+	CallCountBlocked *int32
 
 	// Number of calls failed due to proxy or backend errors. This includes calls returning HttpStatusCode.BadRequest(400) and
 	// any Code between HttpStatusCode.InternalServerError (500) and 600
-	CallCountFailed *int32 `json:"callCountFailed,omitempty"`
+	CallCountFailed *int32
 
 	// Number of other calls.
-	CallCountOther *int32 `json:"callCountOther,omitempty"`
+	CallCountOther *int32
 
 	// Number of successful calls. This includes calls returning HttpStatusCode <= 301 and HttpStatusCode.NotModified and HttpStatusCode.TemporaryRedirect
-	CallCountSuccess *int32 `json:"callCountSuccess,omitempty"`
+	CallCountSuccess *int32
 
 	// Total number of calls.
-	CallCountTotal *int32 `json:"callCountTotal,omitempty"`
+	CallCountTotal *int32
 
 	// Country to which this record data is related.
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// Length of aggregation period. Interval must be multiple of 15 minutes and may not be zero. The value should be in ISO 8601
 	// format (http://en.wikipedia.org/wiki/ISO_8601#Durations).
-	Interval *string `json:"interval,omitempty"`
+	Interval *string
 
 	// Name depending on report endpoint specifies product, API, operation or developer name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Operation identifier path. /apis/{apiId}/operations/{operationId}
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 
 	// Country region to which this record data is related.
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// Average time it took to process request on backend.
-	ServiceTimeAvg *float64 `json:"serviceTimeAvg,omitempty"`
+	ServiceTimeAvg *float64
 
 	// Maximum time it took to process request on backend.
-	ServiceTimeMax *float64 `json:"serviceTimeMax,omitempty"`
+	ServiceTimeMax *float64
 
 	// Minimum time it took to process request on backend.
-	ServiceTimeMin *float64 `json:"serviceTimeMin,omitempty"`
+	ServiceTimeMin *float64
 
 	// Subscription identifier path. /subscriptions/{subscriptionId}
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// Start of aggregation period. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
 	// standard.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 
 	// Zip code to which this record data is related.
-	Zip *string `json:"zip,omitempty"`
+	Zip *string
 
 	// READ-ONLY; Product identifier path. /products/{productId}
-	ProductID *string `json:"productId,omitempty" azure:"ro"`
+	ProductID *string
 
 	// READ-ONLY; User identifier path. /users/{userId}
-	UserID *string `json:"userId,omitempty" azure:"ro"`
+	UserID *string
 }
 
 // ReportsClientListByAPIOptions contains the optional parameters for the ReportsClient.NewListByAPIPager method.
@@ -5889,312 +5889,312 @@ type ReportsClientListByUserOptions struct {
 // RepresentationContract - Operation request/response representation details.
 type RepresentationContract struct {
 	// REQUIRED; Specifies a registered or custom content type for this representation, e.g. application/xml.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// Exampled defined for the representation.
-	Examples map[string]*ParameterExampleContract `json:"examples,omitempty"`
+	Examples map[string]*ParameterExampleContract
 
 	// Collection of form parameters. Required if 'contentType' value is either 'application/x-www-form-urlencoded' or 'multipart/form-data'..
-	FormParameters []*ParameterContract `json:"formParameters,omitempty"`
+	FormParameters []*ParameterContract
 
 	// Schema identifier. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded' nor 'multipart/form-data'.
-	SchemaID *string `json:"schemaId,omitempty"`
+	SchemaID *string
 
 	// Type name defined by the schema. Applicable only if 'contentType' value is neither 'application/x-www-form-urlencoded'
 	// nor 'multipart/form-data'.
-	TypeName *string `json:"typeName,omitempty"`
+	TypeName *string
 }
 
 // RequestContract - Operation request details.
 type RequestContract struct {
 	// Operation request description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Collection of operation request headers.
-	Headers []*ParameterContract `json:"headers,omitempty"`
+	Headers []*ParameterContract
 
 	// Collection of operation request query parameters.
-	QueryParameters []*ParameterContract `json:"queryParameters,omitempty"`
+	QueryParameters []*ParameterContract
 
 	// Collection of operation request representations.
-	Representations []*RepresentationContract `json:"representations,omitempty"`
+	Representations []*RepresentationContract
 }
 
 // RequestReportCollection - Paged Report records list representation.
 type RequestReportCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Page values.
-	Value []*RequestReportRecordContract `json:"value,omitempty"`
+	Value []*RequestReportRecordContract
 }
 
 // RequestReportRecordContract - Request Report data.
 type RequestReportRecordContract struct {
 	// API identifier path. /apis/{apiId}
-	APIID *string `json:"apiId,omitempty"`
+	APIID *string
 
 	// Azure region where the gateway that processed this request is located.
-	APIRegion *string `json:"apiRegion,omitempty"`
+	APIRegion *string
 
 	// The total time it took to process this request.
-	APITime *float64 `json:"apiTime,omitempty"`
+	APITime *float64
 
 	// The HTTP status code received by the gateway as a result of forwarding this request to the backend.
-	BackendResponseCode *string `json:"backendResponseCode,omitempty"`
+	BackendResponseCode *string
 
 	// Specifies if response cache was involved in generating the response. If the value is none, the cache was not used. If the
 	// value is hit, cached response was returned. If the value is miss, the cache
 	// was used but lookup resulted in a miss and request was fulfilled by the backend.
-	Cache *string `json:"cache,omitempty"`
+	Cache *string
 
 	// The client IP address associated with this request.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// The HTTP method associated with this request..
-	Method *string `json:"method,omitempty"`
+	Method *string
 
 	// Operation identifier path. /apis/{apiId}/operations/{operationId}
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 
 	// Request Identifier.
-	RequestID *string `json:"requestId,omitempty"`
+	RequestID *string
 
 	// The size of this request..
-	RequestSize *int32 `json:"requestSize,omitempty"`
+	RequestSize *int32
 
 	// The HTTP status code returned by the gateway.
-	ResponseCode *int32 `json:"responseCode,omitempty"`
+	ResponseCode *int32
 
 	// The size of the response returned by the gateway.
-	ResponseSize *int32 `json:"responseSize,omitempty"`
+	ResponseSize *int32
 
 	// he time it took to forward this request to the backend and get the response back.
-	ServiceTime *float64 `json:"serviceTime,omitempty"`
+	ServiceTime *float64
 
 	// Subscription identifier path. /subscriptions/{subscriptionId}
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// The date and time when this request was received by the gateway in ISO 8601 format.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 
 	// The full URL associated with this request.
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// READ-ONLY; Product identifier path. /products/{productId}
-	ProductID *string `json:"productId,omitempty" azure:"ro"`
+	ProductID *string
 
 	// READ-ONLY; User identifier path. /users/{userId}
-	UserID *string `json:"userId,omitempty" azure:"ro"`
+	UserID *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceLocationDataContract - Resource location data properties.
 type ResourceLocationDataContract struct {
 	// REQUIRED; A canonical name for the geographic or physical location.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The city or locality where the resource is located.
-	City *string `json:"city,omitempty"`
+	City *string
 
 	// The country or region where the resource is located.
-	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
+	CountryOrRegion *string
 
 	// The district, state, or province where the resource is located.
-	District *string `json:"district,omitempty"`
+	District *string
 }
 
 // ResourceSKU - Describes an available API Management SKU.
 type ResourceSKU struct {
 	// Name of the Sku.
-	Name *SKUType `json:"name,omitempty"`
+	Name *SKUType
 }
 
 // ResourceSKUCapacity - Describes scaling information of a SKU.
 type ResourceSKUCapacity struct {
 	// READ-ONLY; The default capacity.
-	Default *int32 `json:"default,omitempty" azure:"ro"`
+	Default *int32
 
 	// READ-ONLY; The maximum capacity that can be set.
-	Maximum *int32 `json:"maximum,omitempty" azure:"ro"`
+	Maximum *int32
 
 	// READ-ONLY; The minimum capacity.
-	Minimum *int32 `json:"minimum,omitempty" azure:"ro"`
+	Minimum *int32
 
 	// READ-ONLY; The scale type applicable to the sku.
-	ScaleType *ResourceSKUCapacityScaleType `json:"scaleType,omitempty" azure:"ro"`
+	ScaleType *ResourceSKUCapacityScaleType
 }
 
 // ResourceSKUResult - Describes an available API Management service SKU.
 type ResourceSKUResult struct {
 	// READ-ONLY; Specifies the number of API Management units.
-	Capacity *ResourceSKUCapacity `json:"capacity,omitempty" azure:"ro"`
+	Capacity *ResourceSKUCapacity
 
 	// READ-ONLY; The type of resource the SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; Specifies API Management SKU.
-	SKU *ResourceSKU `json:"sku,omitempty" azure:"ro"`
+	SKU *ResourceSKU
 }
 
 // ResourceSKUResults - The API Management service SKUs operation response.
 type ResourceSKUResults struct {
 	// REQUIRED; The list of skus available for the service.
-	Value []*ResourceSKUResult `json:"value,omitempty"`
+	Value []*ResourceSKUResult
 
 	// The uri to fetch the next page of API Management service Skus.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // ResponseContract - Operation response details.
 type ResponseContract struct {
 	// REQUIRED; Operation response HTTP status code.
-	StatusCode *int32 `json:"statusCode,omitempty"`
+	StatusCode *int32
 
 	// Operation response description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Collection of operation response headers.
-	Headers []*ParameterContract `json:"headers,omitempty"`
+	Headers []*ParameterContract
 
 	// Collection of operation response representations.
-	Representations []*RepresentationContract `json:"representations,omitempty"`
+	Representations []*RepresentationContract
 }
 
 // SKU - Describes an available ApiManagement SKU.
 type SKU struct {
 	// READ-ONLY; The api versions that support this SKU.
-	APIVersions []*string `json:"apiVersions,omitempty" azure:"ro"`
+	APIVersions []*string
 
 	// READ-ONLY; A name value pair to describe the capability.
-	Capabilities []*SKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*SKUCapabilities
 
 	// READ-ONLY; Specifies the number of virtual machines in the scale set.
-	Capacity *SKUCapacity `json:"capacity,omitempty" azure:"ro"`
+	Capacity *SKUCapacity
 
 	// READ-ONLY; Metadata for retrieving price info.
-	Costs []*SKUCosts `json:"costs,omitempty" azure:"ro"`
+	Costs []*SKUCosts
 
 	// READ-ONLY; The Family of this particular SKU.
-	Family *string `json:"family,omitempty" azure:"ro"`
+	Family *string
 
 	// READ-ONLY; The Kind of resources that are supported in this SKU.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; A list of locations and availability zones in those locations where the SKU is available.
-	LocationInfo []*SKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
+	LocationInfo []*SKULocationInfo
 
 	// READ-ONLY; The set of locations that the SKU is available.
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
+	Locations []*string
 
 	// READ-ONLY; The name of SKU.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of resource the SKU applies to.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
-	Restrictions []*SKURestrictions `json:"restrictions,omitempty" azure:"ro"`
+	Restrictions []*SKURestrictions
 
 	// READ-ONLY; The Size of the SKU.
-	Size *string `json:"size,omitempty" azure:"ro"`
+	Size *string
 
 	// READ-ONLY; Specifies the tier of virtual machines in a scale set.
 	// Possible Values:
 	// Standard
 	// Basic
-	Tier *string `json:"tier,omitempty" azure:"ro"`
+	Tier *string
 }
 
 // SKUCapabilities - Describes The SKU capabilities object.
 type SKUCapabilities struct {
 	// READ-ONLY; An invariant to describe the feature.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; An invariant if the feature is measured by quantity.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // SKUCapacity - Describes scaling information of a SKU.
 type SKUCapacity struct {
 	// READ-ONLY; The default capacity.
-	Default *int32 `json:"default,omitempty" azure:"ro"`
+	Default *int32
 
 	// READ-ONLY; The maximum capacity that can be set.
-	Maximum *int32 `json:"maximum,omitempty" azure:"ro"`
+	Maximum *int32
 
 	// READ-ONLY; The minimum capacity.
-	Minimum *int32 `json:"minimum,omitempty" azure:"ro"`
+	Minimum *int32
 
 	// READ-ONLY; The scale type applicable to the sku.
-	ScaleType *APIManagementSKUCapacityScaleType `json:"scaleType,omitempty" azure:"ro"`
+	ScaleType *APIManagementSKUCapacityScaleType
 }
 
 // SKUCosts - Describes metadata for retrieving price info.
 type SKUCosts struct {
 	// READ-ONLY; An invariant to show the extended unit.
-	ExtendedUnit *string `json:"extendedUnit,omitempty" azure:"ro"`
+	ExtendedUnit *string
 
 	// READ-ONLY; Used for querying price from commerce.
-	MeterID *string `json:"meterID,omitempty" azure:"ro"`
+	MeterID *string
 
 	// READ-ONLY; The multiplier is needed to extend the base metered cost.
-	Quantity *int64 `json:"quantity,omitempty" azure:"ro"`
+	Quantity *int64
 }
 
 type SKULocationInfo struct {
 	// READ-ONLY; Location of the SKU
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; Details of capabilities available to a SKU in specific zones.
-	ZoneDetails []*SKUZoneDetails `json:"zoneDetails,omitempty" azure:"ro"`
+	ZoneDetails []*SKUZoneDetails
 
 	// READ-ONLY; List of availability zones where the SKU is supported.
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 type SKURestrictionInfo struct {
 	// READ-ONLY; Locations where the SKU is restricted
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
+	Locations []*string
 
 	// READ-ONLY; List of availability zones where the SKU is restricted.
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 // SKURestrictions - Describes scaling information of a SKU.
 type SKURestrictions struct {
 	// READ-ONLY; The reason for restriction.
-	ReasonCode *APIManagementSKURestrictionsReasonCode `json:"reasonCode,omitempty" azure:"ro"`
+	ReasonCode *APIManagementSKURestrictionsReasonCode
 
 	// READ-ONLY; The information about the restriction where the SKU cannot be used.
-	RestrictionInfo *SKURestrictionInfo `json:"restrictionInfo,omitempty" azure:"ro"`
+	RestrictionInfo *SKURestrictionInfo
 
 	// READ-ONLY; The type of restrictions.
-	Type *APIManagementSKURestrictionsType `json:"type,omitempty" azure:"ro"`
+	Type *APIManagementSKURestrictionsType
 
 	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
 	// the SKU is restricted.
-	Values []*string `json:"values,omitempty" azure:"ro"`
+	Values []*string
 }
 
 // SKUZoneDetails - Describes The zonal capabilities of a SKU.
 type SKUZoneDetails struct {
 	// READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
-	Capabilities []*SKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*SKUCapabilities
 
 	// READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
-	Name []*string `json:"name,omitempty" azure:"ro"`
+	Name []*string
 }
 
 // SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
@@ -6205,63 +6205,63 @@ type SKUsClientListOptions struct {
 // SKUsResult - The List Resource Skus operation response.
 type SKUsResult struct {
 	// REQUIRED; The list of skus available for the subscription.
-	Value []*SKU `json:"value,omitempty"`
+	Value []*SKU
 
 	// READ-ONLY; The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource
 	// Skus
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SamplingSettings - Sampling settings for Diagnostic.
 type SamplingSettings struct {
 	// Rate of sampling for fixed-rate sampling.
-	Percentage *float64 `json:"percentage,omitempty"`
+	Percentage *float64
 
 	// Sampling type.
-	SamplingType *SamplingType `json:"samplingType,omitempty"`
+	SamplingType *SamplingType
 }
 
 // SaveConfigurationParameter - Save Tenant Configuration Contract details.
 type SaveConfigurationParameter struct {
 	// Properties of the Save Configuration Parameters.
-	Properties *SaveConfigurationParameterProperties `json:"properties,omitempty"`
+	Properties *SaveConfigurationParameterProperties
 }
 
 // SaveConfigurationParameterProperties - Parameters supplied to the Save Tenant Configuration operation.
 type SaveConfigurationParameterProperties struct {
 	// REQUIRED; The name of the Git branch in which to commit the current configuration snapshot.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// The value if true, the current configuration database is committed to the Git repository, even if the Git repository has
 	// newer changes that would be overwritten.
-	Force *bool `json:"force,omitempty"`
+	Force *bool
 }
 
 // SchemaCollection - The response of the list schema operation.
 type SchemaCollection struct {
 	// Total record count number.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; API Schema Contract value.
-	Value []*SchemaContract `json:"value,omitempty" azure:"ro"`
+	Value []*SchemaContract
 }
 
 // SchemaContract - API Schema Contract details.
 type SchemaContract struct {
 	// Properties of the API Schema.
-	Properties *SchemaContractProperties `json:"properties,omitempty"`
+	Properties *SchemaContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SchemaContractProperties - API Schema create or update contract Properties.
@@ -6272,63 +6272,63 @@ type SchemaContractProperties struct {
 	// - WSDL Schema use application/vnd.ms-azure-apim.xsd+xml
 	// - OpenApi Schema use application/vnd.oai.openapi.components+json
 	// - WADL Schema use application/vnd.ms-azure-apim.wadl.grammars+xml.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// Create or update Properties of the API Schema Document.
-	Document *SchemaDocumentProperties `json:"document,omitempty"`
+	Document *SchemaDocumentProperties
 }
 
 // SchemaDocumentProperties - Api Schema Document Properties.
 type SchemaDocumentProperties struct {
 	// Types definitions. Used for Swagger/OpenAPI v2/v3 schemas only, null otherwise.
-	Components any `json:"components,omitempty"`
+	Components any
 
 	// Types definitions. Used for Swagger/OpenAPI v1 schemas only, null otherwise.
-	Definitions any `json:"definitions,omitempty"`
+	Definitions any
 
 	// Json escaped string defining the document representing the Schema. Used for schemas other than Swagger/OpenAPI.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ServiceApplyNetworkConfigurationParameters - Parameter supplied to the Apply Network configuration operation.
 type ServiceApplyNetworkConfigurationParameters struct {
 	// Location of the Api Management service to update for a multi-region service. For a service deployed in a single region,
 	// this parameter is not required.
-	Location *string `json:"location,omitempty"`
+	Location *string
 }
 
 // ServiceBackupRestoreParameters - Parameters supplied to the Backup/Restore of an API Management service operation.
 type ServiceBackupRestoreParameters struct {
 	// REQUIRED; The name of the backup file to create/retrieve.
-	BackupName *string `json:"backupName,omitempty"`
+	BackupName *string
 
 	// REQUIRED; The name of the blob container (used to place/retrieve the backup).
-	ContainerName *string `json:"containerName,omitempty"`
+	ContainerName *string
 
 	// REQUIRED; The name of the Azure storage account (used to place/retrieve the backup).
-	StorageAccount *string `json:"storageAccount,omitempty"`
+	StorageAccount *string
 
 	// Storage account access key. Required only if accessType is set to AccessKey.
-	AccessKey *string `json:"accessKey,omitempty"`
+	AccessKey *string
 
 	// The type of access to be used for the storage account.
-	AccessType *AccessType `json:"accessType,omitempty"`
+	AccessType *AccessType
 
 	// The Client ID of user assigned managed identity. Required only if accessType is set to UserAssignedManagedIdentity.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 }
 
 // ServiceBaseProperties - Base Properties of an API Management service resource description.
 type ServiceBaseProperties struct {
 	// Control Plane Apis version constraint for the API Management service.
-	APIVersionConstraint *APIVersionConstraint `json:"apiVersionConstraint,omitempty"`
+	APIVersionConstraint *APIVersionConstraint
 
 	// Additional datacenter locations of the API Management service.
-	AdditionalLocations []*AdditionalLocation `json:"additionalLocations,omitempty"`
+	AdditionalLocations []*AdditionalLocation
 
 	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
 	// is 10.
-	Certificates []*CertificateConfiguration `json:"certificates,omitempty"`
+	Certificates []*CertificateConfiguration
 
 	// Custom properties of the API Management service.
 	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
@@ -6353,95 +6353,95 @@ type ServiceBaseProperties struct {
 	// is true for them. Note: next ciphers can't be disabled since they are required by
 	// Azure CloudService internal components: TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCMSHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBC
 	// SHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256,TLSRSAWITHAES256GCMSHA384
-	CustomProperties map[string]*string `json:"customProperties,omitempty"`
+	CustomProperties map[string]*string
 
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
 	// in master region.
-	DisableGateway *bool `json:"disableGateway,omitempty"`
+	DisableGateway *bool
 
 	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
 	// request to the gateway. This also enables the ability to authenticate the
 	// certificate in the policy on the gateway.
-	EnableClientCertificate *bool `json:"enableClientCertificate,omitempty"`
+	EnableClientCertificate *bool
 
 	// Custom hostname configuration of the API Management service.
-	HostnameConfigurations []*HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
+	HostnameConfigurations []*HostnameConfiguration
 
 	// Email address from which the notification will be sent.
-	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
+	NotificationSenderEmail *string
 
 	// List of Private Endpoint Connections of this service.
-	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper
 
 	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
 	// only for Developer and Premium SKU being deployed in Virtual Network.
-	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+	PublicIPAddressID *string
 
 	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
 	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
 	// exclusive access method. Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
 	// properties will be ignored.
-	Restore *bool `json:"restore,omitempty"`
+	Restore *bool
 
 	// Virtual network configuration of the API Management service.
-	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
+	VirtualNetworkConfiguration *VirtualNetworkConfiguration
 
 	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
 	// service is not part of any Virtual Network, External means the API Management
 	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
 	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
 	// only.
-	VirtualNetworkType *VirtualNetworkType `json:"virtualNetworkType,omitempty"`
+	VirtualNetworkType *VirtualNetworkType
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
 	// as specified by the ISO 8601 standard.
-	CreatedAtUTC *time.Time `json:"createdAtUtc,omitempty" azure:"ro"`
+	CreatedAtUTC *time.Time
 
 	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
-	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty" azure:"ro"`
+	DeveloperPortalURL *string
 
 	// READ-ONLY; Gateway URL of the API Management service in the Default Region.
-	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty" azure:"ro"`
+	GatewayRegionalURL *string
 
 	// READ-ONLY; Gateway URL of the API Management service.
-	GatewayURL *string `json:"gatewayUrl,omitempty" azure:"ro"`
+	GatewayURL *string
 
 	// READ-ONLY; Management API endpoint URL of the API Management service.
-	ManagementAPIURL *string `json:"managementApiUrl,omitempty" azure:"ro"`
+	ManagementAPIURL *string
 
 	// READ-ONLY; Compute Platform Version running the service in this location.
-	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
+	PlatformVersion *PlatformVersion
 
 	// READ-ONLY; Publisher portal endpoint Url of the API Management service.
-	PortalURL *string `json:"portalUrl,omitempty" azure:"ro"`
+	PortalURL *string
 
 	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
 	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
 	// SKU.
-	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
+	PrivateIPAddresses []*string
 
 	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
 	// Basic, Standard, Premium and Isolated SKU.
-	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
+	PublicIPAddresses []*string
 
 	// READ-ONLY; SCM endpoint URL of the API Management service.
-	ScmURL *string `json:"scmUrl,omitempty" azure:"ro"`
+	ScmURL *string
 
 	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
 	// on the service.
-	TargetProvisioningState *string `json:"targetProvisioningState,omitempty" azure:"ro"`
+	TargetProvisioningState *string
 }
 
 // ServiceCheckNameAvailabilityParameters - Parameters supplied to the CheckNameAvailability operation.
 type ServiceCheckNameAvailabilityParameters struct {
 	// REQUIRED; The name to check for availability.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ServiceClientBeginApplyNetworkConfigurationUpdatesOptions contains the optional parameters for the ServiceClient.BeginApplyNetworkConfigurationUpdates
@@ -6521,13 +6521,13 @@ type ServiceClientListOptions struct {
 // ServiceGetDomainOwnershipIdentifierResult - Response of the GetDomainOwnershipIdentifier operation.
 type ServiceGetDomainOwnershipIdentifierResult struct {
 	// READ-ONLY; The domain ownership identifier value.
-	DomainOwnershipIdentifier *string `json:"domainOwnershipIdentifier,omitempty" azure:"ro"`
+	DomainOwnershipIdentifier *string
 }
 
 // ServiceGetSsoTokenResult - The response of the GetSsoToken operation.
 type ServiceGetSsoTokenResult struct {
 	// Redirect URL to the Publisher Portal containing the SSO token.
-	RedirectURI *string `json:"redirectUri,omitempty"`
+	RedirectURI *string
 }
 
 // ServiceIdentity - Identity properties of the Api Management service resource.
@@ -6535,27 +6535,27 @@ type ServiceIdentity struct {
 	// REQUIRED; The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an implicitly
 	// created identity and a set of user assigned identities. The type 'None' will remove any
 	// identities from the service.
-	Type *ApimIdentityType `json:"type,omitempty"`
+	Type *ApimIdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/ providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserIdentityProperties
 
 	// READ-ONLY; The principal id of the identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The client tenant id of the identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ServiceListResult - The response of the List API Management services operation.
 type ServiceListResult struct {
 	// REQUIRED; Result of the List API Management services operation.
-	Value []*ServiceResource `json:"value,omitempty"`
+	Value []*ServiceResource
 
 	// Link to the next set of results. Not empty if Value contains incomplete list of API Management services.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // ServiceNameAvailabilityResult - Response of the CheckNameAvailability operation.
@@ -6563,34 +6563,34 @@ type ServiceNameAvailabilityResult struct {
 	// Invalid indicates the name provided does not match the resource provider’s naming requirements (incorrect length, unsupported
 	// characters, etc.) AlreadyExists indicates that the name is already in use
 	// and is therefore unavailable.
-	Reason *NameAvailabilityReason `json:"reason,omitempty"`
+	Reason *NameAvailabilityReason
 
 	// READ-ONLY; If reason == invalid, provide the user with the reason why the given name is invalid, and provide the resource
 	// naming requirements so that the user can select a valid name. If reason == AlreadyExists,
 	// explain that is already in use, and direct them to select a different name.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; True if the name is available and can be used to create a new API Management service; otherwise false.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
+	NameAvailable *bool
 }
 
 // ServiceProperties - Properties of an API Management service resource description.
 type ServiceProperties struct {
 	// REQUIRED; Publisher email.
-	PublisherEmail *string `json:"publisherEmail,omitempty"`
+	PublisherEmail *string
 
 	// REQUIRED; Publisher name.
-	PublisherName *string `json:"publisherName,omitempty"`
+	PublisherName *string
 
 	// Control Plane Apis version constraint for the API Management service.
-	APIVersionConstraint *APIVersionConstraint `json:"apiVersionConstraint,omitempty"`
+	APIVersionConstraint *APIVersionConstraint
 
 	// Additional datacenter locations of the API Management service.
-	AdditionalLocations []*AdditionalLocation `json:"additionalLocations,omitempty"`
+	AdditionalLocations []*AdditionalLocation
 
 	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
 	// is 10.
-	Certificates []*CertificateConfiguration `json:"certificates,omitempty"`
+	Certificates []*CertificateConfiguration
 
 	// Custom properties of the API Management service.
 	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
@@ -6615,135 +6615,135 @@ type ServiceProperties struct {
 	// is true for them. Note: next ciphers can't be disabled since they are required by
 	// Azure CloudService internal components: TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCMSHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBC
 	// SHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256,TLSRSAWITHAES256GCMSHA384
-	CustomProperties map[string]*string `json:"customProperties,omitempty"`
+	CustomProperties map[string]*string
 
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
 	// in master region.
-	DisableGateway *bool `json:"disableGateway,omitempty"`
+	DisableGateway *bool
 
 	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
 	// request to the gateway. This also enables the ability to authenticate the
 	// certificate in the policy on the gateway.
-	EnableClientCertificate *bool `json:"enableClientCertificate,omitempty"`
+	EnableClientCertificate *bool
 
 	// Custom hostname configuration of the API Management service.
-	HostnameConfigurations []*HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
+	HostnameConfigurations []*HostnameConfiguration
 
 	// Email address from which the notification will be sent.
-	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
+	NotificationSenderEmail *string
 
 	// List of Private Endpoint Connections of this service.
-	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper
 
 	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
 	// only for Developer and Premium SKU being deployed in Virtual Network.
-	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+	PublicIPAddressID *string
 
 	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
 	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
 	// exclusive access method. Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
 	// properties will be ignored.
-	Restore *bool `json:"restore,omitempty"`
+	Restore *bool
 
 	// Virtual network configuration of the API Management service.
-	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
+	VirtualNetworkConfiguration *VirtualNetworkConfiguration
 
 	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
 	// service is not part of any Virtual Network, External means the API Management
 	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
 	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
 	// only.
-	VirtualNetworkType *VirtualNetworkType `json:"virtualNetworkType,omitempty"`
+	VirtualNetworkType *VirtualNetworkType
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
 	// as specified by the ISO 8601 standard.
-	CreatedAtUTC *time.Time `json:"createdAtUtc,omitempty" azure:"ro"`
+	CreatedAtUTC *time.Time
 
 	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
-	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty" azure:"ro"`
+	DeveloperPortalURL *string
 
 	// READ-ONLY; Gateway URL of the API Management service in the Default Region.
-	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty" azure:"ro"`
+	GatewayRegionalURL *string
 
 	// READ-ONLY; Gateway URL of the API Management service.
-	GatewayURL *string `json:"gatewayUrl,omitempty" azure:"ro"`
+	GatewayURL *string
 
 	// READ-ONLY; Management API endpoint URL of the API Management service.
-	ManagementAPIURL *string `json:"managementApiUrl,omitempty" azure:"ro"`
+	ManagementAPIURL *string
 
 	// READ-ONLY; Compute Platform Version running the service in this location.
-	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
+	PlatformVersion *PlatformVersion
 
 	// READ-ONLY; Publisher portal endpoint Url of the API Management service.
-	PortalURL *string `json:"portalUrl,omitempty" azure:"ro"`
+	PortalURL *string
 
 	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
 	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
 	// SKU.
-	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
+	PrivateIPAddresses []*string
 
 	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
 	// Basic, Standard, Premium and Isolated SKU.
-	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
+	PublicIPAddresses []*string
 
 	// READ-ONLY; SCM endpoint URL of the API Management service.
-	ScmURL *string `json:"scmUrl,omitempty" azure:"ro"`
+	ScmURL *string
 
 	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
 	// on the service.
-	TargetProvisioningState *string `json:"targetProvisioningState,omitempty" azure:"ro"`
+	TargetProvisioningState *string
 }
 
 // ServiceResource - A single API Management service resource in List or Get response.
 type ServiceResource struct {
 	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties of the API Management service.
-	Properties *ServiceProperties `json:"properties,omitempty"`
+	Properties *ServiceProperties
 
 	// REQUIRED; SKU properties of the API Management service.
-	SKU *ServiceSKUProperties `json:"sku,omitempty"`
+	SKU *ServiceSKUProperties
 
 	// Managed service identity of the Api Management service.
-	Identity *ServiceIdentity `json:"identity,omitempty"`
+	Identity *ServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// A list of availability zones denoting where the resource needs to come from.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 
 	// READ-ONLY; ETag of the resource.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type for API Management resource is set to Microsoft.ApiManagement.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceSKUProperties - API Management service resource SKU properties.
 type ServiceSKUProperties struct {
 	// REQUIRED; Capacity of the SKU (number of deployed units of the SKU). For Consumption SKU capacity must be specified as
 	// 0.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// REQUIRED; Name of the Sku.
-	Name *SKUType `json:"name,omitempty"`
+	Name *SKUType
 }
 
 // ServiceSKUsClientListAvailableServiceSKUsOptions contains the optional parameters for the ServiceSKUsClient.NewListAvailableServiceSKUsPager
@@ -6755,44 +6755,44 @@ type ServiceSKUsClientListAvailableServiceSKUsOptions struct {
 // ServiceUpdateParameters - Parameter supplied to Update Api Management Service.
 type ServiceUpdateParameters struct {
 	// Managed service identity of the Api Management service.
-	Identity *ServiceIdentity `json:"identity,omitempty"`
+	Identity *ServiceIdentity
 
 	// Properties of the API Management service.
-	Properties *ServiceUpdateProperties `json:"properties,omitempty"`
+	Properties *ServiceUpdateProperties
 
 	// SKU properties of the API Management service.
-	SKU *ServiceSKUProperties `json:"sku,omitempty"`
+	SKU *ServiceSKUProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// A list of availability zones denoting where the resource needs to come from.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 
 	// READ-ONLY; ETag of the resource.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type for API Management resource is set to Microsoft.ApiManagement.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceUpdateProperties - Properties of an API Management service resource description.
 type ServiceUpdateProperties struct {
 	// Control Plane Apis version constraint for the API Management service.
-	APIVersionConstraint *APIVersionConstraint `json:"apiVersionConstraint,omitempty"`
+	APIVersionConstraint *APIVersionConstraint
 
 	// Additional datacenter locations of the API Management service.
-	AdditionalLocations []*AdditionalLocation `json:"additionalLocations,omitempty"`
+	AdditionalLocations []*AdditionalLocation
 
 	// List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed
 	// is 10.
-	Certificates []*CertificateConfiguration `json:"certificates,omitempty"`
+	Certificates []*CertificateConfiguration
 
 	// Custom properties of the API Management service.
 	// Setting Microsoft.WindowsAzure.ApiManagement.Gateway.Security.Ciphers.TripleDes168 will disable the cipher TLSRSAWITH3DESEDECBCSHA
@@ -6817,95 +6817,95 @@ type ServiceUpdateProperties struct {
 	// is true for them. Note: next ciphers can't be disabled since they are required by
 	// Azure CloudService internal components: TLSECDHEECDSAWITHAES256GCMSHA384,TLSECDHEECDSAWITHAES128GCMSHA256,TLSECDHERSAWITHAES256GCMSHA384,TLSECDHERSAWITHAES128GCMSHA256,TLSECDHEECDSAWITHAES256CBC
 	// SHA384,TLSECDHEECDSAWITHAES128CBCSHA256,TLSECDHERSAWITHAES256CBCSHA384,TLSECDHERSAWITHAES128CBCSHA256,TLSRSAWITHAES256GCMSHA384
-	CustomProperties map[string]*string `json:"customProperties,omitempty"`
+	CustomProperties map[string]*string
 
 	// Property only valid for an Api Management service deployed in multiple locations. This can be used to disable the gateway
 	// in master region.
-	DisableGateway *bool `json:"disableGateway,omitempty"`
+	DisableGateway *bool
 
 	// Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each
 	// request to the gateway. This also enables the ability to authenticate the
 	// certificate in the policy on the gateway.
-	EnableClientCertificate *bool `json:"enableClientCertificate,omitempty"`
+	EnableClientCertificate *bool
 
 	// Custom hostname configuration of the API Management service.
-	HostnameConfigurations []*HostnameConfiguration `json:"hostnameConfigurations,omitempty"`
+	HostnameConfigurations []*HostnameConfiguration
 
 	// Email address from which the notification will be sent.
-	NotificationSenderEmail *string `json:"notificationSenderEmail,omitempty"`
+	NotificationSenderEmail *string
 
 	// List of Private Endpoint Connections of this service.
-	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*RemotePrivateEndpointConnectionWrapper
 
 	// Public Standard SKU IP V4 based IP address to be associated with Virtual Network deployed service in the region. Supported
 	// only for Developer and Premium SKU being deployed in Virtual Network.
-	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+	PublicIPAddressID *string
 
 	// Whether or not public endpoint access is allowed for this API Management service. Value is optional but if passed in, must
 	// be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the
 	// exclusive access method. Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Publisher email.
-	PublisherEmail *string `json:"publisherEmail,omitempty"`
+	PublisherEmail *string
 
 	// Publisher name.
-	PublisherName *string `json:"publisherName,omitempty"`
+	PublisherName *string
 
 	// Undelete Api Management Service if it was previously soft-deleted. If this flag is specified and set to True all other
 	// properties will be ignored.
-	Restore *bool `json:"restore,omitempty"`
+	Restore *bool
 
 	// Virtual network configuration of the API Management service.
-	VirtualNetworkConfiguration *VirtualNetworkConfiguration `json:"virtualNetworkConfiguration,omitempty"`
+	VirtualNetworkConfiguration *VirtualNetworkConfiguration
 
 	// The type of VPN in which API Management service needs to be configured in. None (Default Value) means the API Management
 	// service is not part of any Virtual Network, External means the API Management
 	// deployment is set up inside a Virtual Network having an Internet Facing Endpoint, and Internal means that API Management
 	// deployment is setup inside a Virtual Network having an Intranet Facing Endpoint
 	// only.
-	VirtualNetworkType *VirtualNetworkType `json:"virtualNetworkType,omitempty"`
+	VirtualNetworkType *VirtualNetworkType
 
 	// READ-ONLY; Creation UTC date of the API Management service.The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ
 	// as specified by the ISO 8601 standard.
-	CreatedAtUTC *time.Time `json:"createdAtUtc,omitempty" azure:"ro"`
+	CreatedAtUTC *time.Time
 
 	// READ-ONLY; DEveloper Portal endpoint URL of the API Management service.
-	DeveloperPortalURL *string `json:"developerPortalUrl,omitempty" azure:"ro"`
+	DeveloperPortalURL *string
 
 	// READ-ONLY; Gateway URL of the API Management service in the Default Region.
-	GatewayRegionalURL *string `json:"gatewayRegionalUrl,omitempty" azure:"ro"`
+	GatewayRegionalURL *string
 
 	// READ-ONLY; Gateway URL of the API Management service.
-	GatewayURL *string `json:"gatewayUrl,omitempty" azure:"ro"`
+	GatewayURL *string
 
 	// READ-ONLY; Management API endpoint URL of the API Management service.
-	ManagementAPIURL *string `json:"managementApiUrl,omitempty" azure:"ro"`
+	ManagementAPIURL *string
 
 	// READ-ONLY; Compute Platform Version running the service in this location.
-	PlatformVersion *PlatformVersion `json:"platformVersion,omitempty" azure:"ro"`
+	PlatformVersion *PlatformVersion
 
 	// READ-ONLY; Publisher portal endpoint Url of the API Management service.
-	PortalURL *string `json:"portalUrl,omitempty" azure:"ro"`
+	PortalURL *string
 
 	// READ-ONLY; Private Static Load Balanced IP addresses of the API Management service in Primary region which is deployed
 	// in an Internal Virtual Network. Available only for Basic, Standard, Premium and Isolated
 	// SKU.
-	PrivateIPAddresses []*string `json:"privateIPAddresses,omitempty" azure:"ro"`
+	PrivateIPAddresses []*string
 
 	// READ-ONLY; The current provisioning state of the API Management service which can be one of the following: Created/Activating/Succeeded/Updating/Failed/Stopped/Terminating/TerminationFailed/Deleted.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Public Static Load Balanced IP addresses of the API Management service in Primary region. Available only for
 	// Basic, Standard, Premium and Isolated SKU.
-	PublicIPAddresses []*string `json:"publicIPAddresses,omitempty" azure:"ro"`
+	PublicIPAddresses []*string
 
 	// READ-ONLY; SCM endpoint URL of the API Management service.
-	ScmURL *string `json:"scmUrl,omitempty" azure:"ro"`
+	ScmURL *string
 
 	// READ-ONLY; The provisioning state of the API Management service, which is targeted by the long running operation started
 	// on the service.
-	TargetProvisioningState *string `json:"targetProvisioningState,omitempty" azure:"ro"`
+	TargetProvisioningState *string
 }
 
 // SignInSettingsClientCreateOrUpdateOptions contains the optional parameters for the SignInSettingsClient.CreateOrUpdate
@@ -7029,34 +7029,34 @@ type SubscriptionClientUpdateOptions struct {
 // SubscriptionCollection - Paged Subscriptions list representation.
 type SubscriptionCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*SubscriptionContract `json:"value,omitempty"`
+	Value []*SubscriptionContract
 }
 
 // SubscriptionContract - Subscription details.
 type SubscriptionContract struct {
 	// Subscription contract properties.
-	Properties *SubscriptionContractProperties `json:"properties,omitempty"`
+	Properties *SubscriptionContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SubscriptionContractProperties - Subscription details.
 type SubscriptionContractProperties struct {
 	// REQUIRED; Scope like /products/{productId} or /apis or /apis/{apiId}.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 
 	// REQUIRED; Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription
 	// is blocked, and the subscriber cannot call any APIs of the product, * submitted – the
@@ -7064,72 +7064,72 @@ type SubscriptionContractProperties struct {
 	// request has been denied by an administrator, * cancelled – the
 	// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
 	// date and was deactivated.
-	State *SubscriptionState `json:"state,omitempty"`
+	State *SubscriptionState
 
 	// Determines whether tracing is enabled
-	AllowTracing *bool `json:"allowTracing,omitempty"`
+	AllowTracing *bool
 
 	// The name of the subscription, or null if the subscription has no name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Date when subscription was cancelled or expired. The setting is for audit purposes only and the subscription is not automatically
 	// cancelled. The subscription lifecycle can be managed by using the
 	// state property. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-	EndDate *time.Time `json:"endDate,omitempty"`
+	EndDate *time.Time
 
 	// Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired.
 	// The subscription lifecycle can be managed by using the state property. The date
 	// conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time
 
 	// Upcoming subscription expiration notification date. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as
 	// specified by the ISO 8601 standard.
-	NotificationDate *time.Time `json:"notificationDate,omitempty"`
+	NotificationDate *time.Time
 
 	// The user resource identifier of the subscription owner. The value is a valid relative URL in the format of /users/{userId}
 	// where {userId} is a user identifier.
-	OwnerID *string `json:"ownerId,omitempty"`
+	OwnerID *string
 
 	// Subscription primary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
 	// the value.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Subscription secondary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get
 	// the value.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 
 	// Subscription activation date. The setting is for audit purposes only and the subscription is not automatically activated.
 	// The subscription lifecycle can be managed by using the state property. The
 	// date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-	StartDate *time.Time `json:"startDate,omitempty"`
+	StartDate *time.Time
 
 	// Optional subscription comment added by an administrator when the state is changed to the 'rejected'.
-	StateComment *string `json:"stateComment,omitempty"`
+	StateComment *string
 
 	// READ-ONLY; Subscription creation date. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
 	// the ISO 8601 standard.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 }
 
 // SubscriptionCreateParameterProperties - Parameters supplied to the Create subscription operation.
 type SubscriptionCreateParameterProperties struct {
 	// REQUIRED; Subscription name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; Scope like /products/{productId} or /apis or /apis/{apiId}.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 
 	// Determines whether tracing can be enabled
-	AllowTracing *bool `json:"allowTracing,omitempty"`
+	AllowTracing *bool
 
 	// User (user id path) for whom subscription is being created in form /users/{userId}
-	OwnerID *string `json:"ownerId,omitempty"`
+	OwnerID *string
 
 	// Primary subscription key. If not specified during request key will be generated automatically.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Secondary subscription key. If not specified during request key will be generated automatically.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 
 	// Initial subscription state. If no value is specified, subscription is created with Submitted state. Possible states are
 	// * active – the subscription is active, * suspended – the subscription is
@@ -7138,57 +7138,57 @@ type SubscriptionCreateParameterProperties struct {
 	// subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled by the developer
 	// or administrator, * expired – the subscription reached its expiration date
 	// and was deactivated.
-	State *SubscriptionState `json:"state,omitempty"`
+	State *SubscriptionState
 }
 
 // SubscriptionCreateParameters - Subscription create details.
 type SubscriptionCreateParameters struct {
 	// Subscription contract properties.
-	Properties *SubscriptionCreateParameterProperties `json:"properties,omitempty"`
+	Properties *SubscriptionCreateParameterProperties
 }
 
 // SubscriptionKeyParameterNamesContract - Subscription key parameter names details.
 type SubscriptionKeyParameterNamesContract struct {
 	// Subscription key header name.
-	Header *string `json:"header,omitempty"`
+	Header *string
 
 	// Subscription key query string parameter name.
-	Query *string `json:"query,omitempty"`
+	Query *string
 }
 
 // SubscriptionKeysContract - Subscription keys.
 type SubscriptionKeysContract struct {
 	// Subscription primary key.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Subscription secondary key.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 }
 
 // SubscriptionUpdateParameterProperties - Parameters supplied to the Update subscription operation.
 type SubscriptionUpdateParameterProperties struct {
 	// Determines whether tracing can be enabled
-	AllowTracing *bool `json:"allowTracing,omitempty"`
+	AllowTracing *bool
 
 	// Subscription name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically expired.
 	// The subscription lifecycle can be managed by using the state property. The date
 	// conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time
 
 	// User identifier path: /users/{userId}
-	OwnerID *string `json:"ownerId,omitempty"`
+	OwnerID *string
 
 	// Primary subscription key.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Scope like /products/{productId} or /apis or /apis/{apiId}
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 
 	// Secondary subscription key.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 
 	// Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is blocked,
 	// and the subscriber cannot call any APIs of the product, * submitted – the
@@ -7196,43 +7196,43 @@ type SubscriptionUpdateParameterProperties struct {
 	// request has been denied by an administrator, * cancelled – the
 	// subscription has been cancelled by the developer or administrator, * expired – the subscription reached its expiration
 	// date and was deactivated.
-	State *SubscriptionState `json:"state,omitempty"`
+	State *SubscriptionState
 
 	// Comments describing subscription state change by the administrator when the state is changed to the 'rejected'.
-	StateComment *string `json:"stateComment,omitempty"`
+	StateComment *string
 }
 
 // SubscriptionUpdateParameters - Subscription update details.
 type SubscriptionUpdateParameters struct {
 	// Subscription Update contract properties.
-	Properties *SubscriptionUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *SubscriptionUpdateParameterProperties
 }
 
 // SubscriptionsDelegationSettingsProperties - Subscriptions delegation settings properties.
 type SubscriptionsDelegationSettingsProperties struct {
 	// Enable or disable delegation for subscriptions.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagClientAssignToAPIOptions contains the optional parameters for the TagClient.AssignToAPI method.
@@ -7379,103 +7379,103 @@ type TagClientUpdateOptions struct {
 // TagCollection - Paged Tag list representation.
 type TagCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*TagContract `json:"value,omitempty"`
+	Value []*TagContract
 }
 
 // TagContract - Tag Contract details.
 type TagContract struct {
 	// Tag entity contract properties.
-	Properties *TagContractProperties `json:"properties,omitempty"`
+	Properties *TagContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TagContractProperties - Tag contract Properties.
 type TagContractProperties struct {
 	// REQUIRED; Tag name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 }
 
 // TagCreateUpdateParameters - Parameters supplied to Create/Update Tag operations.
 type TagCreateUpdateParameters struct {
 	// Properties supplied to Create Tag operation.
-	Properties *TagContractProperties `json:"properties,omitempty"`
+	Properties *TagContractProperties
 }
 
 // TagDescriptionBaseProperties - Parameters supplied to the Create TagDescription operation.
 type TagDescriptionBaseProperties struct {
 	// Description of the Tag.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Description of the external resources describing the tag.
-	ExternalDocsDescription *string `json:"externalDocsDescription,omitempty"`
+	ExternalDocsDescription *string
 
 	// Absolute URL of external resources describing the tag.
-	ExternalDocsURL *string `json:"externalDocsUrl,omitempty"`
+	ExternalDocsURL *string
 }
 
 // TagDescriptionCollection - Paged TagDescription list representation.
 type TagDescriptionCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*TagDescriptionContract `json:"value,omitempty"`
+	Value []*TagDescriptionContract
 }
 
 // TagDescriptionContract - Contract details.
 type TagDescriptionContract struct {
 	// TagDescription entity contract properties.
-	Properties *TagDescriptionContractProperties `json:"properties,omitempty"`
+	Properties *TagDescriptionContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TagDescriptionContractProperties - TagDescription contract Properties.
 type TagDescriptionContractProperties struct {
 	// Description of the Tag.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Tag name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Description of the external resources describing the tag.
-	ExternalDocsDescription *string `json:"externalDocsDescription,omitempty"`
+	ExternalDocsDescription *string
 
 	// Absolute URL of external resources describing the tag.
-	ExternalDocsURL *string `json:"externalDocsUrl,omitempty"`
+	ExternalDocsURL *string
 
 	// Identifier of the tag in the form of /tags/{tagId}
-	TagID *string `json:"tagId,omitempty"`
+	TagID *string
 }
 
 // TagDescriptionCreateParameters - Parameters supplied to the Create TagDescription operation.
 type TagDescriptionCreateParameters struct {
 	// Properties supplied to Create TagDescription operation.
-	Properties *TagDescriptionBaseProperties `json:"properties,omitempty"`
+	Properties *TagDescriptionBaseProperties
 }
 
 // TagResourceClientListByServiceOptions contains the optional parameters for the TagResourceClient.NewListByServicePager
@@ -7506,37 +7506,37 @@ type TagResourceClientListByServiceOptions struct {
 // TagResourceCollection - Paged Tag list representation.
 type TagResourceCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*TagResourceContract `json:"value,omitempty"`
+	Value []*TagResourceContract
 }
 
 // TagResourceContract - TagResource contract properties.
 type TagResourceContract struct {
 	// REQUIRED; Tag associated with the resource.
-	Tag *TagResourceContractProperties `json:"tag,omitempty"`
+	Tag *TagResourceContractProperties
 
 	// API associated with the tag.
-	API *APITagResourceContractProperties `json:"api,omitempty"`
+	API *APITagResourceContractProperties
 
 	// Operation associated with the tag.
-	Operation *OperationTagResourceContractProperties `json:"operation,omitempty"`
+	Operation *OperationTagResourceContractProperties
 
 	// Product associated with the tag.
-	Product *ProductTagResourceContractProperties `json:"product,omitempty"`
+	Product *ProductTagResourceContractProperties
 }
 
 // TagResourceContractProperties - Contract defining the Tag property in the Tag Resource Contract
 type TagResourceContractProperties struct {
 	// Tag identifier
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Tag Name
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // TenantAccessClientCreateOptions contains the optional parameters for the TenantAccessClient.Create method.
@@ -7625,45 +7625,45 @@ type TenantConfigurationClientGetSyncStateOptions struct {
 // TenantConfigurationSyncStateContract - Result of Tenant Configuration Sync State.
 type TenantConfigurationSyncStateContract struct {
 	// Properties returned Tenant Configuration Sync State check.
-	Properties *TenantConfigurationSyncStateContractProperties `json:"properties,omitempty"`
+	Properties *TenantConfigurationSyncStateContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TenantConfigurationSyncStateContractProperties - Tenant Configuration Synchronization State.
 type TenantConfigurationSyncStateContractProperties struct {
 	// The name of Git branch.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// The latest commit Id.
-	CommitID *string `json:"commitId,omitempty"`
+	CommitID *string
 
 	// The date of the latest configuration change. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified
 	// by the ISO 8601 standard.
-	ConfigurationChangeDate *time.Time `json:"configurationChangeDate,omitempty"`
+	ConfigurationChangeDate *time.Time
 
 	// value indicating if last sync was save (true) or deploy (false) operation.
-	IsExport *bool `json:"isExport,omitempty"`
+	IsExport *bool
 
 	// value indicating whether Git configuration access is enabled.
-	IsGitEnabled *bool `json:"isGitEnabled,omitempty"`
+	IsGitEnabled *bool
 
 	// value indicating if last synchronization was later than the configuration change.
-	IsSynced *bool `json:"isSynced,omitempty"`
+	IsSynced *bool
 
 	// Most recent tenant configuration operation identifier
-	LastOperationID *string `json:"lastOperationId,omitempty"`
+	LastOperationID *string
 
 	// The date of the latest synchronization. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by
 	// the ISO 8601 standard.
-	SyncDate *time.Time `json:"syncDate,omitempty"`
+	SyncDate *time.Time
 }
 
 // TenantSettingsClientGetOptions contains the optional parameters for the TenantSettingsClient.Get method.
@@ -7681,52 +7681,52 @@ type TenantSettingsClientListByServiceOptions struct {
 // TenantSettingsCollection - Paged AccessInformation list representation.
 type TenantSettingsCollection struct {
 	// READ-ONLY; Next page link if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Page values.
-	Value []*TenantSettingsContract `json:"value,omitempty" azure:"ro"`
+	Value []*TenantSettingsContract
 }
 
 // TenantSettingsContract - Tenant Settings.
 type TenantSettingsContract struct {
 	// TenantSettings entity contract properties.
-	Properties *TenantSettingsContractProperties `json:"properties,omitempty"`
+	Properties *TenantSettingsContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TenantSettingsContractProperties - Tenant access information contract of the API Management service.
 type TenantSettingsContractProperties struct {
 	// Tenant settings
-	Settings map[string]*string `json:"settings,omitempty"`
+	Settings map[string]*string
 }
 
 // TermsOfServiceProperties - Terms of service contract properties.
 type TermsOfServiceProperties struct {
 	// Ask user for consent to the terms of service.
-	ConsentRequired *bool `json:"consentRequired,omitempty"`
+	ConsentRequired *bool
 
 	// Display terms of service during a sign-up process.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// A terms of service text.
-	Text *string `json:"text,omitempty"`
+	Text *string
 }
 
 // TokenBodyParameterContract - OAuth acquire token request body parameter (www-url-form-encoded).
 type TokenBodyParameterContract struct {
 	// REQUIRED; body parameter name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; body parameter value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // UserClientCreateOrUpdateOptions contains the optional parameters for the UserClient.CreateOrUpdate method.
@@ -7796,13 +7796,13 @@ type UserClientUpdateOptions struct {
 // UserCollection - Paged Users list representation.
 type UserCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Page values.
-	Value []*UserContract `json:"value,omitempty"`
+	Value []*UserContract
 }
 
 // UserConfirmationPasswordClientSendOptions contains the optional parameters for the UserConfirmationPasswordClient.Send
@@ -7815,95 +7815,95 @@ type UserConfirmationPasswordClientSendOptions struct {
 // UserContract - User details.
 type UserContract struct {
 	// User entity contract properties.
-	Properties *UserContractProperties `json:"properties,omitempty"`
+	Properties *UserContractProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserContractProperties - User profile.
 type UserContractProperties struct {
 	// Email address.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// First name.
-	FirstName *string `json:"firstName,omitempty"`
+	FirstName *string
 
 	// Collection of user identities.
-	Identities []*UserIdentityContract `json:"identities,omitempty"`
+	Identities []*UserIdentityContract
 
 	// Last name.
-	LastName *string `json:"lastName,omitempty"`
+	LastName *string
 
 	// Optional note about a user set by the administrator.
-	Note *string `json:"note,omitempty"`
+	Note *string
 
 	// Date of user registration. The date conforms to the following format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601
 	// standard.
-	RegistrationDate *time.Time `json:"registrationDate,omitempty"`
+	RegistrationDate *time.Time
 
 	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
 	// or call any APIs of subscribed products. Default state is Active.
-	State *UserState `json:"state,omitempty"`
+	State *UserState
 
 	// READ-ONLY; Collection of groups user is part of.
-	Groups []*GroupContractProperties `json:"groups,omitempty" azure:"ro"`
+	Groups []*GroupContractProperties
 }
 
 // UserCreateParameterProperties - Parameters supplied to the Create User operation.
 type UserCreateParameterProperties struct {
 	// REQUIRED; Email address. Must not be empty and must be unique within the service instance.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// REQUIRED; First name.
-	FirstName *string `json:"firstName,omitempty"`
+	FirstName *string
 
 	// REQUIRED; Last name.
-	LastName *string `json:"lastName,omitempty"`
+	LastName *string
 
 	// Determines the type of application which send the create user request. Default is legacy portal.
-	AppType *AppType `json:"appType,omitempty"`
+	AppType *AppType
 
 	// Determines the type of confirmation e-mail that will be sent to the newly created user.
-	Confirmation *Confirmation `json:"confirmation,omitempty"`
+	Confirmation *Confirmation
 
 	// Collection of user identities.
-	Identities []*UserIdentityContract `json:"identities,omitempty"`
+	Identities []*UserIdentityContract
 
 	// Optional note about a user set by the administrator.
-	Note *string `json:"note,omitempty"`
+	Note *string
 
 	// User Password. If no value is provided, a default password is generated.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
 	// or call any APIs of subscribed products. Default state is Active.
-	State *UserState `json:"state,omitempty"`
+	State *UserState
 }
 
 // UserCreateParameters - User create details.
 type UserCreateParameters struct {
 	// User entity create contract properties.
-	Properties *UserCreateParameterProperties `json:"properties,omitempty"`
+	Properties *UserCreateParameterProperties
 }
 
 // UserEntityBaseParameters - User Entity Base Parameters set.
 type UserEntityBaseParameters struct {
 	// Collection of user identities.
-	Identities []*UserIdentityContract `json:"identities,omitempty"`
+	Identities []*UserIdentityContract
 
 	// Optional note about a user set by the administrator.
-	Note *string `json:"note,omitempty"`
+	Note *string
 
 	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
 	// or call any APIs of subscribed products. Default state is Active.
-	State *UserState `json:"state,omitempty"`
+	State *UserState
 }
 
 // UserGroupClientListOptions contains the optional parameters for the UserGroupClient.NewListPager method.
@@ -7928,30 +7928,30 @@ type UserIdentitiesClientListOptions struct {
 // UserIdentityCollection - List of Users Identity list representation.
 type UserIdentityCollection struct {
 	// Total record count number across all pages.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Next page link if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// User Identity values.
-	Value []*UserIdentityContract `json:"value,omitempty"`
+	Value []*UserIdentityContract
 }
 
 // UserIdentityContract - User identity details.
 type UserIdentityContract struct {
 	// Identifier value within provider.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Identity provider name.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 }
 
 type UserIdentityProperties struct {
 	// The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 }
 
 // UserSubscriptionClientGetOptions contains the optional parameters for the UserSubscriptionClient.Get method.
@@ -7981,72 +7981,72 @@ type UserSubscriptionClientListOptions struct {
 type UserTokenParameterProperties struct {
 	// REQUIRED; The Expiry time of the Token. Maximum token expiry time is set to 30 days. The date conforms to the following
 	// format: yyyy-MM-ddTHH:mm:ssZ as specified by the ISO 8601 standard.
-	Expiry *time.Time `json:"expiry,omitempty"`
+	Expiry *time.Time
 
 	// REQUIRED; The Key to be used to generate token for user.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 }
 
 // UserTokenParameters - Get User Token parameters.
 type UserTokenParameters struct {
 	// User Token Parameter contract properties.
-	Properties *UserTokenParameterProperties `json:"properties,omitempty"`
+	Properties *UserTokenParameterProperties
 }
 
 // UserTokenResult - Get User Token response details.
 type UserTokenResult struct {
 	// Shared Access Authorization token for the User.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // UserUpdateParameters - User update parameters.
 type UserUpdateParameters struct {
 	// User entity update contract properties.
-	Properties *UserUpdateParametersProperties `json:"properties,omitempty"`
+	Properties *UserUpdateParametersProperties
 }
 
 // UserUpdateParametersProperties - Parameters supplied to the Update User operation.
 type UserUpdateParametersProperties struct {
 	// Email address. Must not be empty and must be unique within the service instance.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// First name.
-	FirstName *string `json:"firstName,omitempty"`
+	FirstName *string
 
 	// Collection of user identities.
-	Identities []*UserIdentityContract `json:"identities,omitempty"`
+	Identities []*UserIdentityContract
 
 	// Last name.
-	LastName *string `json:"lastName,omitempty"`
+	LastName *string
 
 	// Optional note about a user set by the administrator.
-	Note *string `json:"note,omitempty"`
+	Note *string
 
 	// User Password.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// Account state. Specifies whether the user is active or not. Blocked users are unable to sign into the developer portal
 	// or call any APIs of subscribed products. Default state is Active.
-	State *UserState `json:"state,omitempty"`
+	State *UserState
 }
 
 // VirtualNetworkConfiguration - Configuration of a virtual network to which API Management service is deployed.
 type VirtualNetworkConfiguration struct {
 	// The full resource ID of a subnet in a virtual network to deploy the API Management service in.
-	SubnetResourceID *string `json:"subnetResourceId,omitempty"`
+	SubnetResourceID *string
 
 	// READ-ONLY; The name of the subnet.
-	Subnetname *string `json:"subnetname,omitempty" azure:"ro"`
+	Subnetname *string
 
 	// READ-ONLY; The virtual network ID. This is typically a GUID. Expect a null GUID by default.
-	Vnetid *string `json:"vnetid,omitempty" azure:"ro"`
+	Vnetid *string
 }
 
 // X509CertificateName - Properties of server X509Names.
 type X509CertificateName struct {
 	// Thumbprint for the Issuer of the Certificate.
-	IssuerCertificateThumbprint *string `json:"issuerCertificateThumbprint,omitempty"`
+	IssuerCertificateThumbprint *string
 
 	// Common Name of the Certificate.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }

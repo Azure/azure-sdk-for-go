@@ -14,429 +14,429 @@ import "time"
 // AddressDetails - Address details for an order item.
 type AddressDetails struct {
 	// REQUIRED; Customer address and contact details. It should be address resource
-	ForwardAddress *AddressProperties `json:"forwardAddress,omitempty"`
+	ForwardAddress *AddressProperties
 
 	// READ-ONLY; Return shipping address
-	ReturnAddress *AddressProperties `json:"returnAddress,omitempty" azure:"ro"`
+	ReturnAddress *AddressProperties
 }
 
 // AddressProperties - Address Properties
 type AddressProperties struct {
 	// REQUIRED; Contact details for the address
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	ContactDetails *ContactDetails
 
 	// Shipping details for the address
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 
 	// READ-ONLY; Status of address validation
-	AddressValidationStatus *AddressValidationStatus `json:"addressValidationStatus,omitempty" azure:"ro"`
+	AddressValidationStatus *AddressValidationStatus
 }
 
 // AddressResource - Address Resource.
 type AddressResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties of an address.
-	Properties *AddressProperties `json:"properties,omitempty"`
+	Properties *AddressProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Represents resource creation and update time
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AddressResourceList - Address Resource Collection
 type AddressResourceList struct {
 	// Link for the next set of job resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of address resources.
-	Value []*AddressResource `json:"value,omitempty" azure:"ro"`
+	Value []*AddressResource
 }
 
 // AddressUpdateParameter - The Address update parameters
 type AddressUpdateParameter struct {
 	// Properties of a address to be updated.
-	Properties *AddressUpdateProperties `json:"properties,omitempty"`
+	Properties *AddressUpdateProperties
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
 	// resource groups).
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AddressUpdateProperties - Address Properties
 type AddressUpdateProperties struct {
 	// Contact details for the address
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	ContactDetails *ContactDetails
 
 	// Shipping details for the address
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 }
 
 // AvailabilityInformation - Availability information of a product system.
 type AvailabilityInformation struct {
 	// READ-ONLY; Current availability stage of the product. Availability stage
-	AvailabilityStage *AvailabilityStage `json:"availabilityStage,omitempty" azure:"ro"`
+	AvailabilityStage *AvailabilityStage
 
 	// READ-ONLY; Reason why the product is disabled.
-	DisabledReason *DisabledReason `json:"disabledReason,omitempty" azure:"ro"`
+	DisabledReason *DisabledReason
 
 	// READ-ONLY; Message for why the product is disabled.
-	DisabledReasonMessage *string `json:"disabledReasonMessage,omitempty" azure:"ro"`
+	DisabledReasonMessage *string
 }
 
 // BasicInformation - Basic information for any product system
 type BasicInformation struct {
 	// READ-ONLY; Availability information of the product system.
-	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+	AvailabilityInformation *AvailabilityInformation
 
 	// READ-ONLY; Cost information for the product system.
-	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+	CostInformation *CostInformation
 
 	// READ-ONLY; Description related to the product system.
-	Description *Description `json:"description,omitempty" azure:"ro"`
+	Description *Description
 
 	// READ-ONLY; Display Name for the product system.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Hierarchy information of a product.
-	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+	HierarchyInformation *HierarchyInformation
 
 	// READ-ONLY; Image information for the product system.
-	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
+	ImageInformation []*ImageInformation
 }
 
 // BillingMeterDetails - Holds billing meter details for each type of billing
 type BillingMeterDetails struct {
 	// READ-ONLY; Frequency of recurrence
-	Frequency *string `json:"frequency,omitempty" azure:"ro"`
+	Frequency *string
 
 	// READ-ONLY; Represents MeterDetails
-	MeterDetails MeterDetailsClassification `json:"meterDetails,omitempty" azure:"ro"`
+	MeterDetails MeterDetailsClassification
 
 	// READ-ONLY; Represents Metering type (eg one-time or recurrent)
-	MeteringType *MeteringType `json:"meteringType,omitempty" azure:"ro"`
+	MeteringType *MeteringType
 
 	// READ-ONLY; Represents Billing type name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // CancellationReason - Reason for cancellation.
 type CancellationReason struct {
 	// REQUIRED; Reason for cancellation.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 }
 
 // CommonProperties - Represents common properties across product hierarchy
 type CommonProperties struct {
 	// READ-ONLY; Availability information of the product system.
-	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+	AvailabilityInformation *AvailabilityInformation
 
 	// READ-ONLY; Cost information for the product system.
-	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+	CostInformation *CostInformation
 
 	// READ-ONLY; Description related to the product system.
-	Description *Description `json:"description,omitempty" azure:"ro"`
+	Description *Description
 
 	// READ-ONLY; Display Name for the product system.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; list of filters supported for a product
-	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+	FilterableProperties []*FilterableProperty
 
 	// READ-ONLY; Hierarchy information of a product.
-	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+	HierarchyInformation *HierarchyInformation
 
 	// READ-ONLY; Image information for the product system.
-	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
+	ImageInformation []*ImageInformation
 }
 
 // Configuration object.
 type Configuration struct {
 	// READ-ONLY; Properties of configuration
-	Properties *ConfigurationProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ConfigurationProperties
 }
 
 // ConfigurationFilters - Configuration filters
 type ConfigurationFilters struct {
 	// REQUIRED; Product hierarchy information
-	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty"`
+	HierarchyInformation *HierarchyInformation
 
 	// Filters specific to product
-	FilterableProperty []*FilterableProperty `json:"filterableProperty,omitempty"`
+	FilterableProperty []*FilterableProperty
 }
 
 // ConfigurationProperties - Properties of configuration
 type ConfigurationProperties struct {
 	// READ-ONLY; Availability information of the product system.
-	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+	AvailabilityInformation *AvailabilityInformation
 
 	// READ-ONLY; Cost information for the product system.
-	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+	CostInformation *CostInformation
 
 	// READ-ONLY; Description related to the product system.
-	Description *Description `json:"description,omitempty" azure:"ro"`
+	Description *Description
 
 	// READ-ONLY; Dimensions of the configuration
-	Dimensions *Dimensions `json:"dimensions,omitempty" azure:"ro"`
+	Dimensions *Dimensions
 
 	// READ-ONLY; Display Name for the product system.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; list of filters supported for a product
-	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+	FilterableProperties []*FilterableProperty
 
 	// READ-ONLY; Hierarchy information of a product.
-	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+	HierarchyInformation *HierarchyInformation
 
 	// READ-ONLY; Image information for the product system.
-	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
+	ImageInformation []*ImageInformation
 
 	// READ-ONLY; Specifications of the configuration
-	Specifications []*Specification `json:"specifications,omitempty" azure:"ro"`
+	Specifications []*Specification
 }
 
 // Configurations - The list of configurations.
 type Configurations struct {
 	// Link for the next set of configurations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of configurations.
-	Value []*Configuration `json:"value,omitempty" azure:"ro"`
+	Value []*Configuration
 }
 
 // ConfigurationsRequest - Configuration request object.
 type ConfigurationsRequest struct {
 	// REQUIRED; Holds details about product hierarchy information and filterable property.
-	ConfigurationFilters []*ConfigurationFilters `json:"configurationFilters,omitempty"`
+	ConfigurationFilters []*ConfigurationFilters
 
 	// Customer subscription properties. Clients can display available products to unregistered customers by explicitly passing
 	// subscription details
-	CustomerSubscriptionDetails *CustomerSubscriptionDetails `json:"customerSubscriptionDetails,omitempty"`
+	CustomerSubscriptionDetails *CustomerSubscriptionDetails
 }
 
 // ContactDetails - Contact Details.
 type ContactDetails struct {
 	// REQUIRED; Contact name of the person.
-	ContactName *string `json:"contactName,omitempty"`
+	ContactName *string
 
 	// REQUIRED; List of Email-ids to be notified about job progress.
-	EmailList []*string `json:"emailList,omitempty"`
+	EmailList []*string
 
 	// REQUIRED; Phone number of the contact person.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// Mobile number of the contact person.
-	Mobile *string `json:"mobile,omitempty"`
+	Mobile *string
 
 	// Phone extension number of the contact person.
-	PhoneExtension *string `json:"phoneExtension,omitempty"`
+	PhoneExtension *string
 }
 
 // CostInformation - Cost information for the product system
 type CostInformation struct {
 	// READ-ONLY; Default url to display billing information
-	BillingInfoURL *string `json:"billingInfoUrl,omitempty" azure:"ro"`
+	BillingInfoURL *string
 
 	// READ-ONLY; Details on the various billing aspects for the product system.
-	BillingMeterDetails []*BillingMeterDetails `json:"billingMeterDetails,omitempty" azure:"ro"`
+	BillingMeterDetails []*BillingMeterDetails
 }
 
 // CustomerSubscriptionDetails - Holds Customer subscription details. Clients can display available products to unregistered
 // customers by explicitly passing subscription details
 type CustomerSubscriptionDetails struct {
 	// REQUIRED; Quota ID of a subscription
-	QuotaID *string `json:"quotaId,omitempty"`
+	QuotaID *string
 
 	// Location placement Id of a subscription
-	LocationPlacementID *string `json:"locationPlacementId,omitempty"`
+	LocationPlacementID *string
 
 	// List of registered feature flags for subscription
-	RegisteredFeatures []*CustomerSubscriptionRegisteredFeatures `json:"registeredFeatures,omitempty"`
+	RegisteredFeatures []*CustomerSubscriptionRegisteredFeatures
 }
 
 // CustomerSubscriptionRegisteredFeatures - Represents subscription registered features
 type CustomerSubscriptionRegisteredFeatures struct {
 	// Name of subscription registered feature
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// State of subscription registered feature
-	State *string `json:"state,omitempty"`
+	State *string
 }
 
 // Description related properties of a product system.
 type Description struct {
 	// READ-ONLY; Attributes for the product system.
-	Attributes []*string `json:"attributes,omitempty" azure:"ro"`
+	Attributes []*string
 
 	// READ-ONLY; Type of description.
-	DescriptionType *DescriptionType `json:"descriptionType,omitempty" azure:"ro"`
+	DescriptionType *DescriptionType
 
 	// READ-ONLY; Keywords for the product system.
-	Keywords []*string `json:"keywords,omitempty" azure:"ro"`
+	Keywords []*string
 
 	// READ-ONLY; Links for the product system.
-	Links []*Link `json:"links,omitempty" azure:"ro"`
+	Links []*Link
 
 	// READ-ONLY; Long description of the product system.
-	LongDescription *string `json:"longDescription,omitempty" azure:"ro"`
+	LongDescription *string
 
 	// READ-ONLY; Short description of the product system.
-	ShortDescription *string `json:"shortDescription,omitempty" azure:"ro"`
+	ShortDescription *string
 }
 
 // DeviceDetails - Device details.
 type DeviceDetails struct {
 	// READ-ONLY; Management Resource Id
-	ManagementResourceID *string `json:"managementResourceId,omitempty" azure:"ro"`
+	ManagementResourceID *string
 
 	// READ-ONLY; Management Resource Tenant ID
-	ManagementResourceTenantID *string `json:"managementResourceTenantId,omitempty" azure:"ro"`
+	ManagementResourceTenantID *string
 
 	// READ-ONLY; device serial number
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 }
 
 // Dimensions of a configuration.
 type Dimensions struct {
 	// READ-ONLY; Depth of the device.
-	Depth *float64 `json:"depth,omitempty" azure:"ro"`
+	Depth *float64
 
 	// READ-ONLY; Height of the device.
-	Height *float64 `json:"height,omitempty" azure:"ro"`
+	Height *float64
 
 	// READ-ONLY; Length of the device.
-	Length *float64 `json:"length,omitempty" azure:"ro"`
+	Length *float64
 
 	// READ-ONLY; Unit for the dimensions of length, height and width.
-	LengthHeightUnit *LengthHeightUnit `json:"lengthHeightUnit,omitempty" azure:"ro"`
+	LengthHeightUnit *LengthHeightUnit
 
 	// READ-ONLY; Weight of the device.
-	Weight *float64 `json:"weight,omitempty" azure:"ro"`
+	Weight *float64
 
 	// READ-ONLY; Unit for the dimensions of weight.
-	WeightUnit *WeightMeasurementUnit `json:"weightUnit,omitempty" azure:"ro"`
+	WeightUnit *WeightMeasurementUnit
 
 	// READ-ONLY; Width of the device.
-	Width *float64 `json:"width,omitempty" azure:"ro"`
+	Width *float64
 }
 
 // DisplayInfo - Describes product display information
 type DisplayInfo struct {
 	// READ-ONLY; Configuration display name
-	ConfigurationDisplayName *string `json:"configurationDisplayName,omitempty" azure:"ro"`
+	ConfigurationDisplayName *string
 
 	// READ-ONLY; Product family display name
-	ProductFamilyDisplayName *string `json:"productFamilyDisplayName,omitempty" azure:"ro"`
+	ProductFamilyDisplayName *string
 }
 
 // EncryptionPreferences - Preferences related to the double encryption
 type EncryptionPreferences struct {
 	// Double encryption status as entered by the customer. It is compulsory to give this parameter if the 'Deny' or 'Disabled'
 	// policy is configured.
-	DoubleEncryptionStatus *DoubleEncryptionStatus `json:"doubleEncryptionStatus,omitempty"`
+	DoubleEncryptionStatus *DoubleEncryptionStatus
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // FilterableProperty - Different types of filters supported and its values.
 type FilterableProperty struct {
 	// REQUIRED; Values to be filtered.
-	SupportedValues []*string `json:"supportedValues,omitempty"`
+	SupportedValues []*string
 
 	// REQUIRED; Type of product filter.
-	Type *SupportedFilterTypes `json:"type,omitempty"`
+	Type *SupportedFilterTypes
 }
 
 // ForwardShippingDetails - Forward shipment details.
 type ForwardShippingDetails struct {
 	// READ-ONLY; Carrier Name for display purpose. Not to be used for any processing.
-	CarrierDisplayName *string `json:"carrierDisplayName,omitempty" azure:"ro"`
+	CarrierDisplayName *string
 
 	// READ-ONLY; Name of the carrier.
-	CarrierName *string `json:"carrierName,omitempty" azure:"ro"`
+	CarrierName *string
 
 	// READ-ONLY; TrackingId of the package
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 
 	// READ-ONLY; TrackingUrl of the package.
-	TrackingURL *string `json:"trackingUrl,omitempty" azure:"ro"`
+	TrackingURL *string
 }
 
 // HierarchyInformation - Holds details about product hierarchy information
 type HierarchyInformation struct {
 	// Represents configuration name that uniquely identifies configuration
-	ConfigurationName *string `json:"configurationName,omitempty"`
+	ConfigurationName *string
 
 	// Represents product family name that uniquely identifies product family
-	ProductFamilyName *string `json:"productFamilyName,omitempty"`
+	ProductFamilyName *string
 
 	// Represents product line name that uniquely identifies product line
-	ProductLineName *string `json:"productLineName,omitempty"`
+	ProductLineName *string
 
 	// Represents product name that uniquely identifies product
-	ProductName *string `json:"productName,omitempty"`
+	ProductName *string
 }
 
 // ImageInformation - Image for the product
 type ImageInformation struct {
 	// READ-ONLY; Type of the image
-	ImageType *ImageType `json:"imageType,omitempty" azure:"ro"`
+	ImageType *ImageType
 
 	// READ-ONLY; Url of the image
-	ImageURL *string `json:"imageUrl,omitempty" azure:"ro"`
+	ImageURL *string
 }
 
 // Link - Returns link related to the product
 type Link struct {
 	// READ-ONLY; Type of link
-	LinkType *LinkType `json:"linkType,omitempty" azure:"ro"`
+	LinkType *LinkType
 
 	// READ-ONLY; Url of the link
-	LinkURL *string `json:"linkUrl,omitempty" azure:"ro"`
+	LinkURL *string
 }
 
 // ManagementClientBeginCreateAddressOptions contains the optional parameters for the ManagementClient.BeginCreateAddress
@@ -610,7 +610,7 @@ type ManagementClientListProductFamiliesOptions struct {
 // ManagementResourcePreferences - Management resource preference to link device
 type ManagementResourcePreferences struct {
 	// Customer preferred Management resource ARM ID
-	PreferredManagementResourceID *string `json:"preferredManagementResourceId,omitempty"`
+	PreferredManagementResourceID *string
 }
 
 // MeterDetailsClassification provides polymorphic access to related types.
@@ -625,13 +625,13 @@ type MeterDetailsClassification interface {
 // MeterDetails - Holds details about billing type and its meter guids
 type MeterDetails struct {
 	// REQUIRED; Represents billing type.
-	BillingType *BillingType `json:"billingType,omitempty"`
+	BillingType *BillingType
 
 	// READ-ONLY; Charging type.
-	ChargingType *ChargingType `json:"chargingType,omitempty" azure:"ro"`
+	ChargingType *ChargingType
 
 	// READ-ONLY; Billing unit applicable for Pav2 billing
-	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
+	Multiplier *float64
 }
 
 // GetMeterDetails implements the MeterDetailsClassification interface for type MeterDetails.
@@ -640,234 +640,234 @@ func (m *MeterDetails) GetMeterDetails() *MeterDetails { return m }
 // NotificationPreference - Notification preference for a job stage.
 type NotificationPreference struct {
 	// REQUIRED; Notification is required or not.
-	SendNotification *bool `json:"sendNotification,omitempty"`
+	SendNotification *bool
 
 	// REQUIRED; Name of the stage.
-	StageName *NotificationStageName `json:"stageName,omitempty"`
+	StageName *NotificationStageName
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OrderItemDetails - Order item details
 type OrderItemDetails struct {
 	// REQUIRED; Order item type.
-	OrderItemType *OrderItemType `json:"orderItemType,omitempty"`
+	OrderItemType *OrderItemType
 
 	// REQUIRED; Unique identifier for configuration.
-	ProductDetails *ProductDetails `json:"productDetails,omitempty"`
+	ProductDetails *ProductDetails
 
 	// Additional notification email list
-	NotificationEmailList []*string `json:"notificationEmailList,omitempty"`
+	NotificationEmailList []*string
 
 	// Customer notification Preferences
-	Preferences *Preferences `json:"preferences,omitempty"`
+	Preferences *Preferences
 
 	// READ-ONLY; Cancellation reason.
-	CancellationReason *string `json:"cancellationReason,omitempty" azure:"ro"`
+	CancellationReason *string
 
 	// READ-ONLY; Describes whether the order item is cancellable or not.
-	CancellationStatus *OrderItemCancellationEnum `json:"cancellationStatus,omitempty" azure:"ro"`
+	CancellationStatus *OrderItemCancellationEnum
 
 	// READ-ONLY; Current Order item Status
-	CurrentStage *StageDetails `json:"currentStage,omitempty" azure:"ro"`
+	CurrentStage *StageDetails
 
 	// READ-ONLY; Describes whether the order item is deletable or not.
-	DeletionStatus *ActionStatusEnum `json:"deletionStatus,omitempty" azure:"ro"`
+	DeletionStatus *ActionStatusEnum
 
 	// READ-ONLY; Top level error for the job.
-	Error *ErrorDetail `json:"error,omitempty" azure:"ro"`
+	Error *ErrorDetail
 
 	// READ-ONLY; Forward Package Shipping details
-	ForwardShippingDetails *ForwardShippingDetails `json:"forwardShippingDetails,omitempty" azure:"ro"`
+	ForwardShippingDetails *ForwardShippingDetails
 
 	// READ-ONLY; Parent RP details - this returns only the first or default parent RP from the entire list
-	ManagementRpDetails *ResourceProviderDetails `json:"managementRpDetails,omitempty" azure:"ro"`
+	ManagementRpDetails *ResourceProviderDetails
 
 	// READ-ONLY; List of parent RP details supported for configuration.
-	ManagementRpDetailsList []*ResourceProviderDetails `json:"managementRpDetailsList,omitempty" azure:"ro"`
+	ManagementRpDetailsList []*ResourceProviderDetails
 
 	// READ-ONLY; Order item status history
-	OrderItemStageHistory []*StageDetails `json:"orderItemStageHistory,omitempty" azure:"ro"`
+	OrderItemStageHistory []*StageDetails
 
 	// READ-ONLY; Return reason.
-	ReturnReason *string `json:"returnReason,omitempty" azure:"ro"`
+	ReturnReason *string
 
 	// READ-ONLY; Describes whether the order item is returnable or not.
-	ReturnStatus *OrderItemReturnEnum `json:"returnStatus,omitempty" azure:"ro"`
+	ReturnStatus *OrderItemReturnEnum
 
 	// READ-ONLY; Reverse Package Shipping details
-	ReverseShippingDetails *ReverseShippingDetails `json:"reverseShippingDetails,omitempty" azure:"ro"`
+	ReverseShippingDetails *ReverseShippingDetails
 }
 
 // OrderItemProperties - Represents order item details.
 type OrderItemProperties struct {
 	// REQUIRED; Represents shipping and return address for order item
-	AddressDetails *AddressDetails `json:"addressDetails,omitempty"`
+	AddressDetails *AddressDetails
 
 	// REQUIRED; Id of the order to which order item belongs to
-	OrderID *string `json:"orderId,omitempty"`
+	OrderID *string
 
 	// REQUIRED; Represents order item details.
-	OrderItemDetails *OrderItemDetails `json:"orderItemDetails,omitempty"`
+	OrderItemDetails *OrderItemDetails
 
 	// READ-ONLY; Start time of order item
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // OrderItemResource - Represents order item contract
 type OrderItemResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Order item properties
-	Properties *OrderItemProperties `json:"properties,omitempty"`
+	Properties *OrderItemProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Represents resource creation and update time
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OrderItemResourceList - List of orderItems.
 type OrderItemResourceList struct {
 	// Link for the next set of order item resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of order item resources.
-	Value []*OrderItemResource `json:"value,omitempty" azure:"ro"`
+	Value []*OrderItemResource
 }
 
 // OrderItemUpdateParameter - Updates order item parameters.
 type OrderItemUpdateParameter struct {
 	// Order item update properties
-	Properties *OrderItemUpdateProperties `json:"properties,omitempty"`
+	Properties *OrderItemUpdateProperties
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
 	// resource groups).
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // OrderItemUpdateProperties - Order item update properties.
 type OrderItemUpdateProperties struct {
 	// Updates forward shipping address and contact details.
-	ForwardAddress *AddressProperties `json:"forwardAddress,omitempty"`
+	ForwardAddress *AddressProperties
 
 	// Additional notification email list.
-	NotificationEmailList []*string `json:"notificationEmailList,omitempty"`
+	NotificationEmailList []*string
 
 	// Customer preference.
-	Preferences *Preferences `json:"preferences,omitempty"`
+	Preferences *Preferences
 }
 
 // OrderProperties - Represents order details.
 type OrderProperties struct {
 	// READ-ONLY; Order current status.
-	CurrentStage *StageDetails `json:"currentStage,omitempty" azure:"ro"`
+	CurrentStage *StageDetails
 
 	// READ-ONLY; List of order item ARM Ids which are part of an order.
-	OrderItemIDs []*string `json:"orderItemIds,omitempty" azure:"ro"`
+	OrderItemIDs []*string
 
 	// READ-ONLY; Order status history.
-	OrderStageHistory []*StageDetails `json:"orderStageHistory,omitempty" azure:"ro"`
+	OrderStageHistory []*StageDetails
 }
 
 // OrderResource - Specifies the properties or parameters for an order. Order is a grouping of one or more order items.
 type OrderResource struct {
 	// REQUIRED; Order properties
-	Properties *OrderProperties `json:"properties,omitempty"`
+	Properties *OrderProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Represents resource creation and update time
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OrderResourceList - List of orders.
 type OrderResourceList struct {
 	// Link for the next set of order resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of order resources.
-	Value []*OrderResource `json:"value,omitempty" azure:"ro"`
+	Value []*OrderResource
 }
 
 // Pav2MeterDetails - Billing type PAV2 meter details
 type Pav2MeterDetails struct {
 	// REQUIRED; Represents billing type.
-	BillingType *BillingType `json:"billingType,omitempty"`
+	BillingType *BillingType
 
 	// READ-ONLY; Charging type.
-	ChargingType *ChargingType `json:"chargingType,omitempty" azure:"ro"`
+	ChargingType *ChargingType
 
 	// READ-ONLY; Validation status of requested data center and transport.
-	MeterGUID *string `json:"meterGuid,omitempty" azure:"ro"`
+	MeterGUID *string
 
 	// READ-ONLY; Billing unit applicable for Pav2 billing
-	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
+	Multiplier *float64
 }
 
 // GetMeterDetails implements the MeterDetailsClassification interface for type Pav2MeterDetails.
@@ -882,204 +882,204 @@ func (p *Pav2MeterDetails) GetMeterDetails() *MeterDetails {
 // Preferences related to the order
 type Preferences struct {
 	// Preferences related to the Encryption.
-	EncryptionPreferences *EncryptionPreferences `json:"encryptionPreferences,omitempty"`
+	EncryptionPreferences *EncryptionPreferences
 
 	// Preferences related to the Management resource.
-	ManagementResourcePreferences *ManagementResourcePreferences `json:"managementResourcePreferences,omitempty"`
+	ManagementResourcePreferences *ManagementResourcePreferences
 
 	// Notification preferences.
-	NotificationPreferences []*NotificationPreference `json:"notificationPreferences,omitempty"`
+	NotificationPreferences []*NotificationPreference
 
 	// Preferences related to the shipment logistics of the order.
-	TransportPreferences *TransportPreferences `json:"transportPreferences,omitempty"`
+	TransportPreferences *TransportPreferences
 }
 
 // Product - List of Products
 type Product struct {
 	// READ-ONLY; Properties of product
-	Properties *ProductProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ProductProperties
 }
 
 // ProductDetails - Represents product details
 type ProductDetails struct {
 	// REQUIRED; Hierarchy of the product which uniquely identifies the product
-	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty"`
+	HierarchyInformation *HierarchyInformation
 
 	// Display details of the product
-	DisplayInfo *DisplayInfo `json:"displayInfo,omitempty"`
+	DisplayInfo *DisplayInfo
 
 	// READ-ONLY; Quantity of the product
-	Count *int32 `json:"count,omitempty" azure:"ro"`
+	Count *int32
 
 	// READ-ONLY; list of device details
-	DeviceDetails []*DeviceDetails `json:"deviceDetails,omitempty" azure:"ro"`
+	DeviceDetails []*DeviceDetails
 
 	// READ-ONLY; Double encryption status of the configuration. Read-only field.
-	ProductDoubleEncryptionStatus *DoubleEncryptionStatus `json:"productDoubleEncryptionStatus,omitempty" azure:"ro"`
+	ProductDoubleEncryptionStatus *DoubleEncryptionStatus
 }
 
 // ProductFamilies - The list of product families.
 type ProductFamilies struct {
 	// Link for the next set of product families.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of product families.
-	Value []*ProductFamily `json:"value,omitempty" azure:"ro"`
+	Value []*ProductFamily
 }
 
 // ProductFamiliesMetadata - Holds details about product family metadata
 type ProductFamiliesMetadata struct {
 	// READ-ONLY; Link for the next set of product families.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of product family metadata details.
-	Value []*ProductFamiliesMetadataDetails `json:"value,omitempty" azure:"ro"`
+	Value []*ProductFamiliesMetadataDetails
 }
 
 // ProductFamiliesMetadataDetails - Product families metadata details.
 type ProductFamiliesMetadataDetails struct {
 	// READ-ONLY; Product family properties
-	Properties *ProductFamilyProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ProductFamilyProperties
 }
 
 // ProductFamiliesRequest - The filters for showing the product families.
 type ProductFamiliesRequest struct {
 	// REQUIRED; Dictionary of filterable properties on product family.
-	FilterableProperties map[string][]*FilterableProperty `json:"filterableProperties,omitempty"`
+	FilterableProperties map[string][]*FilterableProperty
 
 	// Customer subscription properties. Clients can display available products to unregistered customers by explicitly passing
 	// subscription details
-	CustomerSubscriptionDetails *CustomerSubscriptionDetails `json:"customerSubscriptionDetails,omitempty"`
+	CustomerSubscriptionDetails *CustomerSubscriptionDetails
 }
 
 // ProductFamily - Product Family
 type ProductFamily struct {
 	// READ-ONLY; Properties of product family
-	Properties *ProductFamilyProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ProductFamilyProperties
 }
 
 // ProductFamilyProperties - Properties of product family
 type ProductFamilyProperties struct {
 	// Contains details related to resource provider
-	ResourceProviderDetails []*ResourceProviderDetails `json:"resourceProviderDetails,omitempty"`
+	ResourceProviderDetails []*ResourceProviderDetails
 
 	// READ-ONLY; Availability information of the product system.
-	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+	AvailabilityInformation *AvailabilityInformation
 
 	// READ-ONLY; Cost information for the product system.
-	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+	CostInformation *CostInformation
 
 	// READ-ONLY; Description related to the product system.
-	Description *Description `json:"description,omitempty" azure:"ro"`
+	Description *Description
 
 	// READ-ONLY; Display Name for the product system.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; list of filters supported for a product
-	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+	FilterableProperties []*FilterableProperty
 
 	// READ-ONLY; Hierarchy information of a product.
-	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+	HierarchyInformation *HierarchyInformation
 
 	// READ-ONLY; Image information for the product system.
-	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
+	ImageInformation []*ImageInformation
 
 	// READ-ONLY; List of product lines supported in the product family
-	ProductLines []*ProductLine `json:"productLines,omitempty" azure:"ro"`
+	ProductLines []*ProductLine
 }
 
 // ProductLine - Product line
 type ProductLine struct {
 	// READ-ONLY; Properties of product line
-	Properties *ProductLineProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ProductLineProperties
 }
 
 // ProductLineProperties - Properties of product line
 type ProductLineProperties struct {
 	// READ-ONLY; Availability information of the product system.
-	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+	AvailabilityInformation *AvailabilityInformation
 
 	// READ-ONLY; Cost information for the product system.
-	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+	CostInformation *CostInformation
 
 	// READ-ONLY; Description related to the product system.
-	Description *Description `json:"description,omitempty" azure:"ro"`
+	Description *Description
 
 	// READ-ONLY; Display Name for the product system.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; list of filters supported for a product
-	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+	FilterableProperties []*FilterableProperty
 
 	// READ-ONLY; Hierarchy information of a product.
-	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+	HierarchyInformation *HierarchyInformation
 
 	// READ-ONLY; Image information for the product system.
-	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
+	ImageInformation []*ImageInformation
 
 	// READ-ONLY; List of products in the product line
-	Products []*Product `json:"products,omitempty" azure:"ro"`
+	Products []*Product
 }
 
 // ProductProperties - Properties of products
 type ProductProperties struct {
 	// READ-ONLY; Availability information of the product system.
-	AvailabilityInformation *AvailabilityInformation `json:"availabilityInformation,omitempty" azure:"ro"`
+	AvailabilityInformation *AvailabilityInformation
 
 	// READ-ONLY; List of configurations for the product
-	Configurations []*Configuration `json:"configurations,omitempty" azure:"ro"`
+	Configurations []*Configuration
 
 	// READ-ONLY; Cost information for the product system.
-	CostInformation *CostInformation `json:"costInformation,omitempty" azure:"ro"`
+	CostInformation *CostInformation
 
 	// READ-ONLY; Description related to the product system.
-	Description *Description `json:"description,omitempty" azure:"ro"`
+	Description *Description
 
 	// READ-ONLY; Display Name for the product system.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; list of filters supported for a product
-	FilterableProperties []*FilterableProperty `json:"filterableProperties,omitempty" azure:"ro"`
+	FilterableProperties []*FilterableProperty
 
 	// READ-ONLY; Hierarchy information of a product.
-	HierarchyInformation *HierarchyInformation `json:"hierarchyInformation,omitempty" azure:"ro"`
+	HierarchyInformation *HierarchyInformation
 
 	// READ-ONLY; Image information for the product system.
-	ImageInformation []*ImageInformation `json:"imageInformation,omitempty" azure:"ro"`
+	ImageInformation []*ImageInformation
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PurchaseMeterDetails - Billing type Purchase meter details
 type PurchaseMeterDetails struct {
 	// REQUIRED; Represents billing type.
-	BillingType *BillingType `json:"billingType,omitempty"`
+	BillingType *BillingType
 
 	// READ-ONLY; Charging type.
-	ChargingType *ChargingType `json:"chargingType,omitempty" azure:"ro"`
+	ChargingType *ChargingType
 
 	// READ-ONLY; Billing unit applicable for Pav2 billing
-	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
+	Multiplier *float64
 
 	// READ-ONLY; Product Id
-	ProductID *string `json:"productId,omitempty" azure:"ro"`
+	ProductID *string
 
 	// READ-ONLY; Sku Id
-	SKUID *string `json:"skuId,omitempty" azure:"ro"`
+	SKUID *string
 
 	// READ-ONLY; Term Id
-	TermID *string `json:"termId,omitempty" azure:"ro"`
+	TermID *string
 }
 
 // GetMeterDetails implements the MeterDetailsClassification interface for type PurchaseMeterDetails.
@@ -1094,180 +1094,180 @@ func (p *PurchaseMeterDetails) GetMeterDetails() *MeterDetails {
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceIdentity - Msi identity details of the resource
 type ResourceIdentity struct {
 	// Identity type
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// READ-ONLY; Service Principal Id backing the Msi
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; Home Tenant Id
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ResourceProviderDetails - Management RP details
 type ResourceProviderDetails struct {
 	// READ-ONLY; Resource provider namespace
-	ResourceProviderNamespace *string `json:"resourceProviderNamespace,omitempty" azure:"ro"`
+	ResourceProviderNamespace *string
 }
 
 // ReturnOrderItemDetails - Return order item request body
 type ReturnOrderItemDetails struct {
 	// REQUIRED; Return Reason.
-	ReturnReason *string `json:"returnReason,omitempty"`
+	ReturnReason *string
 
 	// customer return address.
-	ReturnAddress *AddressProperties `json:"returnAddress,omitempty"`
+	ReturnAddress *AddressProperties
 
 	// Service tag (located on the bottom-right corner of the device)
-	ServiceTag *string `json:"serviceTag,omitempty"`
+	ServiceTag *string
 
 	// Shipping Box required
-	ShippingBoxRequired *bool `json:"shippingBoxRequired,omitempty"`
+	ShippingBoxRequired *bool
 }
 
 // ReverseShippingDetails - Reverse shipment details.
 type ReverseShippingDetails struct {
 	// READ-ONLY; Carrier Name for display purpose. Not to be used for any processing.
-	CarrierDisplayName *string `json:"carrierDisplayName,omitempty" azure:"ro"`
+	CarrierDisplayName *string
 
 	// READ-ONLY; Name of the carrier.
-	CarrierName *string `json:"carrierName,omitempty" azure:"ro"`
+	CarrierName *string
 
 	// READ-ONLY; SAS key to download the reverse shipment label of the package.
-	SasKeyForLabel *string `json:"sasKeyForLabel,omitempty" azure:"ro"`
+	SasKeyForLabel *string
 
 	// READ-ONLY; TrackingId of the package
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 
 	// READ-ONLY; TrackingUrl of the package.
-	TrackingURL *string `json:"trackingUrl,omitempty" azure:"ro"`
+	TrackingURL *string
 }
 
 // ShippingAddress - Shipping address where customer wishes to receive the device.
 type ShippingAddress struct {
 	// REQUIRED; Name of the Country.
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// REQUIRED; Street Address line 1.
-	StreetAddress1 *string `json:"streetAddress1,omitempty"`
+	StreetAddress1 *string
 
 	// Type of address.
-	AddressType *AddressType `json:"addressType,omitempty"`
+	AddressType *AddressType
 
 	// Name of the City.
-	City *string `json:"city,omitempty"`
+	City *string
 
 	// Name of the company.
-	CompanyName *string `json:"companyName,omitempty"`
+	CompanyName *string
 
 	// Postal code.
-	PostalCode *string `json:"postalCode,omitempty"`
+	PostalCode *string
 
 	// Name of the State or Province.
-	StateOrProvince *string `json:"stateOrProvince,omitempty"`
+	StateOrProvince *string
 
 	// Street Address line 2.
-	StreetAddress2 *string `json:"streetAddress2,omitempty"`
+	StreetAddress2 *string
 
 	// Street Address line 3.
-	StreetAddress3 *string `json:"streetAddress3,omitempty"`
+	StreetAddress3 *string
 
 	// Extended Zip Code.
-	ZipExtendedCode *string `json:"zipExtendedCode,omitempty"`
+	ZipExtendedCode *string
 }
 
 // ShippingDetails - Package shipping details
 type ShippingDetails struct {
 	// READ-ONLY; Carrier Name for display purpose. Not to be used for any processing.
-	CarrierDisplayName *string `json:"carrierDisplayName,omitempty" azure:"ro"`
+	CarrierDisplayName *string
 
 	// READ-ONLY; Name of the carrier.
-	CarrierName *string `json:"carrierName,omitempty" azure:"ro"`
+	CarrierName *string
 
 	// READ-ONLY; TrackingId of the package
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 
 	// READ-ONLY; TrackingUrl of the package.
-	TrackingURL *string `json:"trackingUrl,omitempty" azure:"ro"`
+	TrackingURL *string
 }
 
 // Specifications of the configurations
 type Specification struct {
 	// READ-ONLY; Name of the specification
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Value of the specification
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // StageDetails - Resource stage details.
 type StageDetails struct {
 	// READ-ONLY; Display name of the resource stage.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Stage name
-	StageName *StageName `json:"stageName,omitempty" azure:"ro"`
+	StageName *StageName
 
 	// READ-ONLY; Stage status.
-	StageStatus *StageStatus `json:"stageStatus,omitempty" azure:"ro"`
+	StageStatus *StageStatus
 
 	// READ-ONLY; Stage start time
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TransportPreferences - Preferences related to the shipment logistics of the sku
 type TransportPreferences struct {
 	// REQUIRED; Indicates Shipment Logistics type that the customer preferred.
-	PreferredShipmentType *TransportShipmentTypes `json:"preferredShipmentType,omitempty"`
+	PreferredShipmentType *TransportShipmentTypes
 }

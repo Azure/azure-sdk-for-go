@@ -14,137 +14,137 @@ import "time"
 // AaddsResourceDetails - The Azure active directory domain service resource details.
 type AaddsResourceDetails struct {
 	// The Azure active directory domain service name.
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// This indicates whether initial sync complete or not.
-	InitialSyncComplete *bool `json:"initialSyncComplete,omitempty"`
+	InitialSyncComplete *bool
 
 	// This indicates whether enable ldaps or not.
-	LdapsEnabled *bool `json:"ldapsEnabled,omitempty"`
+	LdapsEnabled *bool
 
 	// The base 64 format string of public ldap certificate.
-	LdapsPublicCertificateInBase64 *string `json:"ldapsPublicCertificateInBase64,omitempty"`
+	LdapsPublicCertificateInBase64 *string
 
 	// The resource id of azure active directory domain service.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The subnet resource id.
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// The tenant id of azure active directory domain service .
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // Application - The HDInsight cluster application
 type Application struct {
 	// The ETag for the application
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// The properties of the application.
-	Properties *ApplicationProperties `json:"properties,omitempty"`
+	Properties *ApplicationProperties
 
 	// The tags for the application.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplicationGetEndpoint - Gets the application SSH endpoint
 type ApplicationGetEndpoint struct {
 	// The destination port to connect to.
-	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	DestinationPort *int32
 
 	// The location of the endpoint.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The private ip address of the endpoint.
-	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
+	PrivateIPAddress *string
 
 	// The public port to connect to.
-	PublicPort *int32 `json:"publicPort,omitempty"`
+	PublicPort *int32
 }
 
 // ApplicationGetHTTPSEndpoint - Gets the application HTTP endpoints.
 type ApplicationGetHTTPSEndpoint struct {
 	// The list of access modes for the application.
-	AccessModes []*string `json:"accessModes,omitempty"`
+	AccessModes []*string
 
 	// The destination port to connect to.
-	DestinationPort *int32 `json:"destinationPort,omitempty"`
+	DestinationPort *int32
 
 	// The value indicates whether to disable GatewayAuth.
-	DisableGatewayAuth *bool `json:"disableGatewayAuth,omitempty"`
+	DisableGatewayAuth *bool
 
 	// The private ip address of the endpoint.
-	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
+	PrivateIPAddress *string
 
 	// The subdomain suffix of the application.
-	SubDomainSuffix *string `json:"subDomainSuffix,omitempty"`
+	SubDomainSuffix *string
 
 	// READ-ONLY; The location of the endpoint.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The public port to connect to.
-	PublicPort *int32 `json:"publicPort,omitempty" azure:"ro"`
+	PublicPort *int32
 }
 
 // ApplicationListResult - Result of the request to list cluster Applications. It contains a list of operations and a URL
 // link to get the next set of results.
 type ApplicationListResult struct {
 	// The list of HDInsight applications installed on HDInsight cluster.
-	Value []*Application `json:"value,omitempty"`
+	Value []*Application
 
 	// READ-ONLY; The URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ApplicationProperties - The HDInsight cluster application GET response.
 type ApplicationProperties struct {
 	// The application type.
-	ApplicationType *string `json:"applicationType,omitempty"`
+	ApplicationType *string
 
 	// The list of roles in the cluster.
-	ComputeProfile *ComputeProfile `json:"computeProfile,omitempty"`
+	ComputeProfile *ComputeProfile
 
 	// The list of errors.
-	Errors []*Errors `json:"errors,omitempty"`
+	Errors []*Errors
 
 	// The list of application HTTPS endpoints.
-	HTTPSEndpoints []*ApplicationGetHTTPSEndpoint `json:"httpsEndpoints,omitempty"`
+	HTTPSEndpoints []*ApplicationGetHTTPSEndpoint
 
 	// The list of install script actions.
-	InstallScriptActions []*RuntimeScriptAction `json:"installScriptActions,omitempty"`
+	InstallScriptActions []*RuntimeScriptAction
 
 	// The private link configurations.
-	PrivateLinkConfigurations []*PrivateLinkConfiguration `json:"privateLinkConfigurations,omitempty"`
+	PrivateLinkConfigurations []*PrivateLinkConfiguration
 
 	// The list of application SSH endpoints.
-	SSHEndpoints []*ApplicationGetEndpoint `json:"sshEndpoints,omitempty"`
+	SSHEndpoints []*ApplicationGetEndpoint
 
 	// The list of uninstall script actions.
-	UninstallScriptActions []*RuntimeScriptAction `json:"uninstallScriptActions,omitempty"`
+	UninstallScriptActions []*RuntimeScriptAction
 
 	// READ-ONLY; The application state.
-	ApplicationState *string `json:"applicationState,omitempty" azure:"ro"`
+	ApplicationState *string
 
 	// READ-ONLY; The application create date time.
-	CreatedDate *string `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *string
 
 	// READ-ONLY; The marketplace identifier.
-	MarketplaceIdentifier *string `json:"marketplaceIdentifier,omitempty" azure:"ro"`
+	MarketplaceIdentifier *string
 
 	// READ-ONLY; The provisioning state of the application.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // ApplicationsClientBeginCreateOptions contains the optional parameters for the ApplicationsClient.BeginCreate method.
@@ -179,488 +179,488 @@ type ApplicationsClientListByClusterOptions struct {
 // AsyncOperationResult - The azure async operation response.
 type AsyncOperationResult struct {
 	// The operation error information.
-	Error *Errors `json:"error,omitempty"`
+	Error *Errors
 
 	// The async operation state.
-	Status *AsyncOperationState `json:"status,omitempty"`
+	Status *AsyncOperationState
 }
 
 // Autoscale - The autoscale request parameters
 type Autoscale struct {
 	// Parameters for load-based autoscale
-	Capacity *AutoscaleCapacity `json:"capacity,omitempty"`
+	Capacity *AutoscaleCapacity
 
 	// Parameters for schedule-based autoscale
-	Recurrence *AutoscaleRecurrence `json:"recurrence,omitempty"`
+	Recurrence *AutoscaleRecurrence
 }
 
 // AutoscaleCapacity - The load-based autoscale request parameters
 type AutoscaleCapacity struct {
 	// The maximum instance count of the cluster
-	MaxInstanceCount *int32 `json:"maxInstanceCount,omitempty"`
+	MaxInstanceCount *int32
 
 	// The minimum instance count of the cluster
-	MinInstanceCount *int32 `json:"minInstanceCount,omitempty"`
+	MinInstanceCount *int32
 }
 
 // AutoscaleConfigurationUpdateParameter - The autoscale configuration update parameter.
 type AutoscaleConfigurationUpdateParameter struct {
 	// The autoscale configuration.
-	Autoscale *Autoscale `json:"autoscale,omitempty"`
+	Autoscale *Autoscale
 }
 
 // AutoscaleRecurrence - Schedule-based autoscale request parameters
 type AutoscaleRecurrence struct {
 	// Array of schedule-based autoscale rules
-	Schedule []*AutoscaleSchedule `json:"schedule,omitempty"`
+	Schedule []*AutoscaleSchedule
 
 	// The time zone for the autoscale schedule times
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // AutoscaleSchedule - Parameters for a schedule-based autoscale rule, consisting of an array of days + a time and capacity
 type AutoscaleSchedule struct {
 	// Days of the week for a schedule-based autoscale rule
-	Days []*DaysOfWeek `json:"days,omitempty"`
+	Days []*DaysOfWeek
 
 	// Time and capacity for a schedule-based autoscale rule
-	TimeAndCapacity *AutoscaleTimeAndCapacity `json:"timeAndCapacity,omitempty"`
+	TimeAndCapacity *AutoscaleTimeAndCapacity
 }
 
 // AutoscaleTimeAndCapacity - Time and capacity request parameters
 type AutoscaleTimeAndCapacity struct {
 	// The maximum instance count of the cluster
-	MaxInstanceCount *int32 `json:"maxInstanceCount,omitempty"`
+	MaxInstanceCount *int32
 
 	// The minimum instance count of the cluster
-	MinInstanceCount *int32 `json:"minInstanceCount,omitempty"`
+	MinInstanceCount *int32
 
 	// 24-hour time in the form xx:xx
-	Time *string `json:"time,omitempty"`
+	Time *string
 }
 
 // AzureMonitorRequest - The azure monitor parameters.
 type AzureMonitorRequest struct {
 	// The Log Analytics workspace key.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// The selected configurations.
-	SelectedConfigurations *AzureMonitorSelectedConfigurations `json:"selectedConfigurations,omitempty"`
+	SelectedConfigurations *AzureMonitorSelectedConfigurations
 
 	// The Log Analytics workspace ID.
-	WorkspaceID *string `json:"workspaceId,omitempty"`
+	WorkspaceID *string
 }
 
 // AzureMonitorResponse - The azure monitor status response.
 type AzureMonitorResponse struct {
 	// The status of the monitor on the HDInsight cluster.
-	ClusterMonitoringEnabled *bool `json:"clusterMonitoringEnabled,omitempty"`
+	ClusterMonitoringEnabled *bool
 
 	// The selected configurations.
-	SelectedConfigurations *AzureMonitorSelectedConfigurations `json:"selectedConfigurations,omitempty"`
+	SelectedConfigurations *AzureMonitorSelectedConfigurations
 
 	// The workspace ID of the monitor on the HDInsight cluster.
-	WorkspaceID *string `json:"workspaceId,omitempty"`
+	WorkspaceID *string
 }
 
 // AzureMonitorSelectedConfigurations - The selected configurations for azure monitor.
 type AzureMonitorSelectedConfigurations struct {
 	// The configuration version.
-	ConfigurationVersion *string `json:"configurationVersion,omitempty"`
+	ConfigurationVersion *string
 
 	// The global configurations of selected configurations.
-	GlobalConfigurations map[string]*string `json:"globalConfigurations,omitempty"`
+	GlobalConfigurations map[string]*string
 
 	// The table list.
-	TableList []*AzureMonitorTableConfiguration `json:"tableList,omitempty"`
+	TableList []*AzureMonitorTableConfiguration
 }
 
 // AzureMonitorTableConfiguration - The table configuration for the Log Analytics integration.
 type AzureMonitorTableConfiguration struct {
 	// The name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // BillingMeters - The billing meters.
 type BillingMeters struct {
 	// The HDInsight meter guid.
-	Meter *string `json:"meter,omitempty"`
+	Meter *string
 
 	// The virtual machine sizes.
-	MeterParameter *string `json:"meterParameter,omitempty"`
+	MeterParameter *string
 
 	// The unit of meter, VMHours or CoreHours.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // BillingResources - The billing resources.
 type BillingResources struct {
 	// The billing meter information.
-	BillingMeters []*BillingMeters `json:"billingMeters,omitempty"`
+	BillingMeters []*BillingMeters
 
 	// The managed disk billing information.
-	DiskBillingMeters []*DiskBillingMeters `json:"diskBillingMeters,omitempty"`
+	DiskBillingMeters []*DiskBillingMeters
 
 	// The region or location.
-	Region *string `json:"region,omitempty"`
+	Region *string
 }
 
 // BillingResponseListResult - The response for the operation to get regional billingSpecs for a subscription.
 type BillingResponseListResult struct {
 	// The billing and managed disk billing resources for a region.
-	BillingResources []*BillingResources `json:"billingResources,omitempty"`
+	BillingResources []*BillingResources
 
 	// The virtual machine filtering mode. Effectively this can enabling or disabling the virtual machine sizes in a particular
 	// set.
-	VMSizeFilters []*VMSizeCompatibilityFilterV2 `json:"vmSizeFilters,omitempty"`
+	VMSizeFilters []*VMSizeCompatibilityFilterV2
 
 	// The virtual machine sizes to include or exclude.
-	VMSizes []*string `json:"vmSizes,omitempty"`
+	VMSizes []*string
 
 	// The vm sizes which enable encryption at host.
-	VMSizesWithEncryptionAtHost []*string `json:"vmSizesWithEncryptionAtHost,omitempty"`
+	VMSizesWithEncryptionAtHost []*string
 
 	// READ-ONLY; The vm size properties.
-	VMSizeProperties []*VMSizeProperty `json:"vmSizeProperties,omitempty" azure:"ro"`
+	VMSizeProperties []*VMSizeProperty
 }
 
 // CapabilitiesResult - The Get Capabilities operation response.
 type CapabilitiesResult struct {
 	// The capability features.
-	Features []*string `json:"features,omitempty"`
+	Features []*string
 
 	// The virtual machine size compatibility features.
-	Regions map[string]*RegionsCapability `json:"regions,omitempty"`
+	Regions map[string]*RegionsCapability
 
 	// The version capability.
-	Versions map[string]*VersionsCapability `json:"versions,omitempty"`
+	Versions map[string]*VersionsCapability
 
 	// READ-ONLY; The quota capability.
-	Quota *QuotaCapability `json:"quota,omitempty" azure:"ro"`
+	Quota *QuotaCapability
 }
 
 // ClientGroupInfo - The information of AAD security group.
 type ClientGroupInfo struct {
 	// The AAD security group id.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The AAD security group name.
-	GroupName *string `json:"groupName,omitempty"`
+	GroupName *string
 }
 
 // Cluster - The HDInsight cluster.
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The ETag for the resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// The identity of the cluster, if configured.
-	Identity *ClusterIdentity `json:"identity,omitempty"`
+	Identity *ClusterIdentity
 
 	// The properties of the cluster.
-	Properties *ClusterGetProperties `json:"properties,omitempty"`
+	Properties *ClusterGetProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// The availability zones.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClusterConfigurations - The configuration object for the specified cluster.
 type ClusterConfigurations struct {
 	// The configuration object for the specified configuration for the specified cluster.
-	Configurations map[string]map[string]*string `json:"configurations,omitempty"`
+	Configurations map[string]map[string]*string
 }
 
 // ClusterCreateParametersExtended - The CreateCluster request parameters.
 type ClusterCreateParametersExtended struct {
 	// The identity of the cluster, if configured.
-	Identity *ClusterIdentity `json:"identity,omitempty"`
+	Identity *ClusterIdentity
 
 	// The location of the cluster.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The cluster create parameters.
-	Properties *ClusterCreateProperties `json:"properties,omitempty"`
+	Properties *ClusterCreateProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// The availability zones.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // ClusterCreateProperties - The cluster create parameters.
 type ClusterCreateProperties struct {
 	// The cluster definition.
-	ClusterDefinition *ClusterDefinition `json:"clusterDefinition,omitempty"`
+	ClusterDefinition *ClusterDefinition
 
 	// The version of the cluster.
-	ClusterVersion *string `json:"clusterVersion,omitempty"`
+	ClusterVersion *string
 
 	// The compute isolation properties.
-	ComputeIsolationProperties *ComputeIsolationProperties `json:"computeIsolationProperties,omitempty"`
+	ComputeIsolationProperties *ComputeIsolationProperties
 
 	// The compute profile.
-	ComputeProfile *ComputeProfile `json:"computeProfile,omitempty"`
+	ComputeProfile *ComputeProfile
 
 	// The disk encryption properties.
-	DiskEncryptionProperties *DiskEncryptionProperties `json:"diskEncryptionProperties,omitempty"`
+	DiskEncryptionProperties *DiskEncryptionProperties
 
 	// The encryption-in-transit properties.
-	EncryptionInTransitProperties *EncryptionInTransitProperties `json:"encryptionInTransitProperties,omitempty"`
+	EncryptionInTransitProperties *EncryptionInTransitProperties
 
 	// The cluster kafka rest proxy configuration.
-	KafkaRestProperties *KafkaRestProperties `json:"kafkaRestProperties,omitempty"`
+	KafkaRestProperties *KafkaRestProperties
 
 	// The minimal supported tls version.
-	MinSupportedTLSVersion *string `json:"minSupportedTlsVersion,omitempty"`
+	MinSupportedTLSVersion *string
 
 	// The network properties.
-	NetworkProperties *NetworkProperties `json:"networkProperties,omitempty"`
+	NetworkProperties *NetworkProperties
 
 	// The type of operating system.
-	OSType *OSType `json:"osType,omitempty"`
+	OSType *OSType
 
 	// The private link configurations.
-	PrivateLinkConfigurations []*PrivateLinkConfiguration `json:"privateLinkConfigurations,omitempty"`
+	PrivateLinkConfigurations []*PrivateLinkConfiguration
 
 	// The security profile.
-	SecurityProfile *SecurityProfile `json:"securityProfile,omitempty"`
+	SecurityProfile *SecurityProfile
 
 	// The storage profile.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	StorageProfile *StorageProfile
 
 	// The cluster tier.
-	Tier *Tier `json:"tier,omitempty"`
+	Tier *Tier
 }
 
 // ClusterCreateRequestValidationParameters - The cluster create request specification.
 type ClusterCreateRequestValidationParameters struct {
 	// This indicates whether fetch Aadds resource or not.
-	FetchAaddsResource *bool `json:"fetchAaddsResource,omitempty"`
+	FetchAaddsResource *bool
 
 	// The identity of the cluster, if configured.
-	Identity *ClusterIdentity `json:"identity,omitempty"`
+	Identity *ClusterIdentity
 
 	// The location of the cluster.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The cluster name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The cluster create parameters.
-	Properties *ClusterCreateProperties `json:"properties,omitempty"`
+	Properties *ClusterCreateProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// The tenant id.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The resource type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The availability zones.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // ClusterCreateValidationResult - The response of cluster create request validation.
 type ClusterCreateValidationResult struct {
 	// The Azure active directory domain service resource details.
-	AaddsResourcesDetails []*AaddsResourceDetails `json:"aaddsResourcesDetails,omitempty"`
+	AaddsResourcesDetails []*AaddsResourceDetails
 
 	// The estimated creation duration.
-	EstimatedCreationDuration *string `json:"estimatedCreationDuration,omitempty"`
+	EstimatedCreationDuration *string
 
 	// The validation errors.
-	ValidationErrors []*ValidationErrorInfo `json:"validationErrors,omitempty"`
+	ValidationErrors []*ValidationErrorInfo
 
 	// The validation warnings.
-	ValidationWarnings []*ValidationErrorInfo `json:"validationWarnings,omitempty"`
+	ValidationWarnings []*ValidationErrorInfo
 }
 
 // ClusterDefinition - The cluster definition.
 type ClusterDefinition struct {
 	// The link to the blueprint.
-	Blueprint *string `json:"blueprint,omitempty"`
+	Blueprint *string
 
 	// The versions of different services in the cluster.
-	ComponentVersion map[string]*string `json:"componentVersion,omitempty"`
+	ComponentVersion map[string]*string
 
 	// The cluster configurations.
-	Configurations any `json:"configurations,omitempty"`
+	Configurations any
 
 	// The type of cluster.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 }
 
 // ClusterDiskEncryptionParameters - The Disk Encryption Cluster request parameters.
 type ClusterDiskEncryptionParameters struct {
 	// Key name that is used for enabling disk encryption.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// Specific key version that is used for enabling disk encryption.
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 
 	// Base key vault URI where the customers key is located eg. https://myvault.vault.azure.net
-	VaultURI *string `json:"vaultUri,omitempty"`
+	VaultURI *string
 }
 
 // ClusterGetProperties - The properties of cluster.
 type ClusterGetProperties struct {
 	// REQUIRED; The cluster definition.
-	ClusterDefinition *ClusterDefinition `json:"clusterDefinition,omitempty"`
+	ClusterDefinition *ClusterDefinition
 
 	// The hdp version of the cluster.
-	ClusterHdpVersion *string `json:"clusterHdpVersion,omitempty"`
+	ClusterHdpVersion *string
 
 	// The cluster id.
-	ClusterID *string `json:"clusterId,omitempty"`
+	ClusterID *string
 
 	// The state of the cluster.
-	ClusterState *string `json:"clusterState,omitempty"`
+	ClusterState *string
 
 	// The version of the cluster.
-	ClusterVersion *string `json:"clusterVersion,omitempty"`
+	ClusterVersion *string
 
 	// The compute isolation properties.
-	ComputeIsolationProperties *ComputeIsolationProperties `json:"computeIsolationProperties,omitempty"`
+	ComputeIsolationProperties *ComputeIsolationProperties
 
 	// The compute profile.
-	ComputeProfile *ComputeProfile `json:"computeProfile,omitempty"`
+	ComputeProfile *ComputeProfile
 
 	// The list of connectivity endpoints.
-	ConnectivityEndpoints []*ConnectivityEndpoint `json:"connectivityEndpoints,omitempty"`
+	ConnectivityEndpoints []*ConnectivityEndpoint
 
 	// The date on which the cluster was created.
-	CreatedDate *string `json:"createdDate,omitempty"`
+	CreatedDate *string
 
 	// The disk encryption properties.
-	DiskEncryptionProperties *DiskEncryptionProperties `json:"diskEncryptionProperties,omitempty"`
+	DiskEncryptionProperties *DiskEncryptionProperties
 
 	// The encryption-in-transit properties.
-	EncryptionInTransitProperties *EncryptionInTransitProperties `json:"encryptionInTransitProperties,omitempty"`
+	EncryptionInTransitProperties *EncryptionInTransitProperties
 
 	// The list of errors.
-	Errors []*Errors `json:"errors,omitempty"`
+	Errors []*Errors
 
 	// The excluded services config.
-	ExcludedServicesConfig *ExcludedServicesConfig `json:"excludedServicesConfig,omitempty"`
+	ExcludedServicesConfig *ExcludedServicesConfig
 
 	// The cluster kafka rest proxy configuration.
-	KafkaRestProperties *KafkaRestProperties `json:"kafkaRestProperties,omitempty"`
+	KafkaRestProperties *KafkaRestProperties
 
 	// The minimal supported tls version.
-	MinSupportedTLSVersion *string `json:"minSupportedTlsVersion,omitempty"`
+	MinSupportedTLSVersion *string
 
 	// The network properties.
-	NetworkProperties *NetworkProperties `json:"networkProperties,omitempty"`
+	NetworkProperties *NetworkProperties
 
 	// The type of operating system.
-	OSType *OSType `json:"osType,omitempty"`
+	OSType *OSType
 
 	// The private link configurations.
-	PrivateLinkConfigurations []*PrivateLinkConfiguration `json:"privateLinkConfigurations,omitempty"`
+	PrivateLinkConfigurations []*PrivateLinkConfiguration
 
 	// The provisioning state, which only appears in the response.
-	ProvisioningState *HDInsightClusterProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *HDInsightClusterProvisioningState
 
 	// The quota information.
-	QuotaInfo *QuotaInfo `json:"quotaInfo,omitempty"`
+	QuotaInfo *QuotaInfo
 
 	// The security profile.
-	SecurityProfile *SecurityProfile `json:"securityProfile,omitempty"`
+	SecurityProfile *SecurityProfile
 
 	// The storage profile.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	StorageProfile *StorageProfile
 
 	// The cluster tier.
-	Tier *Tier `json:"tier,omitempty"`
+	Tier *Tier
 
 	// READ-ONLY; The list of private endpoint connections.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 }
 
 // ClusterIdentity - Identity for the cluster.
 type ClusterIdentity struct {
 	// The type of identity used for the cluster. The type 'SystemAssigned, UserAssigned' includes both an implicitly created
 	// identity and a set of user assigned identities.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The list of user identities associated with the cluster. The user identity dictionary key references will be ARM resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The principal id of cluster identity. This property will only be provided for a system assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant id associated with the cluster. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ClusterListPersistedScriptActionsResult - The ListPersistedScriptActions operation response.
 type ClusterListPersistedScriptActionsResult struct {
 	// The list of Persisted Script Actions.
-	Value []*RuntimeScriptAction `json:"value,omitempty"`
+	Value []*RuntimeScriptAction
 
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ClusterListResult - The List Cluster operation response.
 type ClusterListResult struct {
 	// The list of Clusters.
-	Value []*Cluster `json:"value,omitempty"`
+	Value []*Cluster
 
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ClusterMonitoringRequest - The cluster monitor parameters.
 type ClusterMonitoringRequest struct {
 	// The cluster monitor workspace key.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// The cluster monitor workspace ID.
-	WorkspaceID *string `json:"workspaceId,omitempty"`
+	WorkspaceID *string
 }
 
 // ClusterMonitoringResponse - The cluster monitoring status response.
 type ClusterMonitoringResponse struct {
 	// The status of the monitor on the HDInsight cluster.
-	ClusterMonitoringEnabled *bool `json:"clusterMonitoringEnabled,omitempty"`
+	ClusterMonitoringEnabled *bool
 
 	// The workspace ID of the monitor on the HDInsight cluster.
-	WorkspaceID *string `json:"workspaceId,omitempty"`
+	WorkspaceID *string
 }
 
 // ClusterPatchParameters - The PatchCluster request parameters
 type ClusterPatchParameters struct {
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ClusterResizeParameters - The Resize Cluster request parameters.
 type ClusterResizeParameters struct {
 	// The target instance count for the operation.
-	TargetInstanceCount *int32 `json:"targetInstanceCount,omitempty"`
+	TargetInstanceCount *int32
 }
 
 // ClustersClientBeginCreateOptions contains the optional parameters for the ClustersClient.BeginCreate method.
@@ -751,16 +751,16 @@ type ClustersClientUpdateOptions struct {
 // ComputeIsolationProperties - The compute isolation properties.
 type ComputeIsolationProperties struct {
 	// The flag indicates whether enable compute isolation or not.
-	EnableComputeIsolation *bool `json:"enableComputeIsolation,omitempty"`
+	EnableComputeIsolation *bool
 
 	// The host sku.
-	HostSKU *string `json:"hostSku,omitempty"`
+	HostSKU *string
 }
 
 // ComputeProfile - Describes the compute profile.
 type ComputeProfile struct {
 	// The list of roles in the cluster.
-	Roles []*Role `json:"roles,omitempty"`
+	Roles []*Role
 }
 
 // ConfigurationsClientBeginUpdateOptions contains the optional parameters for the ConfigurationsClient.BeginUpdate method.
@@ -782,130 +782,130 @@ type ConfigurationsClientListOptions struct {
 // ConnectivityEndpoint - The connectivity properties
 type ConnectivityEndpoint struct {
 	// The location of the endpoint.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The name of the endpoint.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The port to connect to.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 
 	// The private ip address of the endpoint.
-	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
+	PrivateIPAddress *string
 
 	// The protocol of the endpoint.
-	Protocol *string `json:"protocol,omitempty"`
+	Protocol *string
 }
 
 // DataDisksGroups - The data disks groups for the role.
 type DataDisksGroups struct {
 	// The number of disks per node.
-	DisksPerNode *int32 `json:"disksPerNode,omitempty"`
+	DisksPerNode *int32
 
 	// READ-ONLY; ReadOnly. The DiskSize in GB. Do not set this value.
-	DiskSizeGB *int32 `json:"diskSizeGB,omitempty" azure:"ro"`
+	DiskSizeGB *int32
 
 	// READ-ONLY; ReadOnly. The storage account type. Do not set this value.
-	StorageAccountType *string `json:"storageAccountType,omitempty" azure:"ro"`
+	StorageAccountType *string
 }
 
 // Dimension - The definition of Dimension.
 type Dimension struct {
 	// The display name of the dimension.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The display name of the dimension.
-	InternalName *string `json:"internalName,omitempty"`
+	InternalName *string
 
 	// The name of the dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The flag indicates whether the metric will be exported for shoebox or not.
-	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+	ToBeExportedForShoebox *bool
 }
 
 // DiskBillingMeters - The disk billing meters.
 type DiskBillingMeters struct {
 	// The managed disk meter guid.
-	DiskRpMeter *string `json:"diskRpMeter,omitempty"`
+	DiskRpMeter *string
 
 	// The managed disk billing sku, P30 or S30.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// The managed disk billing tier, Standard or Premium.
-	Tier *Tier `json:"tier,omitempty"`
+	Tier *Tier
 }
 
 // DiskEncryptionProperties - The disk encryption properties
 type DiskEncryptionProperties struct {
 	// Algorithm identifier for encryption, default RSA-OAEP.
-	EncryptionAlgorithm *JSONWebKeyEncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	EncryptionAlgorithm *JSONWebKeyEncryptionAlgorithm
 
 	// Indicates whether or not resource disk encryption is enabled.
-	EncryptionAtHost *bool `json:"encryptionAtHost,omitempty"`
+	EncryptionAtHost *bool
 
 	// Key name that is used for enabling disk encryption.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// Specific key version that is used for enabling disk encryption.
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 
 	// Resource ID of Managed Identity that is used to access the key vault.
-	MsiResourceID *string `json:"msiResourceId,omitempty"`
+	MsiResourceID *string
 
 	// Base key vault URI where the customers key is located eg. https://myvault.vault.azure.net
-	VaultURI *string `json:"vaultUri,omitempty"`
+	VaultURI *string
 }
 
 // EncryptionInTransitProperties - The encryption-in-transit properties.
 type EncryptionInTransitProperties struct {
 	// Indicates whether or not inter cluster node communication is encrypted in transit.
-	IsEncryptionInTransitEnabled *bool `json:"isEncryptionInTransitEnabled,omitempty"`
+	IsEncryptionInTransitEnabled *bool
 }
 
 // ErrorResponse - Describes the format of Error response.
 type ErrorResponse struct {
 	// Error code
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // Errors - The error message associated with the cluster creation.
 type Errors struct {
 	// The error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ExcludedServicesConfig - The configuration that services will be excluded when creating cluster.
 type ExcludedServicesConfig struct {
 	// The config id of excluded services.
-	ExcludedServicesConfigID *string `json:"excludedServicesConfigId,omitempty"`
+	ExcludedServicesConfigID *string
 
 	// The list of excluded services.
-	ExcludedServicesList *string `json:"excludedServicesList,omitempty"`
+	ExcludedServicesList *string
 }
 
 // ExecuteScriptActionParameters - The parameters for the script actions to execute on a running cluster.
 type ExecuteScriptActionParameters struct {
 	// REQUIRED; Gets or sets if the scripts needs to be persisted.
-	PersistOnSuccess *bool `json:"persistOnSuccess,omitempty"`
+	PersistOnSuccess *bool
 
 	// The list of run time script actions.
-	ScriptActions []*RuntimeScriptAction `json:"scriptActions,omitempty"`
+	ScriptActions []*RuntimeScriptAction
 }
 
 // Extension - Cluster monitoring extensions.
 type Extension struct {
 	// The certificate for the cluster monitoring extensions.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// The workspace ID for the cluster monitoring extension.
-	WorkspaceID *string `json:"workspaceId,omitempty"`
+	WorkspaceID *string
 }
 
 // ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
@@ -974,94 +974,94 @@ type ExtensionsClientGetOptions struct {
 // GatewaySettings - Gateway settings.
 type GatewaySettings struct {
 	// READ-ONLY; Indicates whether or not the gateway settings based authorization is enabled.
-	IsCredentialEnabled *string `json:"restAuthCredential.isEnabled,omitempty" azure:"ro"`
+	IsCredentialEnabled *string
 
 	// READ-ONLY; The gateway settings user password.
-	Password *string `json:"restAuthCredential.password,omitempty" azure:"ro"`
+	Password *string
 
 	// READ-ONLY; The gateway settings user name.
-	UserName *string `json:"restAuthCredential.username,omitempty" azure:"ro"`
+	UserName *string
 }
 
 // HardwareProfile - The hardware profile.
 type HardwareProfile struct {
 	// The size of the VM
-	VMSize *string `json:"vmSize,omitempty"`
+	VMSize *string
 }
 
 // HostInfo - The cluster host information.
 type HostInfo struct {
 	// The effective disk encryption key URL used by the host
-	EffectiveDiskEncryptionKeyURL *string `json:"effectiveDiskEncryptionKeyUrl,omitempty"`
+	EffectiveDiskEncryptionKeyURL *string
 
 	// The Fully Qualified Domain Name of host
-	Fqdn *string `json:"fqdn,omitempty"`
+	Fqdn *string
 
 	// The host name
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // IPConfiguration - The ip configurations for the private link service.
 type IPConfiguration struct {
 	// REQUIRED; The name of private link IP configuration.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The private link ip configuration properties.
-	Properties *IPConfigurationProperties `json:"properties,omitempty"`
+	Properties *IPConfigurationProperties
 
 	// READ-ONLY; The private link IP configuration id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The type of the private link IP configuration.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IPConfigurationProperties - The private link ip configuration properties.
 type IPConfigurationProperties struct {
 	// Indicates whether this IP configuration is primary for the corresponding NIC.
-	Primary *bool `json:"primary,omitempty"`
+	Primary *bool
 
 	// The IP address.
-	PrivateIPAddress *string `json:"privateIPAddress,omitempty"`
+	PrivateIPAddress *string
 
 	// The method that private IP address is allocated.
-	PrivateIPAllocationMethod *PrivateIPAllocationMethod `json:"privateIPAllocationMethod,omitempty"`
+	PrivateIPAllocationMethod *PrivateIPAllocationMethod
 
 	// The subnet resource id.
-	Subnet *ResourceID `json:"subnet,omitempty"`
+	Subnet *ResourceID
 
 	// READ-ONLY; The private link configuration provisioning state, which only appears in the response.
-	ProvisioningState *PrivateLinkConfigurationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateLinkConfigurationProvisioningState
 }
 
 // KafkaRestProperties - The kafka rest proxy configuration which contains AAD security group information.
 type KafkaRestProperties struct {
 	// The information of AAD security group.
-	ClientGroupInfo *ClientGroupInfo `json:"clientGroupInfo,omitempty"`
+	ClientGroupInfo *ClientGroupInfo
 
 	// The configurations that need to be overriden.
-	ConfigurationOverride map[string]*string `json:"configurationOverride,omitempty"`
+	ConfigurationOverride map[string]*string
 }
 
 // LinuxOperatingSystemProfile - The ssh username, password, and ssh public key.
 type LinuxOperatingSystemProfile struct {
 	// The password.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The SSH profile.
-	SSHProfile *SSHProfile `json:"sshProfile,omitempty"`
+	SSHProfile *SSHProfile
 
 	// The username.
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // LocalizedName - The details about the localizable name of a type of usage.
 type LocalizedName struct {
 	// The localized name of the used resource.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// The name of the used resource.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // LocationsClientCheckNameAvailabilityOptions contains the optional parameters for the LocationsClient.CheckNameAvailability
@@ -1100,128 +1100,128 @@ type LocationsClientValidateClusterCreateRequestOptions struct {
 // MetricSpecifications - The details of metric specifications.
 type MetricSpecifications struct {
 	// The aggregation type of the metric specification.
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// The category of the metric.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// The override name of delegate metric.
-	DelegateMetricNameOverride *string `json:"delegateMetricNameOverride,omitempty"`
+	DelegateMetricNameOverride *string
 
 	// The dimensions of the metric specification.
-	Dimensions []*Dimension `json:"dimensions,omitempty"`
+	Dimensions []*Dimension
 
 	// The display description of the metric specification.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// The display name of the metric specification.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The flag indicates whether enable regional mdm account or not.
-	EnableRegionalMdmAccount *bool `json:"enableRegionalMdmAccount,omitempty"`
+	EnableRegionalMdmAccount *bool
 
 	// The flag indicates whether filling gap with zero.
-	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	FillGapWithZero *bool
 
 	// The flag indicates whether the metric is internal or not.
-	IsInternal *bool `json:"isInternal,omitempty"`
+	IsInternal *bool
 
 	// The metric filter pattern.
-	MetricFilterPattern *string `json:"metricFilterPattern,omitempty"`
+	MetricFilterPattern *string
 
 	// The name of the metric specification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The override name of resource id dimension name.
-	ResourceIDDimensionNameOverride *string `json:"resourceIdDimensionNameOverride,omitempty"`
+	ResourceIDDimensionNameOverride *string
 
 	// The source mdm account.
-	SourceMdmAccount *string `json:"sourceMdmAccount,omitempty"`
+	SourceMdmAccount *string
 
 	// The source mdm namespace.
-	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	SourceMdmNamespace *string
 
 	// The supported aggregation types of the metric specification.
-	SupportedAggregationTypes []*string `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*string
 
 	// The supported time grain types of the metric specification.
-	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty"`
+	SupportedTimeGrainTypes []*string
 
 	// The unit of the metric specification.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // NameAvailabilityCheckRequestParameters - The request spec of checking name availability.
 type NameAvailabilityCheckRequestParameters struct {
 	// The resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource type
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // NameAvailabilityCheckResult - The response spec of checking name availability.
 type NameAvailabilityCheckResult struct {
 	// This indicates whether the name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// READ-ONLY; The related message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The reason of the result.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 }
 
 // NetworkProperties - The network properties.
 type NetworkProperties struct {
 	// Indicates whether or not private link is enabled.
-	PrivateLink *PrivateLink `json:"privateLink,omitempty"`
+	PrivateLink *PrivateLink
 
 	// The direction for the resource provider connection.
-	ResourceProviderConnection *ResourceProviderConnection `json:"resourceProviderConnection,omitempty"`
+	ResourceProviderConnection *ResourceProviderConnection
 }
 
 // Operation - The HDInsight REST API operation.
 type Operation struct {
 	// The display of operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// The operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operation properties.
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Localized friendly description for the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The operation type: read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The service provider: Microsoft.HDInsight
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// The resource on which the operation is performed: Cluster, Applications, etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list HDInsight operations. It contains a list of operations and a URL link
 // to get the next set of results.
 type OperationListResult struct {
 	// The URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of HDInsight operations supported by the HDInsight resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationProperties - The details of operation.
 type OperationProperties struct {
 	// The specification of the service.
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ServiceSpecification
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1232,55 +1232,55 @@ type OperationsClientListOptions struct {
 // OsProfile - The Linux operation systems profile.
 type OsProfile struct {
 	// The Linux OS profile.
-	LinuxOperatingSystemProfile *LinuxOperatingSystemProfile `json:"linuxOperatingSystemProfile,omitempty"`
+	LinuxOperatingSystemProfile *LinuxOperatingSystemProfile
 }
 
 // PrivateEndpoint - The private endpoint.
 type PrivateEndpoint struct {
 	// The private endpoint id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The private endpoint connection.
 type PrivateEndpointConnection struct {
 	// REQUIRED; The private endpoint connection properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - The list private endpoint connections response.
 type PrivateEndpointConnectionListResult struct {
 	// The list of private endpoint connections.
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateEndpointConnectionProperties - The private endpoint connection properties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; The private link service connection state.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// READ-ONLY; The link identifier.
-	LinkIdentifier *string `json:"linkIdentifier,omitempty" azure:"ro"`
+	LinkIdentifier *string
 
 	// READ-ONLY; The private endpoint of the private endpoint connection
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty" azure:"ro"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state, which only appears in the response.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
@@ -1312,65 +1312,65 @@ type PrivateEndpointConnectionsClientListByClusterOptions struct {
 // PrivateLinkConfiguration - The private link configuration.
 type PrivateLinkConfiguration struct {
 	// REQUIRED; The name of private link configuration.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The private link configuration properties.
-	Properties *PrivateLinkConfigurationProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkConfigurationProperties
 
 	// READ-ONLY; The private link configuration id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The type of the private link configuration.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkConfigurationProperties - The private link configuration properties.
 type PrivateLinkConfigurationProperties struct {
 	// REQUIRED; The HDInsight private linkable sub-resource name to apply the private link configuration to. For example, 'headnode',
 	// 'gateway', 'edgenode'.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// REQUIRED; The IP configurations for the private link service.
-	IPConfigurations []*IPConfiguration `json:"ipConfigurations,omitempty"`
+	IPConfigurations []*IPConfiguration
 
 	// READ-ONLY; The private link configuration provisioning state, which only appears in the response.
-	ProvisioningState *PrivateLinkConfigurationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateLinkConfigurationProvisioningState
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -1387,233 +1387,233 @@ type PrivateLinkResourcesClientListByClusterOptions struct {
 // PrivateLinkServiceConnectionState - The private link service connection state.
 type PrivateLinkServiceConnectionState struct {
 	// REQUIRED; The concrete private link service connection.
-	Status *PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateLinkServiceConnectionStatus
 
 	// Whether there is further actions.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The optional description of the status.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // QuotaCapability - The regional quota capability.
 type QuotaCapability struct {
 	// The number of cores used in the subscription.
-	CoresUsed *int64 `json:"coresUsed,omitempty"`
+	CoresUsed *int64
 
 	// The number of cores that the subscription allowed.
-	MaxCoresAllowed *int64 `json:"maxCoresAllowed,omitempty"`
+	MaxCoresAllowed *int64
 
 	// The list of region quota capabilities.
-	RegionalQuotas []*RegionalQuotaCapability `json:"regionalQuotas,omitempty"`
+	RegionalQuotas []*RegionalQuotaCapability
 }
 
 // QuotaInfo - The quota properties for the cluster.
 type QuotaInfo struct {
 	// The cores used by the cluster.
-	CoresUsed *int32 `json:"coresUsed,omitempty"`
+	CoresUsed *int32
 }
 
 // RegionalQuotaCapability - The regional quota capacity.
 type RegionalQuotaCapability struct {
 	// The number of cores available in the region.
-	CoresAvailable *int64 `json:"coresAvailable,omitempty"`
+	CoresAvailable *int64
 
 	// The number of cores used in the region.
-	CoresUsed *int64 `json:"coresUsed,omitempty"`
+	CoresUsed *int64
 
 	// The region name.
-	RegionName *string `json:"regionName,omitempty"`
+	RegionName *string
 }
 
 // RegionsCapability - The regions capability.
 type RegionsCapability struct {
 	// The list of region capabilities.
-	Available []*string `json:"available,omitempty"`
+	Available []*string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceID - The azure resource id.
 type ResourceID struct {
 	// The azure resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // Role - Describes a role on the cluster.
 type Role struct {
 	// The autoscale configurations.
-	AutoscaleConfiguration *Autoscale `json:"autoscale,omitempty"`
+	AutoscaleConfiguration *Autoscale
 
 	// The data disks groups for the role.
-	DataDisksGroups []*DataDisksGroups `json:"dataDisksGroups,omitempty"`
+	DataDisksGroups []*DataDisksGroups
 
 	// Indicates whether encrypt the data disks.
-	EncryptDataDisks *bool `json:"encryptDataDisks,omitempty"`
+	EncryptDataDisks *bool
 
 	// The hardware profile.
-	HardwareProfile *HardwareProfile `json:"hardwareProfile,omitempty"`
+	HardwareProfile *HardwareProfile
 
 	// The minimum instance count of the cluster.
-	MinInstanceCount *int32 `json:"minInstanceCount,omitempty"`
+	MinInstanceCount *int32
 
 	// The name of the role.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operating system profile.
-	OSProfile *OsProfile `json:"osProfile,omitempty"`
+	OSProfile *OsProfile
 
 	// The list of script actions on the role.
-	ScriptActions []*ScriptAction `json:"scriptActions,omitempty"`
+	ScriptActions []*ScriptAction
 
 	// The instance count of the cluster.
-	TargetInstanceCount *int32 `json:"targetInstanceCount,omitempty"`
+	TargetInstanceCount *int32
 
 	// The name of the virtual machine group.
-	VMGroupName *string `json:"VMGroupName,omitempty"`
+	VMGroupName *string
 
 	// The virtual network profile.
-	VirtualNetworkProfile *VirtualNetworkProfile `json:"virtualNetworkProfile,omitempty"`
+	VirtualNetworkProfile *VirtualNetworkProfile
 }
 
 // RuntimeScriptAction - Describes a script action on a running cluster.
 type RuntimeScriptAction struct {
 	// REQUIRED; The name of the script action.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The list of roles where script will be executed.
-	Roles []*string `json:"roles,omitempty"`
+	Roles []*string
 
 	// REQUIRED; The URI to the script.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// The parameters for the script
-	Parameters *string `json:"parameters,omitempty"`
+	Parameters *string
 
 	// READ-ONLY; The application name of the script action, if any.
-	ApplicationName *string `json:"applicationName,omitempty" azure:"ro"`
+	ApplicationName *string
 }
 
 // RuntimeScriptActionDetail - The execution details of a script action.
 type RuntimeScriptActionDetail struct {
 	// REQUIRED; The name of the script action.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The list of roles where script will be executed.
-	Roles []*string `json:"roles,omitempty"`
+	Roles []*string
 
 	// REQUIRED; The URI to the script.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// The parameters for the script
-	Parameters *string `json:"parameters,omitempty"`
+	Parameters *string
 
 	// READ-ONLY; The application name of the script action, if any.
-	ApplicationName *string `json:"applicationName,omitempty" azure:"ro"`
+	ApplicationName *string
 
 	// READ-ONLY; The script action execution debug information.
-	DebugInformation *string `json:"debugInformation,omitempty" azure:"ro"`
+	DebugInformation *string
 
 	// READ-ONLY; The end time of script action execution.
-	EndTime *string `json:"endTime,omitempty" azure:"ro"`
+	EndTime *string
 
 	// READ-ONLY; The summary of script action execution result.
-	ExecutionSummary []*ScriptActionExecutionSummary `json:"executionSummary,omitempty" azure:"ro"`
+	ExecutionSummary []*ScriptActionExecutionSummary
 
 	// READ-ONLY; The reason why the script action was executed.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The execution id of the script action.
-	ScriptExecutionID *int64 `json:"scriptExecutionId,omitempty" azure:"ro"`
+	ScriptExecutionID *int64
 
 	// READ-ONLY; The start time of script action execution.
-	StartTime *string `json:"startTime,omitempty" azure:"ro"`
+	StartTime *string
 
 	// READ-ONLY; The current execution status of the script action.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // SSHProfile - The list of SSH public keys.
 type SSHProfile struct {
 	// The list of SSH public keys.
-	PublicKeys []*SSHPublicKey `json:"publicKeys,omitempty"`
+	PublicKeys []*SSHPublicKey
 }
 
 // SSHPublicKey - The SSH public key for the cluster nodes.
 type SSHPublicKey struct {
 	// The certificate for SSH.
-	CertificateData *string `json:"certificateData,omitempty"`
+	CertificateData *string
 }
 
 // ScriptAction - Describes a script action on role on the cluster.
 type ScriptAction struct {
 	// REQUIRED; The name of the script action.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The parameters for the script provided.
-	Parameters *string `json:"parameters,omitempty"`
+	Parameters *string
 
 	// REQUIRED; The URI to the script.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // ScriptActionExecutionHistoryList - The list script execution history response.
 type ScriptActionExecutionHistoryList struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The list of persisted script action details for the cluster.
-	Value []*RuntimeScriptActionDetail `json:"value,omitempty" azure:"ro"`
+	Value []*RuntimeScriptActionDetail
 }
 
 // ScriptActionExecutionSummary - The execution summary of a script action.
 type ScriptActionExecutionSummary struct {
 	// READ-ONLY; The instance count for a given script action execution status.
-	InstanceCount *int32 `json:"instanceCount,omitempty" azure:"ro"`
+	InstanceCount *int32
 
 	// READ-ONLY; The status of script action execution.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // ScriptActionPersistedGetResponseSpec - The persisted script action for cluster.
 type ScriptActionPersistedGetResponseSpec struct {
 	// The application name for the script action.
-	ApplicationName *string `json:"applicationName,omitempty"`
+	ApplicationName *string
 
 	// The name of script action.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The parameters for the script provided.
-	Parameters *string `json:"parameters,omitempty"`
+	Parameters *string
 
 	// The list of roles where script will be executed.
-	Roles []*string `json:"roles,omitempty"`
+	Roles []*string
 
 	// The URI to the script.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // ScriptActionsClientDeleteOptions contains the optional parameters for the ScriptActionsClient.Delete method.
@@ -1642,10 +1642,10 @@ type ScriptActionsClientListByClusterOptions struct {
 // ScriptActionsList - The persisted script action for the cluster.
 type ScriptActionsList struct {
 	// The list of persisted script action details for the cluster.
-	Value []*RuntimeScriptActionDetail `json:"value,omitempty"`
+	Value []*RuntimeScriptActionDetail
 
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ScriptExecutionHistoryClientListByClusterOptions contains the optional parameters for the ScriptExecutionHistoryClient.NewListByClusterPager
@@ -1663,171 +1663,171 @@ type ScriptExecutionHistoryClientPromoteOptions struct {
 // SecurityProfile - The security profile which contains Ssh public key for the HDInsight cluster.
 type SecurityProfile struct {
 	// The resource ID of the user's Azure Active Directory Domain Service.
-	AaddsResourceID *string `json:"aaddsResourceId,omitempty"`
+	AaddsResourceID *string
 
 	// Optional. The Distinguished Names for cluster user groups
-	ClusterUsersGroupDNs []*string `json:"clusterUsersGroupDNs,omitempty"`
+	ClusterUsersGroupDNs []*string
 
 	// The directory type.
-	DirectoryType *DirectoryType `json:"directoryType,omitempty"`
+	DirectoryType *DirectoryType
 
 	// The organization's active directory domain.
-	Domain *string `json:"domain,omitempty"`
+	Domain *string
 
 	// The domain admin password.
-	DomainUserPassword *string `json:"domainUserPassword,omitempty"`
+	DomainUserPassword *string
 
 	// The domain user account that will have admin privileges on the cluster.
-	DomainUsername *string `json:"domainUsername,omitempty"`
+	DomainUsername *string
 
 	// The LDAPS protocol URLs to communicate with the Active Directory.
-	LdapsUrls []*string `json:"ldapsUrls,omitempty"`
+	LdapsUrls []*string
 
 	// User assigned identity that has permissions to read and create cluster-related artifacts in the user's AADDS.
-	MsiResourceID *string `json:"msiResourceId,omitempty"`
+	MsiResourceID *string
 
 	// The organizational unit within the Active Directory to place the cluster and service accounts.
-	OrganizationalUnitDN *string `json:"organizationalUnitDN,omitempty"`
+	OrganizationalUnitDN *string
 }
 
 // ServiceSpecification - The specification of the service.
 type ServiceSpecification struct {
 	// The metric specifications.
-	MetricSpecifications []*MetricSpecifications `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*MetricSpecifications
 }
 
 // StorageAccount - The storage Account.
 type StorageAccount struct {
 	// The container in the storage account, only to be specified for WASB storage accounts.
-	Container *string `json:"container,omitempty"`
+	Container *string
 
 	// The filesystem, only to be specified for Azure Data Lake Storage Gen 2.
-	FileSystem *string `json:"fileSystem,omitempty"`
+	FileSystem *string
 
 	// The file share name.
-	Fileshare *string `json:"fileshare,omitempty"`
+	Fileshare *string
 
 	// Whether or not the storage account is the default storage account.
-	IsDefault *bool `json:"isDefault,omitempty"`
+	IsDefault *bool
 
 	// The storage account access key.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data Lake Storage
 	// Gen 2.
-	MsiResourceID *string `json:"msiResourceId,omitempty"`
+	MsiResourceID *string
 
 	// The name of the storage account.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource ID of storage account, only to be specified for Azure Data Lake Storage Gen 2.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The shared access signature key.
-	Saskey *string `json:"saskey,omitempty"`
+	Saskey *string
 }
 
 // StorageProfile - The storage profile.
 type StorageProfile struct {
 	// The list of storage accounts in the cluster.
-	Storageaccounts []*StorageAccount `json:"storageaccounts,omitempty"`
+	Storageaccounts []*StorageAccount
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UpdateClusterIdentityCertificateParameters - The update cluster identity certificate request parameters.
 type UpdateClusterIdentityCertificateParameters struct {
 	// The application id.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 
 	// The certificate in base64 encoded format.
-	Certificate *string `json:"certificate,omitempty"`
+	Certificate *string
 
 	// The password of the certificate.
-	CertificatePassword *string `json:"certificatePassword,omitempty"`
+	CertificatePassword *string
 }
 
 // UpdateGatewaySettingsParameters - The update gateway settings request parameters.
 type UpdateGatewaySettingsParameters struct {
 	// Indicates whether or not the gateway settings based authorization is enabled.
-	IsCredentialEnabled *bool `json:"restAuthCredential.isEnabled,omitempty"`
+	IsCredentialEnabled *bool
 
 	// The gateway settings user password.
-	Password *string `json:"restAuthCredential.password,omitempty"`
+	Password *string
 
 	// The gateway settings user name.
-	UserName *string `json:"restAuthCredential.username,omitempty"`
+	UserName *string
 }
 
 // Usage - The details about the usage of a particular limited resource.
 type Usage struct {
 	// The current usage.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
+	CurrentValue *int64
 
 	// The maximum allowed usage.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// The type of measurement for usage.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 
 	// READ-ONLY; The details about the localizable name of the used resource.
-	Name *LocalizedName `json:"name,omitempty" azure:"ro"`
+	Name *LocalizedName
 }
 
 // UsagesListResult - The response for the operation to get regional usages for a subscription.
 type UsagesListResult struct {
 	// The list of usages.
-	Value []*Usage `json:"value,omitempty"`
+	Value []*Usage
 }
 
 // UserAssignedIdentity - The User Assigned Identity
 type UserAssignedIdentity struct {
 	// The tenant id of user assigned identity.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // VMSizeCompatibilityFilterV2 - This class represent a single filter object that defines a multidimensional set. The dimensions
@@ -1837,101 +1837,101 @@ type UserAssignedIdentity struct {
 // conflicted.
 type VMSizeCompatibilityFilterV2 struct {
 	// The list of cluster flavors under the effect of the filter.
-	ClusterFlavors []*string `json:"clusterFlavors,omitempty"`
+	ClusterFlavors []*string
 
 	// The list of cluster versions affected in Major.Minor format.
-	ClusterVersions []*string `json:"clusterVersions,omitempty"`
+	ClusterVersions []*string
 
 	// Whether support compute isolation. 'true' means only for ComputeIsolationEnabled, 'false' means only for regular cluster.
-	ComputeIsolationSupported *string `json:"computeIsolationSupported,omitempty"`
+	ComputeIsolationSupported *string
 
 	// Whether apply for ESP cluster. 'true' means only for ESP, 'false' means only for non-ESP, null or empty string or others
 	// mean for both.
-	EspApplied *string `json:"espApplied,omitempty"`
+	EspApplied *string
 
 	// The filtering mode. Effectively this can enabling or disabling the VM sizes in a particular set.
-	FilterMode *FilterMode `json:"filterMode,omitempty"`
+	FilterMode *FilterMode
 
 	// The list of node types affected by the filter.
-	NodeTypes []*string `json:"nodeTypes,omitempty"`
+	NodeTypes []*string
 
 	// The OSType affected, Windows or Linux.
-	OSType []*OSType `json:"osType,omitempty"`
+	OSType []*OSType
 
 	// The list of regions under the effect of the filter.
-	Regions []*string `json:"regions,omitempty"`
+	Regions []*string
 
 	// The list of virtual machine sizes to include or exclude.
-	VMSizes []*string `json:"vmSizes,omitempty"`
+	VMSizes []*string
 }
 
 // VMSizeProperty - The vm size property
 type VMSizeProperty struct {
 	// The number of cores that the vm size has.
-	Cores *int32 `json:"cores,omitempty"`
+	Cores *int32
 
 	// The data disk storage tier of the vm size.
-	DataDiskStorageTier *string `json:"dataDiskStorageTier,omitempty"`
+	DataDiskStorageTier *string
 
 	// The label of the vm size.
-	Label *string `json:"label,omitempty"`
+	Label *string
 
 	// The max data disk count of the vm size.
-	MaxDataDiskCount *int64 `json:"maxDataDiskCount,omitempty"`
+	MaxDataDiskCount *int64
 
 	// The memory whose unit is MB of the vm size.
-	MemoryInMb *int64 `json:"memoryInMb,omitempty"`
+	MemoryInMb *int64
 
 	// The vm size name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// This indicates this vm size is supported by virtual machines or not
-	SupportedByVirtualMachines *bool `json:"supportedByVirtualMachines,omitempty"`
+	SupportedByVirtualMachines *bool
 
 	// The indicates this vm size is supported by web worker roles or not
-	SupportedByWebWorkerRoles *bool `json:"supportedByWebWorkerRoles,omitempty"`
+	SupportedByWebWorkerRoles *bool
 
 	// The virtual machine resource disk size whose unit is MB of the vm size.
-	VirtualMachineResourceDiskSizeInMb *int64 `json:"virtualMachineResourceDiskSizeInMb,omitempty"`
+	VirtualMachineResourceDiskSizeInMb *int64
 
 	// The web worker resource disk size whose unit is MB of the vm size.
-	WebWorkerResourceDiskSizeInMb *int64 `json:"webWorkerResourceDiskSizeInMb,omitempty"`
+	WebWorkerResourceDiskSizeInMb *int64
 }
 
 // ValidationErrorInfo - The validation error information.
 type ValidationErrorInfo struct {
 	// The error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The error resource.
-	ErrorResource *string `json:"errorResource,omitempty"`
+	ErrorResource *string
 
 	// The error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The message arguments
-	MessageArguments []*string `json:"messageArguments,omitempty"`
+	MessageArguments []*string
 }
 
 // VersionSpec - The version properties.
 type VersionSpec struct {
 	// The component version property.
-	ComponentVersions map[string]*string `json:"componentVersions,omitempty"`
+	ComponentVersions map[string]*string
 
 	// The display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The friendly name
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Whether or not the version is the default version.
-	IsDefault *bool `json:"isDefault,omitempty"`
+	IsDefault *bool
 }
 
 // VersionsCapability - The version capability.
 type VersionsCapability struct {
 	// The list of version capabilities.
-	Available []*VersionSpec `json:"available,omitempty"`
+	Available []*VersionSpec
 }
 
 // VirtualMachinesClientBeginRestartHostsOptions contains the optional parameters for the VirtualMachinesClient.BeginRestartHosts
@@ -1955,8 +1955,8 @@ type VirtualMachinesClientListHostsOptions struct {
 // VirtualNetworkProfile - The virtual network properties.
 type VirtualNetworkProfile struct {
 	// The ID of the virtual network.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The name of the subnet.
-	Subnet *string `json:"subnet,omitempty"`
+	Subnet *string
 }

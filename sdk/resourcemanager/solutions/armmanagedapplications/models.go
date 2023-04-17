@@ -14,82 +14,82 @@ import "time"
 // Application - Information about managed application.
 type Application struct {
 	// REQUIRED; The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// REQUIRED; The managed application properties.
-	Properties *ApplicationProperties `json:"properties,omitempty"`
+	Properties *ApplicationProperties
 
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ID of the resource that manages this resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// The plan information.
-	Plan *Plan `json:"plan,omitempty"`
+	Plan *Plan
 
 	// The SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplicationArtifact - Managed application artifact.
 type ApplicationArtifact struct {
 	// REQUIRED; The managed application artifact name.
-	Name *ApplicationArtifactName `json:"name,omitempty"`
+	Name *ApplicationArtifactName
 
 	// REQUIRED; The managed application artifact type.
-	Type *ApplicationArtifactType `json:"type,omitempty"`
+	Type *ApplicationArtifactType
 
 	// REQUIRED; The managed application artifact blob uri.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // ApplicationAuthorization - The managed application provider authorization.
 type ApplicationAuthorization struct {
 	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
 	// managed application resources.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have
 	// on the managed application's container resource group. This role definition cannot have
 	// permission to delete the resource group.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+	RoleDefinitionID *string
 }
 
 // ApplicationBillingDetailsDefinition - Managed application billing details definition.
 type ApplicationBillingDetailsDefinition struct {
 	// The managed application resource usage Id.
-	ResourceUsageID *string `json:"resourceUsageId,omitempty"`
+	ResourceUsageID *string
 }
 
 // ApplicationClientDetails - The application client details to track the entity creating/updating the managed app resource.
 type ApplicationClientDetails struct {
 	// The client application Id.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 
 	// The client Oid.
-	Oid *string `json:"oid,omitempty"`
+	Oid *string
 
 	// The client Puid
-	Puid *string `json:"puid,omitempty"`
+	Puid *string
 }
 
 // ApplicationClientListOperationsOptions contains the optional parameters for the ApplicationClient.NewListOperationsPager
@@ -101,112 +101,112 @@ type ApplicationClientListOperationsOptions struct {
 // ApplicationDefinition - Information about managed application definition.
 type ApplicationDefinition struct {
 	// REQUIRED; The managed application definition properties.
-	Properties *ApplicationDefinitionProperties `json:"properties,omitempty"`
+	Properties *ApplicationDefinitionProperties
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ID of the resource that manages this resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// The SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplicationDefinitionArtifact - Application definition artifact.
 type ApplicationDefinitionArtifact struct {
 	// REQUIRED; The managed application definition artifact name.
-	Name *ApplicationDefinitionArtifactName `json:"name,omitempty"`
+	Name *ApplicationDefinitionArtifactName
 
 	// REQUIRED; The managed application definition artifact type.
-	Type *ApplicationArtifactType `json:"type,omitempty"`
+	Type *ApplicationArtifactType
 
 	// REQUIRED; The managed application definition artifact blob uri.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // ApplicationDefinitionListResult - List of managed application definitions.
 type ApplicationDefinitionListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The array of managed application definitions.
-	Value []*ApplicationDefinition `json:"value,omitempty"`
+	Value []*ApplicationDefinition
 }
 
 // ApplicationDefinitionPatchable - Information about an application definition request.
 type ApplicationDefinitionPatchable struct {
 	// Application definition tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ApplicationDefinitionProperties - The managed application definition properties.
 type ApplicationDefinitionProperties struct {
 	// REQUIRED; The managed application lock level.
-	LockLevel *ApplicationLockLevel `json:"lockLevel,omitempty"`
+	LockLevel *ApplicationLockLevel
 
 	// The collection of managed application artifacts. The portal will use the files specified as artifacts to construct the
 	// user experience of creating a managed application from a managed application
 	// definition.
-	Artifacts []*ApplicationDefinitionArtifact `json:"artifacts,omitempty"`
+	Artifacts []*ApplicationDefinitionArtifact
 
 	// The managed application provider authorizations.
-	Authorizations []*ApplicationAuthorization `json:"authorizations,omitempty"`
+	Authorizations []*ApplicationAuthorization
 
 	// The createUiDefinition json for the backing template with Microsoft.Solutions/applications resource. It can be a JObject
 	// or well-formed JSON string.
-	CreateUIDefinition any `json:"createUiDefinition,omitempty"`
+	CreateUIDefinition any
 
 	// The managed application deployment policy.
-	DeploymentPolicy *ApplicationDeploymentPolicy `json:"deploymentPolicy,omitempty"`
+	DeploymentPolicy *ApplicationDeploymentPolicy
 
 	// The managed application definition description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The managed application definition display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// A value indicating whether the package is enabled or not.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// The managed application locking policy.
-	LockingPolicy *ApplicationPackageLockingPolicyDefinition `json:"lockingPolicy,omitempty"`
+	LockingPolicy *ApplicationPackageLockingPolicyDefinition
 
 	// The inline main template json which has resources to be provisioned. It can be a JObject or well-formed JSON string.
-	MainTemplate any `json:"mainTemplate,omitempty"`
+	MainTemplate any
 
 	// The managed application management policy that determines publisher's access to the managed resource group.
-	ManagementPolicy *ApplicationManagementPolicy `json:"managementPolicy,omitempty"`
+	ManagementPolicy *ApplicationManagementPolicy
 
 	// The managed application notification policy.
-	NotificationPolicy *ApplicationNotificationPolicy `json:"notificationPolicy,omitempty"`
+	NotificationPolicy *ApplicationNotificationPolicy
 
 	// The managed application definition package file Uri. Use this element
-	PackageFileURI *string `json:"packageFileUri,omitempty"`
+	PackageFileURI *string
 
 	// The managed application provider policies.
-	Policies []*ApplicationPolicy `json:"policies,omitempty"`
+	Policies []*ApplicationPolicy
 
 	// The storage account id for bring your own storage scenario.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// READ-ONLY; Provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ApplicationDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationDefinitionsClient.BeginCreateOrUpdate
@@ -249,196 +249,196 @@ type ApplicationDefinitionsClientUpdateOptions struct {
 // ApplicationDeploymentPolicy - Managed application deployment policy.
 type ApplicationDeploymentPolicy struct {
 	// REQUIRED; The managed application deployment mode.
-	DeploymentMode *DeploymentMode `json:"deploymentMode,omitempty"`
+	DeploymentMode *DeploymentMode
 }
 
 // ApplicationJitAccessPolicy - Managed application Jit access policy.
 type ApplicationJitAccessPolicy struct {
 	// REQUIRED; Whether the JIT access is enabled.
-	JitAccessEnabled *bool `json:"jitAccessEnabled,omitempty"`
+	JitAccessEnabled *bool
 
 	// JIT approval mode.
-	JitApprovalMode *JitApprovalMode `json:"jitApprovalMode,omitempty"`
+	JitApprovalMode *JitApprovalMode
 
 	// The JIT approvers
-	JitApprovers []*JitApproverDefinition `json:"jitApprovers,omitempty"`
+	JitApprovers []*JitApproverDefinition
 
 	// The maximum duration JIT access is granted. This is an ISO8601 time period value.
-	MaximumJitAccessDuration *string `json:"maximumJitAccessDuration,omitempty"`
+	MaximumJitAccessDuration *string
 }
 
 // ApplicationListResult - List of managed applications.
 type ApplicationListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The array of managed applications.
-	Value []*Application `json:"value,omitempty"`
+	Value []*Application
 }
 
 // ApplicationManagementPolicy - Managed application management policy.
 type ApplicationManagementPolicy struct {
 	// The managed application management mode.
-	Mode *ApplicationManagementMode `json:"mode,omitempty"`
+	Mode *ApplicationManagementMode
 }
 
 // ApplicationNotificationEndpoint - Managed application notification endpoint.
 type ApplicationNotificationEndpoint struct {
 	// REQUIRED; The managed application notification endpoint uri.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // ApplicationNotificationPolicy - Managed application notification policy.
 type ApplicationNotificationPolicy struct {
 	// REQUIRED; The managed application notification endpoint.
-	NotificationEndpoints []*ApplicationNotificationEndpoint `json:"notificationEndpoints,omitempty"`
+	NotificationEndpoints []*ApplicationNotificationEndpoint
 }
 
 // ApplicationPackageContact - The application package contact information.
 type ApplicationPackageContact struct {
 	// REQUIRED; The contact email.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// REQUIRED; The contact phone number.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// The contact name.
-	ContactName *string `json:"contactName,omitempty"`
+	ContactName *string
 }
 
 // ApplicationPackageLockingPolicyDefinition - Managed application locking policy.
 type ApplicationPackageLockingPolicyDefinition struct {
 	// The deny assignment excluded actions.
-	AllowedActions []*string `json:"allowedActions,omitempty"`
+	AllowedActions []*string
 
 	// The deny assignment excluded data actions.
-	AllowedDataActions []*string `json:"allowedDataActions,omitempty"`
+	AllowedDataActions []*string
 }
 
 // ApplicationPackageSupportUrls - The appliance package support URLs.
 type ApplicationPackageSupportUrls struct {
 	// The government cloud support URL.
-	GovernmentCloud *string `json:"governmentCloud,omitempty"`
+	GovernmentCloud *string
 
 	// The public azure support URL.
-	PublicAzure *string `json:"publicAzure,omitempty"`
+	PublicAzure *string
 }
 
 // ApplicationPatchable - Information about managed application.
 type ApplicationPatchable struct {
 	// The identity of the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The kind of the managed application. Allowed values are MarketPlace and ServiceCatalog.
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ID of the resource that manages this resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// The plan information.
-	Plan *PlanPatchable `json:"plan,omitempty"`
+	Plan *PlanPatchable
 
 	// The managed application properties.
-	Properties *ApplicationProperties `json:"properties,omitempty"`
+	Properties *ApplicationProperties
 
 	// The SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplicationPolicy - Managed application policy.
 type ApplicationPolicy struct {
 	// The policy name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The policy parameters.
-	Parameters *string `json:"parameters,omitempty"`
+	Parameters *string
 
 	// The policy definition Id.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	PolicyDefinitionID *string
 }
 
 // ApplicationProperties - The managed application properties.
 type ApplicationProperties struct {
 	// The fully qualified path of managed application definition Id.
-	ApplicationDefinitionID *string `json:"applicationDefinitionId,omitempty"`
+	ApplicationDefinitionID *string
 
 	// The managed application Jit access policy.
-	JitAccessPolicy *ApplicationJitAccessPolicy `json:"jitAccessPolicy,omitempty"`
+	JitAccessPolicy *ApplicationJitAccessPolicy
 
 	// The managed resource group Id.
-	ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
+	ManagedResourceGroupID *string
 
 	// Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
-	Parameters any `json:"parameters,omitempty"`
+	Parameters any
 
 	// READ-ONLY; The collection of managed application artifacts.
-	Artifacts []*ApplicationArtifact `json:"artifacts,omitempty" azure:"ro"`
+	Artifacts []*ApplicationArtifact
 
 	// READ-ONLY; The read-only authorizations property that is retrieved from the application package.
-	Authorizations []*ApplicationAuthorization `json:"authorizations,omitempty" azure:"ro"`
+	Authorizations []*ApplicationAuthorization
 
 	// READ-ONLY; The managed application billing details.
-	BillingDetails *ApplicationBillingDetailsDefinition `json:"billingDetails,omitempty" azure:"ro"`
+	BillingDetails *ApplicationBillingDetailsDefinition
 
 	// READ-ONLY; The client entity that created the JIT request.
-	CreatedBy *ApplicationClientDetails `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *ApplicationClientDetails
 
 	// READ-ONLY; The read-only customer support property that is retrieved from the application package.
-	CustomerSupport *ApplicationPackageContact `json:"customerSupport,omitempty" azure:"ro"`
+	CustomerSupport *ApplicationPackageContact
 
 	// READ-ONLY; The managed application management mode.
-	ManagementMode *ApplicationManagementMode `json:"managementMode,omitempty" azure:"ro"`
+	ManagementMode *ApplicationManagementMode
 
 	// READ-ONLY; Name and value pairs that define the managed application outputs.
-	Outputs any `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; The managed application provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The publisher tenant Id.
-	PublisherTenantID *string `json:"publisherTenantId,omitempty" azure:"ro"`
+	PublisherTenantID *string
 
 	// READ-ONLY; The read-only support URLs property that is retrieved from the application package.
-	SupportUrls *ApplicationPackageSupportUrls `json:"supportUrls,omitempty" azure:"ro"`
+	SupportUrls *ApplicationPackageSupportUrls
 
 	// READ-ONLY; The client entity that last updated the JIT request.
-	UpdatedBy *ApplicationClientDetails `json:"updatedBy,omitempty" azure:"ro"`
+	UpdatedBy *ApplicationClientDetails
 }
 
 // ApplicationPropertiesPatchable - The managed application properties.
 type ApplicationPropertiesPatchable struct {
 	// The fully qualified path of managed application definition Id.
-	ApplicationDefinitionID *string `json:"applicationDefinitionId,omitempty"`
+	ApplicationDefinitionID *string
 
 	// The managed resource group Id.
-	ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
+	ManagedResourceGroupID *string
 
 	// Name and value pairs that define the managed application parameters. It can be a JObject or a well formed JSON string.
-	Parameters any `json:"parameters,omitempty"`
+	Parameters any
 
 	// READ-ONLY; Name and value pairs that define the managed application outputs.
-	Outputs any `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; The managed application provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ApplicationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationsClient.BeginCreateOrUpdate
@@ -493,166 +493,166 @@ type ApplicationsClientUpdateOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // GenericResource - Resource information.
 type GenericResource struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ID of the resource that manages this resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// The SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserAssignedResourceIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedResourceIdentity
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // JitApproverDefinition - JIT approver definition.
 type JitApproverDefinition struct {
 	// REQUIRED; The approver service principal Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The approver display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The approver type.
-	Type *JitApproverType `json:"type,omitempty"`
+	Type *JitApproverType
 }
 
 // JitAuthorizationPolicies - The JIT authorization policies.
 type JitAuthorizationPolicies struct {
 	// REQUIRED; The the principal id that will be granted JIT access.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// REQUIRED; The role definition id that will be granted to the Principal.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+	RoleDefinitionID *string
 }
 
 // JitRequestDefinition - Information about JIT request definition.
 type JitRequestDefinition struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The JIT request properties.
-	Properties *JitRequestProperties `json:"properties,omitempty"`
+	Properties *JitRequestProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JitRequestDefinitionListResult - List of JIT requests.
 type JitRequestDefinitionListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The array of Jit request definition.
-	Value []*JitRequestDefinition `json:"value,omitempty"`
+	Value []*JitRequestDefinition
 }
 
 // JitRequestPatchable - Information about JIT request.
 type JitRequestPatchable struct {
 	// Jit request tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // JitRequestProperties - Information about JIT request properties
 type JitRequestProperties struct {
 	// REQUIRED; The parent application id.
-	ApplicationResourceID *string `json:"applicationResourceId,omitempty"`
+	ApplicationResourceID *string
 
 	// REQUIRED; The JIT authorization policies.
-	JitAuthorizationPolicies []*JitAuthorizationPolicies `json:"jitAuthorizationPolicies,omitempty"`
+	JitAuthorizationPolicies []*JitAuthorizationPolicies
 
 	// REQUIRED; The JIT request properties.
-	JitSchedulingPolicy *JitSchedulingPolicy `json:"jitSchedulingPolicy,omitempty"`
+	JitSchedulingPolicy *JitSchedulingPolicy
 
 	// READ-ONLY; The client entity that created the JIT request.
-	CreatedBy *ApplicationClientDetails `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *ApplicationClientDetails
 
 	// READ-ONLY; The JIT request state.
-	JitRequestState *JitRequestState `json:"jitRequestState,omitempty" azure:"ro"`
+	JitRequestState *JitRequestState
 
 	// READ-ONLY; The JIT request provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The publisher tenant id.
-	PublisherTenantID *string `json:"publisherTenantId,omitempty" azure:"ro"`
+	PublisherTenantID *string
 
 	// READ-ONLY; The client entity that last updated the JIT request.
-	UpdatedBy *ApplicationClientDetails `json:"updatedBy,omitempty" azure:"ro"`
+	UpdatedBy *ApplicationClientDetails
 }
 
 // JitRequestsClientBeginCreateOrUpdateOptions contains the optional parameters for the JitRequestsClient.BeginCreateOrUpdate
@@ -692,169 +692,169 @@ type JitRequestsClientUpdateOptions struct {
 // JitSchedulingPolicy - The JIT scheduling policies.
 type JitSchedulingPolicy struct {
 	// REQUIRED; The required duration of the JIT request.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// REQUIRED; The start time of the request.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// REQUIRED; The type of JIT schedule.
-	Type *JitSchedulingType `json:"type,omitempty"`
+	Type *JitSchedulingType
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // Plan for the managed application.
 type Plan struct {
 	// REQUIRED; The plan name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The product code.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// REQUIRED; The publisher ID.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// REQUIRED; The plan's version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// The promotion code.
-	PromotionCode *string `json:"promotionCode,omitempty"`
+	PromotionCode *string
 }
 
 // PlanPatchable - Plan for the managed application.
 type PlanPatchable struct {
 	// The plan name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The product code.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// The promotion code.
-	PromotionCode *string `json:"promotionCode,omitempty"`
+	PromotionCode *string
 
 	// The publisher ID.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// The plan's version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // Resource information.
 type Resource struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKU for the resource.
 type SKU struct {
 	// REQUIRED; The SKU name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The SKU capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// The SKU family.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// The SKU model.
-	Model *string `json:"model,omitempty"`
+	Model *string
 
 	// The SKU size.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// The SKU tier.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // UserAssignedResourceIdentity - Represents the user assigned identity that is contained within the UserAssignedIdentities
 // dictionary on ResourceIdentity
 type UserAssignedResourceIdentity struct {
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant id of user assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }

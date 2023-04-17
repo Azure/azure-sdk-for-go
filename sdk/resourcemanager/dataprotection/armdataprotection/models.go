@@ -14,10 +14,10 @@ import "time"
 // AbsoluteDeleteOption - Delete option with duration
 type AbsoluteDeleteOption struct {
 	// REQUIRED; Duration of deletion after given timespan
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetDeleteOption implements the DeleteOptionClassification interface for type AbsoluteDeleteOption.
@@ -31,30 +31,30 @@ func (a *AbsoluteDeleteOption) GetDeleteOption() *DeleteOption {
 // AdHocBackupRuleOptions - Adhoc backup rules
 type AdHocBackupRuleOptions struct {
 	// REQUIRED
-	RuleName *string `json:"ruleName,omitempty"`
+	RuleName *string
 
 	// REQUIRED; Adhoc backup trigger option
-	TriggerOption *AdhocBackupTriggerOption `json:"triggerOption,omitempty"`
+	TriggerOption *AdhocBackupTriggerOption
 }
 
 // AdhocBackupTriggerOption - Adhoc backup trigger option
 type AdhocBackupTriggerOption struct {
-	RetentionTagOverride *string `json:"retentionTagOverride,omitempty"`
+	RetentionTagOverride *string
 }
 
 // AdhocBasedTaggingCriteria - Adhoc backup tagging criteria
 type AdhocBasedTaggingCriteria struct {
 	// Retention tag information
-	TagInfo *RetentionTag `json:"tagInfo,omitempty"`
+	TagInfo *RetentionTag
 }
 
 // AdhocBasedTriggerContext - Adhoc trigger context
 type AdhocBasedTriggerContext struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Tagging Criteria containing retention tag for adhoc backup.
-	TaggingCriteria *AdhocBasedTaggingCriteria `json:"taggingCriteria,omitempty"`
+	TaggingCriteria *AdhocBasedTaggingCriteria
 }
 
 // GetTriggerContext implements the TriggerContextClassification interface for type AdhocBasedTriggerContext.
@@ -76,7 +76,7 @@ type AuthCredentialsClassification interface {
 // AuthCredentials - Base class for different types of authentication credentials.
 type AuthCredentials struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetAuthCredentials implements the AuthCredentialsClassification interface for type AuthCredentials.
@@ -85,21 +85,21 @@ func (a *AuthCredentials) GetAuthCredentials() *AuthCredentials { return a }
 // AzureBackupDiscreteRecoveryPoint - Azure backup discrete RecoveryPoint
 type AzureBackupDiscreteRecoveryPoint struct {
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED
-	RecoveryPointTime              *time.Time                       `json:"recoveryPointTime,omitempty"`
-	FriendlyName                   *string                          `json:"friendlyName,omitempty"`
-	PolicyName                     *string                          `json:"policyName,omitempty"`
-	PolicyVersion                  *string                          `json:"policyVersion,omitempty"`
-	RecoveryPointDataStoresDetails []*RecoveryPointDataStoreDetails `json:"recoveryPointDataStoresDetails,omitempty"`
-	RecoveryPointID                *string                          `json:"recoveryPointId,omitempty"`
-	RecoveryPointType              *string                          `json:"recoveryPointType,omitempty"`
-	RetentionTagName               *string                          `json:"retentionTagName,omitempty"`
-	RetentionTagVersion            *string                          `json:"retentionTagVersion,omitempty"`
+	RecoveryPointTime              *time.Time
+	FriendlyName                   *string
+	PolicyName                     *string
+	PolicyVersion                  *string
+	RecoveryPointDataStoresDetails []*RecoveryPointDataStoreDetails
+	RecoveryPointID                *string
+	RecoveryPointType              *string
+	RetentionTagName               *string
+	RetentionTagVersion            *string
 
 	// READ-ONLY
-	ExpiryTime *time.Time `json:"expiryTime,omitempty" azure:"ro"`
+	ExpiryTime *time.Time
 }
 
 // GetAzureBackupRecoveryPoint implements the AzureBackupRecoveryPointClassification interface for type AzureBackupDiscreteRecoveryPoint.
@@ -112,179 +112,179 @@ func (a *AzureBackupDiscreteRecoveryPoint) GetAzureBackupRecoveryPoint() *AzureB
 // AzureBackupFindRestorableTimeRangesRequest - List Restore Ranges Request
 type AzureBackupFindRestorableTimeRangesRequest struct {
 	// REQUIRED; Gets or sets the type of the source data store.
-	SourceDataStoreType *RestoreSourceDataStoreType `json:"sourceDataStoreType,omitempty"`
+	SourceDataStoreType *RestoreSourceDataStoreType
 
 	// End time for the List Restore Ranges request. ISO 8601 format.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// Start time for the List Restore Ranges request. ISO 8601 format.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 }
 
 // AzureBackupFindRestorableTimeRangesRequestResource - List Restore Ranges Request
 type AzureBackupFindRestorableTimeRangesRequestResource struct {
 	// AzureBackupFindRestorableTimeRangesRequestResource content
-	Content     *AzureBackupFindRestorableTimeRangesRequest `json:"content,omitempty"`
-	CultureInfo *string                                     `json:"cultureInfo,omitempty"`
-	HTTPMethod  *string                                     `json:"httpMethod,omitempty"`
+	Content     *AzureBackupFindRestorableTimeRangesRequest
+	CultureInfo *string
+	HTTPMethod  *string
 
 	// Dictionary of
-	Headers map[string][]*string `json:"headers,omitempty"`
+	Headers map[string][]*string
 
 	// Dictionary of
-	Parameters             map[string]*string `json:"parameters,omitempty"`
-	SubscriptionID         *string            `json:"subscriptionId,omitempty"`
-	SupportedGroupVersions []*string          `json:"supportedGroupVersions,omitempty"`
-	URI                    *string            `json:"uri,omitempty"`
+	Parameters             map[string]*string
+	SubscriptionID         *string
+	SupportedGroupVersions []*string
+	URI                    *string
 }
 
 // AzureBackupFindRestorableTimeRangesResponse - List Restore Ranges Response
 type AzureBackupFindRestorableTimeRangesResponse struct {
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Returns the Restore Ranges available on the Backup Instance.
-	RestorableTimeRanges []*RestorableTimeRange `json:"restorableTimeRanges,omitempty"`
+	RestorableTimeRanges []*RestorableTimeRange
 }
 
 // AzureBackupFindRestorableTimeRangesResponseResource - List Restore Ranges Response
 type AzureBackupFindRestorableTimeRangesResponseResource struct {
 	// AzureBackupFindRestorableTimeRangesResponseResource properties
-	Properties *AzureBackupFindRestorableTimeRangesResponse `json:"properties,omitempty"`
+	Properties *AzureBackupFindRestorableTimeRangesResponse
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureBackupJob - AzureBackup Job Class
 type AzureBackupJob struct {
 	// REQUIRED; Job Activity Id
-	ActivityID *string `json:"activityID,omitempty"`
+	ActivityID *string
 
 	// REQUIRED; Name of the Backup Instance
-	BackupInstanceFriendlyName *string `json:"backupInstanceFriendlyName,omitempty"`
+	BackupInstanceFriendlyName *string
 
 	// REQUIRED; ARM ID of the DataSource
-	DataSourceID *string `json:"dataSourceId,omitempty"`
+	DataSourceID *string
 
 	// REQUIRED; Location of the DataSource
-	DataSourceLocation *string `json:"dataSourceLocation,omitempty"`
+	DataSourceLocation *string
 
 	// REQUIRED; User Friendly Name of the DataSource
-	DataSourceName *string `json:"dataSourceName,omitempty"`
+	DataSourceName *string
 
 	// REQUIRED; Type of DataSource
-	DataSourceType *string `json:"dataSourceType,omitempty"`
+	DataSourceType *string
 
 	// REQUIRED; Indicated that whether the job is adhoc(true) or scheduled(false)
-	IsUserTriggered *bool `json:"isUserTriggered,omitempty"`
+	IsUserTriggered *bool
 
 	// REQUIRED; It indicates the type of Job i.e. Backup:full/log/diff ;Restore:ALR/OLR; Tiering:Backup/Archive ; Management:ConfigureProtection/UnConfigure
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// REQUIRED; It indicates the type of Job i.e. Backup/Restore/Tiering/Management
-	OperationCategory *string `json:"operationCategory,omitempty"`
+	OperationCategory *string
 
 	// REQUIRED; Indicated whether progress is enabled for the job
-	ProgressEnabled *bool `json:"progressEnabled,omitempty"`
+	ProgressEnabled *bool
 
 	// REQUIRED; Resource Group Name of the Datasource
-	SourceResourceGroup *string `json:"sourceResourceGroup,omitempty"`
+	SourceResourceGroup *string
 
 	// REQUIRED; SubscriptionId corresponding to the DataSource
-	SourceSubscriptionID *string `json:"sourceSubscriptionID,omitempty"`
+	SourceSubscriptionID *string
 
 	// REQUIRED; StartTime of the job(in UTC)
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// REQUIRED; Status of the job like InProgress/Success/Failed/Cancelled/SuccessWithWarning
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// REQUIRED; Subscription Id of the corresponding backup vault
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// REQUIRED; List of supported actions
-	SupportedActions []*string `json:"supportedActions,omitempty"`
+	SupportedActions []*string
 
 	// REQUIRED; Name of the vault
-	VaultName *string `json:"vaultName,omitempty"`
+	VaultName *string
 
 	// Data Source Set Name of the DataSource
-	DataSourceSetName        *string `json:"dataSourceSetName,omitempty"`
-	DestinationDataStoreName *string `json:"destinationDataStoreName,omitempty"`
+	DataSourceSetName        *string
+	DestinationDataStoreName *string
 
 	// Total run time of the job. ISO 8601 format.
-	Duration            *string `json:"duration,omitempty"`
-	Etag                *string `json:"etag,omitempty"`
-	SourceDataStoreName *string `json:"sourceDataStoreName,omitempty"`
+	Duration            *string
+	Etag                *string
+	SourceDataStoreName *string
 
 	// READ-ONLY; ARM ID of the Backup Instance
-	BackupInstanceID *string `json:"backupInstanceId,omitempty" azure:"ro"`
+	BackupInstanceID *string
 
 	// READ-ONLY; EndTime of the job(in UTC)
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; A List, detailing the errors related to the job
-	ErrorDetails []*UserFacingError `json:"errorDetails,omitempty" azure:"ro"`
+	ErrorDetails []*UserFacingError
 
 	// READ-ONLY; Extended Information about the job
-	ExtendedInfo *JobExtendedInfo `json:"extendedInfo,omitempty" azure:"ro"`
+	ExtendedInfo *JobExtendedInfo
 
 	// READ-ONLY; ARM ID of the policy
-	PolicyID *string `json:"policyId,omitempty" azure:"ro"`
+	PolicyID *string
 
 	// READ-ONLY; Name of the policy
-	PolicyName *string `json:"policyName,omitempty" azure:"ro"`
+	PolicyName *string
 
 	// READ-ONLY; Url which contains job's progress
-	ProgressURL *string `json:"progressUrl,omitempty" azure:"ro"`
+	ProgressURL *string
 
 	// READ-ONLY; It indicates the sub type of operation i.e. in case of Restore it can be ALR/OLR
-	RestoreType *string `json:"restoreType,omitempty" azure:"ro"`
+	RestoreType *string
 }
 
 // AzureBackupJobResource - AzureBackup Job Resource Class
 type AzureBackupJobResource struct {
 	// AzureBackupJobResource properties
-	Properties *AzureBackupJob `json:"properties,omitempty"`
+	Properties *AzureBackupJob
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureBackupJobResourceList - List of AzureBackup Job resources
 type AzureBackupJobResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*AzureBackupJobResource `json:"value,omitempty"`
+	Value []*AzureBackupJobResource
 }
 
 // AzureBackupParams - Azure backup parameters
 type AzureBackupParams struct {
 	// REQUIRED; BackupType ; Full/Incremental etc
-	BackupType *string `json:"backupType,omitempty"`
+	BackupType *string
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetBackupParameters implements the BackupParametersClassification interface for type AzureBackupParams.
@@ -306,7 +306,7 @@ type AzureBackupRecoveryPointClassification interface {
 // AzureBackupRecoveryPoint - Azure backup recoveryPoint
 type AzureBackupRecoveryPoint struct {
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetAzureBackupRecoveryPoint implements the AzureBackupRecoveryPointClassification interface for type AzureBackupRecoveryPoint.
@@ -325,19 +325,19 @@ type AzureBackupRecoveryPointBasedRestoreRequestClassification interface {
 // AzureBackupRecoveryPointBasedRestoreRequest - Azure backup recoveryPoint based restore request
 type AzureBackupRecoveryPointBasedRestoreRequest struct {
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// REQUIRED; Gets or sets the restore target information.
-	RestoreTargetInfo RestoreTargetInfoBaseClassification `json:"restoreTargetInfo,omitempty"`
+	RestoreTargetInfo RestoreTargetInfoBaseClassification
 
 	// REQUIRED; Gets or sets the type of the source data store.
-	SourceDataStoreType *SourceDataStoreType `json:"sourceDataStoreType,omitempty"`
+	SourceDataStoreType *SourceDataStoreType
 
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetAzureBackupRecoveryPointBasedRestoreRequest implements the AzureBackupRecoveryPointBasedRestoreRequestClassification
@@ -359,46 +359,46 @@ func (a *AzureBackupRecoveryPointBasedRestoreRequest) GetAzureBackupRestoreReque
 // AzureBackupRecoveryPointResource - Azure backup recoveryPoint resource
 type AzureBackupRecoveryPointResource struct {
 	// AzureBackupRecoveryPointResource properties
-	Properties AzureBackupRecoveryPointClassification `json:"properties,omitempty"`
+	Properties AzureBackupRecoveryPointClassification
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureBackupRecoveryPointResourceList - Azure backup recoveryPoint resource list
 type AzureBackupRecoveryPointResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*AzureBackupRecoveryPointResource `json:"value,omitempty"`
+	Value []*AzureBackupRecoveryPointResource
 }
 
 // AzureBackupRecoveryTimeBasedRestoreRequest - AzureBackup RecoveryPointTime Based Restore Request
 type AzureBackupRecoveryTimeBasedRestoreRequest struct {
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; The recovery time in ISO 8601 format example - 2020-08-14T17:30:00.0000000Z.
-	RecoveryPointTime *string `json:"recoveryPointTime,omitempty"`
+	RecoveryPointTime *string
 
 	// REQUIRED; Gets or sets the restore target information.
-	RestoreTargetInfo RestoreTargetInfoBaseClassification `json:"restoreTargetInfo,omitempty"`
+	RestoreTargetInfo RestoreTargetInfoBaseClassification
 
 	// REQUIRED; Gets or sets the type of the source data store.
-	SourceDataStoreType *SourceDataStoreType `json:"sourceDataStoreType,omitempty"`
+	SourceDataStoreType *SourceDataStoreType
 
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRecoveryTimeBasedRestoreRequest.
@@ -414,13 +414,13 @@ func (a *AzureBackupRecoveryTimeBasedRestoreRequest) GetAzureBackupRestoreReques
 // AzureBackupRehydrationRequest - Azure Backup Rehydrate Request
 type AzureBackupRehydrationRequest struct {
 	// REQUIRED; Id of the recovery point to be recovered
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// REQUIRED; Retention duration in ISO 8601 format i.e P10D .
-	RehydrationRetentionDuration *string `json:"rehydrationRetentionDuration,omitempty"`
+	RehydrationRetentionDuration *string
 
 	// Priority to be used for rehydration. Values High or Standard
-	RehydrationPriority *RehydrationPriority `json:"rehydrationPriority,omitempty"`
+	RehydrationPriority *RehydrationPriority
 }
 
 // AzureBackupRestoreRequestClassification provides polymorphic access to related types.
@@ -436,16 +436,16 @@ type AzureBackupRestoreRequestClassification interface {
 // AzureBackupRestoreRequest - Azure backup restore request
 type AzureBackupRestoreRequest struct {
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Gets or sets the restore target information.
-	RestoreTargetInfo RestoreTargetInfoBaseClassification `json:"restoreTargetInfo,omitempty"`
+	RestoreTargetInfo RestoreTargetInfoBaseClassification
 
 	// REQUIRED; Gets or sets the type of the source data store.
-	SourceDataStoreType *SourceDataStoreType `json:"sourceDataStoreType,omitempty"`
+	SourceDataStoreType *SourceDataStoreType
 
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetAzureBackupRestoreRequest implements the AzureBackupRestoreRequestClassification interface for type AzureBackupRestoreRequest.
@@ -456,25 +456,25 @@ func (a *AzureBackupRestoreRequest) GetAzureBackupRestoreRequest() *AzureBackupR
 // AzureBackupRestoreWithRehydrationRequest - AzureBackup Restore with Rehydration Request
 type AzureBackupRestoreWithRehydrationRequest struct {
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED
-	RecoveryPointID *string `json:"recoveryPointId,omitempty"`
+	RecoveryPointID *string
 
 	// REQUIRED; Priority to be used for rehydration. Values High or Standard
-	RehydrationPriority *RehydrationPriority `json:"rehydrationPriority,omitempty"`
+	RehydrationPriority *RehydrationPriority
 
 	// REQUIRED; Retention duration in ISO 8601 format i.e P10D .
-	RehydrationRetentionDuration *string `json:"rehydrationRetentionDuration,omitempty"`
+	RehydrationRetentionDuration *string
 
 	// REQUIRED; Gets or sets the restore target information.
-	RestoreTargetInfo RestoreTargetInfoBaseClassification `json:"restoreTargetInfo,omitempty"`
+	RestoreTargetInfo RestoreTargetInfoBaseClassification
 
 	// REQUIRED; Gets or sets the type of the source data store.
-	SourceDataStoreType *SourceDataStoreType `json:"sourceDataStoreType,omitempty"`
+	SourceDataStoreType *SourceDataStoreType
 
 	// Fully qualified Azure Resource Manager ID of the datasource which is being recovered.
-	SourceResourceID *string `json:"sourceResourceId,omitempty"`
+	SourceResourceID *string
 }
 
 // GetAzureBackupRecoveryPointBasedRestoreRequest implements the AzureBackupRecoveryPointBasedRestoreRequestClassification
@@ -502,19 +502,19 @@ func (a *AzureBackupRestoreWithRehydrationRequest) GetAzureBackupRestoreRequest(
 // AzureBackupRule - Azure backup rule
 type AzureBackupRule struct {
 	// REQUIRED; DataStoreInfo base
-	DataStore *DataStoreInfoBase `json:"dataStore,omitempty"`
+	DataStore *DataStoreInfoBase
 
 	// REQUIRED
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Trigger context
-	Trigger TriggerContextClassification `json:"trigger,omitempty"`
+	Trigger TriggerContextClassification
 
 	// BackupParameters base
-	BackupParameters BackupParametersClassification `json:"backupParameters,omitempty"`
+	BackupParameters BackupParametersClassification
 }
 
 // GetBasePolicyRule implements the BasePolicyRuleClassification interface for type AzureBackupRule.
@@ -527,19 +527,19 @@ func (a *AzureBackupRule) GetBasePolicyRule() *BasePolicyRule {
 
 // AzureMonitorAlertSettings - Settings for Azure Monitor based alerts
 type AzureMonitorAlertSettings struct {
-	AlertsForAllJobFailures *AlertsState `json:"alertsForAllJobFailures,omitempty"`
+	AlertsForAllJobFailures *AlertsState
 }
 
 // AzureOperationalStoreParameters - Parameters for Operational-Tier DataStore
 type AzureOperationalStoreParameters struct {
 	// REQUIRED; type of datastore; Operational/Vault/Archive
-	DataStoreType *DataStoreTypes `json:"dataStoreType,omitempty"`
+	DataStoreType *DataStoreTypes
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Gets or sets the Snapshot Resource Group Uri.
-	ResourceGroupID *string `json:"resourceGroupId,omitempty"`
+	ResourceGroupID *string
 }
 
 // GetDataStoreParameters implements the DataStoreParametersClassification interface for type AzureOperationalStoreParameters.
@@ -553,14 +553,14 @@ func (a *AzureOperationalStoreParameters) GetDataStoreParameters() *DataStorePar
 // AzureRetentionRule - Azure retention rule
 type AzureRetentionRule struct {
 	// REQUIRED
-	Lifecycles []*SourceLifeCycle `json:"lifecycles,omitempty"`
+	Lifecycles []*SourceLifeCycle
 
 	// REQUIRED
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
-	IsDefault  *bool   `json:"isDefault,omitempty"`
+	ObjectType *string
+	IsDefault  *bool
 }
 
 // GetBasePolicyRule implements the BasePolicyRuleClassification interface for type AzureRetentionRule.
@@ -583,7 +583,7 @@ type BackupCriteriaClassification interface {
 // BackupCriteria base class
 type BackupCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetBackupCriteria implements the BackupCriteriaClassification interface for type BackupCriteria.
@@ -601,7 +601,7 @@ type BackupDatasourceParametersClassification interface {
 // BackupDatasourceParameters - Parameters for Backup Datasource
 type BackupDatasourceParameters struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetBackupDatasourceParameters implements the BackupDatasourceParametersClassification interface for type BackupDatasourceParameters.
@@ -612,67 +612,67 @@ func (b *BackupDatasourceParameters) GetBackupDatasourceParameters() *BackupData
 // BackupInstance - Backup Instance
 type BackupInstance struct {
 	// REQUIRED; Gets or sets the data source information.
-	DataSourceInfo *Datasource `json:"dataSourceInfo,omitempty"`
+	DataSourceInfo *Datasource
 
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Gets or sets the policy information.
-	PolicyInfo *PolicyInfo `json:"policyInfo,omitempty"`
+	PolicyInfo *PolicyInfo
 
 	// Gets or sets the data source set information.
-	DataSourceSetInfo *DatasourceSet `json:"dataSourceSetInfo,omitempty"`
+	DataSourceSetInfo *DatasourceSet
 
 	// Credentials to use to authenticate with data source provider.
-	DatasourceAuthCredentials AuthCredentialsClassification `json:"datasourceAuthCredentials,omitempty"`
+	DatasourceAuthCredentials AuthCredentialsClassification
 
 	// Gets or sets the Backup Instance friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will run again.
-	ValidationType *ValidationType `json:"validationType,omitempty"`
+	ValidationType *ValidationType
 
 	// READ-ONLY; Specifies the current protection state of the resource
-	CurrentProtectionState *CurrentProtectionState `json:"currentProtectionState,omitempty" azure:"ro"`
+	CurrentProtectionState *CurrentProtectionState
 
 	// READ-ONLY; Specifies the protection error of the resource
-	ProtectionErrorDetails *UserFacingError `json:"protectionErrorDetails,omitempty" azure:"ro"`
+	ProtectionErrorDetails *UserFacingError
 
 	// READ-ONLY; Specifies the protection status of the resource
-	ProtectionStatus *ProtectionStatusDetails `json:"protectionStatus,omitempty" azure:"ro"`
+	ProtectionStatus *ProtectionStatusDetails
 
 	// READ-ONLY; Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // BackupInstanceResource - BackupInstance Resource
 type BackupInstanceResource struct {
 	// BackupInstanceResource properties
-	Properties *BackupInstance `json:"properties,omitempty"`
+	Properties *BackupInstance
 
 	// Proxy Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Proxy Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Proxy Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Proxy Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupInstanceResourceList - BackupInstance Resource list response
 type BackupInstanceResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*BackupInstanceResource `json:"value,omitempty"`
+	Value []*BackupInstanceResource
 }
 
 // BackupInstancesClientBeginAdhocBackupOptions contains the optional parameters for the BackupInstancesClient.BeginAdhocBackup
@@ -786,7 +786,7 @@ type BackupParametersClassification interface {
 // BackupParameters base
 type BackupParameters struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetBackupParameters implements the BackupParametersClassification interface for type BackupParameters.
@@ -816,13 +816,13 @@ type BackupPoliciesClientListOptions struct {
 // BackupPolicy - Rule based backup policy
 type BackupPolicy struct {
 	// REQUIRED; Type of datasource for the backup management
-	DatasourceTypes []*string `json:"datasourceTypes,omitempty"`
+	DatasourceTypes []*string
 
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Policy rule dictionary that contains rules for each backuptype i.e Full/Incremental/Logs etc
-	PolicyRules []BasePolicyRuleClassification `json:"policyRules,omitempty"`
+	PolicyRules []BasePolicyRuleClassification
 }
 
 // GetBaseBackupPolicy implements the BaseBackupPolicyClassification interface for type BackupPolicy.
@@ -836,37 +836,37 @@ func (b *BackupPolicy) GetBaseBackupPolicy() *BaseBackupPolicy {
 // BackupSchedule - Schedule for backup
 type BackupSchedule struct {
 	// REQUIRED; ISO 8601 repeating time interval format
-	RepeatingTimeIntervals []*string `json:"repeatingTimeIntervals,omitempty"`
+	RepeatingTimeIntervals []*string
 
 	// Time zone for a schedule. Example: Pacific Standard Time
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // BackupVault - Backup Vault
 type BackupVault struct {
 	// REQUIRED; Storage Settings
-	StorageSettings []*StorageSetting `json:"storageSettings,omitempty"`
+	StorageSettings []*StorageSetting
 
 	// Feature Settings
-	FeatureSettings *FeatureSettings `json:"featureSettings,omitempty"`
+	FeatureSettings *FeatureSettings
 
 	// Monitoring Settings
-	MonitoringSettings *MonitoringSettings `json:"monitoringSettings,omitempty"`
+	MonitoringSettings *MonitoringSettings
 
 	// Security Settings
-	SecuritySettings *SecuritySettings `json:"securitySettings,omitempty"`
+	SecuritySettings *SecuritySettings
 
 	// READ-ONLY; Is vault protected by resource guard
-	IsVaultProtectedByResourceGuard *bool `json:"isVaultProtectedByResourceGuard,omitempty" azure:"ro"`
+	IsVaultProtectedByResourceGuard *bool
 
 	// READ-ONLY; Provisioning state of the BackupVault resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Resource move details for backup vault
-	ResourceMoveDetails *ResourceMoveDetails `json:"resourceMoveDetails,omitempty" azure:"ro"`
+	ResourceMoveDetails *ResourceMoveDetails
 
 	// READ-ONLY; Resource move state for backup vault
-	ResourceMoveState *ResourceMoveState `json:"resourceMoveState,omitempty" azure:"ro"`
+	ResourceMoveState *ResourceMoveState
 }
 
 // BackupVaultOperationResultsClientGetOptions contains the optional parameters for the BackupVaultOperationResultsClient.Get
@@ -878,40 +878,40 @@ type BackupVaultOperationResultsClientGetOptions struct {
 // BackupVaultResource - Backup Vault Resource
 type BackupVaultResource struct {
 	// REQUIRED; BackupVaultResource properties
-	Properties *BackupVault `json:"properties,omitempty"`
+	Properties *BackupVault
 
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Input Managed Identity Details
-	Identity *DppIdentityDetails `json:"identity,omitempty"`
+	Identity *DppIdentityDetails
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BackupVaultResourceList - List of BackupVault resources
 type BackupVaultResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*BackupVaultResource `json:"value,omitempty"`
+	Value []*BackupVaultResource
 }
 
 // BackupVaultsClientBeginCreateOrUpdateOptions contains the optional parameters for the BackupVaultsClient.BeginCreateOrUpdate
@@ -968,10 +968,10 @@ type BaseBackupPolicyClassification interface {
 // BaseBackupPolicy - BackupPolicy base
 type BaseBackupPolicy struct {
 	// REQUIRED; Type of datasource for the backup management
-	DatasourceTypes []*string `json:"datasourceTypes,omitempty"`
+	DatasourceTypes []*string
 
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetBaseBackupPolicy implements the BaseBackupPolicyClassification interface for type BaseBackupPolicy.
@@ -980,28 +980,28 @@ func (b *BaseBackupPolicy) GetBaseBackupPolicy() *BaseBackupPolicy { return b }
 // BaseBackupPolicyResource - BaseBackupPolicy resource
 type BaseBackupPolicyResource struct {
 	// BaseBackupPolicyResource properties
-	Properties BaseBackupPolicyClassification `json:"properties,omitempty"`
+	Properties BaseBackupPolicyClassification
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BaseBackupPolicyResourceList - List of BaseBackupPolicy resources
 type BaseBackupPolicyResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*BaseBackupPolicyResource `json:"value,omitempty"`
+	Value []*BaseBackupPolicyResource
 }
 
 // BasePolicyRuleClassification provides polymorphic access to related types.
@@ -1016,10 +1016,10 @@ type BasePolicyRuleClassification interface {
 // BasePolicyRule - BasePolicy Rule
 type BasePolicyRule struct {
 	// REQUIRED
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetBasePolicyRule implements the BasePolicyRuleClassification interface for type BasePolicyRule.
@@ -1028,10 +1028,10 @@ func (b *BasePolicyRule) GetBasePolicyRule() *BasePolicyRule { return b }
 // BlobBackupDatasourceParameters - Parameters to be used during configuration of backup of blobs
 type BlobBackupDatasourceParameters struct {
 	// REQUIRED; List of containers to be backed up during configuration of backup of blobs
-	ContainersList []*string `json:"containersList,omitempty"`
+	ContainersList []*string
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetBackupDatasourceParameters implements the BackupDatasourceParametersClassification interface for type BlobBackupDatasourceParameters.
@@ -1044,22 +1044,22 @@ func (b *BlobBackupDatasourceParameters) GetBackupDatasourceParameters() *Backup
 // CheckNameAvailabilityRequest - CheckNameAvailability Request
 type CheckNameAvailabilityRequest struct {
 	// Resource name for which availability needs to be checked
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Describes the Resource type: Microsoft.DataProtection/BackupVaults
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResult - CheckNameAvailability Result
 type CheckNameAvailabilityResult struct {
 	// Gets or sets the message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Gets or sets a value indicating whether [name available].
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// Gets or sets the reason.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 }
 
 // ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
@@ -1070,73 +1070,73 @@ type ClientCheckFeatureSupportOptions struct {
 // ClientDiscoveryDisplay - Localized display information of an operation.
 type ClientDiscoveryDisplay struct {
 	// Description of the operation having details of what operation is about.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operations Name itself.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the provider for display purposes
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// ResourceType for which this Operation can be performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // ClientDiscoveryForLogSpecification - Class to represent shoebox log specification in json client discovery.
 type ClientDiscoveryForLogSpecification struct {
 	// blob duration of shoebox log specification
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// Localized display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name for shoebox log specification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ClientDiscoveryForProperties - Class to represent shoebox properties in json client discovery.
 type ClientDiscoveryForProperties struct {
 	// Operation properties.
-	ServiceSpecification *ClientDiscoveryForServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ClientDiscoveryForServiceSpecification
 }
 
 // ClientDiscoveryForServiceSpecification - Class to represent shoebox service specification in json client discovery.
 type ClientDiscoveryForServiceSpecification struct {
 	// List of log specifications of this operation.
-	LogSpecifications []*ClientDiscoveryForLogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*ClientDiscoveryForLogSpecification
 }
 
 // ClientDiscoveryResponse - Operations List response which contains list of available APIs.
 type ClientDiscoveryResponse struct {
 	// Link to the next chunk of Response.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of available operations.
-	Value []*ClientDiscoveryValueForSingleAPI `json:"value,omitempty"`
+	Value []*ClientDiscoveryValueForSingleAPI
 }
 
 // ClientDiscoveryValueForSingleAPI - Available operation details.
 type ClientDiscoveryValueForSingleAPI struct {
 	// Contains the localized display information for this particular operation
-	Display *ClientDiscoveryDisplay `json:"display,omitempty"`
+	Display *ClientDiscoveryDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the Operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The intended executor of the operation;governs the display of the operation in the RBAC UX and the audit logs UX
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties for the given operation.
-	Properties *ClientDiscoveryForProperties `json:"properties,omitempty"`
+	Properties *ClientDiscoveryForProperties
 }
 
 // CopyOnExpiryOption - Copy on Expiry Option
 type CopyOnExpiryOption struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetCopyOption implements the CopyOptionClassification interface for type CopyOnExpiryOption.
@@ -1158,7 +1158,7 @@ type CopyOptionClassification interface {
 // CopyOption - Options to copy
 type CopyOption struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetCopyOption implements the CopyOptionClassification interface for type CopyOption.
@@ -1167,16 +1167,16 @@ func (c *CopyOption) GetCopyOption() *CopyOption { return c }
 // CrossSubscriptionRestoreSettings - CrossSubscriptionRestore Settings
 type CrossSubscriptionRestoreSettings struct {
 	// CrossSubscriptionRestore state
-	State *CrossSubscriptionRestoreState `json:"state,omitempty"`
+	State *CrossSubscriptionRestoreState
 }
 
 // CustomCopyOption - Duration based custom options to copy
 type CustomCopyOption struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Data copied after given timespan
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 }
 
 // GetCopyOption implements the CopyOptionClassification interface for type CustomCopyOption.
@@ -1189,10 +1189,10 @@ func (c *CustomCopyOption) GetCopyOption() *CopyOption {
 // DataStoreInfoBase - DataStoreInfo base
 type DataStoreInfoBase struct {
 	// REQUIRED; type of datastore; Operational/Vault/Archive
-	DataStoreType *DataStoreTypes `json:"dataStoreType,omitempty"`
+	DataStoreType *DataStoreTypes
 
 	// REQUIRED; Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // DataStoreParametersClassification provides polymorphic access to related types.
@@ -1207,10 +1207,10 @@ type DataStoreParametersClassification interface {
 // DataStoreParameters - Parameters for DataStore
 type DataStoreParameters struct {
 	// REQUIRED; type of datastore; Operational/Vault/Archive
-	DataStoreType *DataStoreTypes `json:"dataStoreType,omitempty"`
+	DataStoreType *DataStoreTypes
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetDataStoreParameters implements the DataStoreParametersClassification interface for type DataStoreParameters.
@@ -1220,59 +1220,59 @@ func (d *DataStoreParameters) GetDataStoreParameters() *DataStoreParameters { re
 type Datasource struct {
 	// REQUIRED; Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID
 	// created by backup service via Fabric/Vault.
-	ResourceID *string `json:"resourceID,omitempty"`
+	ResourceID *string
 
 	// DatasourceType of the resource.
-	DatasourceType *string `json:"datasourceType,omitempty"`
+	DatasourceType *string
 
 	// Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Location of datasource.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	ResourceLocation *string
 
 	// Unique identifier of the resource in the context of parent.
-	ResourceName *string `json:"resourceName,omitempty"`
+	ResourceName *string
 
 	// Resource Type of Datasource.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// Uri of the resource.
-	ResourceURI *string `json:"resourceUri,omitempty"`
+	ResourceURI *string
 }
 
 // DatasourceSet details of datasource to be backed up
 type DatasourceSet struct {
 	// REQUIRED; Full ARM ID of the resource. For azure resources, this is ARM ID. For non azure resources, this will be the ID
 	// created by backup service via Fabric/Vault.
-	ResourceID *string `json:"resourceID,omitempty"`
+	ResourceID *string
 
 	// DatasourceType of the resource.
-	DatasourceType *string `json:"datasourceType,omitempty"`
+	DatasourceType *string
 
 	// Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Location of datasource.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	ResourceLocation *string
 
 	// Unique identifier of the resource in the context of parent.
-	ResourceName *string `json:"resourceName,omitempty"`
+	ResourceName *string
 
 	// Resource Type of Datasource.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// Uri of the resource.
-	ResourceURI *string `json:"resourceUri,omitempty"`
+	ResourceURI *string
 }
 
 // Day of the week
 type Day struct {
 	// Date of the month
-	Date *int32 `json:"date,omitempty"`
+	Date *int32
 
 	// Whether Date is last date of month
-	IsLast *bool `json:"isLast,omitempty"`
+	IsLast *bool
 }
 
 // DeleteOptionClassification provides polymorphic access to related types.
@@ -1287,10 +1287,10 @@ type DeleteOptionClassification interface {
 // DeleteOption - Delete Option
 type DeleteOption struct {
 	// REQUIRED; Duration of deletion after given timespan
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetDeleteOption implements the DeleteOptionClassification interface for type DeleteOption.
@@ -1299,67 +1299,67 @@ func (d *DeleteOption) GetDeleteOption() *DeleteOption { return d }
 // DeletedBackupInstance - Deleted Backup Instance
 type DeletedBackupInstance struct {
 	// REQUIRED; Gets or sets the data source information.
-	DataSourceInfo *Datasource `json:"dataSourceInfo,omitempty"`
+	DataSourceInfo *Datasource
 
 	// REQUIRED
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Gets or sets the policy information.
-	PolicyInfo *PolicyInfo `json:"policyInfo,omitempty"`
+	PolicyInfo *PolicyInfo
 
 	// Gets or sets the data source set information.
-	DataSourceSetInfo *DatasourceSet `json:"dataSourceSetInfo,omitempty"`
+	DataSourceSetInfo *DatasourceSet
 
 	// Credentials to use to authenticate with data source provider.
-	DatasourceAuthCredentials AuthCredentialsClassification `json:"datasourceAuthCredentials,omitempty"`
+	DatasourceAuthCredentials AuthCredentialsClassification
 
 	// Gets or sets the Backup Instance friendly name.
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Specifies the type of validation. In case of DeepValidation, all validations from /validateForBackup API will run again.
-	ValidationType *ValidationType `json:"validationType,omitempty"`
+	ValidationType *ValidationType
 
 	// READ-ONLY; Specifies the current protection state of the resource
-	CurrentProtectionState *CurrentProtectionState `json:"currentProtectionState,omitempty" azure:"ro"`
+	CurrentProtectionState *CurrentProtectionState
 
 	// READ-ONLY; Deletion info of Backup Instance
-	DeletionInfo *DeletionInfo `json:"deletionInfo,omitempty" azure:"ro"`
+	DeletionInfo *DeletionInfo
 
 	// READ-ONLY; Specifies the protection error of the resource
-	ProtectionErrorDetails *UserFacingError `json:"protectionErrorDetails,omitempty" azure:"ro"`
+	ProtectionErrorDetails *UserFacingError
 
 	// READ-ONLY; Specifies the protection status of the resource
-	ProtectionStatus *ProtectionStatusDetails `json:"protectionStatus,omitempty" azure:"ro"`
+	ProtectionStatus *ProtectionStatusDetails
 
 	// READ-ONLY; Specifies the provisioning state of the resource i.e. provisioning/updating/Succeeded/Failed
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // DeletedBackupInstanceResource - Deleted Backup Instance
 type DeletedBackupInstanceResource struct {
 	// DeletedBackupInstanceResource properties
-	Properties *DeletedBackupInstance `json:"properties,omitempty"`
+	Properties *DeletedBackupInstance
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeletedBackupInstanceResourceList - List of DeletedBackupInstance resources
 type DeletedBackupInstanceResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*DeletedBackupInstanceResource `json:"value,omitempty"`
+	Value []*DeletedBackupInstanceResource
 }
 
 // DeletedBackupInstancesClientBeginUndeleteOptions contains the optional parameters for the DeletedBackupInstancesClient.BeginUndelete
@@ -1383,183 +1383,183 @@ type DeletedBackupInstancesClientListOptions struct {
 // DeletionInfo - Deletion Info
 type DeletionInfo struct {
 	// READ-ONLY; Specifies billing end date
-	BillingEndDate *string `json:"billingEndDate,omitempty" azure:"ro"`
+	BillingEndDate *string
 
 	// READ-ONLY; Delete activity ID for troubleshooting purpose
-	DeleteActivityID *string `json:"deleteActivityID,omitempty" azure:"ro"`
+	DeleteActivityID *string
 
 	// READ-ONLY; Specifies time of deletion
-	DeletionTime *string `json:"deletionTime,omitempty" azure:"ro"`
+	DeletionTime *string
 
 	// READ-ONLY; Specifies purge time
-	ScheduledPurgeTime *string `json:"scheduledPurgeTime,omitempty" azure:"ro"`
+	ScheduledPurgeTime *string
 }
 
 // DppBaseResource - Base resource under Microsoft.DataProtection provider namespace
 type DppBaseResource struct {
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DppBaseResourceList - Base for all lists of V2 resources.
 type DppBaseResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Dpp resources.
-	Value []*DppBaseResource `json:"value,omitempty"`
+	Value []*DppBaseResource
 }
 
 type DppBaseTrackedResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DppIdentityDetails - Identity details
 type DppIdentityDetails struct {
 	// The identityType which can be either SystemAssigned or None
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// READ-ONLY; The object ID of the service principal object for the managed identity that is used to grant role-based access
 	// to an Azure resource.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; A Globally Unique Identifier (GUID) that represents the Azure AD tenant where the resource is now a member.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 type DppProxyResource struct {
 	// Proxy Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Proxy Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Proxy Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Proxy Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DppResource - Resource class
 type DppResource struct {
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DppResourceList - ListResource
 type DppResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 type DppTrackedResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Input Managed Identity Details
-	Identity *DppIdentityDetails `json:"identity,omitempty"`
+	Identity *DppIdentityDetails
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type DppTrackedResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 type DppWorkerRequest struct {
-	CultureInfo *string `json:"cultureInfo,omitempty"`
-	HTTPMethod  *string `json:"httpMethod,omitempty"`
+	CultureInfo *string
+	HTTPMethod  *string
 
 	// Dictionary of
-	Headers map[string][]*string `json:"headers,omitempty"`
+	Headers map[string][]*string
 
 	// Dictionary of
-	Parameters             map[string]*string `json:"parameters,omitempty"`
-	SubscriptionID         *string            `json:"subscriptionId,omitempty"`
-	SupportedGroupVersions []*string          `json:"supportedGroupVersions,omitempty"`
-	URI                    *string            `json:"uri,omitempty"`
+	Parameters             map[string]*string
+	SubscriptionID         *string
+	SupportedGroupVersions []*string
+	URI                    *string
 }
 
 // Error - The resource management error response.
 type Error struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*Error `json:"details,omitempty" azure:"ro"`
+	Details []*Error
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExportJobsClientBeginTriggerOptions contains the optional parameters for the ExportJobsClient.BeginTrigger method.
@@ -1577,34 +1577,34 @@ type ExportJobsOperationResultClientGetOptions struct {
 // ExportJobsResult - The result for export jobs containing blob details.
 type ExportJobsResult struct {
 	// READ-ONLY; SAS key to access the blob.
-	BlobSasKey *string `json:"blobSasKey,omitempty" azure:"ro"`
+	BlobSasKey *string
 
 	// READ-ONLY; URL of the blob into which the serialized string of list of jobs is exported.
-	BlobURL *string `json:"blobUrl,omitempty" azure:"ro"`
+	BlobURL *string
 
 	// READ-ONLY; SAS key to access the ExcelFile blob.
-	ExcelFileBlobSasKey *string `json:"excelFileBlobSasKey,omitempty" azure:"ro"`
+	ExcelFileBlobSasKey *string
 
 	// READ-ONLY; URL of the blob into which the ExcelFile is uploaded.
-	ExcelFileBlobURL *string `json:"excelFileBlobUrl,omitempty" azure:"ro"`
+	ExcelFileBlobURL *string
 }
 
 // FeatureSettings - Class containing feature settings of vault
 type FeatureSettings struct {
 	// CrossSubscriptionRestore Settings
-	CrossSubscriptionRestoreSettings *CrossSubscriptionRestoreSettings `json:"crossSubscriptionRestoreSettings,omitempty"`
+	CrossSubscriptionRestoreSettings *CrossSubscriptionRestoreSettings
 }
 
 // FeatureValidationRequest - Base class for feature object
 type FeatureValidationRequest struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// backup support feature name.
-	FeatureName *string `json:"featureName,omitempty"`
+	FeatureName *string
 
 	// backup support feature type.
-	FeatureType *FeatureType `json:"featureType,omitempty"`
+	FeatureType *FeatureType
 }
 
 // GetFeatureValidationRequestBase implements the FeatureValidationRequestBaseClassification interface for type FeatureValidationRequest.
@@ -1626,7 +1626,7 @@ type FeatureValidationRequestBaseClassification interface {
 // FeatureValidationRequestBase - Base class for Backup Feature support
 type FeatureValidationRequestBase struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetFeatureValidationRequestBase implements the FeatureValidationRequestBaseClassification interface for type FeatureValidationRequestBase.
@@ -1637,13 +1637,13 @@ func (f *FeatureValidationRequestBase) GetFeatureValidationRequestBase() *Featur
 // FeatureValidationResponse - Feature Validation Response
 type FeatureValidationResponse struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// backup support feature type.
-	FeatureType *FeatureType `json:"featureType,omitempty"`
+	FeatureType *FeatureType
 
 	// Response features
-	Features []*SupportedFeature `json:"features,omitempty"`
+	Features []*SupportedFeature
 }
 
 // GetFeatureValidationResponseBase implements the FeatureValidationResponseBaseClassification interface for type FeatureValidationResponse.
@@ -1665,7 +1665,7 @@ type FeatureValidationResponseBaseClassification interface {
 // FeatureValidationResponseBase - Base class for Backup Feature support
 type FeatureValidationResponseBase struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetFeatureValidationResponseBase implements the FeatureValidationResponseBaseClassification interface for type FeatureValidationResponseBase.
@@ -1676,7 +1676,7 @@ func (f *FeatureValidationResponseBase) GetFeatureValidationResponseBase() *Feat
 // ImmediateCopyOption - Immediate copy Option
 type ImmediateCopyOption struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetCopyOption implements the CopyOptionClassification interface for type ImmediateCopyOption.
@@ -1689,19 +1689,19 @@ func (i *ImmediateCopyOption) GetCopyOption() *CopyOption {
 // ImmutabilitySettings - Immutability Settings at vault level
 type ImmutabilitySettings struct {
 	// Immutability state
-	State *ImmutabilityState `json:"state,omitempty"`
+	State *ImmutabilityState
 }
 
 // InnerError - Inner Error
 type InnerError struct {
 	// Any Key value pairs that can be provided to the client for additional verbose information.
-	AdditionalInfo map[string]*string `json:"additionalInfo,omitempty"`
+	AdditionalInfo map[string]*string
 
 	// Unique code for this error
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Child Inner Error, to allow Nesting.
-	EmbeddedInnerError *InnerError `json:"embeddedInnerError,omitempty"`
+	EmbeddedInnerError *InnerError
 }
 
 // ItemLevelRestoreCriteriaClassification provides polymorphic access to related types.
@@ -1717,7 +1717,7 @@ type ItemLevelRestoreCriteriaClassification interface {
 // ItemLevelRestoreCriteria - Class to contain criteria for item level restore
 type ItemLevelRestoreCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type ItemLevelRestoreCriteria.
@@ -1726,25 +1726,25 @@ func (i *ItemLevelRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelResto
 // ItemLevelRestoreTargetInfo - Restore target info for Item level restore operation
 type ItemLevelRestoreTargetInfo struct {
 	// REQUIRED; Information of target DS
-	DatasourceInfo *Datasource `json:"datasourceInfo,omitempty"`
+	DatasourceInfo *Datasource
 
 	// REQUIRED; Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Recovery Option
-	RecoveryOption *RecoveryOption `json:"recoveryOption,omitempty"`
+	RecoveryOption *RecoveryOption
 
 	// REQUIRED; Restore Criteria
-	RestoreCriteria []ItemLevelRestoreCriteriaClassification `json:"restoreCriteria,omitempty"`
+	RestoreCriteria []ItemLevelRestoreCriteriaClassification
 
 	// Credentials to use to authenticate with data source provider.
-	DatasourceAuthCredentials AuthCredentialsClassification `json:"datasourceAuthCredentials,omitempty"`
+	DatasourceAuthCredentials AuthCredentialsClassification
 
 	// Information of target DS Set
-	DatasourceSetInfo *DatasourceSet `json:"datasourceSetInfo,omitempty"`
+	DatasourceSetInfo *DatasourceSet
 
 	// Target Restore region
-	RestoreLocation *string `json:"restoreLocation,omitempty"`
+	RestoreLocation *string
 }
 
 // GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type ItemLevelRestoreTargetInfo.
@@ -1759,17 +1759,17 @@ func (i *ItemLevelRestoreTargetInfo) GetRestoreTargetInfoBase() *RestoreTargetIn
 // ItemPathBasedRestoreCriteria - Prefix criteria to be used to during restore
 type ItemPathBasedRestoreCriteria struct {
 	// REQUIRED; Flag to specify if the path is relative to backup item or full path
-	IsPathRelativeToBackupItem *bool `json:"isPathRelativeToBackupItem,omitempty"`
+	IsPathRelativeToBackupItem *bool
 
 	// REQUIRED; The path of the item to be restored. It could be the full path of the item or the path relative to the backup
 	// item
-	ItemPath *string `json:"itemPath,omitempty"`
+	ItemPath *string
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// The list of prefix strings to be used as filter criteria during restore. These are relative to the item path specified.
-	SubItemPathPrefix []*string `json:"subItemPathPrefix,omitempty"`
+	SubItemPathPrefix []*string
 }
 
 // GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type ItemPathBasedRestoreCriteria.
@@ -1782,43 +1782,43 @@ func (i *ItemPathBasedRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelR
 // JobExtendedInfo - Extended Information about the job
 type JobExtendedInfo struct {
 	// Job's Additional Details
-	AdditionalDetails map[string]*string `json:"additionalDetails,omitempty"`
+	AdditionalDetails map[string]*string
 
 	// READ-ONLY; State of the Backup Instance
-	BackupInstanceState *string `json:"backupInstanceState,omitempty" azure:"ro"`
+	BackupInstanceState *string
 
 	// READ-ONLY; Number of bytes transferred
-	DataTransferredInBytes *float64 `json:"dataTransferredInBytes,omitempty" azure:"ro"`
+	DataTransferredInBytes *float64
 
 	// READ-ONLY; Destination where restore is done
-	RecoveryDestination *string `json:"recoveryDestination,omitempty" azure:"ro"`
+	RecoveryDestination *string
 
 	// READ-ONLY; Details of the Source Recovery Point
-	SourceRecoverPoint *RestoreJobRecoveryPointDetails `json:"sourceRecoverPoint,omitempty" azure:"ro"`
+	SourceRecoverPoint *RestoreJobRecoveryPointDetails
 
 	// READ-ONLY; List of Sub Tasks of the job
-	SubTasks []*JobSubTask `json:"subTasks,omitempty" azure:"ro"`
+	SubTasks []*JobSubTask
 
 	// READ-ONLY; Details of the Target Recovery Point
-	TargetRecoverPoint *RestoreJobRecoveryPointDetails `json:"targetRecoverPoint,omitempty" azure:"ro"`
+	TargetRecoverPoint *RestoreJobRecoveryPointDetails
 }
 
 // JobSubTask - Details of Job's Sub Task
 type JobSubTask struct {
 	// REQUIRED; Task Id of the Sub Task
-	TaskID *int32 `json:"taskId,omitempty"`
+	TaskID *int32
 
 	// REQUIRED; Name of the Sub Task
-	TaskName *string `json:"taskName,omitempty"`
+	TaskName *string
 
 	// REQUIRED; Status of the Sub Task
-	TaskStatus *string `json:"taskStatus,omitempty"`
+	TaskStatus *string
 
 	// Additional details of Sub Tasks
-	AdditionalDetails map[string]*string `json:"additionalDetails,omitempty"`
+	AdditionalDetails map[string]*string
 
 	// READ-ONLY; Progress of the Sub Task
-	TaskProgress *string `json:"taskProgress,omitempty" azure:"ro"`
+	TaskProgress *string
 }
 
 // JobsClientGetOptions contains the optional parameters for the JobsClient.Get method.
@@ -1835,29 +1835,29 @@ type JobsClientListOptions struct {
 type KubernetesClusterBackupDatasourceParameters struct {
 	// REQUIRED; Gets or sets the include cluster resources property. This property if enabled will include cluster scope resources
 	// during restore.
-	IncludeClusterScopeResources *bool `json:"includeClusterScopeResources,omitempty"`
+	IncludeClusterScopeResources *bool
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Gets or sets the volume snapshot property. This property if enabled will take volume snapshots during restore.
-	SnapshotVolumes *bool `json:"snapshotVolumes,omitempty"`
+	SnapshotVolumes *bool
 
 	// Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during restore.
-	ExcludedNamespaces []*string `json:"excludedNamespaces,omitempty"`
+	ExcludedNamespaces []*string
 
 	// Gets or sets the exclude resource types property. This property sets the resource types to be excluded during restore.
-	ExcludedResourceTypes []*string `json:"excludedResourceTypes,omitempty"`
+	ExcludedResourceTypes []*string
 
 	// Gets or sets the include namespaces property. This property sets the namespaces to be included during restore.
-	IncludedNamespaces []*string `json:"includedNamespaces,omitempty"`
+	IncludedNamespaces []*string
 
 	// Gets or sets the include resource types property. This property sets the resource types to be included during restore.
-	IncludedResourceTypes []*string `json:"includedResourceTypes,omitempty"`
+	IncludedResourceTypes []*string
 
 	// Gets or sets the LabelSelectors property. This property sets the resource with such label selectors to be included during
 	// restore.
-	LabelSelectors []*string `json:"labelSelectors,omitempty"`
+	LabelSelectors []*string
 }
 
 // GetBackupDatasourceParameters implements the BackupDatasourceParametersClassification interface for type KubernetesClusterBackupDatasourceParameters.
@@ -1871,35 +1871,35 @@ func (k *KubernetesClusterBackupDatasourceParameters) GetBackupDatasourceParamet
 type KubernetesClusterRestoreCriteria struct {
 	// REQUIRED; Gets or sets the include cluster resources property. This property if enabled will include cluster scope resources
 	// during restore.
-	IncludeClusterScopeResources *bool `json:"includeClusterScopeResources,omitempty"`
+	IncludeClusterScopeResources *bool
 
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Gets or sets the Conflict Policy property. This property sets policy during conflict of resources during restore.
-	ConflictPolicy *ExistingResourcePolicy `json:"conflictPolicy,omitempty"`
+	ConflictPolicy *ExistingResourcePolicy
 
 	// Gets or sets the exclude namespaces property. This property sets the namespaces to be excluded during restore.
-	ExcludedNamespaces []*string `json:"excludedNamespaces,omitempty"`
+	ExcludedNamespaces []*string
 
 	// Gets or sets the exclude resource types property. This property sets the resource types to be excluded during restore.
-	ExcludedResourceTypes []*string `json:"excludedResourceTypes,omitempty"`
+	ExcludedResourceTypes []*string
 
 	// Gets or sets the include namespaces property. This property sets the namespaces to be included during restore.
-	IncludedNamespaces []*string `json:"includedNamespaces,omitempty"`
+	IncludedNamespaces []*string
 
 	// Gets or sets the include resource types property. This property sets the resource types to be included during restore.
-	IncludedResourceTypes []*string `json:"includedResourceTypes,omitempty"`
+	IncludedResourceTypes []*string
 
 	// Gets or sets the LabelSelectors property. This property sets the resource with such label selectors to be included during
 	// restore.
-	LabelSelectors []*string `json:"labelSelectors,omitempty"`
+	LabelSelectors []*string
 
 	// Gets or sets the Namespace Mappings property. This property sets if namespace needs to be change during restore.
-	NamespaceMappings map[string]*string `json:"namespaceMappings,omitempty"`
+	NamespaceMappings map[string]*string
 
 	// Gets or sets the PV (Persistent Volume) Restore Mode property. This property sets whether volumes needs to be restored.
-	PersistentVolumeRestoreMode *PersistentVolumeRestoreMode `json:"persistentVolumeRestoreMode,omitempty"`
+	PersistentVolumeRestoreMode *PersistentVolumeRestoreMode
 }
 
 // GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesClusterRestoreCriteria.
@@ -1912,13 +1912,13 @@ func (k *KubernetesClusterRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLe
 // KubernetesPVRestoreCriteria - Item Level kubernetes persistent volume target info for restore operation
 type KubernetesPVRestoreCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Selected persistent volume claim name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Selected storage class name for restore operation
-	StorageClassName *string `json:"storageClassName,omitempty"`
+	StorageClassName *string
 }
 
 // GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesPVRestoreCriteria.
@@ -1931,13 +1931,13 @@ func (k *KubernetesPVRestoreCriteria) GetItemLevelRestoreCriteria() *ItemLevelRe
 // KubernetesStorageClassRestoreCriteria - Item Level kubernetes storage class target info for restore operation
 type KubernetesStorageClassRestoreCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Provisioner of the storage class
-	Provisioner *string `json:"provisioner,omitempty"`
+	Provisioner *string
 
 	// Selected storage class name
-	SelectedStorageClassName *string `json:"selectedStorageClassName,omitempty"`
+	SelectedStorageClassName *string
 }
 
 // GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type KubernetesStorageClassRestoreCriteria.
@@ -1950,7 +1950,7 @@ func (k *KubernetesStorageClassRestoreCriteria) GetItemLevelRestoreCriteria() *I
 // MonitoringSettings - Monitoring Settings
 type MonitoringSettings struct {
 	// Settings for Azure Monitor based alerts
-	AzureMonitorAlertSettings *AzureMonitorAlertSettings `json:"azureMonitorAlertSettings,omitempty"`
+	AzureMonitorAlertSettings *AzureMonitorAlertSettings
 }
 
 // OperationExtendedInfoClassification provides polymorphic access to related types.
@@ -1965,7 +1965,7 @@ type OperationExtendedInfoClassification interface {
 // OperationExtendedInfo - Operation Extended Info
 type OperationExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetOperationExtendedInfo implements the OperationExtendedInfoClassification interface for type OperationExtendedInfo.
@@ -1974,10 +1974,10 @@ func (o *OperationExtendedInfo) GetOperationExtendedInfo() *OperationExtendedInf
 // OperationJobExtendedInfo - Operation Job Extended Info
 type OperationJobExtendedInfo struct {
 	// REQUIRED; This property will be used as the discriminator for deciding the specific types in the polymorphic chain of types.
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Arm Id of the job created for this operation.
-	JobID *string `json:"jobId,omitempty"`
+	JobID *string
 }
 
 // GetOperationExtendedInfo implements the OperationExtendedInfoClassification interface for type OperationJobExtendedInfo.
@@ -1990,25 +1990,25 @@ func (o *OperationJobExtendedInfo) GetOperationExtendedInfo() *OperationExtended
 // OperationResource - Operation Resource
 type OperationResource struct {
 	// End time of the operation
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will go into
 	// the v2.2 Azure REST API guidelines. The full set of optional properties (e.g.
 	// inner errors / details) can be found in the "Error Response" section.
-	Error *Error `json:"error,omitempty"`
+	Error *Error
 
 	// It should match what is used to GET the operation result
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// It must match the last segment of the "id" field, and will typically be a GUID / system generated value
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// End time of the operation
-	Properties OperationExtendedInfoClassification `json:"properties,omitempty"`
+	Properties OperationExtendedInfoClassification
 
 	// Start time of the operation
-	StartTime *time.Time `json:"startTime,omitempty"`
-	Status    *string    `json:"status,omitempty"`
+	StartTime *time.Time
+	Status    *string
 }
 
 // OperationResultClientGetOptions contains the optional parameters for the OperationResultClient.Get method.
@@ -2041,73 +2041,73 @@ type OperationsClientListOptions struct {
 // PatchBackupVaultInput - Backup Vault Contract for Patch Backup Vault API.
 type PatchBackupVaultInput struct {
 	// Feature Settings
-	FeatureSettings *FeatureSettings `json:"featureSettings,omitempty"`
+	FeatureSettings *FeatureSettings
 
 	// Monitoring Settings
-	MonitoringSettings *MonitoringSettings `json:"monitoringSettings,omitempty"`
+	MonitoringSettings *MonitoringSettings
 
 	// Security Settings
-	SecuritySettings *SecuritySettings `json:"securitySettings,omitempty"`
+	SecuritySettings *SecuritySettings
 }
 
 // PatchResourceGuardInput - Patch Request content for Microsoft.DataProtection Resource Guard resources
 type PatchResourceGuardInput struct {
 	// Resource Guard tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PatchResourceRequestInput - Patch Request content for Microsoft.DataProtection resources
 type PatchResourceRequestInput struct {
 	// Input Managed Identity Details
-	Identity *DppIdentityDetails `json:"identity,omitempty"`
+	Identity *DppIdentityDetails
 
 	// Resource properties.
-	Properties *PatchBackupVaultInput `json:"properties,omitempty"`
+	Properties *PatchBackupVaultInput
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PolicyInfo - Policy Info in backupInstance
 type PolicyInfo struct {
 	// REQUIRED
-	PolicyID *string `json:"policyId,omitempty"`
+	PolicyID *string
 
 	// Policy parameters for the backup instance
-	PolicyParameters *PolicyParameters `json:"policyParameters,omitempty"`
+	PolicyParameters *PolicyParameters
 
 	// READ-ONLY
-	PolicyVersion *string `json:"policyVersion,omitempty" azure:"ro"`
+	PolicyVersion *string
 }
 
 // PolicyParameters - Parameters in Policy
 type PolicyParameters struct {
 	// Gets or sets the Backup Data Source Parameters
-	BackupDatasourceParametersList []BackupDatasourceParametersClassification `json:"backupDatasourceParametersList,omitempty"`
+	BackupDatasourceParametersList []BackupDatasourceParametersClassification
 
 	// Gets or sets the DataStore Parameters
-	DataStoreParametersList []DataStoreParametersClassification `json:"dataStoreParametersList,omitempty"`
+	DataStoreParametersList []DataStoreParametersClassification
 }
 
 // ProtectionStatusDetails - Protection status details
 type ProtectionStatusDetails struct {
 	// Specifies the protection status error of the resource
-	ErrorDetails *UserFacingError `json:"errorDetails,omitempty"`
+	ErrorDetails *UserFacingError
 
 	// Specifies the protection status of the resource
-	Status *Status `json:"status,omitempty"`
+	Status *Status
 }
 
 // RangeBasedItemLevelRestoreCriteria - Item Level target info for restore operation
 type RangeBasedItemLevelRestoreCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// maximum value for range prefix match
-	MaxMatchingValue *string `json:"maxMatchingValue,omitempty"`
+	MaxMatchingValue *string
 
 	// minimum value for range prefix match
-	MinMatchingValue *string `json:"minMatchingValue,omitempty"`
+	MinMatchingValue *string
 }
 
 // GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type RangeBasedItemLevelRestoreCriteria.
@@ -2119,19 +2119,19 @@ func (r *RangeBasedItemLevelRestoreCriteria) GetItemLevelRestoreCriteria() *Item
 
 // RecoveryPointDataStoreDetails - RecoveryPoint datastore details
 type RecoveryPointDataStoreDetails struct {
-	CreationTime *time.Time `json:"creationTime,omitempty"`
-	ExpiryTime   *time.Time `json:"expiryTime,omitempty"`
-	ID           *string    `json:"id,omitempty"`
-	MetaData     *string    `json:"metaData,omitempty"`
-	State        *string    `json:"state,omitempty"`
-	Type         *string    `json:"type,omitempty"`
-	Visible      *bool      `json:"visible,omitempty"`
+	CreationTime *time.Time
+	ExpiryTime   *time.Time
+	ID           *string
+	MetaData     *string
+	State        *string
+	Type         *string
+	Visible      *bool
 
 	// READ-ONLY
-	RehydrationExpiryTime *time.Time `json:"rehydrationExpiryTime,omitempty" azure:"ro"`
+	RehydrationExpiryTime *time.Time
 
 	// READ-ONLY
-	RehydrationStatus *RehydrationStatus `json:"rehydrationStatus,omitempty" azure:"ro"`
+	RehydrationStatus *RehydrationStatus
 }
 
 // RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
@@ -2148,73 +2148,73 @@ type RecoveryPointsClientListOptions struct {
 }
 
 type RecoveryPointsFilters struct {
-	EndDate                 *string `json:"endDate,omitempty"`
-	ExtendedInfo            *bool   `json:"extendedInfo,omitempty"`
-	IsVisible               *bool   `json:"isVisible,omitempty"`
-	RestorePointDataStoreID *string `json:"restorePointDataStoreId,omitempty"`
-	RestorePointState       *string `json:"restorePointState,omitempty"`
-	StartDate               *string `json:"startDate,omitempty"`
+	EndDate                 *string
+	ExtendedInfo            *bool
+	IsVisible               *bool
+	RestorePointDataStoreID *string
+	RestorePointState       *string
+	StartDate               *string
 }
 
 type ResourceGuard struct {
 	// List of critical operations which are not protected by this resourceGuard
-	VaultCriticalOperationExclusionList []*string `json:"vaultCriticalOperationExclusionList,omitempty"`
+	VaultCriticalOperationExclusionList []*string
 
 	// READ-ONLY; This flag indicates whether auto approval is allowed or not.
-	AllowAutoApprovals *bool `json:"allowAutoApprovals,omitempty" azure:"ro"`
+	AllowAutoApprovals *bool
 
 	// READ-ONLY; Description about the pre-req steps to perform all the critical operations.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Provisioning state of the BackupVault resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; {readonly} List of operation details those are protected by the ResourceGuard resource
-	ResourceGuardOperations []*ResourceGuardOperation `json:"resourceGuardOperations,omitempty" azure:"ro"`
+	ResourceGuardOperations []*ResourceGuardOperation
 }
 
 // ResourceGuardOperation - This class contains all the details about a critical operation.
 type ResourceGuardOperation struct {
 	// READ-ONLY; Type of resource request.
-	RequestResourceType *string `json:"requestResourceType,omitempty" azure:"ro"`
+	RequestResourceType *string
 
 	// READ-ONLY; Name of the critical operation.
-	VaultCriticalOperation *string `json:"vaultCriticalOperation,omitempty" azure:"ro"`
+	VaultCriticalOperation *string
 }
 
 type ResourceGuardResource struct {
 	// Optional ETag.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// ResourceGuardResource properties
-	Properties *ResourceGuard `json:"properties,omitempty"`
+	Properties *ResourceGuard
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id represents the complete path to the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name associated with the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type represents the complete path of the form Namespace/ResourceType/ResourceType/…
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceGuardResourceList - List of ResourceGuard resources
 type ResourceGuardResourceList struct {
 	// The uri to fetch the next page of resources. Call ListNext() fetches next page of resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of resources.
-	Value []*ResourceGuardResource `json:"value,omitempty"`
+	Value []*ResourceGuardResource
 }
 
 // ResourceGuardsClientDeleteOptions contains the optional parameters for the ResourceGuardsClient.Delete method.
@@ -2324,28 +2324,28 @@ type ResourceGuardsClientPutOptions struct {
 // ResourceMoveDetails will be returned in response to GetResource call from ARM
 type ResourceMoveDetails struct {
 	// Completion time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
-	CompletionTimeUTC *string `json:"completionTimeUtc,omitempty"`
+	CompletionTimeUTC *string
 
 	// CorrelationId of latest ResourceMove operation attempted
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 
 	// ARM resource path of source resource
-	SourceResourcePath *string `json:"sourceResourcePath,omitempty"`
+	SourceResourcePath *string
 
 	// Start time in UTC of latest ResourceMove operation attempted. ISO 8601 format.
-	StartTimeUTC *string `json:"startTimeUtc,omitempty"`
+	StartTimeUTC *string
 
 	// ARM resource path of target resource used in latest ResourceMove operation
-	TargetResourcePath *string `json:"targetResourcePath,omitempty"`
+	TargetResourcePath *string
 }
 
 type RestorableTimeRange struct {
 	// REQUIRED; End time for the available restore range
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// REQUIRED; Start time for the available restore range
-	StartTime  *string `json:"startTime,omitempty"`
-	ObjectType *string `json:"objectType,omitempty"`
+	StartTime  *string
+	ObjectType *string
 }
 
 // RestorableTimeRangesClientFindOptions contains the optional parameters for the RestorableTimeRangesClient.Find method.
@@ -2356,16 +2356,16 @@ type RestorableTimeRangesClientFindOptions struct {
 // RestoreFilesTargetInfo - Class encapsulating restore as files target parameters
 type RestoreFilesTargetInfo struct {
 	// REQUIRED; Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Recovery Option
-	RecoveryOption *RecoveryOption `json:"recoveryOption,omitempty"`
+	RecoveryOption *RecoveryOption
 
 	// REQUIRED; Destination of RestoreAsFiles operation, when destination is not a datasource
-	TargetDetails *TargetDetails `json:"targetDetails,omitempty"`
+	TargetDetails *TargetDetails
 
 	// Target Restore region
-	RestoreLocation *string `json:"restoreLocation,omitempty"`
+	RestoreLocation *string
 }
 
 // GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type RestoreFilesTargetInfo.
@@ -2378,29 +2378,29 @@ func (r *RestoreFilesTargetInfo) GetRestoreTargetInfoBase() *RestoreTargetInfoBa
 }
 
 type RestoreJobRecoveryPointDetails struct {
-	RecoveryPointID   *string    `json:"recoveryPointID,omitempty"`
-	RecoveryPointTime *time.Time `json:"recoveryPointTime,omitempty"`
+	RecoveryPointID   *string
+	RecoveryPointTime *time.Time
 }
 
 // RestoreTargetInfo - Class encapsulating restore target parameters
 type RestoreTargetInfo struct {
 	// REQUIRED; Information of target DS
-	DatasourceInfo *Datasource `json:"datasourceInfo,omitempty"`
+	DatasourceInfo *Datasource
 
 	// REQUIRED; Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Recovery Option
-	RecoveryOption *RecoveryOption `json:"recoveryOption,omitempty"`
+	RecoveryOption *RecoveryOption
 
 	// Credentials to use to authenticate with data source provider.
-	DatasourceAuthCredentials AuthCredentialsClassification `json:"datasourceAuthCredentials,omitempty"`
+	DatasourceAuthCredentials AuthCredentialsClassification
 
 	// Information of target DS Set
-	DatasourceSetInfo *DatasourceSet `json:"datasourceSetInfo,omitempty"`
+	DatasourceSetInfo *DatasourceSet
 
 	// Target Restore region
-	RestoreLocation *string `json:"restoreLocation,omitempty"`
+	RestoreLocation *string
 }
 
 // GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type RestoreTargetInfo.
@@ -2424,13 +2424,13 @@ type RestoreTargetInfoBaseClassification interface {
 // RestoreTargetInfoBase - Base class common to RestoreTargetInfo and RestoreFilesTargetInfo
 type RestoreTargetInfoBase struct {
 	// REQUIRED; Type of Datasource object, used to initialize the right inherited type
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Recovery Option
-	RecoveryOption *RecoveryOption `json:"recoveryOption,omitempty"`
+	RecoveryOption *RecoveryOption
 
 	// Target Restore region
-	RestoreLocation *string `json:"restoreLocation,omitempty"`
+	RestoreLocation *string
 }
 
 // GetRestoreTargetInfoBase implements the RestoreTargetInfoBaseClassification interface for type RestoreTargetInfoBase.
@@ -2439,38 +2439,38 @@ func (r *RestoreTargetInfoBase) GetRestoreTargetInfoBase() *RestoreTargetInfoBas
 // RetentionTag - Retention tag
 type RetentionTag struct {
 	// REQUIRED; Retention Tag Name to relate it to retention rule.
-	TagName *string `json:"tagName,omitempty"`
+	TagName *string
 
 	// READ-ONLY; Retention Tag version.
-	ETag *string `json:"eTag,omitempty" azure:"ro"`
+	ETag *string
 
 	// READ-ONLY; Retention Tag version.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // ScheduleBasedBackupCriteria - Schedule based backup criteria
 type ScheduleBasedBackupCriteria struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" / "FirstOfMonth" and should be part of AbsoluteMarker
 	// enum
-	AbsoluteCriteria []*AbsoluteMarker `json:"absoluteCriteria,omitempty"`
+	AbsoluteCriteria []*AbsoluteMarker
 
 	// This is day of the month from 1 to 28 other wise last of month
-	DaysOfMonth []*Day `json:"daysOfMonth,omitempty"`
+	DaysOfMonth []*Day
 
 	// It should be Sunday/Monday/T…./Saturday
-	DaysOfTheWeek []*DayOfWeek `json:"daysOfTheWeek,omitempty"`
+	DaysOfTheWeek []*DayOfWeek
 
 	// It should be January/February/……/December
-	MonthsOfYear []*Month `json:"monthsOfYear,omitempty"`
+	MonthsOfYear []*Month
 
 	// List of schedule times for backup
-	ScheduleTimes []*time.Time `json:"scheduleTimes,omitempty"`
+	ScheduleTimes []*time.Time
 
 	// It should be First/Second/Third/Fourth/Last
-	WeeksOfTheMonth []*WeekNumber `json:"weeksOfTheMonth,omitempty"`
+	WeeksOfTheMonth []*WeekNumber
 }
 
 // GetBackupCriteria implements the BackupCriteriaClassification interface for type ScheduleBasedBackupCriteria.
@@ -2483,13 +2483,13 @@ func (s *ScheduleBasedBackupCriteria) GetBackupCriteria() *BackupCriteria {
 // ScheduleBasedTriggerContext - Schedule based trigger context
 type ScheduleBasedTriggerContext struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// REQUIRED; Schedule for this backup
-	Schedule *BackupSchedule `json:"schedule,omitempty"`
+	Schedule *BackupSchedule
 
 	// REQUIRED; List of tags that can be applicable for given schedule.
-	TaggingCriteria []*TaggingCriteria `json:"taggingCriteria,omitempty"`
+	TaggingCriteria []*TaggingCriteria
 }
 
 // GetTriggerContext implements the TriggerContextClassification interface for type ScheduleBasedTriggerContext.
@@ -2502,10 +2502,10 @@ func (s *ScheduleBasedTriggerContext) GetTriggerContext() *TriggerContext {
 // SecretStoreBasedAuthCredentials - Secret store based authentication credentials.
 type SecretStoreBasedAuthCredentials struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 
 	// Secret store resource
-	SecretStoreResource *SecretStoreResource `json:"secretStoreResource,omitempty"`
+	SecretStoreResource *SecretStoreResource
 }
 
 // GetAuthCredentials implements the AuthCredentialsClassification interface for type SecretStoreBasedAuthCredentials.
@@ -2518,137 +2518,137 @@ func (s *SecretStoreBasedAuthCredentials) GetAuthCredentials() *AuthCredentials 
 // SecretStoreResource - Class representing a secret store resource.
 type SecretStoreResource struct {
 	// REQUIRED; Gets or sets the type of secret store
-	SecretStoreType *SecretStoreType `json:"secretStoreType,omitempty"`
+	SecretStoreType *SecretStoreType
 
 	// Uri to get to the resource
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// Gets or sets value stored in secret store resource
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // SecuritySettings - Class containing security settings of vault
 type SecuritySettings struct {
 	// Immutability Settings at vault level
-	ImmutabilitySettings *ImmutabilitySettings `json:"immutabilitySettings,omitempty"`
+	ImmutabilitySettings *ImmutabilitySettings
 
 	// Soft delete related settings
-	SoftDeleteSettings *SoftDeleteSettings `json:"softDeleteSettings,omitempty"`
+	SoftDeleteSettings *SoftDeleteSettings
 }
 
 // SoftDeleteSettings - Soft delete related settings
 type SoftDeleteSettings struct {
 	// Soft delete retention duration
-	RetentionDurationInDays *float64 `json:"retentionDurationInDays,omitempty"`
+	RetentionDurationInDays *float64
 
 	// State of soft delete
-	State *SoftDeleteState `json:"state,omitempty"`
+	State *SoftDeleteState
 }
 
 // SourceLifeCycle - Source LifeCycle
 type SourceLifeCycle struct {
 	// REQUIRED; Delete Option
-	DeleteAfter DeleteOptionClassification `json:"deleteAfter,omitempty"`
+	DeleteAfter DeleteOptionClassification
 
 	// REQUIRED; DataStoreInfo base
-	SourceDataStore             *DataStoreInfoBase   `json:"sourceDataStore,omitempty"`
-	TargetDataStoreCopySettings []*TargetCopySetting `json:"targetDataStoreCopySettings,omitempty"`
+	SourceDataStore             *DataStoreInfoBase
+	TargetDataStoreCopySettings []*TargetCopySetting
 }
 
 // StorageSetting - Storage setting
 type StorageSetting struct {
 	// Gets or sets the type of the datastore.
-	DatastoreType *StorageSettingStoreTypes `json:"datastoreType,omitempty"`
+	DatastoreType *StorageSettingStoreTypes
 
 	// Gets or sets the type.
-	Type *StorageSettingTypes `json:"type,omitempty"`
+	Type *StorageSettingTypes
 }
 
 // SupportedFeature - Elements class for feature request
 type SupportedFeature struct {
 	// support feature type.
-	ExposureControlledFeatures []*string `json:"exposureControlledFeatures,omitempty"`
+	ExposureControlledFeatures []*string
 
 	// support feature type.
-	FeatureName *string `json:"featureName,omitempty"`
+	FeatureName *string
 
 	// feature support status
-	SupportStatus *FeatureSupportStatus `json:"supportStatus,omitempty"`
+	SupportStatus *FeatureSupportStatus
 }
 
 // SyncBackupInstanceRequest - Sync BackupInstance Request
 type SyncBackupInstanceRequest struct {
 	// Field indicating sync type e.g. to sync only in case of failure or in all cases
-	SyncType *SyncType `json:"syncType,omitempty"`
+	SyncType *SyncType
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TaggingCriteria - Tagging criteria
 type TaggingCriteria struct {
 	// REQUIRED; Specifies if tag is default.
-	IsDefault *bool `json:"isDefault,omitempty"`
+	IsDefault *bool
 
 	// REQUIRED; Retention tag information
-	TagInfo *RetentionTag `json:"tagInfo,omitempty"`
+	TagInfo *RetentionTag
 
 	// REQUIRED; Retention Tag priority.
-	TaggingPriority *int64 `json:"taggingPriority,omitempty"`
+	TaggingPriority *int64
 
 	// Criteria which decides whether the tag can be applied to a triggered backup.
-	Criteria []BackupCriteriaClassification `json:"criteria,omitempty"`
+	Criteria []BackupCriteriaClassification
 }
 
 // TargetCopySetting - Target copy settings
 type TargetCopySetting struct {
 	// REQUIRED; It can be CustomCopyOption or ImmediateCopyOption.
-	CopyAfter CopyOptionClassification `json:"copyAfter,omitempty"`
+	CopyAfter CopyOptionClassification
 
 	// REQUIRED; Info of target datastore
-	DataStore *DataStoreInfoBase `json:"dataStore,omitempty"`
+	DataStore *DataStoreInfoBase
 }
 
 // TargetDetails - Class encapsulating target details, used where the destination is not a datasource
 type TargetDetails struct {
 	// REQUIRED; Restore operation may create multiple files inside location pointed by Url Below will be the common prefix for
 	// all of them
-	FilePrefix *string `json:"filePrefix,omitempty"`
+	FilePrefix *string
 
 	// REQUIRED; Denotes the target location where the data will be restored, string value for the enum {Microsoft.Internal.AzureBackup.DataProtection.Common.Interface.RestoreTargetLocationType}
-	RestoreTargetLocationType *RestoreTargetLocationType `json:"restoreTargetLocationType,omitempty"`
+	RestoreTargetLocationType *RestoreTargetLocationType
 
 	// REQUIRED; Url denoting the restore destination. It can point to container / file share etc
-	URL *string `json:"url,omitempty"`
+	URL *string
 
 	// Full ARM Id denoting the restore destination. It is the ARM Id pointing to container / file share This is optional if the
 	// target subscription can be identified with the URL field. If not then this is
 	// needed if CrossSubscriptionRestore field of BackupVault is in any of the disabled states
-	TargetResourceArmID *string `json:"targetResourceArmId,omitempty"`
+	TargetResourceArmID *string
 }
 
 // TriggerBackupRequest - Trigger backup request
 type TriggerBackupRequest struct {
 	// REQUIRED; Name for the Rule of the Policy which needs to be applied for this backup
-	BackupRuleOptions *AdHocBackupRuleOptions `json:"backupRuleOptions,omitempty"`
+	BackupRuleOptions *AdHocBackupRuleOptions
 }
 
 // TriggerContextClassification provides polymorphic access to related types.
@@ -2663,7 +2663,7 @@ type TriggerContextClassification interface {
 // TriggerContext - Trigger context
 type TriggerContext struct {
 	// REQUIRED; Type of the specific object - used for deserializing
-	ObjectType *string `json:"objectType,omitempty"`
+	ObjectType *string
 }
 
 // GetTriggerContext implements the TriggerContextClassification interface for type TriggerContext.
@@ -2672,39 +2672,39 @@ func (t *TriggerContext) GetTriggerContext() *TriggerContext { return t }
 // UserFacingError - Error object used by layers that have access to localized content, and propagate that to user
 type UserFacingError struct {
 	// Unique code for this error
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Additional related Errors
-	Details []*UserFacingError `json:"details,omitempty"`
+	Details []*UserFacingError
 
 	// Inner Error
-	InnerError *InnerError `json:"innerError,omitempty"`
+	InnerError *InnerError
 
 	// Whether the operation will be retryable or not
-	IsRetryable *bool `json:"isRetryable,omitempty"`
+	IsRetryable *bool
 
 	// Whether the operation is due to a user error or service error
-	IsUserError *bool   `json:"isUserError,omitempty"`
-	Message     *string `json:"message,omitempty"`
+	IsUserError *bool
+	Message     *string
 
 	// Any key value pairs that can be injected inside error object
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// RecommendedAction � localized.
-	RecommendedAction []*string `json:"recommendedAction,omitempty"`
+	RecommendedAction []*string
 
 	// Target of the error.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ValidateForBackupRequest - Validate for backup request
 type ValidateForBackupRequest struct {
 	// REQUIRED; Backup Instance
-	BackupInstance *BackupInstance `json:"backupInstance,omitempty"`
+	BackupInstance *BackupInstance
 }
 
 // ValidateRestoreRequestObject - Validate restore request object
 type ValidateRestoreRequestObject struct {
 	// REQUIRED; Gets or sets the restore request object.
-	RestoreRequestObject AzureBackupRestoreRequestClassification `json:"restoreRequestObject,omitempty"`
+	RestoreRequestObject AzureBackupRestoreRequestClassification
 }

@@ -14,49 +14,43 @@ import "time"
 // AADBasedSecurityPrincipal - AAD based security principal with associated Ledger RoleName
 type AADBasedSecurityPrincipal struct {
 	// LedgerRole associated with the Security Principal of Ledger
-	LedgerRoleName *LedgerRoleName `json:"ledgerRoleName,omitempty"`
+	LedgerRoleName *LedgerRoleName
 
 	// UUID/GUID based Principal Id of the Security Principal
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// UUID/GUID based Tenant Id of the Security Principal
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // CertBasedSecurityPrincipal - Cert based security principal with Ledger RoleName
 type CertBasedSecurityPrincipal struct {
 	// Public key of the user cert (.pem or .cer)
-	Cert *string `json:"cert,omitempty"`
+	Cert *string
 
 	// LedgerRole associated with the Security Principal of Ledger
-	LedgerRoleName *LedgerRoleName `json:"ledgerRoleName,omitempty"`
-}
-
-// CertificateTags - Tags for Managed CCF Certificates
-type CertificateTags struct {
-	// Additional tags for Managed CCF Certificates
-	Tags map[string]*string `json:"tags,omitempty"`
+	LedgerRoleName *LedgerRoleName
 }
 
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
 	// The name of the resource for which availability needs to be checked.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResponse - The check availability result.
 type CheckNameAvailabilityResponse struct {
 	// Detailed reason why the given name is available.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicates if the resource name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason why the given name is not available.
-	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
+	Reason *CheckNameAvailabilityReason
 }
 
 // ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
@@ -66,72 +60,60 @@ type ClientCheckNameAvailabilityOptions struct {
 
 // ConfidentialLedger - Confidential Ledger. Contains the properties of Confidential Ledger Resource.
 type ConfidentialLedger struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	// The Azure location where the Confidential Ledger is running.
+	Location *string
 
 	// Properties of Confidential Ledger Resource.
-	Properties *LedgerProperties `json:"properties,omitempty"`
+	Properties *LedgerProperties
 
-	// Object representing RunningState for Ledger.
-	RunningState *RunningState `json:"runningState,omitempty"`
+	// Additional tags for Confidential Ledger
+	Tags map[string]*string
 
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
 
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	// READ-ONLY; Name of the Resource.
+	Name *string
 
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// DeploymentType - Object representing DeploymentType for Managed CCF.
-type DeploymentType struct {
-	// Source Uri containing ManagedCCF code
-	AppSourceURI *string `json:"appSourceUri,omitempty"`
-
-	// Unique name for the Managed CCF.
-	LanguageRuntime *LanguageRuntime `json:"languageRuntime,omitempty"`
+	// READ-ONLY; The type of the resource.
+	Type *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // LedgerClientBeginCreateOptions contains the optional parameters for the LedgerClient.BeginCreate method.
@@ -174,143 +156,37 @@ type LedgerClientListBySubscriptionOptions struct {
 // LedgerProperties - Additional Confidential Ledger properties.
 type LedgerProperties struct {
 	// Array of all AAD based Security Principals.
-	AADBasedSecurityPrincipals []*AADBasedSecurityPrincipal `json:"aadBasedSecurityPrincipals,omitempty"`
+	AADBasedSecurityPrincipals []*AADBasedSecurityPrincipal
 
 	// Array of all cert based Security Principals.
-	CertBasedSecurityPrincipals []*CertBasedSecurityPrincipal `json:"certBasedSecurityPrincipals,omitempty"`
+	CertBasedSecurityPrincipals []*CertBasedSecurityPrincipal
 
 	// Type of Confidential Ledger
-	LedgerType *LedgerType `json:"ledgerType,omitempty"`
+	LedgerType *LedgerType
 
 	// READ-ONLY; Endpoint for accessing network identity.
-	IdentityServiceURI *string `json:"identityServiceUri,omitempty" azure:"ro"`
+	IdentityServiceURI *string
 
 	// READ-ONLY; Internal namespace for the Ledger
-	LedgerInternalNamespace *string `json:"ledgerInternalNamespace,omitempty" azure:"ro"`
+	LedgerInternalNamespace *string
 
 	// READ-ONLY; Unique name for the Confidential Ledger.
-	LedgerName *string `json:"ledgerName,omitempty" azure:"ro"`
+	LedgerName *string
 
 	// READ-ONLY; Endpoint for calling Ledger Service.
-	LedgerURI *string `json:"ledgerUri,omitempty" azure:"ro"`
+	LedgerURI *string
 
 	// READ-ONLY; Provisioning state of Ledger Resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // List - Object that includes an array of Confidential Ledgers and a possible link for next set.
 type List struct {
 	// The URL the client should use to fetch the next page (per server side paging).
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Confidential Ledgers
-	Value []*ConfidentialLedger `json:"value,omitempty"`
-}
-
-// ManagedCCF - Managed CCF. Contains the properties of Managed CCF Resource.
-type ManagedCCF struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-
-	// Properties of Managed CCF Resource.
-	Properties *ManagedCCFProperties `json:"properties,omitempty"`
-
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// ManagedCCFClientBeginCreateOptions contains the optional parameters for the ManagedCCFClient.BeginCreate method.
-type ManagedCCFClientBeginCreateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedCCFClientBeginDeleteOptions contains the optional parameters for the ManagedCCFClient.BeginDelete method.
-type ManagedCCFClientBeginDeleteOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedCCFClientBeginUpdateOptions contains the optional parameters for the ManagedCCFClient.BeginUpdate method.
-type ManagedCCFClientBeginUpdateOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ManagedCCFClientGetOptions contains the optional parameters for the ManagedCCFClient.Get method.
-type ManagedCCFClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedCCFClientListByResourceGroupOptions contains the optional parameters for the ManagedCCFClient.NewListByResourceGroupPager
-// method.
-type ManagedCCFClientListByResourceGroupOptions struct {
-	// The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'
-	Filter *string
-}
-
-// ManagedCCFClientListBySubscriptionOptions contains the optional parameters for the ManagedCCFClient.NewListBySubscriptionPager
-// method.
-type ManagedCCFClientListBySubscriptionOptions struct {
-	// The filter to apply on the list operation. eg. $filter=ledgerType eq 'Public'
-	Filter *string
-}
-
-// ManagedCCFList - Object that includes an array of Managed CCF and a possible link for next set.
-type ManagedCCFList struct {
-	// The URL the client should use to fetch the next page (per server side paging).
-	NextLink *string `json:"nextLink,omitempty"`
-
-	// List of Managed CCF
-	Value []*ManagedCCF `json:"value,omitempty"`
-}
-
-// ManagedCCFProperties - Additional Managed CCF properties.
-type ManagedCCFProperties struct {
-	// Deployment Type of Managed CCF
-	DeploymentType *DeploymentType `json:"deploymentType,omitempty"`
-
-	// List of member identity certificates for Managed CCF
-	MemberIdentityCertificates []*MemberIdentityCertificate `json:"memberIdentityCertificates,omitempty"`
-
-	// Number of CCF nodes in the Managed CCF.
-	NodeCount *int32 `json:"nodeCount,omitempty"`
-
-	// READ-ONLY; Unique name for the Managed CCF.
-	AppName *string `json:"appName,omitempty" azure:"ro"`
-
-	// READ-ONLY; Endpoint for calling Managed CCF Service.
-	AppURI *string `json:"appUri,omitempty" azure:"ro"`
-
-	// READ-ONLY; Endpoint for accessing network identity.
-	IdentityServiceURI *string `json:"identityServiceUri,omitempty" azure:"ro"`
-
-	// READ-ONLY; Provisioning state of Ledger Resource
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
-}
-
-// MemberIdentityCertificate - Object representing MemberIdentityCertificate for Managed CCF.
-type MemberIdentityCertificate struct {
-	// Member Identity Certificate
-	Certificate *string `json:"certificate,omitempty"`
-
-	// Member Identity Certificate Encryption Key
-	Encryptionkey *string `json:"encryptionkey,omitempty"`
-
-	// Anything
-	Tags any `json:"tags,omitempty"`
+	Value []*ConfidentialLedger
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -318,102 +194,86 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
+// Resource - An Azure resource.
 type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	// READ-ONLY; Fully qualified resource Id for the resource.
+	ID *string
 
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	// READ-ONLY; Name of the Resource.
+	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData
 
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	// READ-ONLY; The type of the resource.
+	Type *string
+}
+
+// ResourceLocation - Location of the ARM Resource
+type ResourceLocation struct {
+	// The Azure location where the Confidential Ledger is running.
+	Location *string
 }
 
 // ResourceProviderOperationDefinition - Describes the Resource Provider Operation.
 type ResourceProviderOperationDefinition struct {
 	// Details about the operations
-	Display *ResourceProviderOperationDisplay `json:"display,omitempty"`
+	Display *ResourceProviderOperationDisplay
 
 	// Indicates whether the operation is data action or not.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Resource provider operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ResourceProviderOperationDisplay - Describes the properties of the Operation.
 type ResourceProviderOperationDisplay struct {
 	// Description of the resource provider operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the resource provider operation.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the resource provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Name of the resource type.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // ResourceProviderOperationList - List containing this Resource Provider's available operations.
 type ResourceProviderOperationList struct {
 	// READ-ONLY; The URI that can be used to request the next page for list of Azure operations.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Resource provider operations list.
-	Value []*ResourceProviderOperationDefinition `json:"value,omitempty" azure:"ro"`
+	Value []*ResourceProviderOperationDefinition
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // Tags for Confidential Ledger Resource
 type Tags struct {
 	// Additional tags for Confidential Ledger
-	Tags map[string]*string `json:"tags,omitempty"`
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
-
-	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
-
-	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Tags map[string]*string
 }

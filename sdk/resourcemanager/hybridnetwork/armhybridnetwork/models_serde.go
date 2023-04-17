@@ -272,7 +272,7 @@ func (d *DeviceRegistrationKey) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -531,8 +531,8 @@ func (n NetworkFunctionPropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "device", n.Device)
 	populate(objectMap, "managedApplication", n.ManagedApplication)
-	populate(objectMap, "managedApplicationParameters", &n.ManagedApplicationParameters)
-	populate(objectMap, "networkFunctionContainerConfigurations", &n.NetworkFunctionContainerConfigurations)
+	populateAny(objectMap, "managedApplicationParameters", n.ManagedApplicationParameters)
+	populateAny(objectMap, "networkFunctionContainerConfigurations", n.NetworkFunctionContainerConfigurations)
 	populate(objectMap, "networkFunctionUserConfigurations", n.NetworkFunctionUserConfigurations)
 	populate(objectMap, "provisioningState", n.ProvisioningState)
 	populate(objectMap, "skuName", n.SKUName)
@@ -602,8 +602,8 @@ func (n NetworkFunctionRoleConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "roleName", n.RoleName)
 	populate(objectMap, "roleType", n.RoleType)
 	populate(objectMap, "storageProfile", n.StorageProfile)
-	populate(objectMap, "userDataParameters", &n.UserDataParameters)
-	populate(objectMap, "userDataTemplate", &n.UserDataTemplate)
+	populateAny(objectMap, "userDataParameters", n.UserDataParameters)
+	populateAny(objectMap, "userDataTemplate", n.UserDataTemplate)
 	populate(objectMap, "virtualMachineSize", n.VirtualMachineSize)
 	return json.Marshal(objectMap)
 }
@@ -754,8 +754,8 @@ func (n NetworkFunctionSKURoleDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "networkInterfaces", n.NetworkInterfaces)
 	populate(objectMap, "roleName", n.RoleName)
-	populate(objectMap, "userDataParameters", &n.UserDataParameters)
-	populate(objectMap, "userDataTemplate", &n.UserDataTemplate)
+	populateAny(objectMap, "userDataParameters", n.UserDataParameters)
+	populateAny(objectMap, "userDataTemplate", n.UserDataTemplate)
 	return json.Marshal(objectMap)
 }
 
@@ -821,7 +821,7 @@ func (n NetworkFunctionUserConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "networkInterfaces", n.NetworkInterfaces)
 	populate(objectMap, "osProfile", n.OSProfile)
 	populate(objectMap, "roleName", n.RoleName)
-	populate(objectMap, "userDataParameters", &n.UserDataParameters)
+	populateAny(objectMap, "userDataParameters", n.UserDataParameters)
 	return json.Marshal(objectMap)
 }
 
@@ -914,7 +914,7 @@ func (n NetworkFunctionVendorConfiguration) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "networkInterfaces", n.NetworkInterfaces)
 	populate(objectMap, "osProfile", n.OSProfile)
 	populate(objectMap, "roleName", n.RoleName)
-	populate(objectMap, "userDataParameters", &n.UserDataParameters)
+	populateAny(objectMap, "userDataParameters", n.UserDataParameters)
 	return json.Marshal(objectMap)
 }
 
@@ -2087,8 +2087,8 @@ func (v *VendorSKUListResult) UnmarshalJSON(data []byte) error {
 func (v VendorSKUPropertiesFormat) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "deploymentMode", v.DeploymentMode)
-	populate(objectMap, "managedApplicationParameters", &v.ManagedApplicationParameters)
-	populate(objectMap, "managedApplicationTemplate", &v.ManagedApplicationTemplate)
+	populateAny(objectMap, "managedApplicationParameters", v.ManagedApplicationParameters)
+	populateAny(objectMap, "managedApplicationTemplate", v.ManagedApplicationTemplate)
 	populate(objectMap, "networkFunctionTemplate", v.NetworkFunctionTemplate)
 	populate(objectMap, "networkFunctionType", v.NetworkFunctionType)
 	populate(objectMap, "preview", v.Preview)
@@ -2171,6 +2171,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

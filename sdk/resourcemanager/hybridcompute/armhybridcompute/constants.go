@@ -11,7 +11,7 @@ package armhybridcompute
 
 const (
 	moduleName    = "armhybridcompute"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // AssessmentModeTypes - Specifies the assessment mode.

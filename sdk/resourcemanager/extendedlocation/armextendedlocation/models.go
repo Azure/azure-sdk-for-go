@@ -14,110 +14,110 @@ import "time"
 // CustomLocation - Custom Locations definition.
 type CustomLocation struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The set of properties specific to a Custom Location
-	Properties *CustomLocationProperties `json:"properties,omitempty"`
+	Properties *CustomLocationProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomLocationListResult - The List Custom Locations operation response.
 type CustomLocationListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The list of Custom Locations.
-	Value []*CustomLocation `json:"value,omitempty" azure:"ro"`
+	Value []*CustomLocation
 }
 
 // CustomLocationOperation - Custom Locations operation.
 type CustomLocationOperation struct {
 	// Describes the properties of a Custom Locations Operation Value Display.
-	Display *CustomLocationOperationValueDisplay `json:"display,omitempty"`
+	Display *CustomLocationOperationValueDisplay
 
 	// READ-ONLY; Is this Operation a data plane operation
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the compute operation.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The origin of the compute operation.
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // CustomLocationOperationValueDisplay - Describes the properties of a Custom Locations Operation Value Display.
 type CustomLocationOperationValueDisplay struct {
 	// READ-ONLY; The description of the operation.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The display name of the compute operation.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The resource provider for the operation.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The display name of the resource the operation applies to.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // CustomLocationOperationsList - Lists of Custom Locations operations.
 type CustomLocationOperationsList struct {
 	// REQUIRED; Array of customLocationOperation
-	Value []*CustomLocationOperation `json:"value,omitempty"`
+	Value []*CustomLocationOperation
 
 	// Next page of operations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // CustomLocationProperties - Properties for a custom location.
 type CustomLocationProperties struct {
 	// This is optional input that contains the authentication that should be used to generate the namespace.
-	Authentication *CustomLocationPropertiesAuthentication `json:"authentication,omitempty"`
+	Authentication *CustomLocationPropertiesAuthentication
 
 	// Contains the reference to the add-on that contains charts to deploy CRDs and operators.
-	ClusterExtensionIDs []*string `json:"clusterExtensionIds,omitempty"`
+	ClusterExtensionIDs []*string
 
 	// Display name for the Custom Locations location.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Connected Cluster or AKS Cluster. The Custom Locations RP will perform a checkAccess API for listAdminCredentials permissions.
-	HostResourceID *string `json:"hostResourceId,omitempty"`
+	HostResourceID *string
 
 	// Type of host the Custom Locations is referencing (Kubernetes, etc…).
-	HostType *HostType `json:"hostType,omitempty"`
+	HostType *HostType
 
 	// Kubernetes namespace that will be created on the specified cluster.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// Provisioning State for the Custom Location.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 }
 
 // CustomLocationPropertiesAuthentication - This is optional input that contains the authentication that should be used to
 // generate the namespace.
 type CustomLocationPropertiesAuthentication struct {
 	// The type of the Custom Locations authentication
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The kubeconfig value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // CustomLocationsClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomLocationsClient.BeginCreateOrUpdate
@@ -170,173 +170,173 @@ type CustomLocationsClientUpdateOptions struct {
 // EnabledResourceType definition.
 type EnabledResourceType struct {
 	// The set of properties for EnabledResourceType specific to a Custom Location
-	Properties *EnabledResourceTypeProperties `json:"properties,omitempty"`
+	Properties *EnabledResourceTypeProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EnabledResourceTypeProperties - Properties for EnabledResourceType of a custom location.
 type EnabledResourceTypeProperties struct {
 	// Cluster Extension ID
-	ClusterExtensionID *string `json:"clusterExtensionId,omitempty"`
+	ClusterExtensionID *string
 
 	// Cluster Extension Type
-	ExtensionType *string `json:"extensionType,omitempty"`
+	ExtensionType *string
 
 	// Metadata of the Resource Type
-	TypesMetadata []*EnabledResourceTypePropertiesTypesMetadataItem `json:"typesMetadata,omitempty"`
+	TypesMetadata []*EnabledResourceTypePropertiesTypesMetadataItem
 }
 
 // EnabledResourceTypePropertiesTypesMetadataItem - Metadata of the Resource Type.
 type EnabledResourceTypePropertiesTypesMetadataItem struct {
 	// Api Version of Resource Type
-	APIVersion *string `json:"apiVersion,omitempty"`
+	APIVersion *string
 
 	// Resource Provider Namespace of Resource Type
-	ResourceProviderNamespace *string `json:"resourceProviderNamespace,omitempty"`
+	ResourceProviderNamespace *string
 
 	// Resource Type
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // EnabledResourceTypesListResult - List of EnabledResourceTypes definition.
 type EnabledResourceTypesListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The list of EnabledResourceTypes available for a customLocation.
-	Value []*EnabledResourceType `json:"value,omitempty" azure:"ro"`
+	Value []*EnabledResourceType
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // PatchableCustomLocations - The Custom Locations patchable resource definition.
 type PatchableCustomLocations struct {
 	// Identity for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The Custom Locations patchable properties.
-	Properties *CustomLocationProperties `json:"properties,omitempty"`
+	Properties *CustomLocationProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

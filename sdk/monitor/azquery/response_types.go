@@ -14,17 +14,22 @@ type LogsClientQueryBatchResponse struct {
 	BatchResponse
 }
 
+// LogsClientQueryResourceResponse contains the response from method LogsClient.QueryResource.
+type LogsClientQueryResourceResponse struct {
+	Results
+}
+
 // LogsClientQueryWorkspaceResponse contains the response from method LogsClient.QueryWorkspace.
 type LogsClientQueryWorkspaceResponse struct {
 	Results
 }
 
-// MetricsClientListDefinitionsResponse contains the response from method MetricsClient.ListDefinitions.
+// MetricsClientListDefinitionsResponse contains the response from method MetricsClient.NewListDefinitionsPager.
 type MetricsClientListDefinitionsResponse struct {
 	MetricDefinitionCollection
 }
 
-// MetricsClientListNamespacesResponse contains the response from method MetricsClient.ListNamespaces.
+// MetricsClientListNamespacesResponse contains the response from method MetricsClient.NewListNamespacesPager.
 type MetricsClientListNamespacesResponse struct {
 	MetricNamespaceCollection
 }

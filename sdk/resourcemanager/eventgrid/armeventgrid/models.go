@@ -30,10 +30,10 @@ type AdvancedFilterClassification interface {
 // on which you want to filter.
 type AdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type AdvancedFilter.
@@ -42,10 +42,10 @@ func (a *AdvancedFilter) GetAdvancedFilter() *AdvancedFilter { return a }
 // AzureFunctionEventSubscriptionDestination - Information about the azure function destination for an event subscription.
 type AzureFunctionEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// Azure Function Properties of the event subscription destination.
-	Properties *AzureFunctionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+	Properties *AzureFunctionEventSubscriptionDestinationProperties
 }
 
 // GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type AzureFunctionEventSubscriptionDestination.
@@ -59,28 +59,28 @@ func (a *AzureFunctionEventSubscriptionDestination) GetEventSubscriptionDestinat
 // event subscription.
 type AzureFunctionEventSubscriptionDestinationProperties struct {
 	// Delivery attribute details.
-	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
+	DeliveryAttributeMappings []DeliveryAttributeMappingClassification
 
 	// Maximum number of events per batch.
-	MaxEventsPerBatch *int32 `json:"maxEventsPerBatch,omitempty"`
+	MaxEventsPerBatch *int32
 
 	// Preferred batch size in Kilobytes.
-	PreferredBatchSizeInKilobytes *int32 `json:"preferredBatchSizeInKilobytes,omitempty"`
+	PreferredBatchSizeInKilobytes *int32
 
 	// The Azure Resource Id that represents the endpoint of the Azure Function destination of an event subscription.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // BoolEqualsAdvancedFilter - BoolEquals Advanced Filter.
 type BoolEqualsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The boolean filter value.
-	Value *bool `json:"value,omitempty"`
+	Value *bool
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type BoolEqualsAdvancedFilter.
@@ -94,48 +94,48 @@ func (b *BoolEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // Channel info.
 type Channel struct {
 	// Properties of the Channel.
-	Properties *ChannelProperties `json:"properties,omitempty"`
+	Properties *ChannelProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to Channel resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ChannelProperties - Properties of the Channel.
 type ChannelProperties struct {
 	// The type of the event channel which represents the direction flow of events.
-	ChannelType *ChannelType `json:"channelType,omitempty"`
+	ChannelType *ChannelType
 
 	// Expiration time of the channel. If this timer expires while the corresponding partner topic is never activated, the channel
 	// and corresponding partner topic are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
+	ExpirationTimeIfNotActivatedUTC *time.Time
 
 	// Context or helpful message that can be used during the approval process by the subscriber.
-	MessageForActivation *string `json:"messageForActivation,omitempty"`
+	MessageForActivation *string
 
 	// This property should be populated when channelType is PartnerTopic and represents information about the partner topic resource
 	// corresponding to the channel.
-	PartnerTopicInfo *PartnerTopicInfo `json:"partnerTopicInfo,omitempty"`
+	PartnerTopicInfo *PartnerTopicInfo
 
 	// Provisioning state of the channel.
-	ProvisioningState *ChannelProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ChannelProvisioningState
 
 	// The readiness state of the corresponding partner topic.
-	ReadinessState *ReadinessState `json:"readinessState,omitempty"`
+	ReadinessState *ReadinessState
 }
 
 // ChannelUpdateParameters - Properties of the Channel update.
 type ChannelUpdateParameters struct {
 	// Properties of the channel update parameters.
-	Properties *ChannelUpdateParametersProperties `json:"properties,omitempty"`
+	Properties *ChannelUpdateParametersProperties
 }
 
 // ChannelUpdateParametersProperties - Properties of the channel update parameters.
@@ -143,10 +143,10 @@ type ChannelUpdateParametersProperties struct {
 	// Expiration time of the channel. If this timer expires while the corresponding partner topic or partner destination is never
 	// activated, the channel and corresponding partner topic or partner
 	// destination are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
+	ExpirationTimeIfNotActivatedUTC *time.Time
 
 	// Partner topic properties which can be updated if the channel is of type PartnerTopic.
-	PartnerTopicInfo *PartnerUpdateTopicInfo `json:"partnerTopicInfo,omitempty"`
+	PartnerTopicInfo *PartnerUpdateTopicInfo
 }
 
 // ChannelsClientBeginDeleteOptions contains the optional parameters for the ChannelsClient.BeginDelete method.
@@ -193,22 +193,22 @@ type ChannelsClientUpdateOptions struct {
 // ChannelsListResult - Result of the List Channels operation
 type ChannelsListResult struct {
 	// A link for the next page of channels.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of Channels.
-	Value []*Channel `json:"value,omitempty"`
+	Value []*Channel
 }
 
 // ConnectionState information.
 type ConnectionState struct {
 	// Actions required (if any).
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// Description of the connection state.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Status of the connection.
-	Status *PersistedConnectionStatus `json:"status,omitempty"`
+	Status *PersistedConnectionStatus
 }
 
 // DeadLetterDestinationClassification provides polymorphic access to related types.
@@ -225,7 +225,7 @@ type DeadLetterDestinationClassification interface {
 // derived class. Currently, StorageBlobDeadLetterDestination is the only class that derives from this class.
 type DeadLetterDestination struct {
 	// REQUIRED; Type of the endpoint for the dead letter destination
-	EndpointType *DeadLetterEndPointType `json:"endpointType,omitempty"`
+	EndpointType *DeadLetterEndPointType
 }
 
 // GetDeadLetterDestination implements the DeadLetterDestinationClassification interface for type DeadLetterDestination.
@@ -236,16 +236,16 @@ type DeadLetterWithResourceIdentity struct {
 	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
 	// setup on the parent resource (namely, topic or domain) to acquire the
 	// authentication tokens being used during delivery / dead-lettering.
-	DeadLetterDestination DeadLetterDestinationClassification `json:"deadLetterDestination,omitempty"`
+	DeadLetterDestination DeadLetterDestinationClassification
 
 	// The identity to use when dead-lettering events.
-	Identity *EventSubscriptionIdentity `json:"identity,omitempty"`
+	Identity *EventSubscriptionIdentity
 }
 
 // DeliveryAttributeListResult - Result of the Get delivery attributes operation.
 type DeliveryAttributeListResult struct {
 	// A collection of DeliveryAttributeMapping
-	Value []DeliveryAttributeMappingClassification `json:"value,omitempty"`
+	Value []DeliveryAttributeMappingClassification
 }
 
 // DeliveryAttributeMappingClassification provides polymorphic access to related types.
@@ -260,10 +260,10 @@ type DeliveryAttributeMappingClassification interface {
 // DeliveryAttributeMapping - Delivery attribute mapping details.
 type DeliveryAttributeMapping struct {
 	// REQUIRED; Type of the delivery attribute or header name.
-	Type *DeliveryAttributeMappingType `json:"type,omitempty"`
+	Type *DeliveryAttributeMappingType
 
 	// Name of the delivery attribute or header.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type DeliveryAttributeMapping.
@@ -274,37 +274,37 @@ type DeliveryWithResourceIdentity struct {
 	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's
 	// identity to acquire the authentication tokens being used during delivery /
 	// dead-lettering.
-	Destination EventSubscriptionDestinationClassification `json:"destination,omitempty"`
+	Destination EventSubscriptionDestinationClassification
 
 	// The identity to use when delivering events.
-	Identity *EventSubscriptionIdentity `json:"identity,omitempty"`
+	Identity *EventSubscriptionIdentity
 }
 
 // Domain - EventGrid Domain.
 type Domain struct {
 	// REQUIRED; Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity information for the Event Grid Domain resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
+	Identity *IdentityInfo
 
 	// Properties of the Event Grid Domain resource.
-	Properties *DomainProperties `json:"properties,omitempty"`
+	Properties *DomainProperties
 
 	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to the Event Grid Domain resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DomainEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainEventSubscriptionsClient.BeginCreateOrUpdate
@@ -372,7 +372,7 @@ type DomainProperties struct {
 	// while auto-managed mode provides the flexibility to perform less operations
 	// and manage fewer resources by the user. Also, note that in auto-managed creation mode, user is allowed to create the domain
 	// topic on demand if needed.
-	AutoCreateTopicWithFirstSubscription *bool `json:"autoCreateTopicWithFirstSubscription,omitempty"`
+	AutoCreateTopicWithFirstSubscription *bool
 
 	// This Boolean is used to specify the deletion mechanism for 'all' the Event Grid Domain Topics associated with this Event
 	// Grid Domain resource. In this context, deletion of domain topic can be
@@ -384,73 +384,73 @@ type DomainProperties struct {
 	// can be used if the user wants full control of when the domain topic needs to be
 	// deleted, while auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the
 	// user.
-	AutoDeleteTopicWithLastSubscription *bool `json:"autoDeleteTopicWithLastSubscription,omitempty"`
+	AutoDeleteTopicWithLastSubscription *bool
 
 	// Data Residency Boundary of the resource.
-	DataResidencyBoundary *DataResidencyBoundary `json:"dataResidencyBoundary,omitempty"`
+	DataResidencyBoundary *DataResidencyBoundary
 
 	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
 	// token will be used to authenticate if user is allowed to publish to the domain.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
+	InboundIPRules []*InboundIPRule
 
 	// This determines the format that Event Grid should expect for incoming events published to the Event Grid Domain Resource.
-	InputSchema *InputSchema `json:"inputSchema,omitempty"`
+	InputSchema *InputSchema
 
 	// Information about the InputSchemaMapping which specified the info about mapping event payload.
-	InputSchemaMapping InputSchemaMappingClassification `json:"inputSchemaMapping,omitempty"`
+	InputSchemaMapping InputSchemaMappingClassification
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// READ-ONLY; Endpoint for the Event Grid Domain Resource which is used for publishing the events.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
 
 	// READ-ONLY; Metric resource id for the Event Grid Domain Resource.
-	MetricResourceID *string `json:"metricResourceId,omitempty" azure:"ro"`
+	MetricResourceID *string
 
 	// READ-ONLY; List of private endpoint connections.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the Event Grid Domain Resource.
-	ProvisioningState *DomainProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DomainProvisioningState
 }
 
 // DomainRegenerateKeyRequest - Domain regenerate share access key request.
 type DomainRegenerateKeyRequest struct {
 	// REQUIRED; Key name to regenerate key1 or key2.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 }
 
 // DomainSharedAccessKeys - Shared access keys of the Domain.
 type DomainSharedAccessKeys struct {
 	// Shared access key1 for the domain.
-	Key1 *string `json:"key1,omitempty"`
+	Key1 *string
 
 	// Shared access key2 for the domain.
-	Key2 *string `json:"key2,omitempty"`
+	Key2 *string
 }
 
 // DomainTopic - Domain Topic.
 type DomainTopic struct {
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Properties of the Domain Topic.
-	Properties *DomainTopicProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *DomainTopicProperties
 
 	// READ-ONLY; The system metadata relating to Domain Topic resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DomainTopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainTopicEventSubscriptionsClient.BeginCreateOrUpdate
@@ -510,7 +510,7 @@ type DomainTopicEventSubscriptionsClientListOptions struct {
 // DomainTopicProperties - Properties of the Domain Topic.
 type DomainTopicProperties struct {
 	// READ-ONLY; Provisioning state of the domain topic.
-	ProvisioningState *DomainTopicProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DomainTopicProvisioningState
 }
 
 // DomainTopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainTopicsClient.BeginCreateOrUpdate
@@ -549,10 +549,10 @@ type DomainTopicsClientListByDomainOptions struct {
 // DomainTopicsListResult - Result of the List Domain Topics operation.
 type DomainTopicsListResult struct {
 	// A link for the next page of domain topics.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of Domain Topics.
-	Value []*DomainTopic `json:"value,omitempty"`
+	Value []*DomainTopic
 }
 
 // DomainUpdateParameterProperties - Information of domain update parameter properties.
@@ -567,7 +567,7 @@ type DomainUpdateParameterProperties struct {
 	// while auto-managed mode provides the flexibility to perform less operations
 	// and manage fewer resources by the user. Also, note that in auto-managed creation mode, user is allowed to create the domain
 	// topic on demand if needed.
-	AutoCreateTopicWithFirstSubscription *bool `json:"autoCreateTopicWithFirstSubscription,omitempty"`
+	AutoCreateTopicWithFirstSubscription *bool
 
 	// This Boolean is used to specify the deletion mechanism for 'all' the Event Grid Domain Topics associated with this Event
 	// Grid Domain resource. In this context, deletion of domain topic can be
@@ -579,34 +579,34 @@ type DomainUpdateParameterProperties struct {
 	// can be used if the user wants full control of when the domain topic needs to be
 	// deleted, while auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the
 	// user.
-	AutoDeleteTopicWithLastSubscription *bool `json:"autoDeleteTopicWithLastSubscription,omitempty"`
+	AutoDeleteTopicWithLastSubscription *bool
 
 	// The data residency boundary for the domain.
-	DataResidencyBoundary *DataResidencyBoundary `json:"dataResidencyBoundary,omitempty"`
+	DataResidencyBoundary *DataResidencyBoundary
 
 	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
 	// token will be used to authenticate if user is allowed to publish to the domain.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
+	InboundIPRules []*InboundIPRule
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 }
 
 // DomainUpdateParameters - Properties of the Domain update.
 type DomainUpdateParameters struct {
 	// Identity information for the resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
+	Identity *IdentityInfo
 
 	// Properties of the resource.
-	Properties *DomainUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *DomainUpdateParameterProperties
 
 	// Tags of the domains resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate method.
@@ -675,22 +675,22 @@ type DomainsClientRegenerateKeyOptions struct {
 // DomainsListResult - Result of the List Domains operation.
 type DomainsListResult struct {
 	// A link for the next page of domains.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of Domains.
-	Value []*Domain `json:"value,omitempty"`
+	Value []*Domain
 }
 
 // DynamicDeliveryAttributeMapping - Dynamic delivery attribute mapping details.
 type DynamicDeliveryAttributeMapping struct {
 	// REQUIRED; Type of the delivery attribute or header name.
-	Type *DeliveryAttributeMappingType `json:"type,omitempty"`
+	Type *DeliveryAttributeMappingType
 
 	// Name of the delivery attribute or header.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of dynamic delivery attribute mapping.
-	Properties *DynamicDeliveryAttributeMappingProperties `json:"properties,omitempty"`
+	Properties *DynamicDeliveryAttributeMappingProperties
 }
 
 // GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type DynamicDeliveryAttributeMapping.
@@ -704,16 +704,16 @@ func (d *DynamicDeliveryAttributeMapping) GetDeliveryAttributeMapping() *Deliver
 // DynamicDeliveryAttributeMappingProperties - Properties of dynamic delivery attribute mapping.
 type DynamicDeliveryAttributeMappingProperties struct {
 	// JSON path in the event which contains attribute value.
-	SourceField *string `json:"sourceField,omitempty"`
+	SourceField *string
 }
 
 // EventHubEventSubscriptionDestination - Information about the event hub destination for an event subscription.
 type EventHubEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// Event Hub Properties of the event subscription destination.
-	Properties *EventHubEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+	Properties *EventHubEventSubscriptionDestinationProperties
 }
 
 // GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type EventHubEventSubscriptionDestination.
@@ -726,28 +726,28 @@ func (e *EventHubEventSubscriptionDestination) GetEventSubscriptionDestination()
 // EventHubEventSubscriptionDestinationProperties - The properties for a event hub destination.
 type EventHubEventSubscriptionDestinationProperties struct {
 	// Delivery attribute details.
-	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
+	DeliveryAttributeMappings []DeliveryAttributeMappingClassification
 
 	// The Azure Resource Id that represents the endpoint of an Event Hub destination of an event subscription.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // EventSubscription - Event Subscription
 type EventSubscription struct {
 	// Properties of the event subscription.
-	Properties *EventSubscriptionProperties `json:"properties,omitempty"`
+	Properties *EventSubscriptionProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to Event Subscription resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EventSubscriptionDestinationClassification provides polymorphic access to related types.
@@ -764,7 +764,7 @@ type EventSubscriptionDestinationClassification interface {
 // EventSubscriptionDestination - Information about the destination for an event subscription.
 type EventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 }
 
 // GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type EventSubscriptionDestination.
@@ -775,43 +775,43 @@ func (e *EventSubscriptionDestination) GetEventSubscriptionDestination() *EventS
 // EventSubscriptionFilter - Filter for the Event Subscription.
 type EventSubscriptionFilter struct {
 	// An array of advanced filters that are used for filtering event subscriptions.
-	AdvancedFilters []AdvancedFilterClassification `json:"advancedFilters,omitempty"`
+	AdvancedFilters []AdvancedFilterClassification
 
 	// Allows advanced filters to be evaluated against an array of values instead of expecting a singular value.
-	EnableAdvancedFilteringOnArrays *bool `json:"enableAdvancedFilteringOnArrays,omitempty"`
+	EnableAdvancedFilteringOnArrays *bool
 
 	// A list of applicable event types that need to be part of the event subscription. If it is desired to subscribe to all default
 	// event types, set the IncludedEventTypes to null.
-	IncludedEventTypes []*string `json:"includedEventTypes,omitempty"`
+	IncludedEventTypes []*string
 
 	// Specifies if the SubjectBeginsWith and SubjectEndsWith properties of the filter should be compared in a case sensitive
 	// manner.
-	IsSubjectCaseSensitive *bool `json:"isSubjectCaseSensitive,omitempty"`
+	IsSubjectCaseSensitive *bool
 
 	// An optional string to filter events for an event subscription based on a resource path prefix. The format of this depends
 	// on the publisher of the events. Wildcard characters are not supported in this
 	// path.
-	SubjectBeginsWith *string `json:"subjectBeginsWith,omitempty"`
+	SubjectBeginsWith *string
 
 	// An optional string to filter events for an event subscription based on a resource path suffix. Wildcard characters are
 	// not supported in this path.
-	SubjectEndsWith *string `json:"subjectEndsWith,omitempty"`
+	SubjectEndsWith *string
 }
 
 // EventSubscriptionFullURL - Full endpoint url of an event subscription
 type EventSubscriptionFullURL struct {
 	// The URL that represents the endpoint of the destination of an event subscription.
-	EndpointURL *string `json:"endpointUrl,omitempty"`
+	EndpointURL *string
 }
 
 // EventSubscriptionIdentity - The identity information with the event subscription.
 type EventSubscriptionIdentity struct {
 	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
 	// and a set of user-assigned identities. The type 'None' will remove any identity.
-	Type *EventSubscriptionIdentityType `json:"type,omitempty"`
+	Type *EventSubscriptionIdentityType
 
 	// The user identity associated with the resource.
-	UserAssignedIdentity *string `json:"userAssignedIdentity,omitempty"`
+	UserAssignedIdentity *string
 }
 
 // EventSubscriptionProperties - Properties of the Event Subscription.
@@ -819,43 +819,43 @@ type EventSubscriptionProperties struct {
 	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to
 	// the dead letter destination. Uses Azure Event Grid's identity to acquire the
 	// authentication tokens being used during delivery / dead-lettering.
-	DeadLetterDestination DeadLetterDestinationClassification `json:"deadLetterDestination,omitempty"`
+	DeadLetterDestination DeadLetterDestinationClassification
 
 	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to
 	// the dead letter destination. Uses the managed identity setup on the parent
 	// resource (namely, topic or domain) to acquire the authentication tokens being used during delivery / dead-lettering.
-	DeadLetterWithResourceIdentity *DeadLetterWithResourceIdentity `json:"deadLetterWithResourceIdentity,omitempty"`
+	DeadLetterWithResourceIdentity *DeadLetterWithResourceIdentity
 
 	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
 	// setup on the parent resource (namely, topic or domain) to acquire the
 	// authentication tokens being used during delivery / dead-lettering.
-	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity `json:"deliveryWithResourceIdentity,omitempty"`
+	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity
 
 	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's
 	// identity to acquire the authentication tokens being used during delivery /
 	// dead-lettering.
-	Destination EventSubscriptionDestinationClassification `json:"destination,omitempty"`
+	Destination EventSubscriptionDestinationClassification
 
 	// The event delivery schema for the event subscription.
-	EventDeliverySchema *EventDeliverySchema `json:"eventDeliverySchema,omitempty"`
+	EventDeliverySchema *EventDeliverySchema
 
 	// Expiration time of the event subscription.
-	ExpirationTimeUTC *time.Time `json:"expirationTimeUtc,omitempty"`
+	ExpirationTimeUTC *time.Time
 
 	// Information about the filter for the event subscription.
-	Filter *EventSubscriptionFilter `json:"filter,omitempty"`
+	Filter *EventSubscriptionFilter
 
 	// List of user defined labels.
-	Labels []*string `json:"labels,omitempty"`
+	Labels []*string
 
 	// The retry policy for events. This can be used to configure maximum number of delivery attempts and time to live for events.
-	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
+	RetryPolicy *RetryPolicy
 
 	// READ-ONLY; Provisioning state of the event subscription.
-	ProvisioningState *EventSubscriptionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *EventSubscriptionProvisioningState
 
 	// READ-ONLY; Name of the topic of the event subscription.
-	Topic *string `json:"topic,omitempty" azure:"ro"`
+	Topic *string
 }
 
 // EventSubscriptionUpdateParameters - Properties of the Event Subscription update.
@@ -863,37 +863,37 @@ type EventSubscriptionUpdateParameters struct {
 	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to
 	// the dead letter destination. Uses Azure Event Grid's identity to acquire the
 	// authentication tokens being used during delivery / dead-lettering.
-	DeadLetterDestination DeadLetterDestinationClassification `json:"deadLetterDestination,omitempty"`
+	DeadLetterDestination DeadLetterDestinationClassification
 
 	// The dead letter destination of the event subscription. Any event that cannot be delivered to its' destination is sent to
 	// the dead letter destination. Uses the managed identity setup on the parent
 	// resource (topic / domain) to acquire the authentication tokens being used during delivery / dead-lettering.
-	DeadLetterWithResourceIdentity *DeadLetterWithResourceIdentity `json:"deadLetterWithResourceIdentity,omitempty"`
+	DeadLetterWithResourceIdentity *DeadLetterWithResourceIdentity
 
 	// Information about the destination where events have to be delivered for the event subscription. Uses the managed identity
 	// setup on the parent resource (topic / domain) to acquire the authentication
 	// tokens being used during delivery / dead-lettering.
-	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity `json:"deliveryWithResourceIdentity,omitempty"`
+	DeliveryWithResourceIdentity *DeliveryWithResourceIdentity
 
 	// Information about the destination where events have to be delivered for the event subscription. Uses Azure Event Grid's
 	// identity to acquire the authentication tokens being used during delivery /
 	// dead-lettering.
-	Destination EventSubscriptionDestinationClassification `json:"destination,omitempty"`
+	Destination EventSubscriptionDestinationClassification
 
 	// The event delivery schema for the event subscription.
-	EventDeliverySchema *EventDeliverySchema `json:"eventDeliverySchema,omitempty"`
+	EventDeliverySchema *EventDeliverySchema
 
 	// Information about the expiration time for the event subscription.
-	ExpirationTimeUTC *time.Time `json:"expirationTimeUtc,omitempty"`
+	ExpirationTimeUTC *time.Time
 
 	// Information about the filter for the event subscription.
-	Filter *EventSubscriptionFilter `json:"filter,omitempty"`
+	Filter *EventSubscriptionFilter
 
 	// List of user defined labels.
-	Labels []*string `json:"labels,omitempty"`
+	Labels []*string
 
 	// The retry policy for events. This can be used to configure maximum number of delivery attempts and time to live for events.
-	RetryPolicy *RetryPolicy `json:"retryPolicy,omitempty"`
+	RetryPolicy *RetryPolicy
 }
 
 // EventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the EventSubscriptionsClient.BeginCreateOrUpdate
@@ -1087,25 +1087,25 @@ type EventSubscriptionsClientListRegionalBySubscriptionOptions struct {
 // EventSubscriptionsListResult - Result of the List EventSubscriptions operation
 type EventSubscriptionsListResult struct {
 	// A link for the next page of event subscriptions
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of EventSubscriptions
-	Value []*EventSubscription `json:"value,omitempty"`
+	Value []*EventSubscription
 }
 
 // EventType - Event Type for a subject under a topic
 type EventType struct {
 	// Properties of the event type.
-	Properties *EventTypeProperties `json:"properties,omitempty"`
+	Properties *EventTypeProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EventTypeInfo - The event type information for Channels.
@@ -1114,58 +1114,58 @@ type EventTypeInfo struct {
 	// name of the event. An example of a valid inline event name is
 	// "Contoso.OrderCreated". The inline event type values are of type InlineEventProperties and will contain additional information
 	// for every inline event type.
-	InlineEventTypes map[string]*InlineEventProperties `json:"inlineEventTypes,omitempty"`
+	InlineEventTypes map[string]*InlineEventProperties
 
 	// The kind of event type used.
-	Kind *EventDefinitionKind `json:"kind,omitempty"`
+	Kind *EventDefinitionKind
 }
 
 // EventTypeProperties - Properties of the event type
 type EventTypeProperties struct {
 	// Description of the event type.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Display name of the event type.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// IsInDefaultSet flag of the event type.
-	IsInDefaultSet *bool `json:"isInDefaultSet,omitempty"`
+	IsInDefaultSet *bool
 
 	// Url of the schema for this event type.
-	SchemaURL *string `json:"schemaUrl,omitempty"`
+	SchemaURL *string
 }
 
 // EventTypesListResult - Result of the List Event Types operation
 type EventTypesListResult struct {
 	// A collection of event types
-	Value []*EventType `json:"value,omitempty"`
+	Value []*EventType
 }
 
 // ExtensionTopic - Event grid Extension Topic. This is used for getting Event Grid related metrics for Azure resources.
 type ExtensionTopic struct {
 	// Properties of the extension topic
-	Properties *ExtensionTopicProperties `json:"properties,omitempty"`
+	Properties *ExtensionTopicProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to Extension Topic resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExtensionTopicProperties - Properties of the Extension Topic
 type ExtensionTopicProperties struct {
 	// Description of the extension topic.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// System topic resource id which is mapped to the source.
-	SystemTopic *string `json:"systemTopic,omitempty"`
+	SystemTopic *string
 }
 
 // ExtensionTopicsClientGetOptions contains the optional parameters for the ExtensionTopicsClient.Get method.
@@ -1176,10 +1176,10 @@ type ExtensionTopicsClientGetOptions struct {
 // HybridConnectionEventSubscriptionDestination - Information about the HybridConnection destination for an event subscription.
 type HybridConnectionEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// Hybrid connection Properties of the event subscription destination.
-	Properties *HybridConnectionEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+	Properties *HybridConnectionEventSubscriptionDestinationProperties
 }
 
 // GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type HybridConnectionEventSubscriptionDestination.
@@ -1192,53 +1192,53 @@ func (h *HybridConnectionEventSubscriptionDestination) GetEventSubscriptionDesti
 // HybridConnectionEventSubscriptionDestinationProperties - The properties for a hybrid connection destination.
 type HybridConnectionEventSubscriptionDestinationProperties struct {
 	// Delivery attribute details.
-	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
+	DeliveryAttributeMappings []DeliveryAttributeMappingClassification
 
 	// The Azure Resource ID of an hybrid connection that is the destination of an event subscription.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // IdentityInfo - The identity information for the resource.
 type IdentityInfo struct {
 	// The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The type of managed identity used. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity
 	// and a set of user-assigned identities. The type 'None' will remove any identity.
-	Type *IdentityType `json:"type,omitempty"`
+	Type *IdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
 	// This property is currently not used and reserved for
 	// future usage.
-	UserAssignedIdentities map[string]*UserIdentityProperties `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserIdentityProperties
 }
 
 type InboundIPRule struct {
 	// Action to perform based on the match or no match of the IpMask.
-	Action *IPActionType `json:"action,omitempty"`
+	Action *IPActionType
 
 	// IP Address in CIDR notation e.g., 10.0.0.0/8.
-	IPMask *string `json:"ipMask,omitempty"`
+	IPMask *string
 }
 
 // InlineEventProperties - Additional information about every inline event.
 type InlineEventProperties struct {
 	// The dataSchemaUrl for the inline event.
-	DataSchemaURL *string `json:"dataSchemaUrl,omitempty"`
+	DataSchemaURL *string
 
 	// The description for the inline event.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The displayName for the inline event.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The documentationUrl for the inline event.
-	DocumentationURL *string `json:"documentationUrl,omitempty"`
+	DocumentationURL *string
 }
 
 // InputSchemaMappingClassification provides polymorphic access to related types.
@@ -1255,7 +1255,7 @@ type InputSchemaMappingClassification interface {
 // supported type of InputSchemaMapping is 'JsonInputSchemaMapping'.
 type InputSchemaMapping struct {
 	// REQUIRED; Type of the custom mapping
-	InputSchemaMappingType *InputSchemaMappingType `json:"inputSchemaMappingType,omitempty"`
+	InputSchemaMappingType *InputSchemaMappingType
 }
 
 // GetInputSchemaMapping implements the InputSchemaMappingClassification interface for type InputSchemaMapping.
@@ -1264,10 +1264,10 @@ func (i *InputSchemaMapping) GetInputSchemaMapping() *InputSchemaMapping { retur
 // IsNotNullAdvancedFilter - IsNotNull Advanced Filter.
 type IsNotNullAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type IsNotNullAdvancedFilter.
@@ -1281,10 +1281,10 @@ func (i *IsNotNullAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // IsNullOrUndefinedAdvancedFilter - IsNullOrUndefined Advanced Filter.
 type IsNullOrUndefinedAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type IsNullOrUndefinedAdvancedFilter.
@@ -1300,7 +1300,7 @@ func (i *IsNullOrUndefinedAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // properties. This represents a field in the input event schema.
 type JSONField struct {
 	// Name of a field in the input event schema that's to be used as the source of a mapping.
-	SourceField *string `json:"sourceField,omitempty"`
+	SourceField *string
 }
 
 // JSONFieldWithDefault - This is used to express the source of an input schema mapping for a single target field in the Event
@@ -1310,20 +1310,20 @@ type JSONField struct {
 type JSONFieldWithDefault struct {
 	// The default value to be used for mapping when a SourceField is not provided or if there's no property with the specified
 	// name in the published JSON event payload.
-	DefaultValue *string `json:"defaultValue,omitempty"`
+	DefaultValue *string
 
 	// Name of a field in the input event schema that's to be used as the source of a mapping.
-	SourceField *string `json:"sourceField,omitempty"`
+	SourceField *string
 }
 
 // JSONInputSchemaMapping - This enables publishing to Event Grid using a custom input schema. This can be used to map properties
 // from a custom input JSON schema to the Event Grid event schema.
 type JSONInputSchemaMapping struct {
 	// REQUIRED; Type of the custom mapping
-	InputSchemaMappingType *InputSchemaMappingType `json:"inputSchemaMappingType,omitempty"`
+	InputSchemaMappingType *InputSchemaMappingType
 
 	// JSON Properties of the input schema mapping
-	Properties *JSONInputSchemaMappingProperties `json:"properties,omitempty"`
+	Properties *JSONInputSchemaMappingProperties
 }
 
 // GetInputSchemaMapping implements the InputSchemaMappingClassification interface for type JSONInputSchemaMapping.
@@ -1337,34 +1337,34 @@ func (j *JSONInputSchemaMapping) GetInputSchemaMapping() *InputSchemaMapping {
 // supported properties) to properties of the EventGridEvent schema.
 type JSONInputSchemaMappingProperties struct {
 	// The mapping information for the DataVersion property of the Event Grid Event.
-	DataVersion *JSONFieldWithDefault `json:"dataVersion,omitempty"`
+	DataVersion *JSONFieldWithDefault
 
 	// The mapping information for the EventTime property of the Event Grid Event.
-	EventTime *JSONField `json:"eventTime,omitempty"`
+	EventTime *JSONField
 
 	// The mapping information for the EventType property of the Event Grid Event.
-	EventType *JSONFieldWithDefault `json:"eventType,omitempty"`
+	EventType *JSONFieldWithDefault
 
 	// The mapping information for the Id property of the Event Grid Event.
-	ID *JSONField `json:"id,omitempty"`
+	ID *JSONField
 
 	// The mapping information for the Subject property of the Event Grid Event.
-	Subject *JSONFieldWithDefault `json:"subject,omitempty"`
+	Subject *JSONFieldWithDefault
 
 	// The mapping information for the Topic property of the Event Grid Event.
-	Topic *JSONField `json:"topic,omitempty"`
+	Topic *JSONField
 }
 
 // NumberGreaterThanAdvancedFilter - NumberGreaterThan Advanced Filter.
 type NumberGreaterThanAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The filter value.
-	Value *float64 `json:"value,omitempty"`
+	Value *float64
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberGreaterThanAdvancedFilter.
@@ -1378,13 +1378,13 @@ func (n *NumberGreaterThanAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // NumberGreaterThanOrEqualsAdvancedFilter - NumberGreaterThanOrEquals Advanced Filter.
 type NumberGreaterThanOrEqualsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The filter value.
-	Value *float64 `json:"value,omitempty"`
+	Value *float64
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberGreaterThanOrEqualsAdvancedFilter.
@@ -1398,13 +1398,13 @@ func (n *NumberGreaterThanOrEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedF
 // NumberInAdvancedFilter - NumberIn Advanced Filter.
 type NumberInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*float64 `json:"values,omitempty"`
+	Values []*float64
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberInAdvancedFilter.
@@ -1418,13 +1418,13 @@ func (n *NumberInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // NumberInRangeAdvancedFilter - NumberInRange Advanced Filter.
 type NumberInRangeAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values [][]*float64 `json:"values,omitempty"`
+	Values [][]*float64
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberInRangeAdvancedFilter.
@@ -1438,13 +1438,13 @@ func (n *NumberInRangeAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // NumberLessThanAdvancedFilter - NumberLessThan Advanced Filter.
 type NumberLessThanAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The filter value.
-	Value *float64 `json:"value,omitempty"`
+	Value *float64
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberLessThanAdvancedFilter.
@@ -1458,13 +1458,13 @@ func (n *NumberLessThanAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // NumberLessThanOrEqualsAdvancedFilter - NumberLessThanOrEquals Advanced Filter.
 type NumberLessThanOrEqualsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The filter value.
-	Value *float64 `json:"value,omitempty"`
+	Value *float64
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberLessThanOrEqualsAdvancedFilter.
@@ -1478,13 +1478,13 @@ func (n *NumberLessThanOrEqualsAdvancedFilter) GetAdvancedFilter() *AdvancedFilt
 // NumberNotInAdvancedFilter - NumberNotIn Advanced Filter.
 type NumberNotInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*float64 `json:"values,omitempty"`
+	Values []*float64
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberNotInAdvancedFilter.
@@ -1498,13 +1498,13 @@ func (n *NumberNotInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // NumberNotInRangeAdvancedFilter - NumberNotInRange Advanced Filter.
 type NumberNotInRangeAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values [][]*float64 `json:"values,omitempty"`
+	Values [][]*float64
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type NumberNotInRangeAdvancedFilter.
@@ -1518,34 +1518,34 @@ func (n *NumberNotInRangeAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // Operation - Represents an operation returned by the GetOperations request.
 type Operation struct {
 	// Display name of the operation.
-	Display *OperationInfo `json:"display,omitempty"`
+	Display *OperationInfo
 
 	// This Boolean is used to determine if the operation is a data plane action or not.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operation.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationInfo - Information about an operation
 type OperationInfo struct {
 	// Description of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the operation
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the provider
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Name of the resource type
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1556,7 +1556,7 @@ type OperationsClientListOptions struct {
 // OperationsListResult - Result of the List Operations operation
 type OperationsListResult struct {
 	// A collection of operations
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // Partner - Information about the partner.
@@ -1566,73 +1566,73 @@ type Partner struct {
 	// values are between 1 to the value of defaultMaximumExpirationTimeInDays specified in PartnerConfiguration. If not specified,
 	// the default value will be the value of defaultMaximumExpirationTimeInDays
 	// specified in PartnerConfiguration or 7 if this value is not specified.
-	AuthorizationExpirationTimeInUTC *time.Time `json:"authorizationExpirationTimeInUtc,omitempty"`
+	AuthorizationExpirationTimeInUTC *time.Time
 
 	// The partner name.
-	PartnerName *string `json:"partnerName,omitempty"`
+	PartnerName *string
 
 	// The immutableId of the corresponding partner registration.
-	PartnerRegistrationImmutableID *string `json:"partnerRegistrationImmutableId,omitempty"`
+	PartnerRegistrationImmutableID *string
 }
 
 // PartnerAuthorization - The partner authorization details.
 type PartnerAuthorization struct {
 	// The list of authorized partners.
-	AuthorizedPartnersList []*Partner `json:"authorizedPartnersList,omitempty"`
+	AuthorizedPartnersList []*Partner
 
 	// Time used to validate the authorization expiration time for each authorized partner. If DefaultMaximumExpirationTimeInDays
 	// is not specified, the default is 7 days. Otherwise, allowed values are
 	// between 1 and 365 days.
-	DefaultMaximumExpirationTimeInDays *int32 `json:"defaultMaximumExpirationTimeInDays,omitempty"`
+	DefaultMaximumExpirationTimeInDays *int32
 }
 
 // PartnerConfiguration - Partner configuration information
 type PartnerConfiguration struct {
 	// Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the partner configuration.
-	Properties *PartnerConfigurationProperties `json:"properties,omitempty"`
+	Properties *PartnerConfigurationProperties
 
 	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to partner configuration resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PartnerConfigurationProperties - Properties of the partner configuration.
 type PartnerConfigurationProperties struct {
 	// The details of authorized partners.
-	PartnerAuthorization *PartnerAuthorization `json:"partnerAuthorization,omitempty"`
+	PartnerAuthorization *PartnerAuthorization
 
 	// Provisioning state of the partner configuration.
-	ProvisioningState *PartnerConfigurationProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *PartnerConfigurationProvisioningState
 }
 
 // PartnerConfigurationUpdateParameterProperties - Information of partner configuration update parameter properties.
 type PartnerConfigurationUpdateParameterProperties struct {
 	// The default time used to validate the maximum expiration time for each authorized partners in days. Allowed values ar between
 	// 1 and 365 days.
-	DefaultMaximumExpirationTimeInDays *int32 `json:"defaultMaximumExpirationTimeInDays,omitempty"`
+	DefaultMaximumExpirationTimeInDays *int32
 }
 
 // PartnerConfigurationUpdateParameters - Properties of the partner configuration update.
 type PartnerConfigurationUpdateParameters struct {
 	// Properties of the Topic resource.
-	Properties *PartnerConfigurationUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *PartnerConfigurationUpdateParameterProperties
 
 	// Tags of the partner configuration resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PartnerConfigurationsClientAuthorizePartnerOptions contains the optional parameters for the PartnerConfigurationsClient.AuthorizePartner
@@ -1697,46 +1697,46 @@ type PartnerConfigurationsClientUnauthorizePartnerOptions struct {
 // PartnerConfigurationsListResult - Result of the List partner configurations operation
 type PartnerConfigurationsListResult struct {
 	// A link for the next page of partner configurations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of partner configurations.
-	Value []*PartnerConfiguration `json:"value,omitempty"`
+	Value []*PartnerConfiguration
 }
 
 // PartnerDetails - Information about the partner.
 type PartnerDetails struct {
 	// This is short description about the partner. The length of this description should not exceed 256 characters.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Long description for the partner's scenarios and integration.Length of this description should not exceed 2048 characters.
-	LongDescription *string `json:"longDescription,omitempty"`
+	LongDescription *string
 
 	// URI of the partner website that can be used by Azure customers to setup Event Grid integration on an event source.
-	SetupURI *string `json:"setupUri,omitempty"`
+	SetupURI *string
 }
 
 // PartnerNamespace - EventGrid Partner Namespace.
 type PartnerNamespace struct {
 	// REQUIRED; Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the Partner Namespace.
-	Properties *PartnerNamespaceProperties `json:"properties,omitempty"`
+	Properties *PartnerNamespaceProperties
 
 	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to Partner Namespace resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PartnerNamespaceProperties - Properties of the partner namespace.
@@ -1744,49 +1744,49 @@ type PartnerNamespaceProperties struct {
 	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
 	// token will be used to authenticate if user is allowed to publish to the partner
 	// namespace.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
+	InboundIPRules []*InboundIPRule
 
 	// The fully qualified ARM Id of the partner registration that should be associated with this partner namespace. This takes
 	// the following format:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
-	PartnerRegistrationFullyQualifiedID *string `json:"partnerRegistrationFullyQualifiedId,omitempty"`
+	PartnerRegistrationFullyQualifiedID *string
 
 	// This determines if events published to this partner namespace should use the source attribute in the event payload or use
 	// the channel name in the header when matching to the partner topic. If none is
 	// specified, source attribute routing will be used to match the partner topic.
-	PartnerTopicRoutingMode *PartnerTopicRoutingMode `json:"partnerTopicRoutingMode,omitempty"`
+	PartnerTopicRoutingMode *PartnerTopicRoutingMode
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// READ-ONLY; Endpoint for the partner namespace.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
 
 	// READ-ONLY
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the partner namespace.
-	ProvisioningState *PartnerNamespaceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PartnerNamespaceProvisioningState
 }
 
 // PartnerNamespaceRegenerateKeyRequest - PartnerNamespace regenerate shared access key request.
 type PartnerNamespaceRegenerateKeyRequest struct {
 	// REQUIRED; Key name to regenerate (key1 or key2).
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 }
 
 // PartnerNamespaceSharedAccessKeys - Shared access keys of the partner namespace.
 type PartnerNamespaceSharedAccessKeys struct {
 	// Shared access key1 for the partner namespace.
-	Key1 *string `json:"key1,omitempty"`
+	Key1 *string
 
 	// Shared access key2 for the partner namespace.
-	Key2 *string `json:"key2,omitempty"`
+	Key2 *string
 }
 
 // PartnerNamespaceUpdateParameterProperties - Information of Partner Namespace update parameter properties.
@@ -1794,24 +1794,24 @@ type PartnerNamespaceUpdateParameterProperties struct {
 	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
 	// token will be used to authenticate if user is allowed to publish to the partner
 	// namespace.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
+	InboundIPRules []*InboundIPRule
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 }
 
 // PartnerNamespaceUpdateParameters - Properties of the Partner Namespace update.
 type PartnerNamespaceUpdateParameters struct {
 	// Properties of the Partner Namespace.
-	Properties *PartnerNamespaceUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *PartnerNamespaceUpdateParameterProperties
 
 	// Tags of the Partner Namespace.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PartnerNamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerNamespacesClient.BeginCreateOrUpdate
@@ -1885,50 +1885,50 @@ type PartnerNamespacesClientRegenerateKeyOptions struct {
 // PartnerNamespacesListResult - Result of the List Partner Namespaces operation
 type PartnerNamespacesListResult struct {
 	// A link for the next page of partner namespaces.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of partner namespaces.
-	Value []*PartnerNamespace `json:"value,omitempty"`
+	Value []*PartnerNamespace
 }
 
 // PartnerRegistration - Information about a partner registration.
 type PartnerRegistration struct {
 	// REQUIRED; Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the partner registration.
-	Properties *PartnerRegistrationProperties `json:"properties,omitempty"`
+	Properties *PartnerRegistrationProperties
 
 	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to Partner Registration resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PartnerRegistrationProperties - Properties of the partner registration.
 type PartnerRegistrationProperties struct {
 	// The immutableId of the corresponding partner registration. Note: This property is marked for deprecation and is not supported
 	// in any future GA API version
-	PartnerRegistrationImmutableID *string `json:"partnerRegistrationImmutableId,omitempty"`
+	PartnerRegistrationImmutableID *string
 
 	// READ-ONLY; Provisioning state of the partner registration.
-	ProvisioningState *PartnerRegistrationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PartnerRegistrationProvisioningState
 }
 
 // PartnerRegistrationUpdateParameters - Properties of the Partner Registration update.
 type PartnerRegistrationUpdateParameters struct {
 	// Tags of the partner registration resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PartnerRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerRegistrationsClient.BeginCreateOrUpdate
@@ -1990,37 +1990,37 @@ type PartnerRegistrationsClientListBySubscriptionOptions struct {
 // PartnerRegistrationsListResult - Result of the List Partner Registrations operation.
 type PartnerRegistrationsListResult struct {
 	// A link for the next page of partner registrations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of partner registrations.
-	Value []*PartnerRegistration `json:"value,omitempty"`
+	Value []*PartnerRegistration
 }
 
 // PartnerTopic - Event Grid Partner Topic.
 type PartnerTopic struct {
 	// REQUIRED; Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity information for the Partner Topic resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
+	Identity *IdentityInfo
 
 	// Properties of the Partner Topic.
-	Properties *PartnerTopicProperties `json:"properties,omitempty"`
+	Properties *PartnerTopicProperties
 
 	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to Partner Topic resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PartnerTopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PartnerTopicEventSubscriptionsClient.BeginCreateOrUpdate
@@ -2081,62 +2081,62 @@ type PartnerTopicEventSubscriptionsClientListByPartnerTopicOptions struct {
 type PartnerTopicInfo struct {
 	// Azure subscription ID of the subscriber. The partner topic associated with the channel will be created under this Azure
 	// subscription.
-	AzureSubscriptionID *string `json:"azureSubscriptionId,omitempty"`
+	AzureSubscriptionID *string
 
 	// Event Type Information for the partner topic. This information is provided by the publisher and can be used by the subscriber
 	// to view different types of events that are published.
-	EventTypeInfo *EventTypeInfo `json:"eventTypeInfo,omitempty"`
+	EventTypeInfo *EventTypeInfo
 
 	// Name of the partner topic associated with the channel.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Azure Resource Group of the subscriber. The partner topic associated with the channel will be created under this resource
 	// group.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	ResourceGroupName *string
 
 	// The source information is provided by the publisher to determine the scope or context from which the events are originating.
 	// This information can be used by the subscriber during the approval process
 	// of the created partner topic.
-	Source *string `json:"source,omitempty"`
+	Source *string
 }
 
 // PartnerTopicProperties - Properties of the Partner Topic.
 type PartnerTopicProperties struct {
 	// Activation state of the partner topic.
-	ActivationState *PartnerTopicActivationState `json:"activationState,omitempty"`
+	ActivationState *PartnerTopicActivationState
 
 	// Event Type information from the corresponding event channel.
-	EventTypeInfo *EventTypeInfo `json:"eventTypeInfo,omitempty"`
+	EventTypeInfo *EventTypeInfo
 
 	// Expiration time of the partner topic. If this timer expires while the partner topic is still never activated, the partner
 	// topic and corresponding event channel are deleted.
-	ExpirationTimeIfNotActivatedUTC *time.Time `json:"expirationTimeIfNotActivatedUtc,omitempty"`
+	ExpirationTimeIfNotActivatedUTC *time.Time
 
 	// Context or helpful message that can be used during the approval process by the subscriber.
-	MessageForActivation *string `json:"messageForActivation,omitempty"`
+	MessageForActivation *string
 
 	// The immutableId of the corresponding partner registration.
-	PartnerRegistrationImmutableID *string `json:"partnerRegistrationImmutableId,omitempty"`
+	PartnerRegistrationImmutableID *string
 
 	// Friendly description about the topic. This can be set by the publisher/partner to show custom description for the customer
 	// partner topic. This will be helpful to remove any ambiguity of the origin of
 	// creation of the partner topic for the customer.
-	PartnerTopicFriendlyDescription *string `json:"partnerTopicFriendlyDescription,omitempty"`
+	PartnerTopicFriendlyDescription *string
 
 	// Source associated with this partner topic. This represents a unique partner resource.
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// READ-ONLY; Provisioning state of the partner topic.
-	ProvisioningState *PartnerTopicProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PartnerTopicProvisioningState
 }
 
 // PartnerTopicUpdateParameters - Properties of the Partner Topic update.
 type PartnerTopicUpdateParameters struct {
 	// Identity information for the Partner Topic resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
+	Identity *IdentityInfo
 
 	// Tags of the Partner Topic resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PartnerTopicsClientActivateOptions contains the optional parameters for the PartnerTopicsClient.Activate method.
@@ -2203,60 +2203,60 @@ type PartnerTopicsClientUpdateOptions struct {
 // PartnerTopicsListResult - Result of the List Partner Topics operation.
 type PartnerTopicsListResult struct {
 	// A link for the next page of partner topics.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of partner topics.
-	Value []*PartnerTopic `json:"value,omitempty"`
+	Value []*PartnerTopic
 }
 
 // PartnerUpdateTopicInfo - Update properties for the corresponding partner topic of a channel.
 type PartnerUpdateTopicInfo struct {
 	// Event type info for the partner topic
-	EventTypeInfo *EventTypeInfo `json:"eventTypeInfo,omitempty"`
+	EventTypeInfo *EventTypeInfo
 }
 
 // PrivateEndpoint information.
 type PrivateEndpoint struct {
 	// The ARM identifier for Private Endpoint.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 type PrivateEndpointConnection struct {
 	// Properties of the PrivateEndpointConnection.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - Result of the list of all private endpoint connections operation.
 type PrivateEndpointConnectionListResult struct {
 	// A link for the next page of private endpoint connection resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of private endpoint connection resources.
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the private endpoint connection resource.
 type PrivateEndpointConnectionProperties struct {
 	// GroupIds from the private link service resource.
-	GroupIDs []*string `json:"groupIds,omitempty"`
+	GroupIDs []*string
 
 	// The Private Endpoint resource for this Connection.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// Details about the state of the connection.
-	PrivateLinkServiceConnectionState *ConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *ConnectionState
 
 	// Provisioning state of the Private Endpoint Connection.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ResourceProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
@@ -2297,23 +2297,23 @@ type PrivateEndpointConnectionsClientListByResourceOptions struct {
 // PrivateLinkResource - Information of the private link resource.
 type PrivateLinkResource struct {
 	// Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the private link resource.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// Type of the resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 type PrivateLinkResourceProperties struct {
-	DisplayName       *string   `json:"displayName,omitempty"`
-	GroupID           *string   `json:"groupId,omitempty"`
-	RequiredMembers   []*string `json:"requiredMembers,omitempty"`
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	DisplayName       *string
+	GroupID           *string
+	RequiredMembers   []*string
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -2339,40 +2339,40 @@ type PrivateLinkResourcesClientListByResourceOptions struct {
 // PrivateLinkResourcesListResult - Result of the List private link resources operation.
 type PrivateLinkResourcesListResult struct {
 	// A link for the next page of private link resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // Resource - Definition of a Resource.
 type Resource struct {
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RetryPolicy - Information about the retry policy for an event subscription.
 type RetryPolicy struct {
 	// Time To Live (in minutes) for events.
-	EventTimeToLiveInMinutes *int32 `json:"eventTimeToLiveInMinutes,omitempty"`
+	EventTimeToLiveInMinutes *int32
 
 	// Maximum number of delivery retry attempts for events.
-	MaxDeliveryAttempts *int32 `json:"maxDeliveryAttempts,omitempty"`
+	MaxDeliveryAttempts *int32
 }
 
 // ServiceBusQueueEventSubscriptionDestination - Information about the service bus destination for an event subscription.
 type ServiceBusQueueEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// Service Bus Properties of the event subscription destination.
-	Properties *ServiceBusQueueEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+	Properties *ServiceBusQueueEventSubscriptionDestinationProperties
 }
 
 // GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type ServiceBusQueueEventSubscriptionDestination.
@@ -2386,19 +2386,19 @@ func (s *ServiceBusQueueEventSubscriptionDestination) GetEventSubscriptionDestin
 // event subscription.
 type ServiceBusQueueEventSubscriptionDestinationProperties struct {
 	// Delivery attribute details.
-	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
+	DeliveryAttributeMappings []DeliveryAttributeMappingClassification
 
 	// The Azure Resource Id that represents the endpoint of the Service Bus destination of an event subscription.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // ServiceBusTopicEventSubscriptionDestination - Information about the service bus topic destination for an event subscription.
 type ServiceBusTopicEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// Service Bus Topic Properties of the event subscription destination.
-	Properties *ServiceBusTopicEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+	Properties *ServiceBusTopicEventSubscriptionDestinationProperties
 }
 
 // GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type ServiceBusTopicEventSubscriptionDestination.
@@ -2412,22 +2412,22 @@ func (s *ServiceBusTopicEventSubscriptionDestination) GetEventSubscriptionDestin
 // of an event subscription.
 type ServiceBusTopicEventSubscriptionDestinationProperties struct {
 	// Delivery attribute details.
-	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
+	DeliveryAttributeMappings []DeliveryAttributeMappingClassification
 
 	// The Azure Resource Id that represents the endpoint of the Service Bus Topic destination of an event subscription.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // StaticDeliveryAttributeMapping - Static delivery attribute mapping details.
 type StaticDeliveryAttributeMapping struct {
 	// REQUIRED; Type of the delivery attribute or header name.
-	Type *DeliveryAttributeMappingType `json:"type,omitempty"`
+	Type *DeliveryAttributeMappingType
 
 	// Name of the delivery attribute or header.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of static delivery attribute mapping.
-	Properties *StaticDeliveryAttributeMappingProperties `json:"properties,omitempty"`
+	Properties *StaticDeliveryAttributeMappingProperties
 }
 
 // GetDeliveryAttributeMapping implements the DeliveryAttributeMappingClassification interface for type StaticDeliveryAttributeMapping.
@@ -2441,19 +2441,19 @@ func (s *StaticDeliveryAttributeMapping) GetDeliveryAttributeMapping() *Delivery
 // StaticDeliveryAttributeMappingProperties - Properties of static delivery attribute mapping.
 type StaticDeliveryAttributeMappingProperties struct {
 	// Boolean flag to tell if the attribute contains sensitive information .
-	IsSecret *bool `json:"isSecret,omitempty"`
+	IsSecret *bool
 
 	// Value of the delivery attribute.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // StorageBlobDeadLetterDestination - Information about the storage blob based dead letter destination.
 type StorageBlobDeadLetterDestination struct {
 	// REQUIRED; Type of the endpoint for the dead letter destination
-	EndpointType *DeadLetterEndPointType `json:"endpointType,omitempty"`
+	EndpointType *DeadLetterEndPointType
 
 	// The properties of the Storage Blob based deadletter destination
-	Properties *StorageBlobDeadLetterDestinationProperties `json:"properties,omitempty"`
+	Properties *StorageBlobDeadLetterDestinationProperties
 }
 
 // GetDeadLetterDestination implements the DeadLetterDestinationClassification interface for type StorageBlobDeadLetterDestination.
@@ -2466,19 +2466,19 @@ func (s *StorageBlobDeadLetterDestination) GetDeadLetterDestination() *DeadLette
 // StorageBlobDeadLetterDestinationProperties - Properties of the storage blob based dead letter destination.
 type StorageBlobDeadLetterDestinationProperties struct {
 	// The name of the Storage blob container that is the destination of the deadletter events
-	BlobContainerName *string `json:"blobContainerName,omitempty"`
+	BlobContainerName *string
 
 	// The Azure Resource ID of the storage account that is the destination of the deadletter events
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // StorageQueueEventSubscriptionDestination - Information about the storage queue destination for an event subscription.
 type StorageQueueEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// Storage Queue Properties of the event subscription destination.
-	Properties *StorageQueueEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+	Properties *StorageQueueEventSubscriptionDestinationProperties
 }
 
 // GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type StorageQueueEventSubscriptionDestination.
@@ -2491,25 +2491,25 @@ func (s *StorageQueueEventSubscriptionDestination) GetEventSubscriptionDestinati
 // StorageQueueEventSubscriptionDestinationProperties - The properties for a storage queue destination.
 type StorageQueueEventSubscriptionDestinationProperties struct {
 	// Storage queue message time to live in seconds.
-	QueueMessageTimeToLiveInSeconds *int64 `json:"queueMessageTimeToLiveInSeconds,omitempty"`
+	QueueMessageTimeToLiveInSeconds *int64
 
 	// The name of the Storage queue under a storage account that is the destination of an event subscription.
-	QueueName *string `json:"queueName,omitempty"`
+	QueueName *string
 
 	// The Azure Resource ID of the storage account that contains the queue that is the destination of an event subscription.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // StringBeginsWithAdvancedFilter - StringBeginsWith Advanced Filter.
 type StringBeginsWithAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringBeginsWithAdvancedFilter.
@@ -2523,13 +2523,13 @@ func (s *StringBeginsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // StringContainsAdvancedFilter - StringContains Advanced Filter.
 type StringContainsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringContainsAdvancedFilter.
@@ -2543,13 +2543,13 @@ func (s *StringContainsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // StringEndsWithAdvancedFilter - StringEndsWith Advanced Filter.
 type StringEndsWithAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringEndsWithAdvancedFilter.
@@ -2563,13 +2563,13 @@ func (s *StringEndsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // StringInAdvancedFilter - StringIn Advanced Filter.
 type StringInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringInAdvancedFilter.
@@ -2583,13 +2583,13 @@ func (s *StringInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // StringNotBeginsWithAdvancedFilter - StringNotBeginsWith Advanced Filter.
 type StringNotBeginsWithAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotBeginsWithAdvancedFilter.
@@ -2603,13 +2603,13 @@ func (s *StringNotBeginsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter 
 // StringNotContainsAdvancedFilter - StringNotContains Advanced Filter.
 type StringNotContainsAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotContainsAdvancedFilter.
@@ -2623,13 +2623,13 @@ func (s *StringNotContainsAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // StringNotEndsWithAdvancedFilter - StringNotEndsWith Advanced Filter.
 type StringNotEndsWithAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotEndsWithAdvancedFilter.
@@ -2643,13 +2643,13 @@ func (s *StringNotEndsWithAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // StringNotInAdvancedFilter - StringNotIn Advanced Filter.
 type StringNotInAdvancedFilter struct {
 	// REQUIRED; The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
-	OperatorType *AdvancedFilterOperatorType `json:"operatorType,omitempty"`
+	OperatorType *AdvancedFilterOperatorType
 
 	// The field/property in the event based on which you want to filter.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The set of filter values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // GetAdvancedFilter implements the AdvancedFilterClassification interface for type StringNotInAdvancedFilter.
@@ -2663,49 +2663,49 @@ func (s *StringNotInAdvancedFilter) GetAdvancedFilter() *AdvancedFilter {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // SystemTopic - EventGrid System Topic.
 type SystemTopic struct {
 	// REQUIRED; Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity information for the resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
+	Identity *IdentityInfo
 
 	// Properties of the system topic.
-	Properties *SystemTopicProperties `json:"properties,omitempty"`
+	Properties *SystemTopicProperties
 
 	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to System Topic resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SystemTopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SystemTopicEventSubscriptionsClient.BeginCreateOrUpdate
@@ -2765,25 +2765,25 @@ type SystemTopicEventSubscriptionsClientListBySystemTopicOptions struct {
 // SystemTopicProperties - Properties of the System Topic.
 type SystemTopicProperties struct {
 	// Source for the system topic.
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// TopicType for the system topic.
-	TopicType *string `json:"topicType,omitempty"`
+	TopicType *string
 
 	// READ-ONLY; Metric resource id for the system topic.
-	MetricResourceID *string `json:"metricResourceId,omitempty" azure:"ro"`
+	MetricResourceID *string
 
 	// READ-ONLY; Provisioning state of the system topic.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ResourceProvisioningState
 }
 
 // SystemTopicUpdateParameters - Properties of the System Topic update.
 type SystemTopicUpdateParameters struct {
 	// Resource identity information.
-	Identity *IdentityInfo `json:"identity,omitempty"`
+	Identity *IdentityInfo
 
 	// Tags of the system topic.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // SystemTopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the SystemTopicsClient.BeginCreateOrUpdate
@@ -2843,37 +2843,37 @@ type SystemTopicsClientListBySubscriptionOptions struct {
 // SystemTopicsListResult - Result of the List System topics operation.
 type SystemTopicsListResult struct {
 	// A link for the next page of topics.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of system Topics.
-	Value []*SystemTopic `json:"value,omitempty"`
+	Value []*SystemTopic
 }
 
 // Topic - EventGrid Topic
 type Topic struct {
 	// REQUIRED; Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity information for the resource.
-	Identity *IdentityInfo `json:"identity,omitempty"`
+	Identity *IdentityInfo
 
 	// Properties of the topic.
-	Properties *TopicProperties `json:"properties,omitempty"`
+	Properties *TopicProperties
 
 	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to Topic resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TopicEventSubscriptionsClientBeginCreateOrUpdateOptions contains the optional parameters for the TopicEventSubscriptionsClient.BeginCreateOrUpdate
@@ -2932,95 +2932,95 @@ type TopicEventSubscriptionsClientListOptions struct {
 // TopicProperties - Properties of the Topic.
 type TopicProperties struct {
 	// Data Residency Boundary of the resource.
-	DataResidencyBoundary *DataResidencyBoundary `json:"dataResidencyBoundary,omitempty"`
+	DataResidencyBoundary *DataResidencyBoundary
 
 	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
 	// token will be used to authenticate if user is allowed to publish to the topic.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
+	InboundIPRules []*InboundIPRule
 
 	// This determines the format that Event Grid should expect for incoming events published to the topic.
-	InputSchema *InputSchema `json:"inputSchema,omitempty"`
+	InputSchema *InputSchema
 
 	// This enables publishing using custom event schemas. An InputSchemaMapping can be specified to map various properties of
 	// a source schema to various required properties of the EventGridEvent schema.
-	InputSchemaMapping InputSchemaMappingClassification `json:"inputSchemaMapping,omitempty"`
+	InputSchemaMapping InputSchemaMappingClassification
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// READ-ONLY; Endpoint for the topic.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
 
 	// READ-ONLY; Metric resource id for the topic.
-	MetricResourceID *string `json:"metricResourceId,omitempty" azure:"ro"`
+	MetricResourceID *string
 
 	// READ-ONLY
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the topic.
-	ProvisioningState *TopicProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *TopicProvisioningState
 }
 
 // TopicRegenerateKeyRequest - Topic regenerate share access key request
 type TopicRegenerateKeyRequest struct {
 	// REQUIRED; Key name to regenerate key1 or key2
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 }
 
 // TopicSharedAccessKeys - Shared access keys of the Topic
 type TopicSharedAccessKeys struct {
 	// Shared access key1 for the topic.
-	Key1 *string `json:"key1,omitempty"`
+	Key1 *string
 
 	// Shared access key2 for the topic.
-	Key2 *string `json:"key2,omitempty"`
+	Key2 *string
 }
 
 // TopicTypeInfo - Properties of a topic type info.
 type TopicTypeInfo struct {
 	// Properties of the topic type info
-	Properties *TopicTypeProperties `json:"properties,omitempty"`
+	Properties *TopicTypeProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TopicTypeProperties - Properties of a topic type.
 type TopicTypeProperties struct {
 	// Description of the topic type.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Display Name for the topic type.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Namespace of the provider of the topic type.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Provisioning state of the topic type
-	ProvisioningState *TopicTypeProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *TopicTypeProvisioningState
 
 	// Region type of the resource.
-	ResourceRegionType *ResourceRegionType `json:"resourceRegionType,omitempty"`
+	ResourceRegionType *ResourceRegionType
 
 	// Source resource format.
-	SourceResourceFormat *string `json:"sourceResourceFormat,omitempty"`
+	SourceResourceFormat *string
 
 	// List of locations supported by this topic type.
-	SupportedLocations []*string `json:"supportedLocations,omitempty"`
+	SupportedLocations []*string
 
 	// Supported source scopes.
-	SupportedScopesForSource []*TopicTypeSourceScope `json:"supportedScopesForSource,omitempty"`
+	SupportedScopesForSource []*TopicTypeSourceScope
 }
 
 // TopicTypesClientGetOptions contains the optional parameters for the TopicTypesClient.Get method.
@@ -3042,37 +3042,37 @@ type TopicTypesClientListOptions struct {
 // TopicTypesListResult - Result of the List Topic Types operation
 type TopicTypesListResult struct {
 	// A collection of topic types
-	Value []*TopicTypeInfo `json:"value,omitempty"`
+	Value []*TopicTypeInfo
 }
 
 // TopicUpdateParameterProperties - Information of topic update parameter properties.
 type TopicUpdateParameterProperties struct {
 	// The data residency boundary for the topic.
-	DataResidencyBoundary *DataResidencyBoundary `json:"dataResidencyBoundary,omitempty"`
+	DataResidencyBoundary *DataResidencyBoundary
 
 	// This boolean is used to enable or disable local auth. Default value is false. When the property is set to true, only AAD
 	// token will be used to authenticate if user is allowed to publish to the topic.
-	DisableLocalAuth *bool `json:"disableLocalAuth,omitempty"`
+	DisableLocalAuth *bool
 
 	// This can be used to restrict traffic from specific IPs instead of all IPs. Note: These are considered only if PublicNetworkAccess
 	// is enabled.
-	InboundIPRules []*InboundIPRule `json:"inboundIpRules,omitempty"`
+	InboundIPRules []*InboundIPRule
 
 	// This determines if traffic is allowed over public network. By default it is enabled. You can further restrict to specific
 	// IPs by configuring
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 }
 
 // TopicUpdateParameters - Properties of the Topic update
 type TopicUpdateParameters struct {
 	// Topic resource identity information.
-	Identity *IdentityInfo `json:"identity,omitempty"`
+	Identity *IdentityInfo
 
 	// Properties of the Topic resource.
-	Properties *TopicUpdateParameterProperties `json:"properties,omitempty"`
+	Properties *TopicUpdateParameterProperties
 
 	// Tags of the Topic resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // TopicsClientBeginCreateOrUpdateOptions contains the optional parameters for the TopicsClient.BeginCreateOrUpdate method.
@@ -3147,73 +3147,73 @@ type TopicsClientListSharedAccessKeysOptions struct {
 // TopicsListResult - Result of the List Topics operation
 type TopicsListResult struct {
 	// A link for the next page of topics
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of Topics
-	Value []*Topic `json:"value,omitempty"`
+	Value []*Topic
 }
 
 // TrackedResource - Definition of a Tracked Resource.
 type TrackedResource struct {
 	// REQUIRED; Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserIdentityProperties - The information about the user identity.
 type UserIdentityProperties struct {
 	// The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 }
 
 // VerifiedPartner - Verified partner information
 type VerifiedPartner struct {
 	// Properties of the verified partner.
-	Properties *VerifiedPartnerProperties `json:"properties,omitempty"`
+	Properties *VerifiedPartnerProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to Verified Partner resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VerifiedPartnerProperties - Properties of the verified partner.
 type VerifiedPartnerProperties struct {
 	// Official name of the Partner.
-	OrganizationName *string `json:"organizationName,omitempty"`
+	OrganizationName *string
 
 	// Display name of the verified partner.
-	PartnerDisplayName *string `json:"partnerDisplayName,omitempty"`
+	PartnerDisplayName *string
 
 	// ImmutableId of the corresponding partner registration.
-	PartnerRegistrationImmutableID *string `json:"partnerRegistrationImmutableId,omitempty"`
+	PartnerRegistrationImmutableID *string
 
 	// Details of the partner topic scenario.
-	PartnerTopicDetails *PartnerDetails `json:"partnerTopicDetails,omitempty"`
+	PartnerTopicDetails *PartnerDetails
 
 	// Provisioning state of the verified partner.
-	ProvisioningState *VerifiedPartnerProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *VerifiedPartnerProvisioningState
 }
 
 // VerifiedPartnersClientGetOptions contains the optional parameters for the VerifiedPartnersClient.Get method.
@@ -3238,19 +3238,19 @@ type VerifiedPartnersClientListOptions struct {
 // VerifiedPartnersListResult - Result of the List verified partners operation
 type VerifiedPartnersListResult struct {
 	// A link for the next page of verified partners if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of verified partners.
-	Value []*VerifiedPartner `json:"value,omitempty"`
+	Value []*VerifiedPartner
 }
 
 // WebHookEventSubscriptionDestination - Information about the webhook destination for an event subscription.
 type WebHookEventSubscriptionDestination struct {
 	// REQUIRED; Type of the endpoint for the event subscription destination.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// WebHook Properties of the event subscription destination.
-	Properties *WebHookEventSubscriptionDestinationProperties `json:"properties,omitempty"`
+	Properties *WebHookEventSubscriptionDestinationProperties
 }
 
 // GetEventSubscriptionDestination implements the EventSubscriptionDestinationClassification interface for type WebHookEventSubscriptionDestination.
@@ -3264,23 +3264,23 @@ func (w *WebHookEventSubscriptionDestination) GetEventSubscriptionDestination() 
 type WebHookEventSubscriptionDestinationProperties struct {
 	// The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer token in delivery
 	// requests.
-	AzureActiveDirectoryApplicationIDOrURI *string `json:"azureActiveDirectoryApplicationIdOrUri,omitempty"`
+	AzureActiveDirectoryApplicationIDOrURI *string
 
 	// The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in delivery requests.
-	AzureActiveDirectoryTenantID *string `json:"azureActiveDirectoryTenantId,omitempty"`
+	AzureActiveDirectoryTenantID *string
 
 	// Delivery attribute details.
-	DeliveryAttributeMappings []DeliveryAttributeMappingClassification `json:"deliveryAttributeMappings,omitempty"`
+	DeliveryAttributeMappings []DeliveryAttributeMappingClassification
 
 	// The URL that represents the endpoint of the destination of an event subscription.
-	EndpointURL *string `json:"endpointUrl,omitempty"`
+	EndpointURL *string
 
 	// Maximum number of events per batch.
-	MaxEventsPerBatch *int32 `json:"maxEventsPerBatch,omitempty"`
+	MaxEventsPerBatch *int32
 
 	// Preferred batch size in Kilobytes.
-	PreferredBatchSizeInKilobytes *int32 `json:"preferredBatchSizeInKilobytes,omitempty"`
+	PreferredBatchSizeInKilobytes *int32
 
 	// READ-ONLY; The base URL that represents the endpoint of the destination of an event subscription.
-	EndpointBaseURL *string `json:"endpointBaseUrl,omitempty" azure:"ro"`
+	EndpointBaseURL *string
 }

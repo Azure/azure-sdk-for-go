@@ -291,7 +291,7 @@ type DataEncryption struct {
 	// Resource Id for the User assigned identity to be used for data encryption for primary server.
 	PrimaryUserAssignedIdentityID *string
 
-	// Data encryption type to depict if it is System assigned vs Azure Key vault.
+	// Data encryption type to depict if it is System Managed vs Azure Key vault.
 	Type *ArmServerKeyType
 }
 

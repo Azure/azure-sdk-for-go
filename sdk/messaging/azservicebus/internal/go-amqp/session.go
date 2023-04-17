@@ -475,7 +475,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 					continue
 				}
 
-				if body.Echo {
+				if body.Echo && !closeInProgress {
 					niID := nextIncomingID
 					resp := &frames.PerformFlow{
 						NextIncomingID: &niID,
@@ -538,7 +538,7 @@ func (s *Session) mux(remoteBegin *frames.PerformBegin) {
 				}
 
 				// Update peer's outgoing window if half has been consumed.
-				if s.needFlowCount >= s.incomingWindow/2 {
+				if s.needFlowCount >= s.incomingWindow/2 && !closeInProgress {
 					debug.Log(3, "RX (Session %p): channel %d: flow - s.needFlowCount(%d) >= s.incomingWindow(%d)/2\n", s, s.channel, s.needFlowCount, s.incomingWindow)
 					s.needFlowCount = 0
 					nID := nextIncomingID

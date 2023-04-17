@@ -14,37 +14,37 @@ import "time"
 // AffectedMoveResource - The RP custom operation error info.
 type AffectedMoveResource struct {
 	// READ-ONLY; The affected move resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The affected move resources.
-	MoveResources []*AffectedMoveResource `json:"moveResources,omitempty" azure:"ro"`
+	MoveResources []*AffectedMoveResource
 
 	// READ-ONLY; The affected move resource source id.
-	SourceID *string `json:"sourceId,omitempty" azure:"ro"`
+	SourceID *string
 }
 
 // AutomaticResolutionProperties - Defines the properties for automatic resolution.
 type AutomaticResolutionProperties struct {
 	// Gets the MoveResource ARM ID of the dependent resource if the resolution type is Automatic.
-	MoveResourceID *string `json:"moveResourceId,omitempty"`
+	MoveResourceID *string
 }
 
 // AvailabilitySetResourceSettings - Gets or sets the availability set resource settings.
 type AvailabilitySetResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets the target fault domain.
-	FaultDomain *int32 `json:"faultDomain,omitempty"`
+	FaultDomain *int32
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Gets or sets the target update domain.
-	UpdateDomain *int32 `json:"updateDomain,omitempty"`
+	UpdateDomain *int32
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type AvailabilitySetResourceSettings.
@@ -58,55 +58,55 @@ func (a *AvailabilitySetResourceSettings) GetResourceSettings() *ResourceSetting
 // AzureResourceReference - Defines reference to an Azure resource.
 type AzureResourceReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+	SourceArmResourceID *string
 }
 
 // BulkRemoveRequest - Defines the request body for bulk remove of move resources operation.
 type BulkRemoveRequest struct {
 	// Defines the move resource input type.
-	MoveResourceInputType *MoveResourceInputType `json:"moveResourceInputType,omitempty"`
+	MoveResourceInputType *MoveResourceInputType
 
 	// Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched via
 	// moveResourceInputType property.
-	MoveResources []*string `json:"moveResources,omitempty"`
+	MoveResources []*string
 
 	// Gets or sets a value indicating whether the operation needs to only run pre-requisite.
-	ValidateOnly *bool `json:"validateOnly,omitempty"`
+	ValidateOnly *bool
 }
 
 // CommitRequest - Defines the request body for commit operation.
 type CommitRequest struct {
 	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched
 	// via moveResourceInputType property.
-	MoveResources []*string `json:"moveResources,omitempty"`
+	MoveResources []*string
 
 	// Defines the move resource input type.
-	MoveResourceInputType *MoveResourceInputType `json:"moveResourceInputType,omitempty"`
+	MoveResourceInputType *MoveResourceInputType
 
 	// Gets or sets a value indicating whether the operation needs to only run pre-requisite.
-	ValidateOnly *bool `json:"validateOnly,omitempty"`
+	ValidateOnly *bool
 }
 
 // DiscardRequest - Defines the request body for discard operation.
 type DiscardRequest struct {
 	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched
 	// via moveResourceInputType property.
-	MoveResources []*string `json:"moveResources,omitempty"`
+	MoveResources []*string
 
 	// Defines the move resource input type.
-	MoveResourceInputType *MoveResourceInputType `json:"moveResourceInputType,omitempty"`
+	MoveResourceInputType *MoveResourceInputType
 
 	// Gets or sets a value indicating whether the operation needs to only run pre-requisite.
-	ValidateOnly *bool `json:"validateOnly,omitempty"`
+	ValidateOnly *bool
 }
 
 // DiskEncryptionSetResourceSettings - Defines the disk encryption set resource settings.
 type DiskEncryptionSetResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type DiskEncryptionSetResourceSettings.
@@ -127,54 +127,54 @@ type Display struct {
 	// resource Delete any 'display.provider' resource Perform any other action on any
 	// 'display.provider' resource Prescriptive guidance for namespace: Read any 'display.resource' Create or Update any 'display.resource'
 	// Delete any 'display.resource' 'ActionName' any 'display.resources'.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets the operation. The localized friendly name for the operation, as it should be shown to the user. It should
 	// be concise (to fit in drop downs) but clear (i.e. self-documenting). It should
 	// use Title Casing. Prescriptive guidance: Read Create or Update Delete 'ActionName'.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Gets or sets the provider. The localized friendly form of the resource provider name – it is expected to also include the
 	// publisher/company responsible. It should use Title Casing and begin with
 	// "Microsoft" for 1st party services. e.g. "Microsoft Monitoring Insights" or "Microsoft Compute.".
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Gets or sets the resource. The localized friendly form of the resource related to this action/operation – it should match
 	// the public documentation for the resource provider. It should use Title
 	// Casing. This value should be unique for a particular URL type (e.g. nested types should notreuse their parent’s display.resource
 	// field) e.g. "Virtual Machines" or "Scheduler Job Collections", or
 	// "Virtual Machine VM Sizes" or "Scheduler Jobs".
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // Identity - Defines the MSI properties of the Move Collection.
 type Identity struct {
 	// Gets or sets the principal id.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// Gets or sets the tenant id.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The type of identity used for the resource mover service.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 }
 
 // JobStatus - Defines the job status.
 type JobStatus struct {
 	// READ-ONLY; Defines the job name.
-	JobName *JobName `json:"jobName,omitempty" azure:"ro"`
+	JobName *JobName
 
 	// READ-ONLY; Gets or sets the monitoring job percentage.
-	JobProgress *string `json:"jobProgress,omitempty" azure:"ro"`
+	JobProgress *string
 }
 
 // KeyVaultResourceSettings - Defines the key vault resource settings.
 type KeyVaultResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type KeyVaultResourceSettings.
@@ -188,69 +188,69 @@ func (k *KeyVaultResourceSettings) GetResourceSettings() *ResourceSettings {
 // LBBackendAddressPoolResourceSettings - Defines load balancer backend address pool properties.
 type LBBackendAddressPoolResourceSettings struct {
 	// Gets or sets the backend address pool name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // LBFrontendIPConfigurationResourceSettings - Defines load balancer frontend IP configuration properties.
 type LBFrontendIPConfigurationResourceSettings struct {
 	// Gets or sets the frontend IP configuration name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the IP address of the Load Balancer.This is only specified if a specific private IP address shall be allocated
 	// from the subnet specified in subnetRef.
-	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
+	PrivateIPAddress *string
 
 	// Gets or sets PrivateIP allocation method (Static/Dynamic).
-	PrivateIPAllocationMethod *string `json:"privateIpAllocationMethod,omitempty"`
+	PrivateIPAllocationMethod *string
 
 	// Defines reference to subnet.
-	Subnet *SubnetReference `json:"subnet,omitempty"`
+	Subnet *SubnetReference
 
 	// Gets or sets the csv list of zones.
-	Zones *string `json:"zones,omitempty"`
+	Zones *string
 }
 
 // LoadBalancerBackendAddressPoolReference - Defines reference to load balancer backend address pools.
 type LoadBalancerBackendAddressPoolReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+	SourceArmResourceID *string
 
 	// Gets the name of the proxy resource on the target side.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // LoadBalancerNatRuleReference - Defines reference to load balancer NAT rules.
 type LoadBalancerNatRuleReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+	SourceArmResourceID *string
 
 	// Gets the name of the proxy resource on the target side.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // LoadBalancerResourceSettings - Defines the load balancer resource settings.
 type LoadBalancerResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets the backend address pools of the load balancer.
-	BackendAddressPools []*LBBackendAddressPoolResourceSettings `json:"backendAddressPools,omitempty"`
+	BackendAddressPools []*LBBackendAddressPoolResourceSettings
 
 	// Gets or sets the frontend IP configurations of the load balancer.
-	FrontendIPConfigurations []*LBFrontendIPConfigurationResourceSettings `json:"frontendIPConfigurations,omitempty"`
+	FrontendIPConfigurations []*LBFrontendIPConfigurationResourceSettings
 
 	// Gets or sets load balancer sku (Basic/Standard).
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Gets or sets the csv list of zones common for all frontend IP configurations. Note this is given precedence only if frontend
 	// IP configurations settings are not present.
-	Zones *string `json:"zones,omitempty"`
+	Zones *string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type LoadBalancerResourceSettings.
@@ -264,67 +264,67 @@ func (l *LoadBalancerResourceSettings) GetResourceSettings() *ResourceSettings {
 // ManualResolutionProperties - Defines the properties for manual resolution.
 type ManualResolutionProperties struct {
 	// Gets or sets the target resource ARM ID of the dependent resource if the resource type is Manual.
-	TargetID *string `json:"targetId,omitempty"`
+	TargetID *string
 }
 
 // MoveCollection - Define the move collection.
 type MoveCollection struct {
 	// Defines the MSI properties of the Move Collection.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The geo-location where the resource lives.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Defines the move collection properties.
-	Properties *MoveCollectionProperties `json:"properties,omitempty"`
+	Properties *MoveCollectionProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The etag of the resource.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MoveCollectionProperties - Defines the move collection properties.
 type MoveCollectionProperties struct {
 	// REQUIRED; Gets or sets the source region.
-	SourceRegion *string `json:"sourceRegion,omitempty"`
+	SourceRegion *string
 
 	// REQUIRED; Gets or sets the target region.
-	TargetRegion *string `json:"targetRegion,omitempty"`
+	TargetRegion *string
 
 	// READ-ONLY; Defines the move collection errors.
-	Errors *MoveCollectionPropertiesErrors `json:"errors,omitempty" azure:"ro"`
+	Errors *MoveCollectionPropertiesErrors
 
 	// READ-ONLY; Defines the provisioning states.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // MoveCollectionPropertiesErrors - Defines the move collection errors.
 type MoveCollectionPropertiesErrors struct {
 	// The move resource error body.
-	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
+	Properties *MoveResourceErrorBody
 }
 
 // MoveCollectionResultList - Defines the collection of move collections.
 type MoveCollectionResultList struct {
 	// Gets the value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets the list of move collections.
-	Value []*MoveCollection `json:"value,omitempty"`
+	Value []*MoveCollection
 }
 
 // MoveCollectionsClientBeginBulkRemoveOptions contains the optional parameters for the MoveCollectionsClient.BeginBulkRemove
@@ -413,170 +413,170 @@ type MoveCollectionsClientUpdateOptions struct {
 // MoveErrorInfo - The move custom error info.
 type MoveErrorInfo struct {
 	// READ-ONLY; The affected move resources.
-	MoveResources []*AffectedMoveResource `json:"moveResources,omitempty" azure:"ro"`
+	MoveResources []*AffectedMoveResource
 }
 
 // MoveResource - Defines the move resource.
 type MoveResource struct {
 	// Defines the move resource properties.
-	Properties *MoveResourceProperties `json:"properties,omitempty"`
+	Properties *MoveResourceProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MoveResourceCollection - Defines the collection of move resources.
 type MoveResourceCollection struct {
 	// Gets the value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets the list of summary items and the field on which summary is done.
-	SummaryCollection *SummaryCollection `json:"summaryCollection,omitempty"`
+	SummaryCollection *SummaryCollection
 
 	// Gets the list of move resources.
-	Value []*MoveResource `json:"value,omitempty"`
+	Value []*MoveResource
 
 	// READ-ONLY; Gets the total count.
-	TotalCount *int64 `json:"totalCount,omitempty" azure:"ro"`
+	TotalCount *int64
 }
 
 // MoveResourceDependency - Defines the dependency of the move resource.
 type MoveResourceDependency struct {
 	// Defines the properties for automatic resolution.
-	AutomaticResolution *AutomaticResolutionProperties `json:"automaticResolution,omitempty"`
+	AutomaticResolution *AutomaticResolutionProperties
 
 	// Defines the dependency type.
-	DependencyType *DependencyType `json:"dependencyType,omitempty"`
+	DependencyType *DependencyType
 
 	// Gets the source ARM ID of the dependent resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets a value indicating whether the dependency is optional.
-	IsOptional *string `json:"isOptional,omitempty"`
+	IsOptional *string
 
 	// Defines the properties for manual resolution.
-	ManualResolution *ManualResolutionProperties `json:"manualResolution,omitempty"`
+	ManualResolution *ManualResolutionProperties
 
 	// Gets the dependency resolution status.
-	ResolutionStatus *string `json:"resolutionStatus,omitempty"`
+	ResolutionStatus *string
 
 	// Defines the resolution type.
-	ResolutionType *ResolutionType `json:"resolutionType,omitempty"`
+	ResolutionType *ResolutionType
 }
 
 // MoveResourceDependencyOverride - Defines the dependency override of the move resource.
 type MoveResourceDependencyOverride struct {
 	// Gets or sets the ARM ID of the dependent resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets the resource ARM id of either the MoveResource or the resource ARM ID of the dependent resource.
-	TargetID *string `json:"targetId,omitempty"`
+	TargetID *string
 }
 
 // MoveResourceError - An error response from the azure resource mover service.
 type MoveResourceError struct {
 	// The move resource error body.
-	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
+	Properties *MoveResourceErrorBody
 }
 
 // MoveResourceErrorBody - An error response from the Azure Migrate service.
 type MoveResourceErrorBody struct {
 	// READ-ONLY; An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; A list of additional details about the error.
-	Details []*MoveResourceErrorBody `json:"details,omitempty" azure:"ro"`
+	Details []*MoveResourceErrorBody
 
 	// READ-ONLY; A message describing the error, intended to be suitable for display in a user interface.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The target of the particular error. For example, the name of the property in error.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // MoveResourceFilter - Move resource filter.
 type MoveResourceFilter struct {
-	Properties *MoveResourceFilterProperties `json:"properties,omitempty"`
+	Properties *MoveResourceFilterProperties
 }
 
 type MoveResourceFilterProperties struct {
 	// The provisioning state.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 }
 
 // MoveResourceProperties - Defines the move resource properties.
 type MoveResourceProperties struct {
 	// REQUIRED; Gets or sets the Source ARM Id of the resource.
-	SourceID *string `json:"sourceId,omitempty"`
+	SourceID *string
 
 	// Gets or sets the move resource dependencies overrides.
-	DependsOnOverrides []*MoveResourceDependencyOverride `json:"dependsOnOverrides,omitempty"`
+	DependsOnOverrides []*MoveResourceDependencyOverride
 
 	// Gets or sets the existing target ARM Id of the resource.
-	ExistingTargetID *string `json:"existingTargetId,omitempty"`
+	ExistingTargetID *string
 
 	// Gets or sets the resource settings.
-	ResourceSettings ResourceSettingsClassification `json:"resourceSettings,omitempty"`
+	ResourceSettings ResourceSettingsClassification
 
 	// READ-ONLY; Gets or sets the move resource dependencies.
-	DependsOn []*MoveResourceDependency `json:"dependsOn,omitempty" azure:"ro"`
+	DependsOn []*MoveResourceDependency
 
 	// READ-ONLY; Defines the move resource errors.
-	Errors *MoveResourcePropertiesErrors `json:"errors,omitempty" azure:"ro"`
+	Errors *MoveResourcePropertiesErrors
 
 	// READ-ONLY; Gets a value indicating whether the resolve action is required over the move collection.
-	IsResolveRequired *bool `json:"isResolveRequired,omitempty" azure:"ro"`
+	IsResolveRequired *bool
 
 	// READ-ONLY; Defines the move resource status.
-	MoveStatus *MoveResourcePropertiesMoveStatus `json:"moveStatus,omitempty" azure:"ro"`
+	MoveStatus *MoveResourcePropertiesMoveStatus
 
 	// READ-ONLY; Defines the provisioning states.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Gets or sets the source resource settings.
-	SourceResourceSettings ResourceSettingsClassification `json:"sourceResourceSettings,omitempty" azure:"ro"`
+	SourceResourceSettings ResourceSettingsClassification
 
 	// READ-ONLY; Gets or sets the Target ARM Id of the resource.
-	TargetID *string `json:"targetId,omitempty" azure:"ro"`
+	TargetID *string
 }
 
 // MoveResourcePropertiesErrors - Defines the move resource errors.
 type MoveResourcePropertiesErrors struct {
 	// The move resource error body.
-	Properties *MoveResourceErrorBody `json:"properties,omitempty"`
+	Properties *MoveResourceErrorBody
 }
 
 // MoveResourcePropertiesMoveStatus - Defines the move resource status.
 type MoveResourcePropertiesMoveStatus struct {
 	// An error response from the azure resource mover service.
-	Errors *MoveResourceError `json:"errors,omitempty"`
+	Errors *MoveResourceError
 
 	// Defines the job status.
-	JobStatus *JobStatus `json:"jobStatus,omitempty"`
+	JobStatus *JobStatus
 
 	// READ-ONLY; Defines the MoveResource states.
-	MoveState *MoveState `json:"moveState,omitempty" azure:"ro"`
+	MoveState *MoveState
 }
 
 // MoveResourceStatus - Defines the move resource status.
 type MoveResourceStatus struct {
 	// An error response from the azure resource mover service.
-	Errors *MoveResourceError `json:"errors,omitempty"`
+	Errors *MoveResourceError
 
 	// Defines the job status.
-	JobStatus *JobStatus `json:"jobStatus,omitempty"`
+	JobStatus *JobStatus
 
 	// READ-ONLY; Defines the MoveResource states.
-	MoveState *MoveState `json:"moveState,omitempty" azure:"ro"`
+	MoveState *MoveState
 }
 
 // MoveResourcesClientBeginCreateOptions contains the optional parameters for the MoveResourcesClient.BeginCreate method.
@@ -606,19 +606,19 @@ type MoveResourcesClientListOptions struct {
 // NetworkInterfaceResourceSettings - Defines the network interface resource settings.
 type NetworkInterfaceResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets a value indicating whether accelerated networking is enabled.
-	EnableAcceleratedNetworking *bool `json:"enableAcceleratedNetworking,omitempty"`
+	EnableAcceleratedNetworking *bool
 
 	// Gets or sets the IP configurations of the NIC.
-	IPConfigurations []*NicIPConfigurationResourceSettings `json:"ipConfigurations,omitempty"`
+	IPConfigurations []*NicIPConfigurationResourceSettings
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type NetworkInterfaceResourceSettings.
@@ -632,16 +632,16 @@ func (n *NetworkInterfaceResourceSettings) GetResourceSettings() *ResourceSettin
 // NetworkSecurityGroupResourceSettings - Defines the NSG resource settings.
 type NetworkSecurityGroupResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets Security rules of network security group.
-	SecurityRules []*NsgSecurityRule `json:"securityRules,omitempty"`
+	SecurityRules []*NsgSecurityRule
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type NetworkSecurityGroupResourceSettings.
@@ -655,124 +655,124 @@ func (n *NetworkSecurityGroupResourceSettings) GetResourceSettings() *ResourceSe
 // NicIPConfigurationResourceSettings - Defines NIC IP configuration properties.
 type NicIPConfigurationResourceSettings struct {
 	// Gets or sets the references of the load balancer backend address pools.
-	LoadBalancerBackendAddressPools []*LoadBalancerBackendAddressPoolReference `json:"loadBalancerBackendAddressPools,omitempty"`
+	LoadBalancerBackendAddressPools []*LoadBalancerBackendAddressPoolReference
 
 	// Gets or sets the references of the load balancer NAT rules.
-	LoadBalancerNatRules []*LoadBalancerNatRuleReference `json:"loadBalancerNatRules,omitempty"`
+	LoadBalancerNatRules []*LoadBalancerNatRuleReference
 
 	// Gets or sets the IP configuration name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets a value indicating whether this IP configuration is the primary.
-	Primary *bool `json:"primary,omitempty"`
+	Primary *bool
 
 	// Gets or sets the private IP address of the network interface IP Configuration.
-	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
+	PrivateIPAddress *string
 
 	// Gets or sets the private IP address allocation method.
-	PrivateIPAllocationMethod *string `json:"privateIpAllocationMethod,omitempty"`
+	PrivateIPAllocationMethod *string
 
 	// Defines reference to a public IP.
-	PublicIP *PublicIPReference `json:"publicIp,omitempty"`
+	PublicIP *PublicIPReference
 
 	// Defines reference to subnet.
-	Subnet *SubnetReference `json:"subnet,omitempty"`
+	Subnet *SubnetReference
 }
 
 // NsgReference - Defines reference to NSG.
 type NsgReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+	SourceArmResourceID *string
 }
 
 // NsgSecurityRule - Security Rule data model for Network Security Groups.
 type NsgSecurityRule struct {
 	// Gets or sets whether network traffic is allowed or denied. Possible values are “Allow” and “Deny”.
-	Access *string `json:"access,omitempty"`
+	Access *string
 
 	// Gets or sets a description for this rule. Restricted to 140 chars.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets destination address prefix. CIDR or source IP range. A “*” can also be used to match all source IPs. Default
 	// tags such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be
 	// used.
-	DestinationAddressPrefix *string `json:"destinationAddressPrefix,omitempty"`
+	DestinationAddressPrefix *string
 
 	// Gets or sets Destination Port or Range. Integer or range between 0 and 65535. A “*” can also be used to match all ports.
-	DestinationPortRange *string `json:"destinationPortRange,omitempty"`
+	DestinationPortRange *string
 
 	// Gets or sets the direction of the rule.InBound or Outbound. The direction specifies if rule will be evaluated on incoming
 	// or outgoing traffic.
-	Direction *string `json:"direction,omitempty"`
+	Direction *string
 
 	// Gets or sets the Security rule name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets the priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each
 	// rule in the collection. The lower the priority number, the higher the priority
 	// of the rule.
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// Gets or sets Network protocol this rule applies to. Can be Tcp, Udp or All(*).
-	Protocol *string `json:"protocol,omitempty"`
+	Protocol *string
 
 	// Gets or sets source address prefix. CIDR or source IP range. A “*” can also be used to match all source IPs. Default tags
 	// such as ‘VirtualNetwork’, ‘AzureLoadBalancer’ and ‘Internet’ can also be used.
 	// If this is an ingress rule, specifies where network traffic originates from.
-	SourceAddressPrefix *string `json:"sourceAddressPrefix,omitempty"`
+	SourceAddressPrefix *string
 
 	// Gets or sets Source Port or Range. Integer or range between 0 and
 	// 65535. A “*” can also be used to match all ports.
-	SourcePortRange *string `json:"sourcePortRange,omitempty"`
+	SourcePortRange *string
 }
 
 // OperationErrorAdditionalInfo - The operation error info.
 type OperationErrorAdditionalInfo struct {
 	// READ-ONLY; The operation error info.
-	Info *MoveErrorInfo `json:"info,omitempty" azure:"ro"`
+	Info *MoveErrorInfo
 
 	// READ-ONLY; The error type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OperationStatus - Operation status REST resource.
 type OperationStatus struct {
 	// READ-ONLY; End time.
-	EndTime *string `json:"endTime,omitempty" azure:"ro"`
+	EndTime *string
 
 	// READ-ONLY; Error stating all error details for the operation.
-	Error *OperationStatusError `json:"error,omitempty" azure:"ro"`
+	Error *OperationStatusError
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Operation name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Custom data.
-	Properties any `json:"properties,omitempty" azure:"ro"`
+	Properties any
 
 	// READ-ONLY; Start time.
-	StartTime *string `json:"startTime,omitempty" azure:"ro"`
+	StartTime *string
 
 	// READ-ONLY; Status of the operation. ARM expects the terminal status to be one of Succeeded/ Failed/ Canceled. All other
 	// values imply that the operation is still running.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // OperationStatusError - Class for operation status errors.
 type OperationStatusError struct {
 	// READ-ONLY; The additional info.
-	AdditionalInfo []*OperationErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*OperationErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*OperationStatusError `json:"details,omitempty" azure:"ro"`
+	Details []*OperationStatusError
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // OperationsDiscovery - Operations discovery class.
@@ -780,10 +780,10 @@ type OperationsDiscovery struct {
 	// Contains the localized display information for this particular operation / action. These value will be used by several
 	// clients for (1) custom role definitions for RBAC; (2) complex query filters for
 	// the event service; and (3) audit history / records for management operations.
-	Display *Display `json:"display,omitempty"`
+	Display *Display
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Gets or sets Name of the API. The name of the operation being performed on this particular object. It should match the
 	// action name that appears in RBAC / the event service. Examples of operations
@@ -801,14 +801,14 @@ type OperationsDiscovery struct {
 	// response. This API is used to register for their service, and should include details about the operation (e.g. a localized
 	// name for the resource provider + any special considerations like PII
 	// release).
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets Origin. The intended executor of the operation; governs the display of the operation in the RBAC UX and the
 	// audit logs UX. Default value is "user,system".
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// ClientDiscovery properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationsDiscoveryClientGetOptions contains the optional parameters for the OperationsDiscoveryClient.Get method.
@@ -819,59 +819,59 @@ type OperationsDiscoveryClientGetOptions struct {
 // OperationsDiscoveryCollection - Collection of ClientDiscovery details.
 type OperationsDiscoveryCollection struct {
 	// Gets or sets the value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets the ClientDiscovery details.
-	Value []*OperationsDiscovery `json:"value,omitempty"`
+	Value []*OperationsDiscovery
 }
 
 // PrepareRequest - Defines the request body for initiate prepare operation.
 type PrepareRequest struct {
 	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched
 	// via moveResourceInputType property.
-	MoveResources []*string `json:"moveResources,omitempty"`
+	MoveResources []*string
 
 	// Defines the move resource input type.
-	MoveResourceInputType *MoveResourceInputType `json:"moveResourceInputType,omitempty"`
+	MoveResourceInputType *MoveResourceInputType
 
 	// Gets or sets a value indicating whether the operation needs to only run pre-requisite.
-	ValidateOnly *bool `json:"validateOnly,omitempty"`
+	ValidateOnly *bool
 }
 
 // ProxyResourceReference - Defines reference to a proxy resource.
 type ProxyResourceReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+	SourceArmResourceID *string
 
 	// Gets the name of the proxy resource on the target side.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // PublicIPAddressResourceSettings - Defines the public IP address resource settings.
 type PublicIPAddressResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets the domain name label.
-	DomainNameLabel *string `json:"domainNameLabel,omitempty"`
+	DomainNameLabel *string
 
 	// Gets or sets the fully qualified domain name.
-	Fqdn *string `json:"fqdn,omitempty"`
+	Fqdn *string
 
 	// Gets or sets public IP allocation method.
-	PublicIPAllocationMethod *string `json:"publicIpAllocationMethod,omitempty"`
+	PublicIPAllocationMethod *string
 
 	// Gets or sets public IP sku.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Gets or sets public IP zones.
-	Zones *string `json:"zones,omitempty"`
+	Zones *string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type PublicIPAddressResourceSettings.
@@ -885,22 +885,22 @@ func (p *PublicIPAddressResourceSettings) GetResourceSettings() *ResourceSetting
 // PublicIPReference - Defines reference to a public IP.
 type PublicIPReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+	SourceArmResourceID *string
 }
 
 // RequiredForResourcesCollection - Required for resources collection.
 type RequiredForResourcesCollection struct {
 	// Gets or sets the list of source Ids for which the input resource is required.
-	SourceIDs []*string `json:"sourceIds,omitempty"`
+	SourceIDs []*string
 }
 
 // ResourceGroupResourceSettings - Defines the resource group resource settings.
 type ResourceGroupResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type ResourceGroupResourceSettings.
@@ -915,13 +915,13 @@ func (r *ResourceGroupResourceSettings) GetResourceSettings() *ResourceSettings 
 type ResourceMoveRequest struct {
 	// REQUIRED; Gets or sets the list of resource Id's, by default it accepts move resource id's unless the input type is switched
 	// via moveResourceInputType property.
-	MoveResources []*string `json:"moveResources,omitempty"`
+	MoveResources []*string
 
 	// Defines the move resource input type.
-	MoveResourceInputType *MoveResourceInputType `json:"moveResourceInputType,omitempty"`
+	MoveResourceInputType *MoveResourceInputType
 
 	// Gets or sets a value indicating whether the operation needs to only run pre-requisite.
-	ValidateOnly *bool `json:"validateOnly,omitempty"`
+	ValidateOnly *bool
 }
 
 // ResourceSettingsClassification provides polymorphic access to related types.
@@ -939,10 +939,10 @@ type ResourceSettingsClassification interface {
 // ResourceSettings - Gets or sets the resource settings.
 type ResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type ResourceSettings.
@@ -951,16 +951,16 @@ func (r *ResourceSettings) GetResourceSettings() *ResourceSettings { return r }
 // SQLDatabaseResourceSettings - Defines the Sql Database resource settings.
 type SQLDatabaseResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Defines the zone redundant resource setting.
-	ZoneRedundant *ZoneRedundant `json:"zoneRedundant,omitempty"`
+	ZoneRedundant *ZoneRedundant
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type SQLDatabaseResourceSettings.
@@ -974,16 +974,16 @@ func (s *SQLDatabaseResourceSettings) GetResourceSettings() *ResourceSettings {
 // SQLElasticPoolResourceSettings - Defines the Sql ElasticPool resource settings.
 type SQLElasticPoolResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Defines the zone redundant resource setting.
-	ZoneRedundant *ZoneRedundant `json:"zoneRedundant,omitempty"`
+	ZoneRedundant *ZoneRedundant
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type SQLElasticPoolResourceSettings.
@@ -997,10 +997,10 @@ func (s *SQLElasticPoolResourceSettings) GetResourceSettings() *ResourceSettings
 // SQLServerResourceSettings - Defines the SQL Server resource settings.
 type SQLServerResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type SQLServerResourceSettings.
@@ -1014,61 +1014,61 @@ func (s *SQLServerResourceSettings) GetResourceSettings() *ResourceSettings {
 // SubnetReference - Defines reference to subnet.
 type SubnetReference struct {
 	// REQUIRED; Gets the ARM resource ID of the tracked resource being referenced.
-	SourceArmResourceID *string `json:"sourceArmResourceId,omitempty"`
+	SourceArmResourceID *string
 
 	// Gets the name of the proxy resource on the target side.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // SubnetResourceSettings - Defines the virtual network subnets resource settings.
 type SubnetResourceSettings struct {
 	// Gets or sets address prefix for the subnet.
-	AddressPrefix *string `json:"addressPrefix,omitempty"`
+	AddressPrefix *string
 
 	// Gets or sets the Subnet name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Defines reference to NSG.
-	NetworkSecurityGroup *NsgReference `json:"networkSecurityGroup,omitempty"`
+	NetworkSecurityGroup *NsgReference
 }
 
 // Summary item.
 type Summary struct {
 	// Gets the count.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// Gets the item.
-	Item *string `json:"item,omitempty"`
+	Item *string
 }
 
 // SummaryCollection - Summary Collection.
 type SummaryCollection struct {
 	// Gets or sets the field name on which summary is done.
-	FieldName *string `json:"fieldName,omitempty"`
+	FieldName *string
 
 	// Gets or sets the list of summary items.
-	Summary []*Summary `json:"summary,omitempty"`
+	Summary []*Summary
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // UnresolvedDependenciesClientGetOptions contains the optional parameters for the UnresolvedDependenciesClient.NewGetPager
@@ -1084,69 +1084,69 @@ type UnresolvedDependenciesClientGetOptions struct {
 
 // UnresolvedDependenciesFilter - Unresolved dependencies contract.
 type UnresolvedDependenciesFilter struct {
-	Properties *UnresolvedDependenciesFilterProperties `json:"properties,omitempty"`
+	Properties *UnresolvedDependenciesFilterProperties
 }
 
 type UnresolvedDependenciesFilterProperties struct {
 	// The count of the resource.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 }
 
 // UnresolvedDependency - Unresolved dependency.
 type UnresolvedDependency struct {
 	// Gets or sets the count.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// Gets or sets the arm id of the dependency.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // UnresolvedDependencyCollection - Unresolved dependency collection.
 type UnresolvedDependencyCollection struct {
 	// Gets or sets the value of next link.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Gets or sets the list of unresolved dependencies.
-	Value []*UnresolvedDependency `json:"value,omitempty"`
+	Value []*UnresolvedDependency
 
 	// READ-ONLY; Gets or sets the list of summary items and the field on which summary is done.
-	SummaryCollection *SummaryCollection `json:"summaryCollection,omitempty" azure:"ro"`
+	SummaryCollection *SummaryCollection
 
 	// READ-ONLY; Gets the total count.
-	TotalCount *int64 `json:"totalCount,omitempty" azure:"ro"`
+	TotalCount *int64
 }
 
 // UpdateMoveCollectionRequest - Defines the request body for updating move collection.
 type UpdateMoveCollectionRequest struct {
 	// Defines the MSI properties of the Move Collection.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // VirtualMachineResourceSettings - Gets or sets the virtual machine resource settings.
 type VirtualMachineResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Gets or sets the target availability set id for virtual machines not in an availability set at source.
-	TargetAvailabilitySetID *string `json:"targetAvailabilitySetId,omitempty"`
+	TargetAvailabilitySetID *string
 
 	// Gets or sets the target availability zone.
-	TargetAvailabilityZone *TargetAvailabilityZone `json:"targetAvailabilityZone,omitempty"`
+	TargetAvailabilityZone *TargetAvailabilityZone
 
 	// Gets or sets the target virtual machine size.
-	TargetVMSize *string `json:"targetVmSize,omitempty"`
+	TargetVMSize *string
 
 	// Gets or sets user-managed identities
-	UserManagedIdentities []*string `json:"userManagedIdentities,omitempty"`
+	UserManagedIdentities []*string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type VirtualMachineResourceSettings.
@@ -1160,25 +1160,25 @@ func (v *VirtualMachineResourceSettings) GetResourceSettings() *ResourceSettings
 // VirtualNetworkResourceSettings - Defines the virtual network resource settings.
 type VirtualNetworkResourceSettings struct {
 	// REQUIRED; The resource type. For example, the value can be Microsoft.Compute/virtualMachines.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// REQUIRED; Gets or sets the target Resource name.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Gets or sets the address prefixes for the virtual network.
-	AddressSpace []*string `json:"addressSpace,omitempty"`
+	AddressSpace []*string
 
 	// Gets or sets DHCPOptions that contains an array of DNS servers available to VMs deployed in the virtual network.
-	DNSServers []*string `json:"dnsServers,omitempty"`
+	DNSServers []*string
 
 	// Gets or sets a value indicating whether gets or sets whether the DDOS protection should be switched on.
-	EnableDdosProtection *bool `json:"enableDdosProtection,omitempty"`
+	EnableDdosProtection *bool
 
 	// Gets or sets List of subnets in a VirtualNetwork.
-	Subnets []*SubnetResourceSettings `json:"subnets,omitempty"`
+	Subnets []*SubnetResourceSettings
 
 	// Gets or sets the Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // GetResourceSettings implements the ResourceSettingsClassification interface for type VirtualNetworkResourceSettings.

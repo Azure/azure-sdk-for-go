@@ -13,22 +13,22 @@ import "time"
 
 type APIError struct {
 	// REQUIRED
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // AccountCopyLogDetails - Copy log details for a storage account of a DataBox job
 type AccountCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
-	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+	CopyLogDetailsType *ClassDiscriminator
 
 	// READ-ONLY; Account name.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+	AccountName *string
 
 	// READ-ONLY; Link for copy logs.
-	CopyLogLink *string `json:"copyLogLink,omitempty" azure:"ro"`
+	CopyLogLink *string
 
 	// READ-ONLY; Link for copy verbose logs. This will be set only when LogCollectionLevel is set to Verbose.
-	CopyVerboseLogLink *string `json:"copyVerboseLogLink,omitempty" azure:"ro"`
+	CopyVerboseLogLink *string
 }
 
 // GetCopyLogDetails implements the CopyLogDetailsClassification interface for type AccountCopyLogDetails.
@@ -41,46 +41,46 @@ func (a *AccountCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
 // AccountCredentialDetails - Credential details of the account.
 type AccountCredentialDetails struct {
 	// READ-ONLY; Connection string of the account endpoint to use the account as a storage endpoint on the device.
-	AccountConnectionString *string `json:"accountConnectionString,omitempty" azure:"ro"`
+	AccountConnectionString *string
 
 	// READ-ONLY; Name of the account.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+	AccountName *string
 
 	// READ-ONLY; Type of the account.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty" azure:"ro"`
+	DataAccountType *DataAccountType
 
 	// READ-ONLY; Per share level unencrypted access credentials.
-	ShareCredentialDetails []*ShareCredentialDetails `json:"shareCredentialDetails,omitempty" azure:"ro"`
+	ShareCredentialDetails []*ShareCredentialDetails
 }
 
 // AdditionalErrorInfo - This class represents additional info which Resource Providers pass when an error occurs.
 type AdditionalErrorInfo struct {
 	// Additional information of the type of error.
-	Info any `json:"info,omitempty"`
+	Info any
 
 	// Type of error (e.g. CustomerIntervention, PolicyViolation, SecurityViolation).
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // AddressValidationOutput - Output of the address validation api.
 type AddressValidationOutput struct {
 	// READ-ONLY; The address validation properties.
-	Properties *AddressValidationProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *AddressValidationProperties
 }
 
 // AddressValidationProperties - The address validation output.
 type AddressValidationProperties struct {
 	// REQUIRED; Identifies the type of validation response.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// READ-ONLY; List of alternate addresses.
-	AlternateAddresses []*ShippingAddress `json:"alternateAddresses,omitempty" azure:"ro"`
+	AlternateAddresses []*ShippingAddress
 
 	// READ-ONLY; Error code and message of validation response.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 
 	// READ-ONLY; The address validation status.
-	ValidationStatus *AddressValidationStatus `json:"validationStatus,omitempty" azure:"ro"`
+	ValidationStatus *AddressValidationStatus
 }
 
 // GetValidationInputResponse implements the ValidationInputResponseClassification interface for type AddressValidationProperties.
@@ -94,94 +94,94 @@ func (a *AddressValidationProperties) GetValidationInputResponse() *ValidationIn
 // ApplianceNetworkConfiguration - The Network Adapter configuration of a DataBox.
 type ApplianceNetworkConfiguration struct {
 	// READ-ONLY; Mac Address.
-	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
+	MacAddress *string
 
 	// READ-ONLY; Name of the network.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // ArmBaseObject - Base class for all objects under resource.
 type ArmBaseObject struct {
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AvailableSKURequest - The filters for showing the available skus.
 type AvailableSKURequest struct {
 	// REQUIRED; ISO country code. Country for hardware shipment. For codes check: https://en.wikipedia.org/wiki/ISO3166-1alpha-2#Officiallyassignedcode_elements
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Type of the transfer.
-	TransferType *TransferType `json:"transferType,omitempty"`
+	TransferType *TransferType
 
 	// Sku Names to filter for available skus
-	SKUNames []*SKUName `json:"skuNames,omitempty"`
+	SKUNames []*SKUName
 }
 
 // AvailableSKUsResult - The available skus operation response.
 type AvailableSKUsResult struct {
 	// Link for the next set of skus.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of available skus.
-	Value []*SKUInformation `json:"value,omitempty" azure:"ro"`
+	Value []*SKUInformation
 }
 
 // AzureFileFilterDetails - Filter details to transfer Azure files
 type AzureFileFilterDetails struct {
 	// List of full path of the files to be transferred.
-	FilePathList []*string `json:"filePathList,omitempty"`
+	FilePathList []*string
 
 	// Prefix list of the Azure files to be transferred.
-	FilePrefixList []*string `json:"filePrefixList,omitempty"`
+	FilePrefixList []*string
 
 	// List of file shares to be transferred.
-	FileShareList []*string `json:"fileShareList,omitempty"`
+	FileShareList []*string
 }
 
 // BlobFilterDetails - Filter details to transfer Azure Blobs
 type BlobFilterDetails struct {
 	// List of full path of the blobs to be transferred.
-	BlobPathList []*string `json:"blobPathList,omitempty"`
+	BlobPathList []*string
 
 	// Prefix list of the Azure blobs to be transferred.
-	BlobPrefixList []*string `json:"blobPrefixList,omitempty"`
+	BlobPrefixList []*string
 
 	// List of blob containers to be transferred.
-	ContainerList []*string `json:"containerList,omitempty"`
+	ContainerList []*string
 }
 
 // CancellationReason - Reason for cancellation.
 type CancellationReason struct {
 	// REQUIRED; Reason for cancellation.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 }
 
 // CloudError - Provides additional information about an http error response.
 type CloudError struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The error message parsed from the body of the http error response.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Gets or sets the target of the error.
-	Target *string `json:"target,omitempty"`
+	Target *string
 
 	// READ-ONLY; Gets or sets additional error info.
-	AdditionalInfo []*AdditionalErrorInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*AdditionalErrorInfo
 
 	// READ-ONLY; Gets or sets details for the error.
-	Details []*CloudError `json:"details,omitempty" azure:"ro"`
+	Details []*CloudError
 }
 
 // CommonJobDetailsClassification provides polymorphic access to related types.
@@ -196,61 +196,61 @@ type CommonJobDetailsClassification interface {
 // CommonJobDetails - Job details.
 type CommonJobDetails struct {
 	// REQUIRED; Contact details for notification and shipping.
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	ContactDetails *ContactDetails
 
 	// REQUIRED; Indicates the type of job details.
-	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+	JobDetailsType *ClassDiscriminator
 
 	// Details of the data to be exported from azure.
-	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+	DataExportDetails []*DataExportDetails
 
 	// Details of the data to be imported into azure.
-	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+	DataImportDetails []*DataImportDetails
 
 	// The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	ExpectedDataSizeInTeraBytes *int32
 
 	// Details about which key encryption type is being used.
-	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+	KeyEncryptionKey *KeyEncryptionKey
 
 	// Preferences for the order.
-	Preferences *Preferences `json:"preferences,omitempty"`
+	Preferences *Preferences
 
 	// Shipping address of the customer.
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 
 	// READ-ONLY; Available actions on the job.
-	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+	Actions []*CustomerResolutionCode
 
 	// READ-ONLY; Shared access key to download the chain of custody logs
-	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+	ChainOfCustodySasKey *string
 
 	// READ-ONLY; List of copy log details.
-	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+	CopyLogDetails []CopyLogDetailsClassification
 
 	// READ-ONLY; DataCenter code.
-	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+	DataCenterCode *DataCenterCode
 
 	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
-	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+	DatacenterAddress DatacenterAddressResponseClassification
 
 	// READ-ONLY; Delivery package shipping details.
-	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+	DeliveryPackage *PackageShippingDetails
 
 	// READ-ONLY; Holds device data erasure details
-	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+	DeviceErasureDetails *DeviceErasureDetails
 
 	// READ-ONLY; List of stages that run in the job.
-	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+	JobStages []*JobStages
 
 	// READ-ONLY; Last mitigation action performed on the job.
-	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+	LastMitigationActionOnJob *LastMitigationActionOnJob
 
 	// READ-ONLY; Return package shipping details.
-	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+	ReturnPackage *PackageShippingDetails
 
 	// READ-ONLY; Shared access key to download the return shipment label
-	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+	ReverseShipmentLabelSasKey *string
 }
 
 // GetCommonJobDetails implements the CommonJobDetailsClassification interface for type CommonJobDetails.
@@ -268,13 +268,13 @@ type CommonJobSecretsClassification interface {
 // CommonJobSecrets - The base class for the secrets
 type CommonJobSecrets struct {
 	// REQUIRED; Used to indicate what type of job secrets object.
-	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+	JobSecretsType *ClassDiscriminator
 
 	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
-	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+	DcAccessSecurityCode *DcAccessSecurityCode
 
 	// READ-ONLY; Error while fetching the secrets.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 }
 
 // GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type CommonJobSecrets.
@@ -292,13 +292,13 @@ type CommonScheduleAvailabilityRequestClassification interface {
 // CommonScheduleAvailabilityRequest - Request body to get the availability for scheduling orders.
 type CommonScheduleAvailabilityRequest struct {
 	// REQUIRED; Sku Name for which the order is to be scheduled.
-	SKUName *SKUName `json:"skuName,omitempty"`
+	SKUName *SKUName
 
 	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
-	StorageLocation *string `json:"storageLocation,omitempty"`
+	StorageLocation *string
 
 	// Country in which storage location should be supported.
-	Country *string `json:"country,omitempty"`
+	Country *string
 }
 
 // GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
@@ -310,22 +310,22 @@ func (c *CommonScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest
 // ContactDetails - Contact Details.
 type ContactDetails struct {
 	// REQUIRED; Contact name of the person.
-	ContactName *string `json:"contactName,omitempty"`
+	ContactName *string
 
 	// REQUIRED; List of Email-ids to be notified about job progress.
-	EmailList []*string `json:"emailList,omitempty"`
+	EmailList []*string
 
 	// REQUIRED; Phone number of the contact person.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// Mobile number of the contact person.
-	Mobile *string `json:"mobile,omitempty"`
+	Mobile *string
 
 	// Notification preference for a job stage.
-	NotificationPreference []*NotificationPreference `json:"notificationPreference,omitempty"`
+	NotificationPreference []*NotificationPreference
 
 	// Phone extension number of the contact person.
-	PhoneExtension *string `json:"phoneExtension,omitempty"`
+	PhoneExtension *string
 }
 
 // CopyLogDetailsClassification provides polymorphic access to related types.
@@ -340,7 +340,7 @@ type CopyLogDetailsClassification interface {
 // CopyLogDetails - Details for log generated during copy.
 type CopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
-	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+	CopyLogDetailsType *ClassDiscriminator
 }
 
 // GetCopyLogDetails implements the CopyLogDetailsClassification interface for type CopyLogDetails.
@@ -349,59 +349,59 @@ func (c *CopyLogDetails) GetCopyLogDetails() *CopyLogDetails { return c }
 // CopyProgress - Copy progress.
 type CopyProgress struct {
 	// READ-ONLY; Id of the account where the data needs to be uploaded.
-	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+	AccountID *string
 
 	// READ-ONLY; To indicate bytes transferred.
-	BytesProcessed *int64 `json:"bytesProcessed,omitempty" azure:"ro"`
+	BytesProcessed *int64
 
 	// READ-ONLY; Data Account Type.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty" azure:"ro"`
+	DataAccountType *DataAccountType
 
 	// READ-ONLY; To indicate directories errored out in the job.
-	DirectoriesErroredOut *int64 `json:"directoriesErroredOut,omitempty" azure:"ro"`
+	DirectoriesErroredOut *int64
 
 	// READ-ONLY; Number of files which could not be copied
-	FilesErroredOut *int64 `json:"filesErroredOut,omitempty" azure:"ro"`
+	FilesErroredOut *int64
 
 	// READ-ONLY; Number of files processed
-	FilesProcessed *int64 `json:"filesProcessed,omitempty" azure:"ro"`
+	FilesProcessed *int64
 
 	// READ-ONLY; To indicate directories renamed
-	InvalidDirectoriesProcessed *int64 `json:"invalidDirectoriesProcessed,omitempty" azure:"ro"`
+	InvalidDirectoriesProcessed *int64
 
 	// READ-ONLY; Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
-	InvalidFileBytesUploaded *int64 `json:"invalidFileBytesUploaded,omitempty" azure:"ro"`
+	InvalidFileBytesUploaded *int64
 
 	// READ-ONLY; Number of files not adhering to azure naming conventions which were processed by automatic renaming
-	InvalidFilesProcessed *int64 `json:"invalidFilesProcessed,omitempty" azure:"ro"`
+	InvalidFilesProcessed *int64
 
 	// READ-ONLY; To indicate if enumeration of data is in progress. Until this is true, the TotalBytesToProcess may not be valid.
-	IsEnumerationInProgress *bool `json:"isEnumerationInProgress,omitempty" azure:"ro"`
+	IsEnumerationInProgress *bool
 
 	// READ-ONLY; Number of folders not adhering to azure naming conventions which were processed by automatic renaming
-	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty" azure:"ro"`
+	RenamedContainerCount *int64
 
 	// READ-ONLY; Name of the storage account. This will be empty for data account types other than storage account.
-	StorageAccountName *string `json:"storageAccountName,omitempty" azure:"ro"`
+	StorageAccountName *string
 
 	// READ-ONLY; Total amount of data to be processed by the job.
-	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty" azure:"ro"`
+	TotalBytesToProcess *int64
 
 	// READ-ONLY; Total files to process
-	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty" azure:"ro"`
+	TotalFilesToProcess *int64
 
 	// READ-ONLY; Transfer type of data
-	TransferType *TransferType `json:"transferType,omitempty" azure:"ro"`
+	TransferType *TransferType
 }
 
 // CreateJobValidations - It does all pre-job creation validations.
 type CreateJobValidations struct {
 	// REQUIRED; List of request details contain validationType and its request as key and value respectively.
-	IndividualRequestDetails []ValidationInputRequestClassification `json:"individualRequestDetails,omitempty"`
+	IndividualRequestDetails []ValidationInputRequestClassification
 
 	// CONSTANT; Identify the nature of validation.
 	// Field has constant value "JobCreationValidation", any specified value is ignored.
-	ValidationCategory *string `json:"validationCategory,omitempty"`
+	ValidationCategory *string
 }
 
 // GetValidationRequest implements the ValidationRequestClassification interface for type CreateJobValidations.
@@ -415,10 +415,10 @@ func (c *CreateJobValidations) GetValidationRequest() *ValidationRequest {
 // CreateOrderLimitForSubscriptionValidationRequest - Request to validate create order limit for current subscription.
 type CreateOrderLimitForSubscriptionValidationRequest struct {
 	// REQUIRED; Device type to be used for the job.
-	DeviceType *SKUName `json:"deviceType,omitempty"`
+	DeviceType *SKUName
 
 	// REQUIRED; Identifies the type of validation request.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 }
 
 // GetValidationInputRequest implements the ValidationInputRequestClassification interface for type CreateOrderLimitForSubscriptionValidationRequest.
@@ -432,13 +432,13 @@ func (c *CreateOrderLimitForSubscriptionValidationRequest) GetValidationInputReq
 // response.
 type CreateOrderLimitForSubscriptionValidationResponseProperties struct {
 	// REQUIRED; Identifies the type of validation response.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// READ-ONLY; Error code and message of validation response.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 
 	// READ-ONLY; Create order limit validation status.
-	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+	Status *ValidationStatus
 }
 
 // GetValidationInputResponse implements the ValidationInputResponseClassification interface for type CreateOrderLimitForSubscriptionValidationResponseProperties.
@@ -452,16 +452,16 @@ func (c *CreateOrderLimitForSubscriptionValidationResponseProperties) GetValidat
 // CustomerDiskCopyLogDetails - Copy Log Details for customer disk
 type CustomerDiskCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
-	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+	CopyLogDetailsType *ClassDiscriminator
 
 	// READ-ONLY; Link for copy error logs.
-	ErrorLogLink *string `json:"errorLogLink,omitempty" azure:"ro"`
+	ErrorLogLink *string
 
 	// READ-ONLY; Disk Serial Number.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; Link for copy verbose logs.
-	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
+	VerboseLogLink *string
 }
 
 // GetCopyLogDetails implements the CopyLogDetailsClassification interface for type CustomerDiskCopyLogDetails.
@@ -474,133 +474,133 @@ func (c *CustomerDiskCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
 // CustomerDiskCopyProgress - DataBox CustomerDisk Copy Progress
 type CustomerDiskCopyProgress struct {
 	// READ-ONLY; Id of the account where the data needs to be uploaded.
-	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+	AccountID *string
 
 	// READ-ONLY; To indicate bytes transferred.
-	BytesProcessed *int64 `json:"bytesProcessed,omitempty" azure:"ro"`
+	BytesProcessed *int64
 
 	// READ-ONLY; The Status of the copy
-	CopyStatus *CopyStatus `json:"copyStatus,omitempty" azure:"ro"`
+	CopyStatus *CopyStatus
 
 	// READ-ONLY; Data Account Type.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty" azure:"ro"`
+	DataAccountType *DataAccountType
 
 	// READ-ONLY; To indicate directories errored out in the job.
-	DirectoriesErroredOut *int64 `json:"directoriesErroredOut,omitempty" azure:"ro"`
+	DirectoriesErroredOut *int64
 
 	// READ-ONLY; Number of files which could not be copied
-	FilesErroredOut *int64 `json:"filesErroredOut,omitempty" azure:"ro"`
+	FilesErroredOut *int64
 
 	// READ-ONLY; Number of files processed
-	FilesProcessed *int64 `json:"filesProcessed,omitempty" azure:"ro"`
+	FilesProcessed *int64
 
 	// READ-ONLY; To indicate directories renamed
-	InvalidDirectoriesProcessed *int64 `json:"invalidDirectoriesProcessed,omitempty" azure:"ro"`
+	InvalidDirectoriesProcessed *int64
 
 	// READ-ONLY; Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
-	InvalidFileBytesUploaded *int64 `json:"invalidFileBytesUploaded,omitempty" azure:"ro"`
+	InvalidFileBytesUploaded *int64
 
 	// READ-ONLY; Number of files not adhering to azure naming conventions which were processed by automatic renaming
-	InvalidFilesProcessed *int64 `json:"invalidFilesProcessed,omitempty" azure:"ro"`
+	InvalidFilesProcessed *int64
 
 	// READ-ONLY; To indicate if enumeration of data is in progress. Until this is true, the TotalBytesToProcess may not be valid.
-	IsEnumerationInProgress *bool `json:"isEnumerationInProgress,omitempty" azure:"ro"`
+	IsEnumerationInProgress *bool
 
 	// READ-ONLY; Number of folders not adhering to azure naming conventions which were processed by automatic renaming
-	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty" azure:"ro"`
+	RenamedContainerCount *int64
 
 	// READ-ONLY; Disk Serial Number.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; Name of the storage account. This will be empty for data account types other than storage account.
-	StorageAccountName *string `json:"storageAccountName,omitempty" azure:"ro"`
+	StorageAccountName *string
 
 	// READ-ONLY; Total amount of data to be processed by the job.
-	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty" azure:"ro"`
+	TotalBytesToProcess *int64
 
 	// READ-ONLY; Total files to process
-	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty" azure:"ro"`
+	TotalFilesToProcess *int64
 
 	// READ-ONLY; Transfer type of data
-	TransferType *TransferType `json:"transferType,omitempty" azure:"ro"`
+	TransferType *TransferType
 }
 
 // CustomerDiskJobDetails - Customer disk job details.
 type CustomerDiskJobDetails struct {
 	// REQUIRED; Contact details for notification and shipping.
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	ContactDetails *ContactDetails
 
 	// REQUIRED; Indicates the type of job details.
-	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+	JobDetailsType *ClassDiscriminator
 
 	// REQUIRED; Return package shipping details.
-	ReturnToCustomerPackageDetails *PackageCarrierDetails `json:"returnToCustomerPackageDetails,omitempty"`
+	ReturnToCustomerPackageDetails *PackageCarrierDetails
 
 	// Details of the data to be exported from azure.
-	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+	DataExportDetails []*DataExportDetails
 
 	// Details of the data to be imported into azure.
-	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+	DataImportDetails []*DataImportDetails
 
 	// Flag to indicate if disk manifest should be backed-up in the Storage Account.
-	EnableManifestBackup *bool `json:"enableManifestBackup,omitempty"`
+	EnableManifestBackup *bool
 
 	// The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	ExpectedDataSizeInTeraBytes *int32
 
 	// Contains the map of disk serial number to the disk details for import jobs.
-	ImportDiskDetailsCollection map[string]*ImportDiskDetails `json:"importDiskDetailsCollection,omitempty"`
+	ImportDiskDetailsCollection map[string]*ImportDiskDetails
 
 	// Details about which key encryption type is being used.
-	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+	KeyEncryptionKey *KeyEncryptionKey
 
 	// Preferences for the order.
-	Preferences *Preferences `json:"preferences,omitempty"`
+	Preferences *Preferences
 
 	// Shipping address of the customer.
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 
 	// READ-ONLY; Available actions on the job.
-	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+	Actions []*CustomerResolutionCode
 
 	// READ-ONLY; Shared access key to download the chain of custody logs
-	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+	ChainOfCustodySasKey *string
 
 	// READ-ONLY; List of copy log details.
-	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+	CopyLogDetails []CopyLogDetailsClassification
 
 	// READ-ONLY; Copy progress per disk.
-	CopyProgress []*CustomerDiskCopyProgress `json:"copyProgress,omitempty" azure:"ro"`
+	CopyProgress []*CustomerDiskCopyProgress
 
 	// READ-ONLY; DataCenter code.
-	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+	DataCenterCode *DataCenterCode
 
 	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
-	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+	DatacenterAddress DatacenterAddressResponseClassification
 
 	// READ-ONLY; Delivery package shipping details.
-	DeliverToDcPackageDetails *PackageCarrierInfo `json:"deliverToDcPackageDetails,omitempty" azure:"ro"`
+	DeliverToDcPackageDetails *PackageCarrierInfo
 
 	// READ-ONLY; Delivery package shipping details.
-	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+	DeliveryPackage *PackageShippingDetails
 
 	// READ-ONLY; Holds device data erasure details
-	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+	DeviceErasureDetails *DeviceErasureDetails
 
 	// READ-ONLY; Contains the map of disk serial number to the disk details for export jobs.
-	ExportDiskDetailsCollection map[string]*ExportDiskDetails `json:"exportDiskDetailsCollection,omitempty" azure:"ro"`
+	ExportDiskDetailsCollection map[string]*ExportDiskDetails
 
 	// READ-ONLY; List of stages that run in the job.
-	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+	JobStages []*JobStages
 
 	// READ-ONLY; Last mitigation action performed on the job.
-	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+	LastMitigationActionOnJob *LastMitigationActionOnJob
 
 	// READ-ONLY; Return package shipping details.
-	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+	ReturnPackage *PackageShippingDetails
 
 	// READ-ONLY; Shared access key to download the return shipment label
-	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+	ReverseShipmentLabelSasKey *string
 }
 
 // GetCommonJobDetails implements the CommonJobDetailsClassification interface for type CustomerDiskJobDetails.
@@ -631,19 +631,19 @@ func (c *CustomerDiskJobDetails) GetCommonJobDetails() *CommonJobDetails {
 // CustomerDiskJobSecrets - The secrets related to customer disk job.
 type CustomerDiskJobSecrets struct {
 	// REQUIRED; Used to indicate what type of job secrets object.
-	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+	JobSecretsType *ClassDiscriminator
 
 	// READ-ONLY; Carrier Account Number of the customer
-	CarrierAccountNumber *string `json:"carrierAccountNumber,omitempty" azure:"ro"`
+	CarrierAccountNumber *string
 
 	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
-	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+	DcAccessSecurityCode *DcAccessSecurityCode
 
 	// READ-ONLY; Contains the list of secrets object for that device.
-	DiskSecrets []*DiskSecret `json:"diskSecrets,omitempty" azure:"ro"`
+	DiskSecrets []*DiskSecret
 
 	// READ-ONLY; Error while fetching the secrets.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 }
 
 // GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type CustomerDiskJobSecrets.
@@ -667,7 +667,7 @@ type DataAccountDetailsClassification interface {
 // DataAccountDetails - Account details of the data to be transferred
 type DataAccountDetails struct {
 	// REQUIRED; Account Type of the data to be transferred.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty"`
+	DataAccountType *DataAccountType
 
 	// Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure jobs. If
 	// this is not passed, the service will generate password itself. This will not be
@@ -675,7 +675,7 @@ type DataAccountDetails struct {
 	// have at least one uppercase alphabet, one number and one special character.
 	// Password cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
 	// : @#-$%^!+=;:_()]+
-	SharePassword *string `json:"sharePassword,omitempty"`
+	SharePassword *string
 }
 
 // GetDataAccountDetails implements the DataAccountDetailsClassification interface for type DataAccountDetails.
@@ -684,49 +684,49 @@ func (d *DataAccountDetails) GetDataAccountDetails() *DataAccountDetails { retur
 // DataExportDetails - Details of the data to be used for exporting data from azure.
 type DataExportDetails struct {
 	// REQUIRED; Account details of the data to be transferred
-	AccountDetails DataAccountDetailsClassification `json:"accountDetails,omitempty"`
+	AccountDetails DataAccountDetailsClassification
 
 	// REQUIRED; Configuration for the data transfer.
-	TransferConfiguration *TransferConfiguration `json:"transferConfiguration,omitempty"`
+	TransferConfiguration *TransferConfiguration
 
 	// Level of the logs to be collected.
-	LogCollectionLevel *LogCollectionLevel `json:"logCollectionLevel,omitempty"`
+	LogCollectionLevel *LogCollectionLevel
 }
 
 // DataImportDetails - Details of the data to be used for importing data to azure.
 type DataImportDetails struct {
 	// REQUIRED; Account details of the data to be transferred
-	AccountDetails DataAccountDetailsClassification `json:"accountDetails,omitempty"`
+	AccountDetails DataAccountDetailsClassification
 
 	// Level of the logs to be collected.
-	LogCollectionLevel *LogCollectionLevel `json:"logCollectionLevel,omitempty"`
+	LogCollectionLevel *LogCollectionLevel
 }
 
 // DataLocationToServiceLocationMap - Map of data location to service location
 type DataLocationToServiceLocationMap struct {
 	// READ-ONLY; Location of the data.
-	DataLocation *string `json:"dataLocation,omitempty" azure:"ro"`
+	DataLocation *string
 
 	// READ-ONLY; Location of the service.
-	ServiceLocation *string `json:"serviceLocation,omitempty" azure:"ro"`
+	ServiceLocation *string
 }
 
 // DataTransferDetailsValidationRequest - Request to validate export and import data details.
 type DataTransferDetailsValidationRequest struct {
 	// REQUIRED; Device type.
-	DeviceType *SKUName `json:"deviceType,omitempty"`
+	DeviceType *SKUName
 
 	// REQUIRED; Type of the transfer.
-	TransferType *TransferType `json:"transferType,omitempty"`
+	TransferType *TransferType
 
 	// REQUIRED; Identifies the type of validation request.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// List of DataTransfer details to be used to export data from azure.
-	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+	DataExportDetails []*DataExportDetails
 
 	// List of DataTransfer details to be used to import data to azure.
-	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+	DataImportDetails []*DataImportDetails
 }
 
 // GetValidationInputRequest implements the ValidationInputRequestClassification interface for type DataTransferDetailsValidationRequest.
@@ -739,13 +739,13 @@ func (d *DataTransferDetailsValidationRequest) GetValidationInputRequest() *Vali
 // DataTransferDetailsValidationResponseProperties - Properties of data transfer details validation response.
 type DataTransferDetailsValidationResponseProperties struct {
 	// REQUIRED; Identifies the type of validation response.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// READ-ONLY; Error code and message of validation response.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 
 	// READ-ONLY; Data transfer details validation status.
-	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+	Status *ValidationStatus
 }
 
 // GetValidationInputResponse implements the ValidationInputResponseClassification interface for type DataTransferDetailsValidationResponseProperties.
@@ -759,16 +759,16 @@ func (d *DataTransferDetailsValidationResponseProperties) GetValidationInputResp
 // DatacenterAddressInstructionResponse - Datacenter instruction for given storage location.
 type DatacenterAddressInstructionResponse struct {
 	// REQUIRED; Data center address type
-	DatacenterAddressType *DatacenterAddressType `json:"datacenterAddressType,omitempty"`
+	DatacenterAddressType *DatacenterAddressType
 
 	// READ-ONLY; Data center communication instruction
-	CommunicationInstruction *string `json:"communicationInstruction,omitempty" azure:"ro"`
+	CommunicationInstruction *string
 
 	// READ-ONLY; Azure Location where the Data Center serves primarily.
-	DataCenterAzureLocation *string `json:"dataCenterAzureLocation,omitempty" azure:"ro"`
+	DataCenterAzureLocation *string
 
 	// READ-ONLY; List of supported carriers for return shipment.
-	SupportedCarriersForReturnShipment []*string `json:"supportedCarriersForReturnShipment,omitempty" azure:"ro"`
+	SupportedCarriersForReturnShipment []*string
 }
 
 // GetDatacenterAddressResponse implements the DatacenterAddressResponseClassification interface for type DatacenterAddressInstructionResponse.
@@ -783,52 +783,52 @@ func (d *DatacenterAddressInstructionResponse) GetDatacenterAddressResponse() *D
 // DatacenterAddressLocationResponse - Datacenter address for given storage location.
 type DatacenterAddressLocationResponse struct {
 	// REQUIRED; Data center address type
-	DatacenterAddressType *DatacenterAddressType `json:"datacenterAddressType,omitempty"`
+	DatacenterAddressType *DatacenterAddressType
 
 	// READ-ONLY; Special instruction for shipping
-	AdditionalShippingInformation *string `json:"additionalShippingInformation,omitempty" azure:"ro"`
+	AdditionalShippingInformation *string
 
 	// READ-ONLY; Address type
-	AddressType *string `json:"addressType,omitempty" azure:"ro"`
+	AddressType *string
 
 	// READ-ONLY; City name
-	City *string `json:"city,omitempty" azure:"ro"`
+	City *string
 
 	// READ-ONLY; Company name
-	Company *string `json:"company,omitempty" azure:"ro"`
+	Company *string
 
 	// READ-ONLY; Contact person name
-	ContactPersonName *string `json:"contactPersonName,omitempty" azure:"ro"`
+	ContactPersonName *string
 
 	// READ-ONLY; name of the country
-	Country *string `json:"country,omitempty" azure:"ro"`
+	Country *string
 
 	// READ-ONLY; Azure Location where the Data Center serves primarily.
-	DataCenterAzureLocation *string `json:"dataCenterAzureLocation,omitempty" azure:"ro"`
+	DataCenterAzureLocation *string
 
 	// READ-ONLY; Phone number
-	Phone *string `json:"phone,omitempty" azure:"ro"`
+	Phone *string
 
 	// READ-ONLY; Phone extension
-	PhoneExtension *string `json:"phoneExtension,omitempty" azure:"ro"`
+	PhoneExtension *string
 
 	// READ-ONLY; name of the state
-	State *string `json:"state,omitempty" azure:"ro"`
+	State *string
 
 	// READ-ONLY; Street address line 1
-	Street1 *string `json:"street1,omitempty" azure:"ro"`
+	Street1 *string
 
 	// READ-ONLY; Street address line 2
-	Street2 *string `json:"street2,omitempty" azure:"ro"`
+	Street2 *string
 
 	// READ-ONLY; Street address line 3
-	Street3 *string `json:"street3,omitempty" azure:"ro"`
+	Street3 *string
 
 	// READ-ONLY; List of supported carriers for return shipment.
-	SupportedCarriersForReturnShipment []*string `json:"supportedCarriersForReturnShipment,omitempty" azure:"ro"`
+	SupportedCarriersForReturnShipment []*string
 
 	// READ-ONLY; Zip code
-	Zip *string `json:"zip,omitempty" azure:"ro"`
+	Zip *string
 }
 
 // GetDatacenterAddressResponse implements the DatacenterAddressResponseClassification interface for type DatacenterAddressLocationResponse.
@@ -843,10 +843,10 @@ func (d *DatacenterAddressLocationResponse) GetDatacenterAddressResponse() *Data
 // DatacenterAddressRequest - Request body to get the datacenter address.
 type DatacenterAddressRequest struct {
 	// REQUIRED; Sku Name for which the data center address requested.
-	SKUName *SKUName `json:"skuName,omitempty"`
+	SKUName *SKUName
 
 	// REQUIRED; Storage location. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
-	StorageLocation *string `json:"storageLocation,omitempty"`
+	StorageLocation *string
 }
 
 // DatacenterAddressResponseClassification provides polymorphic access to related types.
@@ -861,13 +861,13 @@ type DatacenterAddressResponseClassification interface {
 // DatacenterAddressResponse - Datacenter address for given storage location.
 type DatacenterAddressResponse struct {
 	// REQUIRED; Data center address type
-	DatacenterAddressType *DatacenterAddressType `json:"datacenterAddressType,omitempty"`
+	DatacenterAddressType *DatacenterAddressType
 
 	// READ-ONLY; Azure Location where the Data Center serves primarily.
-	DataCenterAzureLocation *string `json:"dataCenterAzureLocation,omitempty" azure:"ro"`
+	DataCenterAzureLocation *string
 
 	// READ-ONLY; List of supported carriers for return shipment.
-	SupportedCarriersForReturnShipment []*string `json:"supportedCarriersForReturnShipment,omitempty" azure:"ro"`
+	SupportedCarriersForReturnShipment []*string
 }
 
 // GetDatacenterAddressResponse implements the DatacenterAddressResponseClassification interface for type DatacenterAddressResponse.
@@ -878,42 +878,42 @@ func (d *DatacenterAddressResponse) GetDatacenterAddressResponse() *DatacenterAd
 // DcAccessSecurityCode - Dc access security code
 type DcAccessSecurityCode struct {
 	// Forward Dc access security code.
-	ForwardDCAccessCode *string `json:"forwardDCAccessCode,omitempty"`
+	ForwardDCAccessCode *string
 
 	// Reverse Dc access security code.
-	ReverseDCAccessCode *string `json:"reverseDCAccessCode,omitempty"`
+	ReverseDCAccessCode *string
 }
 
 type Details struct {
 	// REQUIRED
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // DeviceErasureDetails - Device erasure details with erasure completion status and erasureordestructionlog sas key
 type DeviceErasureDetails struct {
 	// READ-ONLY; Holds the device erasure completion status
-	DeviceErasureStatus *StageStatus `json:"deviceErasureStatus,omitempty" azure:"ro"`
+	DeviceErasureStatus *StageStatus
 
 	// READ-ONLY; Shared access key to download cleanup or destruction certificate for device
-	ErasureOrDestructionCertificateSasKey *string `json:"erasureOrDestructionCertificateSasKey,omitempty" azure:"ro"`
+	ErasureOrDestructionCertificateSasKey *string
 }
 
 // DiskCopyLogDetails - Copy Log Details for a disk
 type DiskCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
-	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+	CopyLogDetailsType *ClassDiscriminator
 
 	// READ-ONLY; Disk Serial Number.
-	DiskSerialNumber *string `json:"diskSerialNumber,omitempty" azure:"ro"`
+	DiskSerialNumber *string
 
 	// READ-ONLY; Link for copy error logs.
-	ErrorLogLink *string `json:"errorLogLink,omitempty" azure:"ro"`
+	ErrorLogLink *string
 
 	// READ-ONLY; Link for copy verbose logs.
-	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
+	VerboseLogLink *string
 }
 
 // GetCopyLogDetails implements the CopyLogDetailsClassification interface for type DiskCopyLogDetails.
@@ -926,34 +926,34 @@ func (d *DiskCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
 // DiskCopyProgress - DataBox Disk Copy Progress
 type DiskCopyProgress struct {
 	// READ-ONLY; Bytes copied during the copy of disk.
-	BytesCopied *int64 `json:"bytesCopied,omitempty" azure:"ro"`
+	BytesCopied *int64
 
 	// READ-ONLY; Indicates the percentage completed for the copy of the disk.
-	PercentComplete *int32 `json:"percentComplete,omitempty" azure:"ro"`
+	PercentComplete *int32
 
 	// READ-ONLY; The serial number of the disk
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; The Status of the copy
-	Status *CopyStatus `json:"status,omitempty" azure:"ro"`
+	Status *CopyStatus
 }
 
 // DiskGranularCopyLogDetails - Granular Copy Log Details for customer disk
 type DiskGranularCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
-	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+	CopyLogDetailsType *ClassDiscriminator
 
 	// READ-ONLY; Account name.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+	AccountName *string
 
 	// READ-ONLY; Link for copy error logs.
-	ErrorLogLink *string `json:"errorLogLink,omitempty" azure:"ro"`
+	ErrorLogLink *string
 
 	// READ-ONLY; Disk Serial Number.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; Link for copy verbose logs.
-	VerboseLogLink *string `json:"verboseLogLink,omitempty" azure:"ro"`
+	VerboseLogLink *string
 }
 
 // GetGranularCopyLogDetails implements the GranularCopyLogDetailsClassification interface for type DiskGranularCopyLogDetails.
@@ -966,132 +966,132 @@ func (d *DiskGranularCopyLogDetails) GetGranularCopyLogDetails() *GranularCopyLo
 // DiskGranularCopyProgress - DataBox Disk Granular Copy Progress
 type DiskGranularCopyProgress struct {
 	// READ-ONLY; Id of the account where the data needs to be uploaded.
-	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+	AccountID *string
 
 	// READ-ONLY; To indicate bytes transferred.
-	BytesProcessed *int64 `json:"bytesProcessed,omitempty" azure:"ro"`
+	BytesProcessed *int64
 
 	// READ-ONLY; The Status of the copy
-	CopyStatus *CopyStatus `json:"copyStatus,omitempty" azure:"ro"`
+	CopyStatus *CopyStatus
 
 	// READ-ONLY; Data Account Type.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty" azure:"ro"`
+	DataAccountType *DataAccountType
 
 	// READ-ONLY; To indicate directories errored out in the job.
-	DirectoriesErroredOut *int64 `json:"directoriesErroredOut,omitempty" azure:"ro"`
+	DirectoriesErroredOut *int64
 
 	// READ-ONLY; Number of files which could not be copied
-	FilesErroredOut *int64 `json:"filesErroredOut,omitempty" azure:"ro"`
+	FilesErroredOut *int64
 
 	// READ-ONLY; Number of files processed
-	FilesProcessed *int64 `json:"filesProcessed,omitempty" azure:"ro"`
+	FilesProcessed *int64
 
 	// READ-ONLY; To indicate directories renamed
-	InvalidDirectoriesProcessed *int64 `json:"invalidDirectoriesProcessed,omitempty" azure:"ro"`
+	InvalidDirectoriesProcessed *int64
 
 	// READ-ONLY; Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
-	InvalidFileBytesUploaded *int64 `json:"invalidFileBytesUploaded,omitempty" azure:"ro"`
+	InvalidFileBytesUploaded *int64
 
 	// READ-ONLY; Number of files not adhering to azure naming conventions which were processed by automatic renaming
-	InvalidFilesProcessed *int64 `json:"invalidFilesProcessed,omitempty" azure:"ro"`
+	InvalidFilesProcessed *int64
 
 	// READ-ONLY; To indicate if enumeration of data is in progress. Until this is true, the TotalBytesToProcess may not be valid.
-	IsEnumerationInProgress *bool `json:"isEnumerationInProgress,omitempty" azure:"ro"`
+	IsEnumerationInProgress *bool
 
 	// READ-ONLY; Number of folders not adhering to azure naming conventions which were processed by automatic renaming
-	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty" azure:"ro"`
+	RenamedContainerCount *int64
 
 	// READ-ONLY; Disk Serial Number.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; Name of the storage account. This will be empty for data account types other than storage account.
-	StorageAccountName *string `json:"storageAccountName,omitempty" azure:"ro"`
+	StorageAccountName *string
 
 	// READ-ONLY; Total amount of data to be processed by the job.
-	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty" azure:"ro"`
+	TotalBytesToProcess *int64
 
 	// READ-ONLY; Total files to process
-	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty" azure:"ro"`
+	TotalFilesToProcess *int64
 
 	// READ-ONLY; Transfer type of data
-	TransferType *TransferType `json:"transferType,omitempty" azure:"ro"`
+	TransferType *TransferType
 }
 
 // DiskJobDetails - DataBox Disk Job Details.
 type DiskJobDetails struct {
 	// REQUIRED; Contact details for notification and shipping.
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	ContactDetails *ContactDetails
 
 	// REQUIRED; Indicates the type of job details.
-	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+	JobDetailsType *ClassDiscriminator
 
 	// Details of the data to be exported from azure.
-	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+	DataExportDetails []*DataExportDetails
 
 	// Details of the data to be imported into azure.
-	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+	DataImportDetails []*DataImportDetails
 
 	// The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	ExpectedDataSizeInTeraBytes *int32
 
 	// Details about which key encryption type is being used.
-	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+	KeyEncryptionKey *KeyEncryptionKey
 
 	// User entered passkey for DataBox Disk job.
-	Passkey *string `json:"passkey,omitempty"`
+	Passkey *string
 
 	// Preferences for the order.
-	Preferences *Preferences `json:"preferences,omitempty"`
+	Preferences *Preferences
 
 	// User preference on what size disks are needed for the job. The map is from the disk size in TB to the count. Eg. {2,5}
 	// means 5 disks of 2 TB size. Key is string but will be checked against an int.
-	PreferredDisks map[string]*int32 `json:"preferredDisks,omitempty"`
+	PreferredDisks map[string]*int32
 
 	// Shipping address of the customer.
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 
 	// READ-ONLY; Available actions on the job.
-	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+	Actions []*CustomerResolutionCode
 
 	// READ-ONLY; Shared access key to download the chain of custody logs
-	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+	ChainOfCustodySasKey *string
 
 	// READ-ONLY; List of copy log details.
-	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+	CopyLogDetails []CopyLogDetailsClassification
 
 	// READ-ONLY; Copy progress per disk.
-	CopyProgress []*DiskCopyProgress `json:"copyProgress,omitempty" azure:"ro"`
+	CopyProgress []*DiskCopyProgress
 
 	// READ-ONLY; DataCenter code.
-	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+	DataCenterCode *DataCenterCode
 
 	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
-	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+	DatacenterAddress DatacenterAddressResponseClassification
 
 	// READ-ONLY; Delivery package shipping details.
-	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+	DeliveryPackage *PackageShippingDetails
 
 	// READ-ONLY; Holds device data erasure details
-	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+	DeviceErasureDetails *DeviceErasureDetails
 
 	// READ-ONLY; Contains the map of disk serial number to the disk size being used for the job. Is returned only after the disks
 	// are shipped to the customer.
-	DisksAndSizeDetails map[string]*int32 `json:"disksAndSizeDetails,omitempty" azure:"ro"`
+	DisksAndSizeDetails map[string]*int32
 
 	// READ-ONLY; Copy progress per disk.
-	GranularCopyProgress []*DiskGranularCopyProgress `json:"granularCopyProgress,omitempty" azure:"ro"`
+	GranularCopyProgress []*DiskGranularCopyProgress
 
 	// READ-ONLY; List of stages that run in the job.
-	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+	JobStages []*JobStages
 
 	// READ-ONLY; Last mitigation action performed on the job.
-	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+	LastMitigationActionOnJob *LastMitigationActionOnJob
 
 	// READ-ONLY; Return package shipping details.
-	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+	ReturnPackage *PackageShippingDetails
 
 	// READ-ONLY; Shared access key to download the return shipment label
-	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+	ReverseShipmentLabelSasKey *string
 }
 
 // GetCommonJobDetails implements the CommonJobDetailsClassification interface for type DiskJobDetails.
@@ -1122,22 +1122,22 @@ func (d *DiskJobDetails) GetCommonJobDetails() *CommonJobDetails {
 // DiskJobSecrets - The secrets related to disk job.
 type DiskJobSecrets struct {
 	// REQUIRED; Used to indicate what type of job secrets object.
-	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+	JobSecretsType *ClassDiscriminator
 
 	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
-	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+	DcAccessSecurityCode *DcAccessSecurityCode
 
 	// READ-ONLY; Contains the list of secrets object for that device.
-	DiskSecrets []*DiskSecret `json:"diskSecrets,omitempty" azure:"ro"`
+	DiskSecrets []*DiskSecret
 
 	// READ-ONLY; Error while fetching the secrets.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 
 	// READ-ONLY; Whether passkey was provided by user.
-	IsPasskeyUserDefined *bool `json:"isPasskeyUserDefined,omitempty" azure:"ro"`
+	IsPasskeyUserDefined *bool
 
 	// READ-ONLY; PassKey for the disk Job.
-	PassKey *string `json:"passKey,omitempty" azure:"ro"`
+	PassKey *string
 }
 
 // GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type DiskJobSecrets.
@@ -1152,16 +1152,16 @@ func (d *DiskJobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
 // DiskScheduleAvailabilityRequest - Request body to get the availability for scheduling disk orders.
 type DiskScheduleAvailabilityRequest struct {
 	// REQUIRED; The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	ExpectedDataSizeInTeraBytes *int32
 
 	// REQUIRED; Sku Name for which the order is to be scheduled.
-	SKUName *SKUName `json:"skuName,omitempty"`
+	SKUName *SKUName
 
 	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
-	StorageLocation *string `json:"storageLocation,omitempty"`
+	StorageLocation *string
 
 	// Country in which storage location should be supported.
-	Country *string `json:"country,omitempty"`
+	Country *string
 }
 
 // GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
@@ -1177,47 +1177,47 @@ func (d *DiskScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest()
 // DiskSecret - Contains all the secrets of a Disk.
 type DiskSecret struct {
 	// READ-ONLY; Bit Locker key of the disk which can be used to unlock the disk to copy data.
-	BitLockerKey *string `json:"bitLockerKey,omitempty" azure:"ro"`
+	BitLockerKey *string
 
 	// READ-ONLY; Serial number of the assigned disk.
-	DiskSerialNumber *string `json:"diskSerialNumber,omitempty" azure:"ro"`
+	DiskSerialNumber *string
 }
 
 // EncryptionPreferences - Preferences related to the Encryption.
 type EncryptionPreferences struct {
 	// Defines secondary layer of software-based encryption enablement.
-	DoubleEncryption *DoubleEncryption `json:"doubleEncryption,omitempty"`
+	DoubleEncryption *DoubleEncryption
 }
 
 type ErrorDetail struct {
 	// REQUIRED
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED
-	Message *string    `json:"message,omitempty"`
-	Details []*Details `json:"details,omitempty"`
-	Target  *string    `json:"target,omitempty"`
+	Message *string
+	Details []*Details
+	Target  *string
 }
 
 // ExportDiskDetails - Export disk details
 type ExportDiskDetails struct {
 	// READ-ONLY; Path to backed up manifest, only returned if enableManifestBackup is true.
-	BackupManifestCloudPath *string `json:"backupManifestCloudPath,omitempty" azure:"ro"`
+	BackupManifestCloudPath *string
 
 	// READ-ONLY; The relative path of the manifest file on the disk.
-	ManifestFile *string `json:"manifestFile,omitempty" azure:"ro"`
+	ManifestFile *string
 
 	// READ-ONLY; The Base16-encoded MD5 hash of the manifest file on the disk.
-	ManifestHash *string `json:"manifestHash,omitempty" azure:"ro"`
+	ManifestHash *string
 }
 
 // FilterFileDetails - Details of the filter files to be used for data transfer.
 type FilterFileDetails struct {
 	// REQUIRED; Path of the file that contains the details of all items to transfer.
-	FilterFilePath *string `json:"filterFilePath,omitempty"`
+	FilterFilePath *string
 
 	// REQUIRED; Type of the filter file.
-	FilterFileType *FilterFileType `json:"filterFileType,omitempty"`
+	FilterFileType *FilterFileType
 }
 
 // GranularCopyLogDetailsClassification provides polymorphic access to related types.
@@ -1232,7 +1232,7 @@ type GranularCopyLogDetailsClassification interface {
 // GranularCopyLogDetails - Granular Details for log generated during copy.
 type GranularCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
-	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+	CopyLogDetailsType *ClassDiscriminator
 }
 
 // GetGranularCopyLogDetails implements the GranularCopyLogDetailsClassification interface for type GranularCopyLogDetails.
@@ -1241,64 +1241,64 @@ func (g *GranularCopyLogDetails) GetGranularCopyLogDetails() *GranularCopyLogDet
 // GranularCopyProgress - Granular Copy progress.
 type GranularCopyProgress struct {
 	// READ-ONLY; Id of the account where the data needs to be uploaded.
-	AccountID *string `json:"accountId,omitempty" azure:"ro"`
+	AccountID *string
 
 	// READ-ONLY; To indicate bytes transferred.
-	BytesProcessed *int64 `json:"bytesProcessed,omitempty" azure:"ro"`
+	BytesProcessed *int64
 
 	// READ-ONLY; Data Account Type.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty" azure:"ro"`
+	DataAccountType *DataAccountType
 
 	// READ-ONLY; To indicate directories errored out in the job.
-	DirectoriesErroredOut *int64 `json:"directoriesErroredOut,omitempty" azure:"ro"`
+	DirectoriesErroredOut *int64
 
 	// READ-ONLY; Number of files which could not be copied
-	FilesErroredOut *int64 `json:"filesErroredOut,omitempty" azure:"ro"`
+	FilesErroredOut *int64
 
 	// READ-ONLY; Number of files processed
-	FilesProcessed *int64 `json:"filesProcessed,omitempty" azure:"ro"`
+	FilesProcessed *int64
 
 	// READ-ONLY; To indicate directories renamed
-	InvalidDirectoriesProcessed *int64 `json:"invalidDirectoriesProcessed,omitempty" azure:"ro"`
+	InvalidDirectoriesProcessed *int64
 
 	// READ-ONLY; Total amount of data not adhering to azure naming conventions which were processed by automatic renaming
-	InvalidFileBytesUploaded *int64 `json:"invalidFileBytesUploaded,omitempty" azure:"ro"`
+	InvalidFileBytesUploaded *int64
 
 	// READ-ONLY; Number of files not adhering to azure naming conventions which were processed by automatic renaming
-	InvalidFilesProcessed *int64 `json:"invalidFilesProcessed,omitempty" azure:"ro"`
+	InvalidFilesProcessed *int64
 
 	// READ-ONLY; To indicate if enumeration of data is in progress. Until this is true, the TotalBytesToProcess may not be valid.
-	IsEnumerationInProgress *bool `json:"isEnumerationInProgress,omitempty" azure:"ro"`
+	IsEnumerationInProgress *bool
 
 	// READ-ONLY; Number of folders not adhering to azure naming conventions which were processed by automatic renaming
-	RenamedContainerCount *int64 `json:"renamedContainerCount,omitempty" azure:"ro"`
+	RenamedContainerCount *int64
 
 	// READ-ONLY; Name of the storage account. This will be empty for data account types other than storage account.
-	StorageAccountName *string `json:"storageAccountName,omitempty" azure:"ro"`
+	StorageAccountName *string
 
 	// READ-ONLY; Total amount of data to be processed by the job.
-	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty" azure:"ro"`
+	TotalBytesToProcess *int64
 
 	// READ-ONLY; Total files to process
-	TotalFilesToProcess *int64 `json:"totalFilesToProcess,omitempty" azure:"ro"`
+	TotalFilesToProcess *int64
 
 	// READ-ONLY; Transfer type of data
-	TransferType *TransferType `json:"transferType,omitempty" azure:"ro"`
+	TransferType *TransferType
 }
 
 // HeavyAccountCopyLogDetails - Copy log details for a storage account for Databox heavy
 type HeavyAccountCopyLogDetails struct {
 	// REQUIRED; Indicates the type of job details.
-	CopyLogDetailsType *ClassDiscriminator `json:"copyLogDetailsType,omitempty"`
+	CopyLogDetailsType *ClassDiscriminator
 
 	// READ-ONLY; Account name.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+	AccountName *string
 
 	// READ-ONLY; Link for copy logs.
-	CopyLogLink []*string `json:"copyLogLink,omitempty" azure:"ro"`
+	CopyLogLink []*string
 
 	// READ-ONLY; Link for copy verbose logs. This will be set only when the LogCollectionLevel is set to verbose.
-	CopyVerboseLogLink []*string `json:"copyVerboseLogLink,omitempty" azure:"ro"`
+	CopyVerboseLogLink []*string
 }
 
 // GetCopyLogDetails implements the CopyLogDetailsClassification interface for type HeavyAccountCopyLogDetails.
@@ -1311,71 +1311,71 @@ func (h *HeavyAccountCopyLogDetails) GetCopyLogDetails() *CopyLogDetails {
 // HeavyJobDetails - Databox Heavy Device Job Details
 type HeavyJobDetails struct {
 	// REQUIRED; Contact details for notification and shipping.
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	ContactDetails *ContactDetails
 
 	// REQUIRED; Indicates the type of job details.
-	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+	JobDetailsType *ClassDiscriminator
 
 	// Details of the data to be exported from azure.
-	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+	DataExportDetails []*DataExportDetails
 
 	// Details of the data to be imported into azure.
-	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+	DataImportDetails []*DataImportDetails
 
 	// Set Device password for unlocking Databox Heavy. Should not be passed for TransferType:ExportFromAzure jobs. If this is
 	// not passed, the service will generate password itself. This will not be returned
 	// in Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at
 	// least one uppercase alphabet, one number and one special character. Password
 	// cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters : @#-$%^!+=;:_()]+
-	DevicePassword *string `json:"devicePassword,omitempty"`
+	DevicePassword *string
 
 	// The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	ExpectedDataSizeInTeraBytes *int32
 
 	// Details about which key encryption type is being used.
-	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+	KeyEncryptionKey *KeyEncryptionKey
 
 	// Preferences for the order.
-	Preferences *Preferences `json:"preferences,omitempty"`
+	Preferences *Preferences
 
 	// Shipping address of the customer.
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 
 	// READ-ONLY; Available actions on the job.
-	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+	Actions []*CustomerResolutionCode
 
 	// READ-ONLY; Shared access key to download the chain of custody logs
-	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+	ChainOfCustodySasKey *string
 
 	// READ-ONLY; List of copy log details.
-	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+	CopyLogDetails []CopyLogDetailsClassification
 
 	// READ-ONLY; Copy progress per account.
-	CopyProgress []*CopyProgress `json:"copyProgress,omitempty" azure:"ro"`
+	CopyProgress []*CopyProgress
 
 	// READ-ONLY; DataCenter code.
-	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+	DataCenterCode *DataCenterCode
 
 	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
-	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+	DatacenterAddress DatacenterAddressResponseClassification
 
 	// READ-ONLY; Delivery package shipping details.
-	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+	DeliveryPackage *PackageShippingDetails
 
 	// READ-ONLY; Holds device data erasure details
-	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+	DeviceErasureDetails *DeviceErasureDetails
 
 	// READ-ONLY; List of stages that run in the job.
-	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+	JobStages []*JobStages
 
 	// READ-ONLY; Last mitigation action performed on the job.
-	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+	LastMitigationActionOnJob *LastMitigationActionOnJob
 
 	// READ-ONLY; Return package shipping details.
-	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+	ReturnPackage *PackageShippingDetails
 
 	// READ-ONLY; Shared access key to download the return shipment label
-	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+	ReverseShipmentLabelSasKey *string
 }
 
 // GetCommonJobDetails implements the CommonJobDetailsClassification interface for type HeavyJobDetails.
@@ -1406,16 +1406,16 @@ func (h *HeavyJobDetails) GetCommonJobDetails() *CommonJobDetails {
 // HeavyJobSecrets - The secrets related to a databox heavy job.
 type HeavyJobSecrets struct {
 	// REQUIRED; Used to indicate what type of job secrets object.
-	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+	JobSecretsType *ClassDiscriminator
 
 	// READ-ONLY; Contains the list of secret objects for a databox heavy job.
-	CabinetPodSecrets []*HeavySecret `json:"cabinetPodSecrets,omitempty" azure:"ro"`
+	CabinetPodSecrets []*HeavySecret
 
 	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
-	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+	DcAccessSecurityCode *DcAccessSecurityCode
 
 	// READ-ONLY; Error while fetching the secrets.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 }
 
 // GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type HeavyJobSecrets.
@@ -1430,13 +1430,13 @@ func (h *HeavyJobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
 // HeavyScheduleAvailabilityRequest - Request body to get the availability for scheduling heavy orders.
 type HeavyScheduleAvailabilityRequest struct {
 	// REQUIRED; Sku Name for which the order is to be scheduled.
-	SKUName *SKUName `json:"skuName,omitempty"`
+	SKUName *SKUName
 
 	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
-	StorageLocation *string `json:"storageLocation,omitempty"`
+	StorageLocation *string
 
 	// Country in which storage location should be supported.
-	Country *string `json:"country,omitempty"`
+	Country *string
 }
 
 // GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
@@ -1452,119 +1452,119 @@ func (h *HeavyScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest(
 // HeavySecret - The secrets related to a databox heavy.
 type HeavySecret struct {
 	// READ-ONLY; Per account level access credentials.
-	AccountCredentialDetails []*AccountCredentialDetails `json:"accountCredentialDetails,omitempty" azure:"ro"`
+	AccountCredentialDetails []*AccountCredentialDetails
 
 	// READ-ONLY; Password for out of the box experience on device.
-	DevicePassword *string `json:"devicePassword,omitempty" azure:"ro"`
+	DevicePassword *string
 
 	// READ-ONLY; Serial number of the assigned device.
-	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty" azure:"ro"`
+	DeviceSerialNumber *string
 
 	// READ-ONLY; The base 64 encoded public key to authenticate with the device
-	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty" azure:"ro"`
+	EncodedValidationCertPubKey *string
 
 	// READ-ONLY; Network configuration of the appliance.
-	NetworkConfigurations []*ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty" azure:"ro"`
+	NetworkConfigurations []*ApplianceNetworkConfiguration
 }
 
 // IdentityProperties - Managed identity properties.
 type IdentityProperties struct {
 	// Managed service identity type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// User assigned identity properties.
-	UserAssigned *UserAssignedProperties `json:"userAssigned,omitempty"`
+	UserAssigned *UserAssignedProperties
 }
 
 // ImportDiskDetails - Import disk details
 type ImportDiskDetails struct {
 	// REQUIRED; BitLocker key used to encrypt the disk.
-	BitLockerKey *string `json:"bitLockerKey,omitempty"`
+	BitLockerKey *string
 
 	// REQUIRED; The relative path of the manifest file on the disk.
-	ManifestFile *string `json:"manifestFile,omitempty"`
+	ManifestFile *string
 
 	// REQUIRED; The Base16-encoded MD5 hash of the manifest file on the disk.
-	ManifestHash *string `json:"manifestHash,omitempty"`
+	ManifestHash *string
 
 	// READ-ONLY; Path to backed up manifest, only returned if enableManifestBackup is true.
-	BackupManifestCloudPath *string `json:"backupManifestCloudPath,omitempty" azure:"ro"`
+	BackupManifestCloudPath *string
 }
 
 // JobDeliveryInfo - Additional delivery info.
 type JobDeliveryInfo struct {
 	// Scheduled date time.
-	ScheduledDateTime *time.Time `json:"scheduledDateTime,omitempty"`
+	ScheduledDateTime *time.Time
 }
 
 // JobDetails - Databox Job Details
 type JobDetails struct {
 	// REQUIRED; Contact details for notification and shipping.
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	ContactDetails *ContactDetails
 
 	// REQUIRED; Indicates the type of job details.
-	JobDetailsType *ClassDiscriminator `json:"jobDetailsType,omitempty"`
+	JobDetailsType *ClassDiscriminator
 
 	// Details of the data to be exported from azure.
-	DataExportDetails []*DataExportDetails `json:"dataExportDetails,omitempty"`
+	DataExportDetails []*DataExportDetails
 
 	// Details of the data to be imported into azure.
-	DataImportDetails []*DataImportDetails `json:"dataImportDetails,omitempty"`
+	DataImportDetails []*DataImportDetails
 
 	// Set Device password for unlocking Databox. Should not be passed for TransferType:ExportFromAzure jobs. If this is not passed,
 	// the service will generate password itself. This will not be returned in
 	// Get Call. Password Requirements : Password must be minimum of 12 and maximum of 64 characters. Password must have at least
 	// one uppercase alphabet, one number and one special character. Password cannot
 	// have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters : @#-$%^!+=;:_()]+
-	DevicePassword *string `json:"devicePassword,omitempty"`
+	DevicePassword *string
 
 	// The expected size of the data, which needs to be transferred in this job, in terabytes.
-	ExpectedDataSizeInTeraBytes *int32 `json:"expectedDataSizeInTeraBytes,omitempty"`
+	ExpectedDataSizeInTeraBytes *int32
 
 	// Details about which key encryption type is being used.
-	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+	KeyEncryptionKey *KeyEncryptionKey
 
 	// Preferences for the order.
-	Preferences *Preferences `json:"preferences,omitempty"`
+	Preferences *Preferences
 
 	// Shipping address of the customer.
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 
 	// READ-ONLY; Available actions on the job.
-	Actions []*CustomerResolutionCode `json:"actions,omitempty" azure:"ro"`
+	Actions []*CustomerResolutionCode
 
 	// READ-ONLY; Shared access key to download the chain of custody logs
-	ChainOfCustodySasKey *string `json:"chainOfCustodySasKey,omitempty" azure:"ro"`
+	ChainOfCustodySasKey *string
 
 	// READ-ONLY; List of copy log details.
-	CopyLogDetails []CopyLogDetailsClassification `json:"copyLogDetails,omitempty" azure:"ro"`
+	CopyLogDetails []CopyLogDetailsClassification
 
 	// READ-ONLY; Copy progress per storage account.
-	CopyProgress []*CopyProgress `json:"copyProgress,omitempty" azure:"ro"`
+	CopyProgress []*CopyProgress
 
 	// READ-ONLY; DataCenter code.
-	DataCenterCode *DataCenterCode `json:"dataCenterCode,omitempty" azure:"ro"`
+	DataCenterCode *DataCenterCode
 
 	// READ-ONLY; Datacenter address to ship to, for the given sku and storage location.
-	DatacenterAddress DatacenterAddressResponseClassification `json:"datacenterAddress,omitempty" azure:"ro"`
+	DatacenterAddress DatacenterAddressResponseClassification
 
 	// READ-ONLY; Delivery package shipping details.
-	DeliveryPackage *PackageShippingDetails `json:"deliveryPackage,omitempty" azure:"ro"`
+	DeliveryPackage *PackageShippingDetails
 
 	// READ-ONLY; Holds device data erasure details
-	DeviceErasureDetails *DeviceErasureDetails `json:"deviceErasureDetails,omitempty" azure:"ro"`
+	DeviceErasureDetails *DeviceErasureDetails
 
 	// READ-ONLY; List of stages that run in the job.
-	JobStages []*JobStages `json:"jobStages,omitempty" azure:"ro"`
+	JobStages []*JobStages
 
 	// READ-ONLY; Last mitigation action performed on the job.
-	LastMitigationActionOnJob *LastMitigationActionOnJob `json:"lastMitigationActionOnJob,omitempty" azure:"ro"`
+	LastMitigationActionOnJob *LastMitigationActionOnJob
 
 	// READ-ONLY; Return package shipping details.
-	ReturnPackage *PackageShippingDetails `json:"returnPackage,omitempty" azure:"ro"`
+	ReturnPackage *PackageShippingDetails
 
 	// READ-ONLY; Shared access key to download the return shipment label
-	ReverseShipmentLabelSasKey *string `json:"reverseShipmentLabelSasKey,omitempty" azure:"ro"`
+	ReverseShipmentLabelSasKey *string
 }
 
 // GetCommonJobDetails implements the CommonJobDetailsClassification interface for type JobDetails.
@@ -1595,43 +1595,43 @@ func (j *JobDetails) GetCommonJobDetails() *CommonJobDetails {
 // JobProperties - Job Properties
 type JobProperties struct {
 	// REQUIRED; Type of the data transfer.
-	TransferType *TransferType `json:"transferType,omitempty"`
+	TransferType *TransferType
 
 	// Delivery Info of Job.
-	DeliveryInfo *JobDeliveryInfo `json:"deliveryInfo,omitempty"`
+	DeliveryInfo *JobDeliveryInfo
 
 	// Delivery type of Job.
-	DeliveryType *JobDeliveryType `json:"deliveryType,omitempty"`
+	DeliveryType *JobDeliveryType
 
 	// Details of a job run. This field will only be sent for expand details filter.
-	Details CommonJobDetailsClassification `json:"details,omitempty"`
+	Details CommonJobDetailsClassification
 
 	// READ-ONLY; Reason for cancellation.
-	CancellationReason *string `json:"cancellationReason,omitempty" azure:"ro"`
+	CancellationReason *string
 
 	// READ-ONLY; Top level error for the job.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 
 	// READ-ONLY; Describes whether the job is cancellable or not.
-	IsCancellable *bool `json:"isCancellable,omitempty" azure:"ro"`
+	IsCancellable *bool
 
 	// READ-ONLY; Flag to indicate cancellation of scheduled job.
-	IsCancellableWithoutFee *bool `json:"isCancellableWithoutFee,omitempty" azure:"ro"`
+	IsCancellableWithoutFee *bool
 
 	// READ-ONLY; Describes whether the job is deletable or not.
-	IsDeletable *bool `json:"isDeletable,omitempty" azure:"ro"`
+	IsDeletable *bool
 
 	// READ-ONLY; Is Prepare To Ship Enabled on this job
-	IsPrepareToShipEnabled *bool `json:"isPrepareToShipEnabled,omitempty" azure:"ro"`
+	IsPrepareToShipEnabled *bool
 
 	// READ-ONLY; Describes whether the shipping address is editable or not.
-	IsShippingAddressEditable *bool `json:"isShippingAddressEditable,omitempty" azure:"ro"`
+	IsShippingAddressEditable *bool
 
 	// READ-ONLY; Time at which the job was started in UTC ISO 8601 format.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Name of the stage which is in progress.
-	Status *StageName `json:"status,omitempty" azure:"ro"`
+	Status *StageName
 }
 
 // JobResource - Job Resource.
@@ -1639,69 +1639,69 @@ type JobResource struct {
 	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East
 	// US, Southeast Asia, etc.). The region of a resource cannot be changed once it is
 	// created, but if an identical region is specified on update the request will succeed.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties of a job.
-	Properties *JobProperties `json:"properties,omitempty"`
+	Properties *JobProperties
 
 	// REQUIRED; The sku type.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Msi identity of the resource
-	Identity *ResourceIdentity `json:"identity,omitempty"`
+	Identity *ResourceIdentity
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
 	// resource groups).
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobResourceList - Job Resource Collection
 type JobResourceList struct {
 	// Link for the next set of job resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of job resources.
-	Value []*JobResource `json:"value,omitempty"`
+	Value []*JobResource
 }
 
 // JobResourceUpdateParameter - The JobResourceUpdateParameter.
 type JobResourceUpdateParameter struct {
 	// Msi identity of the resource
-	Identity *ResourceIdentity `json:"identity,omitempty"`
+	Identity *ResourceIdentity
 
 	// Properties of a job to be updated.
-	Properties *UpdateJobProperties `json:"properties,omitempty"`
+	Properties *UpdateJobProperties
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
 	// resource groups).
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // JobSecrets - The secrets related to a databox job.
 type JobSecrets struct {
 	// REQUIRED; Used to indicate what type of job secrets object.
-	JobSecretsType *ClassDiscriminator `json:"jobSecretsType,omitempty"`
+	JobSecretsType *ClassDiscriminator
 
 	// Contains the list of secret objects for a job.
-	PodSecrets []*Secret `json:"podSecrets,omitempty"`
+	PodSecrets []*Secret
 
 	// READ-ONLY; Dc Access Security Code for Customer Managed Shipping
-	DcAccessSecurityCode *DcAccessSecurityCode `json:"dcAccessSecurityCode,omitempty" azure:"ro"`
+	DcAccessSecurityCode *DcAccessSecurityCode
 
 	// READ-ONLY; Error while fetching the secrets.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 }
 
 // GetCommonJobSecrets implements the CommonJobSecretsClassification interface for type JobSecrets.
@@ -1716,19 +1716,19 @@ func (j *JobSecrets) GetCommonJobSecrets() *CommonJobSecrets {
 // JobStages - Job stages.
 type JobStages struct {
 	// READ-ONLY; Display name of the job stage.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Job Stage Details
-	JobStageDetails any `json:"jobStageDetails,omitempty" azure:"ro"`
+	JobStageDetails any
 
 	// READ-ONLY; Name of the job stage.
-	StageName *StageName `json:"stageName,omitempty" azure:"ro"`
+	StageName *StageName
 
 	// READ-ONLY; Status of the job stage.
-	StageStatus *StageStatus `json:"stageStatus,omitempty" azure:"ro"`
+	StageStatus *StageStatus
 
 	// READ-ONLY; Time for the job stage in UTC ISO 8601 format.
-	StageTime *time.Time `json:"stageTime,omitempty" azure:"ro"`
+	StageTime *time.Time
 }
 
 // JobsClientBeginCreateOptions contains the optional parameters for the JobsClient.BeginCreate method.
@@ -1792,40 +1792,40 @@ type JobsClientMarkDevicesShippedOptions struct {
 // KeyEncryptionKey - Encryption key containing details about key to encrypt different keys.
 type KeyEncryptionKey struct {
 	// REQUIRED; Type of encryption key used for key encryption.
-	KekType *KekType `json:"kekType,omitempty"`
+	KekType *KekType
 
 	// Managed identity properties used for key encryption.
-	IdentityProperties *IdentityProperties `json:"identityProperties,omitempty"`
+	IdentityProperties *IdentityProperties
 
 	// Key encryption key. It is required in case of Customer managed KekType.
-	KekURL *string `json:"kekUrl,omitempty"`
+	KekURL *string
 
 	// Kek vault resource id. It is required in case of Customer managed KekType.
-	KekVaultResourceID *string `json:"kekVaultResourceID,omitempty"`
+	KekVaultResourceID *string
 }
 
 // LastMitigationActionOnJob - Last Mitigation Action Performed On Job
 type LastMitigationActionOnJob struct {
 	// Action performed date time
-	ActionDateTimeInUTC *time.Time `json:"actionDateTimeInUtc,omitempty"`
+	ActionDateTimeInUTC *time.Time
 
 	// Resolution code provided by customer
-	CustomerResolution *CustomerResolutionCode `json:"customerResolution,omitempty"`
+	CustomerResolution *CustomerResolutionCode
 
 	// Action performed by customer, possibility is that mitigation might happen by customer or service or by ops
-	IsPerformedByCustomer *bool `json:"isPerformedByCustomer,omitempty"`
+	IsPerformedByCustomer *bool
 }
 
 // ManagedDiskDetails - Details of the managed disks.
 type ManagedDiskDetails struct {
 	// REQUIRED; Account Type of the data to be transferred.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty"`
+	DataAccountType *DataAccountType
 
 	// REQUIRED; Resource Group Id of the compute disks.
-	ResourceGroupID *string `json:"resourceGroupId,omitempty"`
+	ResourceGroupID *string
 
 	// REQUIRED; Resource Id of the storage account that can be used to copy the vhd for staging.
-	StagingStorageAccountID *string `json:"stagingStorageAccountId,omitempty"`
+	StagingStorageAccountID *string
 
 	// Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure jobs. If
 	// this is not passed, the service will generate password itself. This will not be
@@ -1833,7 +1833,7 @@ type ManagedDiskDetails struct {
 	// have at least one uppercase alphabet, one number and one special character.
 	// Password cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
 	// : @#-$%^!+=;:_()]+
-	SharePassword *string `json:"sharePassword,omitempty"`
+	SharePassword *string
 }
 
 // GetDataAccountDetails implements the DataAccountDetailsClassification interface for type ManagedDiskDetails.
@@ -1852,64 +1852,64 @@ type ManagementClientMitigateOptions struct {
 // MarkDevicesShippedRequest - The request body to provide the delivery package details of job
 type MarkDevicesShippedRequest struct {
 	// REQUIRED; Delivery package details
-	DeliverToDcPackageDetails *PackageCarrierInfo `json:"deliverToDcPackageDetails,omitempty"`
+	DeliverToDcPackageDetails *PackageCarrierInfo
 }
 
 // MitigateJobRequest - The Mitigate Job captured from request body for Mitigate API
 type MitigateJobRequest struct {
 	// REQUIRED; Resolution code for the job
-	CustomerResolutionCode *CustomerResolutionCode `json:"customerResolutionCode,omitempty"`
+	CustomerResolutionCode *CustomerResolutionCode
 }
 
 // NotificationPreference - Notification preference for a job stage.
 type NotificationPreference struct {
 	// REQUIRED; Notification is required or not.
-	SendNotification *bool `json:"sendNotification,omitempty"`
+	SendNotification *bool
 
 	// REQUIRED; Name of the stage.
-	StageName *NotificationStageName `json:"stageName,omitempty"`
+	StageName *NotificationStageName
 }
 
 // Operation entity.
 type Operation struct {
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// READ-ONLY; Operation display values.
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Name of the operation. Format: {resourceProviderNamespace}/{resourceType}/{read|write|delete|action}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Origin of the operation. Can be : user|system|user,system
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 
 	// READ-ONLY; Operation properties.
-	Properties any `json:"properties,omitempty" azure:"ro"`
+	Properties any
 }
 
 // OperationDisplay - Operation display
 type OperationDisplay struct {
 	// Localized description of the operation for display purpose.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Localized name of the operation for display purpose.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Provider name.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource name.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationList - Operation Collection.
 type OperationList struct {
 	// Link for the next set of operations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of operations.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1920,61 +1920,61 @@ type OperationsClientListOptions struct {
 // PackageCarrierDetails - Package carrier details.
 type PackageCarrierDetails struct {
 	// Carrier Account Number of customer for customer disk.
-	CarrierAccountNumber *string `json:"carrierAccountNumber,omitempty"`
+	CarrierAccountNumber *string
 
 	// Name of the carrier.
-	CarrierName *string `json:"carrierName,omitempty"`
+	CarrierName *string
 
 	// Tracking Id of shipment.
-	TrackingID *string `json:"trackingId,omitempty"`
+	TrackingID *string
 }
 
 // PackageCarrierInfo - package carrier info
 type PackageCarrierInfo struct {
 	// Name of the carrier.
-	CarrierName *string `json:"carrierName,omitempty"`
+	CarrierName *string
 
 	// Tracking Id of shipment.
-	TrackingID *string `json:"trackingId,omitempty"`
+	TrackingID *string
 }
 
 // PackageShippingDetails - package shipping details
 type PackageShippingDetails struct {
 	// READ-ONLY; Name of the carrier.
-	CarrierName *string `json:"carrierName,omitempty" azure:"ro"`
+	CarrierName *string
 
 	// READ-ONLY; Tracking Id of shipment.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 
 	// READ-ONLY; Url where shipment can be tracked.
-	TrackingURL *string `json:"trackingUrl,omitempty" azure:"ro"`
+	TrackingURL *string
 }
 
 // Preferences related to the order
 type Preferences struct {
 	// Preferences related to the Encryption.
-	EncryptionPreferences *EncryptionPreferences `json:"encryptionPreferences,omitempty"`
+	EncryptionPreferences *EncryptionPreferences
 
 	// Preferred data center region.
-	PreferredDataCenterRegion []*string `json:"preferredDataCenterRegion,omitempty"`
+	PreferredDataCenterRegion []*string
 
 	// Preferences related to the Access Tier of storage accounts.
-	StorageAccountAccessTierPreferences []*string `json:"storageAccountAccessTierPreferences,omitempty"`
+	StorageAccountAccessTierPreferences []*string
 
 	// Preferences related to the shipment logistics of the sku.
-	TransportPreferences *TransportPreferences `json:"transportPreferences,omitempty"`
+	TransportPreferences *TransportPreferences
 }
 
 // PreferencesValidationRequest - Request to validate preference of transport and data center.
 type PreferencesValidationRequest struct {
 	// REQUIRED; Device type to be used for the job.
-	DeviceType *SKUName `json:"deviceType,omitempty"`
+	DeviceType *SKUName
 
 	// REQUIRED; Identifies the type of validation request.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// Preference of transport and data center.
-	Preference *Preferences `json:"preference,omitempty"`
+	Preference *Preferences
 }
 
 // GetValidationInputRequest implements the ValidationInputRequestClassification interface for type PreferencesValidationRequest.
@@ -1987,13 +1987,13 @@ func (p *PreferencesValidationRequest) GetValidationInputRequest() *ValidationIn
 // PreferencesValidationResponseProperties - Properties of data center and transport preference validation response.
 type PreferencesValidationResponseProperties struct {
 	// REQUIRED; Identifies the type of validation response.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// READ-ONLY; Error code and message of validation response.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 
 	// READ-ONLY; Validation status of requested data center and transport.
-	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+	Status *ValidationStatus
 }
 
 // GetValidationInputResponse implements the ValidationInputResponseClassification interface for type PreferencesValidationResponseProperties.
@@ -2007,25 +2007,25 @@ func (p *PreferencesValidationResponseProperties) GetValidationInputResponse() *
 // RegionConfigurationRequest - Request body to get the configuration for the region.
 type RegionConfigurationRequest struct {
 	// Request body to get the datacenter address for given sku.
-	DatacenterAddressRequest *DatacenterAddressRequest `json:"datacenterAddressRequest,omitempty"`
+	DatacenterAddressRequest *DatacenterAddressRequest
 
 	// Request body to get the availability for scheduling orders.
-	ScheduleAvailabilityRequest CommonScheduleAvailabilityRequestClassification `json:"scheduleAvailabilityRequest,omitempty"`
+	ScheduleAvailabilityRequest CommonScheduleAvailabilityRequestClassification
 
 	// Request body to get the transport availability for given sku.
-	TransportAvailabilityRequest *TransportAvailabilityRequest `json:"transportAvailabilityRequest,omitempty"`
+	TransportAvailabilityRequest *TransportAvailabilityRequest
 }
 
 // RegionConfigurationResponse - Configuration response specific to a region.
 type RegionConfigurationResponse struct {
 	// READ-ONLY; Datacenter address for given sku in a region.
-	DatacenterAddressResponse DatacenterAddressResponseClassification `json:"datacenterAddressResponse,omitempty" azure:"ro"`
+	DatacenterAddressResponse DatacenterAddressResponseClassification
 
 	// READ-ONLY; Schedule availability for given sku in a region.
-	ScheduleAvailabilityResponse *ScheduleAvailabilityResponse `json:"scheduleAvailabilityResponse,omitempty" azure:"ro"`
+	ScheduleAvailabilityResponse *ScheduleAvailabilityResponse
 
 	// READ-ONLY; Transport options available for given sku in a region.
-	TransportAvailabilityResponse *TransportAvailabilityResponse `json:"transportAvailabilityResponse,omitempty" azure:"ro"`
+	TransportAvailabilityResponse *TransportAvailabilityResponse
 }
 
 // Resource - Model of the Resource.
@@ -2033,62 +2033,62 @@ type Resource struct {
 	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Regions (e.g. West US, East
 	// US, Southeast Asia, etc.). The region of a resource cannot be changed once it is
 	// created, but if an identical region is specified on update the request will succeed.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The sku type.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Msi identity of the resource
-	Identity *ResourceIdentity `json:"identity,omitempty"`
+	Identity *ResourceIdentity
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
 	// resource groups).
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ResourceIdentity - Msi identity details of the resource
 type ResourceIdentity struct {
 	// Identity type
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// User Assigned Identities
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; Service Principal Id backing the Msi
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; Home Tenant Id
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // SKU - The Sku.
 type SKU struct {
 	// REQUIRED; The sku name.
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 
 	// The display name of the sku.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The sku family.
-	Family *string `json:"family,omitempty"`
+	Family *string
 }
 
 // SKUAvailabilityValidationRequest - Request to validate sku availability.
 type SKUAvailabilityValidationRequest struct {
 	// REQUIRED; ISO country code. Country for hardware shipment. For codes check: https://en.wikipedia.org/wiki/ISO3166-1alpha-2#Officiallyassignedcode_elements
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// REQUIRED; Device type to be used for the job.
-	DeviceType *SKUName `json:"deviceType,omitempty"`
+	DeviceType *SKUName
 
 	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Type of the transfer.
-	TransferType *TransferType `json:"transferType,omitempty"`
+	TransferType *TransferType
 
 	// REQUIRED; Identifies the type of validation request.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 }
 
 // GetValidationInputRequest implements the ValidationInputRequestClassification interface for type SKUAvailabilityValidationRequest.
@@ -2101,13 +2101,13 @@ func (s *SKUAvailabilityValidationRequest) GetValidationInputRequest() *Validati
 // SKUAvailabilityValidationResponseProperties - Properties of sku availability validation response.
 type SKUAvailabilityValidationResponseProperties struct {
 	// REQUIRED; Identifies the type of validation response.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// READ-ONLY; Error code and message of validation response.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 
 	// READ-ONLY; Sku availability validation status.
-	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+	Status *ValidationStatus
 }
 
 // GetValidationInputResponse implements the ValidationInputResponseClassification interface for type SKUAvailabilityValidationResponseProperties.
@@ -2121,71 +2121,71 @@ func (s *SKUAvailabilityValidationResponseProperties) GetValidationInputResponse
 // SKUCapacity - Capacity of the sku.
 type SKUCapacity struct {
 	// READ-ONLY; Maximum capacity in TB.
-	Maximum *string `json:"maximum,omitempty" azure:"ro"`
+	Maximum *string
 
 	// READ-ONLY; Usable capacity in TB.
-	Usable *string `json:"usable,omitempty" azure:"ro"`
+	Usable *string
 }
 
 // SKUCost - Describes metadata for retrieving price info.
 type SKUCost struct {
 	// READ-ONLY; Meter id of the Sku.
-	MeterID *string `json:"meterId,omitempty" azure:"ro"`
+	MeterID *string
 
 	// READ-ONLY; The type of the meter.
-	MeterType *string `json:"meterType,omitempty" azure:"ro"`
+	MeterType *string
 
 	// READ-ONLY; Multiplier specifies the region specific value to be multiplied with 1$ guid. Eg: Our new regions will be using
 	// 1$ shipping guid with appropriate multiplier specific to region.
-	Multiplier *float64 `json:"multiplier,omitempty" azure:"ro"`
+	Multiplier *float64
 }
 
 // SKUInformation - Information of the sku.
 type SKUInformation struct {
 	// READ-ONLY; The sku is enabled or not.
-	Enabled *bool `json:"enabled,omitempty" azure:"ro"`
+	Enabled *bool
 
 	// READ-ONLY; Properties of the sku.
-	Properties *SKUProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *SKUProperties
 
 	// READ-ONLY; The Sku.
-	SKU *SKU `json:"sku,omitempty" azure:"ro"`
+	SKU *SKU
 }
 
 // SKUProperties - Properties of the sku.
 type SKUProperties struct {
 	// READ-ONLY; Api versions that support this Sku.
-	APIVersions []*string `json:"apiVersions,omitempty" azure:"ro"`
+	APIVersions []*string
 
 	// READ-ONLY; Capacity of the Sku.
-	Capacity *SKUCapacity `json:"capacity,omitempty" azure:"ro"`
+	Capacity *SKUCapacity
 
 	// READ-ONLY; Cost of the Sku.
-	Costs []*SKUCost `json:"costs,omitempty" azure:"ro"`
+	Costs []*SKUCost
 
 	// READ-ONLY; The map of data location to service location.
-	DataLocationToServiceLocationMap []*DataLocationToServiceLocationMap `json:"dataLocationToServiceLocationMap,omitempty" azure:"ro"`
+	DataLocationToServiceLocationMap []*DataLocationToServiceLocationMap
 
 	// READ-ONLY; Reason why the Sku is disabled.
-	DisabledReason *SKUDisabledReason `json:"disabledReason,omitempty" azure:"ro"`
+	DisabledReason *SKUDisabledReason
 
 	// READ-ONLY; Message for why the Sku is disabled.
-	DisabledReasonMessage *string `json:"disabledReasonMessage,omitempty" azure:"ro"`
+	DisabledReasonMessage *string
 
 	// READ-ONLY; Required feature to access the sku.
-	RequiredFeature *string `json:"requiredFeature,omitempty" azure:"ro"`
+	RequiredFeature *string
 }
 
 // ScheduleAvailabilityRequest - Request body to get the availability for scheduling data box orders orders.
 type ScheduleAvailabilityRequest struct {
 	// REQUIRED; Sku Name for which the order is to be scheduled.
-	SKUName *SKUName `json:"skuName,omitempty"`
+	SKUName *SKUName
 
 	// REQUIRED; Location for data transfer. For locations check: https://management.azure.com/subscriptions/SUBSCRIPTIONID/locations?api-version=2018-01-01
-	StorageLocation *string `json:"storageLocation,omitempty"`
+	StorageLocation *string
 
 	// Country in which storage location should be supported.
-	Country *string `json:"country,omitempty"`
+	Country *string
 }
 
 // GetCommonScheduleAvailabilityRequest implements the CommonScheduleAvailabilityRequestClassification interface for type
@@ -2201,25 +2201,25 @@ func (s *ScheduleAvailabilityRequest) GetCommonScheduleAvailabilityRequest() *Co
 // ScheduleAvailabilityResponse - Schedule availability for given sku in a region.
 type ScheduleAvailabilityResponse struct {
 	// READ-ONLY; List of dates available to schedule
-	AvailableDates []*time.Time `json:"availableDates,omitempty" azure:"ro"`
+	AvailableDates []*time.Time
 }
 
 // Secret - The secrets related to a DataBox.
 type Secret struct {
 	// READ-ONLY; Per account level access credentials.
-	AccountCredentialDetails []*AccountCredentialDetails `json:"accountCredentialDetails,omitempty" azure:"ro"`
+	AccountCredentialDetails []*AccountCredentialDetails
 
 	// READ-ONLY; Password for out of the box experience on device.
-	DevicePassword *string `json:"devicePassword,omitempty" azure:"ro"`
+	DevicePassword *string
 
 	// READ-ONLY; Serial number of the assigned device.
-	DeviceSerialNumber *string `json:"deviceSerialNumber,omitempty" azure:"ro"`
+	DeviceSerialNumber *string
 
 	// READ-ONLY; The base 64 encoded public key to authenticate with the device
-	EncodedValidationCertPubKey *string `json:"encodedValidationCertPubKey,omitempty" azure:"ro"`
+	EncodedValidationCertPubKey *string
 
 	// READ-ONLY; Network configuration of the appliance.
-	NetworkConfigurations []*ApplianceNetworkConfiguration `json:"networkConfigurations,omitempty" azure:"ro"`
+	NetworkConfigurations []*ApplianceNetworkConfiguration
 }
 
 // ServiceClientListAvailableSKUsByResourceGroupOptions contains the optional parameters for the ServiceClient.NewListAvailableSKUsByResourceGroupPager
@@ -2258,82 +2258,82 @@ type ServiceClientValidateInputsOptions struct {
 // ShareCredentialDetails - Credential details of the shares in account.
 type ShareCredentialDetails struct {
 	// READ-ONLY; Password for the share.
-	Password *string `json:"password,omitempty" azure:"ro"`
+	Password *string
 
 	// READ-ONLY; Name of the share.
-	ShareName *string `json:"shareName,omitempty" azure:"ro"`
+	ShareName *string
 
 	// READ-ONLY; Type of the share.
-	ShareType *ShareDestinationFormatType `json:"shareType,omitempty" azure:"ro"`
+	ShareType *ShareDestinationFormatType
 
 	// READ-ONLY; Access protocols supported on the device.
-	SupportedAccessProtocols []*AccessProtocol `json:"supportedAccessProtocols,omitempty" azure:"ro"`
+	SupportedAccessProtocols []*AccessProtocol
 
 	// READ-ONLY; User name for the share.
-	UserName *string `json:"userName,omitempty" azure:"ro"`
+	UserName *string
 }
 
 // ShipmentPickUpRequest - Shipment pick up request details.
 type ShipmentPickUpRequest struct {
 	// REQUIRED; Maximum date before which the pick up should commence, this must be in local time of pick up area.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// REQUIRED; Shipment Location in the pickup place. Eg.front desk
-	ShipmentLocation *string `json:"shipmentLocation,omitempty"`
+	ShipmentLocation *string
 
 	// REQUIRED; Minimum date after which the pick up should commence, this must be in local time of pick up area.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // ShipmentPickUpResponse - Shipment pick up response.
 type ShipmentPickUpResponse struct {
 	// READ-ONLY; Confirmation number for the pick up request.
-	ConfirmationNumber *string `json:"confirmationNumber,omitempty" azure:"ro"`
+	ConfirmationNumber *string
 
 	// READ-ONLY; Time by which shipment should be ready for pick up, this is in local time of pick up area.
-	ReadyByTime *time.Time `json:"readyByTime,omitempty" azure:"ro"`
+	ReadyByTime *time.Time
 }
 
 // ShippingAddress - Shipping address where customer wishes to receive the device.
 type ShippingAddress struct {
 	// REQUIRED; Name of the Country.
-	Country *string `json:"country,omitempty"`
+	Country *string
 
 	// REQUIRED; Street Address line 1.
-	StreetAddress1 *string `json:"streetAddress1,omitempty"`
+	StreetAddress1 *string
 
 	// Type of address.
-	AddressType *AddressType `json:"addressType,omitempty"`
+	AddressType *AddressType
 
 	// Name of the City.
-	City *string `json:"city,omitempty"`
+	City *string
 
 	// Name of the company.
-	CompanyName *string `json:"companyName,omitempty"`
+	CompanyName *string
 
 	// Postal code.
-	PostalCode *string `json:"postalCode,omitempty"`
+	PostalCode *string
 
 	// Name of the State or Province.
-	StateOrProvince *string `json:"stateOrProvince,omitempty"`
+	StateOrProvince *string
 
 	// Street Address line 2.
-	StreetAddress2 *string `json:"streetAddress2,omitempty"`
+	StreetAddress2 *string
 
 	// Street Address line 3.
-	StreetAddress3 *string `json:"streetAddress3,omitempty"`
+	StreetAddress3 *string
 
 	// Extended Zip Code.
-	ZipExtendedCode *string `json:"zipExtendedCode,omitempty"`
+	ZipExtendedCode *string
 }
 
 // StorageAccountDetails - Details for the storage account.
 type StorageAccountDetails struct {
 	// REQUIRED; Account Type of the data to be transferred.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty"`
+	DataAccountType *DataAccountType
 
 	// REQUIRED; Storage Account Resource Id.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// Password for all the shares to be created on the device. Should not be passed for TransferType:ExportFromAzure jobs. If
 	// this is not passed, the service will generate password itself. This will not be
@@ -2341,7 +2341,7 @@ type StorageAccountDetails struct {
 	// have at least one uppercase alphabet, one number and one special character.
 	// Password cannot have the following characters : IilLoO0 Password can have only alphabets, numbers and these characters
 	// : @#-$%^!+=;:_()]+
-	SharePassword *string `json:"sharePassword,omitempty"`
+	SharePassword *string
 }
 
 // GetDataAccountDetails implements the DataAccountDetailsClassification interface for type StorageAccountDetails.
@@ -2355,7 +2355,7 @@ func (s *StorageAccountDetails) GetDataAccountDetails() *DataAccountDetails {
 // SubscriptionIsAllowedToCreateJobValidationRequest - Request to validate subscription permission to create jobs.
 type SubscriptionIsAllowedToCreateJobValidationRequest struct {
 	// REQUIRED; Identifies the type of validation request.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 }
 
 // GetValidationInputRequest implements the ValidationInputRequestClassification interface for type SubscriptionIsAllowedToCreateJobValidationRequest.
@@ -2369,13 +2369,13 @@ func (s *SubscriptionIsAllowedToCreateJobValidationRequest) GetValidationInputRe
 // response.
 type SubscriptionIsAllowedToCreateJobValidationResponseProperties struct {
 	// REQUIRED; Identifies the type of validation response.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// READ-ONLY; Error code and message of validation response.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 
 	// READ-ONLY; Validation status of subscription permission to create job.
-	Status *ValidationStatus `json:"status,omitempty" azure:"ro"`
+	Status *ValidationStatus
 }
 
 // GetValidationInputResponse implements the ValidationInputResponseClassification interface for type SubscriptionIsAllowedToCreateJobValidationResponseProperties.
@@ -2389,170 +2389,170 @@ func (s *SubscriptionIsAllowedToCreateJobValidationResponseProperties) GetValida
 // SystemData - Provides details about resource creation and update time
 type SystemData struct {
 	// READ-ONLY; The timestamp of resource creation (UTC)
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; A string identifier for the identity that created the resource
-	CreatedBy *string `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *string
 
 	// READ-ONLY; The type of identity that created the resource: user, application, managedIdentity
-	CreatedByType *string `json:"createdByType,omitempty" azure:"ro"`
+	CreatedByType *string
 
 	// READ-ONLY; The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty" azure:"ro"`
+	LastModifiedAt *time.Time
 
 	// READ-ONLY; A string identifier for the identity that last modified the resource
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *string
 
 	// READ-ONLY; The type of identity that last modified the resource: user, application, managedIdentity
-	LastModifiedByType *string `json:"lastModifiedByType,omitempty" azure:"ro"`
+	LastModifiedByType *string
 }
 
 // TransferAllDetails - Details to transfer all data.
 type TransferAllDetails struct {
 	// REQUIRED; Type of the account of data
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty"`
+	DataAccountType *DataAccountType
 
 	// To indicate if all Azure blobs have to be transferred
-	TransferAllBlobs *bool `json:"transferAllBlobs,omitempty"`
+	TransferAllBlobs *bool
 
 	// To indicate if all Azure Files have to be transferred
-	TransferAllFiles *bool `json:"transferAllFiles,omitempty"`
+	TransferAllFiles *bool
 }
 
 // TransferConfiguration - Configuration for defining the transfer of data.
 type TransferConfiguration struct {
 	// REQUIRED; Type of the configuration for transfer.
-	TransferConfigurationType *TransferConfigurationType `json:"transferConfigurationType,omitempty"`
+	TransferConfigurationType *TransferConfigurationType
 
 	// Map of filter type and the details to transfer all data. This field is required only if the TransferConfigurationType is
 	// given as TransferAll
-	TransferAllDetails *TransferConfigurationTransferAllDetails `json:"transferAllDetails,omitempty"`
+	TransferAllDetails *TransferConfigurationTransferAllDetails
 
 	// Map of filter type and the details to filter. This field is required only if the TransferConfigurationType is given as
 	// TransferUsingFilter.
-	TransferFilterDetails *TransferConfigurationTransferFilterDetails `json:"transferFilterDetails,omitempty"`
+	TransferFilterDetails *TransferConfigurationTransferFilterDetails
 }
 
 // TransferConfigurationTransferAllDetails - Map of filter type and the details to transfer all data. This field is required
 // only if the TransferConfigurationType is given as TransferAll
 type TransferConfigurationTransferAllDetails struct {
 	// Details to transfer all data.
-	Include *TransferAllDetails `json:"include,omitempty"`
+	Include *TransferAllDetails
 }
 
 // TransferConfigurationTransferFilterDetails - Map of filter type and the details to filter. This field is required only
 // if the TransferConfigurationType is given as TransferUsingFilter.
 type TransferConfigurationTransferFilterDetails struct {
 	// Details of the filtering the transfer of data.
-	Include *TransferFilterDetails `json:"include,omitempty"`
+	Include *TransferFilterDetails
 }
 
 // TransferFilterDetails - Details of the filtering the transfer of data.
 type TransferFilterDetails struct {
 	// REQUIRED; Type of the account of data.
-	DataAccountType *DataAccountType `json:"dataAccountType,omitempty"`
+	DataAccountType *DataAccountType
 
 	// Filter details to transfer Azure files.
-	AzureFileFilterDetails *AzureFileFilterDetails `json:"azureFileFilterDetails,omitempty"`
+	AzureFileFilterDetails *AzureFileFilterDetails
 
 	// Filter details to transfer blobs.
-	BlobFilterDetails *BlobFilterDetails `json:"blobFilterDetails,omitempty"`
+	BlobFilterDetails *BlobFilterDetails
 
 	// Details of the filter files to be used for data transfer.
-	FilterFileDetails []*FilterFileDetails `json:"filterFileDetails,omitempty"`
+	FilterFileDetails []*FilterFileDetails
 }
 
 // TransportAvailabilityDetails - Transport options availability details for given region.
 type TransportAvailabilityDetails struct {
 	// READ-ONLY; Transport Shipment Type supported for given region.
-	ShipmentType *TransportShipmentTypes `json:"shipmentType,omitempty" azure:"ro"`
+	ShipmentType *TransportShipmentTypes
 }
 
 // TransportAvailabilityRequest - Request body to get the transport availability for given sku.
 type TransportAvailabilityRequest struct {
 	// Type of the device.
-	SKUName *SKUName `json:"skuName,omitempty"`
+	SKUName *SKUName
 }
 
 // TransportAvailabilityResponse - Transport options available for given sku in a region.
 type TransportAvailabilityResponse struct {
 	// READ-ONLY; List of transport availability details for given region
-	TransportAvailabilityDetails []*TransportAvailabilityDetails `json:"transportAvailabilityDetails,omitempty" azure:"ro"`
+	TransportAvailabilityDetails []*TransportAvailabilityDetails
 }
 
 // TransportPreferences - Preferences related to the shipment logistics of the sku
 type TransportPreferences struct {
 	// REQUIRED; Indicates Shipment Logistics type that the customer preferred.
-	PreferredShipmentType *TransportShipmentTypes `json:"preferredShipmentType,omitempty"`
+	PreferredShipmentType *TransportShipmentTypes
 }
 
 // UnencryptedCredentials - Unencrypted credentials for accessing device.
 type UnencryptedCredentials struct {
 	// READ-ONLY; Name of the job.
-	JobName *string `json:"jobName,omitempty" azure:"ro"`
+	JobName *string
 
 	// READ-ONLY; Secrets related to this job.
-	JobSecrets CommonJobSecretsClassification `json:"jobSecrets,omitempty" azure:"ro"`
+	JobSecrets CommonJobSecretsClassification
 }
 
 // UnencryptedCredentialsList - List of unencrypted credentials for accessing device.
 type UnencryptedCredentialsList struct {
 	// Link for the next set of unencrypted credentials.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of unencrypted credentials.
-	Value []*UnencryptedCredentials `json:"value,omitempty"`
+	Value []*UnencryptedCredentials
 }
 
 // UpdateJobDetails - Job details for update.
 type UpdateJobDetails struct {
 	// Contact details for notification and shipping.
-	ContactDetails *ContactDetails `json:"contactDetails,omitempty"`
+	ContactDetails *ContactDetails
 
 	// Key encryption key for the job.
-	KeyEncryptionKey *KeyEncryptionKey `json:"keyEncryptionKey,omitempty"`
+	KeyEncryptionKey *KeyEncryptionKey
 
 	// Return package details of job.
-	ReturnToCustomerPackageDetails *PackageCarrierDetails `json:"returnToCustomerPackageDetails,omitempty"`
+	ReturnToCustomerPackageDetails *PackageCarrierDetails
 
 	// Shipping address of the customer.
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 }
 
 // UpdateJobProperties - Job Properties for update
 type UpdateJobProperties struct {
 	// Details of a job to be updated.
-	Details *UpdateJobDetails `json:"details,omitempty"`
+	Details *UpdateJobDetails
 }
 
 // UserAssignedIdentity - Class defining User assigned identity details.
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // UserAssignedProperties - User assigned identity properties.
 type UserAssignedProperties struct {
 	// Arm resource id for user assigned identity to be used to fetch MSI token.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // ValidateAddress - The requirements to validate customer address where the device needs to be shipped.
 type ValidateAddress struct {
 	// REQUIRED; Device type to be used for the job.
-	DeviceType *SKUName `json:"deviceType,omitempty"`
+	DeviceType *SKUName
 
 	// REQUIRED; Shipping address of the customer.
-	ShippingAddress *ShippingAddress `json:"shippingAddress,omitempty"`
+	ShippingAddress *ShippingAddress
 
 	// REQUIRED; Identifies the type of validation request.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// Preferences related to the shipment logistics of the sku.
-	TransportPreferences *TransportPreferences `json:"transportPreferences,omitempty"`
+	TransportPreferences *TransportPreferences
 }
 
 // GetValidationInputRequest implements the ValidationInputRequestClassification interface for type ValidateAddress.
@@ -2575,7 +2575,7 @@ type ValidationInputRequestClassification interface {
 // ValidationInputRequest - Minimum fields that must be present in any type of validation request.
 type ValidationInputRequest struct {
 	// REQUIRED; Identifies the type of validation request.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 }
 
 // GetValidationInputRequest implements the ValidationInputRequestClassification interface for type ValidationInputRequest.
@@ -2595,10 +2595,10 @@ type ValidationInputResponseClassification interface {
 // ValidationInputResponse - Minimum properties that should be present in each individual validation response.
 type ValidationInputResponse struct {
 	// REQUIRED; Identifies the type of validation response.
-	ValidationType *ValidationInputDiscriminator `json:"validationType,omitempty"`
+	ValidationType *ValidationInputDiscriminator
 
 	// READ-ONLY; Error code and message of validation response.
-	Error *CloudError `json:"error,omitempty" azure:"ro"`
+	Error *CloudError
 }
 
 // GetValidationInputResponse implements the ValidationInputResponseClassification interface for type ValidationInputResponse.
@@ -2616,11 +2616,11 @@ type ValidationRequestClassification interface {
 // ValidationRequest - Minimum request requirement of any validation category.
 type ValidationRequest struct {
 	// REQUIRED; List of request details contain validationType and its request as key and value respectively.
-	IndividualRequestDetails []ValidationInputRequestClassification `json:"individualRequestDetails,omitempty"`
+	IndividualRequestDetails []ValidationInputRequestClassification
 
 	// CONSTANT; Identify the nature of validation.
 	// Field has constant value "JobCreationValidation", any specified value is ignored.
-	ValidationCategory *string `json:"validationCategory,omitempty"`
+	ValidationCategory *string
 }
 
 // GetValidationRequest implements the ValidationRequestClassification interface for type ValidationRequest.
@@ -2629,14 +2629,14 @@ func (v *ValidationRequest) GetValidationRequest() *ValidationRequest { return v
 // ValidationResponse - Response of pre job creation validations.
 type ValidationResponse struct {
 	// READ-ONLY; Properties of pre job creation validation response.
-	Properties *ValidationResponseProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ValidationResponseProperties
 }
 
 // ValidationResponseProperties - Properties of pre job creation validation response.
 type ValidationResponseProperties struct {
 	// READ-ONLY; List of response details contain validationType and its response as key and value respectively.
-	IndividualResponseDetails []ValidationInputResponseClassification `json:"individualResponseDetails,omitempty" azure:"ro"`
+	IndividualResponseDetails []ValidationInputResponseClassification
 
 	// READ-ONLY; Overall validation status.
-	Status *OverallValidationStatus `json:"status,omitempty" azure:"ro"`
+	Status *OverallValidationStatus
 }

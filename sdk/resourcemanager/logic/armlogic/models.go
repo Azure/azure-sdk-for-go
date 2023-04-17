@@ -14,1374 +14,1374 @@ import "time"
 // APIDeploymentParameterMetadata - The API deployment parameter metadata.
 type APIDeploymentParameterMetadata struct {
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Indicates whether its required.
-	IsRequired *bool `json:"isRequired,omitempty"`
+	IsRequired *bool
 
 	// The type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The visibility.
-	Visibility *APIDeploymentParameterVisibility `json:"visibility,omitempty"`
+	Visibility *APIDeploymentParameterVisibility
 }
 
 // APIDeploymentParameterMetadataSet - The API deployment parameters metadata.
 type APIDeploymentParameterMetadataSet struct {
 	// The package content link parameter.
-	PackageContentLink *APIDeploymentParameterMetadata `json:"packageContentLink,omitempty"`
+	PackageContentLink *APIDeploymentParameterMetadata
 
 	// The package content link parameter.
-	RedisCacheConnectionString *APIDeploymentParameterMetadata `json:"redisCacheConnectionString,omitempty"`
+	RedisCacheConnectionString *APIDeploymentParameterMetadata
 }
 
 // APIOperation - The api operation.
 type APIOperation struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The api operations properties
-	Properties *APIOperationPropertiesDefinition `json:"properties,omitempty"`
+	Properties *APIOperationPropertiesDefinition
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // APIOperationAnnotation - The Api Operation Annotation.
 type APIOperationAnnotation struct {
 	// The family.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// The revision.
-	Revision *int32 `json:"revision,omitempty"`
+	Revision *int32
 
 	// The status annotation.
-	Status *StatusAnnotation `json:"status,omitempty"`
+	Status *StatusAnnotation
 }
 
 // APIOperationListResult - The list of managed API operations.
 type APIOperationListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The api operation definitions for an API.
-	Value []*APIOperation `json:"value,omitempty"`
+	Value []*APIOperation
 }
 
 // APIOperationPropertiesDefinition - The api operations properties
 type APIOperationPropertiesDefinition struct {
 	// The api reference.
-	API *APIReference `json:"api,omitempty"`
+	API *APIReference
 
 	// The annotation of api operation.
-	Annotation *APIOperationAnnotation `json:"annotation,omitempty"`
+	Annotation *APIOperationAnnotation
 
 	// The description of the api operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The operation inputs definition schema.
-	InputsDefinition *SwaggerSchema `json:"inputsDefinition,omitempty"`
+	InputsDefinition *SwaggerSchema
 
 	// Indicates whether the API operation is notification or not.
-	IsNotification *bool `json:"isNotification,omitempty"`
+	IsNotification *bool
 
 	// Indicates whether the API operation is webhook or not.
-	IsWebhook *bool `json:"isWebhook,omitempty"`
+	IsWebhook *bool
 
 	// Indicates whether the api operation is pageable.
-	Pageable *bool `json:"pageable,omitempty"`
+	Pageable *bool
 
 	// The operation responses definition schemas.
-	ResponsesDefinition map[string]*SwaggerSchema `json:"responsesDefinition,omitempty"`
+	ResponsesDefinition map[string]*SwaggerSchema
 
 	// The summary of the api operation.
-	Summary *string `json:"summary,omitempty"`
+	Summary *string
 
 	// The trigger type of api operation.
-	Trigger *string `json:"trigger,omitempty"`
+	Trigger *string
 
 	// The trigger hint for the api operation.
-	TriggerHint *string `json:"triggerHint,omitempty"`
+	TriggerHint *string
 
 	// The visibility of the api operation.
-	Visibility *string `json:"visibility,omitempty"`
+	Visibility *string
 }
 
 // APIReference - The Api reference.
 type APIReference struct {
 	// The brand color of the api.
-	BrandColor *string `json:"brandColor,omitempty"`
+	BrandColor *string
 
 	// The tier.
-	Category *APITier `json:"category,omitempty"`
+	Category *APITier
 
 	// The description of the api.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name of the api.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The icon uri of the api.
-	IconURI *string `json:"iconUri,omitempty"`
+	IconURI *string
 
 	// The integration service environment reference.
-	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
+	IntegrationServiceEnvironment *ResourceReference
 
 	// The swagger of the api.
-	Swagger any `json:"swagger,omitempty"`
+	Swagger any
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // APIResourceBackendService - The API backend service.
 type APIResourceBackendService struct {
 	// The service URL.
-	ServiceURL *string `json:"serviceUrl,omitempty"`
+	ServiceURL *string
 }
 
 // APIResourceDefinitions - The Api resource definition.
 type APIResourceDefinitions struct {
 	// The modified swagger url.
-	ModifiedSwaggerURL *string `json:"modifiedSwaggerUrl,omitempty"`
+	ModifiedSwaggerURL *string
 
 	// The original swagger url.
-	OriginalSwaggerURL *string `json:"originalSwaggerUrl,omitempty"`
+	OriginalSwaggerURL *string
 }
 
 // APIResourceGeneralInformation - The API general information.
 type APIResourceGeneralInformation struct {
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The icon url.
-	IconURL *string `json:"iconUrl,omitempty"`
+	IconURL *string
 
 	// The release tag.
-	ReleaseTag *string `json:"releaseTag,omitempty"`
+	ReleaseTag *string
 
 	// The terms of use url.
-	TermsOfUseURL *string `json:"termsOfUseUrl,omitempty"`
+	TermsOfUseURL *string
 
 	// The tier.
-	Tier *APITier `json:"tier,omitempty"`
+	Tier *APITier
 }
 
 // APIResourceMetadata - The api resource metadata.
 type APIResourceMetadata struct {
 	// The api type.
-	APIType *APIType `json:"ApiType,omitempty"`
+	APIType *APIType
 
 	// The brand color.
-	BrandColor *string `json:"brandColor,omitempty"`
+	BrandColor *string
 
 	// The connection type.
-	ConnectionType *string `json:"connectionType,omitempty"`
+	ConnectionType *string
 
 	// The connector deployment parameters metadata.
-	DeploymentParameters *APIDeploymentParameterMetadataSet `json:"deploymentParameters,omitempty"`
+	DeploymentParameters *APIDeploymentParameterMetadataSet
 
 	// The hide key.
-	HideKey *string `json:"hideKey,omitempty"`
+	HideKey *string
 
 	// The provisioning state.
-	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *WorkflowProvisioningState
 
 	// The source.
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// The tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// The WSDL import method.
-	WsdlImportMethod *WsdlImportMethod `json:"wsdlImportMethod,omitempty"`
+	WsdlImportMethod *WsdlImportMethod
 
 	// The WSDL service.
-	WsdlService *WsdlService `json:"wsdlService,omitempty"`
+	WsdlService *WsdlService
 }
 
 // APIResourcePolicies - The API resource policies.
 type APIResourcePolicies struct {
 	// The API level only policies XML as embedded content.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// The content link to the policies.
-	ContentLink *string `json:"contentLink,omitempty"`
+	ContentLink *string
 }
 
 // APIResourceProperties - The API resource properties.
 type APIResourceProperties struct {
 	// The integration service environment reference.
-	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
+	IntegrationServiceEnvironment *ResourceReference
 
 	// READ-ONLY; The API definition.
-	APIDefinitionURL *string `json:"apiDefinitionUrl,omitempty" azure:"ro"`
+	APIDefinitionURL *string
 
 	// READ-ONLY; The api definitions.
-	APIDefinitions *APIResourceDefinitions `json:"apiDefinitions,omitempty" azure:"ro"`
+	APIDefinitions *APIResourceDefinitions
 
 	// READ-ONLY; The backend service.
-	BackendService *APIResourceBackendService `json:"backendService,omitempty" azure:"ro"`
+	BackendService *APIResourceBackendService
 
 	// READ-ONLY; The capabilities.
-	Capabilities []*string `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*string
 
 	// READ-ONLY; The category.
-	Category *APITier `json:"category,omitempty" azure:"ro"`
+	Category *APITier
 
 	// READ-ONLY; The connection parameters.
-	ConnectionParameters map[string]any `json:"connectionParameters,omitempty" azure:"ro"`
+	ConnectionParameters map[string]any
 
 	// READ-ONLY; The api general information.
-	GeneralInformation *APIResourceGeneralInformation `json:"generalInformation,omitempty" azure:"ro"`
+	GeneralInformation *APIResourceGeneralInformation
 
 	// READ-ONLY; The metadata.
-	Metadata *APIResourceMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *APIResourceMetadata
 
 	// READ-ONLY; The name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The policies for the API.
-	Policies *APIResourcePolicies `json:"policies,omitempty" azure:"ro"`
+	Policies *APIResourcePolicies
 
 	// READ-ONLY; The provisioning state.
-	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkflowProvisioningState
 
 	// READ-ONLY; The runtime urls.
-	RuntimeUrls []*string `json:"runtimeUrls,omitempty" azure:"ro"`
+	RuntimeUrls []*string
 }
 
 // AS2AcknowledgementConnectionSettings - The AS2 agreement acknowledgement connection settings.
 type AS2AcknowledgementConnectionSettings struct {
 	// REQUIRED; Indicates whether to ignore mismatch in certificate name.
-	IgnoreCertificateNameMismatch *bool `json:"ignoreCertificateNameMismatch,omitempty"`
+	IgnoreCertificateNameMismatch *bool
 
 	// REQUIRED; Indicates whether to keep the connection alive.
-	KeepHTTPConnectionAlive *bool `json:"keepHttpConnectionAlive,omitempty"`
+	KeepHTTPConnectionAlive *bool
 
 	// REQUIRED; Indicates whether to support HTTP status code 'CONTINUE'.
-	SupportHTTPStatusCodeContinue *bool `json:"supportHttpStatusCodeContinue,omitempty"`
+	SupportHTTPStatusCodeContinue *bool
 
 	// REQUIRED; Indicates whether to unfold the HTTP headers.
-	UnfoldHTTPHeaders *bool `json:"unfoldHttpHeaders,omitempty"`
+	UnfoldHTTPHeaders *bool
 }
 
 // AS2AgreementContent - The integration account AS2 agreement content.
 type AS2AgreementContent struct {
 	// REQUIRED; The AS2 one-way receive agreement.
-	ReceiveAgreement *AS2OneWayAgreement `json:"receiveAgreement,omitempty"`
+	ReceiveAgreement *AS2OneWayAgreement
 
 	// REQUIRED; The AS2 one-way send agreement.
-	SendAgreement *AS2OneWayAgreement `json:"sendAgreement,omitempty"`
+	SendAgreement *AS2OneWayAgreement
 }
 
 // AS2EnvelopeSettings - The AS2 agreement envelope settings.
 type AS2EnvelopeSettings struct {
 	// REQUIRED; The value indicating whether to auto generate file name.
-	AutogenerateFileName *bool `json:"autogenerateFileName,omitempty"`
+	AutogenerateFileName *bool
 
 	// REQUIRED; The template for file name.
-	FileNameTemplate *string `json:"fileNameTemplate,omitempty"`
+	FileNameTemplate *string
 
 	// REQUIRED; The message content type.
-	MessageContentType *string `json:"messageContentType,omitempty"`
+	MessageContentType *string
 
 	// REQUIRED; The value indicating whether to suspend message on file name generation error.
-	SuspendMessageOnFileNameGenerationError *bool `json:"suspendMessageOnFileNameGenerationError,omitempty"`
+	SuspendMessageOnFileNameGenerationError *bool
 
 	// REQUIRED; The value indicating whether to transmit file name in mime header.
-	TransmitFileNameInMimeHeader *bool `json:"transmitFileNameInMimeHeader,omitempty"`
+	TransmitFileNameInMimeHeader *bool
 }
 
 // AS2ErrorSettings - The AS2 agreement error settings.
 type AS2ErrorSettings struct {
 	// REQUIRED; The value indicating whether to resend message If MDN is not received.
-	ResendIfMDNNotReceived *bool `json:"resendIfMDNNotReceived,omitempty"`
+	ResendIfMDNNotReceived *bool
 
 	// REQUIRED; The value indicating whether to suspend duplicate message.
-	SuspendDuplicateMessage *bool `json:"suspendDuplicateMessage,omitempty"`
+	SuspendDuplicateMessage *bool
 }
 
 // AS2MdnSettings - The AS2 agreement mdn settings.
 type AS2MdnSettings struct {
 	// REQUIRED; The signing or hashing algorithm.
-	MicHashingAlgorithm *HashingAlgorithm `json:"micHashingAlgorithm,omitempty"`
+	MicHashingAlgorithm *HashingAlgorithm
 
 	// REQUIRED; The value indicating whether to send or request a MDN.
-	NeedMDN *bool `json:"needMDN,omitempty"`
+	NeedMDN *bool
 
 	// REQUIRED; The value indicating whether to send inbound MDN to message box.
-	SendInboundMDNToMessageBox *bool `json:"sendInboundMDNToMessageBox,omitempty"`
+	SendInboundMDNToMessageBox *bool
 
 	// REQUIRED; The value indicating whether to send the asynchronous MDN.
-	SendMDNAsynchronously *bool `json:"sendMDNAsynchronously,omitempty"`
+	SendMDNAsynchronously *bool
 
 	// REQUIRED; The value indicating whether the MDN needs to be signed or not.
-	SignMDN *bool `json:"signMDN,omitempty"`
+	SignMDN *bool
 
 	// REQUIRED; The value indicating whether to sign the outbound MDN if optional.
-	SignOutboundMDNIfOptional *bool `json:"signOutboundMDNIfOptional,omitempty"`
+	SignOutboundMDNIfOptional *bool
 
 	// The disposition notification to header value.
-	DispositionNotificationTo *string `json:"dispositionNotificationTo,omitempty"`
+	DispositionNotificationTo *string
 
 	// The MDN text.
-	MdnText *string `json:"mdnText,omitempty"`
+	MdnText *string
 
 	// The receipt delivery URL.
-	ReceiptDeliveryURL *string `json:"receiptDeliveryUrl,omitempty"`
+	ReceiptDeliveryURL *string
 }
 
 // AS2MessageConnectionSettings - The AS2 agreement message connection settings.
 type AS2MessageConnectionSettings struct {
 	// REQUIRED; The value indicating whether to ignore mismatch in certificate name.
-	IgnoreCertificateNameMismatch *bool `json:"ignoreCertificateNameMismatch,omitempty"`
+	IgnoreCertificateNameMismatch *bool
 
 	// REQUIRED; The value indicating whether to keep the connection alive.
-	KeepHTTPConnectionAlive *bool `json:"keepHttpConnectionAlive,omitempty"`
+	KeepHTTPConnectionAlive *bool
 
 	// REQUIRED; The value indicating whether to support HTTP status code 'CONTINUE'.
-	SupportHTTPStatusCodeContinue *bool `json:"supportHttpStatusCodeContinue,omitempty"`
+	SupportHTTPStatusCodeContinue *bool
 
 	// REQUIRED; The value indicating whether to unfold the HTTP headers.
-	UnfoldHTTPHeaders *bool `json:"unfoldHttpHeaders,omitempty"`
+	UnfoldHTTPHeaders *bool
 }
 
 // AS2OneWayAgreement - The integration account AS2 one-way agreement.
 type AS2OneWayAgreement struct {
 	// REQUIRED; The AS2 protocol settings.
-	ProtocolSettings *AS2ProtocolSettings `json:"protocolSettings,omitempty"`
+	ProtocolSettings *AS2ProtocolSettings
 
 	// REQUIRED; The receiver business identity
-	ReceiverBusinessIdentity *BusinessIdentity `json:"receiverBusinessIdentity,omitempty"`
+	ReceiverBusinessIdentity *BusinessIdentity
 
 	// REQUIRED; The sender business identity
-	SenderBusinessIdentity *BusinessIdentity `json:"senderBusinessIdentity,omitempty"`
+	SenderBusinessIdentity *BusinessIdentity
 }
 
 // AS2ProtocolSettings - The AS2 agreement protocol settings.
 type AS2ProtocolSettings struct {
 	// REQUIRED; The acknowledgement connection settings.
-	AcknowledgementConnectionSettings *AS2AcknowledgementConnectionSettings `json:"acknowledgementConnectionSettings,omitempty"`
+	AcknowledgementConnectionSettings *AS2AcknowledgementConnectionSettings
 
 	// REQUIRED; The envelope settings.
-	EnvelopeSettings *AS2EnvelopeSettings `json:"envelopeSettings,omitempty"`
+	EnvelopeSettings *AS2EnvelopeSettings
 
 	// REQUIRED; The error settings.
-	ErrorSettings *AS2ErrorSettings `json:"errorSettings,omitempty"`
+	ErrorSettings *AS2ErrorSettings
 
 	// REQUIRED; The MDN settings.
-	MdnSettings *AS2MdnSettings `json:"mdnSettings,omitempty"`
+	MdnSettings *AS2MdnSettings
 
 	// REQUIRED; The message connection settings.
-	MessageConnectionSettings *AS2MessageConnectionSettings `json:"messageConnectionSettings,omitempty"`
+	MessageConnectionSettings *AS2MessageConnectionSettings
 
 	// REQUIRED; The security settings.
-	SecuritySettings *AS2SecuritySettings `json:"securitySettings,omitempty"`
+	SecuritySettings *AS2SecuritySettings
 
 	// REQUIRED; The validation settings.
-	ValidationSettings *AS2ValidationSettings `json:"validationSettings,omitempty"`
+	ValidationSettings *AS2ValidationSettings
 }
 
 // AS2SecuritySettings - The AS2 agreement security settings.
 type AS2SecuritySettings struct {
 	// REQUIRED; The value indicating whether to enable NRR for inbound decoded messages.
-	EnableNRRForInboundDecodedMessages *bool `json:"enableNRRForInboundDecodedMessages,omitempty"`
+	EnableNRRForInboundDecodedMessages *bool
 
 	// REQUIRED; The value indicating whether to enable NRR for inbound encoded messages.
-	EnableNRRForInboundEncodedMessages *bool `json:"enableNRRForInboundEncodedMessages,omitempty"`
+	EnableNRRForInboundEncodedMessages *bool
 
 	// REQUIRED; The value indicating whether to enable NRR for inbound MDN.
-	EnableNRRForInboundMDN *bool `json:"enableNRRForInboundMDN,omitempty"`
+	EnableNRRForInboundMDN *bool
 
 	// REQUIRED; The value indicating whether to enable NRR for outbound decoded messages.
-	EnableNRRForOutboundDecodedMessages *bool `json:"enableNRRForOutboundDecodedMessages,omitempty"`
+	EnableNRRForOutboundDecodedMessages *bool
 
 	// REQUIRED; The value indicating whether to enable NRR for outbound encoded messages.
-	EnableNRRForOutboundEncodedMessages *bool `json:"enableNRRForOutboundEncodedMessages,omitempty"`
+	EnableNRRForOutboundEncodedMessages *bool
 
 	// REQUIRED; The value indicating whether to enable NRR for outbound MDN.
-	EnableNRRForOutboundMDN *bool `json:"enableNRRForOutboundMDN,omitempty"`
+	EnableNRRForOutboundMDN *bool
 
 	// REQUIRED; The value indicating whether to send or request a MDN.
-	OverrideGroupSigningCertificate *bool `json:"overrideGroupSigningCertificate,omitempty"`
+	OverrideGroupSigningCertificate *bool
 
 	// The name of the encryption certificate.
-	EncryptionCertificateName *string `json:"encryptionCertificateName,omitempty"`
+	EncryptionCertificateName *string
 
 	// The Sha2 algorithm format. Valid values are Sha2, ShaHashSize, ShaHyphenHashSize, Sha2UnderscoreHashSize.
-	SHA2AlgorithmFormat *string `json:"sha2AlgorithmFormat,omitempty"`
+	SHA2AlgorithmFormat *string
 
 	// The name of the signing certificate.
-	SigningCertificateName *string `json:"signingCertificateName,omitempty"`
+	SigningCertificateName *string
 }
 
 // AS2ValidationSettings - The AS2 agreement validation settings.
 type AS2ValidationSettings struct {
 	// REQUIRED; The value indicating whether to check for certificate revocation list on receive.
-	CheckCertificateRevocationListOnReceive *bool `json:"checkCertificateRevocationListOnReceive,omitempty"`
+	CheckCertificateRevocationListOnReceive *bool
 
 	// REQUIRED; The value indicating whether to check for certificate revocation list on send.
-	CheckCertificateRevocationListOnSend *bool `json:"checkCertificateRevocationListOnSend,omitempty"`
+	CheckCertificateRevocationListOnSend *bool
 
 	// REQUIRED; The value indicating whether to check for duplicate message.
-	CheckDuplicateMessage *bool `json:"checkDuplicateMessage,omitempty"`
+	CheckDuplicateMessage *bool
 
 	// REQUIRED; The value indicating whether the message has to be compressed.
-	CompressMessage *bool `json:"compressMessage,omitempty"`
+	CompressMessage *bool
 
 	// REQUIRED; The value indicating whether the message has to be encrypted.
-	EncryptMessage *bool `json:"encryptMessage,omitempty"`
+	EncryptMessage *bool
 
 	// REQUIRED; The encryption algorithm.
-	EncryptionAlgorithm *EncryptionAlgorithm `json:"encryptionAlgorithm,omitempty"`
+	EncryptionAlgorithm *EncryptionAlgorithm
 
 	// REQUIRED; The number of days to look back for duplicate interchange.
-	InterchangeDuplicatesValidityDays *int32 `json:"interchangeDuplicatesValidityDays,omitempty"`
+	InterchangeDuplicatesValidityDays *int32
 
 	// REQUIRED; The value indicating whether to override incoming message properties with those in agreement.
-	OverrideMessageProperties *bool `json:"overrideMessageProperties,omitempty"`
+	OverrideMessageProperties *bool
 
 	// REQUIRED; The value indicating whether the message has to be signed.
-	SignMessage *bool `json:"signMessage,omitempty"`
+	SignMessage *bool
 
 	// The signing algorithm.
-	SigningAlgorithm *SigningAlgorithm `json:"signingAlgorithm,omitempty"`
+	SigningAlgorithm *SigningAlgorithm
 }
 
 // AgreementContent - The integration account agreement content.
 type AgreementContent struct {
 	// The AS2 agreement content.
-	AS2 *AS2AgreementContent `json:"aS2,omitempty"`
+	AS2 *AS2AgreementContent
 
 	// The EDIFACT agreement content.
-	Edifact *EdifactAgreementContent `json:"edifact,omitempty"`
+	Edifact *EdifactAgreementContent
 
 	// The X12 agreement content.
-	X12 *X12AgreementContent `json:"x12,omitempty"`
+	X12 *X12AgreementContent
 }
 
 // ArtifactContentPropertiesDefinition - The artifact content properties definition.
 type ArtifactContentPropertiesDefinition struct {
 	// The artifact changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time
 
 	// Anything
-	Content any `json:"content,omitempty"`
+	Content any
 
 	// The content link.
-	ContentLink *ContentLink `json:"contentLink,omitempty"`
+	ContentLink *ContentLink
 
 	// The content type.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// The artifact creation time.
-	CreatedTime *time.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time
 
 	// Anything
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 }
 
 // ArtifactProperties - The artifact properties definition.
 type ArtifactProperties struct {
 	// The artifact changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time
 
 	// The artifact creation time.
-	CreatedTime *time.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time
 
 	// Anything
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 }
 
 // AssemblyCollection - A collection of assembly definitions.
 type AssemblyCollection struct {
-	Value []*AssemblyDefinition `json:"value,omitempty"`
+	Value []*AssemblyDefinition
 }
 
 // AssemblyDefinition - The assembly definition.
 type AssemblyDefinition struct {
 	// REQUIRED; The assembly properties.
-	Properties *AssemblyProperties `json:"properties,omitempty"`
+	Properties *AssemblyProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssemblyProperties - The assembly properties definition.
 type AssemblyProperties struct {
 	// REQUIRED; The assembly name.
-	AssemblyName *string `json:"assemblyName,omitempty"`
+	AssemblyName *string
 
 	// The assembly culture.
-	AssemblyCulture *string `json:"assemblyCulture,omitempty"`
+	AssemblyCulture *string
 
 	// The assembly public key token.
-	AssemblyPublicKeyToken *string `json:"assemblyPublicKeyToken,omitempty"`
+	AssemblyPublicKeyToken *string
 
 	// The assembly version.
-	AssemblyVersion *string `json:"assemblyVersion,omitempty"`
+	AssemblyVersion *string
 
 	// The artifact changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time
 
 	// Anything
-	Content any `json:"content,omitempty"`
+	Content any
 
 	// The content link.
-	ContentLink *ContentLink `json:"contentLink,omitempty"`
+	ContentLink *ContentLink
 
 	// The content type.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// The artifact creation time.
-	CreatedTime *time.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time
 
 	// Anything
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 }
 
 // AzureResourceErrorInfo - The azure resource error info.
 type AzureResourceErrorInfo struct {
 	// REQUIRED; The error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; The error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The error details.
-	Details []*AzureResourceErrorInfo `json:"details,omitempty"`
+	Details []*AzureResourceErrorInfo
 }
 
 // B2BPartnerContent - The B2B partner content.
 type B2BPartnerContent struct {
 	// The list of partner business identities.
-	BusinessIdentities []*BusinessIdentity `json:"businessIdentities,omitempty"`
+	BusinessIdentities []*BusinessIdentity
 }
 
 // BatchConfiguration - The batch configuration resource definition.
 type BatchConfiguration struct {
 	// REQUIRED; The batch configuration properties.
-	Properties *BatchConfigurationProperties `json:"properties,omitempty"`
+	Properties *BatchConfigurationProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BatchConfigurationCollection - A collection of batch configurations.
 type BatchConfigurationCollection struct {
-	Value []*BatchConfiguration `json:"value,omitempty"`
+	Value []*BatchConfiguration
 }
 
 // BatchConfigurationProperties - The batch configuration properties definition.
 type BatchConfigurationProperties struct {
 	// REQUIRED; The name of the batch group.
-	BatchGroupName *string `json:"batchGroupName,omitempty"`
+	BatchGroupName *string
 
 	// REQUIRED; The batch release criteria.
-	ReleaseCriteria *BatchReleaseCriteria `json:"releaseCriteria,omitempty"`
+	ReleaseCriteria *BatchReleaseCriteria
 
 	// The artifact changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time
 
 	// The artifact creation time.
-	CreatedTime *time.Time `json:"createdTime,omitempty"`
+	CreatedTime *time.Time
 
 	// Anything
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 }
 
 // BatchReleaseCriteria - The batch release criteria.
 type BatchReleaseCriteria struct {
 	// The batch size in bytes.
-	BatchSize *int32 `json:"batchSize,omitempty"`
+	BatchSize *int32
 
 	// The message count.
-	MessageCount *int32 `json:"messageCount,omitempty"`
+	MessageCount *int32
 
 	// The recurrence.
-	Recurrence *WorkflowTriggerRecurrence `json:"recurrence,omitempty"`
+	Recurrence *WorkflowTriggerRecurrence
 }
 
 // BusinessIdentity - The integration account partner's business identity.
 type BusinessIdentity struct {
 	// REQUIRED; The business identity qualifier e.g. as2identity, ZZ, ZZZ, 31, 32
-	Qualifier *string `json:"qualifier,omitempty"`
+	Qualifier *string
 
 	// REQUIRED; The user defined business identity value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // CallbackURL - The callback url.
 type CallbackURL struct {
 	// The URL value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ContentHash - The content hash.
 type ContentHash struct {
 	// The algorithm of the content hash.
-	Algorithm *string `json:"algorithm,omitempty"`
+	Algorithm *string
 
 	// The value of the content hash.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ContentLink - The content link.
 type ContentLink struct {
 	// The content link URI.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// READ-ONLY; The content hash.
-	ContentHash *ContentHash `json:"contentHash,omitempty" azure:"ro"`
+	ContentHash *ContentHash
 
 	// READ-ONLY; The content size.
-	ContentSize *int64 `json:"contentSize,omitempty" azure:"ro"`
+	ContentSize *int64
 
 	// READ-ONLY; The content version.
-	ContentVersion *string `json:"contentVersion,omitempty" azure:"ro"`
+	ContentVersion *string
 
 	// READ-ONLY; The metadata.
-	Metadata any `json:"metadata,omitempty" azure:"ro"`
+	Metadata any
 }
 
 // Correlation - The correlation property.
 type Correlation struct {
 	// The client tracking id.
-	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
+	ClientTrackingID *string
 }
 
 // EdifactAcknowledgementSettings - The Edifact agreement acknowledgement settings.
 type EdifactAcknowledgementSettings struct {
 	// REQUIRED; The acknowledgement control number lower bound.
-	AcknowledgementControlNumberLowerBound *int32 `json:"acknowledgementControlNumberLowerBound,omitempty"`
+	AcknowledgementControlNumberLowerBound *int32
 
 	// REQUIRED; The acknowledgement control number upper bound.
-	AcknowledgementControlNumberUpperBound *int32 `json:"acknowledgementControlNumberUpperBound,omitempty"`
+	AcknowledgementControlNumberUpperBound *int32
 
 	// REQUIRED; The value indicating whether to batch functional acknowledgements.
-	BatchFunctionalAcknowledgements *bool `json:"batchFunctionalAcknowledgements,omitempty"`
+	BatchFunctionalAcknowledgements *bool
 
 	// REQUIRED; The value indicating whether to batch the technical acknowledgements.
-	BatchTechnicalAcknowledgements *bool `json:"batchTechnicalAcknowledgements,omitempty"`
+	BatchTechnicalAcknowledgements *bool
 
 	// REQUIRED; The value indicating whether functional acknowledgement is needed.
-	NeedFunctionalAcknowledgement *bool `json:"needFunctionalAcknowledgement,omitempty"`
+	NeedFunctionalAcknowledgement *bool
 
 	// REQUIRED; The value indicating whether a loop is needed for valid messages.
-	NeedLoopForValidMessages *bool `json:"needLoopForValidMessages,omitempty"`
+	NeedLoopForValidMessages *bool
 
 	// REQUIRED; The value indicating whether technical acknowledgement is needed.
-	NeedTechnicalAcknowledgement *bool `json:"needTechnicalAcknowledgement,omitempty"`
+	NeedTechnicalAcknowledgement *bool
 
 	// REQUIRED; The value indicating whether to rollover acknowledgement control number.
-	RolloverAcknowledgementControlNumber *bool `json:"rolloverAcknowledgementControlNumber,omitempty"`
+	RolloverAcknowledgementControlNumber *bool
 
 	// REQUIRED; The value indicating whether to send synchronous acknowledgement.
-	SendSynchronousAcknowledgement *bool `json:"sendSynchronousAcknowledgement,omitempty"`
+	SendSynchronousAcknowledgement *bool
 
 	// The acknowledgement control number prefix.
-	AcknowledgementControlNumberPrefix *string `json:"acknowledgementControlNumberPrefix,omitempty"`
+	AcknowledgementControlNumberPrefix *string
 
 	// The acknowledgement control number suffix.
-	AcknowledgementControlNumberSuffix *string `json:"acknowledgementControlNumberSuffix,omitempty"`
+	AcknowledgementControlNumberSuffix *string
 }
 
 // EdifactAgreementContent - The Edifact agreement content.
 type EdifactAgreementContent struct {
 	// REQUIRED; The EDIFACT one-way receive agreement.
-	ReceiveAgreement *EdifactOneWayAgreement `json:"receiveAgreement,omitempty"`
+	ReceiveAgreement *EdifactOneWayAgreement
 
 	// REQUIRED; The EDIFACT one-way send agreement.
-	SendAgreement *EdifactOneWayAgreement `json:"sendAgreement,omitempty"`
+	SendAgreement *EdifactOneWayAgreement
 }
 
 // EdifactDelimiterOverride - The Edifact delimiter override settings.
 type EdifactDelimiterOverride struct {
 	// REQUIRED; The component separator.
-	ComponentSeparator *int32 `json:"componentSeparator,omitempty"`
+	ComponentSeparator *int32
 
 	// REQUIRED; The data element separator.
-	DataElementSeparator *int32 `json:"dataElementSeparator,omitempty"`
+	DataElementSeparator *int32
 
 	// REQUIRED; The decimal point indicator.
-	DecimalPointIndicator *EdifactDecimalIndicator `json:"decimalPointIndicator,omitempty"`
+	DecimalPointIndicator *EdifactDecimalIndicator
 
 	// REQUIRED; The release indicator.
-	ReleaseIndicator *int32 `json:"releaseIndicator,omitempty"`
+	ReleaseIndicator *int32
 
 	// REQUIRED; The repetition separator.
-	RepetitionSeparator *int32 `json:"repetitionSeparator,omitempty"`
+	RepetitionSeparator *int32
 
 	// REQUIRED; The segment terminator.
-	SegmentTerminator *int32 `json:"segmentTerminator,omitempty"`
+	SegmentTerminator *int32
 
 	// REQUIRED; The segment terminator suffix.
-	SegmentTerminatorSuffix *SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
+	SegmentTerminatorSuffix *SegmentTerminatorSuffix
 
 	// The message association assigned code.
-	MessageAssociationAssignedCode *string `json:"messageAssociationAssignedCode,omitempty"`
+	MessageAssociationAssignedCode *string
 
 	// The message id.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// The message release.
-	MessageRelease *string `json:"messageRelease,omitempty"`
+	MessageRelease *string
 
 	// The message version.
-	MessageVersion *string `json:"messageVersion,omitempty"`
+	MessageVersion *string
 
 	// The target namespace on which this delimiter settings has to be applied.
-	TargetNamespace *string `json:"targetNamespace,omitempty"`
+	TargetNamespace *string
 }
 
 // EdifactEnvelopeOverride - The Edifact envelope override settings.
 type EdifactEnvelopeOverride struct {
 	// The application password.
-	ApplicationPassword *string `json:"applicationPassword,omitempty"`
+	ApplicationPassword *string
 
 	// The association assigned code.
-	AssociationAssignedCode *string `json:"associationAssignedCode,omitempty"`
+	AssociationAssignedCode *string
 
 	// The controlling agency code.
-	ControllingAgencyCode *string `json:"controllingAgencyCode,omitempty"`
+	ControllingAgencyCode *string
 
 	// The functional group id.
-	FunctionalGroupID *string `json:"functionalGroupId,omitempty"`
+	FunctionalGroupID *string
 
 	// The group header message release.
-	GroupHeaderMessageRelease *string `json:"groupHeaderMessageRelease,omitempty"`
+	GroupHeaderMessageRelease *string
 
 	// The group header message version.
-	GroupHeaderMessageVersion *string `json:"groupHeaderMessageVersion,omitempty"`
+	GroupHeaderMessageVersion *string
 
 	// The message association assigned code.
-	MessageAssociationAssignedCode *string `json:"messageAssociationAssignedCode,omitempty"`
+	MessageAssociationAssignedCode *string
 
 	// The message id on which this envelope settings has to be applied.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// The message release version on which this envelope settings has to be applied.
-	MessageRelease *string `json:"messageRelease,omitempty"`
+	MessageRelease *string
 
 	// The message version on which this envelope settings has to be applied.
-	MessageVersion *string `json:"messageVersion,omitempty"`
+	MessageVersion *string
 
 	// The receiver application id.
-	ReceiverApplicationID *string `json:"receiverApplicationId,omitempty"`
+	ReceiverApplicationID *string
 
 	// The receiver application qualifier.
-	ReceiverApplicationQualifier *string `json:"receiverApplicationQualifier,omitempty"`
+	ReceiverApplicationQualifier *string
 
 	// The sender application id.
-	SenderApplicationID *string `json:"senderApplicationId,omitempty"`
+	SenderApplicationID *string
 
 	// The sender application qualifier.
-	SenderApplicationQualifier *string `json:"senderApplicationQualifier,omitempty"`
+	SenderApplicationQualifier *string
 
 	// The target namespace on which this envelope settings has to be applied.
-	TargetNamespace *string `json:"targetNamespace,omitempty"`
+	TargetNamespace *string
 }
 
 // EdifactEnvelopeSettings - The Edifact agreement envelope settings.
 type EdifactEnvelopeSettings struct {
 	// REQUIRED; The value indicating whether to apply delimiter string advice.
-	ApplyDelimiterStringAdvice *bool `json:"applyDelimiterStringAdvice,omitempty"`
+	ApplyDelimiterStringAdvice *bool
 
 	// REQUIRED; The value indicating whether to create grouping segments.
-	CreateGroupingSegments *bool `json:"createGroupingSegments,omitempty"`
+	CreateGroupingSegments *bool
 
 	// REQUIRED; The value indicating whether to enable default group headers.
-	EnableDefaultGroupHeaders *bool `json:"enableDefaultGroupHeaders,omitempty"`
+	EnableDefaultGroupHeaders *bool
 
 	// REQUIRED; The group control number lower bound.
-	GroupControlNumberLowerBound *int64 `json:"groupControlNumberLowerBound,omitempty"`
+	GroupControlNumberLowerBound *int64
 
 	// REQUIRED; The group control number upper bound.
-	GroupControlNumberUpperBound *int64 `json:"groupControlNumberUpperBound,omitempty"`
+	GroupControlNumberUpperBound *int64
 
 	// REQUIRED; The interchange control number lower bound.
-	InterchangeControlNumberLowerBound *int64 `json:"interchangeControlNumberLowerBound,omitempty"`
+	InterchangeControlNumberLowerBound *int64
 
 	// REQUIRED; The interchange control number upper bound.
-	InterchangeControlNumberUpperBound *int64 `json:"interchangeControlNumberUpperBound,omitempty"`
+	InterchangeControlNumberUpperBound *int64
 
 	// REQUIRED; The value indicating whether the message is a test interchange.
-	IsTestInterchange *bool `json:"isTestInterchange,omitempty"`
+	IsTestInterchange *bool
 
 	// REQUIRED; The value indicating whether to overwrite existing transaction set control number.
-	OverwriteExistingTransactionSetControlNumber *bool `json:"overwriteExistingTransactionSetControlNumber,omitempty"`
+	OverwriteExistingTransactionSetControlNumber *bool
 
 	// REQUIRED; The value indicating whether to rollover group control number.
-	RolloverGroupControlNumber *bool `json:"rolloverGroupControlNumber,omitempty"`
+	RolloverGroupControlNumber *bool
 
 	// REQUIRED; The value indicating whether to rollover interchange control number.
-	RolloverInterchangeControlNumber *bool `json:"rolloverInterchangeControlNumber,omitempty"`
+	RolloverInterchangeControlNumber *bool
 
 	// REQUIRED; The value indicating whether to rollover transaction set control number.
-	RolloverTransactionSetControlNumber *bool `json:"rolloverTransactionSetControlNumber,omitempty"`
+	RolloverTransactionSetControlNumber *bool
 
 	// REQUIRED; The transaction set control number lower bound.
-	TransactionSetControlNumberLowerBound *int64 `json:"transactionSetControlNumberLowerBound,omitempty"`
+	TransactionSetControlNumberLowerBound *int64
 
 	// REQUIRED; The transaction set control number upper bound.
-	TransactionSetControlNumberUpperBound *int64 `json:"transactionSetControlNumberUpperBound,omitempty"`
+	TransactionSetControlNumberUpperBound *int64
 
 	// The application reference id.
-	ApplicationReferenceID *string `json:"applicationReferenceId,omitempty"`
+	ApplicationReferenceID *string
 
 	// The communication agreement id.
-	CommunicationAgreementID *string `json:"communicationAgreementId,omitempty"`
+	CommunicationAgreementID *string
 
 	// The functional group id.
-	FunctionalGroupID *string `json:"functionalGroupId,omitempty"`
+	FunctionalGroupID *string
 
 	// The group application password.
-	GroupApplicationPassword *string `json:"groupApplicationPassword,omitempty"`
+	GroupApplicationPassword *string
 
 	// The group application receiver id.
-	GroupApplicationReceiverID *string `json:"groupApplicationReceiverId,omitempty"`
+	GroupApplicationReceiverID *string
 
 	// The group application receiver qualifier.
-	GroupApplicationReceiverQualifier *string `json:"groupApplicationReceiverQualifier,omitempty"`
+	GroupApplicationReceiverQualifier *string
 
 	// The group application sender id.
-	GroupApplicationSenderID *string `json:"groupApplicationSenderId,omitempty"`
+	GroupApplicationSenderID *string
 
 	// The group application sender qualifier.
-	GroupApplicationSenderQualifier *string `json:"groupApplicationSenderQualifier,omitempty"`
+	GroupApplicationSenderQualifier *string
 
 	// The group association assigned code.
-	GroupAssociationAssignedCode *string `json:"groupAssociationAssignedCode,omitempty"`
+	GroupAssociationAssignedCode *string
 
 	// The group control number prefix.
-	GroupControlNumberPrefix *string `json:"groupControlNumberPrefix,omitempty"`
+	GroupControlNumberPrefix *string
 
 	// The group control number suffix.
-	GroupControlNumberSuffix *string `json:"groupControlNumberSuffix,omitempty"`
+	GroupControlNumberSuffix *string
 
 	// The group controlling agency code.
-	GroupControllingAgencyCode *string `json:"groupControllingAgencyCode,omitempty"`
+	GroupControllingAgencyCode *string
 
 	// The group message release.
-	GroupMessageRelease *string `json:"groupMessageRelease,omitempty"`
+	GroupMessageRelease *string
 
 	// The group message version.
-	GroupMessageVersion *string `json:"groupMessageVersion,omitempty"`
+	GroupMessageVersion *string
 
 	// The interchange control number prefix.
-	InterchangeControlNumberPrefix *string `json:"interchangeControlNumberPrefix,omitempty"`
+	InterchangeControlNumberPrefix *string
 
 	// The interchange control number suffix.
-	InterchangeControlNumberSuffix *string `json:"interchangeControlNumberSuffix,omitempty"`
+	InterchangeControlNumberSuffix *string
 
 	// The processing priority code.
-	ProcessingPriorityCode *string `json:"processingPriorityCode,omitempty"`
+	ProcessingPriorityCode *string
 
 	// The receiver internal identification.
-	ReceiverInternalIdentification *string `json:"receiverInternalIdentification,omitempty"`
+	ReceiverInternalIdentification *string
 
 	// The receiver internal sub identification.
-	ReceiverInternalSubIdentification *string `json:"receiverInternalSubIdentification,omitempty"`
+	ReceiverInternalSubIdentification *string
 
 	// The receiver reverse routing address.
-	ReceiverReverseRoutingAddress *string `json:"receiverReverseRoutingAddress,omitempty"`
+	ReceiverReverseRoutingAddress *string
 
 	// The recipient reference password qualifier.
-	RecipientReferencePasswordQualifier *string `json:"recipientReferencePasswordQualifier,omitempty"`
+	RecipientReferencePasswordQualifier *string
 
 	// The recipient reference password value.
-	RecipientReferencePasswordValue *string `json:"recipientReferencePasswordValue,omitempty"`
+	RecipientReferencePasswordValue *string
 
 	// The sender internal identification.
-	SenderInternalIdentification *string `json:"senderInternalIdentification,omitempty"`
+	SenderInternalIdentification *string
 
 	// The sender internal sub identification.
-	SenderInternalSubIdentification *string `json:"senderInternalSubIdentification,omitempty"`
+	SenderInternalSubIdentification *string
 
 	// The sender reverse routing address.
-	SenderReverseRoutingAddress *string `json:"senderReverseRoutingAddress,omitempty"`
+	SenderReverseRoutingAddress *string
 
 	// The transaction set control number prefix.
-	TransactionSetControlNumberPrefix *string `json:"transactionSetControlNumberPrefix,omitempty"`
+	TransactionSetControlNumberPrefix *string
 
 	// The transaction set control number suffix.
-	TransactionSetControlNumberSuffix *string `json:"transactionSetControlNumberSuffix,omitempty"`
+	TransactionSetControlNumberSuffix *string
 }
 
 // EdifactFramingSettings - The Edifact agreement framing settings.
 type EdifactFramingSettings struct {
 	// REQUIRED; The EDIFACT frame setting characterSet.
-	CharacterSet *EdifactCharacterSet `json:"characterSet,omitempty"`
+	CharacterSet *EdifactCharacterSet
 
 	// REQUIRED; The component separator.
-	ComponentSeparator *int32 `json:"componentSeparator,omitempty"`
+	ComponentSeparator *int32
 
 	// REQUIRED; The data element separator.
-	DataElementSeparator *int32 `json:"dataElementSeparator,omitempty"`
+	DataElementSeparator *int32
 
 	// REQUIRED; The EDIFACT frame setting decimal indicator.
-	DecimalPointIndicator *EdifactDecimalIndicator `json:"decimalPointIndicator,omitempty"`
+	DecimalPointIndicator *EdifactDecimalIndicator
 
 	// REQUIRED; The protocol version.
-	ProtocolVersion *int32 `json:"protocolVersion,omitempty"`
+	ProtocolVersion *int32
 
 	// REQUIRED; The release indicator.
-	ReleaseIndicator *int32 `json:"releaseIndicator,omitempty"`
+	ReleaseIndicator *int32
 
 	// REQUIRED; The repetition separator.
-	RepetitionSeparator *int32 `json:"repetitionSeparator,omitempty"`
+	RepetitionSeparator *int32
 
 	// REQUIRED; The segment terminator.
-	SegmentTerminator *int32 `json:"segmentTerminator,omitempty"`
+	SegmentTerminator *int32
 
 	// REQUIRED; The EDIFACT frame setting segment terminator suffix.
-	SegmentTerminatorSuffix *SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
+	SegmentTerminatorSuffix *SegmentTerminatorSuffix
 
 	// The character encoding.
-	CharacterEncoding *string `json:"characterEncoding,omitempty"`
+	CharacterEncoding *string
 
 	// The service code list directory version.
-	ServiceCodeListDirectoryVersion *string `json:"serviceCodeListDirectoryVersion,omitempty"`
+	ServiceCodeListDirectoryVersion *string
 }
 
 // EdifactMessageFilter - The Edifact message filter for odata query.
 type EdifactMessageFilter struct {
 	// REQUIRED; The message filter type.
-	MessageFilterType *MessageFilterType `json:"messageFilterType,omitempty"`
+	MessageFilterType *MessageFilterType
 }
 
 // EdifactMessageIdentifier - The Edifact message identifier.
 type EdifactMessageIdentifier struct {
 	// REQUIRED; The message id on which this envelope settings has to be applied.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 }
 
 // EdifactOneWayAgreement - The Edifact one way agreement.
 type EdifactOneWayAgreement struct {
 	// REQUIRED; The EDIFACT protocol settings.
-	ProtocolSettings *EdifactProtocolSettings `json:"protocolSettings,omitempty"`
+	ProtocolSettings *EdifactProtocolSettings
 
 	// REQUIRED; The receiver business identity
-	ReceiverBusinessIdentity *BusinessIdentity `json:"receiverBusinessIdentity,omitempty"`
+	ReceiverBusinessIdentity *BusinessIdentity
 
 	// REQUIRED; The sender business identity
-	SenderBusinessIdentity *BusinessIdentity `json:"senderBusinessIdentity,omitempty"`
+	SenderBusinessIdentity *BusinessIdentity
 }
 
 // EdifactProcessingSettings - The Edifact agreement protocol settings.
 type EdifactProcessingSettings struct {
 	// REQUIRED; The value indicating whether to create empty xml tags for trailing separators.
-	CreateEmptyXMLTagsForTrailingSeparators *bool `json:"createEmptyXmlTagsForTrailingSeparators,omitempty"`
+	CreateEmptyXMLTagsForTrailingSeparators *bool
 
 	// REQUIRED; The value indicating whether to mask security information.
-	MaskSecurityInfo *bool `json:"maskSecurityInfo,omitempty"`
+	MaskSecurityInfo *bool
 
 	// REQUIRED; The value indicating whether to preserve interchange.
-	PreserveInterchange *bool `json:"preserveInterchange,omitempty"`
+	PreserveInterchange *bool
 
 	// REQUIRED; The value indicating whether to suspend interchange on error.
-	SuspendInterchangeOnError *bool `json:"suspendInterchangeOnError,omitempty"`
+	SuspendInterchangeOnError *bool
 
 	// REQUIRED; The value indicating whether to use dot as decimal separator.
-	UseDotAsDecimalSeparator *bool `json:"useDotAsDecimalSeparator,omitempty"`
+	UseDotAsDecimalSeparator *bool
 }
 
 // EdifactProtocolSettings - The Edifact agreement protocol settings.
 type EdifactProtocolSettings struct {
 	// REQUIRED; The EDIFACT acknowledgement settings.
-	AcknowledgementSettings *EdifactAcknowledgementSettings `json:"acknowledgementSettings,omitempty"`
+	AcknowledgementSettings *EdifactAcknowledgementSettings
 
 	// REQUIRED; The EDIFACT envelope settings.
-	EnvelopeSettings *EdifactEnvelopeSettings `json:"envelopeSettings,omitempty"`
+	EnvelopeSettings *EdifactEnvelopeSettings
 
 	// REQUIRED; The EDIFACT framing settings.
-	FramingSettings *EdifactFramingSettings `json:"framingSettings,omitempty"`
+	FramingSettings *EdifactFramingSettings
 
 	// REQUIRED; The EDIFACT message filter.
-	MessageFilter *EdifactMessageFilter `json:"messageFilter,omitempty"`
+	MessageFilter *EdifactMessageFilter
 
 	// REQUIRED; The EDIFACT processing Settings.
-	ProcessingSettings *EdifactProcessingSettings `json:"processingSettings,omitempty"`
+	ProcessingSettings *EdifactProcessingSettings
 
 	// REQUIRED; The EDIFACT schema references.
-	SchemaReferences []*EdifactSchemaReference `json:"schemaReferences,omitempty"`
+	SchemaReferences []*EdifactSchemaReference
 
 	// REQUIRED; The EDIFACT validation settings.
-	ValidationSettings *EdifactValidationSettings `json:"validationSettings,omitempty"`
+	ValidationSettings *EdifactValidationSettings
 
 	// The EDIFACT delimiter override settings.
-	EdifactDelimiterOverrides []*EdifactDelimiterOverride `json:"edifactDelimiterOverrides,omitempty"`
+	EdifactDelimiterOverrides []*EdifactDelimiterOverride
 
 	// The EDIFACT envelope override settings.
-	EnvelopeOverrides []*EdifactEnvelopeOverride `json:"envelopeOverrides,omitempty"`
+	EnvelopeOverrides []*EdifactEnvelopeOverride
 
 	// The EDIFACT message filter list.
-	MessageFilterList []*EdifactMessageIdentifier `json:"messageFilterList,omitempty"`
+	MessageFilterList []*EdifactMessageIdentifier
 
 	// The EDIFACT validation override settings.
-	ValidationOverrides []*EdifactValidationOverride `json:"validationOverrides,omitempty"`
+	ValidationOverrides []*EdifactValidationOverride
 }
 
 // EdifactSchemaReference - The Edifact schema reference.
 type EdifactSchemaReference struct {
 	// REQUIRED; The message id.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// REQUIRED; The message release version.
-	MessageRelease *string `json:"messageRelease,omitempty"`
+	MessageRelease *string
 
 	// REQUIRED; The message version.
-	MessageVersion *string `json:"messageVersion,omitempty"`
+	MessageVersion *string
 
 	// REQUIRED; The schema name.
-	SchemaName *string `json:"schemaName,omitempty"`
+	SchemaName *string
 
 	// The association assigned code.
-	AssociationAssignedCode *string `json:"associationAssignedCode,omitempty"`
+	AssociationAssignedCode *string
 
 	// The sender application id.
-	SenderApplicationID *string `json:"senderApplicationId,omitempty"`
+	SenderApplicationID *string
 
 	// The sender application qualifier.
-	SenderApplicationQualifier *string `json:"senderApplicationQualifier,omitempty"`
+	SenderApplicationQualifier *string
 }
 
 // EdifactValidationOverride - The Edifact validation override settings.
 type EdifactValidationOverride struct {
 	// REQUIRED; The value indicating whether to allow leading and trailing spaces and zeroes.
-	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
+	AllowLeadingAndTrailingSpacesAndZeroes *bool
 
 	// REQUIRED; The value indicating whether to validate character Set.
-	EnforceCharacterSet *bool `json:"enforceCharacterSet,omitempty"`
+	EnforceCharacterSet *bool
 
 	// REQUIRED; The message id on which the validation settings has to be applied.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// REQUIRED; The trailing separator policy.
-	TrailingSeparatorPolicy *TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+	TrailingSeparatorPolicy *TrailingSeparatorPolicy
 
 	// REQUIRED; The value indicating whether to trim leading and trailing spaces and zeroes.
-	TrimLeadingAndTrailingSpacesAndZeroes *bool `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
+	TrimLeadingAndTrailingSpacesAndZeroes *bool
 
 	// REQUIRED; The value indicating whether to validate EDI types.
-	ValidateEDITypes *bool `json:"validateEDITypes,omitempty"`
+	ValidateEDITypes *bool
 
 	// REQUIRED; The value indicating whether to validate XSD types.
-	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
+	ValidateXSDTypes *bool
 }
 
 // EdifactValidationSettings - The Edifact agreement validation settings.
 type EdifactValidationSettings struct {
 	// REQUIRED; The value indicating whether to allow leading and trailing spaces and zeroes.
-	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
+	AllowLeadingAndTrailingSpacesAndZeroes *bool
 
 	// REQUIRED; The value indicating whether to check for duplicate group control number.
-	CheckDuplicateGroupControlNumber *bool `json:"checkDuplicateGroupControlNumber,omitempty"`
+	CheckDuplicateGroupControlNumber *bool
 
 	// REQUIRED; The value indicating whether to check for duplicate interchange control number.
-	CheckDuplicateInterchangeControlNumber *bool `json:"checkDuplicateInterchangeControlNumber,omitempty"`
+	CheckDuplicateInterchangeControlNumber *bool
 
 	// REQUIRED; The value indicating whether to check for duplicate transaction set control number.
-	CheckDuplicateTransactionSetControlNumber *bool `json:"checkDuplicateTransactionSetControlNumber,omitempty"`
+	CheckDuplicateTransactionSetControlNumber *bool
 
 	// REQUIRED; The validity period of interchange control number.
-	InterchangeControlNumberValidityDays *int32 `json:"interchangeControlNumberValidityDays,omitempty"`
+	InterchangeControlNumberValidityDays *int32
 
 	// REQUIRED; The trailing separator policy.
-	TrailingSeparatorPolicy *TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+	TrailingSeparatorPolicy *TrailingSeparatorPolicy
 
 	// REQUIRED; The value indicating whether to trim leading and trailing spaces and zeroes.
-	TrimLeadingAndTrailingSpacesAndZeroes *bool `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
+	TrimLeadingAndTrailingSpacesAndZeroes *bool
 
 	// REQUIRED; The value indicating whether to validate character set in the message.
-	ValidateCharacterSet *bool `json:"validateCharacterSet,omitempty"`
+	ValidateCharacterSet *bool
 
 	// REQUIRED; The value indicating whether to Whether to validate EDI types.
-	ValidateEDITypes *bool `json:"validateEDITypes,omitempty"`
+	ValidateEDITypes *bool
 
 	// REQUIRED; The value indicating whether to Whether to validate XSD types.
-	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
+	ValidateXSDTypes *bool
 }
 
 // ErrorInfo - The error info.
 type ErrorInfo struct {
 	// REQUIRED; The error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 }
 
 // ErrorProperties - Error properties indicate why the Logic service was not able to process the incoming request. The reason
 // is provided in the error message.
 type ErrorProperties struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ErrorResponse - Error response indicates Logic service is not able to process the incoming request. The error property
 // contains the error details.
 type ErrorResponse struct {
 	// The error properties.
-	Error *ErrorProperties `json:"error,omitempty"`
+	Error *ErrorProperties
 }
 
 // Expression - The expression.
 type Expression struct {
 	// The azure resource error info.
-	Error *AzureResourceErrorInfo `json:"error,omitempty"`
+	Error *AzureResourceErrorInfo
 
 	// The sub expressions.
-	Subexpressions []*Expression `json:"subexpressions,omitempty"`
+	Subexpressions []*Expression
 
 	// The text.
-	Text *string `json:"text,omitempty"`
+	Text *string
 
 	// Anything
-	Value any `json:"value,omitempty"`
+	Value any
 }
 
 // ExpressionRoot - The expression root.
 type ExpressionRoot struct {
 	// The azure resource error info.
-	Error *AzureResourceErrorInfo `json:"error,omitempty"`
+	Error *AzureResourceErrorInfo
 
 	// The path.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// The sub expressions.
-	Subexpressions []*Expression `json:"subexpressions,omitempty"`
+	Subexpressions []*Expression
 
 	// The text.
-	Text *string `json:"text,omitempty"`
+	Text *string
 
 	// Anything
-	Value any `json:"value,omitempty"`
+	Value any
 }
 
 // ExpressionTraces - The expression traces.
 type ExpressionTraces struct {
-	Inputs []*ExpressionRoot `json:"inputs,omitempty"`
+	Inputs []*ExpressionRoot
 }
 
 // ExtendedErrorInfo - The extended error info.
 type ExtendedErrorInfo struct {
 	// REQUIRED; The error code.
-	Code *ErrorResponseCode `json:"code,omitempty"`
+	Code *ErrorResponseCode
 
 	// REQUIRED; The error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The error message details.
-	Details []*ExtendedErrorInfo `json:"details,omitempty"`
+	Details []*ExtendedErrorInfo
 
 	// The inner error.
-	InnerError any `json:"innerError,omitempty"`
+	InnerError any
 }
 
 // FlowAccessControlConfiguration - The access control configuration.
 type FlowAccessControlConfiguration struct {
 	// The access control configuration for workflow actions.
-	Actions *FlowAccessControlConfigurationPolicy `json:"actions,omitempty"`
+	Actions *FlowAccessControlConfigurationPolicy
 
 	// The access control configuration for accessing workflow run contents.
-	Contents *FlowAccessControlConfigurationPolicy `json:"contents,omitempty"`
+	Contents *FlowAccessControlConfigurationPolicy
 
 	// The access control configuration for invoking workflow triggers.
-	Triggers *FlowAccessControlConfigurationPolicy `json:"triggers,omitempty"`
+	Triggers *FlowAccessControlConfigurationPolicy
 
 	// The access control configuration for workflow management.
-	WorkflowManagement *FlowAccessControlConfigurationPolicy `json:"workflowManagement,omitempty"`
+	WorkflowManagement *FlowAccessControlConfigurationPolicy
 }
 
 // FlowAccessControlConfigurationPolicy - The access control configuration policy.
 type FlowAccessControlConfigurationPolicy struct {
 	// The allowed caller IP address ranges.
-	AllowedCallerIPAddresses []*IPAddressRange `json:"allowedCallerIpAddresses,omitempty"`
+	AllowedCallerIPAddresses []*IPAddressRange
 
 	// The authentication policies for workflow.
-	OpenAuthenticationPolicies *OpenAuthenticationAccessPolicies `json:"openAuthenticationPolicies,omitempty"`
+	OpenAuthenticationPolicies *OpenAuthenticationAccessPolicies
 }
 
 // FlowEndpoints - The flow endpoints configuration.
 type FlowEndpoints struct {
 	// The access endpoint ip address.
-	AccessEndpointIPAddresses []*IPAddress `json:"accessEndpointIpAddresses,omitempty"`
+	AccessEndpointIPAddresses []*IPAddress
 
 	// The outgoing ip address.
-	OutgoingIPAddresses []*IPAddress `json:"outgoingIpAddresses,omitempty"`
+	OutgoingIPAddresses []*IPAddress
 }
 
 // FlowEndpointsConfiguration - The endpoints configuration.
 type FlowEndpointsConfiguration struct {
 	// The connector endpoints.
-	Connector *FlowEndpoints `json:"connector,omitempty"`
+	Connector *FlowEndpoints
 
 	// The workflow endpoints.
-	Workflow *FlowEndpoints `json:"workflow,omitempty"`
+	Workflow *FlowEndpoints
 }
 
 // GenerateUpgradedDefinitionParameters - The parameters to generate upgraded definition.
 type GenerateUpgradedDefinitionParameters struct {
 	// The target schema version.
-	TargetSchemaVersion *string `json:"targetSchemaVersion,omitempty"`
+	TargetSchemaVersion *string
 }
 
 // GetCallbackURLParameters - The callback url parameters.
 type GetCallbackURLParameters struct {
 	// The key type.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 
 	// The expiry time.
-	NotAfter *time.Time `json:"notAfter,omitempty"`
+	NotAfter *time.Time
 }
 
 // IPAddress - The ip address.
 type IPAddress struct {
 	// The address.
-	Address *string `json:"address,omitempty"`
+	Address *string
 }
 
 // IPAddressRange - The ip address range.
 type IPAddressRange struct {
 	// The IP address range.
-	AddressRange *string `json:"addressRange,omitempty"`
+	AddressRange *string
 }
 
 // IntegrationAccount - The integration account.
 type IntegrationAccount struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The integration account properties.
-	Properties *IntegrationAccountProperties `json:"properties,omitempty"`
+	Properties *IntegrationAccountProperties
 
 	// The sku.
-	SKU *IntegrationAccountSKU `json:"sku,omitempty"`
+	SKU *IntegrationAccountSKU
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationAccountAgreement - The integration account agreement.
 type IntegrationAccountAgreement struct {
 	// REQUIRED; The integration account agreement properties.
-	Properties *IntegrationAccountAgreementProperties `json:"properties,omitempty"`
+	Properties *IntegrationAccountAgreementProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationAccountAgreementFilter - The integration account agreement filter for odata query.
 type IntegrationAccountAgreementFilter struct {
 	// REQUIRED; The agreement type of integration account agreement.
-	AgreementType *AgreementType `json:"agreementType,omitempty"`
+	AgreementType *AgreementType
 }
 
 // IntegrationAccountAgreementListResult - The list of integration account agreements.
 type IntegrationAccountAgreementListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of integration account agreements.
-	Value []*IntegrationAccountAgreement `json:"value,omitempty"`
+	Value []*IntegrationAccountAgreement
 }
 
 // IntegrationAccountAgreementProperties - The integration account agreement properties.
 type IntegrationAccountAgreementProperties struct {
 	// REQUIRED; The agreement type.
-	AgreementType *AgreementType `json:"agreementType,omitempty"`
+	AgreementType *AgreementType
 
 	// REQUIRED; The agreement content.
-	Content *AgreementContent `json:"content,omitempty"`
+	Content *AgreementContent
 
 	// REQUIRED; The business identity of the guest partner.
-	GuestIdentity *BusinessIdentity `json:"guestIdentity,omitempty"`
+	GuestIdentity *BusinessIdentity
 
 	// REQUIRED; The integration account partner that is set as guest partner for this agreement.
-	GuestPartner *string `json:"guestPartner,omitempty"`
+	GuestPartner *string
 
 	// REQUIRED; The business identity of the host partner.
-	HostIdentity *BusinessIdentity `json:"hostIdentity,omitempty"`
+	HostIdentity *BusinessIdentity
 
 	// REQUIRED; The integration account partner that is set as host partner for this agreement.
-	HostPartner *string `json:"hostPartner,omitempty"`
+	HostPartner *string
 
 	// The metadata.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// READ-ONLY; The changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; The created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 }
 
 // IntegrationAccountAgreementsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountAgreementsClient.CreateOrUpdate
@@ -1474,49 +1474,49 @@ type IntegrationAccountBatchConfigurationsClientListOptions struct {
 // IntegrationAccountCertificate - The integration account certificate.
 type IntegrationAccountCertificate struct {
 	// REQUIRED; The integration account certificate properties.
-	Properties *IntegrationAccountCertificateProperties `json:"properties,omitempty"`
+	Properties *IntegrationAccountCertificateProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationAccountCertificateListResult - The list of integration account certificates.
 type IntegrationAccountCertificateListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of integration account certificates.
-	Value []*IntegrationAccountCertificate `json:"value,omitempty"`
+	Value []*IntegrationAccountCertificate
 }
 
 // IntegrationAccountCertificateProperties - The integration account certificate properties.
 type IntegrationAccountCertificateProperties struct {
 	// The key details in the key vault.
-	Key *KeyVaultKeyReference `json:"key,omitempty"`
+	Key *KeyVaultKeyReference
 
 	// The metadata.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The public certificate.
-	PublicCertificate *string `json:"publicCertificate,omitempty"`
+	PublicCertificate *string
 
 	// READ-ONLY; The changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; The created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 }
 
 // IntegrationAccountCertificatesClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountCertificatesClient.CreateOrUpdate
@@ -1547,79 +1547,79 @@ type IntegrationAccountCertificatesClientListOptions struct {
 // IntegrationAccountListResult - The list of integration accounts.
 type IntegrationAccountListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of integration accounts.
-	Value []*IntegrationAccount `json:"value,omitempty"`
+	Value []*IntegrationAccount
 }
 
 // IntegrationAccountMap - The integration account map.
 type IntegrationAccountMap struct {
 	// REQUIRED; The integration account map properties.
-	Properties *IntegrationAccountMapProperties `json:"properties,omitempty"`
+	Properties *IntegrationAccountMapProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationAccountMapFilter - The integration account map filter for odata query.
 type IntegrationAccountMapFilter struct {
 	// REQUIRED; The map type of integration account map.
-	MapType *MapType `json:"mapType,omitempty"`
+	MapType *MapType
 }
 
 // IntegrationAccountMapListResult - The list of integration account maps.
 type IntegrationAccountMapListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of integration account maps.
-	Value []*IntegrationAccountMap `json:"value,omitempty"`
+	Value []*IntegrationAccountMap
 }
 
 // IntegrationAccountMapProperties - The integration account map.
 type IntegrationAccountMapProperties struct {
 	// REQUIRED; The map type.
-	MapType *MapType `json:"mapType,omitempty"`
+	MapType *MapType
 
 	// The content.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// The content type.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// The metadata.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The parameters schema of integration account map.
-	ParametersSchema *IntegrationAccountMapPropertiesParametersSchema `json:"parametersSchema,omitempty"`
+	ParametersSchema *IntegrationAccountMapPropertiesParametersSchema
 
 	// READ-ONLY; The changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; The content link.
-	ContentLink *ContentLink `json:"contentLink,omitempty" azure:"ro"`
+	ContentLink *ContentLink
 
 	// READ-ONLY; The created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 }
 
 // IntegrationAccountMapPropertiesParametersSchema - The parameters schema of integration account map.
 type IntegrationAccountMapPropertiesParametersSchema struct {
 	// The reference name.
-	Ref *string `json:"ref,omitempty"`
+	Ref *string
 }
 
 // IntegrationAccountMapsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountMapsClient.CreateOrUpdate
@@ -1657,55 +1657,55 @@ type IntegrationAccountMapsClientListOptions struct {
 // IntegrationAccountPartner - The integration account partner.
 type IntegrationAccountPartner struct {
 	// REQUIRED; The integration account partner properties.
-	Properties *IntegrationAccountPartnerProperties `json:"properties,omitempty"`
+	Properties *IntegrationAccountPartnerProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationAccountPartnerFilter - The integration account partner filter for odata query.
 type IntegrationAccountPartnerFilter struct {
 	// REQUIRED; The partner type of integration account partner.
-	PartnerType *PartnerType `json:"partnerType,omitempty"`
+	PartnerType *PartnerType
 }
 
 // IntegrationAccountPartnerListResult - The list of integration account partners.
 type IntegrationAccountPartnerListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of integration account partners.
-	Value []*IntegrationAccountPartner `json:"value,omitempty"`
+	Value []*IntegrationAccountPartner
 }
 
 // IntegrationAccountPartnerProperties - The integration account partner properties.
 type IntegrationAccountPartnerProperties struct {
 	// REQUIRED; The partner content.
-	Content *PartnerContent `json:"content,omitempty"`
+	Content *PartnerContent
 
 	// REQUIRED; The partner type.
-	PartnerType *PartnerType `json:"partnerType,omitempty"`
+	PartnerType *PartnerType
 
 	// The metadata.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// READ-ONLY; The changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; The created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 }
 
 // IntegrationAccountPartnersClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountPartnersClient.CreateOrUpdate
@@ -1744,85 +1744,85 @@ type IntegrationAccountPartnersClientListOptions struct {
 // IntegrationAccountProperties - The integration account properties.
 type IntegrationAccountProperties struct {
 	// The integration service environment.
-	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
+	IntegrationServiceEnvironment *ResourceReference
 
 	// The workflow state.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 }
 
 // IntegrationAccountSKU - The integration account sku.
 type IntegrationAccountSKU struct {
 	// REQUIRED; The sku name.
-	Name *IntegrationAccountSKUName `json:"name,omitempty"`
+	Name *IntegrationAccountSKUName
 }
 
 // IntegrationAccountSchema - The integration account schema.
 type IntegrationAccountSchema struct {
 	// REQUIRED; The integration account schema properties.
-	Properties *IntegrationAccountSchemaProperties `json:"properties,omitempty"`
+	Properties *IntegrationAccountSchemaProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationAccountSchemaFilter - The integration account schema filter for odata query.
 type IntegrationAccountSchemaFilter struct {
 	// REQUIRED; The schema type of integration account schema.
-	SchemaType *SchemaType `json:"schemaType,omitempty"`
+	SchemaType *SchemaType
 }
 
 // IntegrationAccountSchemaListResult - The list of integration account schemas.
 type IntegrationAccountSchemaListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of integration account schemas.
-	Value []*IntegrationAccountSchema `json:"value,omitempty"`
+	Value []*IntegrationAccountSchema
 }
 
 // IntegrationAccountSchemaProperties - The integration account schema properties.
 type IntegrationAccountSchemaProperties struct {
 	// REQUIRED; The schema type.
-	SchemaType *SchemaType `json:"schemaType,omitempty"`
+	SchemaType *SchemaType
 
 	// The content.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// The content type.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// The document name.
-	DocumentName *string `json:"documentName,omitempty"`
+	DocumentName *string
 
 	// The file name.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string
 
 	// The metadata.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The target namespace of the schema.
-	TargetNamespace *string `json:"targetNamespace,omitempty"`
+	TargetNamespace *string
 
 	// READ-ONLY; The changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; The content link.
-	ContentLink *ContentLink `json:"contentLink,omitempty" azure:"ro"`
+	ContentLink *ContentLink
 
 	// READ-ONLY; The created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 }
 
 // IntegrationAccountSchemasClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountSchemasClient.CreateOrUpdate
@@ -1861,49 +1861,49 @@ type IntegrationAccountSchemasClientListOptions struct {
 // IntegrationAccountSession - The integration account session.
 type IntegrationAccountSession struct {
 	// REQUIRED; The integration account session properties.
-	Properties *IntegrationAccountSessionProperties `json:"properties,omitempty"`
+	Properties *IntegrationAccountSessionProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationAccountSessionFilter - The integration account session filter.
 type IntegrationAccountSessionFilter struct {
 	// REQUIRED; The changed time of integration account sessions.
-	ChangedTime *time.Time `json:"changedTime,omitempty"`
+	ChangedTime *time.Time
 }
 
 // IntegrationAccountSessionListResult - The list of integration account sessions.
 type IntegrationAccountSessionListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of integration account sessions.
-	Value []*IntegrationAccountSession `json:"value,omitempty"`
+	Value []*IntegrationAccountSession
 }
 
 // IntegrationAccountSessionProperties - The integration account session properties.
 type IntegrationAccountSessionProperties struct {
 	// The session content.
-	Content any `json:"content,omitempty"`
+	Content any
 
 	// READ-ONLY; The changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; The created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 }
 
 // IntegrationAccountSessionsClientCreateOrUpdateOptions contains the optional parameters for the IntegrationAccountSessionsClient.CreateOrUpdate
@@ -1995,96 +1995,96 @@ type IntegrationAccountsClientUpdateOptions struct {
 // IntegrationServiceEnvironmenEncryptionConfiguration - The encryption configuration for the integration service environment.
 type IntegrationServiceEnvironmenEncryptionConfiguration struct {
 	// The encryption key reference.
-	EncryptionKeyReference *IntegrationServiceEnvironmenEncryptionKeyReference `json:"encryptionKeyReference,omitempty"`
+	EncryptionKeyReference *IntegrationServiceEnvironmenEncryptionKeyReference
 }
 
 // IntegrationServiceEnvironmenEncryptionKeyReference - The encryption key details for the integration service environment.
 type IntegrationServiceEnvironmenEncryptionKeyReference struct {
 	// Gets the key name in the Key Vault.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// The key vault reference.
-	KeyVault *ResourceReference `json:"keyVault,omitempty"`
+	KeyVault *ResourceReference
 
 	// Gets the version of the key specified in the keyName property.
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 }
 
 // IntegrationServiceEnvironment - The integration service environment.
 type IntegrationServiceEnvironment struct {
 	// Managed service identity properties.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The integration service environment properties.
-	Properties *IntegrationServiceEnvironmentProperties `json:"properties,omitempty"`
+	Properties *IntegrationServiceEnvironmentProperties
 
 	// The sku.
-	SKU *IntegrationServiceEnvironmentSKU `json:"sku,omitempty"`
+	SKU *IntegrationServiceEnvironmentSKU
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationServiceEnvironmentAccessEndpoint - The integration service environment access endpoint.
 type IntegrationServiceEnvironmentAccessEndpoint struct {
 	// The access endpoint type.
-	Type *IntegrationServiceEnvironmentAccessEndpointType `json:"type,omitempty"`
+	Type *IntegrationServiceEnvironmentAccessEndpointType
 }
 
 // IntegrationServiceEnvironmentListResult - The list of integration service environments.
 type IntegrationServiceEnvironmentListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string                          `json:"nextLink,omitempty"`
-	Value    []*IntegrationServiceEnvironment `json:"value,omitempty"`
+	NextLink *string
+	Value    []*IntegrationServiceEnvironment
 }
 
 // IntegrationServiceEnvironmentManagedAPI - The integration service environment managed api.
 type IntegrationServiceEnvironmentManagedAPI struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The integration service environment managed api properties.
-	Properties *IntegrationServiceEnvironmentManagedAPIProperties `json:"properties,omitempty"`
+	Properties *IntegrationServiceEnvironmentManagedAPIProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IntegrationServiceEnvironmentManagedAPIDeploymentParameters - The integration service environment managed api deployment
 // parameters.
 type IntegrationServiceEnvironmentManagedAPIDeploymentParameters struct {
 	// The integration service environment managed api content link for deployment.
-	ContentLinkDefinition *ContentLink `json:"contentLinkDefinition,omitempty"`
+	ContentLinkDefinition *ContentLink
 }
 
 // IntegrationServiceEnvironmentManagedAPIListResult - The list of integration service environment managed APIs.
 type IntegrationServiceEnvironmentManagedAPIListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The integration service environment managed APIs.
-	Value []*IntegrationServiceEnvironmentManagedAPI `json:"value,omitempty"`
+	Value []*IntegrationServiceEnvironmentManagedAPI
 }
 
 // IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedAPIOperationsClient.NewListPager
@@ -2096,46 +2096,46 @@ type IntegrationServiceEnvironmentManagedAPIOperationsClientListOptions struct {
 // IntegrationServiceEnvironmentManagedAPIProperties - The integration service environment managed api properties.
 type IntegrationServiceEnvironmentManagedAPIProperties struct {
 	// The integration service environment managed api deployment parameters.
-	DeploymentParameters *IntegrationServiceEnvironmentManagedAPIDeploymentParameters `json:"deploymentParameters,omitempty"`
+	DeploymentParameters *IntegrationServiceEnvironmentManagedAPIDeploymentParameters
 
 	// The integration service environment reference.
-	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
+	IntegrationServiceEnvironment *ResourceReference
 
 	// READ-ONLY; The API definition.
-	APIDefinitionURL *string `json:"apiDefinitionUrl,omitempty" azure:"ro"`
+	APIDefinitionURL *string
 
 	// READ-ONLY; The api definitions.
-	APIDefinitions *APIResourceDefinitions `json:"apiDefinitions,omitempty" azure:"ro"`
+	APIDefinitions *APIResourceDefinitions
 
 	// READ-ONLY; The backend service.
-	BackendService *APIResourceBackendService `json:"backendService,omitempty" azure:"ro"`
+	BackendService *APIResourceBackendService
 
 	// READ-ONLY; The capabilities.
-	Capabilities []*string `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*string
 
 	// READ-ONLY; The category.
-	Category *APITier `json:"category,omitempty" azure:"ro"`
+	Category *APITier
 
 	// READ-ONLY; The connection parameters.
-	ConnectionParameters map[string]any `json:"connectionParameters,omitempty" azure:"ro"`
+	ConnectionParameters map[string]any
 
 	// READ-ONLY; The api general information.
-	GeneralInformation *APIResourceGeneralInformation `json:"generalInformation,omitempty" azure:"ro"`
+	GeneralInformation *APIResourceGeneralInformation
 
 	// READ-ONLY; The metadata.
-	Metadata *APIResourceMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *APIResourceMetadata
 
 	// READ-ONLY; The name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The policies for the API.
-	Policies *APIResourcePolicies `json:"policies,omitempty" azure:"ro"`
+	Policies *APIResourcePolicies
 
 	// READ-ONLY; The provisioning state.
-	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkflowProvisioningState
 
 	// READ-ONLY; The runtime urls.
-	RuntimeUrls []*string `json:"runtimeUrls,omitempty" azure:"ro"`
+	RuntimeUrls []*string
 }
 
 // IntegrationServiceEnvironmentManagedApisClientBeginDeleteOptions contains the optional parameters for the IntegrationServiceEnvironmentManagedApisClient.BeginDelete
@@ -2167,34 +2167,34 @@ type IntegrationServiceEnvironmentManagedApisClientListOptions struct {
 // IntegrationServiceEnvironmentNetworkDependency - The azure async operation resource.
 type IntegrationServiceEnvironmentNetworkDependency struct {
 	// The network dependency category type.
-	Category *IntegrationServiceEnvironmentNetworkDependencyCategoryType `json:"category,omitempty"`
+	Category *IntegrationServiceEnvironmentNetworkDependencyCategoryType
 
 	// The display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The endpoints.
-	Endpoints []*IntegrationServiceEnvironmentNetworkEndpoint `json:"endpoints,omitempty"`
+	Endpoints []*IntegrationServiceEnvironmentNetworkEndpoint
 }
 
 // IntegrationServiceEnvironmentNetworkDependencyHealth - The integration service environment subnet network health.
 type IntegrationServiceEnvironmentNetworkDependencyHealth struct {
 	// The error if any occurred during the operation.
-	Error *ExtendedErrorInfo `json:"error,omitempty"`
+	Error *ExtendedErrorInfo
 
 	// The network dependency health state.
-	State *IntegrationServiceEnvironmentNetworkDependencyHealthState `json:"state,omitempty"`
+	State *IntegrationServiceEnvironmentNetworkDependencyHealthState
 }
 
 // IntegrationServiceEnvironmentNetworkEndpoint - The network endpoint.
 type IntegrationServiceEnvironmentNetworkEndpoint struct {
 	// The accessibility state.
-	Accessibility *IntegrationServiceEnvironmentNetworkEndPointAccessibilityState `json:"accessibility,omitempty"`
+	Accessibility *IntegrationServiceEnvironmentNetworkEndPointAccessibilityState
 
 	// The domain name.
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// The ports.
-	Ports []*string `json:"ports,omitempty"`
+	Ports []*string
 }
 
 // IntegrationServiceEnvironmentNetworkHealthClientGetOptions contains the optional parameters for the IntegrationServiceEnvironmentNetworkHealthClient.Get
@@ -2206,76 +2206,76 @@ type IntegrationServiceEnvironmentNetworkHealthClientGetOptions struct {
 // IntegrationServiceEnvironmentProperties - The integration service environment properties.
 type IntegrationServiceEnvironmentProperties struct {
 	// The encryption configuration.
-	EncryptionConfiguration *IntegrationServiceEnvironmenEncryptionConfiguration `json:"encryptionConfiguration,omitempty"`
+	EncryptionConfiguration *IntegrationServiceEnvironmenEncryptionConfiguration
 
 	// The endpoints configuration.
-	EndpointsConfiguration *FlowEndpointsConfiguration `json:"endpointsConfiguration,omitempty"`
+	EndpointsConfiguration *FlowEndpointsConfiguration
 
 	// Gets the tracking id.
-	IntegrationServiceEnvironmentID *string `json:"integrationServiceEnvironmentId,omitempty"`
+	IntegrationServiceEnvironmentID *string
 
 	// The network configuration.
-	NetworkConfiguration *NetworkConfiguration `json:"networkConfiguration,omitempty"`
+	NetworkConfiguration *NetworkConfiguration
 
 	// The provisioning state.
-	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *WorkflowProvisioningState
 
 	// The integration service environment state.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 }
 
 // IntegrationServiceEnvironmentSKU - The integration service environment sku.
 type IntegrationServiceEnvironmentSKU struct {
 	// The sku capacity.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// The sku name.
-	Name *IntegrationServiceEnvironmentSKUName `json:"name,omitempty"`
+	Name *IntegrationServiceEnvironmentSKUName
 }
 
 // IntegrationServiceEnvironmentSKUCapacity - The integration service environment sku capacity.
 type IntegrationServiceEnvironmentSKUCapacity struct {
 	// The default capacity.
-	Default *int32 `json:"default,omitempty"`
+	Default *int32
 
 	// The maximum capacity.
-	Maximum *int32 `json:"maximum,omitempty"`
+	Maximum *int32
 
 	// The minimum capacity.
-	Minimum *int32 `json:"minimum,omitempty"`
+	Minimum *int32
 
 	// The sku scale type.
-	ScaleType *IntegrationServiceEnvironmentSKUScaleType `json:"scaleType,omitempty"`
+	ScaleType *IntegrationServiceEnvironmentSKUScaleType
 }
 
 // IntegrationServiceEnvironmentSKUDefinition - The integration service environment sku definition.
 type IntegrationServiceEnvironmentSKUDefinition struct {
 	// The sku capacity.
-	Capacity *IntegrationServiceEnvironmentSKUCapacity `json:"capacity,omitempty"`
+	Capacity *IntegrationServiceEnvironmentSKUCapacity
 
 	// The resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The sku.
-	SKU *IntegrationServiceEnvironmentSKUDefinitionSKU `json:"sku,omitempty"`
+	SKU *IntegrationServiceEnvironmentSKUDefinitionSKU
 }
 
 // IntegrationServiceEnvironmentSKUDefinitionSKU - The sku.
 type IntegrationServiceEnvironmentSKUDefinitionSKU struct {
 	// The sku name.
-	Name *IntegrationServiceEnvironmentSKUName `json:"name,omitempty"`
+	Name *IntegrationServiceEnvironmentSKUName
 
 	// The sku tier.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // IntegrationServiceEnvironmentSKUList - The list of integration service environment skus.
 type IntegrationServiceEnvironmentSKUList struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of integration service environment skus.
-	Value []*IntegrationServiceEnvironmentSKUDefinition `json:"value,omitempty"`
+	Value []*IntegrationServiceEnvironmentSKUDefinition
 }
 
 // IntegrationServiceEnvironmentSKUsClientListOptions contains the optional parameters for the IntegrationServiceEnvironmentSKUsClient.NewListPager
@@ -2287,13 +2287,13 @@ type IntegrationServiceEnvironmentSKUsClientListOptions struct {
 // IntegrationServiceEnvironmentSubnetNetworkHealth - The integration service environment subnet network health.
 type IntegrationServiceEnvironmentSubnetNetworkHealth struct {
 	// REQUIRED; The integration service environment network health state.
-	NetworkDependencyHealthState *IntegrationServiceEnvironmentNetworkEndPointAccessibilityState `json:"networkDependencyHealthState,omitempty"`
+	NetworkDependencyHealthState *IntegrationServiceEnvironmentNetworkEndPointAccessibilityState
 
 	// The outbound network dependencies.
-	OutboundNetworkDependencies []*IntegrationServiceEnvironmentNetworkDependency `json:"outboundNetworkDependencies,omitempty"`
+	OutboundNetworkDependencies []*IntegrationServiceEnvironmentNetworkDependency
 
 	// The integration service environment network health.
-	OutboundNetworkHealth *IntegrationServiceEnvironmentNetworkDependencyHealth `json:"outboundNetworkHealth,omitempty"`
+	OutboundNetworkHealth *IntegrationServiceEnvironmentNetworkDependencyHealth
 }
 
 // IntegrationServiceEnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the IntegrationServiceEnvironmentsClient.BeginCreateOrUpdate
@@ -2345,273 +2345,273 @@ type IntegrationServiceEnvironmentsClientRestartOptions struct {
 // JSONSchema - The JSON schema.
 type JSONSchema struct {
 	// The JSON content.
-	Content *string `json:"content,omitempty"`
+	Content *string
 
 	// The JSON title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // KeyVaultKey - The key vault key.
 type KeyVaultKey struct {
 	// The key attributes.
-	Attributes *KeyVaultKeyAttributes `json:"attributes,omitempty"`
+	Attributes *KeyVaultKeyAttributes
 
 	// The key id.
-	Kid *string `json:"kid,omitempty"`
+	Kid *string
 }
 
 // KeyVaultKeyAttributes - The key attributes.
 type KeyVaultKeyAttributes struct {
 	// When the key was created.
-	Created *int64 `json:"created,omitempty"`
+	Created *int64
 
 	// Whether the key is enabled or not.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// When the key was updated.
-	Updated *int64 `json:"updated,omitempty"`
+	Updated *int64
 }
 
 // KeyVaultKeyCollection - Collection of key vault keys.
 type KeyVaultKeyCollection struct {
 	// The skip token.
-	SkipToken *string `json:"skipToken,omitempty"`
+	SkipToken *string
 
 	// The key vault keys.
-	Value []*KeyVaultKey `json:"value,omitempty"`
+	Value []*KeyVaultKey
 }
 
 // KeyVaultKeyReference - The reference to the key vault key.
 type KeyVaultKeyReference struct {
 	// REQUIRED; The private key name in key vault.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// REQUIRED; The key vault reference.
-	KeyVault *KeyVaultKeyReferenceKeyVault `json:"keyVault,omitempty"`
+	KeyVault *KeyVaultKeyReferenceKeyVault
 
 	// The private key version in key vault.
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 }
 
 // KeyVaultKeyReferenceKeyVault - The key vault reference.
 type KeyVaultKeyReferenceKeyVault struct {
 	// The resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // KeyVaultReference - The key vault reference.
 type KeyVaultReference struct {
 	// The resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ListKeyVaultKeysDefinition - The list key vault keys definition.
 type ListKeyVaultKeysDefinition struct {
 	// REQUIRED; The key vault reference.
-	KeyVault *KeyVaultReference `json:"keyVault,omitempty"`
+	KeyVault *KeyVaultReference
 
 	// The skip token.
-	SkipToken *string `json:"skipToken,omitempty"`
+	SkipToken *string
 }
 
 // ManagedAPI - The managed api definition.
 type ManagedAPI struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The api resource properties.
-	Properties *APIResourceProperties `json:"properties,omitempty"`
+	Properties *APIResourceProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagedAPIListResult - The list of managed APIs.
 type ManagedAPIListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The managed APIs.
-	Value []*ManagedAPI `json:"value,omitempty"`
+	Value []*ManagedAPI
 }
 
 // ManagedServiceIdentity - Managed service identity properties.
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity. The type 'SystemAssigned' includes an implicitly created identity. The type
 	// 'None' will remove any identities from the resource.
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The list of user assigned identities associated with the resource. The user identity dictionary key references will be
 	// ARM resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; Principal Id of managed service identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; Tenant of managed service identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // NetworkConfiguration - The network configuration.
 type NetworkConfiguration struct {
 	// The access endpoint.
-	AccessEndpoint *IntegrationServiceEnvironmentAccessEndpoint `json:"accessEndpoint,omitempty"`
+	AccessEndpoint *IntegrationServiceEnvironmentAccessEndpoint
 
 	// The subnets.
-	Subnets []*ResourceReference `json:"subnets,omitempty"`
+	Subnets []*ResourceReference
 
 	// Gets the virtual network address space.
-	VirtualNetworkAddressSpace *string `json:"virtualNetworkAddressSpace,omitempty"`
+	VirtualNetworkAddressSpace *string
 }
 
 // OpenAuthenticationAccessPolicies - AuthenticationPolicy of type Open.
 type OpenAuthenticationAccessPolicies struct {
 	// Open authentication policies.
-	Policies map[string]*OpenAuthenticationAccessPolicy `json:"policies,omitempty"`
+	Policies map[string]*OpenAuthenticationAccessPolicy
 }
 
 // OpenAuthenticationAccessPolicy - Open authentication access policy defined by user.
 type OpenAuthenticationAccessPolicy struct {
 	// The access policy claims.
-	Claims []*OpenAuthenticationPolicyClaim `json:"claims,omitempty"`
+	Claims []*OpenAuthenticationPolicyClaim
 
 	// Type of provider for OAuth.
-	Type *OpenAuthenticationProviderType `json:"type,omitempty"`
+	Type *OpenAuthenticationProviderType
 }
 
 // OpenAuthenticationPolicyClaim - Open authentication policy claim.
 type OpenAuthenticationPolicyClaim struct {
 	// The name of the claim.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the claim.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Operation - Logic REST API operation
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Operation: origin
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// The properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Operation: description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.Logic
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: Profile, endpoint, etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Logic operations. It contains a list of operations and a URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Logic operations supported by the Logic resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationResult - The operation result definition.
 type OperationResult struct {
 	// The workflow scope repetition code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The correlation properties.
-	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+	Correlation *RunActionCorrelation
 
 	// The end time of the workflow scope repetition.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Anything
-	Error          any    `json:"error,omitempty"`
-	IterationCount *int32 `json:"iterationCount,omitempty"`
+	Error          any
+	IterationCount *int32
 
 	// Gets the retry histories.
-	RetryHistory []*RetryHistory `json:"retryHistory,omitempty"`
+	RetryHistory []*RetryHistory
 
 	// The start time of the workflow scope repetition.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the workflow scope repetition.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the inputs.
-	Inputs any `json:"inputs,omitempty" azure:"ro"`
+	Inputs any
 
 	// READ-ONLY; Gets the link to inputs.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the outputs.
-	Outputs any `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; Gets the link to outputs.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties any `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties any
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // OperationResultProperties - The run operation result properties.
 type OperationResultProperties struct {
 	// The workflow scope repetition code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The correlation properties.
-	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+	Correlation *RunActionCorrelation
 
 	// The end time of the workflow scope repetition.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Anything
-	Error any `json:"error,omitempty"`
+	Error any
 
 	// The start time of the workflow scope repetition.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the workflow scope repetition.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -2622,745 +2622,745 @@ type OperationsClientListOptions struct {
 // PartnerContent - The integration account partner content.
 type PartnerContent struct {
 	// The B2B partner content.
-	B2B *B2BPartnerContent `json:"b2b,omitempty"`
+	B2B *B2BPartnerContent
 }
 
 // RecurrenceSchedule - The recurrence schedule.
 type RecurrenceSchedule struct {
 	// The hours.
-	Hours []*int32 `json:"hours,omitempty"`
+	Hours []*int32
 
 	// The minutes.
-	Minutes []*int32 `json:"minutes,omitempty"`
+	Minutes []*int32
 
 	// The month days.
-	MonthDays []*int32 `json:"monthDays,omitempty"`
+	MonthDays []*int32
 
 	// The monthly occurrences.
-	MonthlyOccurrences []*RecurrenceScheduleOccurrence `json:"monthlyOccurrences,omitempty"`
+	MonthlyOccurrences []*RecurrenceScheduleOccurrence
 
 	// The days of the week.
-	WeekDays []*DaysOfWeek `json:"weekDays,omitempty"`
+	WeekDays []*DaysOfWeek
 }
 
 // RecurrenceScheduleOccurrence - The recurrence schedule occurrence.
 type RecurrenceScheduleOccurrence struct {
 	// The day of the week.
-	Day *DayOfWeek `json:"day,omitempty"`
+	Day *DayOfWeek
 
 	// The occurrence.
-	Occurrence *int32 `json:"occurrence,omitempty"`
+	Occurrence *int32
 }
 
 // RegenerateActionParameter - The access key regenerate action content.
 type RegenerateActionParameter struct {
 	// The key type.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 }
 
 // RepetitionIndex - The workflow run action repetition index.
 type RepetitionIndex struct {
 	// REQUIRED; The index.
-	ItemIndex *int32 `json:"itemIndex,omitempty"`
+	ItemIndex *int32
 
 	// The scope.
-	ScopeName *string `json:"scopeName,omitempty"`
+	ScopeName *string
 }
 
 // Request - A request.
 type Request struct {
 	// A list of all the headers attached to the request.
-	Headers any `json:"headers,omitempty"`
+	Headers any
 
 	// The HTTP method used for the request.
-	Method *string `json:"method,omitempty"`
+	Method *string
 
 	// The destination for the request.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // RequestHistory - The request history.
 type RequestHistory struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The request history properties.
-	Properties *RequestHistoryProperties `json:"properties,omitempty"`
+	Properties *RequestHistoryProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RequestHistoryListResult - The list of workflow request histories.
 type RequestHistoryListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow request histories.
-	Value []*RequestHistory `json:"value,omitempty"`
+	Value []*RequestHistory
 }
 
 // RequestHistoryProperties - The request history.
 type RequestHistoryProperties struct {
 	// The time the request ended.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The request.
-	Request *Request `json:"request,omitempty"`
+	Request *Request
 
 	// The response.
-	Response *Response `json:"response,omitempty"`
+	Response *Response
 
 	// The time the request started.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // Resource - The base resource type.
 type Resource struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceReference - The resource reference.
 type ResourceReference struct {
 	// The resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Response - A response.
 type Response struct {
 	// Details on the location of the body content.
-	BodyLink *ContentLink `json:"bodyLink,omitempty"`
+	BodyLink *ContentLink
 
 	// A list of all the headers attached to the response.
-	Headers any `json:"headers,omitempty"`
+	Headers any
 
 	// The status code of the response.
-	StatusCode *int32 `json:"statusCode,omitempty"`
+	StatusCode *int32
 }
 
 // RetryHistory - The retry history.
 type RetryHistory struct {
 	// Gets the client request Id.
-	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	ClientRequestID *string
 
 	// Gets the status code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Gets the error response.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// Gets the service request Id.
-	ServiceRequestID *string `json:"serviceRequestId,omitempty"`
+	ServiceRequestID *string
 
 	// Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // RunActionCorrelation - The workflow run action correlation properties.
 type RunActionCorrelation struct {
 	// The action tracking identifier.
-	ActionTrackingID *string `json:"actionTrackingId,omitempty"`
+	ActionTrackingID *string
 
 	// The client keywords.
-	ClientKeywords []*string `json:"clientKeywords,omitempty"`
+	ClientKeywords []*string
 
 	// The client tracking identifier.
-	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
+	ClientTrackingID *string
 }
 
 // RunCorrelation - The correlation properties.
 type RunCorrelation struct {
 	// The client keywords.
-	ClientKeywords []*string `json:"clientKeywords,omitempty"`
+	ClientKeywords []*string
 
 	// The client tracking identifier.
-	ClientTrackingID *string `json:"clientTrackingId,omitempty"`
+	ClientTrackingID *string
 }
 
 // SKU - The sku type.
 type SKU struct {
 	// REQUIRED; The name.
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 
 	// The reference to plan.
-	Plan *ResourceReference `json:"plan,omitempty"`
+	Plan *ResourceReference
 }
 
 // SetTriggerStateActionDefinition - The set trigger state action definition.
 type SetTriggerStateActionDefinition struct {
 	// REQUIRED; The source.
-	Source *WorkflowTriggerReference `json:"source,omitempty"`
+	Source *WorkflowTriggerReference
 }
 
 // SubResource - The sub resource type.
 type SubResource struct {
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // SwaggerCustomDynamicList - The swagger custom dynamic list.
 type SwaggerCustomDynamicList struct {
 	// The built in operation.
-	BuiltInOperation *string `json:"builtInOperation,omitempty"`
+	BuiltInOperation *string
 
 	// The path to an item property which defines the display name of the item.
-	ItemTitlePath *string `json:"itemTitlePath,omitempty"`
+	ItemTitlePath *string
 
 	// The path to a property which defines the value which should be used.
-	ItemValuePath *string `json:"itemValuePath,omitempty"`
+	ItemValuePath *string
 
 	// The path to a response property (relative to the response object, not the response body) which contains an array of dynamic
 	// value items.
-	ItemsPath *string `json:"itemsPath,omitempty"`
+	ItemsPath *string
 
 	// The operation id to fetch dynamic schema.
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 
 	// The parameters.
-	Parameters map[string]*SwaggerCustomDynamicProperties `json:"parameters,omitempty"`
+	Parameters map[string]*SwaggerCustomDynamicProperties
 }
 
 // SwaggerCustomDynamicProperties - The swagger custom dynamic properties.
 type SwaggerCustomDynamicProperties struct {
 	// The operation id to fetch dynamic schema.
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 
 	// The operation parameters.
-	Parameters map[string]*SwaggerCustomDynamicProperties `json:"parameters,omitempty"`
+	Parameters map[string]*SwaggerCustomDynamicProperties
 
 	// Json pointer to the dynamic schema on the response body.
-	ValuePath *string `json:"valuePath,omitempty"`
+	ValuePath *string
 }
 
 // SwaggerCustomDynamicSchema - The swagger custom dynamic schema.
 type SwaggerCustomDynamicSchema struct {
 	// The operation id to fetch dynamic schema.
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 
 	// The operation parameters.
-	Parameters map[string]any `json:"parameters,omitempty"`
+	Parameters map[string]any
 
 	// Json pointer to the dynamic schema on the response body.
-	ValuePath *string `json:"valuePath,omitempty"`
+	ValuePath *string
 }
 
 // SwaggerCustomDynamicTree - The swagger custom dynamic tree.
 type SwaggerCustomDynamicTree struct {
 	// The tree on-browse configuration
-	Browse *SwaggerCustomDynamicTreeCommand `json:"browse,omitempty"`
+	Browse *SwaggerCustomDynamicTreeCommand
 
 	// The tree on-open configuration
-	Open *SwaggerCustomDynamicTreeCommand `json:"open,omitempty"`
+	Open *SwaggerCustomDynamicTreeCommand
 
 	// The tree settings
-	Settings *SwaggerCustomDynamicTreeSettings `json:"settings,omitempty"`
+	Settings *SwaggerCustomDynamicTreeSettings
 }
 
 // SwaggerCustomDynamicTreeCommand - The swagger tree command.
 type SwaggerCustomDynamicTreeCommand struct {
 	// The path to an item property which defines the display name of the item.
-	ItemFullTitlePath *string `json:"itemFullTitlePath,omitempty"`
+	ItemFullTitlePath *string
 
 	// The path to an item property which defines the display name of the item.
-	ItemIsParent *string `json:"itemIsParent,omitempty"`
+	ItemIsParent *string
 
 	// The path to an item property which defines the display name of the item.
-	ItemTitlePath *string `json:"itemTitlePath,omitempty"`
+	ItemTitlePath *string
 
 	// The path to an item property which defines the display name of the item.
-	ItemValuePath *string `json:"itemValuePath,omitempty"`
+	ItemValuePath *string
 
 	// The path to an item property which defines the display name of the item.
-	ItemsPath *string `json:"itemsPath,omitempty"`
+	ItemsPath *string
 
 	// The path to an item property which defines the display name of the item.
-	OperationID *string `json:"operationId,omitempty"`
+	OperationID *string
 
 	// Dictionary of
-	Parameters map[string]*SwaggerCustomDynamicTreeParameter `json:"parameters,omitempty"`
+	Parameters map[string]*SwaggerCustomDynamicTreeParameter
 
 	// The path to an item property which defines the display name of the item.
-	SelectableFilter *string `json:"selectableFilter,omitempty"`
+	SelectableFilter *string
 }
 
 // SwaggerCustomDynamicTreeParameter - The swagger custom dynamic tree parameter.
 type SwaggerCustomDynamicTreeParameter struct {
 	// The parameter reference.
-	ParameterReference *string `json:"parameterReference,omitempty"`
+	ParameterReference *string
 
 	// Indicates whether the parameter is required.
-	Required *bool `json:"required,omitempty"`
+	Required *bool
 
 	// Gets or sets a path to a property in the currently selected item to pass as a value to a parameter for the given operation.
-	SelectedItemValuePath *string `json:"selectedItemValuePath,omitempty"`
+	SelectedItemValuePath *string
 
 	// The parameter value.
-	Value any `json:"value,omitempty"`
+	Value any
 }
 
 // SwaggerCustomDynamicTreeSettings - The swagger custom dynamic tree settings.
 type SwaggerCustomDynamicTreeSettings struct {
 	// Indicates whether leaf nodes can be selected.
-	CanSelectLeafNodes *bool `json:"CanSelectLeafNodes,omitempty"`
+	CanSelectLeafNodes *bool
 
 	// Indicates whether parent nodes can be selected.
-	CanSelectParentNodes *bool `json:"CanSelectParentNodes,omitempty"`
+	CanSelectParentNodes *bool
 }
 
 // SwaggerExternalDocumentation - The swagger external documentation
 type SwaggerExternalDocumentation struct {
 	// The document description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The vendor extensions.
-	Extensions map[string]any `json:"extensions,omitempty"`
+	Extensions map[string]any
 
 	// The documentation Uri.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // SwaggerSchema - The swagger schema.
 type SwaggerSchema struct {
 	// The additional properties.
-	AdditionalProperties any `json:"additionalProperties,omitempty"`
+	AdditionalProperties any
 
 	// The schemas which must pass validation when this schema is used.
-	AllOf []*SwaggerSchema `json:"allOf,omitempty"`
+	AllOf []*SwaggerSchema
 
 	// The discriminator.
-	Discriminator *string `json:"discriminator,omitempty"`
+	Discriminator *string
 
 	// The dynamic list.
-	DynamicListNew *SwaggerCustomDynamicList `json:"dynamicListNew,omitempty"`
+	DynamicListNew *SwaggerCustomDynamicList
 
 	// The dynamic schema configuration.
-	DynamicSchemaNew *SwaggerCustomDynamicProperties `json:"dynamicSchemaNew,omitempty"`
+	DynamicSchemaNew *SwaggerCustomDynamicProperties
 
 	// The dynamic schema configuration.
-	DynamicSchemaOld *SwaggerCustomDynamicSchema `json:"dynamicSchemaOld,omitempty"`
+	DynamicSchemaOld *SwaggerCustomDynamicSchema
 
 	// The dynamic values tree configuration.
-	DynamicTree *SwaggerCustomDynamicTree `json:"dynamicTree,omitempty"`
+	DynamicTree *SwaggerCustomDynamicTree
 
 	// The example value.
-	Example any `json:"example,omitempty"`
+	Example any
 
 	// The external documentation.
-	ExternalDocs *SwaggerExternalDocumentation `json:"externalDocs,omitempty"`
+	ExternalDocs *SwaggerExternalDocumentation
 
 	// The items schema.
-	Items *SwaggerSchema `json:"items,omitempty"`
+	Items *SwaggerSchema
 
 	// The maximum number of allowed properties.
-	MaxProperties *int32 `json:"maxProperties,omitempty"`
+	MaxProperties *int32
 
 	// The minimum number of allowed properties.
-	MinProperties *int32 `json:"minProperties,omitempty"`
+	MinProperties *int32
 
 	// Indicates the notification url extension. If this is set, the property's value should be a callback url for a webhook.
-	NotificationURLExtension *bool `json:"notificationUrlExtension,omitempty"`
+	NotificationURLExtension *bool
 
 	// The object properties
-	Properties map[string]*SwaggerSchema `json:"properties,omitempty"`
+	Properties map[string]*SwaggerSchema
 
 	// Indicates whether this property must be present in the a request.
-	ReadOnly *bool `json:"readOnly,omitempty"`
+	ReadOnly *bool
 
 	// The reference.
-	Ref *string `json:"ref,omitempty"`
+	Ref *string
 
 	// The object required properties.
-	Required []*string `json:"required,omitempty"`
+	Required []*string
 
 	// The title.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// The type
-	Type *SwaggerSchemaType `json:"type,omitempty"`
+	Type *SwaggerSchemaType
 
 	// The xml representation format for a property.
-	XML *SwaggerXML `json:"xml,omitempty"`
+	XML *SwaggerXML
 }
 
 // SwaggerXML - The Swagger XML.
 type SwaggerXML struct {
 	// Indicates whether the property should be an attribute instead of an element.
-	Attribute *bool `json:"attribute,omitempty"`
+	Attribute *bool
 
 	// The vendor extensions.
-	Extensions map[string]any `json:"extensions,omitempty"`
+	Extensions map[string]any
 
 	// The xml element or attribute name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The xml namespace.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// The name prefix.
-	Prefix *string `json:"prefix,omitempty"`
+	Prefix *string
 
 	// Indicates whether the array elements are wrapped in a container element.
-	Wrapped *bool `json:"wrapped,omitempty"`
+	Wrapped *bool
 }
 
 // TrackingEvent - The tracking event.
 type TrackingEvent struct {
 	// REQUIRED; The event level.
-	EventLevel *EventLevel `json:"eventLevel,omitempty"`
+	EventLevel *EventLevel
 
 	// REQUIRED; The event time.
-	EventTime *time.Time `json:"eventTime,omitempty"`
+	EventTime *time.Time
 
 	// REQUIRED; The record type.
-	RecordType *TrackingRecordType `json:"recordType,omitempty"`
+	RecordType *TrackingRecordType
 
 	// The error.
-	Error *TrackingEventErrorInfo `json:"error,omitempty"`
+	Error *TrackingEventErrorInfo
 
 	// The record.
-	Record any `json:"record,omitempty"`
+	Record any
 }
 
 // TrackingEventErrorInfo - The tracking event error info.
 type TrackingEventErrorInfo struct {
 	// The code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // TrackingEventsDefinition - The tracking events definition.
 type TrackingEventsDefinition struct {
 	// REQUIRED; The events.
-	Events []*TrackingEvent `json:"events,omitempty"`
+	Events []*TrackingEvent
 
 	// REQUIRED; The source type.
-	SourceType *string `json:"sourceType,omitempty"`
+	SourceType *string
 
 	// The track events options.
-	TrackEventsOptions *TrackEventsOperationOptions `json:"trackEventsOptions,omitempty"`
+	TrackEventsOptions *TrackEventsOperationOptions
 }
 
 // UserAssignedIdentity - User Assigned identity properties.
 type UserAssignedIdentity struct {
 	// READ-ONLY; Client Id of user assigned identity
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; Principal Id of user assigned identity
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // Workflow - The workflow type.
 type Workflow struct {
 	// Managed service identity properties.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The workflow properties.
-	Properties *WorkflowProperties `json:"properties,omitempty"`
+	Properties *WorkflowProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowFilter - The workflow filter.
 type WorkflowFilter struct {
 	// The state of workflows.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 }
 
 // WorkflowListResult - The list of workflows.
 type WorkflowListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of workflows.
-	Value []*Workflow `json:"value,omitempty"`
+	Value []*Workflow
 }
 
 // WorkflowOutputParameter - The workflow output parameter.
 type WorkflowOutputParameter struct {
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The metadata.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The type.
-	Type *ParameterType `json:"type,omitempty"`
+	Type *ParameterType
 
 	// The value.
-	Value any `json:"value,omitempty"`
+	Value any
 
 	// READ-ONLY; Gets the error.
-	Error any `json:"error,omitempty" azure:"ro"`
+	Error any
 }
 
 // WorkflowParameter - The workflow parameters.
 type WorkflowParameter struct {
 	// The description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The metadata.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The type.
-	Type *ParameterType `json:"type,omitempty"`
+	Type *ParameterType
 
 	// The value.
-	Value any `json:"value,omitempty"`
+	Value any
 }
 
 // WorkflowProperties - The workflow properties.
 type WorkflowProperties struct {
 	// The access control configuration.
-	AccessControl *FlowAccessControlConfiguration `json:"accessControl,omitempty"`
+	AccessControl *FlowAccessControlConfiguration
 
 	// The definition.
-	Definition any `json:"definition,omitempty"`
+	Definition any
 
 	// The endpoints configuration.
-	EndpointsConfiguration *FlowEndpointsConfiguration `json:"endpointsConfiguration,omitempty"`
+	EndpointsConfiguration *FlowEndpointsConfiguration
 
 	// The integration account.
-	IntegrationAccount *ResourceReference `json:"integrationAccount,omitempty"`
+	IntegrationAccount *ResourceReference
 
 	// The integration service environment.
-	IntegrationServiceEnvironment *ResourceReference `json:"integrationServiceEnvironment,omitempty"`
+	IntegrationServiceEnvironment *ResourceReference
 
 	// The parameters.
-	Parameters map[string]*WorkflowParameter `json:"parameters,omitempty"`
+	Parameters map[string]*WorkflowParameter
 
 	// The state.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 
 	// READ-ONLY; Gets the access endpoint.
-	AccessEndpoint *string `json:"accessEndpoint,omitempty" azure:"ro"`
+	AccessEndpoint *string
 
 	// READ-ONLY; Gets the changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; Gets the created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Gets the provisioning state.
-	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkflowProvisioningState
 
 	// READ-ONLY; The sku.
-	SKU *SKU `json:"sku,omitempty" azure:"ro"`
+	SKU *SKU
 
 	// READ-ONLY; Gets the version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // WorkflowReference - The workflow reference.
 type WorkflowReference struct {
 	// The resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowRun - The workflow run.
 type WorkflowRun struct {
 	// The workflow run properties.
-	Properties *WorkflowRunProperties `json:"properties,omitempty"`
+	Properties *WorkflowRunProperties
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the workflow run name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the workflow run type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowRunAction - The workflow run action.
 type WorkflowRunAction struct {
 	// The workflow run action properties.
-	Properties *WorkflowRunActionProperties `json:"properties,omitempty"`
+	Properties *WorkflowRunActionProperties
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the workflow run action name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the workflow run action type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowRunActionFilter - The workflow run action filter.
 type WorkflowRunActionFilter struct {
 	// The status of workflow run action.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 }
 
 // WorkflowRunActionListResult - The list of workflow run actions.
 type WorkflowRunActionListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow run actions.
-	Value []*WorkflowRunAction `json:"value,omitempty"`
+	Value []*WorkflowRunAction
 }
 
 // WorkflowRunActionProperties - The workflow run action properties.
 type WorkflowRunActionProperties struct {
 	// The correlation properties.
-	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+	Correlation *RunActionCorrelation
 
 	// Gets the retry histories.
-	RetryHistory []*RetryHistory `json:"retryHistory,omitempty"`
+	RetryHistory []*RetryHistory
 
 	// READ-ONLY; Gets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the error.
-	Error any `json:"error,omitempty" azure:"ro"`
+	Error any
 
 	// READ-ONLY; Gets the link to inputs.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the link to outputs.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties any `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties any
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // WorkflowRunActionRepetitionDefinition - The workflow run action repetition definition.
 type WorkflowRunActionRepetitionDefinition struct {
 	// REQUIRED; The workflow run action repetition properties definition.
-	Properties *WorkflowRunActionRepetitionProperties `json:"properties,omitempty"`
+	Properties *WorkflowRunActionRepetitionProperties
 
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowRunActionRepetitionDefinitionCollection - A collection of workflow run action repetitions.
 type WorkflowRunActionRepetitionDefinitionCollection struct {
 	// The link used to get the next page of recommendations.
-	NextLink *string                                  `json:"nextLink,omitempty"`
-	Value    []*WorkflowRunActionRepetitionDefinition `json:"value,omitempty"`
+	NextLink *string
+	Value    []*WorkflowRunActionRepetitionDefinition
 }
 
 // WorkflowRunActionRepetitionProperties - The workflow run action repetition properties definition.
 type WorkflowRunActionRepetitionProperties struct {
 	// The workflow scope repetition code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The correlation properties.
-	Correlation *RunActionCorrelation `json:"correlation,omitempty"`
+	Correlation *RunActionCorrelation
 
 	// The end time of the workflow scope repetition.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Anything
-	Error          any    `json:"error,omitempty"`
-	IterationCount *int32 `json:"iterationCount,omitempty"`
+	Error          any
+	IterationCount *int32
 
 	// The repetition indexes.
-	RepetitionIndexes []*RepetitionIndex `json:"repetitionIndexes,omitempty"`
+	RepetitionIndexes []*RepetitionIndex
 
 	// Gets the retry histories.
-	RetryHistory []*RetryHistory `json:"retryHistory,omitempty"`
+	RetryHistory []*RetryHistory
 
 	// The start time of the workflow scope repetition.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the workflow scope repetition.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the inputs.
-	Inputs any `json:"inputs,omitempty" azure:"ro"`
+	Inputs any
 
 	// READ-ONLY; Gets the link to inputs.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the outputs.
-	Outputs any `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; Gets the link to outputs.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties any `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties any
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // WorkflowRunActionRepetitionsClientGetOptions contains the optional parameters for the WorkflowRunActionRepetitionsClient.Get
@@ -3439,16 +3439,16 @@ type WorkflowRunActionsClientListOptions struct {
 // WorkflowRunFilter - The workflow run filter.
 type WorkflowRunFilter struct {
 	// The status of workflow run.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 }
 
 // WorkflowRunListResult - The list of workflow runs.
 type WorkflowRunListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow runs.
-	Value []*WorkflowRun `json:"value,omitempty"`
+	Value []*WorkflowRun
 }
 
 // WorkflowRunOperationsClientGetOptions contains the optional parameters for the WorkflowRunOperationsClient.Get method.
@@ -3459,85 +3459,85 @@ type WorkflowRunOperationsClientGetOptions struct {
 // WorkflowRunProperties - The workflow run properties.
 type WorkflowRunProperties struct {
 	// The run correlation.
-	Correlation *Correlation `json:"correlation,omitempty"`
+	Correlation *Correlation
 
 	// READ-ONLY; Gets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets the correlation id.
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+	CorrelationID *string
 
 	// READ-ONLY; Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the error.
-	Error any `json:"error,omitempty" azure:"ro"`
+	Error any
 
 	// READ-ONLY; Gets the outputs.
-	Outputs map[string]*WorkflowOutputParameter `json:"outputs,omitempty" azure:"ro"`
+	Outputs map[string]*WorkflowOutputParameter
 
 	// READ-ONLY; Gets the response of the flow run.
-	Response *WorkflowRunTrigger `json:"response,omitempty" azure:"ro"`
+	Response *WorkflowRunTrigger
 
 	// READ-ONLY; Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the fired trigger.
-	Trigger *WorkflowRunTrigger `json:"trigger,omitempty" azure:"ro"`
+	Trigger *WorkflowRunTrigger
 
 	// READ-ONLY; Gets the wait end time.
-	WaitEndTime *time.Time `json:"waitEndTime,omitempty" azure:"ro"`
+	WaitEndTime *time.Time
 
 	// READ-ONLY; Gets the reference to workflow version.
-	Workflow *ResourceReference `json:"workflow,omitempty" azure:"ro"`
+	Workflow *ResourceReference
 }
 
 // WorkflowRunTrigger - The workflow run trigger.
 type WorkflowRunTrigger struct {
 	// The run correlation.
-	Correlation *Correlation `json:"correlation,omitempty"`
+	Correlation *Correlation
 
 	// READ-ONLY; Gets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the error.
-	Error any `json:"error,omitempty" azure:"ro"`
+	Error any
 
 	// READ-ONLY; Gets the inputs.
-	Inputs any `json:"inputs,omitempty" azure:"ro"`
+	Inputs any
 
 	// READ-ONLY; Gets the link to inputs.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the outputs.
-	Outputs any `json:"outputs,omitempty" azure:"ro"`
+	Outputs any
 
 	// READ-ONLY; Gets the link to outputs.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the scheduled time.
-	ScheduledTime *time.Time `json:"scheduledTime,omitempty" azure:"ro"`
+	ScheduledTime *time.Time
 
 	// READ-ONLY; Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the tracked properties.
-	TrackedProperties any `json:"trackedProperties,omitempty" azure:"ro"`
+	TrackedProperties any
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // WorkflowRunsClientCancelOptions contains the optional parameters for the WorkflowRunsClient.Cancel method.
@@ -3561,43 +3561,43 @@ type WorkflowRunsClientListOptions struct {
 // WorkflowTrigger - The workflow trigger.
 type WorkflowTrigger struct {
 	// The workflow trigger properties.
-	Properties *WorkflowTriggerProperties `json:"properties,omitempty"`
+	Properties *WorkflowTriggerProperties
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the workflow trigger name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the workflow trigger type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowTriggerCallbackURL - The workflow trigger callback URL.
 type WorkflowTriggerCallbackURL struct {
 	// Gets the workflow trigger callback URL query parameters.
-	Queries *WorkflowTriggerListCallbackURLQueries `json:"queries,omitempty"`
+	Queries *WorkflowTriggerListCallbackURLQueries
 
 	// Gets the workflow trigger callback URL relative path parameters.
-	RelativePathParameters []*string `json:"relativePathParameters,omitempty"`
+	RelativePathParameters []*string
 
 	// READ-ONLY; Gets the workflow trigger callback URL base path.
-	BasePath *string `json:"basePath,omitempty" azure:"ro"`
+	BasePath *string
 
 	// READ-ONLY; Gets the workflow trigger callback URL HTTP method.
-	Method *string `json:"method,omitempty" azure:"ro"`
+	Method *string
 
 	// READ-ONLY; Gets the workflow trigger callback URL relative path.
-	RelativePath *string `json:"relativePath,omitempty" azure:"ro"`
+	RelativePath *string
 
 	// READ-ONLY; Gets the workflow trigger callback URL.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // WorkflowTriggerFilter - The workflow trigger filter.
 type WorkflowTriggerFilter struct {
 	// The state of workflow trigger.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 }
 
 // WorkflowTriggerHistoriesClientGetOptions contains the optional parameters for the WorkflowTriggerHistoriesClient.Get method.
@@ -3623,166 +3623,166 @@ type WorkflowTriggerHistoriesClientResubmitOptions struct {
 // WorkflowTriggerHistory - The workflow trigger history.
 type WorkflowTriggerHistory struct {
 	// Gets the workflow trigger history properties.
-	Properties *WorkflowTriggerHistoryProperties `json:"properties,omitempty"`
+	Properties *WorkflowTriggerHistoryProperties
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the workflow trigger history name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the workflow trigger history type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowTriggerHistoryFilter - The workflow trigger history filter.
 type WorkflowTriggerHistoryFilter struct {
 	// The status of workflow trigger history.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 }
 
 // WorkflowTriggerHistoryListResult - The list of workflow trigger histories.
 type WorkflowTriggerHistoryListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow trigger histories.
-	Value []*WorkflowTriggerHistory `json:"value,omitempty"`
+	Value []*WorkflowTriggerHistory
 }
 
 // WorkflowTriggerHistoryProperties - The workflow trigger history properties.
 type WorkflowTriggerHistoryProperties struct {
 	// The run correlation.
-	Correlation *Correlation `json:"correlation,omitempty"`
+	Correlation *Correlation
 
 	// READ-ONLY; Gets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets the end time.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Gets the error.
-	Error any `json:"error,omitempty" azure:"ro"`
+	Error any
 
 	// READ-ONLY; The value indicating whether trigger was fired.
-	Fired *bool `json:"fired,omitempty" azure:"ro"`
+	Fired *bool
 
 	// READ-ONLY; Gets the link to input parameters.
-	InputsLink *ContentLink `json:"inputsLink,omitempty" azure:"ro"`
+	InputsLink *ContentLink
 
 	// READ-ONLY; Gets the link to output parameters.
-	OutputsLink *ContentLink `json:"outputsLink,omitempty" azure:"ro"`
+	OutputsLink *ContentLink
 
 	// READ-ONLY; Gets the reference to workflow run.
-	Run *ResourceReference `json:"run,omitempty" azure:"ro"`
+	Run *ResourceReference
 
 	// READ-ONLY; The scheduled time.
-	ScheduledTime *time.Time `json:"scheduledTime,omitempty" azure:"ro"`
+	ScheduledTime *time.Time
 
 	// READ-ONLY; Gets the start time.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the tracking id.
-	TrackingID *string `json:"trackingId,omitempty" azure:"ro"`
+	TrackingID *string
 }
 
 // WorkflowTriggerListCallbackURLQueries - Gets the workflow trigger callback URL query parameters.
 type WorkflowTriggerListCallbackURLQueries struct {
 	// The api version.
-	APIVersion *string `json:"api-version,omitempty"`
+	APIVersion *string
 
 	// The SAS timestamp.
-	Se *string `json:"se,omitempty"`
+	Se *string
 
 	// The SAS signature.
-	Sig *string `json:"sig,omitempty"`
+	Sig *string
 
 	// The SAS permissions.
-	Sp *string `json:"sp,omitempty"`
+	Sp *string
 
 	// The SAS version.
-	Sv *string `json:"sv,omitempty"`
+	Sv *string
 }
 
 // WorkflowTriggerListResult - The list of workflow triggers.
 type WorkflowTriggerListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow triggers.
-	Value []*WorkflowTrigger `json:"value,omitempty"`
+	Value []*WorkflowTrigger
 }
 
 // WorkflowTriggerProperties - The workflow trigger properties.
 type WorkflowTriggerProperties struct {
 	// READ-ONLY; Gets the changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; Gets the created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; Gets the last execution time.
-	LastExecutionTime *time.Time `json:"lastExecutionTime,omitempty" azure:"ro"`
+	LastExecutionTime *time.Time
 
 	// READ-ONLY; Gets the next execution time.
-	NextExecutionTime *time.Time `json:"nextExecutionTime,omitempty" azure:"ro"`
+	NextExecutionTime *time.Time
 
 	// READ-ONLY; Gets the provisioning state.
-	ProvisioningState *WorkflowTriggerProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkflowTriggerProvisioningState
 
 	// READ-ONLY; Gets the workflow trigger recurrence.
-	Recurrence *WorkflowTriggerRecurrence `json:"recurrence,omitempty" azure:"ro"`
+	Recurrence *WorkflowTriggerRecurrence
 
 	// READ-ONLY; Gets the state.
-	State *WorkflowState `json:"state,omitempty" azure:"ro"`
+	State *WorkflowState
 
 	// READ-ONLY; Gets the status.
-	Status *WorkflowStatus `json:"status,omitempty" azure:"ro"`
+	Status *WorkflowStatus
 
 	// READ-ONLY; Gets the reference to workflow.
-	Workflow *ResourceReference `json:"workflow,omitempty" azure:"ro"`
+	Workflow *ResourceReference
 }
 
 // WorkflowTriggerRecurrence - The workflow trigger recurrence.
 type WorkflowTriggerRecurrence struct {
 	// The end time.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// The frequency.
-	Frequency *RecurrenceFrequency `json:"frequency,omitempty"`
+	Frequency *RecurrenceFrequency
 
 	// The interval.
-	Interval *int32 `json:"interval,omitempty"`
+	Interval *int32
 
 	// The recurrence schedule.
-	Schedule *RecurrenceSchedule `json:"schedule,omitempty"`
+	Schedule *RecurrenceSchedule
 
 	// The start time.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 
 	// The time zone.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // WorkflowTriggerReference - The workflow trigger reference.
 type WorkflowTriggerReference struct {
 	// The workflow name.
-	FlowName *string `json:"flowName,omitempty"`
+	FlowName *string
 
 	// The resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The workflow trigger name.
-	TriggerName *string `json:"triggerName,omitempty"`
+	TriggerName *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowTriggersClientGetOptions contains the optional parameters for the WorkflowTriggersClient.Get method.
@@ -3828,70 +3828,70 @@ type WorkflowTriggersClientSetStateOptions struct {
 // WorkflowVersion - The workflow version.
 type WorkflowVersion struct {
 	// The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The workflow version properties.
-	Properties *WorkflowVersionProperties `json:"properties,omitempty"`
+	Properties *WorkflowVersionProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Gets the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Gets the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowVersionListResult - The list of workflow versions.
 type WorkflowVersionListResult struct {
 	// The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of workflow versions.
-	Value []*WorkflowVersion `json:"value,omitempty"`
+	Value []*WorkflowVersion
 }
 
 // WorkflowVersionProperties - The workflow version properties.
 type WorkflowVersionProperties struct {
 	// The access control configuration.
-	AccessControl *FlowAccessControlConfiguration `json:"accessControl,omitempty"`
+	AccessControl *FlowAccessControlConfiguration
 
 	// The definition.
-	Definition any `json:"definition,omitempty"`
+	Definition any
 
 	// The endpoints configuration.
-	EndpointsConfiguration *FlowEndpointsConfiguration `json:"endpointsConfiguration,omitempty"`
+	EndpointsConfiguration *FlowEndpointsConfiguration
 
 	// The integration account.
-	IntegrationAccount *ResourceReference `json:"integrationAccount,omitempty"`
+	IntegrationAccount *ResourceReference
 
 	// The parameters.
-	Parameters map[string]*WorkflowParameter `json:"parameters,omitempty"`
+	Parameters map[string]*WorkflowParameter
 
 	// The state.
-	State *WorkflowState `json:"state,omitempty"`
+	State *WorkflowState
 
 	// READ-ONLY; Gets the access endpoint.
-	AccessEndpoint *string `json:"accessEndpoint,omitempty" azure:"ro"`
+	AccessEndpoint *string
 
 	// READ-ONLY; Gets the changed time.
-	ChangedTime *time.Time `json:"changedTime,omitempty" azure:"ro"`
+	ChangedTime *time.Time
 
 	// READ-ONLY; Gets the created time.
-	CreatedTime *time.Time `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *time.Time
 
 	// READ-ONLY; The provisioning state.
-	ProvisioningState *WorkflowProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *WorkflowProvisioningState
 
 	// READ-ONLY; The sku.
-	SKU *SKU `json:"sku,omitempty" azure:"ro"`
+	SKU *SKU
 
 	// READ-ONLY; Gets the version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // WorkflowVersionTriggersClientListCallbackURLOptions contains the optional parameters for the WorkflowVersionTriggersClient.ListCallbackURL
@@ -4002,398 +4002,398 @@ type WorkflowsClientValidateByResourceGroupOptions struct {
 // WsdlService - The WSDL service.
 type WsdlService struct {
 	// The list of endpoints' qualified names.
-	EndpointQualifiedNames []*string `json:"EndpointQualifiedNames,omitempty"`
+	EndpointQualifiedNames []*string
 
 	// The qualified name.
-	QualifiedName *string `json:"qualifiedName,omitempty"`
+	QualifiedName *string
 }
 
 // X12AcknowledgementSettings - The X12 agreement acknowledgement settings.
 type X12AcknowledgementSettings struct {
 	// REQUIRED; The acknowledgement control number lower bound.
-	AcknowledgementControlNumberLowerBound *int32 `json:"acknowledgementControlNumberLowerBound,omitempty"`
+	AcknowledgementControlNumberLowerBound *int32
 
 	// REQUIRED; The acknowledgement control number upper bound.
-	AcknowledgementControlNumberUpperBound *int32 `json:"acknowledgementControlNumberUpperBound,omitempty"`
+	AcknowledgementControlNumberUpperBound *int32
 
 	// REQUIRED; The value indicating whether to batch functional acknowledgements.
-	BatchFunctionalAcknowledgements *bool `json:"batchFunctionalAcknowledgements,omitempty"`
+	BatchFunctionalAcknowledgements *bool
 
 	// REQUIRED; The value indicating whether to batch implementation acknowledgements.
-	BatchImplementationAcknowledgements *bool `json:"batchImplementationAcknowledgements,omitempty"`
+	BatchImplementationAcknowledgements *bool
 
 	// REQUIRED; The value indicating whether to batch the technical acknowledgements.
-	BatchTechnicalAcknowledgements *bool `json:"batchTechnicalAcknowledgements,omitempty"`
+	BatchTechnicalAcknowledgements *bool
 
 	// REQUIRED; The value indicating whether functional acknowledgement is needed.
-	NeedFunctionalAcknowledgement *bool `json:"needFunctionalAcknowledgement,omitempty"`
+	NeedFunctionalAcknowledgement *bool
 
 	// REQUIRED; The value indicating whether implementation acknowledgement is needed.
-	NeedImplementationAcknowledgement *bool `json:"needImplementationAcknowledgement,omitempty"`
+	NeedImplementationAcknowledgement *bool
 
 	// REQUIRED; The value indicating whether a loop is needed for valid messages.
-	NeedLoopForValidMessages *bool `json:"needLoopForValidMessages,omitempty"`
+	NeedLoopForValidMessages *bool
 
 	// REQUIRED; The value indicating whether technical acknowledgement is needed.
-	NeedTechnicalAcknowledgement *bool `json:"needTechnicalAcknowledgement,omitempty"`
+	NeedTechnicalAcknowledgement *bool
 
 	// REQUIRED; The value indicating whether to rollover acknowledgement control number.
-	RolloverAcknowledgementControlNumber *bool `json:"rolloverAcknowledgementControlNumber,omitempty"`
+	RolloverAcknowledgementControlNumber *bool
 
 	// REQUIRED; The value indicating whether to send synchronous acknowledgement.
-	SendSynchronousAcknowledgement *bool `json:"sendSynchronousAcknowledgement,omitempty"`
+	SendSynchronousAcknowledgement *bool
 
 	// The acknowledgement control number prefix.
-	AcknowledgementControlNumberPrefix *string `json:"acknowledgementControlNumberPrefix,omitempty"`
+	AcknowledgementControlNumberPrefix *string
 
 	// The acknowledgement control number suffix.
-	AcknowledgementControlNumberSuffix *string `json:"acknowledgementControlNumberSuffix,omitempty"`
+	AcknowledgementControlNumberSuffix *string
 
 	// The functional acknowledgement version.
-	FunctionalAcknowledgementVersion *string `json:"functionalAcknowledgementVersion,omitempty"`
+	FunctionalAcknowledgementVersion *string
 
 	// The implementation acknowledgement version.
-	ImplementationAcknowledgementVersion *string `json:"implementationAcknowledgementVersion,omitempty"`
+	ImplementationAcknowledgementVersion *string
 }
 
 // X12AgreementContent - The X12 agreement content.
 type X12AgreementContent struct {
 	// REQUIRED; The X12 one-way receive agreement.
-	ReceiveAgreement *X12OneWayAgreement `json:"receiveAgreement,omitempty"`
+	ReceiveAgreement *X12OneWayAgreement
 
 	// REQUIRED; The X12 one-way send agreement.
-	SendAgreement *X12OneWayAgreement `json:"sendAgreement,omitempty"`
+	SendAgreement *X12OneWayAgreement
 }
 
 // X12DelimiterOverrides - The X12 delimiter override settings.
 type X12DelimiterOverrides struct {
 	// REQUIRED; The component separator.
-	ComponentSeparator *int32 `json:"componentSeparator,omitempty"`
+	ComponentSeparator *int32
 
 	// REQUIRED; The data element separator.
-	DataElementSeparator *int32 `json:"dataElementSeparator,omitempty"`
+	DataElementSeparator *int32
 
 	// REQUIRED; The replacement character.
-	ReplaceCharacter *int32 `json:"replaceCharacter,omitempty"`
+	ReplaceCharacter *int32
 
 	// REQUIRED; The value indicating whether to replace separators in payload.
-	ReplaceSeparatorsInPayload *bool `json:"replaceSeparatorsInPayload,omitempty"`
+	ReplaceSeparatorsInPayload *bool
 
 	// REQUIRED; The segment terminator.
-	SegmentTerminator *int32 `json:"segmentTerminator,omitempty"`
+	SegmentTerminator *int32
 
 	// REQUIRED; The segment terminator suffix.
-	SegmentTerminatorSuffix *SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
+	SegmentTerminatorSuffix *SegmentTerminatorSuffix
 
 	// The message id.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// The protocol version.
-	ProtocolVersion *string `json:"protocolVersion,omitempty"`
+	ProtocolVersion *string
 
 	// The target namespace on which this delimiter settings has to be applied.
-	TargetNamespace *string `json:"targetNamespace,omitempty"`
+	TargetNamespace *string
 }
 
 // X12EnvelopeOverride - The X12 envelope override settings.
 type X12EnvelopeOverride struct {
 	// REQUIRED; The date format.
-	DateFormat *X12DateFormat `json:"dateFormat,omitempty"`
+	DateFormat *X12DateFormat
 
 	// REQUIRED; The header version.
-	HeaderVersion *string `json:"headerVersion,omitempty"`
+	HeaderVersion *string
 
 	// REQUIRED; The message id on which this envelope settings has to be applied.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// REQUIRED; The protocol version on which this envelope settings has to be applied.
-	ProtocolVersion *string `json:"protocolVersion,omitempty"`
+	ProtocolVersion *string
 
 	// REQUIRED; The receiver application id.
-	ReceiverApplicationID *string `json:"receiverApplicationId,omitempty"`
+	ReceiverApplicationID *string
 
 	// REQUIRED; The responsible agency code.
-	ResponsibleAgencyCode *string `json:"responsibleAgencyCode,omitempty"`
+	ResponsibleAgencyCode *string
 
 	// REQUIRED; The sender application id.
-	SenderApplicationID *string `json:"senderApplicationId,omitempty"`
+	SenderApplicationID *string
 
 	// REQUIRED; The target namespace on which this envelope settings has to be applied.
-	TargetNamespace *string `json:"targetNamespace,omitempty"`
+	TargetNamespace *string
 
 	// REQUIRED; The time format.
-	TimeFormat *X12TimeFormat `json:"timeFormat,omitempty"`
+	TimeFormat *X12TimeFormat
 
 	// The functional identifier code.
-	FunctionalIdentifierCode *string `json:"functionalIdentifierCode,omitempty"`
+	FunctionalIdentifierCode *string
 }
 
 // X12EnvelopeSettings - The X12 agreement envelope settings.
 type X12EnvelopeSettings struct {
 	// REQUIRED; The controls standards id.
-	ControlStandardsID *int32 `json:"controlStandardsId,omitempty"`
+	ControlStandardsID *int32
 
 	// REQUIRED; The control version number.
-	ControlVersionNumber *string `json:"controlVersionNumber,omitempty"`
+	ControlVersionNumber *string
 
 	// REQUIRED; The value indicating whether to enable default group headers.
-	EnableDefaultGroupHeaders *bool `json:"enableDefaultGroupHeaders,omitempty"`
+	EnableDefaultGroupHeaders *bool
 
 	// REQUIRED; The group control number lower bound.
-	GroupControlNumberLowerBound *int32 `json:"groupControlNumberLowerBound,omitempty"`
+	GroupControlNumberLowerBound *int32
 
 	// REQUIRED; The group control number upper bound.
-	GroupControlNumberUpperBound *int32 `json:"groupControlNumberUpperBound,omitempty"`
+	GroupControlNumberUpperBound *int32
 
 	// REQUIRED; The group header agency code.
-	GroupHeaderAgencyCode *string `json:"groupHeaderAgencyCode,omitempty"`
+	GroupHeaderAgencyCode *string
 
 	// REQUIRED; The group header date format.
-	GroupHeaderDateFormat *X12DateFormat `json:"groupHeaderDateFormat,omitempty"`
+	GroupHeaderDateFormat *X12DateFormat
 
 	// REQUIRED; The group header time format.
-	GroupHeaderTimeFormat *X12TimeFormat `json:"groupHeaderTimeFormat,omitempty"`
+	GroupHeaderTimeFormat *X12TimeFormat
 
 	// REQUIRED; The group header version.
-	GroupHeaderVersion *string `json:"groupHeaderVersion,omitempty"`
+	GroupHeaderVersion *string
 
 	// REQUIRED; The interchange control number lower bound.
-	InterchangeControlNumberLowerBound *int32 `json:"interchangeControlNumberLowerBound,omitempty"`
+	InterchangeControlNumberLowerBound *int32
 
 	// REQUIRED; The interchange control number upper bound.
-	InterchangeControlNumberUpperBound *int32 `json:"interchangeControlNumberUpperBound,omitempty"`
+	InterchangeControlNumberUpperBound *int32
 
 	// REQUIRED; The value indicating whether to overwrite existing transaction set control number.
-	OverwriteExistingTransactionSetControlNumber *bool `json:"overwriteExistingTransactionSetControlNumber,omitempty"`
+	OverwriteExistingTransactionSetControlNumber *bool
 
 	// REQUIRED; The receiver application id.
-	ReceiverApplicationID *string `json:"receiverApplicationId,omitempty"`
+	ReceiverApplicationID *string
 
 	// REQUIRED; The value indicating whether to rollover group control number.
-	RolloverGroupControlNumber *bool `json:"rolloverGroupControlNumber,omitempty"`
+	RolloverGroupControlNumber *bool
 
 	// REQUIRED; The value indicating whether to rollover interchange control number.
-	RolloverInterchangeControlNumber *bool `json:"rolloverInterchangeControlNumber,omitempty"`
+	RolloverInterchangeControlNumber *bool
 
 	// REQUIRED; The value indicating whether to rollover transaction set control number.
-	RolloverTransactionSetControlNumber *bool `json:"rolloverTransactionSetControlNumber,omitempty"`
+	RolloverTransactionSetControlNumber *bool
 
 	// REQUIRED; The sender application id.
-	SenderApplicationID *string `json:"senderApplicationId,omitempty"`
+	SenderApplicationID *string
 
 	// REQUIRED; The transaction set control number lower bound.
-	TransactionSetControlNumberLowerBound *int32 `json:"transactionSetControlNumberLowerBound,omitempty"`
+	TransactionSetControlNumberLowerBound *int32
 
 	// REQUIRED; The transaction set control number upper bound.
-	TransactionSetControlNumberUpperBound *int32 `json:"transactionSetControlNumberUpperBound,omitempty"`
+	TransactionSetControlNumberUpperBound *int32
 
 	// REQUIRED; The usage indicator.
-	UsageIndicator *UsageIndicator `json:"usageIndicator,omitempty"`
+	UsageIndicator *UsageIndicator
 
 	// REQUIRED; The value indicating whether to use control standards id as repetition character.
-	UseControlStandardsIDAsRepetitionCharacter *bool `json:"useControlStandardsIdAsRepetitionCharacter,omitempty"`
+	UseControlStandardsIDAsRepetitionCharacter *bool
 
 	// The functional group id.
-	FunctionalGroupID *string `json:"functionalGroupId,omitempty"`
+	FunctionalGroupID *string
 
 	// The transaction set control number prefix.
-	TransactionSetControlNumberPrefix *string `json:"transactionSetControlNumberPrefix,omitempty"`
+	TransactionSetControlNumberPrefix *string
 
 	// The transaction set control number suffix.
-	TransactionSetControlNumberSuffix *string `json:"transactionSetControlNumberSuffix,omitempty"`
+	TransactionSetControlNumberSuffix *string
 }
 
 // X12FramingSettings - The X12 agreement framing settings.
 type X12FramingSettings struct {
 	// REQUIRED; The X12 character set.
-	CharacterSet *X12CharacterSet `json:"characterSet,omitempty"`
+	CharacterSet *X12CharacterSet
 
 	// REQUIRED; The component separator.
-	ComponentSeparator *int32 `json:"componentSeparator,omitempty"`
+	ComponentSeparator *int32
 
 	// REQUIRED; The data element separator.
-	DataElementSeparator *int32 `json:"dataElementSeparator,omitempty"`
+	DataElementSeparator *int32
 
 	// REQUIRED; The replacement character.
-	ReplaceCharacter *int32 `json:"replaceCharacter,omitempty"`
+	ReplaceCharacter *int32
 
 	// REQUIRED; The value indicating whether to replace separators in payload.
-	ReplaceSeparatorsInPayload *bool `json:"replaceSeparatorsInPayload,omitempty"`
+	ReplaceSeparatorsInPayload *bool
 
 	// REQUIRED; The segment terminator.
-	SegmentTerminator *int32 `json:"segmentTerminator,omitempty"`
+	SegmentTerminator *int32
 
 	// REQUIRED; The segment terminator suffix.
-	SegmentTerminatorSuffix *SegmentTerminatorSuffix `json:"segmentTerminatorSuffix,omitempty"`
+	SegmentTerminatorSuffix *SegmentTerminatorSuffix
 }
 
 // X12MessageFilter - The X12 message filter for odata query.
 type X12MessageFilter struct {
 	// REQUIRED; The message filter type.
-	MessageFilterType *MessageFilterType `json:"messageFilterType,omitempty"`
+	MessageFilterType *MessageFilterType
 }
 
 // X12MessageIdentifier - The X12 message identifier.
 type X12MessageIdentifier struct {
 	// REQUIRED; The message id.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 }
 
 // X12OneWayAgreement - The X12 one-way agreement.
 type X12OneWayAgreement struct {
 	// REQUIRED; The X12 protocol settings.
-	ProtocolSettings *X12ProtocolSettings `json:"protocolSettings,omitempty"`
+	ProtocolSettings *X12ProtocolSettings
 
 	// REQUIRED; The receiver business identity
-	ReceiverBusinessIdentity *BusinessIdentity `json:"receiverBusinessIdentity,omitempty"`
+	ReceiverBusinessIdentity *BusinessIdentity
 
 	// REQUIRED; The sender business identity
-	SenderBusinessIdentity *BusinessIdentity `json:"senderBusinessIdentity,omitempty"`
+	SenderBusinessIdentity *BusinessIdentity
 }
 
 // X12ProcessingSettings - The X12 processing settings.
 type X12ProcessingSettings struct {
 	// REQUIRED; The value indicating whether to convert numerical type to implied decimal.
-	ConvertImpliedDecimal *bool `json:"convertImpliedDecimal,omitempty"`
+	ConvertImpliedDecimal *bool
 
 	// REQUIRED; The value indicating whether to create empty xml tags for trailing separators.
-	CreateEmptyXMLTagsForTrailingSeparators *bool `json:"createEmptyXmlTagsForTrailingSeparators,omitempty"`
+	CreateEmptyXMLTagsForTrailingSeparators *bool
 
 	// REQUIRED; The value indicating whether to mask security information.
-	MaskSecurityInfo *bool `json:"maskSecurityInfo,omitempty"`
+	MaskSecurityInfo *bool
 
 	// REQUIRED; The value indicating whether to preserve interchange.
-	PreserveInterchange *bool `json:"preserveInterchange,omitempty"`
+	PreserveInterchange *bool
 
 	// REQUIRED; The value indicating whether to suspend interchange on error.
-	SuspendInterchangeOnError *bool `json:"suspendInterchangeOnError,omitempty"`
+	SuspendInterchangeOnError *bool
 
 	// REQUIRED; The value indicating whether to use dot as decimal separator.
-	UseDotAsDecimalSeparator *bool `json:"useDotAsDecimalSeparator,omitempty"`
+	UseDotAsDecimalSeparator *bool
 }
 
 // X12ProtocolSettings - The X12 agreement protocol settings.
 type X12ProtocolSettings struct {
 	// REQUIRED; The X12 acknowledgment settings.
-	AcknowledgementSettings *X12AcknowledgementSettings `json:"acknowledgementSettings,omitempty"`
+	AcknowledgementSettings *X12AcknowledgementSettings
 
 	// REQUIRED; The X12 envelope settings.
-	EnvelopeSettings *X12EnvelopeSettings `json:"envelopeSettings,omitempty"`
+	EnvelopeSettings *X12EnvelopeSettings
 
 	// REQUIRED; The X12 framing settings.
-	FramingSettings *X12FramingSettings `json:"framingSettings,omitempty"`
+	FramingSettings *X12FramingSettings
 
 	// REQUIRED; The X12 message filter.
-	MessageFilter *X12MessageFilter `json:"messageFilter,omitempty"`
+	MessageFilter *X12MessageFilter
 
 	// REQUIRED; The X12 processing settings.
-	ProcessingSettings *X12ProcessingSettings `json:"processingSettings,omitempty"`
+	ProcessingSettings *X12ProcessingSettings
 
 	// REQUIRED; The X12 schema references.
-	SchemaReferences []*X12SchemaReference `json:"schemaReferences,omitempty"`
+	SchemaReferences []*X12SchemaReference
 
 	// REQUIRED; The X12 security settings.
-	SecuritySettings *X12SecuritySettings `json:"securitySettings,omitempty"`
+	SecuritySettings *X12SecuritySettings
 
 	// REQUIRED; The X12 validation settings.
-	ValidationSettings *X12ValidationSettings `json:"validationSettings,omitempty"`
+	ValidationSettings *X12ValidationSettings
 
 	// The X12 envelope override settings.
-	EnvelopeOverrides []*X12EnvelopeOverride `json:"envelopeOverrides,omitempty"`
+	EnvelopeOverrides []*X12EnvelopeOverride
 
 	// The X12 message filter list.
-	MessageFilterList []*X12MessageIdentifier `json:"messageFilterList,omitempty"`
+	MessageFilterList []*X12MessageIdentifier
 
 	// The X12 validation override settings.
-	ValidationOverrides []*X12ValidationOverride `json:"validationOverrides,omitempty"`
+	ValidationOverrides []*X12ValidationOverride
 
 	// The X12 delimiter override settings.
-	X12DelimiterOverrides []*X12DelimiterOverrides `json:"x12DelimiterOverrides,omitempty"`
+	X12DelimiterOverrides []*X12DelimiterOverrides
 }
 
 // X12SchemaReference - The X12 schema reference.
 type X12SchemaReference struct {
 	// REQUIRED; The message id.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// REQUIRED; The schema name.
-	SchemaName *string `json:"schemaName,omitempty"`
+	SchemaName *string
 
 	// REQUIRED; The schema version.
-	SchemaVersion *string `json:"schemaVersion,omitempty"`
+	SchemaVersion *string
 
 	// The sender application id.
-	SenderApplicationID *string `json:"senderApplicationId,omitempty"`
+	SenderApplicationID *string
 }
 
 // X12SecuritySettings - The X12 agreement security settings.
 type X12SecuritySettings struct {
 	// REQUIRED; The authorization qualifier.
-	AuthorizationQualifier *string `json:"authorizationQualifier,omitempty"`
+	AuthorizationQualifier *string
 
 	// REQUIRED; The security qualifier.
-	SecurityQualifier *string `json:"securityQualifier,omitempty"`
+	SecurityQualifier *string
 
 	// The authorization value.
-	AuthorizationValue *string `json:"authorizationValue,omitempty"`
+	AuthorizationValue *string
 
 	// The password value.
-	PasswordValue *string `json:"passwordValue,omitempty"`
+	PasswordValue *string
 }
 
 // X12ValidationOverride - The X12 validation override settings.
 type X12ValidationOverride struct {
 	// REQUIRED; The value indicating whether to allow leading and trailing spaces and zeroes.
-	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
+	AllowLeadingAndTrailingSpacesAndZeroes *bool
 
 	// REQUIRED; The message id on which the validation settings has to be applied.
-	MessageID *string `json:"messageId,omitempty"`
+	MessageID *string
 
 	// REQUIRED; The trailing separator policy.
-	TrailingSeparatorPolicy *TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+	TrailingSeparatorPolicy *TrailingSeparatorPolicy
 
 	// REQUIRED; The value indicating whether to trim leading and trailing spaces and zeroes.
-	TrimLeadingAndTrailingSpacesAndZeroes *bool `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
+	TrimLeadingAndTrailingSpacesAndZeroes *bool
 
 	// REQUIRED; The value indicating whether to validate character Set.
-	ValidateCharacterSet *bool `json:"validateCharacterSet,omitempty"`
+	ValidateCharacterSet *bool
 
 	// REQUIRED; The value indicating whether to validate EDI types.
-	ValidateEDITypes *bool `json:"validateEDITypes,omitempty"`
+	ValidateEDITypes *bool
 
 	// REQUIRED; The value indicating whether to validate XSD types.
-	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
+	ValidateXSDTypes *bool
 }
 
 // X12ValidationSettings - The X12 agreement validation settings.
 type X12ValidationSettings struct {
 	// REQUIRED; The value indicating whether to allow leading and trailing spaces and zeroes.
-	AllowLeadingAndTrailingSpacesAndZeroes *bool `json:"allowLeadingAndTrailingSpacesAndZeroes,omitempty"`
+	AllowLeadingAndTrailingSpacesAndZeroes *bool
 
 	// REQUIRED; The value indicating whether to check for duplicate group control number.
-	CheckDuplicateGroupControlNumber *bool `json:"checkDuplicateGroupControlNumber,omitempty"`
+	CheckDuplicateGroupControlNumber *bool
 
 	// REQUIRED; The value indicating whether to check for duplicate interchange control number.
-	CheckDuplicateInterchangeControlNumber *bool `json:"checkDuplicateInterchangeControlNumber,omitempty"`
+	CheckDuplicateInterchangeControlNumber *bool
 
 	// REQUIRED; The value indicating whether to check for duplicate transaction set control number.
-	CheckDuplicateTransactionSetControlNumber *bool `json:"checkDuplicateTransactionSetControlNumber,omitempty"`
+	CheckDuplicateTransactionSetControlNumber *bool
 
 	// REQUIRED; The validity period of interchange control number.
-	InterchangeControlNumberValidityDays *int32 `json:"interchangeControlNumberValidityDays,omitempty"`
+	InterchangeControlNumberValidityDays *int32
 
 	// REQUIRED; The trailing separator policy.
-	TrailingSeparatorPolicy *TrailingSeparatorPolicy `json:"trailingSeparatorPolicy,omitempty"`
+	TrailingSeparatorPolicy *TrailingSeparatorPolicy
 
 	// REQUIRED; The value indicating whether to trim leading and trailing spaces and zeroes.
-	TrimLeadingAndTrailingSpacesAndZeroes *bool `json:"trimLeadingAndTrailingSpacesAndZeroes,omitempty"`
+	TrimLeadingAndTrailingSpacesAndZeroes *bool
 
 	// REQUIRED; The value indicating whether to validate character set in the message.
-	ValidateCharacterSet *bool `json:"validateCharacterSet,omitempty"`
+	ValidateCharacterSet *bool
 
 	// REQUIRED; The value indicating whether to Whether to validate EDI types.
-	ValidateEDITypes *bool `json:"validateEDITypes,omitempty"`
+	ValidateEDITypes *bool
 
 	// REQUIRED; The value indicating whether to Whether to validate XSD types.
-	ValidateXSDTypes *bool `json:"validateXSDTypes,omitempty"`
+	ValidateXSDTypes *bool
 }

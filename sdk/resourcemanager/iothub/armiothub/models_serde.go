@@ -2790,7 +2790,7 @@ func (r *RoutingStorageContainerProperties) UnmarshalJSON(data []byte) error {
 func (r RoutingTwin) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
-	populate(objectMap, "tags", &r.Tags)
+	populateAny(objectMap, "tags", r.Tags)
 	return json.Marshal(objectMap)
 }
 
@@ -2820,8 +2820,8 @@ func (r *RoutingTwin) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type RoutingTwinProperties.
 func (r RoutingTwinProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "desired", &r.Desired)
-	populate(objectMap, "reported", &r.Reported)
+	populateAny(objectMap, "desired", r.Desired)
+	populateAny(objectMap, "reported", r.Reported)
 	return json.Marshal(objectMap)
 }
 
@@ -3375,6 +3375,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

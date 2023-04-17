@@ -1243,12 +1243,12 @@ func (c CloudServiceExtensionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoUpgradeMinorVersion", c.AutoUpgradeMinorVersion)
 	populate(objectMap, "forceUpdateTag", c.ForceUpdateTag)
-	populate(objectMap, "protectedSettings", &c.ProtectedSettings)
+	populateAny(objectMap, "protectedSettings", c.ProtectedSettings)
 	populate(objectMap, "protectedSettingsFromKeyVault", c.ProtectedSettingsFromKeyVault)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
 	populate(objectMap, "publisher", c.Publisher)
 	populate(objectMap, "rolesAppliedTo", c.RolesAppliedTo)
-	populate(objectMap, "settings", &c.Settings)
+	populateAny(objectMap, "settings", c.Settings)
 	populate(objectMap, "type", c.Type)
 	populate(objectMap, "typeHandlerVersion", c.TypeHandlerVersion)
 	return json.Marshal(objectMap)
@@ -14093,7 +14093,7 @@ func (v VirtualMachineCaptureResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "contentVersion", v.ContentVersion)
 	populate(objectMap, "id", v.ID)
-	populate(objectMap, "parameters", &v.Parameters)
+	populateAny(objectMap, "parameters", v.Parameters)
 	populate(objectMap, "resources", v.Resources)
 	populate(objectMap, "$schema", v.Schema)
 	return json.Marshal(objectMap)
@@ -14353,11 +14353,11 @@ func (v VirtualMachineExtensionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enableAutomaticUpgrade", v.EnableAutomaticUpgrade)
 	populate(objectMap, "forceUpdateTag", v.ForceUpdateTag)
 	populate(objectMap, "instanceView", v.InstanceView)
-	populate(objectMap, "protectedSettings", &v.ProtectedSettings)
+	populateAny(objectMap, "protectedSettings", v.ProtectedSettings)
 	populate(objectMap, "protectedSettingsFromKeyVault", v.ProtectedSettingsFromKeyVault)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "publisher", v.Publisher)
-	populate(objectMap, "settings", &v.Settings)
+	populateAny(objectMap, "settings", v.Settings)
 	populate(objectMap, "suppressFailures", v.SuppressFailures)
 	populate(objectMap, "type", v.Type)
 	populate(objectMap, "typeHandlerVersion", v.TypeHandlerVersion)
@@ -14454,10 +14454,10 @@ func (v VirtualMachineExtensionUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "autoUpgradeMinorVersion", v.AutoUpgradeMinorVersion)
 	populate(objectMap, "enableAutomaticUpgrade", v.EnableAutomaticUpgrade)
 	populate(objectMap, "forceUpdateTag", v.ForceUpdateTag)
-	populate(objectMap, "protectedSettings", &v.ProtectedSettings)
+	populateAny(objectMap, "protectedSettings", v.ProtectedSettings)
 	populate(objectMap, "protectedSettingsFromKeyVault", v.ProtectedSettingsFromKeyVault)
 	populate(objectMap, "publisher", v.Publisher)
-	populate(objectMap, "settings", &v.Settings)
+	populateAny(objectMap, "settings", v.Settings)
 	populate(objectMap, "suppressFailures", v.SuppressFailures)
 	populate(objectMap, "type", v.Type)
 	populate(objectMap, "typeHandlerVersion", v.TypeHandlerVersion)
@@ -16059,12 +16059,12 @@ func (v VirtualMachineScaleSetExtensionProperties) MarshalJSON() ([]byte, error)
 	populate(objectMap, "autoUpgradeMinorVersion", v.AutoUpgradeMinorVersion)
 	populate(objectMap, "enableAutomaticUpgrade", v.EnableAutomaticUpgrade)
 	populate(objectMap, "forceUpdateTag", v.ForceUpdateTag)
-	populate(objectMap, "protectedSettings", &v.ProtectedSettings)
+	populateAny(objectMap, "protectedSettings", v.ProtectedSettings)
 	populate(objectMap, "protectedSettingsFromKeyVault", v.ProtectedSettingsFromKeyVault)
 	populate(objectMap, "provisionAfterExtensions", v.ProvisionAfterExtensions)
 	populate(objectMap, "provisioningState", v.ProvisioningState)
 	populate(objectMap, "publisher", v.Publisher)
-	populate(objectMap, "settings", &v.Settings)
+	populateAny(objectMap, "settings", v.Settings)
 	populate(objectMap, "suppressFailures", v.SuppressFailures)
 	populate(objectMap, "type", v.Type)
 	populate(objectMap, "typeHandlerVersion", v.TypeHandlerVersion)
@@ -18850,6 +18850,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

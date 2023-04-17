@@ -14,44 +14,44 @@ import "time"
 // Change - The detected change.
 type Change struct {
 	// The properties of a change.
-	Properties *ChangeProperties `json:"properties,omitempty"`
+	Properties *ChangeProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ChangeList - The list of detected changes.
 type ChangeList struct {
 	// The URI that can be used to request the next page of changes.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of changes.
-	Value []*Change `json:"value,omitempty"`
+	Value []*Change
 }
 
 // ChangeProperties - The properties of a change.
 type ChangeProperties struct {
 	// The type of the change.
-	ChangeType *ChangeType `json:"changeType,omitempty"`
+	ChangeType *ChangeType
 
 	// The list of identities who might initiated the change. The identity could be user name (email address) or the object ID
 	// of the Service Principal.
-	InitiatedByList []*string `json:"initiatedByList,omitempty"`
+	InitiatedByList []*string
 
 	// The list of detailed changes at json property level.
-	PropertyChanges []*PropertyChange `json:"propertyChanges,omitempty"`
+	PropertyChanges []*PropertyChange
 
 	// The resource id that the change is attached to.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The time when the change is detected.
-	TimeStamp *time.Time `json:"timeStamp,omitempty"`
+	TimeStamp *time.Time
 }
 
 // ChangesClientListChangesByResourceGroupOptions contains the optional parameters for the ChangesClient.NewListChangesByResourceGroupPager
@@ -75,35 +75,35 @@ type ChangesClientListChangesBySubscriptionOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -117,56 +117,56 @@ type OperationsClientListOptions struct {
 // PropertyChange - Data of a property change.
 type PropertyChange struct {
 	// The change category.
-	ChangeCategory *ChangeCategory `json:"changeCategory,omitempty"`
+	ChangeCategory *ChangeCategory
 
 	// The type of the change.
-	ChangeType *ChangeType `json:"changeType,omitempty"`
+	ChangeType *ChangeType
 
 	// The description of the changed property.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The enhanced display name of the json path. E.g., the json path value[0].properties will be translated to something meaningful
 	// like slots["Staging"].properties.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The boolean indicating whether the oldValue and newValue are masked. The values are masked if it contains sensitive information
 	// that the user doesn't have access to.
-	IsDataMasked *bool `json:"isDataMasked,omitempty"`
+	IsDataMasked *bool
 
 	// The json path of the changed property.
-	JSONPath *string `json:"jsonPath,omitempty"`
-	Level    *Level  `json:"level,omitempty"`
+	JSONPath *string
+	Level    *Level
 
 	// The value of the property after the change.
-	NewValue *string `json:"newValue,omitempty"`
+	NewValue *string
 
 	// The value of the property before the change.
-	OldValue *string `json:"oldValue,omitempty"`
+	OldValue *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceChangesClientListOptions contains the optional parameters for the ResourceChangesClient.NewListPager method.
@@ -180,32 +180,32 @@ type ResourceChangesClientListOptions struct {
 // ResourceProviderOperationDefinition - The resource provider operation definition.
 type ResourceProviderOperationDefinition struct {
 	// The resource provider operation details.
-	Display *ResourceProviderOperationDisplay `json:"display,omitempty"`
+	Display *ResourceProviderOperationDisplay
 
 	// The resource provider operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ResourceProviderOperationDisplay - The resource provider operation details.
 type ResourceProviderOperationDisplay struct {
 	// Description of the resource provider operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the resource provider operation.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the resource provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Name of the resource type.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // ResourceProviderOperationList - The resource provider operation list.
 type ResourceProviderOperationList struct {
 	// The URI that can be used to request the next page for list of Azure operations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Resource provider operations list.
-	Value []*ResourceProviderOperationDefinition `json:"value,omitempty"`
+	Value []*ResourceProviderOperationDefinition
 }

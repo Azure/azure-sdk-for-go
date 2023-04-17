@@ -11,7 +11,7 @@ package armsecurity
 
 const (
 	moduleName    = "armsecurity"
-	moduleVersion = "v0.10.0"
+	moduleVersion = "v0.10.1"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution

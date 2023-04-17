@@ -192,7 +192,7 @@ func (a ArcSettingProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "arcApplicationTenantId", a.ArcApplicationTenantID)
 	populate(objectMap, "arcInstanceResourceGroup", a.ArcInstanceResourceGroup)
 	populate(objectMap, "arcServicePrincipalObjectId", a.ArcServicePrincipalObjectID)
-	populate(objectMap, "connectivityProperties", &a.ConnectivityProperties)
+	populateAny(objectMap, "connectivityProperties", a.ConnectivityProperties)
 	populate(objectMap, "perNodeDetails", a.PerNodeDetails)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -276,7 +276,7 @@ func (a *ArcSettingsPatch) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ArcSettingsPatchProperties.
 func (a ArcSettingsPatchProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "connectivityProperties", &a.ConnectivityProperties)
+	populateAny(objectMap, "connectivityProperties", a.ConnectivityProperties)
 	return json.Marshal(objectMap)
 }
 
@@ -753,7 +753,7 @@ func (c *ClusterReportedProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -930,9 +930,9 @@ func (e ExtensionParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoUpgradeMinorVersion", e.AutoUpgradeMinorVersion)
 	populate(objectMap, "forceUpdateTag", e.ForceUpdateTag)
-	populate(objectMap, "protectedSettings", &e.ProtectedSettings)
+	populateAny(objectMap, "protectedSettings", e.ProtectedSettings)
 	populate(objectMap, "publisher", e.Publisher)
-	populate(objectMap, "settings", &e.Settings)
+	populateAny(objectMap, "settings", e.Settings)
 	populate(objectMap, "type", e.Type)
 	populate(objectMap, "typeHandlerVersion", e.TypeHandlerVersion)
 	return json.Marshal(objectMap)
@@ -1457,6 +1457,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

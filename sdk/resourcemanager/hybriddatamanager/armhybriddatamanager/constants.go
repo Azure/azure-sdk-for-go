@@ -11,7 +11,7 @@ package armhybriddatamanager
 
 const (
 	moduleName    = "armhybriddatamanager"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // IsJobCancellable - Describes whether the job is cancellable.

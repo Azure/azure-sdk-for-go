@@ -147,7 +147,7 @@ type CertificateOperation struct {
 	CancellationRequested *bool `json:"cancellation_requested,omitempty"`
 
 	// Error encountered, if any, during the certificate operation.
-	Error *Error `json:"error,omitempty"`
+	Error *ErrorInfo `json:"error,omitempty"`
 
 	// Parameters for the issuer of the X509 component of a certificate.
 	IssuerParameters *IssuerParameters `json:"issuer,omitempty"`
@@ -440,18 +440,6 @@ type DeletedCertificateListResult struct {
 	// READ-ONLY; A response message containing a list of deleted certificates in the vault along with a link to the next page
 	// of deleted certificates
 	Value []*DeletedCertificateItem `json:"value,omitempty" azure:"ro"`
-}
-
-// Error - The key vault server error.
-type Error struct {
-	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
-
-	// READ-ONLY; The key vault server error.
-	InnerError *Error `json:"innererror,omitempty" azure:"ro"`
-
-	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
 }
 
 // ImportCertificateParameters - The certificate import parameters.

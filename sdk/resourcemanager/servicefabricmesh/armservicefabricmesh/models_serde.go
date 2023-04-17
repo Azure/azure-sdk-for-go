@@ -595,7 +595,7 @@ func (a AzureInternalMonitoringPipelineSinkDescription) MarshalJSON() ([]byte, e
 	populate(objectMap, "accountName", a.AccountName)
 	populate(objectMap, "autoKeyConfigUrl", a.AutoKeyConfigURL)
 	populate(objectMap, "description", a.Description)
-	populate(objectMap, "fluentdConfigUrl", &a.FluentdConfigURL)
+	populateAny(objectMap, "fluentdConfigUrl", a.FluentdConfigURL)
 	objectMap["kind"] = DiagnosticsSinkKindAzureInternalMonitoringPipeline
 	populate(objectMap, "maConfigUrl", a.MaConfigURL)
 	populate(objectMap, "name", a.Name)
@@ -3245,6 +3245,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

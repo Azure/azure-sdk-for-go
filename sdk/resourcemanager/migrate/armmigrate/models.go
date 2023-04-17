@@ -14,172 +14,172 @@ import "time"
 // AssessedDisk - A disk assessed for an assessment.
 type AssessedDisk struct {
 	// READ-ONLY; User friendly name of the assessed disk.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Gigabytes of storage provided by the recommended Azure disk size.
-	GigabytesForRecommendedDiskSize *int32 `json:"gigabytesForRecommendedDiskSize,omitempty" azure:"ro"`
+	GigabytesForRecommendedDiskSize *int32
 
 	// READ-ONLY; Gigabytes of storage provisioned for this disk.
-	GigabytesProvisioned *float64 `json:"gigabytesProvisioned,omitempty" azure:"ro"`
+	GigabytesProvisioned *float64
 
 	// READ-ONLY; Disk throughput in MegaBytes per second.
-	MegabytesPerSecondOfRead *float64 `json:"megabytesPerSecondOfRead,omitempty" azure:"ro"`
+	MegabytesPerSecondOfRead *float64
 
 	// READ-ONLY; Disk throughput in MegaBytes per second.
-	MegabytesPerSecondOfWrite *float64 `json:"megabytesPerSecondOfWrite,omitempty" azure:"ro"`
+	MegabytesPerSecondOfWrite *float64
 
 	// READ-ONLY; Estimated aggregate storage cost for a 31-day month for this disk.
-	MonthlyStorageCost *float64 `json:"monthlyStorageCost,omitempty" azure:"ro"`
+	MonthlyStorageCost *float64
 
 	// READ-ONLY; Name of the assessed disk.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Number of read operations per second for the disk.
-	NumberOfReadOperationsPerSecond *float64 `json:"numberOfReadOperationsPerSecond,omitempty" azure:"ro"`
+	NumberOfReadOperationsPerSecond *float64
 
 	// READ-ONLY; Number of read and write operations per second for the disk.
-	NumberOfWriteOperationsPerSecond *float64 `json:"numberOfWriteOperationsPerSecond,omitempty" azure:"ro"`
+	NumberOfWriteOperationsPerSecond *float64
 
 	// READ-ONLY; Recommended Azure size for the disk, given utilization data and preferences set on Assessment.
-	RecommendedDiskSize *AzureDiskSize `json:"recommendedDiskSize,omitempty" azure:"ro"`
+	RecommendedDiskSize *AzureDiskSize
 
 	// READ-ONLY; Storage type selected for this disk.
-	RecommendedDiskType *AzureDiskType `json:"recommendedDiskType,omitempty" azure:"ro"`
+	RecommendedDiskType *AzureDiskType
 
 	// READ-ONLY; Whether this disk is suitable for Azure.
-	Suitability *CloudSuitability `json:"suitability,omitempty" azure:"ro"`
+	Suitability *CloudSuitability
 
 	// READ-ONLY; If disk is suitable to be migrate but some conditions/checks were not considered while calculating suitability,
 	// this explains the details.
-	SuitabilityDetail *AzureDiskSuitabilityDetail `json:"suitabilityDetail,omitempty" azure:"ro"`
+	SuitabilityDetail *AzureDiskSuitabilityDetail
 
 	// READ-ONLY; If disk is not suitable to be migrated, this explains the reasons and mitigation steps.
-	SuitabilityExplanation *AzureDiskSuitabilityExplanation `json:"suitabilityExplanation,omitempty" azure:"ro"`
+	SuitabilityExplanation *AzureDiskSuitabilityExplanation
 }
 
 // AssessedMachine - A machine evaluated as part of an assessment.
 type AssessedMachine struct {
 	// For optimistic concurrency control.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Properties of an assessed machine.
-	Properties *AssessedMachineProperties `json:"properties,omitempty"`
+	Properties *AssessedMachineProperties
 
 	// READ-ONLY; Path reference to this assessed machine.
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/groups/{groupName}/assessments/{assessmentName}/assessedMachines/{assessedMachineName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the machine.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object = [Microsoft.Migrate/assessmentProjects/groups/assessments/assessedMachines].
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssessedMachineProperties - Properties of an assessed machine.
 type AssessedMachineProperties struct {
 	// READ-ONLY; Boot type of the machine.
-	BootType *MachineBootType `json:"bootType,omitempty" azure:"ro"`
+	BootType *MachineBootType
 
 	// READ-ONLY; Confidence rating of assessed machine.
-	ConfidenceRatingInPercentage *float64 `json:"confidenceRatingInPercentage,omitempty" azure:"ro"`
+	ConfidenceRatingInPercentage *float64
 
 	// READ-ONLY; Time when this machine was created. Date-Time represented in ISO-8601 format.
-	CreatedTimestamp *time.Time `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *time.Time
 
 	// READ-ONLY; ARM ID of the discovered machine.
-	DatacenterMachineArmID *string `json:"datacenterMachineArmId,omitempty" azure:"ro"`
+	DatacenterMachineArmID *string
 
 	// READ-ONLY; ARM ID of the discovered datacenter.
-	DatacenterManagementServerArmID *string `json:"datacenterManagementServerArmId,omitempty" azure:"ro"`
+	DatacenterManagementServerArmID *string
 
 	// READ-ONLY; Name of the server hosting the datacenter management solution.
-	DatacenterManagementServerName *string `json:"datacenterManagementServerName,omitempty" azure:"ro"`
+	DatacenterManagementServerName *string
 
 	// READ-ONLY; Description of the machine
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Dictionary of disks attached to the machine. Key is ID of disk. Value is a disk object.
-	Disks map[string]*AssessedDisk `json:"disks,omitempty" azure:"ro"`
+	Disks map[string]*AssessedDisk
 
 	// READ-ONLY; User readable name of the machine as defined by the user in their private datacenter.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Memory in Megabytes.
-	MegabytesOfMemory *float64 `json:"megabytesOfMemory,omitempty" azure:"ro"`
+	MegabytesOfMemory *float64
 
 	// READ-ONLY; Megabytes of memory in the Recommended Azure VM Size.
-	MegabytesOfMemoryForRecommendedSize *float64 `json:"megabytesOfMemoryForRecommendedSize,omitempty" azure:"ro"`
+	MegabytesOfMemoryForRecommendedSize *float64
 
 	// READ-ONLY; Monthly network cost estimate for the network adapters that are attached to this machine as a group, for a 31-day
 	// month.
-	MonthlyBandwidthCost *float64 `json:"monthlyBandwidthCost,omitempty" azure:"ro"`
+	MonthlyBandwidthCost *float64
 
 	// READ-ONLY; Compute Cost for a 31-day month, if the machine is migrated to Azure with the Recommended Size.
-	MonthlyComputeCostForRecommendedSize *float64 `json:"monthlyComputeCostForRecommendedSize,omitempty" azure:"ro"`
+	MonthlyComputeCostForRecommendedSize *float64
 
 	// READ-ONLY; Monthly premium storage cost estimate for the disks that are attached to this machine as a group, for a 31-day
 	// month.
-	MonthlyPremiumStorageCost *float64 `json:"monthlyPremiumStorageCost,omitempty" azure:"ro"`
+	MonthlyPremiumStorageCost *float64
 
 	// READ-ONLY; Monthly standard SSD storage cost estimate for the disks that are attached to this machine as a group, for a
 	// 31-day month.
-	MonthlyStandardSSDStorageCost *float64 `json:"monthlyStandardSSDStorageCost,omitempty" azure:"ro"`
+	MonthlyStandardSSDStorageCost *float64
 
 	// READ-ONLY; Monthly storage cost estimate for the disks that are attached to this machine as a group, for a 31-day month.
-	MonthlyStorageCost *float64 `json:"monthlyStorageCost,omitempty" azure:"ro"`
+	MonthlyStorageCost *float64
 
 	// READ-ONLY; Dictionary of network adapters attached to the machine. Key is name of the adapter. Value is a network adapter
 	// object.
-	NetworkAdapters map[string]*AssessedNetworkAdapter `json:"networkAdapters,omitempty" azure:"ro"`
+	NetworkAdapters map[string]*AssessedNetworkAdapter
 
 	// READ-ONLY; Processor count.
-	NumberOfCores *int32 `json:"numberOfCores,omitempty" azure:"ro"`
+	NumberOfCores *int32
 
 	// READ-ONLY; Number of CPU cores in the Recommended Azure VM Size.
-	NumberOfCoresForRecommendedSize *int32 `json:"numberOfCoresForRecommendedSize,omitempty" azure:"ro"`
+	NumberOfCoresForRecommendedSize *int32
 
 	// READ-ONLY; Operating System name of the machine.
-	OperatingSystemName *string `json:"operatingSystemName,omitempty" azure:"ro"`
+	OperatingSystemName *string
 
 	// READ-ONLY; Operating System type of the machine.
-	OperatingSystemType *string `json:"operatingSystemType,omitempty" azure:"ro"`
+	OperatingSystemType *string
 
 	// READ-ONLY; Operating System version of the machine.
-	OperatingSystemVersion *string `json:"operatingSystemVersion,omitempty" azure:"ro"`
+	OperatingSystemVersion *string
 
 	// READ-ONLY; Utilization percentage of the processor core as observed in the private data center, in the Time Range selected
 	// on Assessment, reported as the Percentile value based on the percentile number selected
 	// in assessment.
-	PercentageCoresUtilization *float64 `json:"percentageCoresUtilization,omitempty" azure:"ro"`
+	PercentageCoresUtilization *float64
 
 	// READ-ONLY; Utilization percentage of the memory as observed in the private data center, in the Time Range selected on Assessment,
 	// reported as the Percentile value based on the percentile number selected in
 	// assessment.
-	PercentageMemoryUtilization *float64 `json:"percentageMemoryUtilization,omitempty" azure:"ro"`
+	PercentageMemoryUtilization *float64
 
 	// READ-ONLY; Recommended Azure size for this machine.
-	RecommendedSize *AzureVMSize `json:"recommendedSize,omitempty" azure:"ro"`
+	RecommendedSize *AzureVMSize
 
 	// READ-ONLY; Whether machine is suitable for migration to Azure.
-	Suitability *CloudSuitability `json:"suitability,omitempty" azure:"ro"`
+	Suitability *CloudSuitability
 
 	// READ-ONLY; If machine is not suitable for cloud, this explains the reasons.
-	SuitabilityDetail *AzureVMSuitabilityDetail `json:"suitabilityDetail,omitempty" azure:"ro"`
+	SuitabilityDetail *AzureVMSuitabilityDetail
 
 	// READ-ONLY; If machine is not ready to be migrated, this explains the reasons and mitigation steps.
-	SuitabilityExplanation *AzureVMSuitabilityExplanation `json:"suitabilityExplanation,omitempty" azure:"ro"`
+	SuitabilityExplanation *AzureVMSuitabilityExplanation
 
 	// READ-ONLY; Time when this machine was last updated. Date-Time represented in ISO-8601 format.
-	UpdatedTimestamp *time.Time `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *time.Time
 }
 
 // AssessedMachineResultList - List of assessed machines.
 type AssessedMachineResultList struct {
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of assessed machines.
-	Value []*AssessedMachine `json:"value,omitempty"`
+	Value []*AssessedMachine
 }
 
 // AssessedMachinesClientGetOptions contains the optional parameters for the AssessedMachinesClient.Get method.
@@ -196,193 +196,193 @@ type AssessedMachinesClientListByAssessmentOptions struct {
 // AssessedNetworkAdapter - A network adapter assessed for an assessment.
 type AssessedNetworkAdapter struct {
 	// Gigabytes transmitted through this adapter each month.
-	NetGigabytesTransmittedPerMonth *float64 `json:"netGigabytesTransmittedPerMonth,omitempty"`
+	NetGigabytesTransmittedPerMonth *float64
 
 	// READ-ONLY; User friendly name of the assessed network adapter.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; List of IP Addresses on the network adapter.
-	IPAddresses []*string `json:"ipAddresses,omitempty" azure:"ro"`
+	IPAddresses []*string
 
 	// READ-ONLY; MAC Address of the network adapter.
-	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
+	MacAddress *string
 
 	// READ-ONLY; Adapter throughput for incoming traffic in MegaBytes per second.
-	MegabytesPerSecondReceived *float64 `json:"megabytesPerSecondReceived,omitempty" azure:"ro"`
+	MegabytesPerSecondReceived *float64
 
 	// READ-ONLY; Adapter throughput for outgoing traffic in MegaBytes per second.
-	MegabytesPerSecondTransmitted *float64 `json:"megabytesPerSecondTransmitted,omitempty" azure:"ro"`
+	MegabytesPerSecondTransmitted *float64
 
 	// READ-ONLY; Monthly cost estimate for network bandwidth used by this network adapter.
-	MonthlyBandwidthCosts *float64 `json:"monthlyBandwidthCosts,omitempty" azure:"ro"`
+	MonthlyBandwidthCosts *float64
 
 	// READ-ONLY; Whether this adapter is suitable for Azure.
-	Suitability *CloudSuitability `json:"suitability,omitempty" azure:"ro"`
+	Suitability *CloudSuitability
 
 	// READ-ONLY; If network adapter is not suitable for cloud, this explains the reasons.
-	SuitabilityDetail *AzureNetworkAdapterSuitabilityDetail `json:"suitabilityDetail,omitempty" azure:"ro"`
+	SuitabilityDetail *AzureNetworkAdapterSuitabilityDetail
 
 	// READ-ONLY; If network adapter is suitable, this explains the reasons and mitigation steps.
-	SuitabilityExplanation *AzureNetworkAdapterSuitabilityExplanation `json:"suitabilityExplanation,omitempty" azure:"ro"`
+	SuitabilityExplanation *AzureNetworkAdapterSuitabilityExplanation
 }
 
 // Assessment - An assessment created for a group in the Migration project.
 type Assessment struct {
 	// REQUIRED; Properties of the assessment.
-	Properties *AssessmentProperties `json:"properties,omitempty"`
+	Properties *AssessmentProperties
 
 	// For optimistic concurrency control.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// READ-ONLY; Path reference to this assessment.
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/groups/{groupName}/assessment/{assessmentName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Unique name of an assessment.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object = [Microsoft.Migrate/assessmentProjects/groups/assessments].
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssessmentOptions - Assessment options.
 type AssessmentOptions struct {
 	// REQUIRED; Properties of the assessment options.
-	Properties *AssessmentOptionsProperties `json:"properties,omitempty"`
+	Properties *AssessmentOptionsProperties
 
 	// READ-ONLY; Unique identifier of an assessment options.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Unique name of an assessment options.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // AssessmentOptionsProperties - Assessment options properties.
 type AssessmentOptionsProperties struct {
 	// READ-ONLY; List of supported currencies for reserved instances.
-	ReservedInstanceSupportedCurrencies []*string `json:"reservedInstanceSupportedCurrencies,omitempty" azure:"ro"`
+	ReservedInstanceSupportedCurrencies []*string
 
 	// READ-ONLY; List of supported Azure regions for reserved instances.
-	ReservedInstanceSupportedLocations []*string `json:"reservedInstanceSupportedLocations,omitempty" azure:"ro"`
+	ReservedInstanceSupportedLocations []*string
 
 	// READ-ONLY; List of supported Azure offer codes for reserved instances.
-	ReservedInstanceSupportedOffers []*string `json:"reservedInstanceSupportedOffers,omitempty" azure:"ro"`
+	ReservedInstanceSupportedOffers []*string
 
 	// READ-ONLY; List of supported VM Families.
-	ReservedInstanceVMFamilies []*string `json:"reservedInstanceVmFamilies,omitempty" azure:"ro"`
+	ReservedInstanceVMFamilies []*string
 
 	// READ-ONLY; Dictionary of VM families grouped by vm family name describing the targeted azure locations of VM family and
 	// the category of the family.
-	VMFamilies []*VMFamily `json:"vmFamilies,omitempty" azure:"ro"`
+	VMFamilies []*VMFamily
 }
 
 // AssessmentOptionsResultList - List of API operations.
 type AssessmentOptionsResultList struct {
 	// List of operations.
-	Value []*AssessmentOptions `json:"value,omitempty"`
+	Value []*AssessmentOptions
 }
 
 // AssessmentProperties - Properties of an assessment.
 type AssessmentProperties struct {
 	// REQUIRED; Storage type selected for this disk.
-	AzureDiskType *AzureDiskType `json:"azureDiskType,omitempty"`
+	AzureDiskType *AzureDiskType
 
 	// REQUIRED; AHUB discount on windows virtual machines.
-	AzureHybridUseBenefit *AzureHybridUseBenefit `json:"azureHybridUseBenefit,omitempty"`
+	AzureHybridUseBenefit *AzureHybridUseBenefit
 
 	// REQUIRED; Target Azure location for which the machines should be assessed. These enums are the same as used by Compute
 	// API.
-	AzureLocation *AzureLocation `json:"azureLocation,omitempty"`
+	AzureLocation *AzureLocation
 
 	// REQUIRED; Offer code according to which cost estimation is done.
-	AzureOfferCode *AzureOfferCode `json:"azureOfferCode,omitempty"`
+	AzureOfferCode *AzureOfferCode
 
 	// REQUIRED; Pricing tier for Size evaluation.
-	AzurePricingTier *AzurePricingTier `json:"azurePricingTier,omitempty"`
+	AzurePricingTier *AzurePricingTier
 
 	// REQUIRED; Storage Redundancy type offered by Azure.
-	AzureStorageRedundancy *AzureStorageRedundancy `json:"azureStorageRedundancy,omitempty"`
+	AzureStorageRedundancy *AzureStorageRedundancy
 
 	// REQUIRED; List of azure VM families.
-	AzureVMFamilies []*AzureVMFamily `json:"azureVmFamilies,omitempty"`
+	AzureVMFamilies []*AzureVMFamily
 
 	// REQUIRED; Currency to report prices in.
-	Currency *Currency `json:"currency,omitempty"`
+	Currency *Currency
 
 	// REQUIRED; Custom discount percentage to be applied on final costs. Can be in the range [0, 100].
-	DiscountPercentage *float64 `json:"discountPercentage,omitempty"`
+	DiscountPercentage *float64
 
 	// REQUIRED; Percentile of performance data used to recommend Azure size.
-	Percentile *Percentile `json:"percentile,omitempty"`
+	Percentile *Percentile
 
 	// REQUIRED; Azure reserved instance.
-	ReservedInstance *ReservedInstance `json:"reservedInstance,omitempty"`
+	ReservedInstance *ReservedInstance
 
 	// REQUIRED; Scaling factor used over utilization data to add a performance buffer for new machines to be created in Azure.
 	// Min Value = 1.0, Max value = 1.9, Default = 1.3.
-	ScalingFactor *float64 `json:"scalingFactor,omitempty"`
+	ScalingFactor *float64
 
 	// REQUIRED; Assessment sizing criterion.
-	SizingCriterion *AssessmentSizingCriterion `json:"sizingCriterion,omitempty"`
+	SizingCriterion *AssessmentSizingCriterion
 
 	// REQUIRED; User configurable setting that describes the status of the assessment.
-	Stage *AssessmentStage `json:"stage,omitempty"`
+	Stage *AssessmentStage
 
 	// REQUIRED; Time range of performance data used to recommend a size.
-	TimeRange *TimeRange `json:"timeRange,omitempty"`
+	TimeRange *TimeRange
 
 	// REQUIRED; Specify the duration for which the VMs are up in the on-premises environment.
-	VMUptime *VMUptime `json:"vmUptime,omitempty"`
+	VMUptime *VMUptime
 
 	// READ-ONLY; Confidence rating percentage for assessment. Can be in the range [0, 100].
-	ConfidenceRatingInPercentage *float64 `json:"confidenceRatingInPercentage,omitempty" azure:"ro"`
+	ConfidenceRatingInPercentage *float64
 
 	// READ-ONLY; Time when this project was created. Date-Time represented in ISO-8601 format.
-	CreatedTimestamp *time.Time `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *time.Time
 
 	// READ-ONLY; Enterprise agreement subscription arm id.
-	EaSubscriptionID *string `json:"eaSubscriptionId,omitempty" azure:"ro"`
+	EaSubscriptionID *string
 
 	// READ-ONLY; Monthly network cost estimate for the machines that are part of this assessment as a group, for a 31-day month.
-	MonthlyBandwidthCost *float64 `json:"monthlyBandwidthCost,omitempty" azure:"ro"`
+	MonthlyBandwidthCost *float64
 
 	// READ-ONLY; Monthly compute cost estimate for the machines that are part of this assessment as a group, for a 31-day month.
-	MonthlyComputeCost *float64 `json:"monthlyComputeCost,omitempty" azure:"ro"`
+	MonthlyComputeCost *float64
 
 	// READ-ONLY; Monthly premium storage cost estimate for the machines that are part of this assessment as a group, for a 31-day
 	// month.
-	MonthlyPremiumStorageCost *float64 `json:"monthlyPremiumStorageCost,omitempty" azure:"ro"`
+	MonthlyPremiumStorageCost *float64
 
 	// READ-ONLY; Monthly standard SSD storage cost estimate for the machines that are part of this assessment as a group, for
 	// a 31-day month.
-	MonthlyStandardSSDStorageCost *float64 `json:"monthlyStandardSSDStorageCost,omitempty" azure:"ro"`
+	MonthlyStandardSSDStorageCost *float64
 
 	// READ-ONLY; Monthly storage cost estimate for the machines that are part of this assessment as a group, for a 31-day month.
-	MonthlyStorageCost *float64 `json:"monthlyStorageCost,omitempty" azure:"ro"`
+	MonthlyStorageCost *float64
 
 	// READ-ONLY; Number of assessed machines part of this assessment.
-	NumberOfMachines *int32 `json:"numberOfMachines,omitempty" azure:"ro"`
+	NumberOfMachines *int32
 
 	// READ-ONLY; End time to consider performance data for assessment
-	PerfDataEndTime *time.Time `json:"perfDataEndTime,omitempty" azure:"ro"`
+	PerfDataEndTime *time.Time
 
 	// READ-ONLY; Start time to consider performance data for assessment
-	PerfDataStartTime *time.Time `json:"perfDataStartTime,omitempty" azure:"ro"`
+	PerfDataStartTime *time.Time
 
 	// READ-ONLY; Time when the Azure Prices were queried. Date-Time represented in ISO-8601 format.
-	PricesTimestamp *time.Time `json:"pricesTimestamp,omitempty" azure:"ro"`
+	PricesTimestamp *time.Time
 
 	// READ-ONLY; Whether the assessment has been created and is valid.
-	Status *AssessmentStatus `json:"status,omitempty" azure:"ro"`
+	Status *AssessmentStatus
 
 	// READ-ONLY; Time when this project was last updated. Date-Time represented in ISO-8601 format.
-	UpdatedTimestamp *time.Time `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *time.Time
 }
 
 // AssessmentResultList - List of assessments.
 type AssessmentResultList struct {
 	// List of assessments.
-	Value []*Assessment `json:"value,omitempty"`
+	Value []*Assessment
 }
 
 // AssessmentsClientCreateOptions contains the optional parameters for the AssessmentsClient.Create method.
@@ -419,124 +419,124 @@ type AssessmentsClientListByProjectOptions struct {
 }
 
 type CollectorAgentProperties struct {
-	SpnDetails *CollectorBodyAgentSpnProperties `json:"spnDetails,omitempty"`
+	SpnDetails *CollectorBodyAgentSpnProperties
 
 	// READ-ONLY
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY
-	LastHeartbeatUTC *time.Time `json:"lastHeartbeatUtc,omitempty" azure:"ro"`
+	LastHeartbeatUTC *time.Time
 
 	// READ-ONLY
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 type CollectorBodyAgentSpnProperties struct {
 	// Application/client Id for the service principal with which the on-premise management/data plane components would communicate
 	// with our Azure services.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 
 	// Intended audience for the service principal.
-	Audience *string `json:"audience,omitempty"`
+	Audience *string
 
 	// AAD Authority URL which was used to request the token for the service principal.
-	Authority *string `json:"authority,omitempty"`
+	Authority *string
 
 	// Object Id of the service principal with which the on-premise management/data plane components would communicate with our
 	// Azure services.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// Tenant Id for the service principal with which the on-premise management/data plane components would communicate with our
 	// Azure services.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 type CollectorProperties struct {
-	AgentProperties *CollectorAgentProperties `json:"agentProperties,omitempty"`
+	AgentProperties *CollectorAgentProperties
 
 	// The ARM id of the discovery service site.
-	DiscoverySiteID *string `json:"discoverySiteId,omitempty"`
+	DiscoverySiteID *string
 
 	// READ-ONLY; Time when this collector was created. Date-Time represented in ISO-8601 format.
-	CreatedTimestamp *string `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *string
 
 	// READ-ONLY; Time when this collector was updated. Date-Time represented in ISO-8601 format.
-	UpdatedTimestamp *string `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *string
 }
 
 // Disk - A disk discovered on a machine.
 type Disk struct {
 	// READ-ONLY; User friendly name of the disk.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Gigabytes of storage provisioned for this disk.
-	GigabytesAllocated *float64 `json:"gigabytesAllocated,omitempty" azure:"ro"`
+	GigabytesAllocated *float64
 }
 
 // DownloadURL - Download URL for assessment report.
 type DownloadURL struct {
 	// READ-ONLY; Hyperlink to download report.
-	AssessmentReportURL *string `json:"assessmentReportUrl,omitempty" azure:"ro"`
+	AssessmentReportURL *string
 
 	// READ-ONLY; Expiry date of download url.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+	ExpirationTime *time.Time
 }
 
 // Group - A group created in a Migration project.
 type Group struct {
 	// REQUIRED; Properties of the group.
-	Properties *GroupProperties `json:"properties,omitempty"`
+	Properties *GroupProperties
 
 	// For optimistic concurrency control.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// READ-ONLY; Path reference to this group. /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/groups/{groupName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the group.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object = [Microsoft.Migrate/assessmentProjects/groups].
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GroupBodyProperties - Body properties of group update.
 type GroupBodyProperties struct {
 	// List of machine names that are part of this group.
-	Machines []*string `json:"machines,omitempty"`
+	Machines []*string
 
 	// Whether to add or remove the machines.
-	OperationType *GroupUpdateOperation `json:"operationType,omitempty"`
+	OperationType *GroupUpdateOperation
 }
 
 // GroupProperties - Properties of group resource.
 type GroupProperties struct {
 	// The type of group.
-	GroupType *string `json:"groupType,omitempty"`
+	GroupType *string
 
 	// READ-ONLY; If the assessments are in running state.
-	AreAssessmentsRunning *bool `json:"areAssessmentsRunning,omitempty" azure:"ro"`
+	AreAssessmentsRunning *bool
 
 	// READ-ONLY; List of References to Assessments created on this group.
-	Assessments []*string `json:"assessments,omitempty" azure:"ro"`
+	Assessments []*string
 
 	// READ-ONLY; Time when this group was created. Date-Time represented in ISO-8601 format.
-	CreatedTimestamp *time.Time `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *time.Time
 
 	// READ-ONLY; Whether the group has been created and is valid.
-	GroupStatus *GroupStatus `json:"groupStatus,omitempty" azure:"ro"`
+	GroupStatus *GroupStatus
 
 	// READ-ONLY; Number of machines part of this group.
-	MachineCount *int32 `json:"machineCount,omitempty" azure:"ro"`
+	MachineCount *int32
 
 	// READ-ONLY; Time when this group was last updated. Date-Time represented in ISO-8601 format.
-	UpdatedTimestamp *time.Time `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *time.Time
 }
 
 // GroupResultList - List of groups.
 type GroupResultList struct {
 	// List of groups.
-	Value []*Group `json:"value,omitempty"`
+	Value []*Group
 }
 
 // GroupsClientCreateOptions contains the optional parameters for the GroupsClient.Create method.
@@ -567,23 +567,23 @@ type GroupsClientUpdateMachinesOptions struct {
 }
 
 type HyperVCollector struct {
-	ETag       *string              `json:"eTag,omitempty"`
-	Properties *CollectorProperties `json:"properties,omitempty"`
+	ETag       *string
+	Properties *CollectorProperties
 
 	// READ-ONLY
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HyperVCollectorList - List of Hyper-V collectors.
 type HyperVCollectorList struct {
 	// List of Hyper-V collectors.
-	Value []*HyperVCollector `json:"value,omitempty"`
+	Value []*HyperVCollector
 }
 
 // HyperVCollectorsClientCreateOptions contains the optional parameters for the HyperVCollectorsClient.Create method.
@@ -609,33 +609,33 @@ type HyperVCollectorsClientListByProjectOptions struct {
 }
 
 type ImportCollector struct {
-	ETag       *string                    `json:"eTag,omitempty"`
-	Properties *ImportCollectorProperties `json:"properties,omitempty"`
+	ETag       *string
+	Properties *ImportCollectorProperties
 
 	// READ-ONLY
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ImportCollectorList - List of Import collectors.
 type ImportCollectorList struct {
 	// List of Import collectors.
-	Value []*ImportCollector `json:"value,omitempty"`
+	Value []*ImportCollector
 }
 
 type ImportCollectorProperties struct {
-	DiscoverySiteID *string `json:"discoverySiteId,omitempty"`
+	DiscoverySiteID *string
 
 	// READ-ONLY
-	CreatedTimestamp *string `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *string
 
 	// READ-ONLY
-	UpdatedTimestamp *string `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *string
 }
 
 // ImportCollectorsClientCreateOptions contains the optional parameters for the ImportCollectorsClient.Create method.
@@ -663,80 +663,80 @@ type ImportCollectorsClientListByProjectOptions struct {
 // Machine - A machine in a migration project.
 type Machine struct {
 	// For optimistic concurrency control.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Properties of the machine.
-	Properties *MachineProperties `json:"properties,omitempty"`
+	Properties *MachineProperties
 
 	// READ-ONLY; Path reference to this machine. /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/machines/{machineName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the machine. It is a GUID which is unique identifier of machine in private data center. For user-readable
 	// name, we have a displayName property on this machine.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object = [Microsoft.Migrate/assessmentProjects/machines].
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MachineProperties - Properties of a machine.
 type MachineProperties struct {
 	// READ-ONLY; Boot type of the machine.
-	BootType *MachineBootType `json:"bootType,omitempty" azure:"ro"`
+	BootType *MachineBootType
 
 	// READ-ONLY; Time when this machine was created. Date-Time represented in ISO-8601 format.
-	CreatedTimestamp *time.Time `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *time.Time
 
 	// READ-ONLY; ARM ID of the data center as tracked by the Microsoft.OffAzure.
-	DatacenterManagementServerArmID *string `json:"datacenterManagementServerArmId,omitempty" azure:"ro"`
+	DatacenterManagementServerArmID *string
 
 	// READ-ONLY; Name of the server hosting the datacenter management solution.
-	DatacenterManagementServerName *string `json:"datacenterManagementServerName,omitempty" azure:"ro"`
+	DatacenterManagementServerName *string
 
 	// READ-ONLY; Description of the machine
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; ARM ID of the machine as tracked by the Microsoft.OffAzure.
-	DiscoveryMachineArmID *string `json:"discoveryMachineArmId,omitempty" azure:"ro"`
+	DiscoveryMachineArmID *string
 
 	// READ-ONLY; Dictionary of disks attached to the machine. Key is ID of disk. Value is a disk object
-	Disks map[string]*Disk `json:"disks,omitempty" azure:"ro"`
+	Disks map[string]*Disk
 
 	// READ-ONLY; User readable name of the machine as defined by the user in their private datacenter.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; List of references to the groups that the machine is member of.
-	Groups []*string `json:"groups,omitempty" azure:"ro"`
+	Groups []*string
 
 	// READ-ONLY; Memory in Megabytes.
-	MegabytesOfMemory *float32 `json:"megabytesOfMemory,omitempty" azure:"ro"`
+	MegabytesOfMemory *float32
 
 	// READ-ONLY; Dictionary of network adapters attached to the machine. Key is ID of network adapter. Value is a network adapter
 	// object
-	NetworkAdapters map[string]*NetworkAdapter `json:"networkAdapters,omitempty" azure:"ro"`
+	NetworkAdapters map[string]*NetworkAdapter
 
 	// READ-ONLY; Processor count.
-	NumberOfCores *int32 `json:"numberOfCores,omitempty" azure:"ro"`
+	NumberOfCores *int32
 
 	// READ-ONLY; Operating System name of the machine.
-	OperatingSystemName *string `json:"operatingSystemName,omitempty" azure:"ro"`
+	OperatingSystemName *string
 
 	// READ-ONLY; Operating System type of the machine.
-	OperatingSystemType *string `json:"operatingSystemType,omitempty" azure:"ro"`
+	OperatingSystemType *string
 
 	// READ-ONLY; Operating System version of the machine.
-	OperatingSystemVersion *string `json:"operatingSystemVersion,omitempty" azure:"ro"`
+	OperatingSystemVersion *string
 
 	// READ-ONLY; Time when this machine was last updated. Date-Time represented in ISO-8601 format.
-	UpdatedTimestamp *time.Time `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *time.Time
 }
 
 // MachineResultList - List of machines.
 type MachineResultList struct {
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of machines.
-	Value []*Machine `json:"value,omitempty"`
+	Value []*Machine
 }
 
 // MachinesClientGetOptions contains the optional parameters for the MachinesClient.Get method.
@@ -752,46 +752,46 @@ type MachinesClientListByProjectOptions struct {
 // NetworkAdapter - A network adapter discovered on a machine.
 type NetworkAdapter struct {
 	// READ-ONLY; User friendly name of the network adapter.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; List of IP Addresses on the network adapter.
-	IPAddresses []*string `json:"ipAddresses,omitempty" azure:"ro"`
+	IPAddresses []*string
 
 	// READ-ONLY; MAC Address of the network adapter.
-	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
+	MacAddress *string
 }
 
 // Operation - A REST API operation supported by the provider.
 type Operation struct {
 	// READ-ONLY; Displayable properties of the operation.
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Name of the operation.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Origin of the operation.
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // OperationDisplay - Displayable properties of the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Description of the operation.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Operation Type.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Provider of the operation.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource operated on by the operation.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationResultList - List of API operations.
 type OperationResultList struct {
 	// List of operations.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -802,20 +802,20 @@ type OperationsClientListOptions struct {
 // PrivateEndpointConnection - A private endpoint connection for a project.
 type PrivateEndpointConnection struct {
 	// REQUIRED; Properties of the private endpoint endpoint connection.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// For optimistic concurrency control.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// READ-ONLY; Path reference to this private endpoint endpoint connection.
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/privateEndpointConnections/{privateEndpointConnectionName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the private endpoint endpoint connection.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object = [Microsoft.Migrate/assessmentProjects/privateEndpointConnections].
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionClientDeleteOptions contains the optional parameters for the PrivateEndpointConnectionClient.Delete
@@ -846,38 +846,38 @@ type PrivateEndpointConnectionClientUpdateOptions struct {
 // PrivateEndpointConnectionCollection - A collection of private endpoint connections for a project.
 type PrivateEndpointConnectionCollection struct {
 	// READ-ONLY
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of private endpoint connections for a project.
-	Value []*PrivateEndpointConnection `json:"value,omitempty" azure:"ro"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Private endpoint connection properties.
 type PrivateEndpointConnectionProperties struct {
 	// State of the private endpoint connection.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// READ-ONLY; ARM id for the private endpoint resource corresponding to the connection.
-	PrivateEndpoint *ResourceID `json:"privateEndpoint,omitempty" azure:"ro"`
+	PrivateEndpoint *ResourceID
 
 	// READ-ONLY; Indicates whether there is an ongoing operation on the private endpoint.
-	ProvisioningState *PrivateEndpointConnectionPropertiesProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionPropertiesProvisioningState
 }
 
 // PrivateLinkResource - A private link resource for a project for which a private endpoint can be created.
 type PrivateLinkResource struct {
 	// READ-ONLY; Path reference to this private link resource.
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}/privateLinkResources/{privateLinkResourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the private link resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Properties of the private link resource.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Type of the object = [Microsoft.Migrate/assessmentProjects/privateLinkResources].
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceClientGetOptions contains the optional parameters for the PrivateLinkResourceClient.Get method.
@@ -894,117 +894,117 @@ type PrivateLinkResourceClientListByProjectOptions struct {
 // PrivateLinkResourceCollection - A list of private link resources
 type PrivateLinkResourceCollection struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*PrivateLinkResource `json:"value,omitempty" azure:"ro"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 
 	// READ-ONLY; Required DNS zone names of the the private link resource.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty" azure:"ro"`
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkServiceConnectionState - State of a private endpoint connection.
 type PrivateLinkServiceConnectionState struct {
 	// Actions required on the private endpoint connection.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// Description of the private endpoint connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Connection status of the private endpoint connection.
-	Status *PrivateLinkServiceConnectionStateStatus `json:"status,omitempty"`
+	Status *PrivateLinkServiceConnectionStateStatus
 }
 
 // Project - Azure Migrate Project.
 type Project struct {
 	// For optimistic concurrency control.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Azure location in which project is created.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the project.
-	Properties *ProjectProperties `json:"properties,omitempty"`
+	Properties *ProjectProperties
 
 	// Tags provided by Azure Tagging service.
-	Tags any `json:"tags,omitempty"`
+	Tags any
 
 	// READ-ONLY; Path reference to this project /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Migrate/assessmentProjects/{projectName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the project.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object = [Microsoft.Migrate/assessmentProjects].
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProjectProperties - Properties of a project.
 type ProjectProperties struct {
 	// Assessment solution ARM id tracked by Microsoft.Migrate/migrateProjects.
-	AssessmentSolutionID *string `json:"assessmentSolutionId,omitempty"`
+	AssessmentSolutionID *string
 
 	// The ARM id of the storage account used for interactions when public access is disabled.
-	CustomerStorageAccountArmID *string `json:"customerStorageAccountArmId,omitempty"`
+	CustomerStorageAccountArmID *string
 
 	// The ARM id of service map workspace created by customer.
-	CustomerWorkspaceID *string `json:"customerWorkspaceId,omitempty"`
+	CustomerWorkspaceID *string
 
 	// Location of service map workspace created by customer.
-	CustomerWorkspaceLocation *string `json:"customerWorkspaceLocation,omitempty"`
+	CustomerWorkspaceLocation *string
 
 	// Assessment project status.
-	ProjectStatus *ProjectStatus `json:"projectStatus,omitempty"`
+	ProjectStatus *ProjectStatus
 
 	// This value can be set to 'enabled' to avoid breaking changes on existing customer resources and templates. If set to 'disabled',
 	// traffic over public interface is not allowed, and private endpoint
 	// connections would be the exclusive access method.
-	PublicNetworkAccess *string `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *string
 
 	// READ-ONLY; Time when this project was created. Date-Time represented in ISO-8601 format.
-	CreatedTimestamp *time.Time `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *time.Time
 
 	// READ-ONLY; Time when last assessment was created. Date-Time represented in ISO-8601 format. This value will be null until
 	// assessment is created.
-	LastAssessmentTimestamp *time.Time `json:"lastAssessmentTimestamp,omitempty" azure:"ro"`
+	LastAssessmentTimestamp *time.Time
 
 	// READ-ONLY; Number of assessments created in the project.
-	NumberOfAssessments *int32 `json:"numberOfAssessments,omitempty" azure:"ro"`
+	NumberOfAssessments *int32
 
 	// READ-ONLY; Number of groups created in the project.
-	NumberOfGroups *int32 `json:"numberOfGroups,omitempty" azure:"ro"`
+	NumberOfGroups *int32
 
 	// READ-ONLY; Number of machines in the project.
-	NumberOfMachines *int32 `json:"numberOfMachines,omitempty" azure:"ro"`
+	NumberOfMachines *int32
 
 	// READ-ONLY; The list of private endpoint connections to the project.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the project.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Endpoint at which the collector agent can call agent REST API.
-	ServiceEndpoint *string `json:"serviceEndpoint,omitempty" azure:"ro"`
+	ServiceEndpoint *string
 
 	// READ-ONLY; Time when this project was last updated. Date-Time represented in ISO-8601 format.
-	UpdatedTimestamp *time.Time `json:"updatedTimestamp,omitempty" azure:"ro"`
+	UpdatedTimestamp *time.Time
 }
 
 // ProjectResultList - List of projects.
 type ProjectResultList struct {
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of projects.
-	Value []*Project `json:"value,omitempty"`
+	Value []*Project
 }
 
 // ProjectsClientAssessmentOptionsListOptions contains the optional parameters for the ProjectsClient.NewAssessmentOptionsListPager
@@ -1054,27 +1054,27 @@ type ProjectsClientUpdateOptions struct {
 // ResourceID - ARM id for a resource.
 type ResourceID struct {
 	// READ-ONLY
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 type ServerCollector struct {
-	ETag       *string              `json:"eTag,omitempty"`
-	Properties *CollectorProperties `json:"properties,omitempty"`
+	ETag       *string
+	Properties *CollectorProperties
 
 	// READ-ONLY
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServerCollectorList - List of Server collectors.
 type ServerCollectorList struct {
 	// List of Server collectors.
-	Value []*ServerCollector `json:"value,omitempty"`
+	Value []*ServerCollector
 }
 
 // ServerCollectorsClientCreateOptions contains the optional parameters for the ServerCollectorsClient.Create method.
@@ -1102,50 +1102,50 @@ type ServerCollectorsClientListByProjectOptions struct {
 // UpdateGroupBody - Properties of group update.
 type UpdateGroupBody struct {
 	// For optimistic concurrency control.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Properties of the group.
-	Properties *GroupBodyProperties `json:"properties,omitempty"`
+	Properties *GroupBodyProperties
 }
 
 // VMFamily - VM family name, the list of targeted azure locations and the category of the family.
 type VMFamily struct {
 	// READ-ONLY; Category of the VM family.
-	Category []*string `json:"category,omitempty" azure:"ro"`
+	Category []*string
 
 	// READ-ONLY; Name of the VM family.
-	FamilyName *string `json:"familyName,omitempty" azure:"ro"`
+	FamilyName *string
 
 	// READ-ONLY; List of Azure regions.
-	TargetLocations []*string `json:"targetLocations,omitempty" azure:"ro"`
+	TargetLocations []*string
 }
 
 type VMUptime struct {
 	// Number of days in a month for VM uptime.
-	DaysPerMonth *int32 `json:"daysPerMonth,omitempty"`
+	DaysPerMonth *int32
 
 	// Number of hours per day for VM uptime.
-	HoursPerDay *int32 `json:"hoursPerDay,omitempty"`
+	HoursPerDay *int32
 }
 
 type VMwareCollector struct {
-	ETag       *string              `json:"eTag,omitempty"`
-	Properties *CollectorProperties `json:"properties,omitempty"`
+	ETag       *string
+	Properties *CollectorProperties
 
 	// READ-ONLY
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VMwareCollectorList - List of VMware collectors.
 type VMwareCollectorList struct {
 	// List of VMware collectors.
-	Value []*VMwareCollector `json:"value,omitempty"`
+	Value []*VMwareCollector
 }
 
 // VMwareCollectorsClientCreateOptions contains the optional parameters for the VMwareCollectorsClient.Create method.

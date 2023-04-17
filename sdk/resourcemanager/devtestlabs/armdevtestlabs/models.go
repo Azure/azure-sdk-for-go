@@ -14,119 +14,119 @@ import "time"
 // ApplicableSchedule - Schedules applicable to a virtual machine. The schedules may have been defined on a VM or on lab level.
 type ApplicableSchedule struct {
 	// REQUIRED; The properties of the resource.
-	Properties *ApplicableScheduleProperties `json:"properties,omitempty"`
+	Properties *ApplicableScheduleProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplicableScheduleFragment - Schedules applicable to a virtual machine. The schedules may have been defined on a VM or
 // on lab level.
 type ApplicableScheduleFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ApplicableScheduleProperties - Properties of a schedules applicable to a virtual machine.
 type ApplicableScheduleProperties struct {
 	// The auto-shutdown schedule, if one has been set at the lab or lab resource level.
-	LabVMsShutdown *Schedule `json:"labVmsShutdown,omitempty"`
+	LabVMsShutdown *Schedule
 
 	// The auto-startup schedule, if one has been set at the lab or lab resource level.
-	LabVMsStartup *Schedule `json:"labVmsStartup,omitempty"`
+	LabVMsStartup *Schedule
 }
 
 // ApplyArtifactsRequest - Request body for applying artifacts to a virtual machine.
 type ApplyArtifactsRequest struct {
 	// The list of artifacts to apply.
-	Artifacts []*ArtifactInstallProperties `json:"artifacts,omitempty"`
+	Artifacts []*ArtifactInstallProperties
 }
 
 // ArmTemplate - An Azure Resource Manager template.
 type ArmTemplate struct {
 	// REQUIRED; The properties of the resource.
-	Properties *ArmTemplateProperties `json:"properties,omitempty"`
+	Properties *ArmTemplateProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ArmTemplateInfo - Information about a generated ARM template.
 type ArmTemplateInfo struct {
 	// The parameters of the ARM template.
-	Parameters any `json:"parameters,omitempty"`
+	Parameters any
 
 	// The template's contents.
-	Template any `json:"template,omitempty"`
+	Template any
 }
 
 // ArmTemplateList - The response of a list operation.
 type ArmTemplateList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*ArmTemplate `json:"value,omitempty"`
+	Value []*ArmTemplate
 }
 
 // ArmTemplateParameterProperties - Properties of an Azure Resource Manager template parameter.
 type ArmTemplateParameterProperties struct {
 	// The name of the template parameter.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the template parameter.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ArmTemplateProperties - Properties of an Azure Resource Manager template.
 type ArmTemplateProperties struct {
 	// READ-ONLY; The contents of the ARM template.
-	Contents any `json:"contents,omitempty" azure:"ro"`
+	Contents any
 
 	// READ-ONLY; The creation date of the armTemplate.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The description of the ARM template.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The display name of the ARM template.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Whether or not ARM template is enabled for use by lab user.
-	Enabled *bool `json:"enabled,omitempty" azure:"ro"`
+	Enabled *bool
 
 	// READ-ONLY; The URI to the icon of the ARM template.
-	Icon *string `json:"icon,omitempty" azure:"ro"`
+	Icon *string
 
 	// READ-ONLY; File name and parameter values information from all azuredeploy.*.parameters.json for the ARM template.
-	ParametersValueFilesInfo []*ParametersValueFileInfo `json:"parametersValueFilesInfo,omitempty" azure:"ro"`
+	ParametersValueFilesInfo []*ParametersValueFileInfo
 
 	// READ-ONLY; The publisher of the ARM template.
-	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+	Publisher *string
 }
 
 // ArmTemplatesClientGetOptions contains the optional parameters for the ArmTemplatesClient.Get method.
@@ -150,175 +150,175 @@ type ArmTemplatesClientListOptions struct {
 // Artifact - An artifact.
 type Artifact struct {
 	// REQUIRED; The properties of the resource.
-	Properties *ArtifactProperties `json:"properties,omitempty"`
+	Properties *ArtifactProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ArtifactDeploymentStatusProperties - Properties of an artifact deployment.
 type ArtifactDeploymentStatusProperties struct {
 	// The total count of the artifacts that were successfully applied.
-	ArtifactsApplied *int32 `json:"artifactsApplied,omitempty"`
+	ArtifactsApplied *int32
 
 	// The deployment status of the artifact.
-	DeploymentStatus *string `json:"deploymentStatus,omitempty"`
+	DeploymentStatus *string
 
 	// The total count of the artifacts that were tentatively applied.
-	TotalArtifacts *int32 `json:"totalArtifacts,omitempty"`
+	TotalArtifacts *int32
 }
 
 // ArtifactInstallProperties - Properties of an artifact.
 type ArtifactInstallProperties struct {
 	// The artifact's identifier.
-	ArtifactID *string `json:"artifactId,omitempty"`
+	ArtifactID *string
 
 	// The artifact's title.
-	ArtifactTitle *string `json:"artifactTitle,omitempty"`
+	ArtifactTitle *string
 
 	// The status message from the deployment.
-	DeploymentStatusMessage *string `json:"deploymentStatusMessage,omitempty"`
+	DeploymentStatusMessage *string
 
 	// The time that the artifact starts to install on the virtual machine.
-	InstallTime *time.Time `json:"installTime,omitempty"`
+	InstallTime *time.Time
 
 	// The parameters of the artifact.
-	Parameters []*ArtifactParameterProperties `json:"parameters,omitempty"`
+	Parameters []*ArtifactParameterProperties
 
 	// The status of the artifact.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The status message from the virtual machine extension.
-	VMExtensionStatusMessage *string `json:"vmExtensionStatusMessage,omitempty"`
+	VMExtensionStatusMessage *string
 }
 
 // ArtifactList - The response of a list operation.
 type ArtifactList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*Artifact `json:"value,omitempty"`
+	Value []*Artifact
 }
 
 // ArtifactParameterProperties - Properties of an artifact parameter.
 type ArtifactParameterProperties struct {
 	// The name of the artifact parameter.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the artifact parameter.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ArtifactProperties - Properties of an artifact.
 type ArtifactProperties struct {
 	// READ-ONLY; The artifact's creation date.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The artifact's description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The file path to the artifact.
-	FilePath *string `json:"filePath,omitempty" azure:"ro"`
+	FilePath *string
 
 	// READ-ONLY; The URI to the artifact icon.
-	Icon *string `json:"icon,omitempty" azure:"ro"`
+	Icon *string
 
 	// READ-ONLY; The artifact's parameters.
-	Parameters any `json:"parameters,omitempty" azure:"ro"`
+	Parameters any
 
 	// READ-ONLY; The artifact's publisher.
-	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+	Publisher *string
 
 	// READ-ONLY; The artifact's target OS.
-	TargetOsType *string `json:"targetOsType,omitempty" azure:"ro"`
+	TargetOsType *string
 
 	// READ-ONLY; The artifact's title.
-	Title *string `json:"title,omitempty" azure:"ro"`
+	Title *string
 }
 
 // ArtifactSource - Properties of an artifact source.
 type ArtifactSource struct {
 	// REQUIRED; The properties of the resource.
-	Properties *ArtifactSourceProperties `json:"properties,omitempty"`
+	Properties *ArtifactSourceProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ArtifactSourceFragment - Properties of an artifact source.
 type ArtifactSourceFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ArtifactSourceList - The response of a list operation.
 type ArtifactSourceList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*ArtifactSource `json:"value,omitempty"`
+	Value []*ArtifactSource
 }
 
 // ArtifactSourceProperties - Properties of an artifact source.
 type ArtifactSourceProperties struct {
 	// The folder containing Azure Resource Manager templates.
-	ArmTemplateFolderPath *string `json:"armTemplateFolderPath,omitempty"`
+	ArmTemplateFolderPath *string
 
 	// The artifact source's branch reference.
-	BranchRef *string `json:"branchRef,omitempty"`
+	BranchRef *string
 
 	// The artifact source's display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The folder containing artifacts.
-	FolderPath *string `json:"folderPath,omitempty"`
+	FolderPath *string
 
 	// The security token to authenticate to the artifact source.
-	SecurityToken *string `json:"securityToken,omitempty"`
+	SecurityToken *string
 
 	// The artifact source's type.
-	SourceType *SourceControlType `json:"sourceType,omitempty"`
+	SourceType *SourceControlType
 
 	// Indicates if the artifact source is enabled (values: Enabled, Disabled).
-	Status *EnableStatus `json:"status,omitempty"`
+	Status *EnableStatus
 
 	// The artifact source's URI.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 
 	// READ-ONLY; The artifact source's creation date.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // ArtifactSourcesClientCreateOrUpdateOptions contains the optional parameters for the ArtifactSourcesClient.CreateOrUpdate
@@ -382,94 +382,94 @@ type ArtifactsClientListOptions struct {
 // AttachDiskProperties - Properties of the disk to attach.
 type AttachDiskProperties struct {
 	// The resource ID of the Lab virtual machine to which the disk is attached.
-	LeasedByLabVMID *string `json:"leasedByLabVmId,omitempty"`
+	LeasedByLabVMID *string
 }
 
 // AttachNewDataDiskOptions - Properties to attach new disk to the Virtual Machine.
 type AttachNewDataDiskOptions struct {
 	// The name of the disk to be attached.
-	DiskName *string `json:"diskName,omitempty"`
+	DiskName *string
 
 	// Size of the disk to be attached in Gibibytes.
-	DiskSizeGiB *int32 `json:"diskSizeGiB,omitempty"`
+	DiskSizeGiB *int32
 
 	// The storage type for the disk (i.e. Standard, Premium).
-	DiskType *StorageType `json:"diskType,omitempty"`
+	DiskType *StorageType
 }
 
 // BulkCreationParameters - Parameters for creating multiple virtual machines as a single action.
 type BulkCreationParameters struct {
 	// The number of virtual machine instances to create.
-	InstanceCount *int32 `json:"instanceCount,omitempty"`
+	InstanceCount *int32
 }
 
 // ComputeDataDisk - A data disks attached to a virtual machine.
 type ComputeDataDisk struct {
 	// Gets data disk size in GiB.
-	DiskSizeGiB *int32 `json:"diskSizeGiB,omitempty"`
+	DiskSizeGiB *int32
 
 	// When backed by a blob, the URI of underlying blob.
-	DiskURI *string `json:"diskUri,omitempty"`
+	DiskURI *string
 
 	// When backed by managed disk, this is the ID of the compute disk resource.
-	ManagedDiskID *string `json:"managedDiskId,omitempty"`
+	ManagedDiskID *string
 
 	// Gets data disk name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ComputeVMInstanceViewStatus - Status information about a virtual machine.
 type ComputeVMInstanceViewStatus struct {
 	// Gets the status Code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Gets the short localizable label for the status.
-	DisplayStatus *string `json:"displayStatus,omitempty"`
+	DisplayStatus *string
 
 	// Gets the message associated with the status.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ComputeVMProperties - Properties of a virtual machine returned by the Microsoft.Compute API.
 type ComputeVMProperties struct {
 	// Gets data disks blob uri for the virtual machine.
-	DataDiskIDs []*string `json:"dataDiskIds,omitempty"`
+	DataDiskIDs []*string
 
 	// Gets all data disks attached to the virtual machine.
-	DataDisks []*ComputeDataDisk `json:"dataDisks,omitempty"`
+	DataDisks []*ComputeDataDisk
 
 	// Gets the network interface ID of the virtual machine.
-	NetworkInterfaceID *string `json:"networkInterfaceId,omitempty"`
+	NetworkInterfaceID *string
 
 	// Gets OS disk blob uri for the virtual machine.
-	OSDiskID *string `json:"osDiskId,omitempty"`
+	OSDiskID *string
 
 	// Gets the OS type of the virtual machine.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// Gets the statuses of the virtual machine.
-	Statuses []*ComputeVMInstanceViewStatus `json:"statuses,omitempty"`
+	Statuses []*ComputeVMInstanceViewStatus
 
 	// Gets the size of the virtual machine.
-	VMSize *string `json:"vmSize,omitempty"`
+	VMSize *string
 }
 
 // CostThresholdProperties - Properties of a cost threshold item.
 type CostThresholdProperties struct {
 	// Indicates whether this threshold will be displayed on cost charts.
-	DisplayOnChart *CostThresholdStatus `json:"displayOnChart,omitempty"`
+	DisplayOnChart *CostThresholdStatus
 
 	// Indicates the datetime when notifications were last sent for this threshold.
-	NotificationSent *string `json:"notificationSent,omitempty"`
+	NotificationSent *string
 
 	// The value of the percentage cost threshold.
-	PercentageThreshold *PercentageCostThresholdProperties `json:"percentageThreshold,omitempty"`
+	PercentageThreshold *PercentageCostThresholdProperties
 
 	// Indicates whether notifications will be sent when this threshold is exceeded.
-	SendNotificationWhenExceeded *CostThresholdStatus `json:"sendNotificationWhenExceeded,omitempty"`
+	SendNotificationWhenExceeded *CostThresholdStatus
 
 	// The ID of the cost threshold item.
-	ThresholdID *string `json:"thresholdId,omitempty"`
+	ThresholdID *string
 }
 
 // CostsClientCreateOrUpdateOptions contains the optional parameters for the CostsClient.CreateOrUpdate method.
@@ -486,112 +486,112 @@ type CostsClientGetOptions struct {
 // CustomImage - A custom image.
 type CustomImage struct {
 	// REQUIRED; The properties of the resource.
-	Properties *CustomImageProperties `json:"properties,omitempty"`
+	Properties *CustomImageProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomImageFragment - A custom image.
 type CustomImageFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // CustomImageList - The response of a list operation.
 type CustomImageList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*CustomImage `json:"value,omitempty"`
+	Value []*CustomImage
 }
 
 // CustomImageProperties - Properties of a custom image.
 type CustomImageProperties struct {
 	// The author of the custom image.
-	Author *string `json:"author,omitempty"`
+	Author *string
 
 	// Storage information about the plan related to this custom image
-	CustomImagePlan *CustomImagePropertiesFromPlan `json:"customImagePlan,omitempty"`
+	CustomImagePlan *CustomImagePropertiesFromPlan
 
 	// Storage information about the data disks present in the custom image
-	DataDiskStorageInfo []*DataDiskStorageTypeInfo `json:"dataDiskStorageInfo,omitempty"`
+	DataDiskStorageInfo []*DataDiskStorageTypeInfo
 
 	// The description of the custom image.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Whether or not the custom images underlying offer/plan has been enabled for programmatic deployment
-	IsPlanAuthorized *bool `json:"isPlanAuthorized,omitempty"`
+	IsPlanAuthorized *bool
 
 	// The Managed Image Id backing the custom image.
-	ManagedImageID *string `json:"managedImageId,omitempty"`
+	ManagedImageID *string
 
 	// The Managed Snapshot Id backing the custom image.
-	ManagedSnapshotID *string `json:"managedSnapshotId,omitempty"`
+	ManagedSnapshotID *string
 
 	// The virtual machine from which the image is to be created.
-	VM *CustomImagePropertiesFromVM `json:"vm,omitempty"`
+	VM *CustomImagePropertiesFromVM
 
 	// The VHD from which the image is to be created.
-	Vhd *CustomImagePropertiesCustom `json:"vhd,omitempty"`
+	Vhd *CustomImagePropertiesCustom
 
 	// READ-ONLY; The creation date of the custom image.
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+	CreationDate *time.Time
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // CustomImagePropertiesCustom - Properties for creating a custom image from a VHD.
 type CustomImagePropertiesCustom struct {
 	// REQUIRED; The OS type of the custom image (i.e. Windows, Linux)
-	OSType *CustomImageOsType `json:"osType,omitempty"`
+	OSType *CustomImageOsType
 
 	// The image name.
-	ImageName *string `json:"imageName,omitempty"`
+	ImageName *string
 
 	// Indicates whether sysprep has been run on the VHD.
-	SysPrep *bool `json:"sysPrep,omitempty"`
+	SysPrep *bool
 }
 
 // CustomImagePropertiesFromPlan - Properties for plan on a custom image.
 type CustomImagePropertiesFromPlan struct {
 	// The id of the plan, equivalent to name of the plan
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The offer for the plan from the marketplace image the custom image is derived from
-	Offer *string `json:"offer,omitempty"`
+	Offer *string
 
 	// The publisher for the plan from the marketplace image the custom image is derived from
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 }
 
 // CustomImagePropertiesFromVM - Properties for creating a custom image from a virtual machine.
 type CustomImagePropertiesFromVM struct {
 	// The Linux OS information of the VM.
-	LinuxOsInfo *LinuxOsInfo `json:"linuxOsInfo,omitempty"`
+	LinuxOsInfo *LinuxOsInfo
 
 	// The source vm identifier.
-	SourceVMID *string `json:"sourceVmId,omitempty"`
+	SourceVMID *string
 
 	// The Windows OS information of the VM.
-	WindowsOsInfo *WindowsOsInfo `json:"windowsOsInfo,omitempty"`
+	WindowsOsInfo *WindowsOsInfo
 }
 
 // CustomImagesClientBeginCreateOrUpdateOptions contains the optional parameters for the CustomImagesClient.BeginCreateOrUpdate
@@ -633,112 +633,112 @@ type CustomImagesClientUpdateOptions struct {
 // DataDiskProperties - Request body for adding a new or existing data disk to a virtual machine.
 type DataDiskProperties struct {
 	// Specifies options to attach a new disk to the virtual machine.
-	AttachNewDataDiskOptions *AttachNewDataDiskOptions `json:"attachNewDataDiskOptions,omitempty"`
+	AttachNewDataDiskOptions *AttachNewDataDiskOptions
 
 	// Specifies the existing lab disk id to attach to virtual machine.
-	ExistingLabDiskID *string `json:"existingLabDiskId,omitempty"`
+	ExistingLabDiskID *string
 
 	// Caching option for a data disk (i.e. None, ReadOnly, ReadWrite).
-	HostCaching *HostCachingOptions `json:"hostCaching,omitempty"`
+	HostCaching *HostCachingOptions
 }
 
 // DataDiskStorageTypeInfo - Storage information about the data disks present in the custom image
 type DataDiskStorageTypeInfo struct {
 	// Disk Lun
-	Lun *string `json:"lun,omitempty"`
+	Lun *string
 
 	// Disk Storage Type
-	StorageType *StorageType `json:"storageType,omitempty"`
+	StorageType *StorageType
 }
 
 // DayDetails - Properties of a daily schedule.
 type DayDetails struct {
 	// The time of day the schedule will occur.
-	Time *string `json:"time,omitempty"`
+	Time *string
 }
 
 // DetachDataDiskProperties - Request body for detaching data disk from a virtual machine.
 type DetachDataDiskProperties struct {
 	// Specifies the disk resource ID to detach from virtual machine.
-	ExistingLabDiskID *string `json:"existingLabDiskId,omitempty"`
+	ExistingLabDiskID *string
 }
 
 // DetachDiskProperties - Properties of the disk to detach.
 type DetachDiskProperties struct {
 	// The resource ID of the Lab VM to which the disk is attached.
-	LeasedByLabVMID *string `json:"leasedByLabVmId,omitempty"`
+	LeasedByLabVMID *string
 }
 
 // Disk - A Disk.
 type Disk struct {
 	// REQUIRED; The properties of the resource.
-	Properties *DiskProperties `json:"properties,omitempty"`
+	Properties *DiskProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiskFragment - A Disk.
 type DiskFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DiskList - The response of a list operation.
 type DiskList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*Disk `json:"value,omitempty"`
+	Value []*Disk
 }
 
 // DiskProperties - Properties of a disk.
 type DiskProperties struct {
 	// When backed by a blob, the name of the VHD blob without extension.
-	DiskBlobName *string `json:"diskBlobName,omitempty"`
+	DiskBlobName *string
 
 	// The size of the disk in Gibibytes.
-	DiskSizeGiB *int32 `json:"diskSizeGiB,omitempty"`
+	DiskSizeGiB *int32
 
 	// The storage type for the disk (i.e. Standard, Premium).
-	DiskType *StorageType `json:"diskType,omitempty"`
+	DiskType *StorageType
 
 	// When backed by a blob, the URI of underlying blob.
-	DiskURI *string `json:"diskUri,omitempty"`
+	DiskURI *string
 
 	// The host caching policy of the disk (i.e. None, ReadOnly, ReadWrite).
-	HostCaching *string `json:"hostCaching,omitempty"`
+	HostCaching *string
 
 	// The resource ID of the VM to which this disk is leased.
-	LeasedByLabVMID *string `json:"leasedByLabVmId,omitempty"`
+	LeasedByLabVMID *string
 
 	// When backed by managed disk, this is the ID of the compute disk resource.
-	ManagedDiskID *string `json:"managedDiskId,omitempty"`
+	ManagedDiskID *string
 
 	// When backed by a blob, the storage account where the blob is.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// READ-ONLY; The creation date of the disk.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // DisksClientBeginAttachOptions contains the optional parameters for the DisksClient.BeginAttach method.
@@ -791,67 +791,67 @@ type DisksClientUpdateOptions struct {
 // DtlEnvironment - An environment, which is essentially an ARM template deployment.
 type DtlEnvironment struct {
 	// REQUIRED; The properties of the resource.
-	Properties *EnvironmentProperties `json:"properties,omitempty"`
+	Properties *EnvironmentProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DtlEnvironmentFragment - An environment, which is essentially an ARM template deployment.
 type DtlEnvironmentFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DtlEnvironmentList - The response of a list operation.
 type DtlEnvironmentList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*DtlEnvironment `json:"value,omitempty"`
+	Value []*DtlEnvironment
 }
 
 // EnvironmentDeploymentProperties - Properties of an environment deployment.
 type EnvironmentDeploymentProperties struct {
 	// The Azure Resource Manager template's identifier.
-	ArmTemplateID *string `json:"armTemplateId,omitempty"`
+	ArmTemplateID *string
 
 	// The parameters of the Azure Resource Manager template.
-	Parameters []*ArmTemplateParameterProperties `json:"parameters,omitempty"`
+	Parameters []*ArmTemplateParameterProperties
 }
 
 // EnvironmentProperties - Properties of an environment.
 type EnvironmentProperties struct {
 	// The display name of the Azure Resource Manager template that produced the environment.
-	ArmTemplateDisplayName *string `json:"armTemplateDisplayName,omitempty"`
+	ArmTemplateDisplayName *string
 
 	// The deployment properties of the environment.
-	DeploymentProperties *EnvironmentDeploymentProperties `json:"deploymentProperties,omitempty"`
+	DeploymentProperties *EnvironmentDeploymentProperties
 
 	// READ-ONLY; The creator of the environment.
-	CreatedByUser *string `json:"createdByUser,omitempty" azure:"ro"`
+	CreatedByUser *string
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The identifier of the resource group containing the environment's resources.
-	ResourceGroupID *string `json:"resourceGroupId,omitempty" azure:"ro"`
+	ResourceGroupID *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // EnvironmentsClientBeginCreateOrUpdateOptions contains the optional parameters for the EnvironmentsClient.BeginCreateOrUpdate
@@ -893,121 +893,121 @@ type EnvironmentsClientUpdateOptions struct {
 // EvaluatePoliciesProperties - Properties for evaluating a policy set.
 type EvaluatePoliciesProperties struct {
 	// The fact data.
-	FactData *string `json:"factData,omitempty"`
+	FactData *string
 
 	// The fact name.
-	FactName *string `json:"factName,omitempty"`
+	FactName *string
 
 	// The user for which policies will be evaluated
-	UserObjectID *string `json:"userObjectId,omitempty"`
+	UserObjectID *string
 
 	// The value offset.
-	ValueOffset *string `json:"valueOffset,omitempty"`
+	ValueOffset *string
 }
 
 // EvaluatePoliciesRequest - Request body for evaluating a policy set.
 type EvaluatePoliciesRequest struct {
 	// Policies to evaluate.
-	Policies []*EvaluatePoliciesProperties `json:"policies,omitempty"`
+	Policies []*EvaluatePoliciesProperties
 }
 
 // EvaluatePoliciesResponse - Response body for evaluating a policy set.
 type EvaluatePoliciesResponse struct {
 	// Results of evaluating a policy set.
-	Results []*PolicySetResult `json:"results,omitempty"`
+	Results []*PolicySetResult
 }
 
 // Event - An event to be notified for.
 type Event struct {
 	// The event type for which this notification is enabled (i.e. AutoShutdown, Cost)
-	EventName *NotificationChannelEventType `json:"eventName,omitempty"`
+	EventName *NotificationChannelEventType
 }
 
 // ExportResourceUsageParameters - The parameters of the export operation.
 type ExportResourceUsageParameters struct {
 	// The blob storage absolute sas uri with write permission to the container which the usage data needs to be uploaded to.
-	BlobStorageAbsoluteSasURI *string `json:"blobStorageAbsoluteSasUri,omitempty"`
+	BlobStorageAbsoluteSasURI *string
 
 	// The start time of the usage. If not provided, usage will be reported since the beginning of data collection.
-	UsageStartDate *time.Time `json:"usageStartDate,omitempty"`
+	UsageStartDate *time.Time
 }
 
 // ExternalSubnet - Subnet information as returned by the Microsoft.Network API.
 type ExternalSubnet struct {
 	// Gets or sets the identifier.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Gets or sets the name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // Formula - A formula for creating a VM, specifying an image base and other parameters
 type Formula struct {
 	// REQUIRED; The properties of the resource.
-	Properties *FormulaProperties `json:"properties,omitempty"`
+	Properties *FormulaProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FormulaFragment - A formula for creating a VM, specifying an image base and other parameters
 type FormulaFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // FormulaList - The response of a list operation.
 type FormulaList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*Formula `json:"value,omitempty"`
+	Value []*Formula
 }
 
 // FormulaProperties - Properties of a formula.
 type FormulaProperties struct {
 	// The description of the formula.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The content of the formula.
-	FormulaContent *LabVirtualMachineCreationParameter `json:"formulaContent,omitempty"`
+	FormulaContent *LabVirtualMachineCreationParameter
 
 	// The OS type of the formula.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// Information about a VM from which a formula is to be created.
-	VM *FormulaPropertiesFromVM `json:"vm,omitempty"`
+	VM *FormulaPropertiesFromVM
 
 	// READ-ONLY; The author of the formula.
-	Author *string `json:"author,omitempty" azure:"ro"`
+	Author *string
 
 	// READ-ONLY; The creation date of the formula.
-	CreationDate *time.Time `json:"creationDate,omitempty" azure:"ro"`
+	CreationDate *time.Time
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // FormulaPropertiesFromVM - Information about a VM from which a formula is to be created.
 type FormulaPropertiesFromVM struct {
 	// The identifier of the VM from which a formula is to be created.
-	LabVMID *string `json:"labVmId,omitempty"`
+	LabVMID *string
 }
 
 // FormulasClientBeginCreateOrUpdateOptions contains the optional parameters for the FormulasClient.BeginCreateOrUpdate method.
@@ -1047,76 +1047,76 @@ type FormulasClientUpdateOptions struct {
 // GalleryImage - A gallery image.
 type GalleryImage struct {
 	// REQUIRED; The properties of the resource.
-	Properties *GalleryImageProperties `json:"properties,omitempty"`
+	Properties *GalleryImageProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GalleryImageList - The response of a list operation.
 type GalleryImageList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*GalleryImage `json:"value,omitempty"`
+	Value []*GalleryImage
 }
 
 // GalleryImageProperties - Properties of a gallery image.
 type GalleryImageProperties struct {
 	// The author of the gallery image.
-	Author *string `json:"author,omitempty"`
+	Author *string
 
 	// The description of the gallery image.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether this gallery image is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The icon of the gallery image.
-	Icon *string `json:"icon,omitempty"`
+	Icon *string
 
 	// The image reference of the gallery image.
-	ImageReference *GalleryImageReference `json:"imageReference,omitempty"`
+	ImageReference *GalleryImageReference
 
 	// Indicates if the plan has been authorized for programmatic deployment.
-	IsPlanAuthorized *bool `json:"isPlanAuthorized,omitempty"`
+	IsPlanAuthorized *bool
 
 	// The third party plan that applies to this image
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 
 	// READ-ONLY; The creation date of the gallery image.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 }
 
 // GalleryImageReference - The reference information for an Azure Marketplace image.
 type GalleryImageReference struct {
 	// The OS type of the gallery image.
-	OSType *string `json:"osType,omitempty"`
+	OSType *string
 
 	// The offer of the gallery image.
-	Offer *string `json:"offer,omitempty"`
+	Offer *string
 
 	// The publisher of the gallery image.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// The SKU of the gallery image.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// The version of the gallery image.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // GalleryImagesClientListOptions contains the optional parameters for the GalleryImagesClient.NewListPager method.
@@ -1134,28 +1134,28 @@ type GalleryImagesClientListOptions struct {
 // GenerateArmTemplateRequest - Parameters for generating an ARM template for deploying artifacts.
 type GenerateArmTemplateRequest struct {
 	// Options for uploading the files for the artifact. UploadFilesAndGenerateSasTokens is the default value.
-	FileUploadOptions *FileUploadOptions `json:"fileUploadOptions,omitempty"`
+	FileUploadOptions *FileUploadOptions
 
 	// The location of the virtual machine.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The parameters of the ARM template.
-	Parameters []*ParameterInfo `json:"parameters,omitempty"`
+	Parameters []*ParameterInfo
 
 	// The resource name of the virtual machine.
-	VirtualMachineName *string `json:"virtualMachineName,omitempty"`
+	VirtualMachineName *string
 }
 
 // GenerateUploadURIParameter - Properties for generating an upload URI.
 type GenerateUploadURIParameter struct {
 	// The blob name of the upload URI.
-	BlobName *string `json:"blobName,omitempty"`
+	BlobName *string
 }
 
 // GenerateUploadURIResponse - Response body for generating an upload URI.
 type GenerateUploadURIResponse struct {
 	// The upload URI for the VHD.
-	UploadURI *string `json:"uploadUri,omitempty"`
+	UploadURI *string
 }
 
 // GlobalSchedulesClientBeginExecuteOptions contains the optional parameters for the GlobalSchedulesClient.BeginExecute method.
@@ -1222,533 +1222,533 @@ type GlobalSchedulesClientUpdateOptions struct {
 // HourDetails - Properties of an hourly schedule.
 type HourDetails struct {
 	// Minutes of the hour the schedule will run.
-	Minute *int32 `json:"minute,omitempty"`
+	Minute *int32
 }
 
 // IdentityProperties - Properties of a managed identity
 type IdentityProperties struct {
 	// The client secret URL of the identity.
-	ClientSecretURL *string `json:"clientSecretUrl,omitempty"`
+	ClientSecretURL *string
 
 	// The principal id of resource identity.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// The tenant identifier of resource.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// Managed identity.
-	Type *ManagedIdentityType `json:"type,omitempty"`
+	Type *ManagedIdentityType
 }
 
 // ImportLabVirtualMachineRequest - This represents the payload required to import a virtual machine from a different lab
 // into the current one
 type ImportLabVirtualMachineRequest struct {
 	// The name of the virtual machine in the destination lab
-	DestinationVirtualMachineName *string `json:"destinationVirtualMachineName,omitempty"`
+	DestinationVirtualMachineName *string
 
 	// The full resource ID of the virtual machine to be imported.
-	SourceVirtualMachineResourceID *string `json:"sourceVirtualMachineResourceId,omitempty"`
+	SourceVirtualMachineResourceID *string
 }
 
 // InboundNatRule - A rule for NAT - exposing a VM's port (backendPort) on the public IP address using a load balancer.
 type InboundNatRule struct {
 	// The port to which the external traffic will be redirected.
-	BackendPort *int32 `json:"backendPort,omitempty"`
+	BackendPort *int32
 
 	// The external endpoint port of the inbound connection. Possible values range between 1 and 65535, inclusive. If unspecified,
 	// a value will be allocated automatically.
-	FrontendPort *int32 `json:"frontendPort,omitempty"`
+	FrontendPort *int32
 
 	// The transport protocol for the endpoint.
-	TransportProtocol *TransportProtocol `json:"transportProtocol,omitempty"`
+	TransportProtocol *TransportProtocol
 }
 
 // Lab - A lab.
 type Lab struct {
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of the resource.
-	Properties *LabProperties `json:"properties,omitempty"`
+	Properties *LabProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LabAnnouncementProperties - Properties of a lab's announcement banner
 type LabAnnouncementProperties struct {
 	// Is the lab announcement active/enabled at this time?
-	Enabled *EnableStatus `json:"enabled,omitempty"`
+	Enabled *EnableStatus
 
 	// The time at which the announcement expires (null for never)
-	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time
 
 	// Has this announcement expired?
-	Expired *bool `json:"expired,omitempty"`
+	Expired *bool
 
 	// The markdown text (if any) that this lab displays in the UI. If left empty/null, nothing will be shown.
-	Markdown *string `json:"markdown,omitempty"`
+	Markdown *string
 
 	// The plain text title for the lab announcement
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // LabCost - A cost item.
 type LabCost struct {
 	// REQUIRED; The properties of the resource.
-	Properties *LabCostProperties `json:"properties,omitempty"`
+	Properties *LabCostProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LabCostDetailsProperties - The properties of a lab cost item.
 type LabCostDetailsProperties struct {
 	// The cost component of the cost item.
-	Cost *float64 `json:"cost,omitempty"`
+	Cost *float64
 
 	// The type of the cost.
-	CostType *CostType `json:"costType,omitempty"`
+	CostType *CostType
 
 	// The date of the cost item.
-	Date *time.Time `json:"date,omitempty"`
+	Date *time.Time
 }
 
 // LabCostProperties - Properties of a cost item.
 type LabCostProperties struct {
 	// The creation date of the cost.
-	CreatedDate *time.Time `json:"createdDate,omitempty"`
+	CreatedDate *time.Time
 
 	// The currency code of the cost.
-	CurrencyCode *string `json:"currencyCode,omitempty"`
+	CurrencyCode *string
 
 	// The end time of the cost data.
-	EndDateTime *time.Time `json:"endDateTime,omitempty"`
+	EndDateTime *time.Time
 
 	// The start time of the cost data.
-	StartDateTime *time.Time `json:"startDateTime,omitempty"`
+	StartDateTime *time.Time
 
 	// The target cost properties
-	TargetCost *TargetCostProperties `json:"targetCost,omitempty"`
+	TargetCost *TargetCostProperties
 
 	// READ-ONLY; The lab cost details component of the cost data.
-	LabCostDetails []*LabCostDetailsProperties `json:"labCostDetails,omitempty" azure:"ro"`
+	LabCostDetails []*LabCostDetailsProperties
 
 	// READ-ONLY; The lab cost summary component of the cost data.
-	LabCostSummary *LabCostSummaryProperties `json:"labCostSummary,omitempty" azure:"ro"`
+	LabCostSummary *LabCostSummaryProperties
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The resource cost component of the cost data.
-	ResourceCosts []*LabResourceCostProperties `json:"resourceCosts,omitempty" azure:"ro"`
+	ResourceCosts []*LabResourceCostProperties
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // LabCostSummaryProperties - The properties of the cost summary.
 type LabCostSummaryProperties struct {
 	// The cost component of the cost item.
-	EstimatedLabCost *float64 `json:"estimatedLabCost,omitempty"`
+	EstimatedLabCost *float64
 }
 
 // LabFragment - A lab.
 type LabFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // LabList - The response of a list operation.
 type LabList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*Lab `json:"value,omitempty"`
+	Value []*Lab
 }
 
 // LabProperties - Properties of a lab.
 type LabProperties struct {
 	// The properties of any lab announcement associated with this lab
-	Announcement *LabAnnouncementProperties `json:"announcement,omitempty"`
+	Announcement *LabAnnouncementProperties
 
 	// The access rights to be granted to the user when provisioning an environment
-	EnvironmentPermission *EnvironmentPermission `json:"environmentPermission,omitempty"`
+	EnvironmentPermission *EnvironmentPermission
 
 	// Extended properties of the lab used for experimental features
-	ExtendedProperties map[string]*string `json:"extendedProperties,omitempty"`
+	ExtendedProperties map[string]*string
 
 	// Type of storage used by the lab. It can be either Premium or Standard. Default is Premium.
-	LabStorageType *StorageType `json:"labStorageType,omitempty"`
+	LabStorageType *StorageType
 
 	// The ordered list of artifact resource IDs that should be applied on all Linux VM creations by default, prior to the artifacts
 	// specified by the user.
-	MandatoryArtifactsResourceIDsLinux []*string `json:"mandatoryArtifactsResourceIdsLinux,omitempty"`
+	MandatoryArtifactsResourceIDsLinux []*string
 
 	// The ordered list of artifact resource IDs that should be applied on all Windows VM creations by default, prior to the artifacts
 	// specified by the user.
-	MandatoryArtifactsResourceIDsWindows []*string `json:"mandatoryArtifactsResourceIdsWindows,omitempty"`
+	MandatoryArtifactsResourceIDsWindows []*string
 
 	// The setting to enable usage of premium data disks. When its value is 'Enabled', creation of standard or premium data disks
 	// is allowed. When its value is 'Disabled', only creation of standard data
 	// disks is allowed.
-	PremiumDataDisks *PremiumDataDisk `json:"premiumDataDisks,omitempty"`
+	PremiumDataDisks *PremiumDataDisk
 
 	// The properties of any lab support message associated with this lab
-	Support *LabSupportProperties `json:"support,omitempty"`
+	Support *LabSupportProperties
 
 	// READ-ONLY; The lab's artifact storage account.
-	ArtifactsStorageAccount *string `json:"artifactsStorageAccount,omitempty" azure:"ro"`
+	ArtifactsStorageAccount *string
 
 	// READ-ONLY; The creation date of the lab.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The lab's default premium storage account.
-	DefaultPremiumStorageAccount *string `json:"defaultPremiumStorageAccount,omitempty" azure:"ro"`
+	DefaultPremiumStorageAccount *string
 
 	// READ-ONLY; The lab's default storage account.
-	DefaultStorageAccount *string `json:"defaultStorageAccount,omitempty" azure:"ro"`
+	DefaultStorageAccount *string
 
 	// READ-ONLY; The load balancer used to for lab VMs that use shared IP address.
-	LoadBalancerID *string `json:"loadBalancerId,omitempty" azure:"ro"`
+	LoadBalancerID *string
 
 	// READ-ONLY; The Network Security Group attached to the lab VMs Network interfaces to restrict open ports.
-	NetworkSecurityGroupID *string `json:"networkSecurityGroupId,omitempty" azure:"ro"`
+	NetworkSecurityGroupID *string
 
 	// READ-ONLY; The lab's premium data disk storage account.
-	PremiumDataDiskStorageAccount *string `json:"premiumDataDiskStorageAccount,omitempty" azure:"ro"`
+	PremiumDataDiskStorageAccount *string
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The public IP address for the lab's load balancer.
-	PublicIPID *string `json:"publicIpId,omitempty" azure:"ro"`
+	PublicIPID *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 
 	// READ-ONLY; The resource group in which all new lab virtual machines will be created. To let DevTest Labs manage resource
 	// group creation, set this value to null.
-	VMCreationResourceGroup *string `json:"vmCreationResourceGroup,omitempty" azure:"ro"`
+	VMCreationResourceGroup *string
 
 	// READ-ONLY; The lab's Key vault.
-	VaultName *string `json:"vaultName,omitempty" azure:"ro"`
+	VaultName *string
 }
 
 // LabResourceCostProperties - The properties of a resource cost item.
 type LabResourceCostProperties struct {
 	// The ID of the external resource
-	ExternalResourceID *string `json:"externalResourceId,omitempty"`
+	ExternalResourceID *string
 
 	// The cost component of the resource cost item.
-	ResourceCost *float64 `json:"resourceCost,omitempty"`
+	ResourceCost *float64
 
 	// The ID of the resource
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The owner of the resource (ex. janedoe@microsoft.com)
-	ResourceOwner *string `json:"resourceOwner,omitempty"`
+	ResourceOwner *string
 
 	// The category of the resource (ex. PremiumLRS, StandardDS1)
-	ResourcePricingTier *string `json:"resourcePricingTier,omitempty"`
+	ResourcePricingTier *string
 
 	// The status of the resource (ex. Active)
-	ResourceStatus *string `json:"resourceStatus,omitempty"`
+	ResourceStatus *string
 
 	// The logical resource type (ex. virtualmachine, storageaccount)
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The unique identifier of the resource.
-	ResourceUID *string `json:"resourceUId,omitempty"`
+	ResourceUID *string
 
 	// The name of the resource.
-	Resourcename *string `json:"resourcename,omitempty"`
+	Resourcename *string
 }
 
 // LabSupportProperties - Properties of a lab's support banner
 type LabSupportProperties struct {
 	// Is the lab support banner active/enabled at this time?
-	Enabled *EnableStatus `json:"enabled,omitempty"`
+	Enabled *EnableStatus
 
 	// The markdown text (if any) that this lab displays in the UI. If left empty/null, nothing will be shown.
-	Markdown *string `json:"markdown,omitempty"`
+	Markdown *string
 }
 
 // LabVhd - Properties of a VHD in the lab.
 type LabVhd struct {
 	// The URI to the VHD.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // LabVhdList - The response of a list operation.
 type LabVhdList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*LabVhd `json:"value,omitempty"`
+	Value []*LabVhd
 }
 
 // LabVirtualMachine - A virtual machine.
 type LabVirtualMachine struct {
 	// REQUIRED; The properties of the resource.
-	Properties *LabVirtualMachineProperties `json:"properties,omitempty"`
+	Properties *LabVirtualMachineProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LabVirtualMachineCreationParameter - Properties for creating a virtual machine.
 type LabVirtualMachineCreationParameter struct {
 	// The location of the new virtual machine or environment
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The name of the virtual machine or environment
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The properties of the resource.
-	Properties *LabVirtualMachineCreationParameterProperties `json:"properties,omitempty"`
+	Properties *LabVirtualMachineCreationParameterProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // LabVirtualMachineCreationParameterProperties - Properties for virtual machine creation.
 type LabVirtualMachineCreationParameterProperties struct {
 	// Indicates whether another user can take ownership of the virtual machine
-	AllowClaim *bool `json:"allowClaim,omitempty"`
+	AllowClaim *bool
 
 	// The artifacts to be installed on the virtual machine.
-	Artifacts []*ArtifactInstallProperties `json:"artifacts,omitempty"`
+	Artifacts []*ArtifactInstallProperties
 
 	// The number of virtual machine instances to create.
-	BulkCreationParameters *BulkCreationParameters `json:"bulkCreationParameters,omitempty"`
+	BulkCreationParameters *BulkCreationParameters
 
 	// The creation date of the virtual machine.
-	CreatedDate *time.Time `json:"createdDate,omitempty"`
+	CreatedDate *time.Time
 
 	// The custom image identifier of the virtual machine.
-	CustomImageID *string `json:"customImageId,omitempty"`
+	CustomImageID *string
 
 	// New or existing data disks to attach to the virtual machine after creation
-	DataDiskParameters []*DataDiskProperties `json:"dataDiskParameters,omitempty"`
+	DataDiskParameters []*DataDiskProperties
 
 	// Indicates whether the virtual machine is to be created without a public IP address.
-	DisallowPublicIPAddress *bool `json:"disallowPublicIpAddress,omitempty"`
+	DisallowPublicIPAddress *bool
 
 	// The resource ID of the environment that contains this virtual machine, if any.
-	EnvironmentID *string `json:"environmentId,omitempty"`
+	EnvironmentID *string
 
 	// The expiration date for VM.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time
 
 	// The Microsoft Azure Marketplace image reference of the virtual machine.
-	GalleryImageReference *GalleryImageReference `json:"galleryImageReference,omitempty"`
+	GalleryImageReference *GalleryImageReference
 
 	// Indicates whether this virtual machine uses an SSH key for authentication.
-	IsAuthenticationWithSSHKey *bool `json:"isAuthenticationWithSshKey,omitempty"`
+	IsAuthenticationWithSSHKey *bool
 
 	// The lab subnet name of the virtual machine.
-	LabSubnetName *string `json:"labSubnetName,omitempty"`
+	LabSubnetName *string
 
 	// The lab virtual network identifier of the virtual machine.
-	LabVirtualNetworkID *string `json:"labVirtualNetworkId,omitempty"`
+	LabVirtualNetworkID *string
 
 	// The network interface properties.
-	NetworkInterface *NetworkInterfaceProperties `json:"networkInterface,omitempty"`
+	NetworkInterface *NetworkInterfaceProperties
 
 	// The notes of the virtual machine.
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// The object identifier of the owner of the virtual machine.
-	OwnerObjectID *string `json:"ownerObjectId,omitempty"`
+	OwnerObjectID *string
 
 	// The user principal name of the virtual machine owner.
-	OwnerUserPrincipalName *string `json:"ownerUserPrincipalName,omitempty"`
+	OwnerUserPrincipalName *string
 
 	// The password of the virtual machine administrator.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The id of the plan associated with the virtual machine image
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 
 	// The SSH key of the virtual machine administrator.
-	SSHKey *string `json:"sshKey,omitempty"`
+	SSHKey *string
 
 	// Virtual Machine schedules to be created
-	ScheduleParameters []*ScheduleCreationParameter `json:"scheduleParameters,omitempty"`
+	ScheduleParameters []*ScheduleCreationParameter
 
 	// The size of the virtual machine.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// Storage type to use for virtual machine (i.e. Standard, Premium).
-	StorageType *string `json:"storageType,omitempty"`
+	StorageType *string
 
 	// The user name of the virtual machine.
-	UserName *string `json:"userName,omitempty"`
+	UserName *string
 }
 
 // LabVirtualMachineFragment - A virtual machine.
 type LabVirtualMachineFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // LabVirtualMachineList - The response of a list operation.
 type LabVirtualMachineList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*LabVirtualMachine `json:"value,omitempty"`
+	Value []*LabVirtualMachine
 }
 
 // LabVirtualMachineProperties - Properties of a virtual machine.
 type LabVirtualMachineProperties struct {
 	// Indicates whether another user can take ownership of the virtual machine
-	AllowClaim *bool `json:"allowClaim,omitempty"`
+	AllowClaim *bool
 
 	// The artifacts to be installed on the virtual machine.
-	Artifacts []*ArtifactInstallProperties `json:"artifacts,omitempty"`
+	Artifacts []*ArtifactInstallProperties
 
 	// The creation date of the virtual machine.
-	CreatedDate *time.Time `json:"createdDate,omitempty"`
+	CreatedDate *time.Time
 
 	// The custom image identifier of the virtual machine.
-	CustomImageID *string `json:"customImageId,omitempty"`
+	CustomImageID *string
 
 	// New or existing data disks to attach to the virtual machine after creation
-	DataDiskParameters []*DataDiskProperties `json:"dataDiskParameters,omitempty"`
+	DataDiskParameters []*DataDiskProperties
 
 	// Indicates whether the virtual machine is to be created without a public IP address.
-	DisallowPublicIPAddress *bool `json:"disallowPublicIpAddress,omitempty"`
+	DisallowPublicIPAddress *bool
 
 	// The resource ID of the environment that contains this virtual machine, if any.
-	EnvironmentID *string `json:"environmentId,omitempty"`
+	EnvironmentID *string
 
 	// The expiration date for VM.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time
 
 	// The Microsoft Azure Marketplace image reference of the virtual machine.
-	GalleryImageReference *GalleryImageReference `json:"galleryImageReference,omitempty"`
+	GalleryImageReference *GalleryImageReference
 
 	// Indicates whether this virtual machine uses an SSH key for authentication.
-	IsAuthenticationWithSSHKey *bool `json:"isAuthenticationWithSshKey,omitempty"`
+	IsAuthenticationWithSSHKey *bool
 
 	// The lab subnet name of the virtual machine.
-	LabSubnetName *string `json:"labSubnetName,omitempty"`
+	LabSubnetName *string
 
 	// The lab virtual network identifier of the virtual machine.
-	LabVirtualNetworkID *string `json:"labVirtualNetworkId,omitempty"`
+	LabVirtualNetworkID *string
 
 	// The network interface properties.
-	NetworkInterface *NetworkInterfaceProperties `json:"networkInterface,omitempty"`
+	NetworkInterface *NetworkInterfaceProperties
 
 	// The notes of the virtual machine.
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// The object identifier of the owner of the virtual machine.
-	OwnerObjectID *string `json:"ownerObjectId,omitempty"`
+	OwnerObjectID *string
 
 	// The user principal name of the virtual machine owner.
-	OwnerUserPrincipalName *string `json:"ownerUserPrincipalName,omitempty"`
+	OwnerUserPrincipalName *string
 
 	// The password of the virtual machine administrator.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The id of the plan associated with the virtual machine image
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 
 	// The SSH key of the virtual machine administrator.
-	SSHKey *string `json:"sshKey,omitempty"`
+	SSHKey *string
 
 	// Virtual Machine schedules to be created
-	ScheduleParameters []*ScheduleCreationParameter `json:"scheduleParameters,omitempty"`
+	ScheduleParameters []*ScheduleCreationParameter
 
 	// The size of the virtual machine.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// Storage type to use for virtual machine (i.e. Standard, Premium).
-	StorageType *string `json:"storageType,omitempty"`
+	StorageType *string
 
 	// The user name of the virtual machine.
-	UserName *string `json:"userName,omitempty"`
+	UserName *string
 
 	// READ-ONLY; The applicable schedule for the virtual machine.
-	ApplicableSchedule *ApplicableSchedule `json:"applicableSchedule,omitempty" azure:"ro"`
+	ApplicableSchedule *ApplicableSchedule
 
 	// READ-ONLY; The artifact deployment status for the virtual machine.
-	ArtifactDeploymentStatus *ArtifactDeploymentStatusProperties `json:"artifactDeploymentStatus,omitempty" azure:"ro"`
+	ArtifactDeploymentStatus *ArtifactDeploymentStatusProperties
 
 	// READ-ONLY; The resource identifier (Microsoft.Compute) of the virtual machine.
-	ComputeID *string `json:"computeId,omitempty" azure:"ro"`
+	ComputeID *string
 
 	// READ-ONLY; The compute virtual machine properties.
-	ComputeVM *ComputeVMProperties `json:"computeVm,omitempty" azure:"ro"`
+	ComputeVM *ComputeVMProperties
 
 	// READ-ONLY; The email address of creator of the virtual machine.
-	CreatedByUser *string `json:"createdByUser,omitempty" azure:"ro"`
+	CreatedByUser *string
 
 	// READ-ONLY; The object identifier of the creator of the virtual machine.
-	CreatedByUserID *string `json:"createdByUserId,omitempty" azure:"ro"`
+	CreatedByUserID *string
 
 	// READ-ONLY; The fully-qualified domain name of the virtual machine.
-	Fqdn *string `json:"fqdn,omitempty" azure:"ro"`
+	Fqdn *string
 
 	// READ-ONLY; Last known compute power state captured in DTL
-	LastKnownPowerState *string `json:"lastKnownPowerState,omitempty" azure:"ro"`
+	LastKnownPowerState *string
 
 	// READ-ONLY; The OS type of the virtual machine.
-	OSType *string `json:"osType,omitempty" azure:"ro"`
+	OSType *string
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 
 	// READ-ONLY; Tells source of creation of lab virtual machine. Output property only.
-	VirtualMachineCreationSource *VirtualMachineCreationSource `json:"virtualMachineCreationSource,omitempty" azure:"ro"`
+	VirtualMachineCreationSource *VirtualMachineCreationSource
 }
 
 // LabsClientBeginClaimAnyVMOptions contains the optional parameters for the LabsClient.BeginClaimAnyVM method.
@@ -1837,101 +1837,101 @@ type LabsClientUpdateOptions struct {
 // LinuxOsInfo - Information about a Linux OS.
 type LinuxOsInfo struct {
 	// The state of the Linux OS (i.e. NonDeprovisioned, DeprovisionRequested, DeprovisionApplied).
-	LinuxOsState *LinuxOsState `json:"linuxOsState,omitempty"`
+	LinuxOsState *LinuxOsState
 }
 
 // NetworkInterfaceProperties - Properties of a network interface.
 type NetworkInterfaceProperties struct {
 	// The DNS name.
-	DNSName *string `json:"dnsName,omitempty"`
+	DNSName *string
 
 	// The private IP address.
-	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
+	PrivateIPAddress *string
 
 	// The public IP address.
-	PublicIPAddress *string `json:"publicIpAddress,omitempty"`
+	PublicIPAddress *string
 
 	// The resource ID of the public IP address.
-	PublicIPAddressID *string `json:"publicIpAddressId,omitempty"`
+	PublicIPAddressID *string
 
 	// The RdpAuthority property is a server DNS host name or IP address followed by the service port number for RDP (Remote Desktop
 	// Protocol).
-	RdpAuthority *string `json:"rdpAuthority,omitempty"`
+	RdpAuthority *string
 
 	// The SshAuthority property is a server DNS host name or IP address followed by the service port number for SSH.
-	SSHAuthority *string `json:"sshAuthority,omitempty"`
+	SSHAuthority *string
 
 	// The configuration for sharing a public IP address across multiple virtual machines.
-	SharedPublicIPAddressConfiguration *SharedPublicIPAddressConfiguration `json:"sharedPublicIpAddressConfiguration,omitempty"`
+	SharedPublicIPAddressConfiguration *SharedPublicIPAddressConfiguration
 
 	// The resource ID of the sub net.
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// The resource ID of the virtual network.
-	VirtualNetworkID *string `json:"virtualNetworkId,omitempty"`
+	VirtualNetworkID *string
 }
 
 // NotificationChannel - A notification.
 type NotificationChannel struct {
 	// REQUIRED; The properties of the resource.
-	Properties *NotificationChannelProperties `json:"properties,omitempty"`
+	Properties *NotificationChannelProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NotificationChannelFragment - A notification.
 type NotificationChannelFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // NotificationChannelList - The response of a list operation.
 type NotificationChannelList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*NotificationChannel `json:"value,omitempty"`
+	Value []*NotificationChannel
 }
 
 // NotificationChannelProperties - Properties of a schedule.
 type NotificationChannelProperties struct {
 	// Description of notification.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The email recipient to send notifications to (can be a list of semi-colon separated email addresses).
-	EmailRecipient *string `json:"emailRecipient,omitempty"`
+	EmailRecipient *string
 
 	// The list of event for which this notification is enabled.
-	Events []*Event `json:"events,omitempty"`
+	Events []*Event
 
 	// The locale to use when sending a notification (fallback for unsupported languages is EN).
-	NotificationLocale *string `json:"notificationLocale,omitempty"`
+	NotificationLocale *string
 
 	// The webhook URL to send notifications to.
-	WebHookURL *string `json:"webHookUrl,omitempty"`
+	WebHookURL *string
 
 	// READ-ONLY; The creation date of the notification channel.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // NotificationChannelsClientCreateOrUpdateOptions contains the optional parameters for the NotificationChannelsClient.CreateOrUpdate
@@ -1977,73 +1977,73 @@ type NotificationChannelsClientUpdateOptions struct {
 // NotificationSettings - Notification settings for a schedule.
 type NotificationSettings struct {
 	// The email recipient to send notifications to (can be a list of semi-colon separated email addresses).
-	EmailRecipient *string `json:"emailRecipient,omitempty"`
+	EmailRecipient *string
 
 	// The locale to use when sending a notification (fallback for unsupported languages is EN).
-	NotificationLocale *string `json:"notificationLocale,omitempty"`
+	NotificationLocale *string
 
 	// If notifications are enabled for this schedule (i.e. Enabled, Disabled).
-	Status *EnableStatus `json:"status,omitempty"`
+	Status *EnableStatus
 
 	// Time in minutes before event at which notification will be sent.
-	TimeInMinutes *int32 `json:"timeInMinutes,omitempty"`
+	TimeInMinutes *int32
 
 	// The webhook URL to which the notification will be sent.
-	WebhookURL *string `json:"webhookUrl,omitempty"`
+	WebhookURL *string
 }
 
 // NotifyParameters - Properties for generating a Notification.
 type NotifyParameters struct {
 	// The type of event (i.e. AutoShutdown, Cost)
-	EventName *NotificationChannelEventType `json:"eventName,omitempty"`
+	EventName *NotificationChannelEventType
 
 	// Properties for the notification in json format.
-	JSONPayload *string `json:"jsonPayload,omitempty"`
+	JSONPayload *string
 }
 
 // OperationError - Error details for the operation in case of a failure.
 type OperationError struct {
 	// The error code of the operation error.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The error message of the operation error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // OperationMetadata - The REST API operation supported by DevTestLab ResourceProvider.
 type OperationMetadata struct {
 	// The object that describes the operations
-	Display *OperationMetadataDisplay `json:"display,omitempty"`
+	Display *OperationMetadataDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationMetadataDisplay - The object that describes the operations
 type OperationMetadataDisplay struct {
 	// Friendly name of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: read, write, delete, listKeys/action, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Friendly name of the resource provider
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource type on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationResult - An Operation Result
 type OperationResult struct {
 	// Error details for the operation in case of a failure.
-	Error *OperationError `json:"error,omitempty"`
+	Error *OperationError
 
 	// The operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The status code for the operation.
-	StatusCode *HTTPStatusCode `json:"statusCode,omitempty"`
+	StatusCode *HTTPStatusCode
 }
 
 // OperationsClientGetOptions contains the optional parameters for the OperationsClient.Get method.
@@ -2054,25 +2054,25 @@ type OperationsClientGetOptions struct {
 // ParameterInfo - Information about an artifact's parameter.
 type ParameterInfo struct {
 	// The name of the artifact parameter.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the artifact parameter.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ParametersValueFileInfo - A file containing a set of parameter values for an ARM template.
 type ParametersValueFileInfo struct {
 	// File name.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string
 
 	// Contents of the file.
-	ParametersValueInfo any `json:"parametersValueInfo,omitempty"`
+	ParametersValueInfo any
 }
 
 // PercentageCostThresholdProperties - Properties of a percentage cost threshold.
 type PercentageCostThresholdProperties struct {
 	// The cost threshold value.
-	ThresholdValue *float64 `json:"thresholdValue,omitempty"`
+	ThresholdValue *float64
 }
 
 // PoliciesClientCreateOrUpdateOptions contains the optional parameters for the PoliciesClient.CreateOrUpdate method.
@@ -2111,76 +2111,76 @@ type PoliciesClientUpdateOptions struct {
 // Policy - A Policy.
 type Policy struct {
 	// REQUIRED; The properties of the resource.
-	Properties *PolicyProperties `json:"properties,omitempty"`
+	Properties *PolicyProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PolicyFragment - A Policy.
 type PolicyFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PolicyList - The response of a list operation.
 type PolicyList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*Policy `json:"value,omitempty"`
+	Value []*Policy
 }
 
 // PolicyProperties - Properties of a Policy.
 type PolicyProperties struct {
 	// The description of the policy.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The evaluator type of the policy (i.e. AllowedValuesPolicy, MaxValuePolicy).
-	EvaluatorType *PolicyEvaluatorType `json:"evaluatorType,omitempty"`
+	EvaluatorType *PolicyEvaluatorType
 
 	// The fact data of the policy.
-	FactData *string `json:"factData,omitempty"`
+	FactData *string
 
 	// The fact name of the policy (e.g. LabVmCount, LabVmSize, MaxVmsAllowedPerLab, etc.
-	FactName *PolicyFactName `json:"factName,omitempty"`
+	FactName *PolicyFactName
 
 	// The status of the policy.
-	Status *PolicyStatus `json:"status,omitempty"`
+	Status *PolicyStatus
 
 	// The threshold of the policy (i.e. a number for MaxValuePolicy, and a JSON array of values for AllowedValuesPolicy).
-	Threshold *string `json:"threshold,omitempty"`
+	Threshold *string
 
 	// READ-ONLY; The creation date of the policy.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // PolicySetResult - Result of a policy set evaluation.
 type PolicySetResult struct {
 	// A value indicating whether this policy set evaluation has discovered violations.
-	HasError *bool `json:"hasError,omitempty"`
+	HasError *bool
 
 	// The list of policy violations.
-	PolicyViolations []*PolicyViolation `json:"policyViolations,omitempty"`
+	PolicyViolations []*PolicyViolation
 }
 
 // PolicySetsClientEvaluatePoliciesOptions contains the optional parameters for the PolicySetsClient.EvaluatePolicies method.
@@ -2191,28 +2191,28 @@ type PolicySetsClientEvaluatePoliciesOptions struct {
 // PolicyViolation - Policy violation.
 type PolicyViolation struct {
 	// The code of the policy violation.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The message of the policy violation.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // Port - Properties of a network port.
 type Port struct {
 	// Backend port of the target virtual machine.
-	BackendPort *int32 `json:"backendPort,omitempty"`
+	BackendPort *int32
 
 	// Protocol type of the port.
-	TransportProtocol *TransportProtocol `json:"transportProtocol,omitempty"`
+	TransportProtocol *TransportProtocol
 }
 
 // ProviderOperationResult - Result of the request to list REST API operations
 type ProviderOperationResult struct {
 	// List of operations supported by the resource provider.
-	Value []*OperationMetadata `json:"value,omitempty"`
+	Value []*OperationMetadata
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProviderOperationsClientListOptions contains the optional parameters for the ProviderOperationsClient.NewListPager method.
@@ -2223,154 +2223,154 @@ type ProviderOperationsClientListOptions struct {
 // RdpConnection - Represents a .rdp file
 type RdpConnection struct {
 	// The contents of the .rdp file
-	Contents *string `json:"contents,omitempty"`
+	Contents *string
 }
 
 // ResizeLabVirtualMachineProperties - Request body for resizing a virtual machine.
 type ResizeLabVirtualMachineProperties struct {
 	// Specifies the size of the virtual machine.
-	Size *string `json:"size,omitempty"`
+	Size *string
 }
 
 // Resource - An Azure resource.
 type Resource struct {
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RetargetScheduleProperties - Properties for retargeting a virtual machine schedule.
 type RetargetScheduleProperties struct {
 	// The resource Id of the virtual machine on which the schedule operates
-	CurrentResourceID *string `json:"currentResourceId,omitempty"`
+	CurrentResourceID *string
 
 	// The resource Id of the virtual machine that the schedule should be retargeted to
-	TargetResourceID *string `json:"targetResourceId,omitempty"`
+	TargetResourceID *string
 }
 
 // Schedule - A schedule.
 type Schedule struct {
 	// REQUIRED; The properties of the resource.
-	Properties *ScheduleProperties `json:"properties,omitempty"`
+	Properties *ScheduleProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScheduleCreationParameter - Properties for creating a schedule.
 type ScheduleCreationParameter struct {
 	// The name of the virtual machine or environment
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The properties of the schedule.
-	Properties *ScheduleCreationParameterProperties `json:"properties,omitempty"`
+	Properties *ScheduleCreationParameterProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The location of the new virtual machine or environment
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 }
 
 // ScheduleCreationParameterProperties - Properties for schedule creation.
 type ScheduleCreationParameterProperties struct {
 	// If the schedule will occur once each day of the week, specify the daily recurrence.
-	DailyRecurrence *DayDetails `json:"dailyRecurrence,omitempty"`
+	DailyRecurrence *DayDetails
 
 	// If the schedule will occur multiple times a day, specify the hourly recurrence.
-	HourlyRecurrence *HourDetails `json:"hourlyRecurrence,omitempty"`
+	HourlyRecurrence *HourDetails
 
 	// Notification settings.
-	NotificationSettings *NotificationSettings `json:"notificationSettings,omitempty"`
+	NotificationSettings *NotificationSettings
 
 	// The status of the schedule (i.e. Enabled, Disabled)
-	Status *EnableStatus `json:"status,omitempty"`
+	Status *EnableStatus
 
 	// The resource ID to which the schedule belongs
-	TargetResourceID *string `json:"targetResourceId,omitempty"`
+	TargetResourceID *string
 
 	// The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-	TaskType *string `json:"taskType,omitempty"`
+	TaskType *string
 
 	// The time zone ID (e.g. Pacific Standard time).
-	TimeZoneID *string `json:"timeZoneId,omitempty"`
+	TimeZoneID *string
 
 	// If the schedule will occur only some days of the week, specify the weekly recurrence.
-	WeeklyRecurrence *WeekDetails `json:"weeklyRecurrence,omitempty"`
+	WeeklyRecurrence *WeekDetails
 }
 
 // ScheduleFragment - A schedule.
 type ScheduleFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ScheduleList - The response of a list operation.
 type ScheduleList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*Schedule `json:"value,omitempty"`
+	Value []*Schedule
 }
 
 // ScheduleProperties - Properties of a schedule.
 type ScheduleProperties struct {
 	// If the schedule will occur once each day of the week, specify the daily recurrence.
-	DailyRecurrence *DayDetails `json:"dailyRecurrence,omitempty"`
+	DailyRecurrence *DayDetails
 
 	// If the schedule will occur multiple times a day, specify the hourly recurrence.
-	HourlyRecurrence *HourDetails `json:"hourlyRecurrence,omitempty"`
+	HourlyRecurrence *HourDetails
 
 	// Notification settings.
-	NotificationSettings *NotificationSettings `json:"notificationSettings,omitempty"`
+	NotificationSettings *NotificationSettings
 
 	// The status of the schedule (i.e. Enabled, Disabled)
-	Status *EnableStatus `json:"status,omitempty"`
+	Status *EnableStatus
 
 	// The resource ID to which the schedule belongs
-	TargetResourceID *string `json:"targetResourceId,omitempty"`
+	TargetResourceID *string
 
 	// The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-	TaskType *string `json:"taskType,omitempty"`
+	TaskType *string
 
 	// The time zone ID (e.g. Pacific Standard time).
-	TimeZoneID *string `json:"timeZoneId,omitempty"`
+	TimeZoneID *string
 
 	// If the schedule will occur only some days of the week, specify the weekly recurrence.
-	WeeklyRecurrence *WeekDetails `json:"weeklyRecurrence,omitempty"`
+	WeeklyRecurrence *WeekDetails
 
 	// READ-ONLY; The creation date of the schedule.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // SchedulesClientBeginExecuteOptions contains the optional parameters for the SchedulesClient.BeginExecute method.
@@ -2420,49 +2420,49 @@ type SchedulesClientUpdateOptions struct {
 // Secret - A secret.
 type Secret struct {
 	// REQUIRED; The properties of the resource.
-	Properties *SecretProperties `json:"properties,omitempty"`
+	Properties *SecretProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SecretFragment - A secret.
 type SecretFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // SecretList - The response of a list operation.
 type SecretList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*Secret `json:"value,omitempty"`
+	Value []*Secret
 }
 
 // SecretProperties - Properties of a secret.
 type SecretProperties struct {
 	// The value of the secret for secret creation.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // SecretsClientBeginCreateOrUpdateOptions contains the optional parameters for the SecretsClient.BeginCreateOrUpdate method.
@@ -2502,55 +2502,55 @@ type SecretsClientUpdateOptions struct {
 // ServiceFabric - A Service Fabric.
 type ServiceFabric struct {
 	// REQUIRED; The properties of the resource.
-	Properties *ServiceFabricProperties `json:"properties,omitempty"`
+	Properties *ServiceFabricProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceFabricFragment - A Service Fabric.
 type ServiceFabricFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ServiceFabricList - The response of a list operation.
 type ServiceFabricList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*ServiceFabric `json:"value,omitempty"`
+	Value []*ServiceFabric
 }
 
 // ServiceFabricProperties - Properties of a service fabric.
 type ServiceFabricProperties struct {
 	// The resource id of the environment under which the service fabric resource is present
-	EnvironmentID *string `json:"environmentId,omitempty"`
+	EnvironmentID *string
 
 	// The backing service fabric resource's id
-	ExternalServiceFabricID *string `json:"externalServiceFabricId,omitempty"`
+	ExternalServiceFabricID *string
 
 	// READ-ONLY; The applicable schedule for the virtual machine.
-	ApplicableSchedule *ApplicableSchedule `json:"applicableSchedule,omitempty" azure:"ro"`
+	ApplicableSchedule *ApplicableSchedule
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // ServiceFabricSchedulesClientBeginExecuteOptions contains the optional parameters for the ServiceFabricSchedulesClient.BeginExecute
@@ -2654,31 +2654,31 @@ type ServiceFabricsClientUpdateOptions struct {
 // ServiceRunner - A container for a managed identity to execute DevTest lab services.
 type ServiceRunner struct {
 	// The identity of the resource.
-	Identity *IdentityProperties `json:"identity,omitempty"`
+	Identity *IdentityProperties
 
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceRunnerList - The response of a list operation.
 type ServiceRunnerList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*ServiceRunner `json:"value,omitempty"`
+	Value []*ServiceRunner
 }
 
 // ServiceRunnersClientCreateOrUpdateOptions contains the optional parameters for the ServiceRunnersClient.CreateOrUpdate
@@ -2700,198 +2700,198 @@ type ServiceRunnersClientGetOptions struct {
 // SharedPublicIPAddressConfiguration - Properties of a virtual machine that determine how it is connected to a load balancer.
 type SharedPublicIPAddressConfiguration struct {
 	// The incoming NAT rules
-	InboundNatRules []*InboundNatRule `json:"inboundNatRules,omitempty"`
+	InboundNatRules []*InboundNatRule
 }
 
 // ShutdownNotificationContent - The contents of a shutdown notification. Webhooks can use this type to deserialize the request
 // body when they get notified of an imminent shutdown.
 type ShutdownNotificationContent struct {
 	// The URL to delay shutdown by 2 hours.
-	DelayUrl120 *string `json:"delayUrl120,omitempty"`
+	DelayUrl120 *string
 
 	// The URL to delay shutdown by 60 minutes.
-	DelayUrl60 *string `json:"delayUrl60,omitempty"`
+	DelayUrl60 *string
 
 	// The event for which a notification will be sent.
-	EventType *string `json:"eventType,omitempty"`
+	EventType *string
 
 	// The GUID for the virtual machine to be shut down.
-	GUID *string `json:"guid,omitempty"`
+	GUID *string
 
 	// The lab for the schedule.
-	LabName *string `json:"labName,omitempty"`
+	LabName *string
 
 	// Minutes remaining until shutdown
-	MinutesUntilShutdown *string `json:"minutesUntilShutdown,omitempty"`
+	MinutesUntilShutdown *string
 
 	// The owner of the virtual machine.
-	Owner *string `json:"owner,omitempty"`
+	Owner *string
 
 	// The resource group name for the schedule.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	ResourceGroupName *string
 
 	// The URL to skip auto-shutdown.
-	SkipURL *string `json:"skipUrl,omitempty"`
+	SkipURL *string
 
 	// The subscription ID for the schedule.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// The text for the notification.
-	Text *string `json:"text,omitempty"`
+	Text *string
 
 	// The virtual machine to be shut down.
-	VMName *string `json:"vmName,omitempty"`
+	VMName *string
 
 	// The URL of the virtual machine.
-	VMURL *string `json:"vmUrl,omitempty"`
+	VMURL *string
 }
 
 // Subnet information.
 type Subnet struct {
 	// The permission policy of the subnet for allowing public IP addresses (i.e. Allow, Deny)).
-	AllowPublicIP *UsagePermissionType `json:"allowPublicIp,omitempty"`
+	AllowPublicIP *UsagePermissionType
 
 	// The name of the subnet as seen in the lab.
-	LabSubnetName *string `json:"labSubnetName,omitempty"`
+	LabSubnetName *string
 
 	// The resource ID of the subnet.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // SubnetOverride - Property overrides on a subnet of a virtual network.
 type SubnetOverride struct {
 	// The name given to the subnet within the lab.
-	LabSubnetName *string `json:"labSubnetName,omitempty"`
+	LabSubnetName *string
 
 	// The resource ID of the subnet.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Properties that virtual machines on this subnet will share.
-	SharedPublicIPAddressConfiguration *SubnetSharedPublicIPAddressConfiguration `json:"sharedPublicIpAddressConfiguration,omitempty"`
+	SharedPublicIPAddressConfiguration *SubnetSharedPublicIPAddressConfiguration
 
 	// Indicates whether this subnet can be used during virtual machine creation (i.e. Allow, Deny).
-	UseInVMCreationPermission *UsagePermissionType `json:"useInVmCreationPermission,omitempty"`
+	UseInVMCreationPermission *UsagePermissionType
 
 	// Indicates whether public IP addresses can be assigned to virtual machines on this subnet (i.e. Allow, Deny).
-	UsePublicIPAddressPermission *UsagePermissionType `json:"usePublicIpAddressPermission,omitempty"`
+	UsePublicIPAddressPermission *UsagePermissionType
 
 	// The virtual network pool associated with this subnet.
-	VirtualNetworkPoolName *string `json:"virtualNetworkPoolName,omitempty"`
+	VirtualNetworkPoolName *string
 }
 
 // SubnetSharedPublicIPAddressConfiguration - Configuration for public IP address sharing.
 type SubnetSharedPublicIPAddressConfiguration struct {
 	// Backend ports that virtual machines on this subnet are allowed to expose
-	AllowedPorts []*Port `json:"allowedPorts,omitempty"`
+	AllowedPorts []*Port
 }
 
 // TargetCostProperties - Properties of a cost target.
 type TargetCostProperties struct {
 	// Cost thresholds.
-	CostThresholds []*CostThresholdProperties `json:"costThresholds,omitempty"`
+	CostThresholds []*CostThresholdProperties
 
 	// Reporting cycle end date.
-	CycleEndDateTime *time.Time `json:"cycleEndDateTime,omitempty"`
+	CycleEndDateTime *time.Time
 
 	// Reporting cycle start date.
-	CycleStartDateTime *time.Time `json:"cycleStartDateTime,omitempty"`
+	CycleStartDateTime *time.Time
 
 	// Reporting cycle type.
-	CycleType *ReportingCycleType `json:"cycleType,omitempty"`
+	CycleType *ReportingCycleType
 
 	// Target cost status
-	Status *TargetCostStatus `json:"status,omitempty"`
+	Status *TargetCostStatus
 
 	// Lab target cost
-	Target *int32 `json:"target,omitempty"`
+	Target *int32
 }
 
 // UpdateResource - Represents an update resource
 type UpdateResource struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // User - Profile of a lab user.
 type User struct {
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of the resource.
-	Properties *UserProperties `json:"properties,omitempty"`
+	Properties *UserProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserFragment - Profile of a lab user.
 type UserFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // UserIdentity - Identity attributes of a lab user.
 type UserIdentity struct {
 	// Set to the app Id of the client JWT making the request.
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// Set to the object Id of the client JWT making the request. Not all users have object Id. For CSP (reseller) scenarios for
 	// example, object Id is not available.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// Set to the principal Id of the client JWT making the request. Service principal will not have the principal Id.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// Set to the principal name / UPN of the client JWT making the request.
-	PrincipalName *string `json:"principalName,omitempty"`
+	PrincipalName *string
 
 	// Set to the tenant ID of the client JWT making the request.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // UserList - The response of a list operation.
 type UserList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*User `json:"value,omitempty"`
+	Value []*User
 }
 
 // UserProperties - Properties of a lab user profile.
 type UserProperties struct {
 	// The identity of the user.
-	Identity *UserIdentity `json:"identity,omitempty"`
+	Identity *UserIdentity
 
 	// The secret store of the user.
-	SecretStore *UserSecretStore `json:"secretStore,omitempty"`
+	SecretStore *UserSecretStore
 
 	// READ-ONLY; The creation date of the user profile.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // UserSecretStore - Properties of a user's secret store.
 type UserSecretStore struct {
 	// The ID of the user's Key vault.
-	KeyVaultID *string `json:"keyVaultId,omitempty"`
+	KeyVaultID *string
 
 	// The URI of the user's Key vault.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	KeyVaultURI *string
 }
 
 // UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate method.
@@ -3095,64 +3095,64 @@ type VirtualMachinesClientUpdateOptions struct {
 // VirtualNetwork - A virtual network.
 type VirtualNetwork struct {
 	// The location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties of the resource.
-	Properties *VirtualNetworkProperties `json:"properties,omitempty"`
+	Properties *VirtualNetworkProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VirtualNetworkFragment - A virtual network.
 type VirtualNetworkFragment struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // VirtualNetworkList - The response of a list operation.
 type VirtualNetworkList struct {
 	// Link for next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of the list operation.
-	Value []*VirtualNetwork `json:"value,omitempty"`
+	Value []*VirtualNetwork
 }
 
 // VirtualNetworkProperties - Properties of a virtual network.
 type VirtualNetworkProperties struct {
 	// The allowed subnets of the virtual network.
-	AllowedSubnets []*Subnet `json:"allowedSubnets,omitempty"`
+	AllowedSubnets []*Subnet
 
 	// The description of the virtual network.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The Microsoft.Network resource identifier of the virtual network.
-	ExternalProviderResourceID *string `json:"externalProviderResourceId,omitempty"`
+	ExternalProviderResourceID *string
 
 	// The subnet overrides of the virtual network.
-	SubnetOverrides []*SubnetOverride `json:"subnetOverrides,omitempty"`
+	SubnetOverrides []*SubnetOverride
 
 	// READ-ONLY; The creation date of the virtual network.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The external subnet properties.
-	ExternalSubnets []*ExternalSubnet `json:"externalSubnets,omitempty" azure:"ro"`
+	ExternalSubnets []*ExternalSubnet
 
 	// READ-ONLY; The provisioning status of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; The unique immutable identifier of a resource (Guid).
-	UniqueIdentifier *string `json:"uniqueIdentifier,omitempty" azure:"ro"`
+	UniqueIdentifier *string
 }
 
 // VirtualNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworksClient.BeginCreateOrUpdate
@@ -3194,14 +3194,14 @@ type VirtualNetworksClientUpdateOptions struct {
 // WeekDetails - Properties of a weekly schedule.
 type WeekDetails struct {
 	// The time of the day the schedule will occur.
-	Time *string `json:"time,omitempty"`
+	Time *string
 
 	// The days of the week for which the schedule is set (e.g. Sunday, Monday, Tuesday, etc.).
-	Weekdays []*string `json:"weekdays,omitempty"`
+	Weekdays []*string
 }
 
 // WindowsOsInfo - Information about a Windows OS.
 type WindowsOsInfo struct {
 	// The state of the Windows OS (i.e. NonSysprepped, SysprepRequested, SysprepApplied).
-	WindowsOsState *WindowsOsState `json:"windowsOsState,omitempty"`
+	WindowsOsState *WindowsOsState
 }

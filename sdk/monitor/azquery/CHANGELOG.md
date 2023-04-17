@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0-beta.1 (2023-04-11)
+
+### Features Added
+* Added the `LogsClient.QueryResource` method which allow users to query Azure resources directly without a Log Analytics workspace
+
+### Other Changes
+* Updated dependencies and documentation
 
 ## 1.0.0 (2023-02-08)
 

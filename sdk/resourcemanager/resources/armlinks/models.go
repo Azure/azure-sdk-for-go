@@ -12,35 +12,35 @@ package armlinks
 // Operation - Microsoft.Resources operation
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.Resources
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: Profile, endpoint, etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Microsoft.Resources operations. It contains a list of operations and
 // a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Microsoft.Resources operations.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -51,43 +51,43 @@ type OperationsClientListOptions struct {
 // ResourceLink - The resource link.
 type ResourceLink struct {
 	// Properties for resource link.
-	Properties *ResourceLinkProperties `json:"properties,omitempty"`
+	Properties *ResourceLinkProperties
 
 	// READ-ONLY; The fully qualified ID of the resource link.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource link.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource link object.
-	Type any `json:"type,omitempty" azure:"ro"`
+	Type any
 }
 
 // ResourceLinkFilter - Resource link filter.
 type ResourceLinkFilter struct {
 	// REQUIRED; The ID of the target resource.
-	TargetID *string `json:"targetId,omitempty"`
+	TargetID *string
 }
 
 // ResourceLinkProperties - The resource link properties.
 type ResourceLinkProperties struct {
 	// REQUIRED; The fully qualified ID of the target resource in the link.
-	TargetID *string `json:"targetId,omitempty"`
+	TargetID *string
 
 	// Notes about the resource link.
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// READ-ONLY; The fully qualified ID of the source resource in the link.
-	SourceID *string `json:"sourceId,omitempty" azure:"ro"`
+	SourceID *string
 }
 
 // ResourceLinkResult - List of resource links.
 type ResourceLinkResult struct {
 	// REQUIRED; An array of resource links.
-	Value []*ResourceLink `json:"value,omitempty"`
+	Value []*ResourceLink
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ResourceLinksClientCreateOrUpdateOptions contains the optional parameters for the ResourceLinksClient.CreateOrUpdate method.

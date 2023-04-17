@@ -316,13 +316,13 @@ func setDeviceHandle(deviceHandle interface{}, req *policy.Request) error {
 	case string:
 		req.Raw().Header.Add("ServiceBusNotification-DeviceHandle", v)
 	case map[string]interface{}:
-		if endpoint, ok = v["endpoint"].(string); !ok {
+		if endpoint, ok = v["Endpoint"].(string); !ok {
 			return fmt.Errorf("missing endpoint")
 		}
-		if p256dh, ok = v["p256dh"].(string); !ok {
+		if p256dh, ok = v["P256DH"].(string); !ok {
 			return fmt.Errorf("missing p256dh")
 		}
-		if auth, ok = v["auth"].(string); !ok {
+		if auth, ok = v["Auth"].(string); !ok {
 			return fmt.Errorf("missing auth")
 		}
 		req.Raw().Header.Add("ServiceBusNotification-DeviceHandle", endpoint)

@@ -12,76 +12,76 @@ package armchanges
 // ChangeAttributes - Details about the change resource
 type ChangeAttributes struct {
 	// READ-ONLY; The number of changes this resource captures
-	ChangesCount *int64 `json:"changesCount,omitempty" azure:"ro"`
+	ChangesCount *int64
 
 	// READ-ONLY; The ARM correlation ID of the change resource
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+	CorrelationID *string
 
 	// READ-ONLY; The GUID of the new snapshot
-	NewResourceSnapshotID *string `json:"newResourceSnapshotId,omitempty" azure:"ro"`
+	NewResourceSnapshotID *string
 
 	// READ-ONLY; The GUID of the previous snapshot
-	PreviousResourceSnapshotID *string `json:"previousResourceSnapshotId,omitempty" azure:"ro"`
+	PreviousResourceSnapshotID *string
 
 	// READ-ONLY; The time the change(s) on the target resource ocurred
-	Timestamp *string `json:"timestamp,omitempty" azure:"ro"`
+	Timestamp *string
 }
 
 // ChangeBase - An individual change on the target resource
 type ChangeBase struct {
 	// READ-ONLY; The entity that made the change
-	ChangeCategory *ChangeCategory `json:"changeCategory,omitempty" azure:"ro"`
+	ChangeCategory *ChangeCategory
 
 	// READ-ONLY; The target resource property value after the change
-	NewValue *string `json:"newValue,omitempty" azure:"ro"`
+	NewValue *string
 
 	// READ-ONLY; The target resource property value before the change
-	PreviousValue *string `json:"previousValue,omitempty" azure:"ro"`
+	PreviousValue *string
 
 	// READ-ONLY; The type of change that occurred
-	PropertyChangeType *PropertyChangeType `json:"propertyChangeType,omitempty" azure:"ro"`
+	PropertyChangeType *PropertyChangeType
 }
 
 // ChangeProperties - The properties of a change
 type ChangeProperties struct {
 	// Details about the change resource
-	ChangeAttributes *ChangeAttributes `json:"changeAttributes,omitempty"`
+	ChangeAttributes *ChangeAttributes
 
 	// A dictionary with changed property name as a key and the change details as the value
-	Changes map[string]*ChangeBase `json:"changes,omitempty"`
+	Changes map[string]*ChangeBase
 
 	// READ-ONLY; The type of change that was captured in the resource
-	ChangeType *ChangeType `json:"changeType,omitempty" azure:"ro"`
+	ChangeType *ChangeType
 
 	// READ-ONLY; The fully qualified ID of the target resource that was changed
-	TargetResourceID *string `json:"targetResourceId,omitempty" azure:"ro"`
+	TargetResourceID *string
 
 	// READ-ONLY; The namespace and type of the resource
-	TargetResourceType *string `json:"targetResourceType,omitempty" azure:"ro"`
+	TargetResourceType *string
 }
 
 // ChangeResourceListResult - The list of resources
 type ChangeResourceListResult struct {
 	// The link used to get the next page of Change Resources
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of resources
-	Value []*ChangeResourceResult `json:"value,omitempty"`
+	Value []*ChangeResourceResult
 }
 
 // ChangeResourceResult - Change Resource
 type ChangeResourceResult struct {
 	// The properties of a change
-	Properties *ChangeProperties `json:"properties,omitempty"`
+	Properties *ChangeProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClientGetOptions contains the optional parameters for the Client.Get method.
@@ -100,45 +100,45 @@ type ClientListOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

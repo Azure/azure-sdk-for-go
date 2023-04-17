@@ -11,7 +11,7 @@ package armresourceconnector
 
 const (
 	moduleName    = "armresourceconnector"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.3.1"
 )
 
 // AccessProfileType - Name which contains the role of the kubeconfig.
@@ -27,20 +27,6 @@ func PossibleAccessProfileTypeValues() []AccessProfileType {
 	return []AccessProfileType{
 		AccessProfileTypeClusterCustomerUser,
 		AccessProfileTypeClusterUser,
-	}
-}
-
-// ArtifactType - Appliance ArtifactType definition.
-type ArtifactType string
-
-const (
-	ArtifactTypeLogsArtifactType ArtifactType = "LogsArtifactType"
-)
-
-// PossibleArtifactTypeValues returns the possible values for the ArtifactType const type.
-func PossibleArtifactTypeValues() []ArtifactType {
-	return []ArtifactType{
-		ArtifactTypeLogsArtifactType,
 	}
 }
 
@@ -120,19 +106,13 @@ func PossibleResourceIdentityTypeValues() []ResourceIdentityType {
 type SSHKeyType string
 
 const (
-	SSHKeyTypeLogsKey         SSHKeyType = "LogsKey"
-	SSHKeyTypeManagementCAKey SSHKeyType = "ManagementCAKey"
 	SSHKeyTypeSSHCustomerUser SSHKeyType = "SSHCustomerUser"
-	SSHKeyTypeScopedAccessKey SSHKeyType = "ScopedAccessKey"
 )
 
 // PossibleSSHKeyTypeValues returns the possible values for the SSHKeyType const type.
 func PossibleSSHKeyTypeValues() []SSHKeyType {
 	return []SSHKeyType{
-		SSHKeyTypeLogsKey,
-		SSHKeyTypeManagementCAKey,
 		SSHKeyTypeSSHCustomerUser,
-		SSHKeyTypeScopedAccessKey,
 	}
 }
 
@@ -142,13 +122,6 @@ type Status string
 const (
 	StatusConnected                             Status = "Connected"
 	StatusConnecting                            Status = "Connecting"
-	StatusImageDeprovisioning                   Status = "ImageDeprovisioning"
-	StatusImageDownloaded                       Status = "ImageDownloaded"
-	StatusImageDownloading                      Status = "ImageDownloading"
-	StatusImagePending                          Status = "ImagePending"
-	StatusImageProvisioned                      Status = "ImageProvisioned"
-	StatusImageProvisioning                     Status = "ImageProvisioning"
-	StatusImageUnknown                          Status = "ImageUnknown"
 	StatusNone                                  Status = "None"
 	StatusOffline                               Status = "Offline"
 	StatusPostUpgrade                           Status = "PostUpgrade"
@@ -162,11 +135,9 @@ const (
 	StatusUpgradeComplete                       Status = "UpgradeComplete"
 	StatusUpgradeFailed                         Status = "UpgradeFailed"
 	StatusUpgradePrerequisitesCompleted         Status = "UpgradePrerequisitesCompleted"
-	StatusUpgradingKVAIO                        Status = "UpgradingKVAIO"
 	StatusValidating                            Status = "Validating"
 	StatusWaitingForCloudOperator               Status = "WaitingForCloudOperator"
 	StatusWaitingForHeartbeat                   Status = "WaitingForHeartbeat"
-	StatusWaitingForKVAIO                       Status = "WaitingForKVAIO"
 )
 
 // PossibleStatusValues returns the possible values for the Status const type.
@@ -174,13 +145,6 @@ func PossibleStatusValues() []Status {
 	return []Status{
 		StatusConnected,
 		StatusConnecting,
-		StatusImageDeprovisioning,
-		StatusImageDownloaded,
-		StatusImageDownloading,
-		StatusImagePending,
-		StatusImageProvisioned,
-		StatusImageProvisioning,
-		StatusImageUnknown,
 		StatusNone,
 		StatusOffline,
 		StatusPostUpgrade,
@@ -194,10 +158,8 @@ func PossibleStatusValues() []Status {
 		StatusUpgradeComplete,
 		StatusUpgradeFailed,
 		StatusUpgradePrerequisitesCompleted,
-		StatusUpgradingKVAIO,
 		StatusValidating,
 		StatusWaitingForCloudOperator,
 		StatusWaitingForHeartbeat,
-		StatusWaitingForKVAIO,
 	}
 }

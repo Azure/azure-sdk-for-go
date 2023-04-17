@@ -338,7 +338,7 @@ func (d *Deployment) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DeploymentExportResult.
 func (d DeploymentExportResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "template", &d.Template)
+	populateAny(objectMap, "template", d.Template)
 	return json.Marshal(objectMap)
 }
 
@@ -603,9 +603,9 @@ func (d DeploymentProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "expressionEvaluationOptions", d.ExpressionEvaluationOptions)
 	populate(objectMap, "mode", d.Mode)
 	populate(objectMap, "onErrorDeployment", d.OnErrorDeployment)
-	populate(objectMap, "parameters", &d.Parameters)
+	populateAny(objectMap, "parameters", d.Parameters)
 	populate(objectMap, "parametersLink", d.ParametersLink)
-	populate(objectMap, "template", &d.Template)
+	populateAny(objectMap, "template", d.Template)
 	populate(objectMap, "templateLink", d.TemplateLink)
 	return json.Marshal(objectMap)
 }
@@ -662,8 +662,8 @@ func (d DeploymentPropertiesExtended) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "mode", d.Mode)
 	populate(objectMap, "onErrorDeployment", d.OnErrorDeployment)
 	populate(objectMap, "outputResources", d.OutputResources)
-	populate(objectMap, "outputs", &d.Outputs)
-	populate(objectMap, "parameters", &d.Parameters)
+	populateAny(objectMap, "outputs", d.Outputs)
+	populateAny(objectMap, "parameters", d.Parameters)
 	populate(objectMap, "parametersLink", d.ParametersLink)
 	populate(objectMap, "providers", d.Providers)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -811,9 +811,9 @@ func (d DeploymentWhatIfProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "expressionEvaluationOptions", d.ExpressionEvaluationOptions)
 	populate(objectMap, "mode", d.Mode)
 	populate(objectMap, "onErrorDeployment", d.OnErrorDeployment)
-	populate(objectMap, "parameters", &d.Parameters)
+	populateAny(objectMap, "parameters", d.Parameters)
 	populate(objectMap, "parametersLink", d.ParametersLink)
-	populate(objectMap, "template", &d.Template)
+	populateAny(objectMap, "template", d.Template)
 	populate(objectMap, "templateLink", d.TemplateLink)
 	populate(objectMap, "whatIfSettings", d.WhatIfSettings)
 	return json.Marshal(objectMap)
@@ -893,7 +893,7 @@ func (d *DeploymentWhatIfSettings) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -1064,7 +1064,7 @@ func (g GenericResource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "managedBy", g.ManagedBy)
 	populate(objectMap, "name", g.Name)
 	populate(objectMap, "plan", g.Plan)
-	populate(objectMap, "properties", &g.Properties)
+	populateAny(objectMap, "properties", g.Properties)
 	populate(objectMap, "sku", g.SKU)
 	populate(objectMap, "tags", g.Tags)
 	populate(objectMap, "type", g.Type)
@@ -1137,7 +1137,7 @@ func (g GenericResourceExpanded) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "managedBy", g.ManagedBy)
 	populate(objectMap, "name", g.Name)
 	populate(objectMap, "plan", g.Plan)
-	populate(objectMap, "properties", &g.Properties)
+	populateAny(objectMap, "properties", g.Properties)
 	populate(objectMap, "provisioningState", g.ProvisioningState)
 	populate(objectMap, "sku", g.SKU)
 	populate(objectMap, "tags", g.Tags)
@@ -1245,7 +1245,7 @@ func (g *GenericResourceFilter) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type HTTPMessage.
 func (h HTTPMessage) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "content", &h.Content)
+	populateAny(objectMap, "content", h.Content)
 	return json.Marshal(objectMap)
 }
 
@@ -2083,7 +2083,7 @@ func (r *ResourceGroup) UnmarshalJSON(data []byte) error {
 func (r ResourceGroupExportResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "error", r.Error)
-	populate(objectMap, "template", &r.Template)
+	populateAny(objectMap, "template", r.Template)
 	return json.Marshal(objectMap)
 }
 
@@ -2898,8 +2898,8 @@ func (t *TemplateLink) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type WhatIfChange.
 func (w WhatIfChange) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "after", &w.After)
-	populate(objectMap, "before", &w.Before)
+	populateAny(objectMap, "after", w.After)
+	populateAny(objectMap, "before", w.Before)
 	populate(objectMap, "changeType", w.ChangeType)
 	populate(objectMap, "delta", w.Delta)
 	populate(objectMap, "resourceId", w.ResourceID)
@@ -3007,8 +3007,8 @@ func (w *WhatIfOperationResult) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type WhatIfPropertyChange.
 func (w WhatIfPropertyChange) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "after", &w.After)
-	populate(objectMap, "before", &w.Before)
+	populateAny(objectMap, "after", w.After)
+	populateAny(objectMap, "before", w.Before)
 	populate(objectMap, "children", w.Children)
 	populate(objectMap, "path", w.Path)
 	populate(objectMap, "propertyChangeType", w.PropertyChangeType)
@@ -3084,6 +3084,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

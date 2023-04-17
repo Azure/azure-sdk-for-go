@@ -467,7 +467,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 }
 
 // nolint
-func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -501,7 +501,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithMD5() {
 	_require.Equal((*putResp.Date).IsZero(), false)
 
 	// test put block with bad MD5 value
-	_, badContent := testcommon.GetRandomDataAndReader(contentSize)
+	_, badContent := testcommon.GetDataAndReader(testName, contentSize)
 	badMD5Value := md5.Sum(badContent)
 	badContentMD5 := badMD5Value[:]
 
@@ -599,7 +599,7 @@ func setUpPutBlobFromURLTest(testName string, _require *require.Assertions, svcC
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetRandomDataAndReader(contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err := srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 
@@ -796,7 +796,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestPutBlobFromUrlSourceContentMD5() {
 	_require.EqualValues(resp.ContentMD5, sourceDataMD5Value[:])
 
 	// Try UploadBlobFromURL with bad MD5
-	_, badMD5 := testcommon.GetRandomDataAndReader(16)
+	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
 	options2 := blockblob.UploadBlobFromURLOptions{
 		SourceContentMD5: badMD5,
 	}
@@ -1180,10 +1180,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	// Random seed for data generation
-	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
-	random := rand.New(rand.NewSource(seed))
-
 	// Getting AAD Authentication
 	cred, err := testcommon.GetGenericTokenCredential()
 	_require.NoError(err)
@@ -1198,7 +1194,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuth() {
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, sourceData := testcommon.GetDataAndReader(random, contentSize)
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 
@@ -1228,10 +1224,6 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
-	// Random seed for data generation
-	seed := int64(crc64.Checksum([]byte(testName), shared.CRC64Table))
-	random := rand.New(rand.NewSource(seed))
-
 	containerName := testcommon.GenerateContainerName(testName)
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
@@ -1242,7 +1234,7 @@ func (s *BlockBlobRecordedTestsSuite) TestPutBlobFromURLCopySourceAuthNegative()
 
 	// Upload some data to source
 	contentSize := 4 * 1024 // 4KB
-	r, _ := testcommon.GetDataAndReader(random, contentSize)
+	r, _ := testcommon.GetDataAndReader(testName, contentSize)
 	_, err = srcBBClient.Upload(context.Background(), streaming.NopCloser(r), nil)
 	_require.Nil(err)
 
@@ -1977,7 +1969,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestSetTierOnCopyBlockBlobFromURL() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	const contentSize = 4 * 1024 * 1024 // 4 MB
-	contentReader, _ := testcommon.GetRandomDataAndReader(contentSize)
+	contentReader, _ := testcommon.GetDataAndReader(testName, contentSize)
 
 	srcBlob := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
@@ -2748,7 +2740,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestCreateBlockBlobReturnsVID() {
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
 	testSize := 2 * 1024 * 1024 // 1MB
-	r, _ := testcommon.GetRandomDataAndReader(testSize)
+	r, _ := testcommon.GetDataAndReader(testName, testSize)
 	bbClient := containerClient.NewBlockBlobClient(testcommon.GenerateBlobName(testName))
 
 	// Prepare source blob for copy.

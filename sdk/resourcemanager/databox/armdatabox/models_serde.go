@@ -125,7 +125,7 @@ func (a *AccountCredentialDetails) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AdditionalErrorInfo.
 func (a AdditionalErrorInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &a.Info)
+	populateAny(objectMap, "info", a.Info)
 	populate(objectMap, "type", a.Type)
 	return json.Marshal(objectMap)
 }
@@ -3105,7 +3105,7 @@ func (j *JobSecrets) UnmarshalJSON(data []byte) error {
 func (j JobStages) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "displayName", j.DisplayName)
-	populate(objectMap, "jobStageDetails", &j.JobStageDetails)
+	populateAny(objectMap, "jobStageDetails", j.JobStageDetails)
 	populate(objectMap, "stageName", j.StageName)
 	populate(objectMap, "stageStatus", j.StageStatus)
 	populateTimeRFC3339(objectMap, "stageTime", j.StageTime)
@@ -3349,7 +3349,7 @@ func (o Operation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isDataAction", o.IsDataAction)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "origin", o.Origin)
-	populate(objectMap, "properties", &o.Properties)
+	populateAny(objectMap, "properties", o.Properties)
 	return json.Marshal(objectMap)
 }
 
@@ -5156,6 +5156,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

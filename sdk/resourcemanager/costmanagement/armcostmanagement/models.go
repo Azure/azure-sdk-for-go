@@ -15,136 +15,136 @@ import "time"
 type Alert struct {
 	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
 	// the latest version or not.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Alert properties.
-	Properties *AlertProperties `json:"properties,omitempty"`
+	Properties *AlertProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertProperties - Alert properties.
 type AlertProperties struct {
 	// dateTime in which alert was closed
-	CloseTime *string `json:"closeTime,omitempty"`
+	CloseTime *string
 
 	// related budget
-	CostEntityID *string `json:"costEntityId,omitempty"`
+	CostEntityID *string
 
 	// dateTime in which alert was created
-	CreationTime *string `json:"creationTime,omitempty"`
+	CreationTime *string
 
 	// defines the type of alert
-	Definition *AlertPropertiesDefinition `json:"definition,omitempty"`
+	Definition *AlertPropertiesDefinition
 
 	// Alert description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Alert details
-	Details *AlertPropertiesDetails `json:"details,omitempty"`
+	Details *AlertPropertiesDetails
 
 	// dateTime in which alert was last modified
-	ModificationTime *string `json:"modificationTime,omitempty"`
+	ModificationTime *string
 
 	// Source of alert
-	Source *AlertSource `json:"source,omitempty"`
+	Source *AlertSource
 
 	// alert status
-	Status *AlertStatus `json:"status,omitempty"`
+	Status *AlertStatus
 
 	// dateTime in which the alert status was last modified
-	StatusModificationTime *string `json:"statusModificationTime,omitempty"`
+	StatusModificationTime *string
 
 	// User who last modified the alert
-	StatusModificationUserName *string `json:"statusModificationUserName,omitempty"`
+	StatusModificationUserName *string
 }
 
 // AlertPropertiesDefinition - defines the type of alert
 type AlertPropertiesDefinition struct {
 	// Alert category
-	Category *AlertCategory `json:"category,omitempty"`
+	Category *AlertCategory
 
 	// Criteria that triggered alert
-	Criteria *AlertCriteria `json:"criteria,omitempty"`
+	Criteria *AlertCriteria
 
 	// type of alert
-	Type *AlertType `json:"type,omitempty"`
+	Type *AlertType
 }
 
 // AlertPropertiesDetails - Alert details
 type AlertPropertiesDetails struct {
 	// budget threshold amount
-	Amount *float64 `json:"amount,omitempty"`
+	Amount *float64
 
 	// company name
-	CompanyName *string `json:"companyName,omitempty"`
+	CompanyName *string
 
 	// list of emails to contact
-	ContactEmails []*string `json:"contactEmails,omitempty"`
+	ContactEmails []*string
 
 	// list of action groups to broadcast to
-	ContactGroups []*string `json:"contactGroups,omitempty"`
+	ContactGroups []*string
 
 	// list of contact roles
-	ContactRoles []*string `json:"contactRoles,omitempty"`
+	ContactRoles []*string
 
 	// current spend
-	CurrentSpend *float64 `json:"currentSpend,omitempty"`
+	CurrentSpend *float64
 
 	// department name
-	DepartmentName *string `json:"departmentName,omitempty"`
+	DepartmentName *string
 
 	// datetime of enrollmentEndDate
-	EnrollmentEndDate *string `json:"enrollmentEndDate,omitempty"`
+	EnrollmentEndDate *string
 
 	// enrollment number
-	EnrollmentNumber *string `json:"enrollmentNumber,omitempty"`
+	EnrollmentNumber *string
 
 	// datetime of enrollmentStartDate
-	EnrollmentStartDate *string `json:"enrollmentStartDate,omitempty"`
+	EnrollmentStartDate *string
 
 	// invoicing threshold
-	InvoicingThreshold *float64 `json:"invoicingThreshold,omitempty"`
+	InvoicingThreshold *float64
 
 	// array of meters to filter by
-	MeterFilter []any `json:"meterFilter,omitempty"`
+	MeterFilter []any
 
 	// operator used to compare currentSpend with amount
-	Operator *AlertOperator `json:"operator,omitempty"`
+	Operator *AlertOperator
 
 	// overriding alert
-	OverridingAlert *string `json:"overridingAlert,omitempty"`
+	OverridingAlert *string
 
 	// datetime of periodStartDate
-	PeriodStartDate *string `json:"periodStartDate,omitempty"`
+	PeriodStartDate *string
 
 	// array of resources to filter by
-	ResourceFilter []any `json:"resourceFilter,omitempty"`
+	ResourceFilter []any
 
 	// array of resourceGroups to filter by
-	ResourceGroupFilter []any `json:"resourceGroupFilter,omitempty"`
+	ResourceGroupFilter []any
 
 	// tags to filter by
-	TagFilter any `json:"tagFilter,omitempty"`
+	TagFilter any
 
 	// notification threshold percentage as a decimal which activated this alert
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold *float64
 
 	// Type of timegrain cadence
-	TimeGrainType *AlertTimeGrainType `json:"timeGrainType,omitempty"`
+	TimeGrainType *AlertTimeGrainType
 
 	// notificationId that triggered this alert
-	TriggeredBy *string `json:"triggeredBy,omitempty"`
+	TriggeredBy *string
 
 	// unit of currency being used
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // AlertsClientDismissOptions contains the optional parameters for the AlertsClient.Dismiss method.
@@ -170,89 +170,89 @@ type AlertsClientListOptions struct {
 // AlertsResult - Result of alerts.
 type AlertsResult struct {
 	// READ-ONLY; URL to get the next set of alerts results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of alerts.
-	Value []*Alert `json:"value,omitempty" azure:"ro"`
+	Value []*Alert
 }
 
 // CommonExportProperties - The common properties of the export.
 type CommonExportProperties struct {
 	// REQUIRED; Has the definition for the export.
-	Definition *ExportDefinition `json:"definition,omitempty"`
+	Definition *ExportDefinition
 
 	// REQUIRED; Has delivery information for the export.
-	DeliveryInfo *ExportDeliveryInfo `json:"deliveryInfo,omitempty"`
+	DeliveryInfo *ExportDeliveryInfo
 
 	// The format of the export being delivered. Currently only 'Csv' is supported.
-	Format *FormatType `json:"format,omitempty"`
+	Format *FormatType
 
 	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file.
 	// Note: this option is currently available only for modern commerce scopes.
-	PartitionData *bool `json:"partitionData,omitempty"`
+	PartitionData *bool
 
 	// If requested, has the most recent execution history for the export.
-	RunHistory *ExportExecutionListResult `json:"runHistory,omitempty"`
+	RunHistory *ExportExecutionListResult
 
 	// READ-ONLY; If the export has an active schedule, provides an estimate of the next execution time.
-	NextRunTimeEstimate *time.Time `json:"nextRunTimeEstimate,omitempty" azure:"ro"`
+	NextRunTimeEstimate *time.Time
 }
 
 // Dimension - List of Dimension.
 type Dimension struct {
 	// Dimension properties.
-	Properties *DimensionProperties `json:"properties,omitempty"`
+	Properties *DimensionProperties
 
 	// READ-ONLY; ETag of the resource.
-	ETag *string `json:"eTag,omitempty" azure:"ro"`
+	ETag *string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Location of the resource.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; SKU of the resource.
-	SKU *string `json:"sku,omitempty" azure:"ro"`
+	SKU *string
 
 	// READ-ONLY; Resource tags.
-	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DimensionProperties - Dimension properties.
 type DimensionProperties struct {
 	// Dimension data.
-	Data []*string `json:"data,omitempty"`
+	Data []*string
 
 	// READ-ONLY; Dimension category.
-	Category *string `json:"category,omitempty" azure:"ro"`
+	Category *string
 
 	// READ-ONLY; Dimension description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Filter enabled.
-	FilterEnabled *bool `json:"filterEnabled,omitempty" azure:"ro"`
+	FilterEnabled *bool
 
 	// READ-ONLY; Grouping enabled.
-	GroupingEnabled *bool `json:"groupingEnabled,omitempty" azure:"ro"`
+	GroupingEnabled *bool
 
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Total number of data for the dimension.
-	Total *int32 `json:"total,omitempty" azure:"ro"`
+	Total *int32
 
 	// READ-ONLY; Usage end.
-	UsageEnd *time.Time `json:"usageEnd,omitempty" azure:"ro"`
+	UsageEnd *time.Time
 
 	// READ-ONLY; Usage start.
-	UsageStart *time.Time `json:"usageStart,omitempty" azure:"ro"`
+	UsageStart *time.Time
 }
 
 // DimensionsClientByExternalCloudProviderTypeOptions contains the optional parameters for the DimensionsClient.NewByExternalCloudProviderTypePager
@@ -289,31 +289,31 @@ type DimensionsClientListOptions struct {
 // DimensionsListResult - Result of listing dimensions. It contains a list of available dimensions.
 type DimensionsListResult struct {
 	// READ-ONLY; The list of dimensions.
-	Value []*Dimension `json:"value,omitempty" azure:"ro"`
+	Value []*Dimension
 }
 
 // DismissAlertPayload - The request payload to update an alert
 type DismissAlertPayload struct {
 	// Alert properties.
-	Properties *AlertProperties `json:"properties,omitempty"`
+	Properties *AlertProperties
 }
 
 // DownloadURL - The URL to download the generated report.
 type DownloadURL struct {
 	// The URL to download the generated report.
-	DownloadURL *string `json:"downloadUrl,omitempty"`
+	DownloadURL *string
 
 	// The time at which report URL becomes invalid/expires in UTC e.g. 2020-12-08T05:55:59.4394737Z.
-	ValidTill *time.Time `json:"validTill,omitempty"`
+	ValidTill *time.Time
 }
 
 // ErrorDetails - The details of the error.
 type ErrorDetails struct {
 	// READ-ONLY; Error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // ErrorResponse - Error response indicates that the service is not able to process the incoming request. The reason is provided
@@ -326,35 +326,35 @@ type ErrorDetails struct {
 // header.
 type ErrorResponse struct {
 	// The details of the error.
-	Error *ErrorDetails `json:"error,omitempty"`
+	Error *ErrorDetails
 }
 
 // Export - An export resource.
 type Export struct {
 	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
 	// the latest version or not.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// The properties of the export.
-	Properties *ExportProperties `json:"properties,omitempty"`
+	Properties *ExportProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExportDataset - The definition for data in the export.
 type ExportDataset struct {
 	// The export dataset configuration.
-	Configuration *ExportDatasetConfiguration `json:"configuration,omitempty"`
+	Configuration *ExportDatasetConfiguration
 
 	// The granularity of rows in the export. Currently only 'Daily' is supported.
-	Granularity *GranularityType `json:"granularity,omitempty"`
+	Granularity *GranularityType
 }
 
 // ExportDatasetConfiguration - The export dataset configuration. Allows columns to be selected for the export. If not provided
@@ -362,23 +362,23 @@ type ExportDataset struct {
 type ExportDatasetConfiguration struct {
 	// Array of column names to be included in the export. If not provided then the export will include all available columns.
 	// The available columns can vary by customer channel (see examples).
-	Columns []*string `json:"columns,omitempty"`
+	Columns []*string
 }
 
 // ExportDefinition - The definition of an export.
 type ExportDefinition struct {
 	// REQUIRED; The time frame for pulling data for the export. If custom, then a specific time period must be provided.
-	Timeframe *TimeframeType `json:"timeframe,omitempty"`
+	Timeframe *TimeframeType
 
 	// REQUIRED; The type of the export. Note that 'Usage' is equivalent to 'ActualCost' and is applicable to exports that do
 	// not yet provide data for charges or amortization for service reservations.
-	Type *ExportType `json:"type,omitempty"`
+	Type *ExportType
 
 	// The definition for data in the export.
-	DataSet *ExportDataset `json:"dataSet,omitempty"`
+	DataSet *ExportDataset
 
 	// Has time period for pulling data for the export.
-	TimePeriod *ExportTimePeriod `json:"timePeriod,omitempty"`
+	TimePeriod *ExportTimePeriod
 }
 
 // ExportDeliveryDestination - This represents the blob storage account location where exports of costs will be delivered.
@@ -397,149 +397,149 @@ type ExportDefinition struct {
 // ).
 type ExportDeliveryDestination struct {
 	// REQUIRED; The name of the container where exports will be uploaded. If the container does not exist it will be created.
-	Container *string `json:"container,omitempty"`
+	Container *string
 
 	// The resource id of the storage account where exports will be delivered. This is not required if a sasToken and storageAccount
 	// are specified.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The name of the directory where exports will be uploaded.
-	RootFolderPath *string `json:"rootFolderPath,omitempty"`
+	RootFolderPath *string
 
 	// A SAS token for the storage account. For a restricted set of Azure customers this together with storageAccount can be specified
 	// instead of resourceId. Note: the value returned by the API for this
 	// property will always be obfuscated. Returning this same obfuscated value will not result in the SAS token being updated.
 	// To update this value a new SAS token must be specified.
-	SasToken *string `json:"sasToken,omitempty"`
+	SasToken *string
 
 	// The storage account where exports will be uploaded. For a restricted set of Azure customers this together with sasToken
 	// can be specified instead of resourceId.
-	StorageAccount *string `json:"storageAccount,omitempty"`
+	StorageAccount *string
 }
 
 // ExportDeliveryInfo - The delivery information associated with a export.
 type ExportDeliveryInfo struct {
 	// REQUIRED; Has destination for the export being delivered.
-	Destination *ExportDeliveryDestination `json:"destination,omitempty"`
+	Destination *ExportDeliveryDestination
 }
 
 // ExportExecution - An export execution.
 type ExportExecution struct {
 	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
 	// the latest version or not.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// The properties of the export execution.
-	Properties *ExportExecutionProperties `json:"properties,omitempty"`
+	Properties *ExportExecutionProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExportExecutionListResult - Result of listing the execution history of an export.
 type ExportExecutionListResult struct {
 	// READ-ONLY; A list of export executions.
-	Value []*ExportExecution `json:"value,omitempty" azure:"ro"`
+	Value []*ExportExecution
 }
 
 // ExportExecutionProperties - The properties of the export execution.
 type ExportExecutionProperties struct {
 	// The details of any error.
-	Error *ErrorDetails `json:"error,omitempty"`
+	Error *ErrorDetails
 
 	// The type of the export execution.
-	ExecutionType *ExecutionType `json:"executionType,omitempty"`
+	ExecutionType *ExecutionType
 
 	// The name of the exported file.
-	FileName *string `json:"fileName,omitempty"`
+	FileName *string
 
 	// The time when the export execution finished.
-	ProcessingEndTime *time.Time `json:"processingEndTime,omitempty"`
+	ProcessingEndTime *time.Time
 
 	// The time when export was picked up to be executed.
-	ProcessingStartTime *time.Time `json:"processingStartTime,omitempty"`
+	ProcessingStartTime *time.Time
 
 	// The export settings that were in effect for this execution.
-	RunSettings *CommonExportProperties `json:"runSettings,omitempty"`
+	RunSettings *CommonExportProperties
 
 	// The last known status of the export execution.
-	Status *ExecutionStatus `json:"status,omitempty"`
+	Status *ExecutionStatus
 
 	// The identifier for the entity that executed the export. For OnDemand executions it is the user email. For scheduled executions
 	// it is 'System'.
-	SubmittedBy *string `json:"submittedBy,omitempty"`
+	SubmittedBy *string
 
 	// The time when export was queued to be executed.
-	SubmittedTime *time.Time `json:"submittedTime,omitempty"`
+	SubmittedTime *time.Time
 }
 
 // ExportListResult - Result of listing exports. It contains a list of available exports in the scope provided.
 type ExportListResult struct {
 	// READ-ONLY; The list of exports.
-	Value []*Export `json:"value,omitempty" azure:"ro"`
+	Value []*Export
 }
 
 // ExportProperties - The properties of the export.
 type ExportProperties struct {
 	// REQUIRED; Has the definition for the export.
-	Definition *ExportDefinition `json:"definition,omitempty"`
+	Definition *ExportDefinition
 
 	// REQUIRED; Has delivery information for the export.
-	DeliveryInfo *ExportDeliveryInfo `json:"deliveryInfo,omitempty"`
+	DeliveryInfo *ExportDeliveryInfo
 
 	// The format of the export being delivered. Currently only 'Csv' is supported.
-	Format *FormatType `json:"format,omitempty"`
+	Format *FormatType
 
 	// If set to true, exported data will be partitioned by size and placed in a blob directory together with a manifest file.
 	// Note: this option is currently available only for modern commerce scopes.
-	PartitionData *bool `json:"partitionData,omitempty"`
+	PartitionData *bool
 
 	// If requested, has the most recent execution history for the export.
-	RunHistory *ExportExecutionListResult `json:"runHistory,omitempty"`
+	RunHistory *ExportExecutionListResult
 
 	// Has schedule information for the export.
-	Schedule *ExportSchedule `json:"schedule,omitempty"`
+	Schedule *ExportSchedule
 
 	// READ-ONLY; If the export has an active schedule, provides an estimate of the next execution time.
-	NextRunTimeEstimate *time.Time `json:"nextRunTimeEstimate,omitempty" azure:"ro"`
+	NextRunTimeEstimate *time.Time
 }
 
 // ExportRecurrencePeriod - The start and end date for recurrence schedule.
 type ExportRecurrencePeriod struct {
 	// REQUIRED; The start date of recurrence.
-	From *time.Time `json:"from,omitempty"`
+	From *time.Time
 
 	// The end date of recurrence.
-	To *time.Time `json:"to,omitempty"`
+	To *time.Time
 }
 
 // ExportSchedule - The schedule associated with the export.
 type ExportSchedule struct {
 	// The schedule recurrence.
-	Recurrence *RecurrenceType `json:"recurrence,omitempty"`
+	Recurrence *RecurrenceType
 
 	// Has start and end date of the recurrence. The start date must be in future. If present, the end date must be greater than
 	// start date.
-	RecurrencePeriod *ExportRecurrencePeriod `json:"recurrencePeriod,omitempty"`
+	RecurrencePeriod *ExportRecurrencePeriod
 
 	// The status of the export's schedule. If 'Inactive', the export's schedule is paused.
-	Status *StatusType `json:"status,omitempty"`
+	Status *StatusType
 }
 
 // ExportTimePeriod - The date range for data in the export. This should only be specified with timeFrame set to 'Custom'.
 // The maximum date range is 3 months.
 type ExportTimePeriod struct {
 	// REQUIRED; The start date for export data.
-	From *time.Time `json:"from,omitempty"`
+	From *time.Time
 
 	// REQUIRED; The end date for export data.
-	To *time.Time `json:"to,omitempty"`
+	To *time.Time
 }
 
 // ExportsClientCreateOrUpdateOptions contains the optional parameters for the ExportsClient.CreateOrUpdate method.
@@ -597,38 +597,38 @@ type ForecastClientUsageOptions struct {
 type ForecastDataset struct {
 	// Dictionary of aggregation expression to use in the forecast. The key of each item in the dictionary is the alias for the
 	// aggregated column. forecast can have up to 2 aggregation clauses.
-	Aggregation map[string]*QueryAggregation `json:"aggregation,omitempty"`
+	Aggregation map[string]*QueryAggregation
 
 	// Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping
 	// are provided.
-	Configuration *QueryDatasetConfiguration `json:"configuration,omitempty"`
+	Configuration *QueryDatasetConfiguration
 
 	// Has filter expression to use in the forecast.
-	Filter *QueryFilter `json:"filter,omitempty"`
+	Filter *QueryFilter
 
 	// The granularity of rows in the forecast.
-	Granularity *GranularityType `json:"granularity,omitempty"`
+	Granularity *GranularityType
 }
 
 // ForecastDefinition - The definition of a forecast.
 type ForecastDefinition struct {
 	// REQUIRED; Has definition for data in this forecast.
-	Dataset *ForecastDataset `json:"dataset,omitempty"`
+	Dataset *ForecastDataset
 
 	// REQUIRED; The time frame for pulling data for the forecast. If custom, then a specific time period must be provided.
-	Timeframe *ForecastTimeframeType `json:"timeframe,omitempty"`
+	Timeframe *ForecastTimeframeType
 
 	// REQUIRED; The type of the forecast.
-	Type *ForecastType `json:"type,omitempty"`
+	Type *ForecastType
 
 	// a boolean determining if actualCost will be included
-	IncludeActualCost *bool `json:"includeActualCost,omitempty"`
+	IncludeActualCost *bool
 
 	// a boolean determining if FreshPartialCost will be included
-	IncludeFreshPartialCost *bool `json:"includeFreshPartialCost,omitempty"`
+	IncludeFreshPartialCost *bool
 
 	// Has time period for pulling data for the forecast.
-	TimePeriod *QueryTimePeriod `json:"timePeriod,omitempty"`
+	TimePeriod *QueryTimePeriod
 }
 
 // GenerateDetailedCostReportClientBeginCreateOperationOptions contains the optional parameters for the GenerateDetailedCostReportClient.BeginCreateOperation
@@ -643,21 +643,21 @@ type GenerateDetailedCostReportDefinition struct {
 	// Billing Period in YearMonth(e.g. 202008) format. Only for legacy enterprise customers can use this. Can only have one of
 	// either timePeriod or invoiceId or billingPeriod parameters. If none provided
 	// current month cost is provided.
-	BillingPeriod *string `json:"billingPeriod,omitempty"`
+	BillingPeriod *string
 
 	// Customer Id for Modern (Invoice Id and billing profile is also required for this).
-	CustomerID *string `json:"customerId,omitempty"`
+	CustomerID *string
 
 	// Invoice Id for PayAsYouGo customers and Modern billing profile scope. Can only have one of either timePeriod or invoiceId
 	// or billingPeriod parameters. If none provided current month cost is provided.
-	InvoiceID *string `json:"invoiceId,omitempty"`
+	InvoiceID *string
 
 	// The type of the detailed report. By default ActualCost is provided
-	Metric *GenerateDetailedCostReportMetricType `json:"metric,omitempty"`
+	Metric *GenerateDetailedCostReportMetricType
 
 	// Has time period for pulling data for the cost detailed report. Can only have one of either timePeriod or invoiceId or billingPeriod
 	// parameters. If none provided current month cost is provided.
-	TimePeriod *GenerateDetailedCostReportTimePeriod `json:"timePeriod,omitempty"`
+	TimePeriod *GenerateDetailedCostReportTimePeriod
 }
 
 // GenerateDetailedCostReportErrorResponse - Error response indicates that the service is not able to process the incoming
@@ -673,22 +673,22 @@ type GenerateDetailedCostReportDefinition struct {
 // header.
 type GenerateDetailedCostReportErrorResponse struct {
 	// The details of the error.
-	Error *ErrorDetails `json:"error,omitempty"`
+	Error *ErrorDetails
 }
 
 // GenerateDetailedCostReportOperationResult - The result of the long running operation for cost detailed report.
 type GenerateDetailedCostReportOperationResult struct {
 	// The id of the long running operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The name of the long running operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The properties of the resource generated.
-	Properties *DownloadURL `json:"properties,omitempty"`
+	Properties *DownloadURL
 
 	// The type of the long running operation.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GenerateDetailedCostReportOperationResultsClientGetOptions contains the optional parameters for the GenerateDetailedCostReportOperationResultsClient.Get
@@ -706,31 +706,31 @@ type GenerateDetailedCostReportOperationStatusClientGetOptions struct {
 // GenerateDetailedCostReportOperationStatuses - The status of the long running operation for cost detailed report.
 type GenerateDetailedCostReportOperationStatuses struct {
 	// The details of the error.
-	Error *ErrorDetails `json:"error,omitempty"`
+	Error *ErrorDetails
 
 	// The id of the long running operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The name of the long running operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The properties of the resource generated.
-	Properties *DownloadURL `json:"properties,omitempty"`
+	Properties *DownloadURL
 
 	// The status of the long running operation.
-	Status *Status `json:"status,omitempty"`
+	Status *Status
 
 	// The type of the long running operation.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GenerateDetailedCostReportTimePeriod - The start and end date for pulling data for the cost detailed report.
 type GenerateDetailedCostReportTimePeriod struct {
 	// REQUIRED; The end date to pull data to. example format 2020-03-15
-	End *string `json:"end,omitempty"`
+	End *string
 
 	// REQUIRED; The start date to pull data from. example format 2020-03-15
-	Start *string `json:"start,omitempty"`
+	Start *string
 }
 
 // GenerateReservationDetailsReportClientBeginByBillingAccountIDOptions contains the optional parameters for the GenerateReservationDetailsReportClient.BeginByBillingAccountID
@@ -750,59 +750,59 @@ type GenerateReservationDetailsReportClientBeginByBillingProfileIDOptions struct
 // KpiProperties - Each KPI must contain a 'type' and 'enabled' key.
 type KpiProperties struct {
 	// show the KPI in the UI?
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// ID of resource related to metric (budget).
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// KPI type (Forecast, Budget).
-	Type *KpiType `json:"type,omitempty"`
+	Type *KpiType
 }
 
 // Operation - A Cost management REST API operation.
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Operation id: {provider}/{resource}/{operation}.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Operation description
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Service provider: Microsoft.CostManagement.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource on which the operation is performed: Dimensions, Query.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - Result of listing cost management operations. It contains a list of operations and a URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of cost management operations supported by the Microsoft.CostManagement resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationStatus - The status of the long running operation.
 type OperationStatus struct {
 	// The properties of the resource generated.
-	Properties *ReportURL `json:"properties,omitempty"`
+	Properties *ReportURL
 
 	// The status of the long running operation.
-	Status *OperationStatusType `json:"status,omitempty"`
+	Status *OperationStatusType
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -813,35 +813,35 @@ type OperationsClientListOptions struct {
 // PivotProperties - Each pivot must contain a 'type' and 'name'.
 type PivotProperties struct {
 	// Data field to show in view.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Data type to show in view.
-	Type *PivotType `json:"type,omitempty"`
+	Type *PivotType
 }
 
 // ProxyResource - The Resource model definition.
 type ProxyResource struct {
 	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
 	// the latest version or not.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // QueryAggregation - The aggregation expression to be used in the query.
 type QueryAggregation struct {
 	// REQUIRED; The name of the aggregation function to use.
-	Function *FunctionType `json:"function,omitempty"`
+	Function *FunctionType
 
 	// REQUIRED; The name of the column to aggregate.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // QueryClientUsageByExternalCloudProviderTypeOptions contains the optional parameters for the QueryClient.UsageByExternalCloudProviderType
@@ -858,341 +858,341 @@ type QueryClientUsageOptions struct {
 // QueryColumn properties
 type QueryColumn struct {
 	// The name of column.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The type of column.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // QueryComparisonExpression - The comparison expression to be used in the query.
 type QueryComparisonExpression struct {
 	// REQUIRED; The name of the column to use in comparison.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The operator to use for comparison.
-	Operator *QueryOperatorType `json:"operator,omitempty"`
+	Operator *QueryOperatorType
 
 	// REQUIRED; Array of values to use for comparison
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // QueryDataset - The definition of data present in the query.
 type QueryDataset struct {
 	// Dictionary of aggregation expression to use in the query. The key of each item in the dictionary is the alias for the aggregated
 	// column. Query can have up to 2 aggregation clauses.
-	Aggregation map[string]*QueryAggregation `json:"aggregation,omitempty"`
+	Aggregation map[string]*QueryAggregation
 
 	// Has configuration information for the data in the export. The configuration will be ignored if aggregation and grouping
 	// are provided.
-	Configuration *QueryDatasetConfiguration `json:"configuration,omitempty"`
+	Configuration *QueryDatasetConfiguration
 
 	// The filter expression to use in the query. Please reference our Query API REST documentation for how to properly format
 	// the filter.
-	Filter *QueryFilter `json:"filter,omitempty"`
+	Filter *QueryFilter
 
 	// The granularity of rows in the query.
-	Granularity *GranularityType `json:"granularity,omitempty"`
+	Granularity *GranularityType
 
 	// Array of group by expression to use in the query. Query can have up to 2 group by clauses.
-	Grouping []*QueryGrouping `json:"grouping,omitempty"`
+	Grouping []*QueryGrouping
 }
 
 // QueryDatasetConfiguration - The configuration of dataset in the query.
 type QueryDatasetConfiguration struct {
 	// Array of column names to be included in the query. Any valid query column name is allowed. If not provided, then query
 	// includes all columns.
-	Columns []*string `json:"columns,omitempty"`
+	Columns []*string
 }
 
 // QueryDefinition - The definition of a query.
 type QueryDefinition struct {
 	// REQUIRED; Has definition for data in this query.
-	Dataset *QueryDataset `json:"dataset,omitempty"`
+	Dataset *QueryDataset
 
 	// REQUIRED; The time frame for pulling data for the query. If custom, then a specific time period must be provided.
-	Timeframe *TimeframeType `json:"timeframe,omitempty"`
+	Timeframe *TimeframeType
 
 	// REQUIRED; The type of the query.
-	Type *ExportType `json:"type,omitempty"`
+	Type *ExportType
 
 	// Has time period for pulling data for the query.
-	TimePeriod *QueryTimePeriod `json:"timePeriod,omitempty"`
+	TimePeriod *QueryTimePeriod
 }
 
 // QueryFilter - The filter expression to be used in the export.
 type QueryFilter struct {
 	// The logical "AND" expression. Must have at least 2 items.
-	And []*QueryFilter `json:"and,omitempty"`
+	And []*QueryFilter
 
 	// Has comparison expression for a dimension
-	Dimensions *QueryComparisonExpression `json:"dimensions,omitempty"`
+	Dimensions *QueryComparisonExpression
 
 	// The logical "OR" expression. Must have at least 2 items.
-	Or []*QueryFilter `json:"or,omitempty"`
+	Or []*QueryFilter
 
 	// Has comparison expression for a tag
-	Tags *QueryComparisonExpression `json:"tags,omitempty"`
+	Tags *QueryComparisonExpression
 }
 
 // QueryGrouping - The group by expression to be used in the query.
 type QueryGrouping struct {
 	// REQUIRED; The name of the column to group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Has type of the column to group.
-	Type *QueryColumnType `json:"type,omitempty"`
+	Type *QueryColumnType
 }
 
 // QueryProperties - Query properties
 type QueryProperties struct {
 	// Array of columns
-	Columns []*QueryColumn `json:"columns,omitempty"`
+	Columns []*QueryColumn
 
 	// The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Array of rows
-	Rows [][]any `json:"rows,omitempty"`
+	Rows [][]any
 }
 
 // QueryResult - Result of query. It contains all columns listed under groupings and aggregation.
 type QueryResult struct {
 	// Query properties
-	Properties *QueryProperties `json:"properties,omitempty"`
+	Properties *QueryProperties
 
 	// READ-ONLY; ETag of the resource.
-	ETag *string `json:"eTag,omitempty" azure:"ro"`
+	ETag *string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Location of the resource.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; SKU of the resource.
-	SKU *string `json:"sku,omitempty" azure:"ro"`
+	SKU *string
 
 	// READ-ONLY; Resource tags.
-	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // QueryTimePeriod - The start and end date for pulling data for the query.
 type QueryTimePeriod struct {
 	// REQUIRED; The start date to pull data from.
-	From *time.Time `json:"from,omitempty"`
+	From *time.Time
 
 	// REQUIRED; The end date to pull data to.
-	To *time.Time `json:"to,omitempty"`
+	To *time.Time
 }
 
 // ReportConfigAggregation - The aggregation expression to be used in the report.
 type ReportConfigAggregation struct {
 	// REQUIRED; The name of the aggregation function to use.
-	Function *FunctionType `json:"function,omitempty"`
+	Function *FunctionType
 
 	// REQUIRED; The name of the column to aggregate.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ReportConfigComparisonExpression - The comparison expression to be used in the report.
 type ReportConfigComparisonExpression struct {
 	// REQUIRED; The name of the column to use in comparison.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The operator to use for comparison.
-	Operator *OperatorType `json:"operator,omitempty"`
+	Operator *OperatorType
 
 	// REQUIRED; Array of values to use for comparison
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // ReportConfigDataset - The definition of data present in the report.
 type ReportConfigDataset struct {
 	// Dictionary of aggregation expression to use in the report. The key of each item in the dictionary is the alias for the
 	// aggregated column. Report can have up to 2 aggregation clauses.
-	Aggregation map[string]*ReportConfigAggregation `json:"aggregation,omitempty"`
+	Aggregation map[string]*ReportConfigAggregation
 
 	// Has configuration information for the data in the report. The configuration will be ignored if aggregation and grouping
 	// are provided.
-	Configuration *ReportConfigDatasetConfiguration `json:"configuration,omitempty"`
+	Configuration *ReportConfigDatasetConfiguration
 
 	// Has filter expression to use in the report.
-	Filter *ReportConfigFilter `json:"filter,omitempty"`
+	Filter *ReportConfigFilter
 
 	// The granularity of rows in the report.
-	Granularity *ReportGranularityType `json:"granularity,omitempty"`
+	Granularity *ReportGranularityType
 
 	// Array of group by expression to use in the report. Report can have up to 2 group by clauses.
-	Grouping []*ReportConfigGrouping `json:"grouping,omitempty"`
+	Grouping []*ReportConfigGrouping
 
 	// Array of order by expression to use in the report.
-	Sorting []*ReportConfigSorting `json:"sorting,omitempty"`
+	Sorting []*ReportConfigSorting
 }
 
 // ReportConfigDatasetConfiguration - The configuration of dataset in the report.
 type ReportConfigDatasetConfiguration struct {
 	// Array of column names to be included in the report. Any valid report column name is allowed. If not provided, then report
 	// includes all columns.
-	Columns []*string `json:"columns,omitempty"`
+	Columns []*string
 }
 
 // ReportConfigDefinition - The definition of a report config.
 type ReportConfigDefinition struct {
 	// REQUIRED; The time frame for pulling data for the report. If custom, then a specific time period must be provided.
-	Timeframe *ReportTimeframeType `json:"timeframe,omitempty"`
+	Timeframe *ReportTimeframeType
 
 	// REQUIRED; The type of the report. Usage represents actual usage, forecast represents forecasted data and UsageAndForecast
 	// represents both usage and forecasted data. Actual usage and forecasted data can be
 	// differentiated based on dates.
-	Type *ReportType `json:"type,omitempty"`
+	Type *ReportType
 
 	// Has definition for data in this report config.
-	DataSet *ReportConfigDataset `json:"dataSet,omitempty"`
+	DataSet *ReportConfigDataset
 
 	// If true, report includes monetary commitment.
-	IncludeMonetaryCommitment *bool `json:"includeMonetaryCommitment,omitempty"`
+	IncludeMonetaryCommitment *bool
 
 	// Has time period for pulling data for the report.
-	TimePeriod *ReportConfigTimePeriod `json:"timePeriod,omitempty"`
+	TimePeriod *ReportConfigTimePeriod
 }
 
 // ReportConfigFilter - The filter expression to be used in the report.
 type ReportConfigFilter struct {
 	// The logical "AND" expression. Must have at least 2 items.
-	And []*ReportConfigFilter `json:"and,omitempty"`
+	And []*ReportConfigFilter
 
 	// Has comparison expression for a dimension
-	Dimensions *ReportConfigComparisonExpression `json:"dimensions,omitempty"`
+	Dimensions *ReportConfigComparisonExpression
 
 	// The logical "OR" expression. Must have at least 2 items.
-	Or []*ReportConfigFilter `json:"or,omitempty"`
+	Or []*ReportConfigFilter
 
 	// Has comparison expression for a tag
-	Tags *ReportConfigComparisonExpression `json:"tags,omitempty"`
+	Tags *ReportConfigComparisonExpression
 }
 
 // ReportConfigGrouping - The group by expression to be used in the report.
 type ReportConfigGrouping struct {
 	// REQUIRED; The name of the column to group. This version supports subscription lowest possible grain.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Has type of the column to group.
-	Type *ReportConfigColumnType `json:"type,omitempty"`
+	Type *ReportConfigColumnType
 }
 
 // ReportConfigSorting - The order by expression to be used in the report.
 type ReportConfigSorting struct {
 	// REQUIRED; The name of the column to sort.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Direction of sort.
-	Direction *ReportConfigSortingType `json:"direction,omitempty"`
+	Direction *ReportConfigSortingType
 }
 
 // ReportConfigTimePeriod - The start and end date for pulling data for the report.
 type ReportConfigTimePeriod struct {
 	// REQUIRED; The start date to pull data from.
-	From *time.Time `json:"from,omitempty"`
+	From *time.Time
 
 	// REQUIRED; The end date to pull data to.
-	To *time.Time `json:"to,omitempty"`
+	To *time.Time
 }
 
 // ReportURL - The URL to download the generated report.
 type ReportURL struct {
 	// The CSV file from the reportUrl blob link consists of reservation usage data with the following schema at daily granularity
-	ReportURL *ReservationReportSchema `json:"reportUrl,omitempty"`
+	ReportURL *ReservationReportSchema
 
 	// The time at which report URL becomes invalid.
-	ValidUntil *time.Time `json:"validUntil,omitempty"`
+	ValidUntil *time.Time
 }
 
 // Resource - The Resource model definition.
 type Resource struct {
 	// READ-ONLY; ETag of the resource.
-	ETag *string `json:"eTag,omitempty" azure:"ro"`
+	ETag *string
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Location of the resource.
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; SKU of the resource.
-	SKU *string `json:"sku,omitempty" azure:"ro"`
+	SKU *string
 
 	// READ-ONLY; Resource tags.
-	Tags map[string]*string `json:"tags,omitempty" azure:"ro"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Status - The status of the long running operation.
 type Status struct {
 	// The status of the long running operation.
-	Status *ReportOperationStatusType `json:"status,omitempty"`
+	Status *ReportOperationStatusType
 }
 
 // View - States and configurations of Cost Analysis.
 type View struct {
 	// eTag of the resource. To handle concurrent update scenario, this field will be used to determine whether the user is updating
 	// the latest version or not.
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// The properties of the view.
-	Properties *ViewProperties `json:"properties,omitempty"`
+	Properties *ViewProperties
 
 	// READ-ONLY; Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ViewListResult - Result of listing views. It contains a list of available views.
 type ViewListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The list of views.
-	Value []*View `json:"value,omitempty" azure:"ro"`
+	Value []*View
 }
 
 // ViewProperties - The properties of the view.
 type ViewProperties struct {
 	// Show costs accumulated over time.
-	Accumulated *AccumulatedType `json:"accumulated,omitempty"`
+	Accumulated *AccumulatedType
 
 	// Chart type of the main view in Cost Analysis. Required.
-	Chart *ChartType `json:"chart,omitempty"`
+	Chart *ChartType
 
 	// User input name of the view. Required.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// List of KPIs to show in Cost Analysis UI.
-	Kpis []*KpiProperties `json:"kpis,omitempty"`
+	Kpis []*KpiProperties
 
 	// Metric to use when displaying costs.
-	Metric *MetricType `json:"metric,omitempty"`
+	Metric *MetricType
 
 	// Configuration of 3 sub-views in the Cost Analysis UI.
-	Pivots []*PivotProperties `json:"pivots,omitempty"`
+	Pivots []*PivotProperties
 
 	// Query body configuration. Required.
-	Query *ReportConfigDefinition `json:"query,omitempty"`
+	Query *ReportConfigDefinition
 
 	// Cost Management scope to save the view on. This includes 'subscriptions/{subscriptionId}' for subscription scope, 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}'
 	// for resourceGroup
@@ -1207,19 +1207,19 @@ type ViewProperties struct {
 	// Management Group scope, '/providers/Microsoft.CostManagement/externalBillingAccounts/{externalBillingAccountName}' for
 	// ExternalBillingAccount scope, and
 	// '/providers/Microsoft.CostManagement/externalSubscriptions/{externalSubscriptionName}' for ExternalSubscription scope.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 
 	// READ-ONLY; Date the user created this view.
-	CreatedOn *time.Time `json:"createdOn,omitempty" azure:"ro"`
+	CreatedOn *time.Time
 
 	// READ-ONLY; Currency of the current view.
-	Currency *string `json:"currency,omitempty" azure:"ro"`
+	Currency *string
 
 	// READ-ONLY; Date range of the current view.
-	DateRange *string `json:"dateRange,omitempty" azure:"ro"`
+	DateRange *string
 
 	// READ-ONLY; Date when the user last modified this view.
-	ModifiedOn *time.Time `json:"modifiedOn,omitempty" azure:"ro"`
+	ModifiedOn *time.Time
 }
 
 // ViewsClientCreateOrUpdateByScopeOptions contains the optional parameters for the ViewsClient.CreateOrUpdateByScope method.

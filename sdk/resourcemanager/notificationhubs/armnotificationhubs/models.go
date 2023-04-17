@@ -14,124 +14,124 @@ import "time"
 // AdmCredential - Description of a NotificationHub AdmCredential.
 type AdmCredential struct {
 	// Properties of NotificationHub AdmCredential.
-	Properties *AdmCredentialProperties `json:"properties,omitempty"`
+	Properties *AdmCredentialProperties
 }
 
 // AdmCredentialProperties - Description of a NotificationHub AdmCredential.
 type AdmCredentialProperties struct {
 	// The URL of the authorization token.
-	AuthTokenURL *string `json:"authTokenUrl,omitempty"`
+	AuthTokenURL *string
 
 	// The client identifier.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The credential secret access key.
-	ClientSecret *string `json:"clientSecret,omitempty"`
+	ClientSecret *string
 }
 
 // ApnsCredential - Description of a NotificationHub ApnsCredential.
 type ApnsCredential struct {
 	// Properties of NotificationHub ApnsCredential.
-	Properties *ApnsCredentialProperties `json:"properties,omitempty"`
+	Properties *ApnsCredentialProperties
 }
 
 // ApnsCredentialProperties - Description of a NotificationHub ApnsCredential. Note that there is no explicit switch between
 // Certificate and Token Authentication Modes. The mode is determined based on the properties passed in.
 type ApnsCredentialProperties struct {
 	// The APNS certificate. Specify if using Certificate Authentication Mode.
-	ApnsCertificate *string `json:"apnsCertificate,omitempty"`
+	ApnsCertificate *string
 
 	// The issuer (iss) registered claim key. The value is a 10-character TeamId, obtained from your developer account. Specify
 	// if using Token Authentication Mode.
-	AppID *string `json:"appId,omitempty"`
+	AppID *string
 
 	// The name of the application or BundleId. Specify if using Token Authentication Mode.
-	AppName *string `json:"appName,omitempty"`
+	AppName *string
 
 	// The APNS certificate password if it exists.
-	CertificateKey *string `json:"certificateKey,omitempty"`
+	CertificateKey *string
 
 	// The APNS endpoint of this credential. If using Certificate Authentication Mode and Sandbox specify 'gateway.sandbox.push.apple.com'.
 	// If using Certificate Authentication Mode and Production specify
 	// 'gateway.push.apple.com'. If using Token Authentication Mode and Sandbox specify 'https://api.development.push.apple.com:443/3/device'.
 	// If using Token Authentication Mode and Production specify
 	// 'https://api.push.apple.com:443/3/device'.
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string
 
 	// A 10-character key identifier (kid) key, obtained from your developer account. Specify if using Token Authentication Mode.
-	KeyID *string `json:"keyId,omitempty"`
+	KeyID *string
 
 	// The APNS certificate thumbprint. Specify if using Certificate Authentication Mode.
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 
 	// Provider Authentication Token, obtained through your developer account. Specify if using Token Authentication Mode.
-	Token *string `json:"token,omitempty"`
+	Token *string
 }
 
 // BaiduCredential - Description of a NotificationHub BaiduCredential.
 type BaiduCredential struct {
 	// Properties of NotificationHub BaiduCredential.
-	Properties *BaiduCredentialProperties `json:"properties,omitempty"`
+	Properties *BaiduCredentialProperties
 }
 
 // BaiduCredentialProperties - Description of a NotificationHub BaiduCredential.
 type BaiduCredentialProperties struct {
 	// Baidu Api Key.
-	BaiduAPIKey *string `json:"baiduApiKey,omitempty"`
+	BaiduAPIKey *string
 
 	// Baidu Endpoint.
-	BaiduEndPoint *string `json:"baiduEndPoint,omitempty"`
+	BaiduEndPoint *string
 
 	// Baidu Secret Key
-	BaiduSecretKey *string `json:"baiduSecretKey,omitempty"`
+	BaiduSecretKey *string
 }
 
 // CheckAvailabilityParameters - Parameters supplied to the Check Name Availability for Namespace and NotificationHubs.
 type CheckAvailabilityParameters struct {
 	// REQUIRED; Resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
-	IsAvailiable *bool `json:"isAvailiable,omitempty"`
+	IsAvailiable *bool
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CheckAvailabilityResult - Description of a CheckAvailability resource.
 type CheckAvailabilityResult struct {
 	// True if the name is available and can be used to create new Namespace/NotificationHub. Otherwise false.
-	IsAvailiable *bool `json:"isAvailiable,omitempty"`
+	IsAvailiable *bool
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClientCheckNotificationHubAvailabilityOptions contains the optional parameters for the Client.CheckNotificationHubAvailability
@@ -211,192 +211,192 @@ type ClientRegenerateKeysOptions struct {
 // DebugSendResponse - Description of a NotificationHub Resource.
 type DebugSendResponse struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the NotificationHub.
-	Properties *DebugSendResult `json:"properties,omitempty"`
+	Properties *DebugSendResult
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type DebugSendResult struct {
 	// send failure
-	Failure *float32 `json:"failure,omitempty"`
+	Failure *float32
 
 	// actual failure description
-	Results any `json:"results,omitempty"`
+	Results any
 
 	// successful send
-	Success *float32 `json:"success,omitempty"`
+	Success *float32
 }
 
 // ErrorResponse - Error response indicates NotificationHubs service is not able to process the incoming request. The reason
 // is provided in the error message.
 type ErrorResponse struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // GCMCredential - Description of a NotificationHub GcmCredential.
 type GCMCredential struct {
 	// Properties of NotificationHub GcmCredential.
-	Properties *GCMCredentialProperties `json:"properties,omitempty"`
+	Properties *GCMCredentialProperties
 }
 
 // GCMCredentialProperties - Description of a NotificationHub GcmCredential.
 type GCMCredentialProperties struct {
 	// The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'
-	GCMEndpoint *string `json:"gcmEndpoint,omitempty"`
+	GCMEndpoint *string
 
 	// The Google API key.
-	GoogleAPIKey *string `json:"googleApiKey,omitempty"`
+	GoogleAPIKey *string
 }
 
 // MpnsCredential - Description of a NotificationHub MpnsCredential.
 type MpnsCredential struct {
 	// Properties of NotificationHub MpnsCredential.
-	Properties *MpnsCredentialProperties `json:"properties,omitempty"`
+	Properties *MpnsCredentialProperties
 }
 
 // MpnsCredentialProperties - Description of a NotificationHub MpnsCredential.
 type MpnsCredentialProperties struct {
 	// The certificate key for this credential.
-	CertificateKey *string `json:"certificateKey,omitempty"`
+	CertificateKey *string
 
 	// The MPNS certificate.
-	MpnsCertificate *string `json:"mpnsCertificate,omitempty"`
+	MpnsCertificate *string
 
 	// The MPNS certificate Thumbprint
-	Thumbprint *string `json:"thumbprint,omitempty"`
+	Thumbprint *string
 }
 
 // NamespaceCreateOrUpdateParameters - Parameters supplied to the CreateOrUpdate Namespace operation.
 type NamespaceCreateOrUpdateParameters struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the Namespace.
-	Properties *NamespaceProperties `json:"properties,omitempty"`
+	Properties *NamespaceProperties
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NamespaceListResult - The response of the List Namespace operation.
 type NamespaceListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of Namespaces
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List Namespace operation.
-	Value []*NamespaceResource `json:"value,omitempty"`
+	Value []*NamespaceResource
 }
 
 // NamespacePatchParameters - Parameters supplied to the Patch Namespace operation.
 type NamespacePatchParameters struct {
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // NamespaceProperties - Namespace properties.
 type NamespaceProperties struct {
 	// The time the namespace was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// Whether or not the namespace is set as Critical.
-	Critical *bool `json:"critical,omitempty"`
+	Critical *bool
 
 	// Data center for the namespace
-	DataCenter *string `json:"dataCenter,omitempty"`
+	DataCenter *string
 
 	// Whether or not the namespace is currently enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The name of the namespace.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The namespace type.
-	NamespaceType *NamespaceType `json:"namespaceType,omitempty"`
+	NamespaceType *NamespaceType
 
 	// Provisioning state of the Namespace.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Specifies the targeted region in which the namespace should be created. It can be any of the following values: Australia
 	// East, Australia Southeast, Central US, East US, East US 2, West US, North
 	// Central US, South Central US, East Asia, Southeast Asia, Brazil South, Japan East, Japan West, North Europe, West Europe
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// ScaleUnit where the namespace gets created
-	ScaleUnit *string `json:"scaleUnit,omitempty"`
+	ScaleUnit *string
 
 	// Endpoint you can use to perform NotificationHub operations.
-	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty"`
+	ServiceBusEndpoint *string
 
 	// Status of the namespace. It can be any of these values:1 = Created/Active2 = Creating3 = Suspended4 = Deleting
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The Id of the Azure subscription associated with the namespace.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// The time the namespace was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty"`
+	UpdatedAt *time.Time
 
 	// READ-ONLY; Identifier for Azure Insights metrics
-	MetricID *string `json:"metricId,omitempty" azure:"ro"`
+	MetricID *string
 }
 
 // NamespaceResource - Description of a Namespace resource.
 type NamespaceResource struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the Namespace.
-	Properties *NamespaceProperties `json:"properties,omitempty"`
+	Properties *NamespaceProperties
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NamespacesClientBeginDeleteOptions contains the optional parameters for the NamespacesClient.BeginDelete method.
@@ -472,143 +472,143 @@ type NamespacesClientRegenerateKeysOptions struct {
 // NotificationHubCreateOrUpdateParameters - Parameters supplied to the CreateOrUpdate NotificationHub operation.
 type NotificationHubCreateOrUpdateParameters struct {
 	// REQUIRED; Properties of the NotificationHub.
-	Properties *NotificationHubProperties `json:"properties,omitempty"`
+	Properties *NotificationHubProperties
 
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NotificationHubListResult - The response of the List NotificationHub operation.
 type NotificationHubListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of NotificationHub
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List NotificationHub operation.
-	Value []*NotificationHubResource `json:"value,omitempty"`
+	Value []*NotificationHubResource
 }
 
 // NotificationHubPatchParameters - Parameters supplied to the patch NotificationHub operation.
 type NotificationHubPatchParameters struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the NotificationHub.
-	Properties *NotificationHubProperties `json:"properties,omitempty"`
+	Properties *NotificationHubProperties
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NotificationHubProperties - NotificationHub properties.
 type NotificationHubProperties struct {
 	// The AdmCredential of the created NotificationHub
-	AdmCredential *AdmCredential `json:"admCredential,omitempty"`
+	AdmCredential *AdmCredential
 
 	// The ApnsCredential of the created NotificationHub
-	ApnsCredential *ApnsCredential `json:"apnsCredential,omitempty"`
+	ApnsCredential *ApnsCredential
 
 	// The AuthorizationRules of the created NotificationHub
-	AuthorizationRules []*SharedAccessAuthorizationRuleProperties `json:"authorizationRules,omitempty"`
+	AuthorizationRules []*SharedAccessAuthorizationRuleProperties
 
 	// The BaiduCredential of the created NotificationHub
-	BaiduCredential *BaiduCredential `json:"baiduCredential,omitempty"`
+	BaiduCredential *BaiduCredential
 
 	// The GcmCredential of the created NotificationHub
-	GCMCredential *GCMCredential `json:"gcmCredential,omitempty"`
+	GCMCredential *GCMCredential
 
 	// The MpnsCredential of the created NotificationHub
-	MpnsCredential *MpnsCredential `json:"mpnsCredential,omitempty"`
+	MpnsCredential *MpnsCredential
 
 	// The NotificationHub name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The RegistrationTtl of the created NotificationHub
-	RegistrationTTL *string `json:"registrationTtl,omitempty"`
+	RegistrationTTL *string
 
 	// The WnsCredential of the created NotificationHub
-	WnsCredential *WnsCredential `json:"wnsCredential,omitempty"`
+	WnsCredential *WnsCredential
 }
 
 // NotificationHubResource - Description of a NotificationHub Resource.
 type NotificationHubResource struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the NotificationHub.
-	Properties *NotificationHubProperties `json:"properties,omitempty"`
+	Properties *NotificationHubProperties
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Operation - A NotificationHubs REST API operation
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Service provider: Microsoft.NotificationHubs
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource on which the operation is performed: Invoice, etc.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list NotificationHubs operations. It contains a list of operations and a
 // URL link to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of NotificationHubs operations supported by the Microsoft.NotificationHubs resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -619,199 +619,199 @@ type OperationsClientListOptions struct {
 // PnsCredentialsProperties - Description of a NotificationHub PNS Credentials.
 type PnsCredentialsProperties struct {
 	// The AdmCredential of the created NotificationHub
-	AdmCredential *AdmCredential `json:"admCredential,omitempty"`
+	AdmCredential *AdmCredential
 
 	// The ApnsCredential of the created NotificationHub
-	ApnsCredential *ApnsCredential `json:"apnsCredential,omitempty"`
+	ApnsCredential *ApnsCredential
 
 	// The BaiduCredential of the created NotificationHub
-	BaiduCredential *BaiduCredential `json:"baiduCredential,omitempty"`
+	BaiduCredential *BaiduCredential
 
 	// The GcmCredential of the created NotificationHub
-	GCMCredential *GCMCredential `json:"gcmCredential,omitempty"`
+	GCMCredential *GCMCredential
 
 	// The MpnsCredential of the created NotificationHub
-	MpnsCredential *MpnsCredential `json:"mpnsCredential,omitempty"`
+	MpnsCredential *MpnsCredential
 
 	// The WnsCredential of the created NotificationHub
-	WnsCredential *WnsCredential `json:"wnsCredential,omitempty"`
+	WnsCredential *WnsCredential
 }
 
 // PnsCredentialsResource - Description of a NotificationHub PNS Credentials.
 type PnsCredentialsResource struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// NotificationHub PNS Credentials.
-	Properties *PnsCredentialsProperties `json:"properties,omitempty"`
+	Properties *PnsCredentialsProperties
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PolicykeyResource - Namespace/NotificationHub Regenerate Keys
 type PolicykeyResource struct {
 	// Name of the key that has to be regenerated for the Namespace/Notification Hub Authorization Rule. The value can be Primary
 	// Key/Secondary Key.
-	PolicyKey *string `json:"policyKey,omitempty"`
+	PolicyKey *string
 }
 
 type Resource struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceListKeys - Namespace/NotificationHub Connection String
 type ResourceListKeys struct {
 	// KeyName of the created AuthorizationRule
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// PrimaryConnectionString of the AuthorizationRule.
-	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty"`
+	PrimaryConnectionString *string
 
 	// PrimaryKey of the created AuthorizationRule.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// SecondaryConnectionString of the created AuthorizationRule
-	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
+	SecondaryConnectionString *string
 
 	// SecondaryKey of the created AuthorizationRule
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 }
 
 // SKU - The Sku description for a namespace
 type SKU struct {
 	// REQUIRED; Name of the notification hub sku
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 
 	// The capacity of the resource
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// The Sku Family
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// The Sku size
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// The tier of particular sku
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // SharedAccessAuthorizationRuleCreateOrUpdateParameters - Parameters supplied to the CreateOrUpdate Namespace AuthorizationRules.
 type SharedAccessAuthorizationRuleCreateOrUpdateParameters struct {
 	// REQUIRED; Properties of the Namespace AuthorizationRules.
-	Properties *SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
+	Properties *SharedAccessAuthorizationRuleProperties
 }
 
 // SharedAccessAuthorizationRuleListResult - The response of the List Namespace operation.
 type SharedAccessAuthorizationRuleListResult struct {
 	// Link to the next set of results. Not empty if Value contains incomplete list of AuthorizationRules
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the List AuthorizationRules operation.
-	Value []*SharedAccessAuthorizationRuleResource `json:"value,omitempty"`
+	Value []*SharedAccessAuthorizationRuleResource
 }
 
 // SharedAccessAuthorizationRuleProperties - SharedAccessAuthorizationRule properties.
 type SharedAccessAuthorizationRuleProperties struct {
 	// The rights associated with the rule.
-	Rights []*AccessRights `json:"rights,omitempty"`
+	Rights []*AccessRights
 
 	// READ-ONLY; A string that describes the claim type
-	ClaimType *string `json:"claimType,omitempty" azure:"ro"`
+	ClaimType *string
 
 	// READ-ONLY; A string that describes the claim value
-	ClaimValue *string `json:"claimValue,omitempty" azure:"ro"`
+	ClaimValue *string
 
 	// READ-ONLY; The created time for this rule
-	CreatedTime *string `json:"createdTime,omitempty" azure:"ro"`
+	CreatedTime *string
 
 	// READ-ONLY; A string that describes the authorization rule.
-	KeyName *string `json:"keyName,omitempty" azure:"ro"`
+	KeyName *string
 
 	// READ-ONLY; The last modified time for this rule
-	ModifiedTime *string `json:"modifiedTime,omitempty" azure:"ro"`
+	ModifiedTime *string
 
 	// READ-ONLY; A base64-encoded 256-bit primary key for signing and validating the SAS token.
-	PrimaryKey *string `json:"primaryKey,omitempty" azure:"ro"`
+	PrimaryKey *string
 
 	// READ-ONLY; The revision number for the rule
-	Revision *int32 `json:"revision,omitempty" azure:"ro"`
+	Revision *int32
 
 	// READ-ONLY; A base64-encoded 256-bit primary key for signing and validating the SAS token.
-	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
+	SecondaryKey *string
 }
 
 // SharedAccessAuthorizationRuleResource - Description of a Namespace AuthorizationRules.
 type SharedAccessAuthorizationRuleResource struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the Namespace AuthorizationRule.
-	Properties *SharedAccessAuthorizationRuleProperties `json:"properties,omitempty"`
+	Properties *SharedAccessAuthorizationRuleProperties
 
 	// The sku of the created namespace
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type SubResource struct {
 	// Resource Id
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // WnsCredential - Description of a NotificationHub WnsCredential.
 type WnsCredential struct {
 	// Properties of NotificationHub WnsCredential.
-	Properties *WnsCredentialProperties `json:"properties,omitempty"`
+	Properties *WnsCredentialProperties
 }
 
 // WnsCredentialProperties - Description of a NotificationHub WnsCredential.
 type WnsCredentialProperties struct {
 	// The package ID for this credential.
-	PackageSid *string `json:"packageSid,omitempty"`
+	PackageSid *string
 
 	// The secret key.
-	SecretKey *string `json:"secretKey,omitempty"`
+	SecretKey *string
 
 	// The Windows Live endpoint.
-	WindowsLiveEndpoint *string `json:"windowsLiveEndpoint,omitempty"`
+	WindowsLiveEndpoint *string
 }

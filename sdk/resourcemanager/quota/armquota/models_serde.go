@@ -418,7 +418,7 @@ func (p Properties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isQuotaApplicable", p.IsQuotaApplicable)
 	populate(objectMap, "limit", p.Limit)
 	populate(objectMap, "name", p.Name)
-	populate(objectMap, "properties", &p.Properties)
+	populateAny(objectMap, "properties", p.Properties)
 	populate(objectMap, "quotaPeriod", p.QuotaPeriod)
 	populate(objectMap, "resourceType", p.ResourceType)
 	populate(objectMap, "unit", p.Unit)
@@ -542,7 +542,7 @@ func (r RequestOneResourceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "limit", r.Limit)
 	populate(objectMap, "message", r.Message)
 	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", &r.Properties)
+	populateAny(objectMap, "properties", r.Properties)
 	populate(objectMap, "provisioningState", r.ProvisioningState)
 	populate(objectMap, "quotaPeriod", r.QuotaPeriod)
 	populateTimeRFC3339(objectMap, "requestSubmitTime", r.RequestSubmitTime)
@@ -692,7 +692,7 @@ func (r RequestStatusDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "limit", r.Limit)
 	populate(objectMap, "message", r.Message)
 	populate(objectMap, "name", r.Name)
-	populate(objectMap, "properties", &r.Properties)
+	populateAny(objectMap, "properties", r.Properties)
 	populate(objectMap, "provisioningState", r.ProvisioningState)
 	populate(objectMap, "quotaPeriod", r.QuotaPeriod)
 	populate(objectMap, "resourceType", r.ResourceType)
@@ -1034,7 +1034,7 @@ func (u UsagesProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "isQuotaApplicable", u.IsQuotaApplicable)
 	populate(objectMap, "name", u.Name)
-	populate(objectMap, "properties", &u.Properties)
+	populateAny(objectMap, "properties", u.Properties)
 	populate(objectMap, "quotaPeriod", u.QuotaPeriod)
 	populate(objectMap, "resourceType", u.ResourceType)
 	populate(objectMap, "unit", u.Unit)
@@ -1086,6 +1086,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

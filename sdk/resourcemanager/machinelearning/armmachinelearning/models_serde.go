@@ -500,7 +500,7 @@ func (a AmlComputeProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "isolatedNetwork", a.IsolatedNetwork)
 	populate(objectMap, "nodeStateCounts", a.NodeStateCounts)
 	populate(objectMap, "osType", a.OSType)
-	populate(objectMap, "propertyBag", &a.PropertyBag)
+	populateAny(objectMap, "propertyBag", a.PropertyBag)
 	populate(objectMap, "remoteLoginPortPublicAccess", a.RemoteLoginPortPublicAccess)
 	populate(objectMap, "scaleSettings", a.ScaleSettings)
 	populate(objectMap, "subnet", a.Subnet)
@@ -2615,7 +2615,7 @@ func (c *CodeVersionResourceArmPaginatedResult) UnmarshalJSON(data []byte) error
 func (c ColumnTransformer) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "fields", c.Fields)
-	populate(objectMap, "parameters", &c.Parameters)
+	populateAny(objectMap, "parameters", c.Parameters)
 	return json.Marshal(objectMap)
 }
 
@@ -2661,7 +2661,7 @@ func (c CommandJob) MarshalJSON() ([]byte, error) {
 	objectMap["jobType"] = JobTypeCommand
 	populate(objectMap, "limits", c.Limits)
 	populate(objectMap, "outputs", c.Outputs)
-	populate(objectMap, "parameters", &c.Parameters)
+	populateAny(objectMap, "parameters", c.Parameters)
 	populate(objectMap, "properties", c.Properties)
 	populate(objectMap, "resources", c.Resources)
 	populate(objectMap, "services", c.Services)
@@ -2951,7 +2951,7 @@ func (c *ComponentVersion) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ComponentVersionProperties.
 func (c ComponentVersionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "componentSpec", &c.ComponentSpec)
+	populateAny(objectMap, "componentSpec", c.ComponentSpec)
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "isAnonymous", c.IsAnonymous)
 	populate(objectMap, "isArchived", c.IsArchived)
@@ -5674,7 +5674,7 @@ func (e *EndpointPropertiesBase) UnmarshalJSON(data []byte) error {
 func (e EndpointScheduleAction) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["actionType"] = ScheduleActionTypeInvokeBatchEndpoint
-	populate(objectMap, "endpointInvocationDefinition", &e.EndpointInvocationDefinition)
+	populateAny(objectMap, "endpointInvocationDefinition", e.EndpointInvocationDefinition)
 	return json.Marshal(objectMap)
 }
 
@@ -5970,7 +5970,7 @@ func (e *EnvironmentVersionResourceArmPaginatedResult) UnmarshalJSON(data []byte
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -11154,7 +11154,7 @@ func (p PipelineJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "outputs", p.Outputs)
 	populate(objectMap, "properties", p.Properties)
 	populate(objectMap, "services", p.Services)
-	populate(objectMap, "settings", &p.Settings)
+	populateAny(objectMap, "settings", p.Settings)
 	populate(objectMap, "sourceJobId", p.SourceJobID)
 	populate(objectMap, "status", p.Status)
 	populate(objectMap, "tags", p.Tags)
@@ -13176,7 +13176,7 @@ func (s *SharedPrivateLinkResourceProperty) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type StackEnsembleSettings.
 func (s StackEnsembleSettings) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "stackMetaLearnerKWargs", &s.StackMetaLearnerKWargs)
+	populateAny(objectMap, "stackMetaLearnerKWargs", s.StackMetaLearnerKWargs)
 	populate(objectMap, "stackMetaLearnerTrainPercentage", s.StackMetaLearnerTrainPercentage)
 	populate(objectMap, "stackMetaLearnerType", s.StackMetaLearnerType)
 	return json.Marshal(objectMap)
@@ -13226,7 +13226,7 @@ func (s SweepJob) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "outputs", s.Outputs)
 	populate(objectMap, "properties", s.Properties)
 	populate(objectMap, "samplingAlgorithm", s.SamplingAlgorithm)
-	populate(objectMap, "searchSpace", &s.SearchSpace)
+	populateAny(objectMap, "searchSpace", s.SearchSpace)
 	populate(objectMap, "services", s.Services)
 	populate(objectMap, "status", s.Status)
 	populate(objectMap, "tags", s.Tags)
@@ -15780,6 +15780,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

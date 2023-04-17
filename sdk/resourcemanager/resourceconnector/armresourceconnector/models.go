@@ -14,139 +14,130 @@ import "time"
 // Appliances definition.
 type Appliance struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Identity for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The set of properties specific to an Appliance
-	Properties *ApplianceProperties `json:"properties,omitempty"`
+	Properties *ApplianceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplianceCredentialKubeconfig - Cluster User Credential appliance.
 type ApplianceCredentialKubeconfig struct {
 	// READ-ONLY; Name which contains the role of the kubeconfig.
-	Name *AccessProfileType `json:"name,omitempty" azure:"ro"`
+	Name *AccessProfileType
 
 	// READ-ONLY; Contains the kubeconfig value.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
-// ApplianceGetTelemetryConfigResult - The Get Telemetry Config Result appliance.
-type ApplianceGetTelemetryConfigResult struct {
-	// READ-ONLY; Telemetry instrumentation key.
-	TelemetryInstrumentationKey *string `json:"telemetryInstrumentationKey,omitempty" azure:"ro"`
+// ApplianceListClusterCustomerUserCredentialResults - The List Cluster Customer User Credential Results appliance.
+type ApplianceListClusterCustomerUserCredentialResults struct {
+	// READ-ONLY; The list of appliance kubeconfigs.
+	Kubeconfigs []*ApplianceCredentialKubeconfig
+
+	// READ-ONLY; Map of Customer User Public and Private SSH Keys
+	SSHKeys map[string]*SSHKey
 }
 
 // ApplianceListCredentialResults - The List Cluster User Credential appliance.
 type ApplianceListCredentialResults struct {
 	// READ-ONLY; Contains the REP (rendezvous endpoint) and “Listener” access token from notification service (NS).
-	HybridConnectionConfig *HybridConnectionConfig `json:"hybridConnectionConfig,omitempty" azure:"ro"`
+	HybridConnectionConfig *HybridConnectionConfig
 
 	// READ-ONLY; The list of appliance kubeconfigs.
-	Kubeconfigs []*ApplianceCredentialKubeconfig `json:"kubeconfigs,omitempty" azure:"ro"`
-}
-
-// ApplianceListKeysResults - The List Cluster Keys Results appliance.
-type ApplianceListKeysResults struct {
-	// READ-ONLY; Map of artifacts that contains a list of ArtifactProfile used to upload artifacts such as logs.
-	ArtifactProfiles map[string]*ArtifactProfile `json:"artifactProfiles,omitempty" azure:"ro"`
-
-	// READ-ONLY; The list of appliance kubeconfigs.
-	Kubeconfigs []*ApplianceCredentialKubeconfig `json:"kubeconfigs,omitempty" azure:"ro"`
-
-	// READ-ONLY; Map of Customer User Public, Private SSH Keys and Certificate when available.
-	SSHKeys map[string]*SSHKey `json:"sshKeys,omitempty" azure:"ro"`
+	Kubeconfigs []*ApplianceCredentialKubeconfig
 }
 
 // ApplianceListResult - The List Appliances operation response.
 type ApplianceListResult struct {
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The list of Appliances.
-	Value []*Appliance `json:"value,omitempty" azure:"ro"`
+	Value []*Appliance
 }
 
 // ApplianceOperation - Appliances operation.
 type ApplianceOperation struct {
 	// Describes the properties of an Appliances Operation Value Display.
-	Display *ApplianceOperationValueDisplay `json:"display,omitempty"`
+	Display *ApplianceOperationValueDisplay
 
 	// READ-ONLY; Is this Operation a data plane operation
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the compute operation.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The origin of the compute operation.
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // ApplianceOperationValueDisplay - Describes the properties of an Appliances Operation Value Display.
 type ApplianceOperationValueDisplay struct {
 	// READ-ONLY; The description of the operation.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The display name of the compute operation.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The resource provider for the operation.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The display name of the resource the operation applies to.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // ApplianceOperationsList - Lists of Appliances operations.
 type ApplianceOperationsList struct {
 	// REQUIRED; Array of applianceOperation
-	Value []*ApplianceOperation `json:"value,omitempty"`
+	Value []*ApplianceOperation
 
 	// Next page of operations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // ApplianceProperties - Properties for an appliance.
 type ApplianceProperties struct {
 	// Represents a supported Fabric/Infra. (AKSEdge etc…).
-	Distro *Distro `json:"distro,omitempty"`
+	Distro *Distro
 
 	// Contains infrastructure information about the Appliance
-	InfrastructureConfig *AppliancePropertiesInfrastructureConfig `json:"infrastructureConfig,omitempty"`
+	InfrastructureConfig *AppliancePropertiesInfrastructureConfig
 
-	// Certificates pair used to download MSI certificate from HIS. Can only be set once.
-	PublicKey *string `json:"publicKey,omitempty"`
+	// Certificates pair used to download MSI certificate from HIS
+	PublicKey *string
 
 	// Version of the Appliance
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; The current deployment or provisioning state, which only appears in the response.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Appliance’s health and state of connection to on-prem
-	Status *Status `json:"status,omitempty" azure:"ro"`
+	Status *Status
 }
 
 // AppliancePropertiesInfrastructureConfig - Contains infrastructure information about the Appliance
 type AppliancePropertiesInfrastructureConfig struct {
 	// Information about the connected appliance.
-	Provider *Provider `json:"provider,omitempty"`
+	Provider *Provider
 }
 
 // AppliancesClientBeginCreateOrUpdateOptions contains the optional parameters for the AppliancesClient.BeginCreateOrUpdate
@@ -167,12 +158,6 @@ type AppliancesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppliancesClientGetTelemetryConfigOptions contains the optional parameters for the AppliancesClient.GetTelemetryConfig
-// method.
-type AppliancesClientGetTelemetryConfigOptions struct {
-	// placeholder for future optional parameters
-}
-
 // AppliancesClientGetUpgradeGraphOptions contains the optional parameters for the AppliancesClient.GetUpgradeGraph method.
 type AppliancesClientGetUpgradeGraphOptions struct {
 	// placeholder for future optional parameters
@@ -190,14 +175,15 @@ type AppliancesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppliancesClientListClusterUserCredentialOptions contains the optional parameters for the AppliancesClient.ListClusterUserCredential
+// AppliancesClientListClusterCustomerUserCredentialOptions contains the optional parameters for the AppliancesClient.ListClusterCustomerUserCredential
 // method.
-type AppliancesClientListClusterUserCredentialOptions struct {
+type AppliancesClientListClusterCustomerUserCredentialOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AppliancesClientListKeysOptions contains the optional parameters for the AppliancesClient.ListKeys method.
-type AppliancesClientListKeysOptions struct {
+// AppliancesClientListClusterUserCredentialOptions contains the optional parameters for the AppliancesClient.ListClusterUserCredential
+// method.
+type AppliancesClientListClusterUserCredentialOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -212,214 +198,193 @@ type AppliancesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArtifactProfile - Appliance ArtifactProfile definition.
-type ArtifactProfile struct {
-	// READ-ONLY; Endpoint is the URL to upload artifacts to.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
-}
-
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // HybridConnectionConfig - Contains the REP (rendezvous endpoint) and “Listener” access token from notification service (NS).
 type HybridConnectionConfig struct {
 	// READ-ONLY; Timestamp when this token will be expired.
-	ExpirationTime *int64 `json:"expirationTime,omitempty" azure:"ro"`
+	ExpirationTime *int64
 
 	// READ-ONLY; Name of the connection
-	HybridConnectionName *string `json:"hybridConnectionName,omitempty" azure:"ro"`
+	HybridConnectionName *string
 
 	// READ-ONLY; Name of the notification service.
-	Relay *string `json:"relay,omitempty" azure:"ro"`
+	Relay *string
 
 	// READ-ONLY; Listener access token
-	Token *string `json:"token,omitempty" azure:"ro"`
+	Token *string
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // PatchableAppliance - The Appliances patchable resource definition.
 type PatchableAppliance struct {
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SSHKey - Appliance SSHKey definition.
 type SSHKey struct {
-	// READ-ONLY; Certificate associated with the public key if the key is signed.
-	Certificate *string `json:"certificate,omitempty" azure:"ro"`
+	// User Private Key.
+	PrivateKey *string
 
-	// READ-ONLY; Certificate creation timestamp (Unix).
-	CreationTimeStamp *int64 `json:"creationTimeStamp,omitempty" azure:"ro"`
-
-	// READ-ONLY; Certificate expiration timestamp (Unix).
-	ExpirationTimeStamp *int64 `json:"expirationTimeStamp,omitempty" azure:"ro"`
-
-	// READ-ONLY; Private Key.
-	PrivateKey *string `json:"privateKey,omitempty" azure:"ro"`
-
-	// READ-ONLY; Public Key.
-	PublicKey *string `json:"publicKey,omitempty" azure:"ro"`
+	// User Public Key.
+	PublicKey *string
 }
 
 // SupportedVersion - The SupportedVersion object for appliance.
 type SupportedVersion struct {
 	// READ-ONLY; This is the metadata of the supported newer version.
-	Metadata *SupportedVersionMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *SupportedVersionMetadata
 
 	// READ-ONLY; The newer version available for upgrade.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // SupportedVersionCatalogVersion - The SupportedVersionCatalogVersion object for appliance.
 type SupportedVersionCatalogVersion struct {
 	// READ-ONLY; The newer supported version catalog version data.
-	Data *SupportedVersionCatalogVersionData `json:"data,omitempty" azure:"ro"`
+	Data *SupportedVersionCatalogVersionData
 
 	// READ-ONLY; The catalog version name for the version available for upgrade.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The catalog version namespace for the version available for upgrade.
-	Namespace *string `json:"namespace,omitempty" azure:"ro"`
+	Namespace *string
 }
 
 // SupportedVersionCatalogVersionData - The SupportedVersionCatalogVersionData object for appliance.
 type SupportedVersionCatalogVersionData struct {
 	// READ-ONLY; The image audience name for the version available for upgrade.
-	Audience *string `json:"audience,omitempty" azure:"ro"`
+	Audience *string
 
 	// READ-ONLY; The image catalog name for the version available for upgrade.
-	Catalog *string `json:"catalog,omitempty" azure:"ro"`
+	Catalog *string
 
 	// READ-ONLY; The image offer name for the version available for upgrade.
-	Offer *string `json:"offer,omitempty" azure:"ro"`
+	Offer *string
 
 	// READ-ONLY; The image version for the version available for upgrade.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // SupportedVersionMetadata - The SupportedVersionMetadata object for appliance.
 type SupportedVersionMetadata struct {
 	// READ-ONLY; The newer supported version catalog version.
-	CatalogVersion *SupportedVersionCatalogVersion `json:"catalogVersion,omitempty" azure:"ro"`
+	CatalogVersion *SupportedVersionCatalogVersion
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UpgradeGraph - The Upgrade Graph for appliance.
 type UpgradeGraph struct {
 	// The properties of supported version
-	Properties *UpgradeGraphProperties `json:"properties,omitempty"`
+	Properties *UpgradeGraphProperties
 
 	// READ-ONLY; The appliance resource path
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The release train name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // UpgradeGraphProperties - The Upgrade Graph Properties for appliance.
 type UpgradeGraphProperties struct {
 	// READ-ONLY; The current appliance version
-	ApplianceVersion *string `json:"applianceVersion,omitempty" azure:"ro"`
+	ApplianceVersion *string
 
 	// READ-ONLY; This contains the current version and supported upgrade versions.
-	SupportedVersions []*SupportedVersion `json:"supportedVersions,omitempty" azure:"ro"`
+	SupportedVersions []*SupportedVersion
 }

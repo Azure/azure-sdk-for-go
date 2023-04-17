@@ -14,17 +14,17 @@ import "time"
 // AvailableProviderOperation - Class represents provider operation
 type AvailableProviderOperation struct {
 	// REQUIRED; Gets or Sets Name of the operations
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Gets or sets Display information Contains the localized display information for this particular operation/action
-	Display *AvailableProviderOperationDisplay `json:"display,omitempty"`
+	Display *AvailableProviderOperationDisplay
 
 	// Gets or sets Origin The intended executor of the operation; governs the display of the operation in the RBAC UX and the
 	// audit logs UX. Default value is “user,system”
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Gets or sets Properties Reserved for future use
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // AvailableProviderOperationDisplay - Contains the localized display information for this particular operation / action.
@@ -33,43 +33,43 @@ type AvailableProviderOperation struct {
 type AvailableProviderOperationDisplay struct {
 	// Gets or sets Description The localized friendly description for the operation, as it should be shown to the user. It should
 	// be thorough, yet concise – it will be used in tool tips and detailed views.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Gets or sets Operation The localized friendly name for the operation, as it should be shown to the user. It should be concise
 	// (to fit in drop downs) but clear (i.e. self-documenting). It should use
 	// Title Casing and include the entity/resource to which it applies.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Gets or sets Provider The localized friendly form of the resource provider name – it is expected to also include the publisher/company
 	// responsible. It should use Title Casing and begin with
 	// “Microsoft” for 1st party services.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Gets or sets Resource The localized friendly form of the resource type related to this action/operation – it should match
 	// the public documentation for the resource provider. It should use Title Casing
 	// – for examples, please refer to the “name” section.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // AvailableProviderOperations - Class for set of operations used for discovery of available provider operations.
 type AvailableProviderOperations struct {
 	// Link for the next set of operations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of operations.
-	Value []*AvailableProviderOperation `json:"value,omitempty"`
+	Value []*AvailableProviderOperation
 }
 
 // CustomerSecret - The pair of customer secret.
 type CustomerSecret struct {
 	// REQUIRED; The encryption algorithm used to encrypt data.
-	Algorithm *SupportedAlgorithm `json:"algorithm,omitempty"`
+	Algorithm *SupportedAlgorithm
 
 	// REQUIRED; The identifier to the data service input object which this secret corresponds to.
-	KeyIdentifier *string `json:"keyIdentifier,omitempty"`
+	KeyIdentifier *string
 
 	// REQUIRED; It contains the encrypted customer secret.
-	KeyValue *string `json:"keyValue,omitempty"`
+	KeyValue *string
 }
 
 // DataManager - The DataManager resource.
@@ -77,45 +77,45 @@ type DataManager struct {
 	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US,
 	// East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it
 	// is created, but if an identical geo region is specified on update the request will succeed.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Etag of the Resource.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// The sku type.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
 	// resource groups).
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataManagerList - DataManager resources Collection.
 type DataManagerList struct {
 	// Link for the next set of data stores.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of data manager resources.
-	Value []*DataManager `json:"value,omitempty"`
+	Value []*DataManager
 }
 
 // DataManagerUpdateParameter - The DataManagerUpdateParameter.
 type DataManagerUpdateParameter struct {
 	// The sku type.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
 	// resource groups).
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DataManagersClientBeginCreateOptions contains the optional parameters for the DataManagersClient.BeginCreate method.
@@ -158,37 +158,37 @@ type DataManagersClientListOptions struct {
 // DataService - Data Service.
 type DataService struct {
 	// REQUIRED; DataService properties.
-	Properties *DataServiceProperties `json:"properties,omitempty"`
+	Properties *DataServiceProperties
 
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataServiceList - Data Service Collection.
 type DataServiceList struct {
 	// Link for the next set of data services.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of data services.
-	Value []*DataService `json:"value,omitempty"`
+	Value []*DataService
 }
 
 // DataServiceProperties - Data Service properties.
 type DataServiceProperties struct {
 	// REQUIRED; State of the data service.
-	State *State `json:"state,omitempty"`
+	State *State
 
 	// Supported data store types which can be used as a sink.
-	SupportedDataSinkTypes []*string `json:"supportedDataSinkTypes,omitempty"`
+	SupportedDataSinkTypes []*string
 
 	// Supported data store types which can be used as a source.
-	SupportedDataSourceTypes []*string `json:"supportedDataSourceTypes,omitempty"`
+	SupportedDataSourceTypes []*string
 }
 
 // DataServicesClientGetOptions contains the optional parameters for the DataServicesClient.Get method.
@@ -205,90 +205,90 @@ type DataServicesClientListByDataManagerOptions struct {
 // DataStore - Data store.
 type DataStore struct {
 	// REQUIRED; DataStore properties.
-	Properties *DataStoreProperties `json:"properties,omitempty"`
+	Properties *DataStoreProperties
 
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataStoreFilter - Contains the information about the filters for the DataStore.
 type DataStoreFilter struct {
 	// The data store type id.
-	DataStoreTypeID *string `json:"dataStoreTypeId,omitempty"`
+	DataStoreTypeID *string
 }
 
 // DataStoreList - Data Store Collection.
 type DataStoreList struct {
 	// Link for the next set of data stores.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of data stores.
-	Value []*DataStore `json:"value,omitempty"`
+	Value []*DataStore
 }
 
 // DataStoreProperties - Data Store for sources and sinks
 type DataStoreProperties struct {
 	// REQUIRED; The arm id of the data store type.
-	DataStoreTypeID *string `json:"dataStoreTypeId,omitempty"`
+	DataStoreTypeID *string
 
 	// REQUIRED; State of the data source.
-	State *State `json:"state,omitempty"`
+	State *State
 
 	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source
 	// to understand the key. Value contains customer secret encrypted by the
 	// encryptionKeys.
-	CustomerSecrets []*CustomerSecret `json:"customerSecrets,omitempty"`
+	CustomerSecrets []*CustomerSecret
 
 	// A generic json used differently by each data source type.
-	ExtendedProperties any `json:"extendedProperties,omitempty"`
+	ExtendedProperties any
 
 	// Arm Id for the manager resource to which the data source is associated. This is optional.
-	RepositoryID *string `json:"repositoryId,omitempty"`
+	RepositoryID *string
 }
 
 // DataStoreType - Data Store Type.
 type DataStoreType struct {
 	// REQUIRED; DataStoreType properties.
-	Properties *DataStoreTypeProperties `json:"properties,omitempty"`
+	Properties *DataStoreTypeProperties
 
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataStoreTypeList - Data Store Type Collection.
 type DataStoreTypeList struct {
 	// Link for the next set of data store types.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of DataStoreType.
-	Value []*DataStoreType `json:"value,omitempty"`
+	Value []*DataStoreType
 }
 
 // DataStoreTypeProperties - Data Store Type properties.
 type DataStoreTypeProperties struct {
 	// REQUIRED; State of the data store type.
-	State *State `json:"state,omitempty"`
+	State *State
 
 	// Arm type for the manager resource to which the data source type is associated. This is optional.
-	RepositoryType *string `json:"repositoryType,omitempty"`
+	RepositoryType *string
 
 	// Supported data services where it can be used as a sink.
-	SupportedDataServicesAsSink []*string `json:"supportedDataServicesAsSink,omitempty"`
+	SupportedDataServicesAsSink []*string
 
 	// Supported data services where it can be used as a source.
-	SupportedDataServicesAsSource []*string `json:"supportedDataServicesAsSource,omitempty"`
+	SupportedDataServicesAsSource []*string
 }
 
 // DataStoreTypesClientGetOptions contains the optional parameters for the DataStoreTypesClient.Get method.
@@ -330,132 +330,132 @@ type DataStoresClientListByDataManagerOptions struct {
 // DmsBaseObject - Base class for all objects under DataManager Service
 type DmsBaseObject struct {
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Error - Top level error for the job.
 type Error struct {
 	// REQUIRED; Error code that can be used to programmatically identify the error.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Describes the error in detail and provides debugging information.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ErrorDetails - Error Details
 type ErrorDetails struct {
 	// Error code.
-	ErrorCode *int32 `json:"errorCode,omitempty"`
+	ErrorCode *int32
 
 	// Error message.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 
 	// Contains the non localized exception message
-	ExceptionMessage *string `json:"exceptionMessage,omitempty"`
+	ExceptionMessage *string
 
 	// Recommended action for the error.
-	RecommendedAction *string `json:"recommendedAction,omitempty"`
+	RecommendedAction *string
 }
 
 // Job - Data service job.
 type Job struct {
 	// REQUIRED; Job properties.
-	Properties *JobProperties `json:"properties,omitempty"`
+	Properties *JobProperties
 
 	// REQUIRED; Time at which the job was started in UTC ISO 8601 format.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// REQUIRED; Status of the job.
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatus
 
 	// Time at which the job ended in UTC ISO 8601 format.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// Top level error for the job.
-	Error *Error `json:"error,omitempty"`
+	Error *Error
 
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobDefinition - Job Definition.
 type JobDefinition struct {
 	// REQUIRED; JobDefinition properties.
-	Properties *JobDefinitionProperties `json:"properties,omitempty"`
+	Properties *JobDefinitionProperties
 
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobDefinitionFilter - Contains the supported job definition filters.
 type JobDefinitionFilter struct {
 	// REQUIRED; The state of the job definition.
-	State *State `json:"state,omitempty"`
+	State *State
 
 	// The data source associated with the job definition
-	DataSource *string `json:"dataSource,omitempty"`
+	DataSource *string
 
 	// The last modified date time of the data source.
-	LastModified *time.Time `json:"lastModified,omitempty"`
+	LastModified *time.Time
 }
 
 // JobDefinitionList - Job Definition Collection.
 type JobDefinitionList struct {
 	// Link for the next set of job definitions.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of job definitions.
-	Value []*JobDefinition `json:"value,omitempty"`
+	Value []*JobDefinition
 }
 
 // JobDefinitionProperties - Job Definition
 type JobDefinitionProperties struct {
 	// REQUIRED; Data Sink Id associated to the job definition.
-	DataSinkID *string `json:"dataSinkId,omitempty"`
+	DataSinkID *string
 
 	// REQUIRED; Data Source Id associated to the job definition.
-	DataSourceID *string `json:"dataSourceId,omitempty"`
+	DataSourceID *string
 
 	// REQUIRED; State of the job definition.
-	State *State `json:"state,omitempty"`
+	State *State
 
 	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source
 	// to understand the key. Value contains customer secret encrypted by the
 	// encryptionKeys.
-	CustomerSecrets []*CustomerSecret `json:"customerSecrets,omitempty"`
+	CustomerSecrets []*CustomerSecret
 
 	// A generic json used differently by each data service type.
-	DataServiceInput any `json:"dataServiceInput,omitempty"`
+	DataServiceInput any
 
 	// Last modified time of the job definition.
-	LastModifiedTime *time.Time `json:"lastModifiedTime,omitempty"`
+	LastModifiedTime *time.Time
 
 	// This is the preferred geo location for the job to run.
-	RunLocation *RunLocation `json:"runLocation,omitempty"`
+	RunLocation *RunLocation
 
 	// Schedule for running the job definition
-	Schedules []*Schedule `json:"schedules,omitempty"`
+	Schedules []*Schedule
 
 	// Enum to detect if user confirmation is required. If not passed will default to NotRequired.
-	UserConfirmation *UserConfirmation `json:"userConfirmation,omitempty"`
+	UserConfirmation *UserConfirmation
 }
 
 // JobDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the JobDefinitionsClient.BeginCreateOrUpdate
@@ -499,76 +499,76 @@ type JobDefinitionsClientListByDataServiceOptions struct {
 // JobDetails - Job details.
 type JobDetails struct {
 	// Error details for failure. This is optional.
-	ErrorDetails []*ErrorDetails `json:"errorDetails,omitempty"`
+	ErrorDetails []*ErrorDetails
 
 	// Item Details Link to download files or see details
-	ItemDetailsLink *string `json:"itemDetailsLink,omitempty"`
+	ItemDetailsLink *string
 
 	// JobDefinition at the time of the run
-	JobDefinition *JobDefinition `json:"jobDefinition,omitempty"`
+	JobDefinition *JobDefinition
 
 	// List of stages that ran in the job
-	JobStages []*JobStages `json:"jobStages,omitempty"`
+	JobStages []*JobStages
 }
 
 // JobFilter - Contains the information about the filters for the job.
 type JobFilter struct {
 	// REQUIRED; The status of the job.
-	Status *JobStatus `json:"status,omitempty"`
+	Status *JobStatus
 
 	// The start time of the job.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // JobList - Job Collection.
 type JobList struct {
 	// Link for the next set of jobs.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of jobs.
-	Value []*Job `json:"value,omitempty"`
+	Value []*Job
 }
 
 // JobProperties - Job Properties
 type JobProperties struct {
 	// REQUIRED; Describes whether the job is cancellable.
-	IsCancellable *IsJobCancellable `json:"isCancellable,omitempty"`
+	IsCancellable *IsJobCancellable
 
 	// Number of bytes processed by the job as of now.
-	BytesProcessed *int64 `json:"bytesProcessed,omitempty"`
+	BytesProcessed *int64
 
 	// Name of the data sink on which the job was triggered.
-	DataSinkName *string `json:"dataSinkName,omitempty"`
+	DataSinkName *string
 
 	// Name of the data source on which the job was triggered.
-	DataSourceName *string `json:"dataSourceName,omitempty"`
+	DataSourceName *string
 
 	// Details of a job run. This field will only be sent for expand details filter.
-	Details *JobDetails `json:"details,omitempty"`
+	Details *JobDetails
 
 	// Number of items processed by the job as of now
-	ItemsProcessed *int64 `json:"itemsProcessed,omitempty"`
+	ItemsProcessed *int64
 
 	// Number of bytes to be processed by the job in total.
-	TotalBytesToProcess *int64 `json:"totalBytesToProcess,omitempty"`
+	TotalBytesToProcess *int64
 
 	// Number of items to be processed by the job in total
-	TotalItemsToProcess *int64 `json:"totalItemsToProcess,omitempty"`
+	TotalItemsToProcess *int64
 }
 
 // JobStages - Job stages.
 type JobStages struct {
 	// REQUIRED; Status of the job stage.
-	StageStatus *JobStatus `json:"stageStatus,omitempty"`
+	StageStatus *JobStatus
 
 	// Error details for the stage. This is optional
-	ErrorDetails []*ErrorDetails `json:"errorDetails,omitempty"`
+	ErrorDetails []*ErrorDetails
 
 	// Job Stage Details
-	JobStageDetails any `json:"jobStageDetails,omitempty"`
+	JobStageDetails any
 
 	// Name of the job stage.
-	StageName *string `json:"stageName,omitempty"`
+	StageName *string
 }
 
 // JobsClientBeginCancelOptions contains the optional parameters for the JobsClient.BeginCancel method.
@@ -611,13 +611,13 @@ type JobsClientListByJobDefinitionOptions struct {
 type Key struct {
 	// REQUIRED; The maximum byte size that can be encrypted by the key. For a key size larger than the size, break into chunks
 	// and encrypt each chunk, append each encrypted chunk with : to mark the end of the chunk.
-	EncryptionChunkSizeInBytes *int32 `json:"encryptionChunkSizeInBytes,omitempty"`
+	EncryptionChunkSizeInBytes *int32
 
 	// REQUIRED; Exponent of the encryption key.
-	KeyExponent *string `json:"keyExponent,omitempty"`
+	KeyExponent *string
 
 	// REQUIRED; Modulus of the encryption key.
-	KeyModulus *string `json:"keyModulus,omitempty"`
+	KeyModulus *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -628,34 +628,34 @@ type OperationsClientListOptions struct {
 // PublicKey - Public key
 type PublicKey struct {
 	// REQUIRED; Public key property.
-	Properties *PublicKeyProperties `json:"properties,omitempty"`
+	Properties *PublicKeyProperties
 
 	// READ-ONLY; Id of the object.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of the object.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PublicKeyList - PublicKey Collection
 type PublicKeyList struct {
 	// Link for the next set of public keys.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of public keys.
-	Value []*PublicKey `json:"value,omitempty"`
+	Value []*PublicKey
 }
 
 // PublicKeyProperties - PublicKey Properties
 type PublicKeyProperties struct {
 	// REQUIRED; Level one public key for encryption
-	DataServiceLevel1Key *Key `json:"dataServiceLevel1Key,omitempty"`
+	DataServiceLevel1Key *Key
 
 	// REQUIRED; Level two public key for encryption
-	DataServiceLevel2Key *Key `json:"dataServiceLevel2Key,omitempty"`
+	DataServiceLevel2Key *Key
 }
 
 // PublicKeysClientGetOptions contains the optional parameters for the PublicKeysClient.Get method.
@@ -674,23 +674,23 @@ type Resource struct {
 	// REQUIRED; The location of the resource. This will be one of the supported and registered Azure Geo Regions (e.g. West US,
 	// East US, Southeast Asia, etc.). The geo region of a resource cannot be changed once it
 	// is created, but if an identical geo region is specified on update the request will succeed.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The sku type.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// The list of key value pairs that describe the resource. These tags can be used in viewing and grouping this resource (across
 	// resource groups).
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The Resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The Resource Name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RunParameters - Run parameters for a job.
@@ -698,29 +698,29 @@ type RunParameters struct {
 	// List of customer secrets containing a key identifier and key value. The key identifier is a way for the specific data source
 	// to understand the key. Value contains customer secret encrypted by the
 	// encryptionKeys.
-	CustomerSecrets []*CustomerSecret `json:"customerSecrets,omitempty"`
+	CustomerSecrets []*CustomerSecret
 
 	// A generic json used differently by each data service type.
-	DataServiceInput any `json:"dataServiceInput,omitempty"`
+	DataServiceInput any
 
 	// Enum to detect if user confirmation is required. If not passed will default to NotRequired.
-	UserConfirmation *UserConfirmation `json:"userConfirmation,omitempty"`
+	UserConfirmation *UserConfirmation
 }
 
 // SKU - The sku type.
 type SKU struct {
 	// The sku name. Required for data manager creation, optional for update.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The sku tier. This is based on the SKU name.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // Schedule for the job run.
 type Schedule struct {
 	// Name of the schedule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// A list of repetition intervals in ISO 8601 format.
-	PolicyList []*string `json:"policyList,omitempty"`
+	PolicyList []*string
 }

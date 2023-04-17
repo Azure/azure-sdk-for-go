@@ -747,7 +747,7 @@ func (t *TrafficControllerProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TrafficControllerUpdate.
 func (t TrafficControllerUpdate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "properties", &t.Properties)
+	populateAny(objectMap, "properties", t.Properties)
 	populate(objectMap, "tags", t.Tags)
 	return json.Marshal(objectMap)
 }
@@ -781,6 +781,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

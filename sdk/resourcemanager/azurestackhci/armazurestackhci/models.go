@@ -14,77 +14,77 @@ import "time"
 // ArcConnectivityProperties - Connectivity related configuration required by arc server.
 type ArcConnectivityProperties struct {
 	// True indicates ARC connectivity is enabled
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // ArcIdentityResponse - ArcIdentity details.
 type ArcIdentityResponse struct {
 	// READ-ONLY; ArcIdentity properties.
-	Properties *ArcIdentityResponseProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ArcIdentityResponseProperties
 }
 
 type ArcIdentityResponseProperties struct {
-	ArcApplicationClientID      *string `json:"arcApplicationClientId,omitempty"`
-	ArcApplicationObjectID      *string `json:"arcApplicationObjectId,omitempty"`
-	ArcApplicationTenantID      *string `json:"arcApplicationTenantId,omitempty"`
-	ArcServicePrincipalObjectID *string `json:"arcServicePrincipalObjectId,omitempty"`
+	ArcApplicationClientID      *string
+	ArcApplicationObjectID      *string
+	ArcApplicationTenantID      *string
+	ArcServicePrincipalObjectID *string
 }
 
 // ArcSetting details.
 type ArcSetting struct {
 	// ArcSetting properties.
-	Properties *ArcSettingProperties `json:"properties,omitempty"`
+	Properties *ArcSettingProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; System data of ArcSetting resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ArcSettingList - List of ArcSetting proxy resources for the HCI cluster.
 type ArcSettingList struct {
 	// READ-ONLY; Link to the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of ArcSetting proxy resources.
-	Value []*ArcSetting `json:"value,omitempty" azure:"ro"`
+	Value []*ArcSetting
 }
 
 // ArcSettingProperties - ArcSetting properties.
 type ArcSettingProperties struct {
 	// App id of arc AAD identity.
-	ArcApplicationClientID *string `json:"arcApplicationClientId,omitempty"`
+	ArcApplicationClientID *string
 
 	// Object id of arc AAD identity.
-	ArcApplicationObjectID *string `json:"arcApplicationObjectId,omitempty"`
+	ArcApplicationObjectID *string
 
 	// Tenant id of arc AAD identity.
-	ArcApplicationTenantID *string `json:"arcApplicationTenantId,omitempty"`
+	ArcApplicationTenantID *string
 
 	// The resource group that hosts the Arc agents, ie. Hybrid Compute Machine resources.
-	ArcInstanceResourceGroup *string `json:"arcInstanceResourceGroup,omitempty"`
+	ArcInstanceResourceGroup *string
 
 	// Object id of arc AAD service principal.
-	ArcServicePrincipalObjectID *string `json:"arcServicePrincipalObjectId,omitempty"`
+	ArcServicePrincipalObjectID *string
 
 	// contains connectivity related configuration for ARC resources
-	ConnectivityProperties any `json:"connectivityProperties,omitempty"`
+	ConnectivityProperties any
 
 	// READ-ONLY; Aggregate state of Arc agent across the nodes in this HCI cluster.
-	AggregateState *ArcSettingAggregateState `json:"aggregateState,omitempty" azure:"ro"`
+	AggregateState *ArcSettingAggregateState
 
 	// READ-ONLY; State of Arc agent in each of the nodes.
-	PerNodeDetails []*PerNodeState `json:"perNodeDetails,omitempty" azure:"ro"`
+	PerNodeDetails []*PerNodeState
 
 	// READ-ONLY; Provisioning state of the ArcSetting proxy resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ArcSettingsClientBeginCreateIdentityOptions contains the optional parameters for the ArcSettingsClient.BeginCreateIdentity
@@ -129,203 +129,203 @@ type ArcSettingsClientUpdateOptions struct {
 // ArcSettingsPatch - ArcSetting details to update.
 type ArcSettingsPatch struct {
 	// ArcSettings properties.
-	Properties *ArcSettingsPatchProperties `json:"properties,omitempty"`
+	Properties *ArcSettingsPatchProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ArcSettingsPatchProperties - ArcSettings properties.
 type ArcSettingsPatchProperties struct {
 	// contains connectivity related configuration for ARC resources
-	ConnectivityProperties any `json:"connectivityProperties,omitempty"`
+	ConnectivityProperties any
 }
 
 // Cluster details.
 type Cluster struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Cluster properties.
-	Properties *ClusterProperties `json:"properties,omitempty"`
+	Properties *ClusterProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; System data of Cluster resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClusterDesiredProperties - Desired properties of the cluster.
 type ClusterDesiredProperties struct {
 	// Desired level of diagnostic data emitted by the cluster.
-	DiagnosticLevel *DiagnosticLevel `json:"diagnosticLevel,omitempty"`
+	DiagnosticLevel *DiagnosticLevel
 
 	// Desired state of Windows Server Subscription.
-	WindowsServerSubscription *WindowsServerSubscription `json:"windowsServerSubscription,omitempty"`
+	WindowsServerSubscription *WindowsServerSubscription
 }
 
 // ClusterIdentityResponse - Cluster Identity details.
 type ClusterIdentityResponse struct {
 	// READ-ONLY; Cluster identity properties.
-	Properties *ClusterIdentityResponseProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ClusterIdentityResponseProperties
 }
 
 type ClusterIdentityResponseProperties struct {
-	AADApplicationObjectID      *string `json:"aadApplicationObjectId,omitempty"`
-	AADClientID                 *string `json:"aadClientId,omitempty"`
-	AADServicePrincipalObjectID *string `json:"aadServicePrincipalObjectId,omitempty"`
-	AADTenantID                 *string `json:"aadTenantId,omitempty"`
+	AADApplicationObjectID      *string
+	AADClientID                 *string
+	AADServicePrincipalObjectID *string
+	AADTenantID                 *string
 }
 
 // ClusterList - List of clusters.
 type ClusterList struct {
 	// List of clusters.
-	Value []*Cluster `json:"value,omitempty"`
+	Value []*Cluster
 
 	// READ-ONLY; Link to the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ClusterNode - Cluster node details.
 type ClusterNode struct {
 	// READ-ONLY; Number of physical cores on the cluster node.
-	CoreCount *float32 `json:"coreCount,omitempty" azure:"ro"`
+	CoreCount *float32
 
 	// READ-ONLY; Id of the node in the cluster.
-	ID *float32 `json:"id,omitempty" azure:"ro"`
+	ID *float32
 
 	// READ-ONLY; Manufacturer of the cluster node hardware.
-	Manufacturer *string `json:"manufacturer,omitempty" azure:"ro"`
+	Manufacturer *string
 
 	// READ-ONLY; Total available memory on the cluster node (in GiB).
-	MemoryInGiB *float32 `json:"memoryInGiB,omitempty" azure:"ro"`
+	MemoryInGiB *float32
 
 	// READ-ONLY; Model name of the cluster node hardware.
-	Model *string `json:"model,omitempty" azure:"ro"`
+	Model *string
 
 	// READ-ONLY; Name of the cluster node.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Operating system running on the cluster node.
-	OSName *string `json:"osName,omitempty" azure:"ro"`
+	OSName *string
 
 	// READ-ONLY; Version of the operating system running on the cluster node.
-	OSVersion *string `json:"osVersion,omitempty" azure:"ro"`
+	OSVersion *string
 
 	// READ-ONLY; Immutable id of the cluster node.
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; State of Windows Server Subscription.
-	WindowsServerSubscription *WindowsServerSubscription `json:"windowsServerSubscription,omitempty" azure:"ro"`
+	WindowsServerSubscription *WindowsServerSubscription
 }
 
 // ClusterPatch - Cluster details to update.
 type ClusterPatch struct {
 	// Cluster properties.
-	Properties *ClusterPatchProperties `json:"properties,omitempty"`
+	Properties *ClusterPatchProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ClusterPatchProperties - Cluster properties.
 type ClusterPatchProperties struct {
 	// App id of cluster AAD identity.
-	AADClientID *string `json:"aadClientId,omitempty"`
+	AADClientID *string
 
 	// Tenant id of cluster AAD identity.
-	AADTenantID *string `json:"aadTenantId,omitempty"`
+	AADTenantID *string
 
 	// Endpoint configured for management from the Azure portal
-	CloudManagementEndpoint *string `json:"cloudManagementEndpoint,omitempty"`
+	CloudManagementEndpoint *string
 
 	// Desired properties of the cluster.
-	DesiredProperties *ClusterDesiredProperties `json:"desiredProperties,omitempty"`
+	DesiredProperties *ClusterDesiredProperties
 }
 
 // ClusterProperties - Cluster properties.
 type ClusterProperties struct {
 	// Object id of cluster AAD identity.
-	AADApplicationObjectID *string `json:"aadApplicationObjectId,omitempty"`
+	AADApplicationObjectID *string
 
 	// App id of cluster AAD identity.
-	AADClientID *string `json:"aadClientId,omitempty"`
+	AADClientID *string
 
 	// Id of cluster identity service principal.
-	AADServicePrincipalObjectID *string `json:"aadServicePrincipalObjectId,omitempty"`
+	AADServicePrincipalObjectID *string
 
 	// Tenant id of cluster AAD identity.
-	AADTenantID *string `json:"aadTenantId,omitempty"`
+	AADTenantID *string
 
 	// Endpoint configured for management from the Azure portal.
-	CloudManagementEndpoint *string `json:"cloudManagementEndpoint,omitempty"`
+	CloudManagementEndpoint *string
 
 	// Desired properties of the cluster.
-	DesiredProperties *ClusterDesiredProperties `json:"desiredProperties,omitempty"`
+	DesiredProperties *ClusterDesiredProperties
 
 	// READ-ONLY; Type of billing applied to the resource.
-	BillingModel *string `json:"billingModel,omitempty" azure:"ro"`
+	BillingModel *string
 
 	// READ-ONLY; Unique, immutable resource id.
-	CloudID *string `json:"cloudId,omitempty" azure:"ro"`
+	CloudID *string
 
 	// READ-ONLY; Most recent billing meter timestamp.
-	LastBillingTimestamp *time.Time `json:"lastBillingTimestamp,omitempty" azure:"ro"`
+	LastBillingTimestamp *time.Time
 
 	// READ-ONLY; Most recent cluster sync timestamp.
-	LastSyncTimestamp *time.Time `json:"lastSyncTimestamp,omitempty" azure:"ro"`
+	LastSyncTimestamp *time.Time
 
 	// READ-ONLY; Provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; First cluster sync timestamp.
-	RegistrationTimestamp *time.Time `json:"registrationTimestamp,omitempty" azure:"ro"`
+	RegistrationTimestamp *time.Time
 
 	// READ-ONLY; Properties reported by cluster agent.
-	ReportedProperties *ClusterReportedProperties `json:"reportedProperties,omitempty" azure:"ro"`
+	ReportedProperties *ClusterReportedProperties
 
 	// READ-ONLY; Region specific DataPath Endpoint of the cluster.
-	ServiceEndpoint *string `json:"serviceEndpoint,omitempty" azure:"ro"`
+	ServiceEndpoint *string
 
 	// READ-ONLY; Status of the cluster agent.
-	Status *Status `json:"status,omitempty" azure:"ro"`
+	Status *Status
 
 	// READ-ONLY; Number of days remaining in the trial period.
-	TrialDaysRemaining *float32 `json:"trialDaysRemaining,omitempty" azure:"ro"`
+	TrialDaysRemaining *float32
 }
 
 // ClusterReportedProperties - Properties reported by cluster agent.
 type ClusterReportedProperties struct {
 	// Level of diagnostic data emitted by the cluster.
-	DiagnosticLevel *DiagnosticLevel `json:"diagnosticLevel,omitempty"`
+	DiagnosticLevel *DiagnosticLevel
 
 	// READ-ONLY; Unique id generated by the on-prem cluster.
-	ClusterID *string `json:"clusterId,omitempty" azure:"ro"`
+	ClusterID *string
 
 	// READ-ONLY; Name of the on-prem cluster connected to this resource.
-	ClusterName *string `json:"clusterName,omitempty" azure:"ro"`
+	ClusterName *string
 
 	// READ-ONLY; Version of the cluster software.
-	ClusterVersion *string `json:"clusterVersion,omitempty" azure:"ro"`
+	ClusterVersion *string
 
 	// READ-ONLY; IMDS attestation status of the cluster.
-	ImdsAttestation *ImdsAttestation `json:"imdsAttestation,omitempty" azure:"ro"`
+	ImdsAttestation *ImdsAttestation
 
 	// READ-ONLY; Last time the cluster reported the data.
-	LastUpdated *time.Time `json:"lastUpdated,omitempty" azure:"ro"`
+	LastUpdated *time.Time
 
 	// READ-ONLY; List of nodes reported by the cluster.
-	Nodes []*ClusterNode `json:"nodes,omitempty" azure:"ro"`
+	Nodes []*ClusterNode
 }
 
 // ClustersClientBeginCreateIdentityOptions contains the optional parameters for the ClustersClient.BeginCreateIdentity method.
@@ -377,62 +377,62 @@ type ClustersClientUpdateOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Extension - Details of a particular extension in HCI Cluster.
 type Extension struct {
 	// Describes Machine Extension Properties.
-	Properties *ExtensionProperties `json:"properties,omitempty"`
+	Properties *ExtensionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; System data of Extension resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExtensionList - List of Extensions in HCI cluster.
 type ExtensionList struct {
 	// READ-ONLY; Link to the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Extensions in HCI cluster.
-	Value []*Extension `json:"value,omitempty" azure:"ro"`
+	Value []*Extension
 }
 
 // ExtensionParameters - Describes the properties of a Machine Extension. This object mirrors the definition in HybridCompute.
@@ -440,40 +440,40 @@ type ExtensionParameters struct {
 	// Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed,
 	// however, the extension will not upgrade minor versions unless redeployed, even
 	// with this property set to true.
-	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
+	AutoUpgradeMinorVersion *bool
 
 	// How the extension handler should be forced to update even if the extension configuration has not changed.
-	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+	ForceUpdateTag *string
 
 	// Protected settings (may contain secrets).
-	ProtectedSettings any `json:"protectedSettings,omitempty"`
+	ProtectedSettings any
 
 	// The name of the extension handler publisher.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// Json formatted public settings for the extension.
-	Settings any `json:"settings,omitempty"`
+	Settings any
 
 	// Specifies the type of the extension; an example is "CustomScriptExtension".
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Specifies the version of the script handler.
-	TypeHandlerVersion *string `json:"typeHandlerVersion,omitempty"`
+	TypeHandlerVersion *string
 }
 
 // ExtensionProperties - Status of Arc Extension for a particular node in HCI Cluster.
 type ExtensionProperties struct {
 	// Parameters specific to this extension type.
-	ExtensionParameters *ExtensionParameters `json:"extensionParameters,omitempty"`
+	ExtensionParameters *ExtensionParameters
 
 	// READ-ONLY; Aggregate state of Arc Extensions across the nodes in this HCI cluster.
-	AggregateState *ExtensionAggregateState `json:"aggregateState,omitempty" azure:"ro"`
+	AggregateState *ExtensionAggregateState
 
 	// READ-ONLY; State of Arc Extension in each of the nodes.
-	PerNodeExtensionDetails []*PerNodeExtensionState `json:"perNodeExtensionDetails,omitempty" azure:"ro"`
+	PerNodeExtensionDetails []*PerNodeExtensionState
 
 	// READ-ONLY; Provisioning state of the Extension proxy resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
@@ -508,50 +508,50 @@ type ExtensionsClientListByArcSettingOptions struct {
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -560,105 +560,105 @@ type OperationsClientListOptions struct {
 }
 
 type PasswordCredential struct {
-	EndDateTime   *time.Time `json:"endDateTime,omitempty"`
-	KeyID         *string    `json:"keyId,omitempty"`
-	SecretText    *string    `json:"secretText,omitempty"`
-	StartDateTime *time.Time `json:"startDateTime,omitempty"`
+	EndDateTime   *time.Time
+	KeyID         *string
+	SecretText    *string
+	StartDateTime *time.Time
 }
 
 // PerNodeExtensionState - Status of Arc Extension for a particular node in HCI Cluster.
 type PerNodeExtensionState struct {
 	// READ-ONLY; Fully qualified resource ID for the particular Arc Extension on this node.
-	Extension *string `json:"extension,omitempty" azure:"ro"`
+	Extension *string
 
 	// READ-ONLY; Name of the node in HCI Cluster.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; State of Arc Extension in this node.
-	State *NodeExtensionState `json:"state,omitempty" azure:"ro"`
+	State *NodeExtensionState
 }
 
 // PerNodeState - Status of Arc agent for a particular node in HCI Cluster.
 type PerNodeState struct {
 	// READ-ONLY; Fully qualified resource ID for the Arc agent of this node.
-	ArcInstance *string `json:"arcInstance,omitempty" azure:"ro"`
+	ArcInstance *string
 
 	// READ-ONLY; Name of the Node in HCI Cluster
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; State of Arc agent in this node.
-	State *NodeArcState `json:"state,omitempty" azure:"ro"`
+	State *NodeArcState
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type RawCertificateData struct {
-	Certificates []*string `json:"certificates,omitempty"`
+	Certificates []*string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type UploadCertificateRequest struct {
-	Properties *RawCertificateData `json:"properties,omitempty"`
+	Properties *RawCertificateData
 }

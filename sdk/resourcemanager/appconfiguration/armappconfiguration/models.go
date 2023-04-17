@@ -669,40 +669,40 @@ type RegenerateKeyParameters struct {
 // Replica - The replica resource.
 type Replica struct {
 	// The location of the replica.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the replica.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; All replica properties.
-	Properties *ReplicaProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ReplicaProperties
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReplicaListResult - The result of a request to list replicas.
 type ReplicaListResult struct {
 	// The URI that can be used to request the next set of paged results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The collection value.
-	Value []*Replica `json:"value,omitempty"`
+	Value []*Replica
 }
 
 // ReplicaProperties - All replica properties.
 type ReplicaProperties struct {
 	// READ-ONLY; The URI of the replica where the replica API will be available.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
 
 	// READ-ONLY; The provisioning state of the replica.
-	ProvisioningState *ReplicaProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ReplicaProvisioningState
 }
 
 // ReplicasClientBeginCreateOptions contains the optional parameters for the ReplicasClient.BeginCreate method.

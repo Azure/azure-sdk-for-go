@@ -274,6 +274,7 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 
 // Concurrent Upload Functions -----------------------------------------------------------------------------------------
 
+// uploadFromReader uploads a buffer in chunks to an Azure file.
 func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) error {
 	if actualSize > MaxFileSize {
 		return errors.New("buffer is too large to upload to a file")
@@ -324,6 +325,7 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 	return err
 }
 
+// UploadBuffer uploads a buffer in chunks to an Azure file.
 func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *UploadBufferOptions) error {
 	uploadOptions := uploadFromReaderOptions{}
 	if options != nil {
@@ -332,7 +334,7 @@ func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *Uploa
 	return f.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
 }
 
-// UploadFile uploads a file in blocks to a block blob.
+// UploadFile uploads a file in chunks to an Azure file.
 func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadFileOptions) error {
 	stat, err := file.Stat()
 	if err != nil {
@@ -345,6 +347,8 @@ func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadF
 	return f.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
 }
 
+// UploadStream copies the file held in io.Reader to the file at fileClient.
+// A Context deadline or cancellation will cause this to error.
 func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *UploadStreamOptions) error {
 	if options == nil {
 		options = &UploadStreamOptions{}

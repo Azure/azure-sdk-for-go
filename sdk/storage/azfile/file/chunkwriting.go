@@ -40,7 +40,7 @@ type bufferManager[T ~[]byte] interface {
 	Free()
 }
 
-// copyFromReader copies a source io.Reader to blob storage using concurrent uploads.
+// copyFromReader copies a source io.Reader to file storage using concurrent uploads.
 func copyFromReader[T ~[]byte](ctx context.Context, src io.Reader, dst chunkWriter, options UploadStreamOptions, getBufferManager func(maxBuffers int, bufferSize int64) bufferManager[T]) error {
 	options.setDefaults()
 

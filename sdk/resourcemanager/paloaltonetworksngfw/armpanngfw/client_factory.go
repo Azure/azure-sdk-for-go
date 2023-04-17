@@ -83,6 +83,11 @@ func (c *ClientFactory) NewLocalRulestacksClient() *LocalRulestacksClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewFirewallStatusClient() *FirewallStatusClient {
+	subClient, _ := NewFirewallStatusClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewCertificateObjectLocalRulestackClient() *CertificateObjectLocalRulestackClient {
 	subClient, _ := NewCertificateObjectLocalRulestackClient(c.subscriptionID, c.credential, c.options)
 	return subClient

@@ -197,6 +197,26 @@ func PossibleEnabledDNSTypeValues() []EnabledDNSType {
 	}
 }
 
+// HealthStatus - Status Codes for the Firewall
+type HealthStatus string
+
+const (
+	HealthStatusGREEN        HealthStatus = "GREEN"
+	HealthStatusINITIALIZING HealthStatus = "INITIALIZING"
+	HealthStatusRED          HealthStatus = "RED"
+	HealthStatusYELLOW       HealthStatus = "YELLOW"
+)
+
+// PossibleHealthStatusValues returns the possible values for the HealthStatus const type.
+func PossibleHealthStatusValues() []HealthStatus {
+	return []HealthStatus{
+		HealthStatusGREEN,
+		HealthStatusINITIALIZING,
+		HealthStatusRED,
+		HealthStatusYELLOW,
+	}
+}
+
 // LogOption - Log options possible
 type LogOption string
 
@@ -362,6 +382,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
+// ReadOnlyProvisioningState - Provisioning state of the firewall resource.
+type ReadOnlyProvisioningState string
+
+const (
+	ReadOnlyProvisioningStateDeleted   ReadOnlyProvisioningState = "Deleted"
+	ReadOnlyProvisioningStateFailed    ReadOnlyProvisioningState = "Failed"
+	ReadOnlyProvisioningStateSucceeded ReadOnlyProvisioningState = "Succeeded"
+)
+
+// PossibleReadOnlyProvisioningStateValues returns the possible values for the ReadOnlyProvisioningState const type.
+func PossibleReadOnlyProvisioningStateValues() []ReadOnlyProvisioningState {
+	return []ReadOnlyProvisioningState{
+		ReadOnlyProvisioningStateDeleted,
+		ReadOnlyProvisioningStateFailed,
+		ReadOnlyProvisioningStateSucceeded,
+	}
+}
+
 // ScopeType - Rulestack Type
 type ScopeType string
 
@@ -398,6 +436,22 @@ func PossibleSecurityServicesTypeEnumValues() []SecurityServicesTypeEnum {
 		SecurityServicesTypeEnumFileBlocking,
 		SecurityServicesTypeEnumIPsVulnerability,
 		SecurityServicesTypeEnumURLFiltering,
+	}
+}
+
+// ServerStatus - Connectivity Status for Panorama Server
+type ServerStatus string
+
+const (
+	ServerStatusDOWN ServerStatus = "DOWN"
+	ServerStatusUP   ServerStatus = "UP"
+)
+
+// PossibleServerStatusValues returns the possible values for the ServerStatus const type.
+func PossibleServerStatusValues() []ServerStatus {
+	return []ServerStatus{
+		ServerStatusDOWN,
+		ServerStatusUP,
 	}
 }
 

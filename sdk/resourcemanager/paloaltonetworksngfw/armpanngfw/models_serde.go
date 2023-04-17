@@ -979,6 +979,123 @@ func (f *FirewallResourceUpdateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type FirewallStatusProperty.
+func (f FirewallStatusProperty) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "healthReason", f.HealthReason)
+	populate(objectMap, "healthStatus", f.HealthStatus)
+	populate(objectMap, "isPanoramaManaged", f.IsPanoramaManaged)
+	populate(objectMap, "panoramaStatus", f.PanoramaStatus)
+	populate(objectMap, "provisioningState", f.ProvisioningState)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FirewallStatusProperty.
+func (f *FirewallStatusProperty) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "healthReason":
+			err = unpopulate(val, "HealthReason", &f.HealthReason)
+			delete(rawMsg, key)
+		case "healthStatus":
+			err = unpopulate(val, "HealthStatus", &f.HealthStatus)
+			delete(rawMsg, key)
+		case "isPanoramaManaged":
+			err = unpopulate(val, "IsPanoramaManaged", &f.IsPanoramaManaged)
+			delete(rawMsg, key)
+		case "panoramaStatus":
+			err = unpopulate(val, "PanoramaStatus", &f.PanoramaStatus)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &f.ProvisioningState)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FirewallStatusResource.
+func (f FirewallStatusResource) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", f.ID)
+	populate(objectMap, "name", f.Name)
+	populate(objectMap, "properties", f.Properties)
+	populate(objectMap, "systemData", f.SystemData)
+	populate(objectMap, "type", f.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FirewallStatusResource.
+func (f *FirewallStatusResource) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &f.ID)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &f.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &f.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &f.SystemData)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &f.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type FirewallStatusResourceListResult.
+func (f FirewallStatusResourceListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", f.NextLink)
+	populate(objectMap, "value", f.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type FirewallStatusResourceListResult.
+func (f *FirewallStatusResourceListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", f, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &f.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &f.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", f, err)
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type FqdnListGlobalRulestackResource.
 func (f FqdnListGlobalRulestackResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -2187,6 +2304,37 @@ func (p *PanoramaConfig) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "vmAuthKey":
 			err = unpopulate(val, "VMAuthKey", &p.VMAuthKey)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %v", p, err)
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type PanoramaStatus.
+func (p PanoramaStatus) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "panoramaServer2Status", p.PanoramaServer2Status)
+	populate(objectMap, "panoramaServerStatus", p.PanoramaServerStatus)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type PanoramaStatus.
+func (p *PanoramaStatus) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", p, err)
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "panoramaServer2Status":
+			err = unpopulate(val, "PanoramaServer2Status", &p.PanoramaServer2Status)
+			delete(rawMsg, key)
+		case "panoramaServerStatus":
+			err = unpopulate(val, "PanoramaServerStatus", &p.PanoramaServerStatus)
 			delete(rawMsg, key)
 		}
 		if err != nil {

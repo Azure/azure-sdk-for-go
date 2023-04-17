@@ -14,115 +14,115 @@ import "time"
 // AdvSecurityObjectListResponse - advanced security object
 type AdvSecurityObjectListResponse struct {
 	// REQUIRED; response value
-	Value *AdvSecurityObjectModel `json:"value,omitempty"`
+	Value *AdvSecurityObjectModel
 
 	// next link
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // AdvSecurityObjectModel - List of custom and predefined url category
 type AdvSecurityObjectModel struct {
 	// REQUIRED; URL entry
-	Entry []*NameDescriptionObject `json:"entry,omitempty"`
+	Entry []*NameDescriptionObject
 
 	// type of object
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // AppSeenData - Data Type for App Seen
 type AppSeenData struct {
 	// REQUIRED; array of appSeen
-	AppSeenList []*AppSeenInfo `json:"appSeenList,omitempty"`
+	AppSeenList []*AppSeenInfo
 
 	// REQUIRED; number of rows
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 }
 
 // AppSeenInfo - Definition for App Seen
 type AppSeenInfo struct {
 	// REQUIRED; category
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// REQUIRED; risk
-	Risk *string `json:"risk,omitempty"`
+	Risk *string
 
 	// REQUIRED; standardPorts
-	StandardPorts *string `json:"standardPorts,omitempty"`
+	StandardPorts *string
 
 	// REQUIRED; subCategory
-	SubCategory *string `json:"subCategory,omitempty"`
+	SubCategory *string
 
 	// REQUIRED; tag
-	Tag *string `json:"tag,omitempty"`
+	Tag *string
 
 	// REQUIRED; technology
-	Technology *string `json:"technology,omitempty"`
+	Technology *string
 
 	// REQUIRED; title
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // ApplicationInsights - Application Insights key
 type ApplicationInsights struct {
 	// Resource id for Application Insights
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Application Insights key
-	Key *string `json:"key,omitempty"`
+	Key *string
 }
 
 // AzureResourceManagerManagedIdentityProperties - The properties of the managed service identities assigned to this resource.
 type AzureResourceManagerManagedIdentityProperties struct {
 	// REQUIRED; The type of managed identity assigned to this resource.
-	Type *ManagedIdentityType `json:"type,omitempty"`
+	Type *ManagedIdentityType
 
 	// The identities assigned to this resource by the user.
-	UserAssignedIdentities map[string]*AzureResourceManagerUserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*AzureResourceManagerUserAssignedIdentity
 
 	// READ-ONLY; The active directory identifier of this principal.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The Active Directory tenant id of the principal.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // AzureResourceManagerUserAssignedIdentity - A managed identity assigned by the user.
 type AzureResourceManagerUserAssignedIdentity struct {
 	// The active directory client identifier for this principal.
-	ClientID *string `json:"clientId,omitempty"`
+	ClientID *string
 
 	// The active directory identifier for this principal.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 }
 
 // Category - URL/EDL to match
 type Category struct {
 	// REQUIRED; feed list
-	Feeds []*string `json:"feeds,omitempty"`
+	Feeds []*string
 
 	// REQUIRED; custom URL
-	URLCustom []*string `json:"urlCustom,omitempty"`
+	URLCustom []*string
 }
 
 // CertificateObject - certificate used for inbound and outbound decryption
 type CertificateObject struct {
 	// REQUIRED; use certificate self signed
-	CertificateSelfSigned *BooleanEnum `json:"certificateSelfSigned,omitempty"`
+	CertificateSelfSigned *BooleanEnum
 
 	// comment for this object
-	AuditComment *string `json:"auditComment,omitempty"`
+	AuditComment *string
 
 	// Resource Id of certificate signer, to be populated only when certificateSelfSigned is false
-	CertificateSignerResourceID *string `json:"certificateSignerResourceId,omitempty"`
+	CertificateSignerResourceID *string
 
 	// user description for this object
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// read only string representing last create or update
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // CertificateObjectGlobalRulestackClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificateObjectGlobalRulestackClient.BeginCreateOrUpdate
@@ -154,28 +154,28 @@ type CertificateObjectGlobalRulestackClientListOptions struct {
 // CertificateObjectGlobalRulestackResource - GlobalRulestack Certificate Object
 type CertificateObjectGlobalRulestackResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *CertificateObject `json:"properties,omitempty"`
+	Properties *CertificateObject
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificateObjectGlobalRulestackResourceListResult - The response of a CertificateObjectGlobalRulestackResource list operation.
 type CertificateObjectGlobalRulestackResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*CertificateObjectGlobalRulestackResource `json:"value,omitempty"`
+	Value []*CertificateObjectGlobalRulestackResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // CertificateObjectLocalRulestackClientBeginCreateOrUpdateOptions contains the optional parameters for the CertificateObjectLocalRulestackClient.BeginCreateOrUpdate
@@ -207,226 +207,282 @@ type CertificateObjectLocalRulestackClientListByLocalRulestacksOptions struct {
 // CertificateObjectLocalRulestackResource - LocalRulestack Certificate Object
 type CertificateObjectLocalRulestackResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *CertificateObject `json:"properties,omitempty"`
+	Properties *CertificateObject
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CertificateObjectLocalRulestackResourceListResult - The response of a CertificateObjectLocalRulestackResource list operation.
 type CertificateObjectLocalRulestackResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*CertificateObjectLocalRulestackResource `json:"value,omitempty"`
+	Value []*CertificateObjectLocalRulestackResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // Changelog list
 type Changelog struct {
 	// REQUIRED; list of changes
-	Changes []*string `json:"changes,omitempty"`
+	Changes []*string
 
 	// lastCommitted timestamp
-	LastCommitted *time.Time `json:"lastCommitted,omitempty"`
+	LastCommitted *time.Time
 
 	// lastModified timestamp
-	LastModified *time.Time `json:"lastModified,omitempty"`
+	LastModified *time.Time
 }
 
 // CountriesResponse - Countries Response Object
 type CountriesResponse struct {
 	// REQUIRED; List of countries
-	Value []*Country `json:"value,omitempty"`
+	Value []*Country
 
 	// next link
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // Country Description
 type Country struct {
 	// REQUIRED; country code
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// code description
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // DNSSettings - DNS Proxy settings for Firewall
 type DNSSettings struct {
 	// List of IPs associated with the Firewall
-	DNSServers []*IPAddress `json:"dnsServers,omitempty"`
+	DNSServers []*IPAddress
 
 	// Enable DNS proxy, disabled by default
-	EnableDNSProxy *DNSProxy `json:"enableDnsProxy,omitempty"`
+	EnableDNSProxy *DNSProxy
 
 	// Enabled DNS proxy type, disabled by default
-	EnabledDNSType *EnabledDNSType `json:"enabledDnsType,omitempty"`
+	EnabledDNSType *EnabledDNSType
 }
 
 // DestinationAddr - destination address
 type DestinationAddr struct {
 	// special value 'any'
-	Cidrs []*string `json:"cidrs,omitempty"`
+	Cidrs []*string
 
 	// list of countries
-	Countries []*string `json:"countries,omitempty"`
+	Countries []*string
 
 	// list of feeds
-	Feeds []*string `json:"feeds,omitempty"`
+	Feeds []*string
 
 	// fqdn list
-	FqdnLists []*string `json:"fqdnLists,omitempty"`
+	FqdnLists []*string
 
 	// prefix list
-	PrefixLists []*string `json:"prefixLists,omitempty"`
+	PrefixLists []*string
 }
 
 // EndpointConfiguration - Endpoint Configuration for frontend and backend
 type EndpointConfiguration struct {
 	// REQUIRED; Address Space
-	Address *IPAddress `json:"address,omitempty"`
+	Address *IPAddress
 
 	// REQUIRED; port ID
-	Port *string `json:"port,omitempty"`
+	Port *string
 }
 
 // EventHub configurations
 type EventHub struct {
 	// Resource ID of EventHub
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// EventHub name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// EventHub namespace
-	NameSpace *string `json:"nameSpace,omitempty"`
+	NameSpace *string
 
 	// EventHub policy name
-	PolicyName *string `json:"policyName,omitempty"`
+	PolicyName *string
 
 	// Subscription Id
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 }
 
 // FirewallDeploymentProperties - Properties specific to the Firewall resource deployment.
 type FirewallDeploymentProperties struct {
 	// REQUIRED; DNS settings for Firewall
-	DNSSettings *DNSSettings `json:"dnsSettings,omitempty"`
+	DNSSettings *DNSSettings
 
 	// REQUIRED; Marketplace details
-	MarketplaceDetails *MarketplaceDetails `json:"marketplaceDetails,omitempty"`
+	MarketplaceDetails *MarketplaceDetails
 
 	// REQUIRED; Network settings
-	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+	NetworkProfile *NetworkProfile
 
 	// REQUIRED; Billing plan information.
-	PlanData *PlanData `json:"planData,omitempty"`
+	PlanData *PlanData
 
 	// Associated Rulestack
-	AssociatedRulestack *RulestackDetails `json:"associatedRulestack,omitempty"`
+	AssociatedRulestack *RulestackDetails
 
 	// Frontend settings for Firewall
-	FrontEndSettings []*FrontendSetting `json:"frontEndSettings,omitempty"`
+	FrontEndSettings []*FrontendSetting
 
 	// Panorama Managed: Default is False. Default will be CloudSec managed
-	IsPanoramaManaged *BooleanEnum `json:"isPanoramaManaged,omitempty"`
+	IsPanoramaManaged *BooleanEnum
 
 	// panEtag info
-	PanEtag *string `json:"panEtag,omitempty"`
+	PanEtag *string
 
 	// Panorama Configuration
-	PanoramaConfig *PanoramaConfig `json:"panoramaConfig,omitempty"`
+	PanoramaConfig *PanoramaConfig
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // FirewallResource - PaloAltoNetworks Firewall
 type FirewallResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *FirewallDeploymentProperties `json:"properties,omitempty"`
+	Properties *FirewallDeploymentProperties
 
 	// The managed service identities assigned to this resource.
-	Identity *AzureResourceManagerManagedIdentityProperties `json:"identity,omitempty"`
+	Identity *AzureResourceManagerManagedIdentityProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FirewallResourceListResult - The response of a FirewallResource list operation.
 type FirewallResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*FirewallResource `json:"value,omitempty"`
+	Value []*FirewallResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // FirewallResourceUpdate - The type used for update operations of the FirewallResource.
 type FirewallResourceUpdate struct {
 	// The managed service identities assigned to this resource.
-	Identity *AzureResourceManagerManagedIdentityProperties `json:"identity,omitempty"`
+	Identity *AzureResourceManagerManagedIdentityProperties
 
 	// The updatable properties of the FirewallResource.
-	Properties *FirewallResourceUpdateProperties `json:"properties,omitempty"`
+	Properties *FirewallResourceUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // FirewallResourceUpdateProperties - The updatable properties of the FirewallResource.
 type FirewallResourceUpdateProperties struct {
 	// Associated Rulestack
-	AssociatedRulestack *RulestackDetails `json:"associatedRulestack,omitempty"`
+	AssociatedRulestack *RulestackDetails
 
 	// DNS settings for Firewall
-	DNSSettings *DNSSettings `json:"dnsSettings,omitempty"`
+	DNSSettings *DNSSettings
 
 	// Frontend settings for Firewall
-	FrontEndSettings []*FrontendSetting `json:"frontEndSettings,omitempty"`
+	FrontEndSettings []*FrontendSetting
 
 	// Panorama Managed: Default is False. Default will be CloudSec managed
-	IsPanoramaManaged *BooleanEnum `json:"isPanoramaManaged,omitempty"`
+	IsPanoramaManaged *BooleanEnum
 
 	// Marketplace details
-	MarketplaceDetails *MarketplaceDetails `json:"marketplaceDetails,omitempty"`
+	MarketplaceDetails *MarketplaceDetails
 
 	// Network settings
-	NetworkProfile *NetworkProfile `json:"networkProfile,omitempty"`
+	NetworkProfile *NetworkProfile
 
 	// panEtag info
-	PanEtag *string `json:"panEtag,omitempty"`
+	PanEtag *string
 
 	// Panorama Configuration
-	PanoramaConfig *PanoramaConfig `json:"panoramaConfig,omitempty"`
+	PanoramaConfig *PanoramaConfig
 
 	// Billing plan information.
-	PlanData *PlanData `json:"planData,omitempty"`
+	PlanData *PlanData
+}
+
+// FirewallStatusClientGetOptions contains the optional parameters for the FirewallStatusClient.Get method.
+type FirewallStatusClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallStatusClientListByFirewallsOptions contains the optional parameters for the FirewallStatusClient.NewListByFirewallsPager
+// method.
+type FirewallStatusClientListByFirewallsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// FirewallStatusProperty - Firewall Status
+type FirewallStatusProperty struct {
+	// READ-ONLY; Detail description of current health of the Firewall
+	HealthReason *string
+
+	// READ-ONLY; Current status of the Firewall
+	HealthStatus *HealthStatus
+
+	// READ-ONLY; Panorama Managed: Default is False. Default will be CloudSec managed
+	IsPanoramaManaged *BooleanEnum
+
+	// READ-ONLY; Panorama Status
+	PanoramaStatus *PanoramaStatus
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ReadOnlyProvisioningState
+}
+
+// FirewallStatusResource - Firewall Status
+type FirewallStatusResource struct {
+	// REQUIRED; The resource-specific properties for this resource.
+	Properties *FirewallStatusProperty
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FirewallStatusResourceListResult - The response of a FirewallStatusResource list operation.
+type FirewallStatusResourceListResult struct {
+	// REQUIRED; The items on this page
+	Value []*FirewallStatusResource
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // FirewallsClientBeginCreateOrUpdateOptions contains the optional parameters for the FirewallsClient.BeginCreateOrUpdate
@@ -513,28 +569,28 @@ type FqdnListGlobalRulestackClientListOptions struct {
 // FqdnListGlobalRulestackResource - GlobalRulestack fqdnList
 type FqdnListGlobalRulestackResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *FqdnObject `json:"properties,omitempty"`
+	Properties *FqdnObject
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FqdnListGlobalRulestackResourceListResult - The response of a FqdnListGlobalRulestackResource list operation.
 type FqdnListGlobalRulestackResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*FqdnListGlobalRulestackResource `json:"value,omitempty"`
+	Value []*FqdnListGlobalRulestackResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // FqdnListLocalRulestackClientBeginCreateOrUpdateOptions contains the optional parameters for the FqdnListLocalRulestackClient.BeginCreateOrUpdate
@@ -565,61 +621,61 @@ type FqdnListLocalRulestackClientListByLocalRulestacksOptions struct {
 // FqdnListLocalRulestackResource - LocalRulestack fqdnList
 type FqdnListLocalRulestackResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *FqdnObject `json:"properties,omitempty"`
+	Properties *FqdnObject
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FqdnListLocalRulestackResourceListResult - The response of a FqdnListLocalRulestackResource list operation.
 type FqdnListLocalRulestackResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*FqdnListLocalRulestackResource `json:"value,omitempty"`
+	Value []*FqdnListLocalRulestackResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // FqdnObject - fqdn object
 type FqdnObject struct {
 	// REQUIRED; fqdn list
-	FqdnList []*string `json:"fqdnList,omitempty"`
+	FqdnList []*string
 
 	// comment for this object
-	AuditComment *string `json:"auditComment,omitempty"`
+	AuditComment *string
 
 	// fqdn object description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// etag info
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // FrontendSetting - Frontend setting for Firewall
 type FrontendSetting struct {
 	// REQUIRED; Backend configurations
-	BackendConfiguration *EndpointConfiguration `json:"backendConfiguration,omitempty"`
+	BackendConfiguration *EndpointConfiguration
 
 	// REQUIRED; Frontend configurations
-	FrontendConfiguration *EndpointConfiguration `json:"frontendConfiguration,omitempty"`
+	FrontendConfiguration *EndpointConfiguration
 
 	// REQUIRED; Settings name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Protocol Type
-	Protocol *ProtocolType `json:"protocol,omitempty"`
+	Protocol *ProtocolType
 }
 
 // GlobalRulestackClientBeginCommitOptions contains the optional parameters for the GlobalRulestackClient.BeginCommit method.
@@ -711,114 +767,114 @@ type GlobalRulestackClientUpdateOptions struct {
 // GlobalRulestackInfo - PAN Rulestack Describe Object
 type GlobalRulestackInfo struct {
 	// REQUIRED; rulestack description
-	AzureID *string `json:"azureId,omitempty"`
+	AzureID *string
 }
 
 // GlobalRulestackResource - PaloAltoNetworks GlobalRulestack
 type GlobalRulestackResource struct {
 	// REQUIRED; Global Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *RulestackProperties `json:"properties,omitempty"`
+	Properties *RulestackProperties
 
 	// The managed service identities assigned to this resource.
-	Identity *AzureResourceManagerManagedIdentityProperties `json:"identity,omitempty"`
+	Identity *AzureResourceManagerManagedIdentityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GlobalRulestackResourceListResult - The response of a GlobalRulestackResource list operation.
 type GlobalRulestackResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*GlobalRulestackResource `json:"value,omitempty"`
+	Value []*GlobalRulestackResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // GlobalRulestackResourceUpdate - The type used for update operations of the GlobalRulestackResource.
 type GlobalRulestackResourceUpdate struct {
 	// The managed service identities assigned to this resource.
-	Identity *AzureResourceManagerManagedIdentityProperties `json:"identity,omitempty"`
+	Identity *AzureResourceManagerManagedIdentityProperties
 
 	// Global Location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The updatable properties of the GlobalRulestackResource.
-	Properties *GlobalRulestackResourceUpdateProperties `json:"properties,omitempty"`
+	Properties *GlobalRulestackResourceUpdateProperties
 }
 
 // GlobalRulestackResourceUpdateProperties - The updatable properties of the GlobalRulestackResource.
 type GlobalRulestackResourceUpdateProperties struct {
 	// subscription scope of global rulestack
-	AssociatedSubscriptions []*string `json:"associatedSubscriptions,omitempty"`
+	AssociatedSubscriptions []*string
 
 	// Mode for default rules creation
-	DefaultMode *DefaultMode `json:"defaultMode,omitempty"`
+	DefaultMode *DefaultMode
 
 	// rulestack description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// minimum version
-	MinAppIDVersion *string `json:"minAppIdVersion,omitempty"`
+	MinAppIDVersion *string
 
 	// PanEtag info
-	PanEtag *string `json:"panEtag,omitempty"`
+	PanEtag *string
 
 	// Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks
-	PanLocation *string `json:"panLocation,omitempty"`
+	PanLocation *string
 
 	// Rulestack Type
-	Scope *ScopeType `json:"scope,omitempty"`
+	Scope *ScopeType
 
 	// Security Profile
-	SecurityServices *SecurityServices `json:"securityServices,omitempty"`
+	SecurityServices *SecurityServices
 }
 
 // IPAddress - IP Address
 type IPAddress struct {
 	// Address value
-	Address *string `json:"address,omitempty"`
+	Address *string
 
 	// Resource Id
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // IPAddressSpace - IP Address Space
 type IPAddressSpace struct {
 	// Address Space
-	AddressSpace *string `json:"addressSpace,omitempty"`
+	AddressSpace *string
 
 	// Resource Id
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 type ListAppIDResponse struct {
 	// REQUIRED; List of AppIds
-	Value []*string `json:"value,omitempty"`
+	Value []*string
 
 	// next Link
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // ListFirewallsResponse - List firewalls response
 type ListFirewallsResponse struct {
 	// REQUIRED; firewalls list
-	Value []*string `json:"value,omitempty"`
+	Value []*string
 
 	// next link
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // LocalRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the LocalRulesClient.BeginCreateOrUpdate
@@ -863,103 +919,103 @@ type LocalRulesClientResetCountersOptions struct {
 // LocalRulesResource - LocalRulestack rule list
 type LocalRulesResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *RuleEntry `json:"properties,omitempty"`
+	Properties *RuleEntry
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LocalRulesResourceListResult - The response of a LocalRulesResource list operation.
 type LocalRulesResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*LocalRulesResource `json:"value,omitempty"`
+	Value []*LocalRulesResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // LocalRulestackResource - PaloAltoNetworks LocalRulestack
 type LocalRulestackResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *RulestackProperties `json:"properties,omitempty"`
+	Properties *RulestackProperties
 
 	// The managed service identities assigned to this resource.
-	Identity *AzureResourceManagerManagedIdentityProperties `json:"identity,omitempty"`
+	Identity *AzureResourceManagerManagedIdentityProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LocalRulestackResourceListResult - The response of a LocalRulestackResource list operation.
 type LocalRulestackResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*LocalRulestackResource `json:"value,omitempty"`
+	Value []*LocalRulestackResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // LocalRulestackResourceUpdate - The type used for update operations of the LocalRulestackResource.
 type LocalRulestackResourceUpdate struct {
 	// The managed service identities assigned to this resource.
-	Identity *AzureResourceManagerManagedIdentityProperties `json:"identity,omitempty"`
+	Identity *AzureResourceManagerManagedIdentityProperties
 
 	// The updatable properties of the LocalRulestackResource.
-	Properties *LocalRulestackResourceUpdateProperties `json:"properties,omitempty"`
+	Properties *LocalRulestackResourceUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // LocalRulestackResourceUpdateProperties - The updatable properties of the LocalRulestackResource.
 type LocalRulestackResourceUpdateProperties struct {
 	// subscription scope of global rulestack
-	AssociatedSubscriptions []*string `json:"associatedSubscriptions,omitempty"`
+	AssociatedSubscriptions []*string
 
 	// Mode for default rules creation
-	DefaultMode *DefaultMode `json:"defaultMode,omitempty"`
+	DefaultMode *DefaultMode
 
 	// rulestack description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// minimum version
-	MinAppIDVersion *string `json:"minAppIdVersion,omitempty"`
+	MinAppIDVersion *string
 
 	// PanEtag info
-	PanEtag *string `json:"panEtag,omitempty"`
+	PanEtag *string
 
 	// Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks
-	PanLocation *string `json:"panLocation,omitempty"`
+	PanLocation *string
 
 	// Rulestack Type
-	Scope *ScopeType `json:"scope,omitempty"`
+	Scope *ScopeType
 
 	// Security Profile
-	SecurityServices *SecurityServices `json:"securityServices,omitempty"`
+	SecurityServices *SecurityServices
 }
 
 // LocalRulestacksClientBeginCommitOptions contains the optional parameters for the LocalRulestacksClient.BeginCommit method.
@@ -1065,149 +1121,149 @@ type LocalRulestacksClientUpdateOptions struct {
 // LogDestination - Log Destination
 type LogDestination struct {
 	// Event Hub configurations
-	EventHubConfigurations *EventHub `json:"eventHubConfigurations,omitempty"`
+	EventHubConfigurations *EventHub
 
 	// Monitor Log configurations
-	MonitorConfigurations *MonitorLog `json:"monitorConfigurations,omitempty"`
+	MonitorConfigurations *MonitorLog
 
 	// Storage account configurations
-	StorageConfigurations *StorageAccount `json:"storageConfigurations,omitempty"`
+	StorageConfigurations *StorageAccount
 }
 
 // LogSettings - Log Settings for Firewall
 type LogSettings struct {
 	// Application Insight details
-	ApplicationInsights *ApplicationInsights `json:"applicationInsights,omitempty"`
+	ApplicationInsights *ApplicationInsights
 
 	// Common destination configurations
-	CommonDestination *LogDestination `json:"commonDestination,omitempty"`
+	CommonDestination *LogDestination
 
 	// Decrypt destination configurations
-	DecryptLogDestination *LogDestination `json:"decryptLogDestination,omitempty"`
+	DecryptLogDestination *LogDestination
 
 	// Log option SAME/INDIVIDUAL
-	LogOption *LogOption `json:"logOption,omitempty"`
+	LogOption *LogOption
 
 	// One of possible log type
-	LogType *LogType `json:"logType,omitempty"`
+	LogType *LogType
 
 	// Threat destination configurations
-	ThreatLogDestination *LogDestination `json:"threatLogDestination,omitempty"`
+	ThreatLogDestination *LogDestination
 
 	// Traffic destination configurations
-	TrafficLogDestination *LogDestination `json:"trafficLogDestination,omitempty"`
+	TrafficLogDestination *LogDestination
 }
 
 // MarketplaceDetails of PAN Firewall resource
 type MarketplaceDetails struct {
 	// REQUIRED; Offer Id
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// REQUIRED; Publisher Id
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 
 	// Marketplace Subscription Status
-	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty"`
+	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus
 
 	// READ-ONLY; Marketplace Subscription Id
-	MarketplaceSubscriptionID *string `json:"marketplaceSubscriptionId,omitempty" azure:"ro"`
+	MarketplaceSubscriptionID *string
 }
 
 // MonitorLog configurations
 type MonitorLog struct {
 	// Resource ID of MonitorLog
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Primary Key value for Monitor
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Secondary Key value for Monitor
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 
 	// Subscription Id
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// MonitorLog workspace
-	Workspace *string `json:"workspace,omitempty"`
+	Workspace *string
 }
 
 // NameDescriptionObject - object type info
 type NameDescriptionObject struct {
 	// REQUIRED; name value
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// description value
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // NetworkProfile - Network settings for Firewall
 type NetworkProfile struct {
 	// REQUIRED; Enable egress NAT, enabled by default
-	EnableEgressNat *EgressNat `json:"enableEgressNat,omitempty"`
+	EnableEgressNat *EgressNat
 
 	// REQUIRED; vnet or vwan, cannot be updated
-	NetworkType *NetworkType `json:"networkType,omitempty"`
+	NetworkType *NetworkType
 
 	// REQUIRED; List of IPs associated with the Firewall
-	PublicIPs []*IPAddress `json:"publicIps,omitempty"`
+	PublicIPs []*IPAddress
 
 	// Egress nat IP to use
-	EgressNatIP []*IPAddress `json:"egressNatIp,omitempty"`
+	EgressNatIP []*IPAddress
 
 	// Vnet configurations
-	VnetConfiguration *VnetConfiguration `json:"vnetConfiguration,omitempty"`
+	VnetConfiguration *VnetConfiguration
 
 	// Vwan configurations
-	VwanConfiguration *VwanConfiguration `json:"vwanConfiguration,omitempty"`
+	VwanConfiguration *VwanConfiguration
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1219,43 +1275,52 @@ type OperationsClientListOptions struct {
 type PanoramaConfig struct {
 	// REQUIRED; Base64 encoded string representing Panorama parameters to be used by Firewall to connect to Panorama. This string
 	// is generated via azure plugin in Panorama
-	ConfigString *string `json:"configString,omitempty"`
+	ConfigString *string
 
 	// READ-ONLY; Panorama Collector Group to join - (Once configured we can not edit the value)
-	CgName *string `json:"cgName,omitempty" azure:"ro"`
+	CgName *string
 
 	// READ-ONLY; Panorama Device Group to join
-	DgName *string `json:"dgName,omitempty" azure:"ro"`
+	DgName *string
 
 	// READ-ONLY; Resource name(may be unique) for PN admin
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; Primary Panorama Server IP address value in dotted format for IPv4
-	PanoramaServer *string `json:"panoramaServer,omitempty" azure:"ro"`
+	PanoramaServer *string
 
 	// READ-ONLY; Secondary Panorama Server IP address value in dotted format for IPv4
-	PanoramaServer2 *string `json:"panoramaServer2,omitempty" azure:"ro"`
+	PanoramaServer2 *string
 
 	// READ-ONLY; Panorama Template Stack to join - (Once configured we can not edit the value)
-	TplName *string `json:"tplName,omitempty" azure:"ro"`
+	TplName *string
 
 	// READ-ONLY; VM auth key for panorama connectivity
-	VMAuthKey *string `json:"vmAuthKey,omitempty" azure:"ro"`
+	VMAuthKey *string
+}
+
+// PanoramaStatus - Panorama connectivity information
+type PanoramaStatus struct {
+	// READ-ONLY; Secondary Panorama connection status
+	PanoramaServer2Status *ServerStatus
+
+	// READ-ONLY; Primary Panorama connection status
+	PanoramaServerStatus *ServerStatus
 }
 
 // PlanData - Billing plan information.
 type PlanData struct {
 	// REQUIRED; different billing cycles like MONTHLY/WEEKLY
-	BillingCycle *BillingCycle `json:"billingCycle,omitempty"`
+	BillingCycle *BillingCycle
 
 	// REQUIRED; plan id as published by Liftr.PAN
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 
 	// different usage type like PAYG/COMMITTED
-	UsageType *UsageType `json:"usageType,omitempty"`
+	UsageType *UsageType
 
 	// READ-ONLY; date when plan was applied
-	EffectiveDate *time.Time `json:"effectiveDate,omitempty" azure:"ro"`
+	EffectiveDate *time.Time
 }
 
 // PostRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the PostRulesClient.BeginCreateOrUpdate
@@ -1299,28 +1364,28 @@ type PostRulesClientResetCountersOptions struct {
 // PostRulesResource - PostRulestack rule list
 type PostRulesResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *RuleEntry `json:"properties,omitempty"`
+	Properties *RuleEntry
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PostRulesResourceListResult - The response of a PostRulesResource list operation.
 type PostRulesResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*PostRulesResource `json:"value,omitempty"`
+	Value []*PostRulesResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PreRulesClientBeginCreateOrUpdateOptions contains the optional parameters for the PreRulesClient.BeginCreateOrUpdate method.
@@ -1363,46 +1428,46 @@ type PreRulesClientResetCountersOptions struct {
 // PreRulesResource - PreRulestack rule list
 type PreRulesResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *RuleEntry `json:"properties,omitempty"`
+	Properties *RuleEntry
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PreRulesResourceListResult - The response of a PreRulesResource list operation.
 type PreRulesResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*PreRulesResource `json:"value,omitempty"`
+	Value []*PreRulesResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PredefinedURLCategoriesResponse - predefined url categories response
 type PredefinedURLCategoriesResponse struct {
 	// REQUIRED; predefined url categories
-	Value []*PredefinedURLCategory `json:"value,omitempty"`
+	Value []*PredefinedURLCategory
 
 	// next link
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PredefinedURLCategory - Predefined URL category object
 type PredefinedURLCategory struct {
 	// REQUIRED
-	Action *string `json:"action,omitempty"`
+	Action *string
 
 	// REQUIRED
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // PrefixListGlobalRulestackClientBeginCreateOrUpdateOptions contains the optional parameters for the PrefixListGlobalRulestackClient.BeginCreateOrUpdate
@@ -1434,28 +1499,28 @@ type PrefixListGlobalRulestackClientListOptions struct {
 // PrefixListGlobalRulestackResource - GlobalRulestack prefixList
 type PrefixListGlobalRulestackResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *PrefixObject `json:"properties,omitempty"`
+	Properties *PrefixObject
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrefixListGlobalRulestackResourceListResult - The response of a PrefixListGlobalRulestackResource list operation.
 type PrefixListGlobalRulestackResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*PrefixListGlobalRulestackResource `json:"value,omitempty"`
+	Value []*PrefixListGlobalRulestackResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PrefixListLocalRulestackClientBeginCreateOrUpdateOptions contains the optional parameters for the PrefixListLocalRulestackClient.BeginCreateOrUpdate
@@ -1486,374 +1551,374 @@ type PrefixListLocalRulestackClientListByLocalRulestacksOptions struct {
 // PrefixListResource - LocalRulestack prefixList
 type PrefixListResource struct {
 	// REQUIRED; The resource-specific properties for this resource.
-	Properties *PrefixObject `json:"properties,omitempty"`
+	Properties *PrefixObject
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrefixListResourceListResult - The response of a PrefixListResource list operation.
 type PrefixListResourceListResult struct {
 	// REQUIRED; The items on this page
-	Value []*PrefixListResource `json:"value,omitempty"`
+	Value []*PrefixListResource
 
 	// The link to the next page of items
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PrefixObject - prefix entry
 type PrefixObject struct {
 	// REQUIRED; prefix list
-	PrefixList []*string `json:"prefixList,omitempty"`
+	PrefixList []*string
 
 	// comment for this object
-	AuditComment *string `json:"auditComment,omitempty"`
+	AuditComment *string
 
 	// prefix description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// etag info
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // RuleCounter - Rule counter
 type RuleCounter struct {
 	// REQUIRED; priority number
-	Priority *string `json:"priority,omitempty"`
+	Priority *string
 
 	// REQUIRED; rule name
-	RuleName *string `json:"ruleName,omitempty"`
+	RuleName *string
 
 	// apps seen
-	AppSeen *AppSeenData `json:"appSeen,omitempty"`
+	AppSeen *AppSeenData
 
 	// firewall name
-	FirewallName *string `json:"firewallName,omitempty"`
+	FirewallName *string
 
 	// hit count
-	HitCount *int32 `json:"hitCount,omitempty"`
+	HitCount *int32
 
 	// last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty"`
+	LastUpdatedTimestamp *time.Time
 
 	// timestamp of request
-	RequestTimestamp *time.Time `json:"requestTimestamp,omitempty"`
+	RequestTimestamp *time.Time
 
 	// rule list name
-	RuleListName *string `json:"ruleListName,omitempty"`
+	RuleListName *string
 
 	// rule Stack Name
-	RuleStackName *string `json:"ruleStackName,omitempty"`
+	RuleStackName *string
 
 	// timestamp of response
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 }
 
 // RuleCounterReset - Rule counter reset
 type RuleCounterReset struct {
 	// firewall name
-	FirewallName *string `json:"firewallName,omitempty"`
+	FirewallName *string
 
 	// rule list name
-	RuleListName *string `json:"ruleListName,omitempty"`
+	RuleListName *string
 
 	// rule name
-	RuleName *string `json:"ruleName,omitempty"`
+	RuleName *string
 
 	// rule Stack Name
-	RuleStackName *string `json:"ruleStackName,omitempty"`
+	RuleStackName *string
 
 	// READ-ONLY; priority number
-	Priority *string `json:"priority,omitempty" azure:"ro"`
+	Priority *string
 }
 
 // RuleEntry - definition of rule
 type RuleEntry struct {
 	// REQUIRED; rule name
-	RuleName *string `json:"ruleName,omitempty"`
+	RuleName *string
 
 	// rule action
-	ActionType *ActionEnum `json:"actionType,omitempty"`
+	ActionType *ActionEnum
 
 	// array of rule applications
-	Applications []*string `json:"applications,omitempty"`
+	Applications []*string
 
 	// rule comment
-	AuditComment *string `json:"auditComment,omitempty"`
+	AuditComment *string
 
 	// rule category
-	Category *Category `json:"category,omitempty"`
+	Category *Category
 
 	// enable or disable decryption
-	DecryptionRuleType *DecryptionRuleTypeEnum `json:"decryptionRuleType,omitempty"`
+	DecryptionRuleType *DecryptionRuleTypeEnum
 
 	// rule description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// destination address
-	Destination *DestinationAddr `json:"destination,omitempty"`
+	Destination *DestinationAddr
 
 	// enable or disable logging
-	EnableLogging *StateEnum `json:"enableLogging,omitempty"`
+	EnableLogging *StateEnum
 
 	// etag info
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// inbound Inspection Certificate
-	InboundInspectionCertificate *string `json:"inboundInspectionCertificate,omitempty"`
+	InboundInspectionCertificate *string
 
 	// cidr should not be 'any'
-	NegateDestination *BooleanEnum `json:"negateDestination,omitempty"`
+	NegateDestination *BooleanEnum
 
 	// cidr should not be 'any'
-	NegateSource *BooleanEnum `json:"negateSource,omitempty"`
+	NegateSource *BooleanEnum
 
 	// any, application-default, TCP:number, UDP:number
-	Protocol *string `json:"protocol,omitempty"`
+	Protocol *string
 
 	// prot port list
-	ProtocolPortList []*string `json:"protocolPortList,omitempty"`
+	ProtocolPortList []*string
 
 	// state of this rule
-	RuleState *StateEnum `json:"ruleState,omitempty"`
+	RuleState *StateEnum
 
 	// source address
-	Source *SourceAddr `json:"source,omitempty"`
+	Source *SourceAddr
 
 	// tag for rule
-	Tags []*TagInfo `json:"tags,omitempty"`
+	Tags []*TagInfo
 
 	// READ-ONLY
-	Priority *int32 `json:"priority,omitempty" azure:"ro"`
+	Priority *int32
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // RulestackDetails - Associated rulestack details
 type RulestackDetails struct {
 	// Rulestack location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource Id
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Associated rulestack Id
-	RulestackID *string `json:"rulestackId,omitempty"`
+	RulestackID *string
 }
 
 // RulestackProperties - PAN Rulestack Describe Object
 type RulestackProperties struct {
 	// subscription scope of global rulestack
-	AssociatedSubscriptions []*string `json:"associatedSubscriptions,omitempty"`
+	AssociatedSubscriptions []*string
 
 	// Mode for default rules creation
-	DefaultMode *DefaultMode `json:"defaultMode,omitempty"`
+	DefaultMode *DefaultMode
 
 	// rulestack description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// minimum version
-	MinAppIDVersion *string `json:"minAppIdVersion,omitempty"`
+	MinAppIDVersion *string
 
 	// PanEtag info
-	PanEtag *string `json:"panEtag,omitempty"`
+	PanEtag *string
 
 	// Rulestack Location, Required for GlobalRulestacks, Not for LocalRulestacks
-	PanLocation *string `json:"panLocation,omitempty"`
+	PanLocation *string
 
 	// Rulestack Type
-	Scope *ScopeType `json:"scope,omitempty"`
+	Scope *ScopeType
 
 	// Security Profile
-	SecurityServices *SecurityServices `json:"securityServices,omitempty"`
+	SecurityServices *SecurityServices
 
 	// READ-ONLY; Provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // SecurityServices - security services
 type SecurityServices struct {
 	// Anti spyware Profile data
-	AntiSpywareProfile *string `json:"antiSpywareProfile,omitempty"`
+	AntiSpywareProfile *string
 
 	// anti virus profile data
-	AntiVirusProfile *string `json:"antiVirusProfile,omitempty"`
+	AntiVirusProfile *string
 
 	// DNS Subscription profile data
-	DNSSubscription *string `json:"dnsSubscription,omitempty"`
+	DNSSubscription *string
 
 	// File blocking profile data
-	FileBlockingProfile *string `json:"fileBlockingProfile,omitempty"`
+	FileBlockingProfile *string
 
 	// Trusted Egress Decryption profile data
-	OutboundTrustCertificate *string `json:"outboundTrustCertificate,omitempty"`
+	OutboundTrustCertificate *string
 
 	// Untrusted Egress Decryption profile data
-	OutboundUnTrustCertificate *string `json:"outboundUnTrustCertificate,omitempty"`
+	OutboundUnTrustCertificate *string
 
 	// URL filtering profile data
-	URLFilteringProfile *string `json:"urlFilteringProfile,omitempty"`
+	URLFilteringProfile *string
 
 	// IPs Vulnerability Profile Data
-	VulnerabilityProfile *string `json:"vulnerabilityProfile,omitempty"`
+	VulnerabilityProfile *string
 }
 
 // SecurityServicesResponse - Security services list response
 type SecurityServicesResponse struct {
 	// REQUIRED; response value
-	Value *SecurityServicesTypeList `json:"value,omitempty"`
+	Value *SecurityServicesTypeList
 
 	// next link
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // SecurityServicesTypeList - Security services type list
 type SecurityServicesTypeList struct {
 	// REQUIRED; list
-	Entry []*NameDescriptionObject `json:"entry,omitempty"`
+	Entry []*NameDescriptionObject
 
 	// security services type
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // SourceAddr - Address properties
 type SourceAddr struct {
 	// special value 'any'
-	Cidrs []*string `json:"cidrs,omitempty"`
+	Cidrs []*string
 
 	// list of countries
-	Countries []*string `json:"countries,omitempty"`
+	Countries []*string
 
 	// list of feeds
-	Feeds []*string `json:"feeds,omitempty"`
+	Feeds []*string
 
 	// prefix list
-	PrefixLists []*string `json:"prefixLists,omitempty"`
+	PrefixLists []*string
 }
 
 // StorageAccount - Storage Account configurations
 type StorageAccount struct {
 	// Storage account name
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// Resource ID of storage account
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Subscription Id
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 }
 
 // SupportInfo - Support information for the resource
 type SupportInfo struct {
 	// Support account associated with given resource
-	AccountID *string `json:"accountId,omitempty"`
+	AccountID *string
 
 	// account registered in Customer Support Portal
-	AccountRegistered *BooleanEnum `json:"accountRegistered,omitempty"`
+	AccountRegistered *BooleanEnum
 
 	// Product usage is in free trial period
-	FreeTrial *BooleanEnum `json:"freeTrial,omitempty"`
+	FreeTrial *BooleanEnum
 
 	// Free trial credit remaining
-	FreeTrialCreditLeft *int32 `json:"freeTrialCreditLeft,omitempty"`
+	FreeTrialCreditLeft *int32
 
 	// Free trial days remaining
-	FreeTrialDaysLeft *int32 `json:"freeTrialDaysLeft,omitempty"`
+	FreeTrialDaysLeft *int32
 
 	// URL for paloaltonetworks live community
-	HelpURL *string `json:"helpURL,omitempty"`
+	HelpURL *string
 
 	// product SKU associated with given resource
-	ProductSKU *string `json:"productSku,omitempty"`
+	ProductSKU *string
 
 	// product Serial associated with given resource
-	ProductSerial *string `json:"productSerial,omitempty"`
+	ProductSerial *string
 
 	// URL for registering product in paloaltonetworks Customer Service Portal
-	RegisterURL *string `json:"registerURL,omitempty"`
+	RegisterURL *string
 
 	// URL for paloaltonetworks Customer Service Portal
-	SupportURL *string `json:"supportURL,omitempty"`
+	SupportURL *string
 
 	// user domain is supported in Customer Support Portal
-	UserDomainSupported *BooleanEnum `json:"userDomainSupported,omitempty"`
+	UserDomainSupported *BooleanEnum
 
 	// user registered in Customer Support Portal
-	UserRegistered *BooleanEnum `json:"userRegistered,omitempty"`
+	UserRegistered *BooleanEnum
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagInfo - Tag
 type TagInfo struct {
 	// REQUIRED; tag name
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// REQUIRED; tag value
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // VnetConfiguration - VnetInfo for Firewall Networking
 type VnetConfiguration struct {
 	// REQUIRED; Trust Subnet
-	TrustSubnet *IPAddressSpace `json:"trustSubnet,omitempty"`
+	TrustSubnet *IPAddressSpace
 
 	// REQUIRED; Untrust Subnet
-	UnTrustSubnet *IPAddressSpace `json:"unTrustSubnet,omitempty"`
+	UnTrustSubnet *IPAddressSpace
 
 	// REQUIRED; Azure Virtual Network
-	Vnet *IPAddressSpace `json:"vnet,omitempty"`
+	Vnet *IPAddressSpace
 
 	// IP of trust subnet for UDR
-	IPOfTrustSubnetForUdr *IPAddress `json:"ipOfTrustSubnetForUdr,omitempty"`
+	IPOfTrustSubnetForUdr *IPAddress
 }
 
 // VwanConfiguration - VwanInfo for Firewall Networking
 type VwanConfiguration struct {
 	// REQUIRED; vHub Address
-	VHub *IPAddressSpace `json:"vHub,omitempty"`
+	VHub *IPAddressSpace
 
 	// IP of trust subnet for UDR
-	IPOfTrustSubnetForUdr *IPAddress `json:"ipOfTrustSubnetForUdr,omitempty"`
+	IPOfTrustSubnetForUdr *IPAddress
 
 	// Network Virtual Appliance resource ID
-	NetworkVirtualApplianceID *string `json:"networkVirtualApplianceId,omitempty"`
+	NetworkVirtualApplianceID *string
 
 	// Trust Subnet
-	TrustSubnet *IPAddressSpace `json:"trustSubnet,omitempty"`
+	TrustSubnet *IPAddressSpace
 
 	// Untrust Subnet
-	UnTrustSubnet *IPAddressSpace `json:"unTrustSubnet,omitempty"`
+	UnTrustSubnet *IPAddressSpace
 }

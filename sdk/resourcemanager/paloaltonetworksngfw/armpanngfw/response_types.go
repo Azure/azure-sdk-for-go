@@ -49,6 +49,16 @@ type CertificateObjectLocalRulestackClientListByLocalRulestacksResponse struct {
 	CertificateObjectLocalRulestackResourceListResult
 }
 
+// FirewallStatusClientGetResponse contains the response from method FirewallStatusClient.Get.
+type FirewallStatusClientGetResponse struct {
+	FirewallStatusResource
+}
+
+// FirewallStatusClientListByFirewallsResponse contains the response from method FirewallStatusClient.NewListByFirewallsPager.
+type FirewallStatusClientListByFirewallsResponse struct {
+	FirewallStatusResourceListResult
+}
+
 // FirewallsClientCreateOrUpdateResponse contains the response from method FirewallsClient.BeginCreateOrUpdate.
 type FirewallsClientCreateOrUpdateResponse struct {
 	FirewallResource

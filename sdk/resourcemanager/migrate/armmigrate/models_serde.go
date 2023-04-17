@@ -1753,7 +1753,7 @@ func (p Project) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "location", p.Location)
 	populate(objectMap, "name", p.Name)
 	populate(objectMap, "properties", p.Properties)
-	populate(objectMap, "tags", &p.Tags)
+	populateAny(objectMap, "tags", p.Tags)
 	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
 }
@@ -2180,6 +2180,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

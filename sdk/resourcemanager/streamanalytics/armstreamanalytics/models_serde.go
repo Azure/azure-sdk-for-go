@@ -54,7 +54,7 @@ func (a *AggregateFunctionProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AvroSerialization.
 func (a AvroSerialization) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "properties", &a.Properties)
+	populateAny(objectMap, "properties", a.Properties)
 	objectMap["type"] = EventSerializationTypeAvro
 	return json.Marshal(objectMap)
 }
@@ -3055,7 +3055,7 @@ func (o *OutputProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ParquetSerialization.
 func (p ParquetSerialization) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "properties", &p.Properties)
+	populateAny(objectMap, "properties", p.Properties)
 	objectMap["type"] = EventSerializationTypeParquet
 	return json.Marshal(objectMap)
 }
@@ -3749,7 +3749,7 @@ func (s ServiceBusQueueOutputDataSourceProperties) MarshalJSON() ([]byte, error)
 	populate(objectMap, "serviceBusNamespace", s.ServiceBusNamespace)
 	populate(objectMap, "sharedAccessPolicyKey", s.SharedAccessPolicyKey)
 	populate(objectMap, "sharedAccessPolicyName", s.SharedAccessPolicyName)
-	populate(objectMap, "systemPropertyColumns", &s.SystemPropertyColumns)
+	populateAny(objectMap, "systemPropertyColumns", s.SystemPropertyColumns)
 	return json.Marshal(objectMap)
 }
 
@@ -4469,6 +4469,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

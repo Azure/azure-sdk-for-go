@@ -379,7 +379,7 @@ func (d *DebugSendResponse) UnmarshalJSON(data []byte) error {
 func (d DebugSendResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "failure", d.Failure)
-	populate(objectMap, "results", &d.Results)
+	populateAny(objectMap, "results", d.Results)
 	populate(objectMap, "success", d.Success)
 	return json.Marshal(objectMap)
 }
@@ -1665,6 +1665,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -51,97 +51,97 @@ type AFDCustomDomainsClientListByProfileOptions struct {
 // www.contoso.com.
 type AFDDomain struct {
 	// The JSON object that contains the properties of the domain to create.
-	Properties *AFDDomainProperties `json:"properties,omitempty"`
+	Properties *AFDDomainProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AFDDomainHTTPSParameters - The JSON object that contains the properties to secure a domain.
 type AFDDomainHTTPSParameters struct {
 	// REQUIRED; Defines the source of the SSL certificate.
-	CertificateType *AfdCertificateType `json:"certificateType,omitempty"`
+	CertificateType *AfdCertificateType
 
 	// TLS protocol version that will be used for Https
-	MinimumTLSVersion *AfdMinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *AfdMinimumTLSVersion
 
 	// Resource reference to the secret. ie. subs/rg/profile/secret
-	Secret *ResourceReference `json:"secret,omitempty"`
+	Secret *ResourceReference
 }
 
 // AFDDomainListResult - Result of the request to list domains. It contains a list of domain objects and a URL link to get
 // the next set of results.
 type AFDDomainListResult struct {
 	// URL to get the next set of domain objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of AzureFrontDoor domains within a profile.
-	Value []*AFDDomain `json:"value,omitempty" azure:"ro"`
+	Value []*AFDDomain
 }
 
 // AFDDomainProperties - The JSON object that contains the properties of the domain to create.
 type AFDDomainProperties struct {
 	// REQUIRED; The host name of the domain. Must be a domain name.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// Resource reference to the Azure DNS zone
-	AzureDNSZone *ResourceReference `json:"azureDnsZone,omitempty"`
+	AzureDNSZone *ResourceReference
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
-	PreValidatedCustomDomainResourceID *ResourceReference `json:"preValidatedCustomDomainResourceId,omitempty"`
+	PreValidatedCustomDomainResourceID *ResourceReference
 
 	// The configuration specifying how to enable HTTPS for the domain - using AzureFrontDoor managed certificate or user's own
 	// certificate. If not specified, enabling ssl uses AzureFrontDoor managed
 	// certificate by default.
-	TLSSettings *AFDDomainHTTPSParameters `json:"tlsSettings,omitempty"`
+	TLSSettings *AFDDomainHTTPSParameters
 
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step. DCV stands
 	// for DomainControlValidation.
-	DomainValidationState *DomainValidationState `json:"domainValidationState,omitempty" azure:"ro"`
+	DomainValidationState *DomainValidationState
 
 	// READ-ONLY; The name of the profile which holds the domain.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 
 	// READ-ONLY; Values the customer needs to validate domain ownership
-	ValidationProperties *DomainValidationProperties `json:"validationProperties,omitempty" azure:"ro"`
+	ValidationProperties *DomainValidationProperties
 }
 
 // AFDDomainUpdateParameters - The domain JSON object required for domain creation or update.
 type AFDDomainUpdateParameters struct {
 	// The JSON object that contains the properties of the domain to create.
-	Properties *AFDDomainUpdatePropertiesParameters `json:"properties,omitempty"`
+	Properties *AFDDomainUpdatePropertiesParameters
 }
 
 // AFDDomainUpdatePropertiesParameters - The JSON object that contains the properties of the domain to create.
 type AFDDomainUpdatePropertiesParameters struct {
 	// Resource reference to the Azure DNS zone
-	AzureDNSZone *ResourceReference `json:"azureDnsZone,omitempty"`
+	AzureDNSZone *ResourceReference
 
 	// Resource reference to the Azure resource where custom domain ownership was prevalidated
-	PreValidatedCustomDomainResourceID *ResourceReference `json:"preValidatedCustomDomainResourceId,omitempty"`
+	PreValidatedCustomDomainResourceID *ResourceReference
 
 	// The configuration specifying how to enable HTTPS for the domain - using AzureFrontDoor managed certificate or user's own
 	// certificate. If not specified, enabling ssl uses AzureFrontDoor managed
 	// certificate by default.
-	TLSSettings *AFDDomainHTTPSParameters `json:"tlsSettings,omitempty"`
+	TLSSettings *AFDDomainHTTPSParameters
 
 	// READ-ONLY; The name of the profile which holds the domain.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 }
 
 // AFDEndpoint - CDN endpoint is the entity within a CDN profile containing configuration information such as origin, protocol,
@@ -149,74 +149,74 @@ type AFDDomainUpdatePropertiesParameters struct {
 // .azureedge.net.
 type AFDEndpoint struct {
 	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The JSON object that contains the properties required to create an endpoint.
-	Properties *AFDEndpointProperties `json:"properties,omitempty"`
+	Properties *AFDEndpointProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AFDEndpointListResult - Result of the request to list endpoints. It contains a list of endpoint objects and a URL link
 // to get the next set of results.
 type AFDEndpointListResult struct {
 	// URL to get the next set of endpoint objects if there is any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of AzureFrontDoor endpoints within a profile
-	Value []*AFDEndpoint `json:"value,omitempty" azure:"ro"`
+	Value []*AFDEndpoint
 }
 
 // AFDEndpointProperties - The JSON object that contains the properties required to create an endpoint.
 type AFDEndpointProperties struct {
 	// Indicates the endpoint name reuse scope. The default value is TenantReuse.
-	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope `json:"autoGeneratedDomainNameLabelScope,omitempty"`
+	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope
 
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *EnabledState `json:"enabledState,omitempty"`
+	EnabledState *EnabledState
 
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; The name of the profile which holds the endpoint.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 }
 
 // AFDEndpointPropertiesUpdateParameters - The JSON object containing endpoint update parameters.
 type AFDEndpointPropertiesUpdateParameters struct {
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *EnabledState `json:"enabledState,omitempty"`
+	EnabledState *EnabledState
 
 	// READ-ONLY; The name of the profile which holds the endpoint.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 }
 
 // AFDEndpointUpdateParameters - Properties required to create or update an endpoint.
 type AFDEndpointUpdateParameters struct {
 	// The JSON object containing endpoint update parameters.
-	Properties *AFDEndpointPropertiesUpdateParameters `json:"properties,omitempty"`
+	Properties *AFDEndpointPropertiesUpdateParameters
 
 	// Endpoint tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AFDEndpointsClientBeginCreateOptions contains the optional parameters for the AFDEndpointsClient.BeginCreate method.
@@ -272,98 +272,98 @@ type AFDEndpointsClientValidateCustomDomainOptions struct {
 // the configured origins.
 type AFDOrigin struct {
 	// The JSON object that contains the properties of the origin.
-	Properties *AFDOriginProperties `json:"properties,omitempty"`
+	Properties *AFDOriginProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AFDOriginGroup - AFDOrigin group comprising of origins is used for load balancing to origins when the content cannot be
 // served from CDN.
 type AFDOriginGroup struct {
 	// The JSON object that contains the properties of the origin group.
-	Properties *AFDOriginGroupProperties `json:"properties,omitempty"`
+	Properties *AFDOriginGroupProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AFDOriginGroupListResult - Result of the request to list origin groups. It contains a list of origin groups objects and
 // a URL link to get the next set of results.
 type AFDOriginGroupListResult struct {
 	// URL to get the next set of origin objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of CDN origin groups within an endpoint
-	Value []*AFDOriginGroup `json:"value,omitempty" azure:"ro"`
+	Value []*AFDOriginGroup
 }
 
 // AFDOriginGroupProperties - The JSON object that contains the properties of the origin group.
 type AFDOriginGroupProperties struct {
 	// Health probe settings to the origin that is used to determine the health of the origin.
-	HealthProbeSettings *HealthProbeParameters `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings *HealthProbeParameters
 
 	// Load balancing settings for a backend pool
-	LoadBalancingSettings *LoadBalancingSettingsParameters `json:"loadBalancingSettings,omitempty"`
+	LoadBalancingSettings *LoadBalancingSettingsParameters
 
 	// Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
-	SessionAffinityState *EnabledState `json:"sessionAffinityState,omitempty"`
+	SessionAffinityState *EnabledState
 
 	// Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint
 	// is added. Default is 10 mins. This property is currently not supported.
-	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32 `json:"trafficRestorationTimeToHealedOrNewEndpointsInMinutes,omitempty"`
+	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32
 
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; The name of the profile which holds the origin group.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 }
 
 // AFDOriginGroupUpdateParameters - AFDOrigin group properties needed for origin group creation or update.
 type AFDOriginGroupUpdateParameters struct {
 	// The JSON object that contains the properties of the origin group.
-	Properties *AFDOriginGroupUpdatePropertiesParameters `json:"properties,omitempty"`
+	Properties *AFDOriginGroupUpdatePropertiesParameters
 }
 
 // AFDOriginGroupUpdatePropertiesParameters - The JSON object that contains the properties of the origin group.
 type AFDOriginGroupUpdatePropertiesParameters struct {
 	// Health probe settings to the origin that is used to determine the health of the origin.
-	HealthProbeSettings *HealthProbeParameters `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings *HealthProbeParameters
 
 	// Load balancing settings for a backend pool
-	LoadBalancingSettings *LoadBalancingSettingsParameters `json:"loadBalancingSettings,omitempty"`
+	LoadBalancingSettings *LoadBalancingSettingsParameters
 
 	// Whether to allow session affinity on this host. Valid options are 'Enabled' or 'Disabled'
-	SessionAffinityState *EnabledState `json:"sessionAffinityState,omitempty"`
+	SessionAffinityState *EnabledState
 
 	// Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint
 	// is added. Default is 10 mins. This property is currently not supported.
-	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32 `json:"trafficRestorationTimeToHealedOrNewEndpointsInMinutes,omitempty"`
+	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32
 
 	// READ-ONLY; The name of the profile which holds the origin group.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 }
 
 // AFDOriginGroupsClientBeginCreateOptions contains the optional parameters for the AFDOriginGroupsClient.BeginCreate method.
@@ -405,104 +405,104 @@ type AFDOriginGroupsClientListResourceUsageOptions struct {
 // the next set of results.
 type AFDOriginListResult struct {
 	// URL to get the next set of origin objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of CDN origins within an endpoint
-	Value []*AFDOrigin `json:"value,omitempty" azure:"ro"`
+	Value []*AFDOrigin
 }
 
 // AFDOriginProperties - The JSON object that contains the properties of the origin.
 type AFDOriginProperties struct {
 	// Resource reference to the Azure origin resource.
-	AzureOrigin *ResourceReference `json:"azureOrigin,omitempty"`
+	AzureOrigin *ResourceReference
 
 	// Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled
 	// if there is a single enabled backend in single enabled backend pool.
-	EnabledState *EnabledState `json:"enabledState,omitempty"`
+	EnabledState *EnabledState
 
 	// Whether to enable certificate name check at origin level
-	EnforceCertificateNameCheck *bool `json:"enforceCertificateNameCheck,omitempty"`
+	EnforceCertificateNameCheck *bool
 
 	// The value of the HTTP port. Must be between 1 and 65535.
-	HTTPPort *int32 `json:"httpPort,omitempty"`
+	HTTPPort *int32
 
 	// The value of the HTTPS port. Must be between 1 and 65535.
-	HTTPSPort *int32 `json:"httpsPort,omitempty"`
+	HTTPSPort *int32
 
 	// The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique across
 	// all origins in an endpoint.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this
 	// value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services
 	// require this host header value to match the origin hostname by default. This overrides the host header defined at Endpoint
-	OriginHostHeader *string `json:"originHostHeader,omitempty"`
+	OriginHostHeader *string
 
 	// Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any
 	// lower priority origin is healthy.Must be between 1 and 5
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// The properties of the private link resource for private origin.
-	SharedPrivateLinkResource *SharedPrivateLinkResourceProperties `json:"sharedPrivateLinkResource,omitempty"`
+	SharedPrivateLinkResource *SharedPrivateLinkResourceProperties
 
 	// Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *int32
 
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; The name of the origin group which contains this origin.
-	OriginGroupName *string `json:"originGroupName,omitempty" azure:"ro"`
+	OriginGroupName *string
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 }
 
 // AFDOriginUpdateParameters - AFDOrigin properties needed for origin update.
 type AFDOriginUpdateParameters struct {
 	// The JSON object that contains the properties of the origin.
-	Properties *AFDOriginUpdatePropertiesParameters `json:"properties,omitempty"`
+	Properties *AFDOriginUpdatePropertiesParameters
 }
 
 // AFDOriginUpdatePropertiesParameters - The JSON object that contains the properties of the origin.
 type AFDOriginUpdatePropertiesParameters struct {
 	// Resource reference to the Azure origin resource.
-	AzureOrigin *ResourceReference `json:"azureOrigin,omitempty"`
+	AzureOrigin *ResourceReference
 
 	// Whether to enable health probes to be made against backends defined under backendPools. Health probes can only be disabled
 	// if there is a single enabled backend in single enabled backend pool.
-	EnabledState *EnabledState `json:"enabledState,omitempty"`
+	EnabledState *EnabledState
 
 	// Whether to enable certificate name check at origin level
-	EnforceCertificateNameCheck *bool `json:"enforceCertificateNameCheck,omitempty"`
+	EnforceCertificateNameCheck *bool
 
 	// The value of the HTTP port. Must be between 1 and 65535.
-	HTTPPort *int32 `json:"httpPort,omitempty"`
+	HTTPPort *int32
 
 	// The value of the HTTPS port. Must be between 1 and 65535.
-	HTTPSPort *int32 `json:"httpsPort,omitempty"`
+	HTTPSPort *int32
 
 	// The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique across
 	// all origins in an endpoint.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this
 	// value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services
 	// require this host header value to match the origin hostname by default. This overrides the host header defined at Endpoint
-	OriginHostHeader *string `json:"originHostHeader,omitempty"`
+	OriginHostHeader *string
 
 	// Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any
 	// lower priority origin is healthy.Must be between 1 and 5
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// The properties of the private link resource for private origin.
-	SharedPrivateLinkResource *SharedPrivateLinkResourceProperties `json:"sharedPrivateLinkResource,omitempty"`
+	SharedPrivateLinkResource *SharedPrivateLinkResourceProperties
 
 	// Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *int32
 
 	// READ-ONLY; The name of the origin group which contains this origin.
-	OriginGroupName *string `json:"originGroupName,omitempty" azure:"ro"`
+	OriginGroupName *string
 }
 
 // AFDOriginsClientBeginCreateOptions contains the optional parameters for the AFDOriginsClient.BeginCreate method.
@@ -549,70 +549,70 @@ type AFDProfilesClientListResourceUsageOptions struct {
 // AFDStateProperties - The tracking states for afd resources.
 type AFDStateProperties struct {
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 }
 
 // ActivatedResourceReference - Reference to another resource along with its state.
 type ActivatedResourceReference struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// READ-ONLY; Whether the resource is active or inactive
-	IsActive *bool `json:"isActive,omitempty" azure:"ro"`
+	IsActive *bool
 }
 
 // AfdErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type AfdErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // AfdPurgeParameters - Parameters required for content purge.
 type AfdPurgeParameters struct {
 	// REQUIRED; The path to the content to be purged. Can describe a file path or a wild card directory.
-	ContentPaths []*string `json:"contentPaths,omitempty"`
+	ContentPaths []*string
 
 	// List of domains.
-	Domains []*string `json:"domains,omitempty"`
+	Domains []*string
 }
 
 // AfdRouteCacheConfiguration - Caching settings for a caching-type route. To disable caching, do not provide a cacheConfiguration
 // object.
 type AfdRouteCacheConfiguration struct {
 	// compression settings.
-	CompressionSettings *CompressionSettings `json:"compressionSettings,omitempty"`
+	CompressionSettings *CompressionSettings
 
 	// query parameters to include or exclude (comma separated).
-	QueryParameters *string `json:"queryParameters,omitempty"`
+	QueryParameters *string
 
 	// Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore
 	// specific query strings, cache every request with a unique URL, or cache specific
 	// query strings.
-	QueryStringCachingBehavior *AfdQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
+	QueryStringCachingBehavior *AfdQueryStringCachingBehavior
 }
 
 // AzureFirstPartyManagedCertificate - Azure FirstParty Managed Certificate provided by other first party resource providers
 // to enable HTTPS.
 type AzureFirstPartyManagedCertificate struct {
 	// The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; Subject name in the certificate.
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 }
 
 // AzureFirstPartyManagedCertificateParameters - Azure FirstParty Managed Certificate provided by other first party resource
 // providers to enable HTTPS.
 type AzureFirstPartyManagedCertificateParameters struct {
 	// REQUIRED; The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 }
 
 // GetSecretParameters implements the SecretParametersClassification interface for type AzureFirstPartyManagedCertificateParameters.
@@ -626,235 +626,235 @@ func (a *AzureFirstPartyManagedCertificateParameters) GetSecretParameters() *Sec
 // object.
 type CacheConfiguration struct {
 	// Caching behavior for the requests
-	CacheBehavior *RuleCacheBehavior `json:"cacheBehavior,omitempty"`
+	CacheBehavior *RuleCacheBehavior
 
 	// The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
-	CacheDuration *string `json:"cacheDuration,omitempty"`
+	CacheDuration *string
 
 	// Indicates whether content compression is enabled. If compression is enabled, content will be served as compressed if user
 	// requests for a compressed version. Content won't be compressed on
 	// AzureFrontDoor when requested content is smaller than 1 byte or larger than 1 MB.
-	IsCompressionEnabled *RuleIsCompressionEnabled `json:"isCompressionEnabled,omitempty"`
+	IsCompressionEnabled *RuleIsCompressionEnabled
 
 	// query parameters to include or exclude (comma separated).
-	QueryParameters *string `json:"queryParameters,omitempty"`
+	QueryParameters *string
 
 	// Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching, ignore
 	// specific query strings, cache every request with a unique URL, or cache specific
 	// query strings.
-	QueryStringCachingBehavior *RuleQueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
+	QueryStringCachingBehavior *RuleQueryStringCachingBehavior
 }
 
 // CacheExpirationActionParameters - Defines the parameters for the cache expiration action.
 type CacheExpirationActionParameters struct {
 	// REQUIRED; Caching behavior for the requests
-	CacheBehavior *CacheBehavior `json:"cacheBehavior,omitempty"`
+	CacheBehavior *CacheBehavior
 
 	// REQUIRED; The level at which the content needs to be cached.
-	CacheType *CacheType `json:"cacheType,omitempty"`
+	CacheType *CacheType
 
 	// REQUIRED
-	TypeName *CacheExpirationActionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *CacheExpirationActionParametersTypeName
 
 	// The duration for which the content needs to be cached. Allowed format is [d.]hh:mm:ss
-	CacheDuration *string `json:"cacheDuration,omitempty"`
+	CacheDuration *string
 }
 
 // CacheKeyQueryStringActionParameters - Defines the parameters for the cache-key query string action.
 type CacheKeyQueryStringActionParameters struct {
 	// REQUIRED; Caching behavior for the requests
-	QueryStringBehavior *QueryStringBehavior `json:"queryStringBehavior,omitempty"`
+	QueryStringBehavior *QueryStringBehavior
 
 	// REQUIRED
-	TypeName *CacheKeyQueryStringActionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *CacheKeyQueryStringActionParametersTypeName
 
 	// query parameters to include or exclude (comma separated).
-	QueryParameters *string `json:"queryParameters,omitempty"`
+	QueryParameters *string
 }
 
 // Certificate used for https
 type Certificate struct {
 	// The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; Subject name in the certificate.
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 }
 
 // CertificateSourceParameters - Defines the parameters for using CDN managed certificate for securing custom domain.
 type CertificateSourceParameters struct {
 	// REQUIRED; Type of certificate used
-	CertificateType *CertificateType `json:"certificateType,omitempty"`
+	CertificateType *CertificateType
 
 	// REQUIRED
-	TypeName *CdnCertificateSourceParametersTypeName `json:"typeName,omitempty"`
+	TypeName *CdnCertificateSourceParametersTypeName
 }
 
 // CheckEndpointNameAvailabilityInput - Input of CheckNameAvailability API.
 type CheckEndpointNameAvailabilityInput struct {
 	// REQUIRED; The resource name to validate.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The type of the resource whose name is to be validated.
-	Type *ResourceType `json:"type,omitempty"`
+	Type *ResourceType
 
 	// Indicates the endpoint name reuse scope. The default value is TenantReuse.
-	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope `json:"autoGeneratedDomainNameLabelScope,omitempty"`
+	AutoGeneratedDomainNameLabelScope *AutoGeneratedDomainNameLabelScope
 }
 
 // CheckEndpointNameAvailabilityOutput - Output of check name availability API.
 type CheckEndpointNameAvailabilityOutput struct {
 	// READ-ONLY; Returns the available hostname generated based on the AutoGeneratedDomainNameLabelScope when the name is available,
 	// otherwise it returns empty string
-	AvailableHostname *string `json:"availableHostname,omitempty" azure:"ro"`
+	AvailableHostname *string
 
 	// READ-ONLY; The detailed error message describing why the name is not available.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Indicates whether the name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
+	NameAvailable *bool
 
 	// READ-ONLY; The reason why the name is not available.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 }
 
 // CheckHostNameAvailabilityInput - Input of CheckHostNameAvailability API.
 type CheckHostNameAvailabilityInput struct {
 	// REQUIRED; The host name to validate.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 }
 
 // CheckNameAvailabilityInput - Input of CheckNameAvailability API.
 type CheckNameAvailabilityInput struct {
 	// REQUIRED; The resource name to validate.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The type of the resource whose name is to be validated.
-	Type *ResourceType `json:"type,omitempty"`
+	Type *ResourceType
 }
 
 // CheckNameAvailabilityOutput - Output of check name availability API.
 type CheckNameAvailabilityOutput struct {
 	// READ-ONLY; The detailed error message describing why the name is not available.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Indicates whether the name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
+	NameAvailable *bool
 
 	// READ-ONLY; The reason why the name is not available.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 }
 
 // CidrIPAddress - CIDR Ip address
 type CidrIPAddress struct {
 	// Ip address itself.
-	BaseIPAddress *string `json:"baseIpAddress,omitempty"`
+	BaseIPAddress *string
 
 	// The length of the prefix of the ip address.
-	PrefixLength *int32 `json:"prefixLength,omitempty"`
+	PrefixLength *int32
 }
 
 // ClientPortMatchConditionParameters - Defines the parameters for ClientPort match conditions
 type ClientPortMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *ClientPortOperator `json:"operator,omitempty"`
+	Operator *ClientPortOperator
 
 	// REQUIRED
-	TypeName *ClientPortMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *ClientPortMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 type Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems struct {
-	DateTime *time.Time `json:"dateTime,omitempty"`
-	Value    *float32   `json:"value,omitempty"`
+	DateTime *time.Time
+	Value    *float32
 }
 
 type Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems struct {
-	DateTime *time.Time `json:"dateTime,omitempty"`
-	Value    *float32   `json:"value,omitempty"`
+	DateTime *time.Time
+	Value    *float32
 }
 
 type ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems struct {
-	Metric     *string  `json:"metric,omitempty"`
-	Percentage *float64 `json:"percentage,omitempty"`
-	Value      *int64   `json:"value,omitempty"`
+	Metric     *string
+	Percentage *float64
+	Value      *int64
 }
 
 // CompressionSettings - settings for compression.
 type CompressionSettings struct {
 	// List of content types on which compression applies. The value should be a valid MIME type.
-	ContentTypesToCompress []*string `json:"contentTypesToCompress,omitempty"`
+	ContentTypesToCompress []*string
 
 	// Indicates whether content compression is enabled on AzureFrontDoor. Default value is false. If compression is enabled,
 	// content will be served as compressed if user requests for a compressed version.
 	// Content won't be compressed on AzureFrontDoor when requested content is smaller than 1 byte or larger than 1 MB.
-	IsCompressionEnabled *bool `json:"isCompressionEnabled,omitempty"`
+	IsCompressionEnabled *bool
 }
 
 // ContinentsResponse - Continents Response
 type ContinentsResponse struct {
-	Continents       []*ContinentsResponseContinentsItem       `json:"continents,omitempty"`
-	CountryOrRegions []*ContinentsResponseCountryOrRegionsItem `json:"countryOrRegions,omitempty"`
+	Continents       []*ContinentsResponseContinentsItem
+	CountryOrRegions []*ContinentsResponseCountryOrRegionsItem
 }
 
 type ContinentsResponseContinentsItem struct {
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 type ContinentsResponseCountryOrRegionsItem struct {
-	ContinentID *string `json:"continentId,omitempty"`
-	ID          *string `json:"id,omitempty"`
+	ContinentID *string
+	ID          *string
 }
 
 // CookiesMatchConditionParameters - Defines the parameters for Cookies match conditions
 type CookiesMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *CookiesOperator `json:"operator,omitempty"`
+	Operator *CookiesOperator
 
 	// REQUIRED
-	TypeName *CookiesMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *CookiesMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// Name of Cookies to be matched
-	Selector *string `json:"selector,omitempty"`
+	Selector *string
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // CustomDomain - Friendly domain name mapping to the endpoint hostname that the customer provides for branding purposes,
 // e.g. www.contoso.com.
 type CustomDomain struct {
 	// The JSON object that contains the properties of the custom domain to create.
-	Properties *CustomDomainProperties `json:"properties,omitempty"`
+	Properties *CustomDomainProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CustomDomainHTTPSParametersClassification provides polymorphic access to related types.
@@ -869,13 +869,13 @@ type CustomDomainHTTPSParametersClassification interface {
 // CustomDomainHTTPSParameters - The JSON object that contains the properties to secure a custom domain.
 type CustomDomainHTTPSParameters struct {
 	// REQUIRED; Defines the source of the SSL certificate.
-	CertificateSource *CertificateSource `json:"certificateSource,omitempty"`
+	CertificateSource *CertificateSource
 
 	// REQUIRED; Defines the TLS extension protocol that is used for secure delivery.
-	ProtocolType *ProtocolType `json:"protocolType,omitempty"`
+	ProtocolType *ProtocolType
 
 	// TLS protocol version that will be used for Https
-	MinimumTLSVersion *MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *MinimumTLSVersion
 }
 
 // GetCustomDomainHTTPSParameters implements the CustomDomainHTTPSParametersClassification interface for type CustomDomainHTTPSParameters.
@@ -887,47 +887,47 @@ func (c *CustomDomainHTTPSParameters) GetCustomDomainHTTPSParameters() *CustomDo
 // a URL link to get the next set of results.
 type CustomDomainListResult struct {
 	// URL to get the next set of custom domain objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of CDN CustomDomains within an endpoint.
-	Value []*CustomDomain `json:"value,omitempty" azure:"ro"`
+	Value []*CustomDomain
 }
 
 // CustomDomainParameters - The customDomain JSON object required for custom domain creation or update.
 type CustomDomainParameters struct {
 	// The JSON object that contains the properties of the custom domain to create.
-	Properties *CustomDomainPropertiesParameters `json:"properties,omitempty"`
+	Properties *CustomDomainPropertiesParameters
 }
 
 // CustomDomainProperties - The JSON object that contains the properties of the custom domain to create.
 type CustomDomainProperties struct {
 	// REQUIRED; The host name of the custom domain. Must be a domain name.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// Certificate parameters for securing custom HTTPS
-	CustomHTTPSParameters CustomDomainHTTPSParametersClassification `json:"customHttpsParameters,omitempty"`
+	CustomHTTPSParameters CustomDomainHTTPSParametersClassification
 
 	// Special validation or data may be required when delivering CDN to some regions due to local compliance reasons. E.g. ICP
 	// license number of a custom domain is required to deliver content in China.
-	ValidationData *string `json:"validationData,omitempty"`
+	ValidationData *string
 
 	// READ-ONLY; Provisioning status of the custom domain.
-	CustomHTTPSProvisioningState *CustomHTTPSProvisioningState `json:"customHttpsProvisioningState,omitempty" azure:"ro"`
+	CustomHTTPSProvisioningState *CustomHTTPSProvisioningState
 
 	// READ-ONLY; Provisioning substate shows the progress of custom HTTPS enabling/disabling process step by step.
-	CustomHTTPSProvisioningSubstate *CustomHTTPSProvisioningSubstate `json:"customHttpsProvisioningSubstate,omitempty" azure:"ro"`
+	CustomHTTPSProvisioningSubstate *CustomHTTPSProvisioningSubstate
 
 	// READ-ONLY; Provisioning status of Custom Https of the custom domain.
-	ProvisioningState *CustomHTTPSProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *CustomHTTPSProvisioningState
 
 	// READ-ONLY; Resource status of the custom domain.
-	ResourceState *CustomDomainResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *CustomDomainResourceState
 }
 
 // CustomDomainPropertiesParameters - The JSON object that contains the properties of the custom domain to create.
 type CustomDomainPropertiesParameters struct {
 	// REQUIRED; The host name of the custom domain. Must be a domain name.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 }
 
 // CustomDomainsClientBeginCreateOptions contains the optional parameters for the CustomDomainsClient.BeginCreate method.
@@ -971,87 +971,87 @@ type CustomDomainsClientListByEndpointOptions struct {
 // CustomRule - Defines the common attributes for a custom rule that can be included in a waf policy
 type CustomRule struct {
 	// REQUIRED; Describes what action to be applied when rule matches
-	Action *ActionType `json:"action,omitempty"`
+	Action *ActionType
 
 	// REQUIRED; List of match conditions.
-	MatchConditions []*MatchCondition `json:"matchConditions,omitempty"`
+	MatchConditions []*MatchCondition
 
 	// REQUIRED; Defines the name of the custom rule
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Defines in what order this rule be evaluated in the overall list of custom rules
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
-	EnabledState *CustomRuleEnabledState `json:"enabledState,omitempty"`
+	EnabledState *CustomRuleEnabledState
 }
 
 // CustomRuleList - Defines contents of custom rules
 type CustomRuleList struct {
 	// List of rules
-	Rules []*CustomRule `json:"rules,omitempty"`
+	Rules []*CustomRule
 }
 
 // CustomerCertificate - Customer Certificate used for https
 type CustomerCertificate struct {
 	// Resource reference to the Azure Key Vault certificate. Expected to be in format of
 	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
-	SecretSource *ResourceReference `json:"secretSource,omitempty"`
+	SecretSource *ResourceReference
 
 	// Certificate version.
-	SecretVersion *string `json:"secretVersion,omitempty"`
+	SecretVersion *string
 
 	// The list of SANs.
-	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
+	SubjectAlternativeNames []*string
 
 	// The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 
 	// Whether to use the latest version for the certificate
-	UseLatestVersion *bool `json:"useLatestVersion,omitempty"`
+	UseLatestVersion *bool
 
 	// READ-ONLY; Certificate issuing authority.
-	CertificateAuthority *string `json:"certificateAuthority,omitempty" azure:"ro"`
+	CertificateAuthority *string
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; Subject name in the certificate.
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 
 	// READ-ONLY; Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 }
 
 // CustomerCertificateParameters - Customer Certificate used for https
 type CustomerCertificateParameters struct {
 	// REQUIRED; Resource reference to the Azure Key Vault certificate. Expected to be in format of
 	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{certificateName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
-	SecretSource *ResourceReference `json:"secretSource,omitempty"`
+	SecretSource *ResourceReference
 
 	// REQUIRED; The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 
 	// Version of the secret to be used
-	SecretVersion *string `json:"secretVersion,omitempty"`
+	SecretVersion *string
 
 	// The list of SANs.
-	SubjectAlternativeNames []*string `json:"subjectAlternativeNames,omitempty"`
+	SubjectAlternativeNames []*string
 
 	// Whether to use the latest version for the certificate
-	UseLatestVersion *bool `json:"useLatestVersion,omitempty"`
+	UseLatestVersion *bool
 
 	// READ-ONLY; Certificate issuing authority.
-	CertificateAuthority *string `json:"certificateAuthority,omitempty" azure:"ro"`
+	CertificateAuthority *string
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; Subject name in the certificate.
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 
 	// READ-ONLY; Certificate thumbprint.
-	Thumbprint *string `json:"thumbprint,omitempty" azure:"ro"`
+	Thumbprint *string
 }
 
 // GetSecretParameters implements the SecretParametersClassification interface for type CustomerCertificateParameters.
@@ -1064,97 +1064,97 @@ func (c *CustomerCertificateParameters) GetSecretParameters() *SecretParameters 
 // DeepCreatedOrigin - The main origin of CDN content which is added when creating a CDN endpoint.
 type DeepCreatedOrigin struct {
 	// REQUIRED; Origin name which must be unique within the endpoint.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the origin created on the CDN endpoint.
-	Properties *DeepCreatedOriginProperties `json:"properties,omitempty"`
+	Properties *DeepCreatedOriginProperties
 }
 
 // DeepCreatedOriginGroup - The origin group for CDN content which is added when creating a CDN endpoint. Traffic is sent
 // to the origins within the origin group based on origin health.
 type DeepCreatedOriginGroup struct {
 	// REQUIRED; Origin group name which must be unique within the endpoint.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the origin group created on the CDN endpoint.
-	Properties *DeepCreatedOriginGroupProperties `json:"properties,omitempty"`
+	Properties *DeepCreatedOriginGroupProperties
 }
 
 // DeepCreatedOriginGroupProperties - Properties of the origin group created on the CDN endpoint.
 type DeepCreatedOriginGroupProperties struct {
 	// REQUIRED; The source of the content being delivered via CDN within given origin group.
-	Origins []*ResourceReference `json:"origins,omitempty"`
+	Origins []*ResourceReference
 
 	// Health probe settings to the origin that is used to determine the health of the origin.
-	HealthProbeSettings *HealthProbeParameters `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings *HealthProbeParameters
 
 	// The JSON object that contains the properties to determine origin health using real requests/responses.This property is
 	// currently not supported.
-	ResponseBasedOriginErrorDetectionSettings *ResponseBasedOriginErrorDetectionParameters `json:"responseBasedOriginErrorDetectionSettings,omitempty"`
+	ResponseBasedOriginErrorDetectionSettings *ResponseBasedOriginErrorDetectionParameters
 
 	// Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint
 	// is added. Default is 10 mins. This property is currently not supported.
-	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32 `json:"trafficRestorationTimeToHealedOrNewEndpointsInMinutes,omitempty"`
+	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32
 }
 
 // DeepCreatedOriginProperties - Properties of the origin created on the CDN endpoint.
 type DeepCreatedOriginProperties struct {
 	// REQUIRED; The address of the origin. It can be a domain name, IPv4 address, or IPv6 address. This should be unique across
 	// all origins in an endpoint.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// Origin is enabled for load balancing or not. By default, origin is always enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The value of the HTTP port. Must be between 1 and 65535.
-	HTTPPort *int32 `json:"httpPort,omitempty"`
+	HTTPPort *int32
 
 	// The value of the HTTPS port. Must be between 1 and 65535.
-	HTTPSPort *int32 `json:"httpsPort,omitempty"`
+	HTTPSPort *int32
 
 	// The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this
 	// value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services
 	// require this host header value to match the origin hostname by default.
-	OriginHostHeader *string `json:"originHostHeader,omitempty"`
+	OriginHostHeader *string
 
 	// Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any
 	// lower priority origin is healthy.Must be between 1 and 5.
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
-	PrivateLinkAlias *string `json:"privateLinkAlias,omitempty"`
+	PrivateLinkAlias *string
 
 	// A custom message to be included in the approval request to connect to the Private Link.
-	PrivateLinkApprovalMessage *string `json:"privateLinkApprovalMessage,omitempty"`
+	PrivateLinkApprovalMessage *string
 
 	// The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
-	PrivateLinkLocation *string `json:"privateLinkLocation,omitempty"`
+	PrivateLinkLocation *string
 
 	// The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
-	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	PrivateLinkResourceID *string
 
 	// Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *int32
 
 	// READ-ONLY; The approval status for the connection to the Private Link
-	PrivateEndpointStatus *PrivateEndpointStatus `json:"privateEndpointStatus,omitempty" azure:"ro"`
+	PrivateEndpointStatus *PrivateEndpointStatus
 }
 
 // DeliveryRule - A rule that specifies a set of actions and conditions
 type DeliveryRule struct {
 	// REQUIRED; A list of actions that are executed when all the conditions of a rule are satisfied.
-	Actions []DeliveryRuleActionAutoGeneratedClassification `json:"actions,omitempty"`
+	Actions []DeliveryRuleActionAutoGeneratedClassification
 
 	// REQUIRED; The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser
 	// order will be applied before a rule with a greater order. Rule with order 0 is a special
 	// rule. It does not require any condition and actions listed in it will always be applied.
-	Order *int32 `json:"order,omitempty"`
+	Order *int32
 
 	// A list of conditions that must be matched for the actions to be executed
-	Conditions []DeliveryRuleConditionClassification `json:"conditions,omitempty"`
+	Conditions []DeliveryRuleConditionClassification
 
 	// Name of the rule
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // DeliveryRuleActionAutoGeneratedClassification provides polymorphic access to related types.
@@ -1171,7 +1171,7 @@ type DeliveryRuleActionAutoGeneratedClassification interface {
 // DeliveryRuleActionAutoGenerated - An action for the delivery rule.
 type DeliveryRuleActionAutoGenerated struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleActionAutoGenerated.
@@ -1182,10 +1182,10 @@ func (d *DeliveryRuleActionAutoGenerated) GetDeliveryRuleActionAutoGenerated() *
 // DeliveryRuleCacheExpirationAction - Defines the cache expiration action for the delivery rule.
 type DeliveryRuleCacheExpirationAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *CacheExpirationActionParameters `json:"parameters,omitempty"`
+	Parameters *CacheExpirationActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleCacheExpirationAction.
@@ -1198,10 +1198,10 @@ func (d *DeliveryRuleCacheExpirationAction) GetDeliveryRuleActionAutoGenerated()
 // DeliveryRuleCacheKeyQueryStringAction - Defines the cache-key query string action for the delivery rule.
 type DeliveryRuleCacheKeyQueryStringAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *CacheKeyQueryStringActionParameters `json:"parameters,omitempty"`
+	Parameters *CacheKeyQueryStringActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleCacheKeyQueryStringAction.
@@ -1214,10 +1214,10 @@ func (d *DeliveryRuleCacheKeyQueryStringAction) GetDeliveryRuleActionAutoGenerat
 // DeliveryRuleClientPortCondition - Defines the ClientPort condition for the delivery rule.
 type DeliveryRuleClientPortCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *ClientPortMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *ClientPortMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleClientPortCondition.
@@ -1243,7 +1243,7 @@ type DeliveryRuleConditionClassification interface {
 // DeliveryRuleCondition - A condition for the delivery rule.
 type DeliveryRuleCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleCondition.
@@ -1252,10 +1252,10 @@ func (d *DeliveryRuleCondition) GetDeliveryRuleCondition() *DeliveryRuleConditio
 // DeliveryRuleCookiesCondition - Defines the Cookies condition for the delivery rule.
 type DeliveryRuleCookiesCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *CookiesMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *CookiesMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleCookiesCondition.
@@ -1268,10 +1268,10 @@ func (d *DeliveryRuleCookiesCondition) GetDeliveryRuleCondition() *DeliveryRuleC
 // DeliveryRuleHTTPVersionCondition - Defines the HttpVersion condition for the delivery rule.
 type DeliveryRuleHTTPVersionCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *HTTPVersionMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *HTTPVersionMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleHTTPVersionCondition.
@@ -1284,10 +1284,10 @@ func (d *DeliveryRuleHTTPVersionCondition) GetDeliveryRuleCondition() *DeliveryR
 // DeliveryRuleHostNameCondition - Defines the HostName condition for the delivery rule.
 type DeliveryRuleHostNameCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *HostNameMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *HostNameMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleHostNameCondition.
@@ -1300,10 +1300,10 @@ func (d *DeliveryRuleHostNameCondition) GetDeliveryRuleCondition() *DeliveryRule
 // DeliveryRuleIsDeviceCondition - Defines the IsDevice condition for the delivery rule.
 type DeliveryRuleIsDeviceCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *IsDeviceMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *IsDeviceMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleIsDeviceCondition.
@@ -1316,10 +1316,10 @@ func (d *DeliveryRuleIsDeviceCondition) GetDeliveryRuleCondition() *DeliveryRule
 // DeliveryRulePostArgsCondition - Defines the PostArgs condition for the delivery rule.
 type DeliveryRulePostArgsCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *PostArgsMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *PostArgsMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRulePostArgsCondition.
@@ -1332,10 +1332,10 @@ func (d *DeliveryRulePostArgsCondition) GetDeliveryRuleCondition() *DeliveryRule
 // DeliveryRuleQueryStringCondition - Defines the QueryString condition for the delivery rule.
 type DeliveryRuleQueryStringCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *QueryStringMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *QueryStringMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleQueryStringCondition.
@@ -1348,10 +1348,10 @@ func (d *DeliveryRuleQueryStringCondition) GetDeliveryRuleCondition() *DeliveryR
 // DeliveryRuleRemoteAddressCondition - Defines the RemoteAddress condition for the delivery rule.
 type DeliveryRuleRemoteAddressCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *RemoteAddressMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *RemoteAddressMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleRemoteAddressCondition.
@@ -1364,10 +1364,10 @@ func (d *DeliveryRuleRemoteAddressCondition) GetDeliveryRuleCondition() *Deliver
 // DeliveryRuleRequestBodyCondition - Defines the RequestBody condition for the delivery rule.
 type DeliveryRuleRequestBodyCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *RequestBodyMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *RequestBodyMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleRequestBodyCondition.
@@ -1380,10 +1380,10 @@ func (d *DeliveryRuleRequestBodyCondition) GetDeliveryRuleCondition() *DeliveryR
 // DeliveryRuleRequestHeaderAction - Defines the request header action for the delivery rule.
 type DeliveryRuleRequestHeaderAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *HeaderActionParameters `json:"parameters,omitempty"`
+	Parameters *HeaderActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleRequestHeaderAction.
@@ -1396,10 +1396,10 @@ func (d *DeliveryRuleRequestHeaderAction) GetDeliveryRuleActionAutoGenerated() *
 // DeliveryRuleRequestHeaderCondition - Defines the RequestHeader condition for the delivery rule.
 type DeliveryRuleRequestHeaderCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *RequestHeaderMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *RequestHeaderMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleRequestHeaderCondition.
@@ -1412,10 +1412,10 @@ func (d *DeliveryRuleRequestHeaderCondition) GetDeliveryRuleCondition() *Deliver
 // DeliveryRuleRequestMethodCondition - Defines the RequestMethod condition for the delivery rule.
 type DeliveryRuleRequestMethodCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *RequestMethodMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *RequestMethodMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleRequestMethodCondition.
@@ -1428,10 +1428,10 @@ func (d *DeliveryRuleRequestMethodCondition) GetDeliveryRuleCondition() *Deliver
 // DeliveryRuleRequestSchemeCondition - Defines the RequestScheme condition for the delivery rule.
 type DeliveryRuleRequestSchemeCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *RequestSchemeMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *RequestSchemeMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleRequestSchemeCondition.
@@ -1444,10 +1444,10 @@ func (d *DeliveryRuleRequestSchemeCondition) GetDeliveryRuleCondition() *Deliver
 // DeliveryRuleRequestURICondition - Defines the RequestUri condition for the delivery rule.
 type DeliveryRuleRequestURICondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *RequestURIMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *RequestURIMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleRequestURICondition.
@@ -1460,10 +1460,10 @@ func (d *DeliveryRuleRequestURICondition) GetDeliveryRuleCondition() *DeliveryRu
 // DeliveryRuleResponseHeaderAction - Defines the response header action for the delivery rule.
 type DeliveryRuleResponseHeaderAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *HeaderActionParameters `json:"parameters,omitempty"`
+	Parameters *HeaderActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleResponseHeaderAction.
@@ -1477,10 +1477,10 @@ func (d *DeliveryRuleResponseHeaderAction) GetDeliveryRuleActionAutoGenerated() 
 // applicable to Frontdoor Standard/Premium Profiles.
 type DeliveryRuleRouteConfigurationOverrideAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *RouteConfigurationOverrideActionParameters `json:"parameters,omitempty"`
+	Parameters *RouteConfigurationOverrideActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type DeliveryRuleRouteConfigurationOverrideAction.
@@ -1493,10 +1493,10 @@ func (d *DeliveryRuleRouteConfigurationOverrideAction) GetDeliveryRuleActionAuto
 // DeliveryRuleSSLProtocolCondition - Defines the SslProtocol condition for the delivery rule.
 type DeliveryRuleSSLProtocolCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *SSLProtocolMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *SSLProtocolMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleSSLProtocolCondition.
@@ -1509,10 +1509,10 @@ func (d *DeliveryRuleSSLProtocolCondition) GetDeliveryRuleCondition() *DeliveryR
 // DeliveryRuleServerPortCondition - Defines the ServerPort condition for the delivery rule.
 type DeliveryRuleServerPortCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *ServerPortMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *ServerPortMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleServerPortCondition.
@@ -1525,10 +1525,10 @@ func (d *DeliveryRuleServerPortCondition) GetDeliveryRuleCondition() *DeliveryRu
 // DeliveryRuleSocketAddrCondition - Defines the SocketAddress condition for the delivery rule.
 type DeliveryRuleSocketAddrCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *SocketAddrMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *SocketAddrMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleSocketAddrCondition.
@@ -1541,10 +1541,10 @@ func (d *DeliveryRuleSocketAddrCondition) GetDeliveryRuleCondition() *DeliveryRu
 // DeliveryRuleURLFileExtensionCondition - Defines the UrlFileExtension condition for the delivery rule.
 type DeliveryRuleURLFileExtensionCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *URLFileExtensionMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *URLFileExtensionMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleURLFileExtensionCondition.
@@ -1557,10 +1557,10 @@ func (d *DeliveryRuleURLFileExtensionCondition) GetDeliveryRuleCondition() *Deli
 // DeliveryRuleURLFileNameCondition - Defines the UrlFileName condition for the delivery rule.
 type DeliveryRuleURLFileNameCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *URLFileNameMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *URLFileNameMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleURLFileNameCondition.
@@ -1573,10 +1573,10 @@ func (d *DeliveryRuleURLFileNameCondition) GetDeliveryRuleCondition() *DeliveryR
 // DeliveryRuleURLPathCondition - Defines the UrlPath condition for the delivery rule.
 type DeliveryRuleURLPathCondition struct {
 	// REQUIRED; The name of the condition for the delivery rule.
-	Name *MatchVariable `json:"name,omitempty"`
+	Name *MatchVariable
 
 	// REQUIRED; Defines the parameters for the condition.
-	Parameters *URLPathMatchConditionParameters `json:"parameters,omitempty"`
+	Parameters *URLPathMatchConditionParameters
 }
 
 // GetDeliveryRuleCondition implements the DeliveryRuleConditionClassification interface for type DeliveryRuleURLPathCondition.
@@ -1589,46 +1589,46 @@ func (d *DeliveryRuleURLPathCondition) GetDeliveryRuleCondition() *DeliveryRuleC
 // DimensionProperties - Type of operation: get, read, delete, etc.
 type DimensionProperties struct {
 	// Display name of dimension.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Internal name of dimension.
-	InternalName *string `json:"internalName,omitempty"`
+	InternalName *string
 
 	// Name of dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // DomainValidationProperties - The JSON object that contains the properties to validate a domain.
 type DomainValidationProperties struct {
 	// READ-ONLY; The date time that the token expires
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; Challenge used for DNS TXT record or file based validation
-	ValidationToken *string `json:"validationToken,omitempty" azure:"ro"`
+	ValidationToken *string
 }
 
 // EdgeNode - Edgenode is a global Point of Presence (POP) location used to deliver CDN content to end users.
 type EdgeNode struct {
 	// The JSON object that contains the properties required to create an edgenode.
-	Properties *EdgeNodeProperties `json:"properties,omitempty"`
+	Properties *EdgeNodeProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EdgeNodeProperties - The JSON object that contains the properties required to create an edgenode.
 type EdgeNodeProperties struct {
 	// REQUIRED; List of ip address groups.
-	IPAddressGroups []*IPAddressGroup `json:"ipAddressGroups,omitempty"`
+	IPAddressGroups []*IPAddressGroup
 }
 
 // EdgeNodesClientListOptions contains the optional parameters for the EdgeNodesClient.NewListPager method.
@@ -1640,10 +1640,10 @@ type EdgeNodesClientListOptions struct {
 // get the next set of results.
 type EdgenodeResult struct {
 	// URL to get the next set of edgenode list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Edge node of CDN service.
-	Value []*EdgeNode `json:"value,omitempty" azure:"ro"`
+	Value []*EdgeNode
 }
 
 // Endpoint - CDN endpoint is the entity within a CDN profile containing configuration information such as origin, protocol,
@@ -1651,196 +1651,196 @@ type EdgenodeResult struct {
 // .azureedge.net.
 type Endpoint struct {
 	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The JSON object that contains the properties required to create an endpoint.
-	Properties *EndpointProperties `json:"properties,omitempty"`
+	Properties *EndpointProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EndpointListResult - Result of the request to list endpoints. It contains a list of endpoint objects and a URL link to
 // get the next set of results.
 type EndpointListResult struct {
 	// URL to get the next set of endpoint objects if there is any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of CDN endpoints within a profile
-	Value []*Endpoint `json:"value,omitempty" azure:"ro"`
+	Value []*Endpoint
 }
 
 // EndpointProperties - The JSON object that contains the properties required to create an endpoint.
 type EndpointProperties struct {
 	// REQUIRED; The source of the content being delivered via CDN.
-	Origins []*DeepCreatedOrigin `json:"origins,omitempty"`
+	Origins []*DeepCreatedOrigin
 
 	// List of content types on which compression applies. The value should be a valid MIME type.
-	ContentTypesToCompress []*string `json:"contentTypesToCompress,omitempty"`
+	ContentTypesToCompress []*string
 
 	// A reference to the origin group.
-	DefaultOriginGroup *ResourceReference `json:"defaultOriginGroup,omitempty"`
+	DefaultOriginGroup *ResourceReference
 
 	// A policy that specifies the delivery rules to be used for an endpoint.
-	DeliveryPolicy *EndpointPropertiesUpdateParametersDeliveryPolicy `json:"deliveryPolicy,omitempty"`
+	DeliveryPolicy *EndpointPropertiesUpdateParametersDeliveryPolicy
 
 	// List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a specified
 	// path or content, e.g. block APAC for path /pictures/
-	GeoFilters []*GeoFilter `json:"geoFilters,omitempty"`
+	GeoFilters []*GeoFilter
 
 	// Indicates whether content compression is enabled on CDN. Default value is false. If compression is enabled, content will
 	// be served as compressed if user requests for a compressed version. Content
 	// won't be compressed on CDN when requested content is smaller than 1 byte or larger than 1 MB.
-	IsCompressionEnabled *bool `json:"isCompressionEnabled,omitempty"`
+	IsCompressionEnabled *bool
 
 	// Indicates whether HTTP traffic is allowed on the endpoint. Default value is true. At least one protocol (HTTP or HTTPS)
 	// must be allowed.
-	IsHTTPAllowed *bool `json:"isHttpAllowed,omitempty"`
+	IsHTTPAllowed *bool
 
 	// Indicates whether HTTPS traffic is allowed on the endpoint. Default value is true. At least one protocol (HTTP or HTTPS)
 	// must be allowed.
-	IsHTTPSAllowed *bool `json:"isHttpsAllowed,omitempty"`
+	IsHTTPSAllowed *bool
 
 	// Specifies what scenario the customer wants this CDN endpoint to optimize for, e.g. Download, Media services. With this
 	// information, CDN can apply scenario driven optimization.
-	OptimizationType *OptimizationType `json:"optimizationType,omitempty"`
+	OptimizationType *OptimizationType
 
 	// The origin groups comprising of origins that are used for load balancing the traffic based on availability.
-	OriginGroups []*DeepCreatedOriginGroup `json:"originGroups,omitempty"`
+	OriginGroups []*DeepCreatedOriginGroup
 
 	// The host header value sent to the origin with each request. This property at Endpoint is only allowed when endpoint uses
 	// single origin and can be overridden by the same property specified at origin.If
 	// you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and
 	// Cloud Services require this host header value to match the origin hostname by
 	// default.
-	OriginHostHeader *string `json:"originHostHeader,omitempty"`
+	OriginHostHeader *string
 
 	// A directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
-	OriginPath *string `json:"originPath,omitempty"`
+	OriginPath *string
 
 	// Path to a file hosted on the origin which helps accelerate delivery of the dynamic content and calculate the most optimal
 	// routes for the CDN. This is relative to the origin path. This property is only
 	// relevant when using a single origin.
-	ProbePath *string `json:"probePath,omitempty"`
+	ProbePath *string
 
 	// Defines how CDN caches requests that include query strings. You can ignore any query strings when caching, bypass caching
 	// to prevent requests that contain query strings from being cached, or cache
 	// every request with a unique URL.
-	QueryStringCachingBehavior *QueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
+	QueryStringCachingBehavior *QueryStringCachingBehavior
 
 	// List of keys used to validate the signed URL hashes.
-	URLSigningKeys []*URLSigningKey `json:"urlSigningKeys,omitempty"`
+	URLSigningKeys []*URLSigningKey
 
 	// Defines the Web Application Firewall policy for the endpoint (if applicable)
-	WebApplicationFirewallPolicyLink *EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
+	WebApplicationFirewallPolicyLink *EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink
 
 	// READ-ONLY; The custom domains under the endpoint.
-	CustomDomains []*CustomDomain `json:"customDomains,omitempty" azure:"ro"`
+	CustomDomains []*CustomDomain
 
 	// READ-ONLY; The host name of the endpoint structured as {endpointName}.{DNSZone}, e.g. contoso.azureedge.net
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; Provisioning status of the endpoint.
-	ProvisioningState *EndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *EndpointProvisioningState
 
 	// READ-ONLY; Resource status of the endpoint.
-	ResourceState *EndpointResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *EndpointResourceState
 }
 
 // EndpointPropertiesUpdateParameters - The JSON object containing endpoint update parameters.
 type EndpointPropertiesUpdateParameters struct {
 	// List of content types on which compression applies. The value should be a valid MIME type.
-	ContentTypesToCompress []*string `json:"contentTypesToCompress,omitempty"`
+	ContentTypesToCompress []*string
 
 	// A reference to the origin group.
-	DefaultOriginGroup *ResourceReference `json:"defaultOriginGroup,omitempty"`
+	DefaultOriginGroup *ResourceReference
 
 	// A policy that specifies the delivery rules to be used for an endpoint.
-	DeliveryPolicy *EndpointPropertiesUpdateParametersDeliveryPolicy `json:"deliveryPolicy,omitempty"`
+	DeliveryPolicy *EndpointPropertiesUpdateParametersDeliveryPolicy
 
 	// List of rules defining the user's geo access within a CDN endpoint. Each geo filter defines an access rule to a specified
 	// path or content, e.g. block APAC for path /pictures/
-	GeoFilters []*GeoFilter `json:"geoFilters,omitempty"`
+	GeoFilters []*GeoFilter
 
 	// Indicates whether content compression is enabled on CDN. Default value is false. If compression is enabled, content will
 	// be served as compressed if user requests for a compressed version. Content
 	// won't be compressed on CDN when requested content is smaller than 1 byte or larger than 1 MB.
-	IsCompressionEnabled *bool `json:"isCompressionEnabled,omitempty"`
+	IsCompressionEnabled *bool
 
 	// Indicates whether HTTP traffic is allowed on the endpoint. Default value is true. At least one protocol (HTTP or HTTPS)
 	// must be allowed.
-	IsHTTPAllowed *bool `json:"isHttpAllowed,omitempty"`
+	IsHTTPAllowed *bool
 
 	// Indicates whether HTTPS traffic is allowed on the endpoint. Default value is true. At least one protocol (HTTP or HTTPS)
 	// must be allowed.
-	IsHTTPSAllowed *bool `json:"isHttpsAllowed,omitempty"`
+	IsHTTPSAllowed *bool
 
 	// Specifies what scenario the customer wants this CDN endpoint to optimize for, e.g. Download, Media services. With this
 	// information, CDN can apply scenario driven optimization.
-	OptimizationType *OptimizationType `json:"optimizationType,omitempty"`
+	OptimizationType *OptimizationType
 
 	// The host header value sent to the origin with each request. This property at Endpoint is only allowed when endpoint uses
 	// single origin and can be overridden by the same property specified at origin.If
 	// you leave this blank, the request hostname determines this value. Azure CDN origins, such as Web Apps, Blob Storage, and
 	// Cloud Services require this host header value to match the origin hostname by
 	// default.
-	OriginHostHeader *string `json:"originHostHeader,omitempty"`
+	OriginHostHeader *string
 
 	// A directory path on the origin that CDN can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
-	OriginPath *string `json:"originPath,omitempty"`
+	OriginPath *string
 
 	// Path to a file hosted on the origin which helps accelerate delivery of the dynamic content and calculate the most optimal
 	// routes for the CDN. This is relative to the origin path. This property is only
 	// relevant when using a single origin.
-	ProbePath *string `json:"probePath,omitempty"`
+	ProbePath *string
 
 	// Defines how CDN caches requests that include query strings. You can ignore any query strings when caching, bypass caching
 	// to prevent requests that contain query strings from being cached, or cache
 	// every request with a unique URL.
-	QueryStringCachingBehavior *QueryStringCachingBehavior `json:"queryStringCachingBehavior,omitempty"`
+	QueryStringCachingBehavior *QueryStringCachingBehavior
 
 	// List of keys used to validate the signed URL hashes.
-	URLSigningKeys []*URLSigningKey `json:"urlSigningKeys,omitempty"`
+	URLSigningKeys []*URLSigningKey
 
 	// Defines the Web Application Firewall policy for the endpoint (if applicable)
-	WebApplicationFirewallPolicyLink *EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink `json:"webApplicationFirewallPolicyLink,omitempty"`
+	WebApplicationFirewallPolicyLink *EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink
 }
 
 // EndpointPropertiesUpdateParametersDeliveryPolicy - A policy that specifies the delivery rules to be used for an endpoint.
 type EndpointPropertiesUpdateParametersDeliveryPolicy struct {
 	// REQUIRED; A list of the delivery rules.
-	Rules []*DeliveryRule `json:"rules,omitempty"`
+	Rules []*DeliveryRule
 
 	// User-friendly description of the policy.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink - Defines the Web Application Firewall policy for the
 // endpoint (if applicable)
 type EndpointPropertiesUpdateParametersWebApplicationFirewallPolicyLink struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // EndpointUpdateParameters - Properties required to create or update an endpoint.
 type EndpointUpdateParameters struct {
 	// The JSON object containing endpoint update parameters.
-	Properties *EndpointPropertiesUpdateParameters `json:"properties,omitempty"`
+	Properties *EndpointPropertiesUpdateParameters
 
 	// Endpoint tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // EndpointsClientBeginCreateOptions contains the optional parameters for the EndpointsClient.BeginCreate method.
@@ -1910,225 +1910,225 @@ type EndpointsClientValidateCustomDomainOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Error response indicates Azure Front Door Standard or Azure Front Door Premium or CDN service is not able
 // to process the incoming request. The reason is provided in the error message.
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // GeoFilter - Rules defining user's geo access within a CDN endpoint.
 type GeoFilter struct {
 	// REQUIRED; Action of the geo filter, i.e. allow or block access.
-	Action *GeoFilterActions `json:"action,omitempty"`
+	Action *GeoFilterActions
 
 	// REQUIRED; Two letter country or region codes defining user country or region access in a geo filter, e.g. AU, MX, US.
-	CountryCodes []*string `json:"countryCodes,omitempty"`
+	CountryCodes []*string
 
 	// REQUIRED; Relative path applicable to geo filter. (e.g. '/mypictures', '/mypicture/kitty.jpg', and etc.)
-	RelativePath *string `json:"relativePath,omitempty"`
+	RelativePath *string
 }
 
 // HTTPErrorRangeParameters - The JSON object that represents the range for http status codes
 type HTTPErrorRangeParameters struct {
 	// The inclusive start of the http status code range.
-	Begin *int32 `json:"begin,omitempty"`
+	Begin *int32
 
 	// The inclusive end of the http status code range.
-	End *int32 `json:"end,omitempty"`
+	End *int32
 }
 
 // HTTPVersionMatchConditionParameters - Defines the parameters for HttpVersion match conditions
 type HTTPVersionMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *HTTPVersionOperator `json:"operator,omitempty"`
+	Operator *HTTPVersionOperator
 
 	// REQUIRED
-	TypeName *HTTPVersionMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *HTTPVersionMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // HeaderActionParameters - Defines the parameters for the request header action.
 type HeaderActionParameters struct {
 	// REQUIRED; Action to perform
-	HeaderAction *HeaderAction `json:"headerAction,omitempty"`
+	HeaderAction *HeaderAction
 
 	// REQUIRED; Name of the header to modify
-	HeaderName *string `json:"headerName,omitempty"`
+	HeaderName *string
 
 	// REQUIRED
-	TypeName *HeaderActionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *HeaderActionParametersTypeName
 
 	// Value for the specified action
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // HealthProbeParameters - The JSON object that contains the properties to send health probes to origin.
 type HealthProbeParameters struct {
 	// The number of seconds between health probes.Default is 240sec.
-	ProbeIntervalInSeconds *int32 `json:"probeIntervalInSeconds,omitempty"`
+	ProbeIntervalInSeconds *int32
 
 	// The path relative to the origin that is used to determine the health of the origin.
-	ProbePath *string `json:"probePath,omitempty"`
+	ProbePath *string
 
 	// Protocol to use for health probe.
-	ProbeProtocol *ProbeProtocol `json:"probeProtocol,omitempty"`
+	ProbeProtocol *ProbeProtocol
 
 	// The type of health probe request that is made.
-	ProbeRequestType *HealthProbeRequestType `json:"probeRequestType,omitempty"`
+	ProbeRequestType *HealthProbeRequestType
 }
 
 // HostNameMatchConditionParameters - Defines the parameters for HostName match conditions
 type HostNameMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *HostNameOperator `json:"operator,omitempty"`
+	Operator *HostNameOperator
 
 	// REQUIRED
-	TypeName *HostNameMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *HostNameMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // IPAddressGroup - CDN Ip address group
 type IPAddressGroup struct {
 	// The delivery region of the ip address group
-	DeliveryRegion *string `json:"deliveryRegion,omitempty"`
+	DeliveryRegion *string
 
 	// The list of ip v4 addresses.
-	IPv4Addresses []*CidrIPAddress `json:"ipv4Addresses,omitempty"`
+	IPv4Addresses []*CidrIPAddress
 
 	// The list of ip v6 addresses.
-	IPv6Addresses []*CidrIPAddress `json:"ipv6Addresses,omitempty"`
+	IPv6Addresses []*CidrIPAddress
 }
 
 // IsDeviceMatchConditionParameters - Defines the parameters for IsDevice match conditions
 type IsDeviceMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *IsDeviceOperator `json:"operator,omitempty"`
+	Operator *IsDeviceOperator
 
 	// REQUIRED
-	TypeName *IsDeviceMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *IsDeviceMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*IsDeviceMatchConditionParametersMatchValuesItem `json:"matchValues,omitempty"`
+	MatchValues []*IsDeviceMatchConditionParametersMatchValuesItem
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // KeyVaultCertificateSourceParameters - Describes the parameters for using a user's KeyVault certificate for securing custom
 // domain.
 type KeyVaultCertificateSourceParameters struct {
 	// REQUIRED; Describes the action that shall be taken when the certificate is removed from Key Vault.
-	DeleteRule *DeleteRule `json:"deleteRule,omitempty"`
+	DeleteRule *DeleteRule
 
 	// REQUIRED; Resource group of the user's Key Vault containing the SSL certificate
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	ResourceGroupName *string
 
 	// REQUIRED; The name of Key Vault Secret (representing the full certificate PFX) in Key Vault.
-	SecretName *string `json:"secretName,omitempty"`
+	SecretName *string
 
 	// REQUIRED; Subscription Id of the user's Key Vault containing the SSL certificate
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// REQUIRED
-	TypeName *KeyVaultCertificateSourceParametersTypeName `json:"typeName,omitempty"`
+	TypeName *KeyVaultCertificateSourceParametersTypeName
 
 	// REQUIRED; Describes the action that shall be taken when the certificate is updated in Key Vault.
-	UpdateRule *UpdateRule `json:"updateRule,omitempty"`
+	UpdateRule *UpdateRule
 
 	// REQUIRED; The name of the user's Key Vault containing the SSL certificate
-	VaultName *string `json:"vaultName,omitempty"`
+	VaultName *string
 
 	// The version(GUID) of Key Vault Secret in Key Vault.
-	SecretVersion *string `json:"secretVersion,omitempty"`
+	SecretVersion *string
 }
 
 // KeyVaultSigningKeyParameters - Describes the parameters for using a user's KeyVault for URL Signing Key.
 type KeyVaultSigningKeyParameters struct {
 	// REQUIRED; Resource group of the user's Key Vault containing the secret
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	ResourceGroupName *string
 
 	// REQUIRED; The name of secret in Key Vault.
-	SecretName *string `json:"secretName,omitempty"`
+	SecretName *string
 
 	// REQUIRED; The version(GUID) of secret in Key Vault.
-	SecretVersion *string `json:"secretVersion,omitempty"`
+	SecretVersion *string
 
 	// REQUIRED; Subscription Id of the user's Key Vault containing the secret
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// REQUIRED
-	TypeName *KeyVaultSigningKeyParametersTypeName `json:"typeName,omitempty"`
+	TypeName *KeyVaultSigningKeyParametersTypeName
 
 	// REQUIRED; The name of the user's Key Vault containing the secret
-	VaultName *string `json:"vaultName,omitempty"`
+	VaultName *string
 }
 
 // LinkedEndpoint - Defines the ARM Resource ID for the linked endpoints
 type LinkedEndpoint struct {
 	// ARM Resource ID string.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // LoadBalancingSettingsParameters - Round-Robin load balancing settings for a backend pool
 type LoadBalancingSettingsParameters struct {
 	// The additional latency in milliseconds for probes to fall into the lowest latency bucket
-	AdditionalLatencyInMilliseconds *int32 `json:"additionalLatencyInMilliseconds,omitempty"`
+	AdditionalLatencyInMilliseconds *int32
 
 	// The number of samples to consider for load balancing decisions
-	SampleSize *int32 `json:"sampleSize,omitempty"`
+	SampleSize *int32
 
 	// The number of samples within the sample period that must succeed
-	SuccessfulSamplesRequired *int32 `json:"successfulSamplesRequired,omitempty"`
+	SuccessfulSamplesRequired *int32
 }
 
 // LoadParameters - Parameters required for content load.
 type LoadParameters struct {
 	// REQUIRED; The path to the content to be loaded. Path should be a relative file URL of the origin.
-	ContentPaths []*string `json:"contentPaths,omitempty"`
+	ContentPaths []*string
 }
 
 // LogAnalyticsClientGetLogAnalyticsLocationsOptions contains the optional parameters for the LogAnalyticsClient.GetLogAnalyticsLocations
@@ -2175,40 +2175,40 @@ type LogAnalyticsClientGetWafLogAnalyticsRankingsOptions struct {
 // LogSpecification - Log specification of operation.
 type LogSpecification struct {
 	// Blob duration of specification.
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// Display name of log specification.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Pattern to filter based on name
-	LogFilterPattern *string `json:"logFilterPattern,omitempty"`
+	LogFilterPattern *string
 
 	// Name of log specification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // ManagedCertificate - Managed Certificate used for https
 type ManagedCertificate struct {
 	// The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; Subject name in the certificate.
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 }
 
 // ManagedCertificateParameters - Managed Certificate used for https
 type ManagedCertificateParameters struct {
 	// REQUIRED; The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 
 	// READ-ONLY; Certificate expiration date.
-	ExpirationDate *string `json:"expirationDate,omitempty" azure:"ro"`
+	ExpirationDate *string
 
 	// READ-ONLY; Subject name in the certificate.
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 }
 
 // GetSecretParameters implements the SecretParametersClassification interface for type ManagedCertificateParameters.
@@ -2221,16 +2221,16 @@ func (m *ManagedCertificateParameters) GetSecretParameters() *SecretParameters {
 // ManagedHTTPSParameters - Defines the certificate source parameters using CDN managed certificate for enabling SSL.
 type ManagedHTTPSParameters struct {
 	// REQUIRED; Defines the source of the SSL certificate.
-	CertificateSource *CertificateSource `json:"certificateSource,omitempty"`
+	CertificateSource *CertificateSource
 
 	// REQUIRED; Defines the certificate source parameters using CDN managed certificate for enabling SSL.
-	CertificateSourceParameters *CertificateSourceParameters `json:"certificateSourceParameters,omitempty"`
+	CertificateSourceParameters *CertificateSourceParameters
 
 	// REQUIRED; Defines the TLS extension protocol that is used for secure delivery.
-	ProtocolType *ProtocolType `json:"protocolType,omitempty"`
+	ProtocolType *ProtocolType
 
 	// TLS protocol version that will be used for Https
-	MinimumTLSVersion *MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *MinimumTLSVersion
 }
 
 // GetCustomDomainHTTPSParameters implements the CustomDomainHTTPSParametersClassification interface for type ManagedHTTPSParameters.
@@ -2245,109 +2245,109 @@ func (m *ManagedHTTPSParameters) GetCustomDomainHTTPSParameters() *CustomDomainH
 // ManagedRuleDefinition - Describes a managed rule definition.
 type ManagedRuleDefinition struct {
 	// READ-ONLY; Describes the functionality of the managed rule.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Identifier for the managed rule.
-	RuleID *string `json:"ruleId,omitempty" azure:"ro"`
+	RuleID *string
 }
 
 // ManagedRuleGroupDefinition - Describes a managed rule group.
 type ManagedRuleGroupDefinition struct {
 	// READ-ONLY; Description of the managed rule group.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Name of the managed rule group.
-	RuleGroupName *string `json:"ruleGroupName,omitempty" azure:"ro"`
+	RuleGroupName *string
 
 	// READ-ONLY; List of rules within the managed rule group.
-	Rules []*ManagedRuleDefinition `json:"rules,omitempty" azure:"ro"`
+	Rules []*ManagedRuleDefinition
 }
 
 // ManagedRuleGroupOverride - Defines a managed rule group override setting.
 type ManagedRuleGroupOverride struct {
 	// REQUIRED; Describes the managed rule group within the rule set to override
-	RuleGroupName *string `json:"ruleGroupName,omitempty"`
+	RuleGroupName *string
 
 	// List of rules that will be disabled. If none specified, all rules in the group will be disabled.
-	Rules []*ManagedRuleOverride `json:"rules,omitempty"`
+	Rules []*ManagedRuleOverride
 }
 
 // ManagedRuleOverride - Defines a managed rule group override setting.
 type ManagedRuleOverride struct {
 	// REQUIRED; Identifier for the managed rule.
-	RuleID *string `json:"ruleId,omitempty"`
+	RuleID *string
 
 	// Describes the override action to be applied when rule matches.
-	Action *ActionType `json:"action,omitempty"`
+	Action *ActionType
 
 	// Describes if the managed rule is in enabled or disabled state. Defaults to Disabled if not specified.
-	EnabledState *ManagedRuleEnabledState `json:"enabledState,omitempty"`
+	EnabledState *ManagedRuleEnabledState
 }
 
 // ManagedRuleSet - Defines a managed rule set.
 type ManagedRuleSet struct {
 	// REQUIRED; Defines the rule set type to use.
-	RuleSetType *string `json:"ruleSetType,omitempty"`
+	RuleSetType *string
 
 	// REQUIRED; Defines the version of the rule set to use.
-	RuleSetVersion *string `json:"ruleSetVersion,omitempty"`
+	RuleSetVersion *string
 
 	// Verizon only : If the rule set supports anomaly detection mode, this describes the threshold for blocking requests.
-	AnomalyScore *int32 `json:"anomalyScore,omitempty"`
+	AnomalyScore *int32
 
 	// Defines the rule overrides to apply to the rule set.
-	RuleGroupOverrides []*ManagedRuleGroupOverride `json:"ruleGroupOverrides,omitempty"`
+	RuleGroupOverrides []*ManagedRuleGroupOverride
 }
 
 // ManagedRuleSetDefinition - Describes a managed rule set definition.
 type ManagedRuleSetDefinition struct {
 	// Describes managed rule set definition properties.
-	Properties *ManagedRuleSetDefinitionProperties `json:"properties,omitempty"`
+	Properties *ManagedRuleSetDefinitionProperties
 
 	// The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagedRuleSetDefinitionList - List of managed rule set definitions available for use in a policy.
 type ManagedRuleSetDefinitionList struct {
 	// URL to retrieve next set of managed rule set definitions.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of managed rule set definitions.
-	Value []*ManagedRuleSetDefinition `json:"value,omitempty" azure:"ro"`
+	Value []*ManagedRuleSetDefinition
 }
 
 // ManagedRuleSetDefinitionProperties - Properties for a managed rule set definition.
 type ManagedRuleSetDefinitionProperties struct {
 	// READ-ONLY; Provisioning state of the managed rule set.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Rule groups of the managed rule set.
-	RuleGroups []*ManagedRuleGroupDefinition `json:"ruleGroups,omitempty" azure:"ro"`
+	RuleGroups []*ManagedRuleGroupDefinition
 
 	// READ-ONLY; Type of the managed rule set.
-	RuleSetType *string `json:"ruleSetType,omitempty" azure:"ro"`
+	RuleSetType *string
 
 	// READ-ONLY; Version of the managed rule set type.
-	RuleSetVersion *string `json:"ruleSetVersion,omitempty" azure:"ro"`
+	RuleSetVersion *string
 }
 
 // ManagedRuleSetList - Defines the list of managed rule sets for the policy.
 type ManagedRuleSetList struct {
 	// List of rule sets.
-	ManagedRuleSets []*ManagedRuleSet `json:"managedRuleSets,omitempty"`
+	ManagedRuleSets []*ManagedRuleSet
 }
 
 // ManagedRuleSetsClientListOptions contains the optional parameters for the ManagedRuleSetsClient.NewListPager method.
@@ -2381,123 +2381,123 @@ type ManagementClientValidateProbeOptions struct {
 // MatchCondition - Define match conditions
 type MatchCondition struct {
 	// REQUIRED; List of possible match values.
-	MatchValue []*string `json:"matchValue,omitempty"`
+	MatchValue []*string
 
 	// REQUIRED; Match variable to compare against.
-	MatchVariable *WafMatchVariable `json:"matchVariable,omitempty"`
+	MatchVariable *WafMatchVariable
 
 	// REQUIRED; Describes operator to be matched
-	Operator *Operator `json:"operator,omitempty"`
+	Operator *Operator
 
 	// Describes if the result of this condition should be negated.
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// Selector can used to match a specific key for QueryString, Cookies, RequestHeader or PostArgs.
-	Selector *string `json:"selector,omitempty"`
+	Selector *string
 
 	// List of transforms.
-	Transforms []*TransformType `json:"transforms,omitempty"`
+	Transforms []*TransformType
 }
 
 // MetricAvailability - Retention policy of a resource metric.
 type MetricAvailability struct {
-	BlobDuration *string `json:"blobDuration,omitempty"`
-	TimeGrain    *string `json:"timeGrain,omitempty"`
+	BlobDuration *string
+	TimeGrain    *string
 }
 
 // MetricSpecification - Metric specification of operation.
 type MetricSpecification struct {
 	// The metric aggregation type. Possible values include: 'Average', 'Count', 'Total'.
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// Retention policies of a resource metric.
-	Availabilities []*MetricAvailability `json:"availabilities,omitempty"`
+	Availabilities []*MetricAvailability
 
 	// The dimensions of metric
-	Dimensions []*DimensionProperties `json:"dimensions,omitempty"`
+	Dimensions []*DimensionProperties
 
 	// Display description of metric specification.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// Display name of metric specification.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Property to specify whether to fill gap with zero.
-	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	FillGapWithZero *bool
 
 	// Property to specify metric is internal or not.
-	IsInternal *bool `json:"isInternal,omitempty"`
+	IsInternal *bool
 
 	// Pattern to filter based on name
-	MetricFilterPattern *string `json:"metricFilterPattern,omitempty"`
+	MetricFilterPattern *string
 
 	// Name of metric specification.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The supported time grain types for the metrics.
-	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty"`
+	SupportedTimeGrainTypes []*string
 
 	// The metric unit. Possible values include: 'Bytes', 'Count', 'Milliseconds'.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // MetricsResponse - Metrics Response
 type MetricsResponse struct {
-	DateTimeBegin *time.Time                   `json:"dateTimeBegin,omitempty"`
-	DateTimeEnd   *time.Time                   `json:"dateTimeEnd,omitempty"`
-	Granularity   *MetricsResponseGranularity  `json:"granularity,omitempty"`
-	Series        []*MetricsResponseSeriesItem `json:"series,omitempty"`
+	DateTimeBegin *time.Time
+	DateTimeEnd   *time.Time
+	Granularity   *MetricsResponseGranularity
+	Series        []*MetricsResponseSeriesItem
 }
 
 type MetricsResponseSeriesItem struct {
-	Data   []*Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems `json:"data,omitempty"`
-	Groups []*MetricsResponseSeriesPropertiesItemsItem                                        `json:"groups,omitempty"`
-	Metric *string                                                                            `json:"metric,omitempty"`
-	Unit   *MetricsResponseSeriesItemUnit                                                     `json:"unit,omitempty"`
+	Data   []*Components1Gs0LlpSchemasMetricsresponsePropertiesSeriesItemsPropertiesDataItems
+	Groups []*MetricsResponseSeriesPropertiesItemsItem
+	Metric *string
+	Unit   *MetricsResponseSeriesItemUnit
 }
 
 type MetricsResponseSeriesPropertiesItemsItem struct {
-	Name  *string `json:"name,omitempty"`
-	Value *string `json:"value,omitempty"`
+	Name  *string
+	Value *string
 }
 
 // Operation - CDN REST API operation
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Properties of operation, include metric specifications.
-	OperationProperties *OperationProperties `json:"properties,omitempty"`
+	OperationProperties *OperationProperties
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The origin of operations.
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Description of operation.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Service provider: Microsoft.Cdn
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource on which the operation is performed: Profile, endpoint, etc.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationProperties - Properties of operation, include metric specifications.
 type OperationProperties struct {
 	// One property of operation, include metric specifications.
-	ServiceSpecification *ServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *ServiceSpecification
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -2509,10 +2509,10 @@ type OperationsClientListOptions struct {
 // get the next set of results.
 type OperationsListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of CDN operations supported by the CDN resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // Origin - CDN origin is the source of the content being delivered via CDN. When the edge nodes represented by an endpoint
@@ -2520,66 +2520,66 @@ type OperationsListResult struct {
 // the configured origins.
 type Origin struct {
 	// The JSON object that contains the properties of the origin.
-	Properties *OriginProperties `json:"properties,omitempty"`
+	Properties *OriginProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OriginGroup - Origin group comprising of origins is used for load balancing to origins when the content cannot be served
 // from CDN.
 type OriginGroup struct {
 	// The JSON object that contains the properties of the origin group.
-	Properties *OriginGroupProperties `json:"properties,omitempty"`
+	Properties *OriginGroupProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OriginGroupListResult - Result of the request to list origin groups. It contains a list of origin groups objects and a
 // URL link to get the next set of results.
 type OriginGroupListResult struct {
 	// URL to get the next set of origin objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of CDN origin groups within an endpoint
-	Value []*OriginGroup `json:"value,omitempty" azure:"ro"`
+	Value []*OriginGroup
 }
 
 // OriginGroupOverride - Defines the parameters for the origin group override configuration.
 type OriginGroupOverride struct {
 	// Protocol this rule will use when forwarding traffic to backends.
-	ForwardingProtocol *ForwardingProtocol `json:"forwardingProtocol,omitempty"`
+	ForwardingProtocol *ForwardingProtocol
 
 	// defines the OriginGroup that would override the DefaultOriginGroup on route.
-	OriginGroup *ResourceReference `json:"originGroup,omitempty"`
+	OriginGroup *ResourceReference
 }
 
 // OriginGroupOverrideAction - Defines the origin group override action for the delivery rule.
 type OriginGroupOverrideAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *OriginGroupOverrideActionParameters `json:"parameters,omitempty"`
+	Parameters *OriginGroupOverrideActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type OriginGroupOverrideAction.
@@ -2592,56 +2592,56 @@ func (o *OriginGroupOverrideAction) GetDeliveryRuleActionAutoGenerated() *Delive
 // OriginGroupOverrideActionParameters - Defines the parameters for the origin group override action.
 type OriginGroupOverrideActionParameters struct {
 	// REQUIRED; defines the OriginGroup that would override the DefaultOriginGroup.
-	OriginGroup *ResourceReference `json:"originGroup,omitempty"`
+	OriginGroup *ResourceReference
 
 	// REQUIRED
-	TypeName *OriginGroupOverrideActionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *OriginGroupOverrideActionParametersTypeName
 }
 
 // OriginGroupProperties - The JSON object that contains the properties of the origin group.
 type OriginGroupProperties struct {
 	// Health probe settings to the origin that is used to determine the health of the origin.
-	HealthProbeSettings *HealthProbeParameters `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings *HealthProbeParameters
 
 	// The source of the content being delivered via CDN within given origin group.
-	Origins []*ResourceReference `json:"origins,omitempty"`
+	Origins []*ResourceReference
 
 	// The JSON object that contains the properties to determine origin health using real requests/responses. This property is
 	// currently not supported.
-	ResponseBasedOriginErrorDetectionSettings *ResponseBasedOriginErrorDetectionParameters `json:"responseBasedOriginErrorDetectionSettings,omitempty"`
+	ResponseBasedOriginErrorDetectionSettings *ResponseBasedOriginErrorDetectionParameters
 
 	// Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint
 	// is added. Default is 10 mins. This property is currently not supported.
-	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32 `json:"trafficRestorationTimeToHealedOrNewEndpointsInMinutes,omitempty"`
+	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32
 
 	// READ-ONLY; Provisioning status of the origin group.
-	ProvisioningState *OriginGroupProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *OriginGroupProvisioningState
 
 	// READ-ONLY; Resource status of the origin group.
-	ResourceState *OriginGroupResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *OriginGroupResourceState
 }
 
 // OriginGroupUpdateParameters - Origin group properties needed for origin group creation or update.
 type OriginGroupUpdateParameters struct {
 	// The JSON object that contains the properties of the origin group.
-	Properties *OriginGroupUpdatePropertiesParameters `json:"properties,omitempty"`
+	Properties *OriginGroupUpdatePropertiesParameters
 }
 
 // OriginGroupUpdatePropertiesParameters - The JSON object that contains the properties of the origin group.
 type OriginGroupUpdatePropertiesParameters struct {
 	// Health probe settings to the origin that is used to determine the health of the origin.
-	HealthProbeSettings *HealthProbeParameters `json:"healthProbeSettings,omitempty"`
+	HealthProbeSettings *HealthProbeParameters
 
 	// The source of the content being delivered via CDN within given origin group.
-	Origins []*ResourceReference `json:"origins,omitempty"`
+	Origins []*ResourceReference
 
 	// The JSON object that contains the properties to determine origin health using real requests/responses. This property is
 	// currently not supported.
-	ResponseBasedOriginErrorDetectionSettings *ResponseBasedOriginErrorDetectionParameters `json:"responseBasedOriginErrorDetectionSettings,omitempty"`
+	ResponseBasedOriginErrorDetectionSettings *ResponseBasedOriginErrorDetectionParameters
 
 	// Time in minutes to shift the traffic to the endpoint gradually when an unhealthy endpoint comes healthy or a new endpoint
 	// is added. Default is 10 mins. This property is currently not supported.
-	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32 `json:"trafficRestorationTimeToHealedOrNewEndpointsInMinutes,omitempty"`
+	TrafficRestorationTimeToHealedOrNewEndpointsInMinutes *int32
 }
 
 // OriginGroupsClientBeginCreateOptions contains the optional parameters for the OriginGroupsClient.BeginCreate method.
@@ -2677,105 +2677,105 @@ type OriginGroupsClientListByEndpointOptions struct {
 // next set of results.
 type OriginListResult struct {
 	// URL to get the next set of origin objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of CDN origins within an endpoint
-	Value []*Origin `json:"value,omitempty" azure:"ro"`
+	Value []*Origin
 }
 
 // OriginProperties - The JSON object that contains the properties of the origin.
 type OriginProperties struct {
 	// Origin is enabled for load balancing or not
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The value of the HTTP port. Must be between 1 and 65535.
-	HTTPPort *int32 `json:"httpPort,omitempty"`
+	HTTPPort *int32
 
 	// The value of the HTTPS port. Must be between 1 and 65535.
-	HTTPSPort *int32 `json:"httpsPort,omitempty"`
+	HTTPSPort *int32
 
 	// The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique across
 	// all origins in an endpoint.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this
 	// value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services
 	// require this host header value to match the origin hostname by default. This overrides the host header defined at Endpoint
-	OriginHostHeader *string `json:"originHostHeader,omitempty"`
+	OriginHostHeader *string
 
 	// Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any
 	// lower priority origin is healthy.Must be between 1 and 5
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
-	PrivateLinkAlias *string `json:"privateLinkAlias,omitempty"`
+	PrivateLinkAlias *string
 
 	// A custom message to be included in the approval request to connect to the Private Link.
-	PrivateLinkApprovalMessage *string `json:"privateLinkApprovalMessage,omitempty"`
+	PrivateLinkApprovalMessage *string
 
 	// The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
-	PrivateLinkLocation *string `json:"privateLinkLocation,omitempty"`
+	PrivateLinkLocation *string
 
 	// The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
-	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	PrivateLinkResourceID *string
 
 	// Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *int32
 
 	// READ-ONLY; The approval status for the connection to the Private Link
-	PrivateEndpointStatus *PrivateEndpointStatus `json:"privateEndpointStatus,omitempty" azure:"ro"`
+	PrivateEndpointStatus *PrivateEndpointStatus
 
 	// READ-ONLY; Provisioning status of the origin.
-	ProvisioningState *OriginProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *OriginProvisioningState
 
 	// READ-ONLY; Resource status of the origin.
-	ResourceState *OriginResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *OriginResourceState
 }
 
 // OriginUpdateParameters - Origin properties needed for origin update.
 type OriginUpdateParameters struct {
 	// The JSON object that contains the properties of the origin.
-	Properties *OriginUpdatePropertiesParameters `json:"properties,omitempty"`
+	Properties *OriginUpdatePropertiesParameters
 }
 
 // OriginUpdatePropertiesParameters - The JSON object that contains the properties of the origin.
 type OriginUpdatePropertiesParameters struct {
 	// Origin is enabled for load balancing or not
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// The value of the HTTP port. Must be between 1 and 65535.
-	HTTPPort *int32 `json:"httpPort,omitempty"`
+	HTTPPort *int32
 
 	// The value of the HTTPS port. Must be between 1 and 65535.
-	HTTPSPort *int32 `json:"httpsPort,omitempty"`
+	HTTPSPort *int32
 
 	// The address of the origin. Domain names, IPv4 addresses, and IPv6 addresses are supported.This should be unique across
 	// all origins in an endpoint.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 
 	// The host header value sent to the origin with each request. If you leave this blank, the request hostname determines this
 	// value. Azure CDN origins, such as Web Apps, Blob Storage, and Cloud Services
 	// require this host header value to match the origin hostname by default. This overrides the host header defined at Endpoint
-	OriginHostHeader *string `json:"originHostHeader,omitempty"`
+	OriginHostHeader *string
 
 	// Priority of origin in given origin group for load balancing. Higher priorities will not be used for load balancing if any
 	// lower priority origin is healthy.Must be between 1 and 5
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// The Alias of the Private Link resource. Populating this optional field indicates that this origin is 'Private'
-	PrivateLinkAlias *string `json:"privateLinkAlias,omitempty"`
+	PrivateLinkAlias *string
 
 	// A custom message to be included in the approval request to connect to the Private Link.
-	PrivateLinkApprovalMessage *string `json:"privateLinkApprovalMessage,omitempty"`
+	PrivateLinkApprovalMessage *string
 
 	// The location of the Private Link resource. Required only if 'privateLinkResourceId' is populated
-	PrivateLinkLocation *string `json:"privateLinkLocation,omitempty"`
+	PrivateLinkLocation *string
 
 	// The Resource Id of the Private Link resource. Populating this optional field indicates that this backend is 'Private'
-	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	PrivateLinkResourceID *string
 
 	// Weight of the origin in given origin group for load balancing. Must be between 1 and 1000
-	Weight *int32 `json:"weight,omitempty"`
+	Weight *int32
 }
 
 // OriginsClientBeginCreateOptions contains the optional parameters for the OriginsClient.BeginCreate method.
@@ -2836,111 +2836,111 @@ type PoliciesClientListOptions struct {
 // PolicySettings - Defines contents of a web application firewall global configuration
 type PolicySettings struct {
 	// If the action type is block, customer can override the response body. The body must be specified in base64 encoding.
-	DefaultCustomBlockResponseBody *string `json:"defaultCustomBlockResponseBody,omitempty"`
+	DefaultCustomBlockResponseBody *string
 
 	// If the action type is block, this field defines the default customer overridable http response status code.
-	DefaultCustomBlockResponseStatusCode *PolicySettingsDefaultCustomBlockResponseStatusCode `json:"defaultCustomBlockResponseStatusCode,omitempty"`
+	DefaultCustomBlockResponseStatusCode *PolicySettingsDefaultCustomBlockResponseStatusCode
 
 	// If action type is redirect, this field represents the default redirect URL for the client.
-	DefaultRedirectURL *string `json:"defaultRedirectUrl,omitempty"`
+	DefaultRedirectURL *string
 
 	// describes if the policy is in enabled state or disabled state
-	EnabledState *PolicyEnabledState `json:"enabledState,omitempty"`
+	EnabledState *PolicyEnabledState
 
 	// Describes if it is in detection mode or prevention mode at policy level.
-	Mode *PolicyMode `json:"mode,omitempty"`
+	Mode *PolicyMode
 }
 
 // PostArgsMatchConditionParameters - Defines the parameters for PostArgs match conditions
 type PostArgsMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *PostArgsOperator `json:"operator,omitempty"`
+	Operator *PostArgsOperator
 
 	// REQUIRED
-	TypeName *PostArgsMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *PostArgsMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// Name of PostArg to be matched
-	Selector *string `json:"selector,omitempty"`
+	Selector *string
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // Profile - A profile is a logical grouping of endpoints that share the same settings.
 type Profile struct {
 	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The pricing tier (defines Azure Front Door Standard or Premium or a CDN provider, feature list and rate) of the
 	// profile.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// The JSON object that contains the properties required to create a profile.
-	Properties *ProfileProperties `json:"properties,omitempty"`
+	Properties *ProfileProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Kind of the profile. Used by portal to differentiate traditional CDN profile and new AFD profile.
-	Kind *string `json:"kind,omitempty" azure:"ro"`
+	Kind *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProfileListResult - Result of the request to list profiles. It contains a list of profile objects and a URL link to get
 // the next set of results.
 type ProfileListResult struct {
 	// URL to get the next set of profile objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of CDN profiles within a resource group.
-	Value []*Profile `json:"value,omitempty" azure:"ro"`
+	Value []*Profile
 }
 
 // ProfileProperties - The JSON object that contains the properties required to create a profile.
 type ProfileProperties struct {
 	// Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
-	OriginResponseTimeoutSeconds *int32 `json:"originResponseTimeoutSeconds,omitempty"`
+	OriginResponseTimeoutSeconds *int32
 
 	// READ-ONLY; The Id of the frontdoor.
-	FrontDoorID *string `json:"frontDoorId,omitempty" azure:"ro"`
+	FrontDoorID *string
 
 	// READ-ONLY; Provisioning status of the profile.
-	ProvisioningState *ProfileProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProfileProvisioningState
 
 	// READ-ONLY; Resource status of the profile.
-	ResourceState *ProfileResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *ProfileResourceState
 }
 
 // ProfilePropertiesUpdateParameters - The JSON object containing profile update parameters.
 type ProfilePropertiesUpdateParameters struct {
 	// Send and receive timeout on forwarding request to the origin. When timeout is reached, the request fails and returns.
-	OriginResponseTimeoutSeconds *int32 `json:"originResponseTimeoutSeconds,omitempty"`
+	OriginResponseTimeoutSeconds *int32
 }
 
 // ProfileUpdateParameters - Properties required to update a profile.
 type ProfileUpdateParameters struct {
 	// The JSON object containing profile update parameters.
-	Properties *ProfilePropertiesUpdateParameters `json:"properties,omitempty"`
+	Properties *ProfilePropertiesUpdateParameters
 
 	// Profile tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ProfilesClientBeginCreateOptions contains the optional parameters for the ProfilesClient.BeginCreate method.
@@ -2998,241 +2998,241 @@ type ProfilesClientListSupportedOptimizationTypesOptions struct {
 // and tags
 type ProxyResource struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PurgeParameters - Parameters required for content purge.
 type PurgeParameters struct {
 	// REQUIRED; The path to the content to be purged. Can describe a file path or a wild card directory.
-	ContentPaths []*string `json:"contentPaths,omitempty"`
+	ContentPaths []*string
 }
 
 // QueryStringMatchConditionParameters - Defines the parameters for QueryString match conditions
 type QueryStringMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *QueryStringOperator `json:"operator,omitempty"`
+	Operator *QueryStringOperator
 
 	// REQUIRED
-	TypeName *QueryStringMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *QueryStringMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // RankingsResponse - Rankings Response
 type RankingsResponse struct {
-	DateTimeBegin *time.Time                    `json:"dateTimeBegin,omitempty"`
-	DateTimeEnd   *time.Time                    `json:"dateTimeEnd,omitempty"`
-	Tables        []*RankingsResponseTablesItem `json:"tables,omitempty"`
+	DateTimeBegin *time.Time
+	DateTimeEnd   *time.Time
+	Tables        []*RankingsResponseTablesItem
 }
 
 type RankingsResponseTablesItem struct {
-	Data    []*RankingsResponseTablesPropertiesItemsItem `json:"data,omitempty"`
-	Ranking *string                                      `json:"ranking,omitempty"`
+	Data    []*RankingsResponseTablesPropertiesItemsItem
+	Ranking *string
 }
 
 type RankingsResponseTablesPropertiesItemsItem struct {
-	Metrics []*RankingsResponseTablesPropertiesItemsMetricsItem `json:"metrics,omitempty"`
-	Name    *string                                             `json:"name,omitempty"`
+	Metrics []*RankingsResponseTablesPropertiesItemsMetricsItem
+	Name    *string
 }
 
 type RankingsResponseTablesPropertiesItemsMetricsItem struct {
-	Metric     *string  `json:"metric,omitempty"`
-	Percentage *float32 `json:"percentage,omitempty"`
-	Value      *int64   `json:"value,omitempty"`
+	Metric     *string
+	Percentage *float32
+	Value      *int64
 }
 
 // RateLimitRule - Defines a rate limiting rule that can be included in a waf policy
 type RateLimitRule struct {
 	// REQUIRED; Describes what action to be applied when rule matches
-	Action *ActionType `json:"action,omitempty"`
+	Action *ActionType
 
 	// REQUIRED; List of match conditions.
-	MatchConditions []*MatchCondition `json:"matchConditions,omitempty"`
+	MatchConditions []*MatchCondition
 
 	// REQUIRED; Defines the name of the custom rule
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Defines in what order this rule be evaluated in the overall list of custom rules
-	Priority *int32 `json:"priority,omitempty"`
+	Priority *int32
 
 	// REQUIRED; Defines rate limit duration. Default is 1 minute.
-	RateLimitDurationInMinutes *int32 `json:"rateLimitDurationInMinutes,omitempty"`
+	RateLimitDurationInMinutes *int32
 
 	// REQUIRED; Defines rate limit threshold.
-	RateLimitThreshold *int32 `json:"rateLimitThreshold,omitempty"`
+	RateLimitThreshold *int32
 
 	// Describes if the custom rule is in enabled or disabled state. Defaults to Enabled if not specified.
-	EnabledState *CustomRuleEnabledState `json:"enabledState,omitempty"`
+	EnabledState *CustomRuleEnabledState
 }
 
 // RateLimitRuleList - Defines contents of rate limit rules
 type RateLimitRuleList struct {
 	// List of rules
-	Rules []*RateLimitRule `json:"rules,omitempty"`
+	Rules []*RateLimitRule
 }
 
 // RemoteAddressMatchConditionParameters - Defines the parameters for RemoteAddress match conditions
 type RemoteAddressMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *RemoteAddressOperator `json:"operator,omitempty"`
+	Operator *RemoteAddressOperator
 
 	// REQUIRED
-	TypeName *RemoteAddressMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *RemoteAddressMatchConditionParametersTypeName
 
 	// Match values to match against. The operator will apply to each value in here with OR semantics. If any of them match the
 	// variable with the given operator this match condition is considered a match.
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // RequestBodyMatchConditionParameters - Defines the parameters for RequestBody match conditions
 type RequestBodyMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *RequestBodyOperator `json:"operator,omitempty"`
+	Operator *RequestBodyOperator
 
 	// REQUIRED
-	TypeName *RequestBodyMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *RequestBodyMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // RequestHeaderMatchConditionParameters - Defines the parameters for RequestHeader match conditions
 type RequestHeaderMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *RequestHeaderOperator `json:"operator,omitempty"`
+	Operator *RequestHeaderOperator
 
 	// REQUIRED
-	TypeName *RequestHeaderMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *RequestHeaderMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// Name of Header to be matched
-	Selector *string `json:"selector,omitempty"`
+	Selector *string
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // RequestMethodMatchConditionParameters - Defines the parameters for RequestMethod match conditions
 type RequestMethodMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *RequestMethodOperator `json:"operator,omitempty"`
+	Operator *RequestMethodOperator
 
 	// REQUIRED
-	TypeName *RequestMethodMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *RequestMethodMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*RequestMethodMatchConditionParametersMatchValuesItem `json:"matchValues,omitempty"`
+	MatchValues []*RequestMethodMatchConditionParametersMatchValuesItem
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // RequestSchemeMatchConditionParameters - Defines the parameters for RequestScheme match conditions
 type RequestSchemeMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *RequestSchemeMatchConditionParametersOperator `json:"operator,omitempty"`
+	Operator *RequestSchemeMatchConditionParametersOperator
 
 	// REQUIRED
-	TypeName *RequestSchemeMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *RequestSchemeMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*RequestSchemeMatchConditionParametersMatchValuesItem `json:"matchValues,omitempty"`
+	MatchValues []*RequestSchemeMatchConditionParametersMatchValuesItem
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // RequestURIMatchConditionParameters - Defines the parameters for RequestUri match conditions
 type RequestURIMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *RequestURIOperator `json:"operator,omitempty"`
+	Operator *RequestURIOperator
 
 	// REQUIRED
-	TypeName *RequestURIMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *RequestURIMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // Resource - The core properties of ARM resources
 type Resource struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceReference - Reference to another resource.
 type ResourceReference struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // ResourceUsage - Output of check resource usage API.
 type ResourceUsage struct {
 	// READ-ONLY; Actual value of usage on the specified resource type.
-	CurrentValue *int32 `json:"currentValue,omitempty" azure:"ro"`
+	CurrentValue *int32
 
 	// READ-ONLY; Quota of the specified resource type.
-	Limit *int32 `json:"limit,omitempty" azure:"ro"`
+	Limit *int32
 
 	// READ-ONLY; Resource type for which the usage is provided.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; Unit of the usage. e.g. count.
-	Unit *ResourceUsageUnit `json:"unit,omitempty" azure:"ro"`
+	Unit *ResourceUsageUnit
 }
 
 // ResourceUsageClientListOptions contains the optional parameters for the ResourceUsageClient.NewListPager method.
@@ -3243,182 +3243,182 @@ type ResourceUsageClientListOptions struct {
 // ResourceUsageListResult - Output of check resource usage API.
 type ResourceUsageListResult struct {
 	// URL to get the next set of custom domain objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of resource usages.
-	Value []*ResourceUsage `json:"value,omitempty" azure:"ro"`
+	Value []*ResourceUsage
 }
 
 // ResourcesResponse - Resources Response
 type ResourcesResponse struct {
-	CustomDomains []*ResourcesResponseCustomDomainsItem `json:"customDomains,omitempty"`
-	Endpoints     []*ResourcesResponseEndpointsItem     `json:"endpoints,omitempty"`
+	CustomDomains []*ResourcesResponseCustomDomainsItem
+	Endpoints     []*ResourcesResponseEndpointsItem
 }
 
 type ResourcesResponseCustomDomainsItem struct {
-	EndpointID *string `json:"endpointId,omitempty"`
-	History    *bool   `json:"history,omitempty"`
-	ID         *string `json:"id,omitempty"`
-	Name       *string `json:"name,omitempty"`
+	EndpointID *string
+	History    *bool
+	ID         *string
+	Name       *string
 }
 
 type ResourcesResponseEndpointsItem struct {
-	CustomDomains []*ResourcesResponseEndpointsPropertiesItemsItem `json:"customDomains,omitempty"`
-	History       *bool                                            `json:"history,omitempty"`
-	ID            *string                                          `json:"id,omitempty"`
-	Name          *string                                          `json:"name,omitempty"`
+	CustomDomains []*ResourcesResponseEndpointsPropertiesItemsItem
+	History       *bool
+	ID            *string
+	Name          *string
 }
 
 type ResourcesResponseEndpointsPropertiesItemsItem struct {
-	EndpointID *string `json:"endpointId,omitempty"`
-	History    *bool   `json:"history,omitempty"`
-	ID         *string `json:"id,omitempty"`
-	Name       *string `json:"name,omitempty"`
+	EndpointID *string
+	History    *bool
+	ID         *string
+	Name       *string
 }
 
 // ResponseBasedOriginErrorDetectionParameters - The JSON object that contains the properties to determine origin health using
 // real requests/responses.
 type ResponseBasedOriginErrorDetectionParameters struct {
 	// The list of Http status code ranges that are considered as server errors for origin and it is marked as unhealthy.
-	HTTPErrorRanges []*HTTPErrorRangeParameters `json:"httpErrorRanges,omitempty"`
+	HTTPErrorRanges []*HTTPErrorRangeParameters
 
 	// Type of response errors for real user requests for which origin will be deemed unhealthy
-	ResponseBasedDetectedErrorTypes *ResponseBasedDetectedErrorTypes `json:"responseBasedDetectedErrorTypes,omitempty"`
+	ResponseBasedDetectedErrorTypes *ResponseBasedDetectedErrorTypes
 
 	// The percentage of failed requests in the sample where failover should trigger.
-	ResponseBasedFailoverThresholdPercentage *int32 `json:"responseBasedFailoverThresholdPercentage,omitempty"`
+	ResponseBasedFailoverThresholdPercentage *int32
 }
 
 // Route - Friendly Routes name mapping to the any Routes or secret related information.
 type Route struct {
 	// The JSON object that contains the properties of the Routes to create.
-	Properties *RouteProperties `json:"properties,omitempty"`
+	Properties *RouteProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RouteConfigurationOverrideActionParameters - Defines the parameters for the route configuration override action.
 type RouteConfigurationOverrideActionParameters struct {
 	// REQUIRED
-	TypeName *RouteConfigurationOverrideActionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *RouteConfigurationOverrideActionParametersTypeName
 
 	// The caching configuration associated with this rule. To disable caching, do not provide a cacheConfiguration object.
-	CacheConfiguration *CacheConfiguration `json:"cacheConfiguration,omitempty"`
+	CacheConfiguration *CacheConfiguration
 
 	// A reference to the origin group override configuration. Leave empty to use the default origin group on route.
-	OriginGroupOverride *OriginGroupOverride `json:"originGroupOverride,omitempty"`
+	OriginGroupOverride *OriginGroupOverride
 }
 
 // RouteListResult - Result of the request to list routes. It contains a list of route objects and a URL link to get the next
 // set of results.
 type RouteListResult struct {
 	// URL to get the next set of route objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of AzureFrontDoor routes within a profile.
-	Value []*Route `json:"value,omitempty" azure:"ro"`
+	Value []*Route
 }
 
 // RouteProperties - The JSON object that contains the properties of the Routes to create.
 type RouteProperties struct {
 	// The caching configuration for this route. To disable caching, do not provide a cacheConfiguration object.
-	CacheConfiguration *AfdRouteCacheConfiguration `json:"cacheConfiguration,omitempty"`
+	CacheConfiguration *AfdRouteCacheConfiguration
 
 	// Domains referenced by this endpoint.
-	CustomDomains []*ActivatedResourceReference `json:"customDomains,omitempty"`
+	CustomDomains []*ActivatedResourceReference
 
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *EnabledState `json:"enabledState,omitempty"`
+	EnabledState *EnabledState
 
 	// Protocol this rule will use when forwarding traffic to backends.
-	ForwardingProtocol *ForwardingProtocol `json:"forwardingProtocol,omitempty"`
+	ForwardingProtocol *ForwardingProtocol
 
 	// Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this rule and it
 	// will be the first rule that gets executed.
-	HTTPSRedirect *HTTPSRedirect `json:"httpsRedirect,omitempty"`
+	HTTPSRedirect *HTTPSRedirect
 
 	// whether this route will be linked to the default endpoint domain.
-	LinkToDefaultDomain *LinkToDefaultDomain `json:"linkToDefaultDomain,omitempty"`
+	LinkToDefaultDomain *LinkToDefaultDomain
 
 	// A reference to the origin group.
-	OriginGroup *ResourceReference `json:"originGroup,omitempty"`
+	OriginGroup *ResourceReference
 
 	// A directory path on the origin that AzureFrontDoor can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
-	OriginPath *string `json:"originPath,omitempty"`
+	OriginPath *string
 
 	// The route patterns of the rule.
-	PatternsToMatch []*string `json:"patternsToMatch,omitempty"`
+	PatternsToMatch []*string
 
 	// rule sets referenced by this endpoint.
-	RuleSets []*ResourceReference `json:"ruleSets,omitempty"`
+	RuleSets []*ResourceReference
 
 	// List of supported protocols for this route.
-	SupportedProtocols []*AFDEndpointProtocols `json:"supportedProtocols,omitempty"`
+	SupportedProtocols []*AFDEndpointProtocols
 
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; The name of the endpoint which holds the route.
-	EndpointName *string `json:"endpointName,omitempty" azure:"ro"`
+	EndpointName *string
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 }
 
 // RouteUpdateParameters - The domain JSON object required for domain creation or update.
 type RouteUpdateParameters struct {
 	// The JSON object that contains the properties of the domain to create.
-	Properties *RouteUpdatePropertiesParameters `json:"properties,omitempty"`
+	Properties *RouteUpdatePropertiesParameters
 }
 
 // RouteUpdatePropertiesParameters - The JSON object that contains the properties of the domain to create.
 type RouteUpdatePropertiesParameters struct {
 	// The caching configuration for this route. To disable caching, do not provide a cacheConfiguration object.
-	CacheConfiguration *AfdRouteCacheConfiguration `json:"cacheConfiguration,omitempty"`
+	CacheConfiguration *AfdRouteCacheConfiguration
 
 	// Domains referenced by this endpoint.
-	CustomDomains []*ActivatedResourceReference `json:"customDomains,omitempty"`
+	CustomDomains []*ActivatedResourceReference
 
 	// Whether to enable use of this rule. Permitted values are 'Enabled' or 'Disabled'
-	EnabledState *EnabledState `json:"enabledState,omitempty"`
+	EnabledState *EnabledState
 
 	// Protocol this rule will use when forwarding traffic to backends.
-	ForwardingProtocol *ForwardingProtocol `json:"forwardingProtocol,omitempty"`
+	ForwardingProtocol *ForwardingProtocol
 
 	// Whether to automatically redirect HTTP traffic to HTTPS traffic. Note that this is a easy way to set up this rule and it
 	// will be the first rule that gets executed.
-	HTTPSRedirect *HTTPSRedirect `json:"httpsRedirect,omitempty"`
+	HTTPSRedirect *HTTPSRedirect
 
 	// whether this route will be linked to the default endpoint domain.
-	LinkToDefaultDomain *LinkToDefaultDomain `json:"linkToDefaultDomain,omitempty"`
+	LinkToDefaultDomain *LinkToDefaultDomain
 
 	// A reference to the origin group.
-	OriginGroup *ResourceReference `json:"originGroup,omitempty"`
+	OriginGroup *ResourceReference
 
 	// A directory path on the origin that AzureFrontDoor can use to retrieve content from, e.g. contoso.cloudapp.net/originpath.
-	OriginPath *string `json:"originPath,omitempty"`
+	OriginPath *string
 
 	// The route patterns of the rule.
-	PatternsToMatch []*string `json:"patternsToMatch,omitempty"`
+	PatternsToMatch []*string
 
 	// rule sets referenced by this endpoint.
-	RuleSets []*ResourceReference `json:"ruleSets,omitempty"`
+	RuleSets []*ResourceReference
 
 	// List of supported protocols for this route.
-	SupportedProtocols []*AFDEndpointProtocols `json:"supportedProtocols,omitempty"`
+	SupportedProtocols []*AFDEndpointProtocols
 
 	// READ-ONLY; The name of the endpoint which holds the route.
-	EndpointName *string `json:"endpointName,omitempty" azure:"ro"`
+	EndpointName *string
 }
 
 // RoutesClientBeginCreateOptions contains the optional parameters for the RoutesClient.BeginCreate method.
@@ -3452,96 +3452,96 @@ type RoutesClientListByEndpointOptions struct {
 // Rule - Friendly Rules name mapping to the any Rules or secret related information.
 type Rule struct {
 	// The JSON object that contains the properties of the Rules to create.
-	Properties *RuleProperties `json:"properties,omitempty"`
+	Properties *RuleProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RuleListResult - Result of the request to list rules. It contains a list of rule objects and a URL link to get the next
 // set of results.
 type RuleListResult struct {
 	// URL to get the next set of rule objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of AzureFrontDoor rules within a rule set.
-	Value []*Rule `json:"value,omitempty" azure:"ro"`
+	Value []*Rule
 }
 
 // RuleProperties - The JSON object that contains the properties of the Rules to create.
 type RuleProperties struct {
 	// A list of actions that are executed when all the conditions of a rule are satisfied.
-	Actions []DeliveryRuleActionAutoGeneratedClassification `json:"actions,omitempty"`
+	Actions []DeliveryRuleActionAutoGeneratedClassification
 
 	// A list of conditions that must be matched for the actions to be executed
-	Conditions []DeliveryRuleConditionClassification `json:"conditions,omitempty"`
+	Conditions []DeliveryRuleConditionClassification
 
 	// If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults
 	// to Continue.
-	MatchProcessingBehavior *MatchProcessingBehavior `json:"matchProcessingBehavior,omitempty"`
+	MatchProcessingBehavior *MatchProcessingBehavior
 
 	// The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will
 	// be applied before a rule with a greater order. Rule with order 0 is a special
 	// rule. It does not require any condition and actions listed in it will always be applied.
-	Order *int32 `json:"order,omitempty"`
+	Order *int32
 
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 
 	// READ-ONLY; The name of the rule set containing the rule.
-	RuleSetName *string `json:"ruleSetName,omitempty" azure:"ro"`
+	RuleSetName *string
 }
 
 // RuleSet - Friendly RuleSet name mapping to the any RuleSet or secret related information.
 type RuleSet struct {
 	// The JSON object that contains the properties of the Rule Set to create.
-	Properties *RuleSetProperties `json:"properties,omitempty"`
+	Properties *RuleSetProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RuleSetListResult - Result of the request to list rule sets. It contains a list of rule set objects and a URL link to get
 // the next set of results.
 type RuleSetListResult struct {
 	// URL to get the next set of rule set objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of AzureFrontDoor rule sets within a profile.
-	Value []*RuleSet `json:"value,omitempty" azure:"ro"`
+	Value []*RuleSet
 }
 
 // RuleSetProperties - The JSON object that contains the properties of the Rule Set to create.
 type RuleSetProperties struct {
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; The name of the profile which holds the rule set.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 }
 
 // RuleSetsClientBeginDeleteOptions contains the optional parameters for the RuleSetsClient.BeginDelete method.
@@ -3574,28 +3574,28 @@ type RuleSetsClientListResourceUsageOptions struct {
 // RuleUpdateParameters - The domain JSON object required for domain creation or update.
 type RuleUpdateParameters struct {
 	// The JSON object that contains the properties of the rule to update.
-	Properties *RuleUpdatePropertiesParameters `json:"properties,omitempty"`
+	Properties *RuleUpdatePropertiesParameters
 }
 
 // RuleUpdatePropertiesParameters - The JSON object that contains the properties of the rule to update.
 type RuleUpdatePropertiesParameters struct {
 	// A list of actions that are executed when all the conditions of a rule are satisfied.
-	Actions []DeliveryRuleActionAutoGeneratedClassification `json:"actions,omitempty"`
+	Actions []DeliveryRuleActionAutoGeneratedClassification
 
 	// A list of conditions that must be matched for the actions to be executed
-	Conditions []DeliveryRuleConditionClassification `json:"conditions,omitempty"`
+	Conditions []DeliveryRuleConditionClassification
 
 	// If this rule is a match should the rules engine continue running the remaining rules or stop. If not present, defaults
 	// to Continue.
-	MatchProcessingBehavior *MatchProcessingBehavior `json:"matchProcessingBehavior,omitempty"`
+	MatchProcessingBehavior *MatchProcessingBehavior
 
 	// The order in which the rules are applied for the endpoint. Possible values {0,1,2,3,………}. A rule with a lesser order will
 	// be applied before a rule with a greater order. Rule with order 0 is a special
 	// rule. It does not require any condition and actions listed in it will always be applied.
-	Order *int32 `json:"order,omitempty"`
+	Order *int32
 
 	// READ-ONLY; The name of the rule set containing the rule.
-	RuleSetName *string `json:"ruleSetName,omitempty" azure:"ro"`
+	RuleSetName *string
 }
 
 // RulesClientBeginCreateOptions contains the optional parameters for the RulesClient.BeginCreate method.
@@ -3641,53 +3641,53 @@ type RulesClientListByRuleSetOptions struct {
 // for a China CDN live-streaming profile using monthly average peak bandwidth billing model.
 type SKU struct {
 	// Name of the pricing tier.
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 }
 
 // SSLProtocolMatchConditionParameters - Defines the parameters for SslProtocol match conditions
 type SSLProtocolMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *SSLProtocolOperator `json:"operator,omitempty"`
+	Operator *SSLProtocolOperator
 
 	// REQUIRED
-	TypeName *SSLProtocolMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *SSLProtocolMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*SSLProtocol `json:"matchValues,omitempty"`
+	MatchValues []*SSLProtocol
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // Secret - Friendly Secret name mapping to the any Secret or secret related information.
 type Secret struct {
 	// The JSON object that contains the properties of the Secret to create.
-	Properties *SecretProperties `json:"properties,omitempty"`
+	Properties *SecretProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SecretListResult - Result of the request to list secrets. It contains a list of Secret objects and a URL link to get the
 // next set of results.
 type SecretListResult struct {
 	// URL to get the next set of Secret objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of AzureFrontDoor secrets within a profile.
-	Value []*Secret `json:"value,omitempty" azure:"ro"`
+	Value []*Secret
 }
 
 // SecretParametersClassification provides polymorphic access to related types.
@@ -3703,7 +3703,7 @@ type SecretParametersClassification interface {
 // SecretParameters - The json object containing secret parameters
 type SecretParameters struct {
 	// REQUIRED; The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 }
 
 // GetSecretParameters implements the SecretParametersClassification interface for type SecretParameters.
@@ -3712,16 +3712,16 @@ func (s *SecretParameters) GetSecretParameters() *SecretParameters { return s }
 // SecretProperties - The JSON object that contains the properties of the Secret to create.
 type SecretProperties struct {
 	// object which contains secret parameters
-	Parameters SecretParametersClassification `json:"parameters,omitempty"`
+	Parameters SecretParametersClassification
 
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; The name of the profile which holds the secret.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 }
 
 // SecretsClientBeginCreateOptions contains the optional parameters for the SecretsClient.BeginCreate method.
@@ -3778,44 +3778,44 @@ type SecurityPoliciesClientListByProfileOptions struct {
 // SecurityPolicy association for AzureFrontDoor profile
 type SecurityPolicy struct {
 	// The json object that contains properties required to create a security policy
-	Properties *SecurityPolicyProperties `json:"properties,omitempty"`
+	Properties *SecurityPolicyProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SecurityPolicyListResult - Result of the request to list security policies. It contains a list of security policy objects
 // and a URL link to get the next set of results.
 type SecurityPolicyListResult struct {
 	// URL to get the next set of security policy objects if there is any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Security policies within a profile
-	Value []*SecurityPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*SecurityPolicy
 }
 
 // SecurityPolicyProperties - The json object that contains properties required to create a security policy
 type SecurityPolicyProperties struct {
 	// object which contains security policy parameters
-	Parameters SecurityPolicyPropertiesParametersClassification `json:"parameters,omitempty"`
+	Parameters SecurityPolicyPropertiesParametersClassification
 
 	// READ-ONLY
-	DeploymentStatus *DeploymentStatus `json:"deploymentStatus,omitempty" azure:"ro"`
+	DeploymentStatus *DeploymentStatus
 
 	// READ-ONLY; The name of the profile which holds the security policy.
-	ProfileName *string `json:"profileName,omitempty" azure:"ro"`
+	ProfileName *string
 
 	// READ-ONLY; Provisioning status
-	ProvisioningState *AfdProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *AfdProvisioningState
 }
 
 // SecurityPolicyPropertiesParametersClassification provides polymorphic access to related types.
@@ -3830,7 +3830,7 @@ type SecurityPolicyPropertiesParametersClassification interface {
 // SecurityPolicyPropertiesParameters - The json object containing security policy parameters
 type SecurityPolicyPropertiesParameters struct {
 	// REQUIRED; The type of the Security policy to create.
-	Type *SecurityPolicyType `json:"type,omitempty"`
+	Type *SecurityPolicyType
 }
 
 // GetSecurityPolicyPropertiesParameters implements the SecurityPolicyPropertiesParametersClassification interface for type
@@ -3842,34 +3842,34 @@ func (s *SecurityPolicyPropertiesParameters) GetSecurityPolicyPropertiesParamete
 // SecurityPolicyUpdateParameters - The JSON object containing security policy update parameters.
 type SecurityPolicyUpdateParameters struct {
 	// The json object that contains properties required to update a security policy
-	Properties *SecurityPolicyUpdateProperties `json:"properties,omitempty"`
+	Properties *SecurityPolicyUpdateProperties
 }
 
 // SecurityPolicyUpdateProperties - The json object that contains properties required to update a security policy
 type SecurityPolicyUpdateProperties struct {
 	// object which contains security policy parameters
-	Parameters SecurityPolicyPropertiesParametersClassification `json:"parameters,omitempty"`
+	Parameters SecurityPolicyPropertiesParametersClassification
 }
 
 // SecurityPolicyWebApplicationFirewallAssociation - settings for security policy patterns to match
 type SecurityPolicyWebApplicationFirewallAssociation struct {
 	// List of domains.
-	Domains []*ActivatedResourceReference `json:"domains,omitempty"`
+	Domains []*ActivatedResourceReference
 
 	// List of paths
-	PatternsToMatch []*string `json:"patternsToMatch,omitempty"`
+	PatternsToMatch []*string
 }
 
 // SecurityPolicyWebApplicationFirewallParameters - The json object containing security policy waf parameters
 type SecurityPolicyWebApplicationFirewallParameters struct {
 	// REQUIRED; The type of the Security policy to create.
-	Type *SecurityPolicyType `json:"type,omitempty"`
+	Type *SecurityPolicyType
 
 	// Waf associations
-	Associations []*SecurityPolicyWebApplicationFirewallAssociation `json:"associations,omitempty"`
+	Associations []*SecurityPolicyWebApplicationFirewallAssociation
 
 	// Resource ID.
-	WafPolicy *ResourceReference `json:"wafPolicy,omitempty"`
+	WafPolicy *ResourceReference
 }
 
 // GetSecurityPolicyPropertiesParameters implements the SecurityPolicyPropertiesParametersClassification interface for type
@@ -3883,182 +3883,182 @@ func (s *SecurityPolicyWebApplicationFirewallParameters) GetSecurityPolicyProper
 // ServerPortMatchConditionParameters - Defines the parameters for ServerPort match conditions
 type ServerPortMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *ServerPortOperator `json:"operator,omitempty"`
+	Operator *ServerPortOperator
 
 	// REQUIRED
-	TypeName *ServerPortMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *ServerPortMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // ServiceSpecification - One property of operation, include log specifications.
 type ServiceSpecification struct {
 	// Log specifications of operation.
-	LogSpecifications []*LogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*LogSpecification
 
 	// Metric specifications of operation.
-	MetricSpecifications []*MetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*MetricSpecification
 }
 
 // SharedPrivateLinkResourceProperties - Describes the properties of an existing Shared Private Link Resource to use when
 // connecting to a private origin.
 type SharedPrivateLinkResourceProperties struct {
 	// The group id from the provider of resource the shared private link resource is for.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The resource id of the resource the shared private link resource is for.
-	PrivateLink *ResourceReference `json:"privateLink,omitempty"`
+	PrivateLink *ResourceReference
 
 	// The location of the shared private link resource
-	PrivateLinkLocation *string `json:"privateLinkLocation,omitempty"`
+	PrivateLinkLocation *string
 
 	// The request message for requesting approval of the shared private link resource.
-	RequestMessage *string `json:"requestMessage,omitempty"`
+	RequestMessage *string
 
 	// Status of the shared private link resource. Can be Pending, Approved, Rejected, Disconnected, or Timeout.
-	Status *SharedPrivateLinkResourceStatus `json:"status,omitempty"`
+	Status *SharedPrivateLinkResourceStatus
 }
 
 // SocketAddrMatchConditionParameters - Defines the parameters for SocketAddress match conditions
 type SocketAddrMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *SocketAddrOperator `json:"operator,omitempty"`
+	Operator *SocketAddrOperator
 
 	// REQUIRED
-	TypeName *SocketAddrMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *SocketAddrMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // SsoURI - The URI required to login to the supplemental portal from the Azure portal.
 type SsoURI struct {
 	// READ-ONLY; The URI used to login to the supplemental portal.
-	SsoURIValue *string `json:"ssoUriValue,omitempty" azure:"ro"`
+	SsoURIValue *string
 }
 
 // SupportedOptimizationTypesListResult - The result of the GetSupportedOptimizationTypes API
 type SupportedOptimizationTypesListResult struct {
 	// READ-ONLY; Supported optimization types for a profile.
-	SupportedOptimizationTypes []*OptimizationType `json:"supportedOptimizationTypes,omitempty" azure:"ro"`
+	SupportedOptimizationTypes []*OptimizationType
 }
 
 // SystemData - Read only system data
 type SystemData struct {
 	// The timestamp of resource creation (UTC)
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// An identifier for the identity that created the resource
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource
-	CreatedByType *IdentityType `json:"createdByType,omitempty"`
+	CreatedByType *IdentityType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// An identifier for the identity that last modified the resource
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource
-	LastModifiedByType *IdentityType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *IdentityType
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource.
 type TrackedResource struct {
 	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // URLFileExtensionMatchConditionParameters - Defines the parameters for UrlFileExtension match conditions
 type URLFileExtensionMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *URLFileExtensionOperator `json:"operator,omitempty"`
+	Operator *URLFileExtensionOperator
 
 	// REQUIRED
-	TypeName *URLFileExtensionMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *URLFileExtensionMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // URLFileNameMatchConditionParameters - Defines the parameters for UrlFilename match conditions
 type URLFileNameMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *URLFileNameOperator `json:"operator,omitempty"`
+	Operator *URLFileNameOperator
 
 	// REQUIRED
-	TypeName *URLFileNameMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *URLFileNameMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // URLPathMatchConditionParameters - Defines the parameters for UrlPath match conditions
 type URLPathMatchConditionParameters struct {
 	// REQUIRED; Describes operator to be matched
-	Operator *URLPathOperator `json:"operator,omitempty"`
+	Operator *URLPathOperator
 
 	// REQUIRED
-	TypeName *URLPathMatchConditionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *URLPathMatchConditionParametersTypeName
 
 	// The match value for the condition of the delivery rule
-	MatchValues []*string `json:"matchValues,omitempty"`
+	MatchValues []*string
 
 	// Describes if this is negate condition or not
-	NegateCondition *bool `json:"negateCondition,omitempty"`
+	NegateCondition *bool
 
 	// List of transforms
-	Transforms []*Transform `json:"transforms,omitempty"`
+	Transforms []*Transform
 }
 
 // URLRedirectAction - Defines the url redirect action for the delivery rule.
 type URLRedirectAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *URLRedirectActionParameters `json:"parameters,omitempty"`
+	Parameters *URLRedirectActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type URLRedirectAction.
@@ -4071,37 +4071,37 @@ func (u *URLRedirectAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleAc
 // URLRedirectActionParameters - Defines the parameters for the url redirect action.
 type URLRedirectActionParameters struct {
 	// REQUIRED; The redirect type the rule will use when redirecting traffic.
-	RedirectType *RedirectType `json:"redirectType,omitempty"`
+	RedirectType *RedirectType
 
 	// REQUIRED
-	TypeName *URLRedirectActionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *URLRedirectActionParametersTypeName
 
 	// Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #.
-	CustomFragment *string `json:"customFragment,omitempty"`
+	CustomFragment *string
 
 	// Host to redirect. Leave empty to use the incoming host as the destination host.
-	CustomHostname *string `json:"customHostname,omitempty"`
+	CustomHostname *string
 
 	// The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as destination
 	// path.
-	CustomPath *string `json:"customPath,omitempty"`
+	CustomPath *string
 
 	// The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query string;
 	// leave empty to preserve the incoming query string. Query string must be in =
 	// format. ? and & will be added automatically so do not include them.
-	CustomQueryString *string `json:"customQueryString,omitempty"`
+	CustomQueryString *string
 
 	// Protocol to use for the redirect. The default value is MatchRequest
-	DestinationProtocol *DestinationProtocol `json:"destinationProtocol,omitempty"`
+	DestinationProtocol *DestinationProtocol
 }
 
 // URLRewriteAction - Defines the url rewrite action for the delivery rule.
 type URLRewriteAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *URLRewriteActionParameters `json:"parameters,omitempty"`
+	Parameters *URLRewriteActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type URLRewriteAction.
@@ -4114,26 +4114,26 @@ func (u *URLRewriteAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleAct
 // URLRewriteActionParameters - Defines the parameters for the url rewrite action.
 type URLRewriteActionParameters struct {
 	// REQUIRED; Define the relative URL to which the above requests will be rewritten by.
-	Destination *string `json:"destination,omitempty"`
+	Destination *string
 
 	// REQUIRED; define a request URI pattern that identifies the type of requests that may be rewritten. If value is blank, all
 	// strings are matched.
-	SourcePattern *string `json:"sourcePattern,omitempty"`
+	SourcePattern *string
 
 	// REQUIRED
-	TypeName *URLRewriteActionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *URLRewriteActionParametersTypeName
 
 	// Whether to preserve unmatched path. Default value is true.
-	PreserveUnmatchedPath *bool `json:"preserveUnmatchedPath,omitempty"`
+	PreserveUnmatchedPath *bool
 }
 
 // URLSigningAction - Defines the url signing action for the delivery rule.
 type URLSigningAction struct {
 	// REQUIRED; The name of the action for the delivery rule.
-	Name *DeliveryRuleAction `json:"name,omitempty"`
+	Name *DeliveryRuleAction
 
 	// REQUIRED; Defines the parameters for the action.
-	Parameters *URLSigningActionParameters `json:"parameters,omitempty"`
+	Parameters *URLSigningActionParameters
 }
 
 // GetDeliveryRuleActionAutoGenerated implements the DeliveryRuleActionAutoGeneratedClassification interface for type URLSigningAction.
@@ -4146,40 +4146,40 @@ func (u *URLSigningAction) GetDeliveryRuleActionAutoGenerated() *DeliveryRuleAct
 // URLSigningActionParameters - Defines the parameters for the Url Signing action.
 type URLSigningActionParameters struct {
 	// REQUIRED
-	TypeName *URLSigningActionParametersTypeName `json:"typeName,omitempty"`
+	TypeName *URLSigningActionParametersTypeName
 
 	// Algorithm to use for URL signing
-	Algorithm *Algorithm `json:"algorithm,omitempty"`
+	Algorithm *Algorithm
 
 	// Defines which query string parameters in the url to be considered for expires, key id etc.
-	ParameterNameOverride []*URLSigningParamIdentifier `json:"parameterNameOverride,omitempty"`
+	ParameterNameOverride []*URLSigningParamIdentifier
 }
 
 // URLSigningKey - Url signing key
 type URLSigningKey struct {
 	// REQUIRED; Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form
 	// the hash.
-	KeyID *string `json:"keyId,omitempty"`
+	KeyID *string
 
 	// REQUIRED; Defines the parameters for using customer key vault for Url Signing Key.
-	KeySourceParameters *KeyVaultSigningKeyParameters `json:"keySourceParameters,omitempty"`
+	KeySourceParameters *KeyVaultSigningKeyParameters
 }
 
 // URLSigningKeyParameters - Url signing key parameters
 type URLSigningKeyParameters struct {
 	// REQUIRED; Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form
 	// the hash.
-	KeyID *string `json:"keyId,omitempty"`
+	KeyID *string
 
 	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of
 	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
-	SecretSource *ResourceReference `json:"secretSource,omitempty"`
+	SecretSource *ResourceReference
 
 	// REQUIRED; The type of the secret resource.
-	Type *SecretType `json:"type,omitempty"`
+	Type *SecretType
 
 	// Version of the secret to be used
-	SecretVersion *string `json:"secretVersion,omitempty"`
+	SecretVersion *string
 }
 
 // GetSecretParameters implements the SecretParametersClassification interface for type URLSigningKeyParameters.
@@ -4192,61 +4192,61 @@ func (u *URLSigningKeyParameters) GetSecretParameters() *SecretParameters {
 // URLSigningParamIdentifier - Defines how to identify a parameter for a specific purpose e.g. expires
 type URLSigningParamIdentifier struct {
 	// REQUIRED; Indicates the purpose of the parameter
-	ParamIndicator *ParamIndicator `json:"paramIndicator,omitempty"`
+	ParamIndicator *ParamIndicator
 
 	// REQUIRED; Parameter name
-	ParamName *string `json:"paramName,omitempty"`
+	ParamName *string
 }
 
 // Usage - Describes resource usage.
 type Usage struct {
 	// REQUIRED; The current value of the usage.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
+	CurrentValue *int64
 
 	// REQUIRED; The limit of usage.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// REQUIRED; The name of the type of usage.
-	Name *UsageName `json:"name,omitempty"`
+	Name *UsageName
 
 	// REQUIRED; An enum describing the unit of measurement.
-	Unit *UsageUnit `json:"unit,omitempty"`
+	Unit *UsageUnit
 
 	// READ-ONLY; Resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // UsageName - The usage names.
 type UsageName struct {
 	// A localized string describing the resource name.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// A string describing the resource name.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // UsagesListResult - The list usages operation response.
 type UsagesListResult struct {
 	// URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of resource usages.
-	Value []*Usage `json:"value,omitempty"`
+	Value []*Usage
 }
 
 // UserManagedHTTPSParameters - Defines the certificate source parameters using user's keyvault certificate for enabling SSL.
 type UserManagedHTTPSParameters struct {
 	// REQUIRED; Defines the source of the SSL certificate.
-	CertificateSource *CertificateSource `json:"certificateSource,omitempty"`
+	CertificateSource *CertificateSource
 
 	// REQUIRED; Defines the certificate source parameters using user's keyvault certificate for enabling SSL.
-	CertificateSourceParameters *KeyVaultCertificateSourceParameters `json:"certificateSourceParameters,omitempty"`
+	CertificateSourceParameters *KeyVaultCertificateSourceParameters
 
 	// REQUIRED; Defines the TLS extension protocol that is used for secure delivery.
-	ProtocolType *ProtocolType `json:"protocolType,omitempty"`
+	ProtocolType *ProtocolType
 
 	// TLS protocol version that will be used for Https
-	MinimumTLSVersion *MinimumTLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *MinimumTLSVersion
 }
 
 // GetCustomDomainHTTPSParameters implements the CustomDomainHTTPSParametersClassification interface for type UserManagedHTTPSParameters.
@@ -4266,166 +4266,166 @@ type ValidateClientSecretOptions struct {
 // ValidateCustomDomainInput - Input of the custom domain to be validated for DNS mapping.
 type ValidateCustomDomainInput struct {
 	// REQUIRED; The host name of the custom domain. Must be a domain name.
-	HostName *string `json:"hostName,omitempty"`
+	HostName *string
 }
 
 // ValidateCustomDomainOutput - Output of custom domain validation.
 type ValidateCustomDomainOutput struct {
 	// READ-ONLY; Indicates whether the custom domain is valid or not.
-	CustomDomainValidated *bool `json:"customDomainValidated,omitempty" azure:"ro"`
+	CustomDomainValidated *bool
 
 	// READ-ONLY; Error message describing why the custom domain is not valid.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The reason why the custom domain is not valid.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 }
 
 // ValidateProbeInput - Input of the validate probe API.
 type ValidateProbeInput struct {
 	// REQUIRED; The probe URL to validate.
-	ProbeURL *string `json:"probeURL,omitempty"`
+	ProbeURL *string
 }
 
 // ValidateProbeOutput - Output of the validate probe API.
 type ValidateProbeOutput struct {
 	// READ-ONLY; Specifies the error code when the probe url is not accepted.
-	ErrorCode *string `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *string
 
 	// READ-ONLY; Indicates whether the probe URL is accepted or not.
-	IsValid *bool `json:"isValid,omitempty" azure:"ro"`
+	IsValid *bool
 
 	// READ-ONLY; The detailed error message describing why the probe URL is not accepted.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // ValidateSecretInput - Input of the secret to be validated.
 type ValidateSecretInput struct {
 	// REQUIRED; Resource reference to the Azure Key Vault secret. Expected to be in format of
 	// /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
-	SecretSource *ResourceReference `json:"secretSource,omitempty"`
+	SecretSource *ResourceReference
 
 	// REQUIRED; The secret type.
-	SecretType *SecretType `json:"secretType,omitempty"`
+	SecretType *SecretType
 
 	// Secret version, if customer is using a specific version.
-	SecretVersion *string `json:"secretVersion,omitempty"`
+	SecretVersion *string
 }
 
 // ValidateSecretOutput - Output of the validated secret.
 type ValidateSecretOutput struct {
 	// Detailed error message
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The validation status.
-	Status *Status `json:"status,omitempty"`
+	Status *Status
 }
 
 // ValidationToken - The validation token.
 type ValidationToken struct {
 	// READ-ONLY
-	Token *string `json:"token,omitempty" azure:"ro"`
+	Token *string
 }
 
 // WafMetricsResponse - Waf Metrics Response
 type WafMetricsResponse struct {
-	DateTimeBegin *time.Time                      `json:"dateTimeBegin,omitempty"`
-	DateTimeEnd   *time.Time                      `json:"dateTimeEnd,omitempty"`
-	Granularity   *WafMetricsResponseGranularity  `json:"granularity,omitempty"`
-	Series        []*WafMetricsResponseSeriesItem `json:"series,omitempty"`
+	DateTimeBegin *time.Time
+	DateTimeEnd   *time.Time
+	Granularity   *WafMetricsResponseGranularity
+	Series        []*WafMetricsResponseSeriesItem
 }
 
 type WafMetricsResponseSeriesItem struct {
-	Data   []*Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems `json:"data,omitempty"`
-	Groups []*WafMetricsResponseSeriesPropertiesItemsItem                                        `json:"groups,omitempty"`
-	Metric *string                                                                               `json:"metric,omitempty"`
-	Unit   *WafMetricsResponseSeriesItemUnit                                                     `json:"unit,omitempty"`
+	Data   []*Components18OrqelSchemasWafmetricsresponsePropertiesSeriesItemsPropertiesDataItems
+	Groups []*WafMetricsResponseSeriesPropertiesItemsItem
+	Metric *string
+	Unit   *WafMetricsResponseSeriesItemUnit
 }
 
 type WafMetricsResponseSeriesPropertiesItemsItem struct {
-	Name  *string `json:"name,omitempty"`
-	Value *string `json:"value,omitempty"`
+	Name  *string
+	Value *string
 }
 
 // WafRankingsResponse - Waf Rankings Response
 type WafRankingsResponse struct {
-	Data          []*WafRankingsResponseDataItem `json:"data,omitempty"`
-	DateTimeBegin *time.Time                     `json:"dateTimeBegin,omitempty"`
-	DateTimeEnd   *time.Time                     `json:"dateTimeEnd,omitempty"`
-	Groups        []*string                      `json:"groups,omitempty"`
+	Data          []*WafRankingsResponseDataItem
+	DateTimeBegin *time.Time
+	DateTimeEnd   *time.Time
+	Groups        []*string
 }
 
 type WafRankingsResponseDataItem struct {
-	GroupValues []*string                                                                              `json:"groupValues,omitempty"`
-	Metrics     []*ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems `json:"metrics,omitempty"`
+	GroupValues []*string
+	Metrics     []*ComponentsKpo1PjSchemasWafrankingsresponsePropertiesDataItemsPropertiesMetricsItems
 }
 
 // WebApplicationFirewallPolicy - Defines web application firewall policy for Azure CDN.
 type WebApplicationFirewallPolicy struct {
 	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The pricing tier (defines a CDN provider, feature list and rate) of the CdnWebApplicationFirewallPolicy.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Gets a unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Properties of the web application firewall policy.
-	Properties *WebApplicationFirewallPolicyProperties `json:"properties,omitempty"`
+	Properties *WebApplicationFirewallPolicyProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Read only system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WebApplicationFirewallPolicyList - Defines a list of WebApplicationFirewallPolicies for Azure CDN. It contains a list of
 // WebApplicationFirewallPolicy objects and a URL link to get the next set of results.
 type WebApplicationFirewallPolicyList struct {
 	// URL to get the next set of WebApplicationFirewallPolicy objects if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; List of Azure CDN WebApplicationFirewallPolicies within a resource group.
-	Value []*WebApplicationFirewallPolicy `json:"value,omitempty" azure:"ro"`
+	Value []*WebApplicationFirewallPolicy
 }
 
 // WebApplicationFirewallPolicyPatchParameters - Properties required to update a CdnWebApplicationFirewallPolicy.
 type WebApplicationFirewallPolicyPatchParameters struct {
 	// CdnWebApplicationFirewallPolicy tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // WebApplicationFirewallPolicyProperties - Defines CDN web application firewall policy properties.
 type WebApplicationFirewallPolicyProperties struct {
 	// Describes custom rules inside the policy.
-	CustomRules *CustomRuleList `json:"customRules,omitempty"`
+	CustomRules *CustomRuleList
 
 	// Describes managed rules inside the policy.
-	ManagedRules *ManagedRuleSetList `json:"managedRules,omitempty"`
+	ManagedRules *ManagedRuleSetList
 
 	// Describes policySettings for policy
-	PolicySettings *PolicySettings `json:"policySettings,omitempty"`
+	PolicySettings *PolicySettings
 
 	// Describes rate limit rules inside the policy.
-	RateLimitRules *RateLimitRuleList `json:"rateLimitRules,omitempty"`
+	RateLimitRules *RateLimitRuleList
 
 	// READ-ONLY; Describes Azure CDN endpoints associated with this Web Application Firewall policy.
-	EndpointLinks []*LinkedEndpoint `json:"endpointLinks,omitempty" azure:"ro"`
+	EndpointLinks []*LinkedEndpoint
 
 	// READ-ONLY; Provisioning state of the WebApplicationFirewallPolicy.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Resource status of the policy.
-	ResourceState *PolicyResourceState `json:"resourceState,omitempty" azure:"ro"`
+	ResourceState *PolicyResourceState
 }

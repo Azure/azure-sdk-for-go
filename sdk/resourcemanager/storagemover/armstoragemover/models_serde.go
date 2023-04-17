@@ -796,16 +796,16 @@ func (j JobRunProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "itemsScanned", j.ItemsScanned)
 	populate(objectMap, "itemsTransferred", j.ItemsTransferred)
 	populate(objectMap, "itemsUnsupported", j.ItemsUnsupported)
-	populate(objectMap, "jobDefinitionProperties", &j.JobDefinitionProperties)
+	populateAny(objectMap, "jobDefinitionProperties", j.JobDefinitionProperties)
 	populateTimeRFC3339(objectMap, "lastStatusUpdate", j.LastStatusUpdate)
 	populate(objectMap, "provisioningState", j.ProvisioningState)
 	populate(objectMap, "scanStatus", j.ScanStatus)
 	populate(objectMap, "sourceName", j.SourceName)
-	populate(objectMap, "sourceProperties", &j.SourceProperties)
+	populateAny(objectMap, "sourceProperties", j.SourceProperties)
 	populate(objectMap, "sourceResourceId", j.SourceResourceID)
 	populate(objectMap, "status", j.Status)
 	populate(objectMap, "targetName", j.TargetName)
-	populate(objectMap, "targetProperties", &j.TargetProperties)
+	populateAny(objectMap, "targetProperties", j.TargetProperties)
 	populate(objectMap, "targetResourceId", j.TargetResourceID)
 	return json.Marshal(objectMap)
 }
@@ -1481,6 +1481,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

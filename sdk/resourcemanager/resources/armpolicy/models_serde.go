@@ -256,7 +256,7 @@ func (a AssignmentProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "displayName", a.DisplayName)
 	populate(objectMap, "enforcementMode", a.EnforcementMode)
-	populate(objectMap, "metadata", &a.Metadata)
+	populateAny(objectMap, "metadata", a.Metadata)
 	populate(objectMap, "nonComplianceMessages", a.NonComplianceMessages)
 	populate(objectMap, "notScopes", a.NotScopes)
 	populate(objectMap, "parameters", a.Parameters)
@@ -343,7 +343,7 @@ func (a *AssignmentUpdate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type DataEffect.
 func (d DataEffect) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "detailsSchema", &d.DetailsSchema)
+	populateAny(objectMap, "detailsSchema", d.DetailsSchema)
 	populate(objectMap, "name", d.Name)
 	return json.Marshal(objectMap)
 }
@@ -684,10 +684,10 @@ func (d DefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", d.Description)
 	populate(objectMap, "displayName", d.DisplayName)
-	populate(objectMap, "metadata", &d.Metadata)
+	populateAny(objectMap, "metadata", d.Metadata)
 	populate(objectMap, "mode", d.Mode)
 	populate(objectMap, "parameters", d.Parameters)
-	populate(objectMap, "policyRule", &d.PolicyRule)
+	populateAny(objectMap, "policyRule", d.PolicyRule)
 	populate(objectMap, "policyType", d.PolicyType)
 	return json.Marshal(objectMap)
 }
@@ -772,7 +772,7 @@ func (d *DefinitionReference) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -924,7 +924,7 @@ func (e ExemptionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "displayName", e.DisplayName)
 	populate(objectMap, "exemptionCategory", e.ExemptionCategory)
 	populateTimeRFC3339(objectMap, "expiresOn", e.ExpiresOn)
-	populate(objectMap, "metadata", &e.Metadata)
+	populateAny(objectMap, "metadata", e.Metadata)
 	populate(objectMap, "policyAssignmentId", e.PolicyAssignmentID)
 	populate(objectMap, "policyDefinitionReferenceIds", e.PolicyDefinitionReferenceIDs)
 	return json.Marshal(objectMap)
@@ -1042,7 +1042,7 @@ func (n *NonComplianceMessage) UnmarshalJSON(data []byte) error {
 func (p ParameterDefinitionsValue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "allowedValues", p.AllowedValues)
-	populate(objectMap, "defaultValue", &p.DefaultValue)
+	populateAny(objectMap, "defaultValue", p.DefaultValue)
 	populate(objectMap, "metadata", p.Metadata)
 	populate(objectMap, "type", p.Type)
 	return json.Marshal(objectMap)
@@ -1134,7 +1134,7 @@ func (p *ParameterDefinitionsValueMetadata) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ParameterValuesValue.
 func (p ParameterValuesValue) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "value", &p.Value)
+	populateAny(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -1268,7 +1268,7 @@ func (s SetDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", s.Description)
 	populate(objectMap, "displayName", s.DisplayName)
-	populate(objectMap, "metadata", &s.Metadata)
+	populateAny(objectMap, "metadata", s.Metadata)
 	populate(objectMap, "parameters", s.Parameters)
 	populate(objectMap, "policyDefinitionGroups", s.PolicyDefinitionGroups)
 	populate(objectMap, "policyDefinitions", s.PolicyDefinitions)
@@ -1398,6 +1398,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

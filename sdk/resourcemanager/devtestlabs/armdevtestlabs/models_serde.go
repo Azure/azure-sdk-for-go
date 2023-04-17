@@ -198,8 +198,8 @@ func (a *ArmTemplate) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ArmTemplateInfo.
 func (a ArmTemplateInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "parameters", &a.Parameters)
-	populate(objectMap, "template", &a.Template)
+	populateAny(objectMap, "parameters", a.Parameters)
+	populateAny(objectMap, "template", a.Template)
 	return json.Marshal(objectMap)
 }
 
@@ -291,7 +291,7 @@ func (a *ArmTemplateParameterProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ArmTemplateProperties.
 func (a ArmTemplateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "contents", &a.Contents)
+	populateAny(objectMap, "contents", a.Contents)
 	populateTimeRFC3339(objectMap, "createdDate", a.CreatedDate)
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "displayName", a.DisplayName)
@@ -545,7 +545,7 @@ func (a ArtifactProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", a.Description)
 	populate(objectMap, "filePath", a.FilePath)
 	populate(objectMap, "icon", a.Icon)
-	populate(objectMap, "parameters", &a.Parameters)
+	populateAny(objectMap, "parameters", a.Parameters)
 	populate(objectMap, "publisher", a.Publisher)
 	populate(objectMap, "targetOsType", a.TargetOsType)
 	populate(objectMap, "title", a.Title)
@@ -4071,7 +4071,7 @@ func (p *ParameterInfo) UnmarshalJSON(data []byte) error {
 func (p ParametersValueFileInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "fileName", p.FileName)
-	populate(objectMap, "parametersValueInfo", &p.ParametersValueInfo)
+	populateAny(objectMap, "parametersValueInfo", p.ParametersValueInfo)
 	return json.Marshal(objectMap)
 }
 
@@ -5904,6 +5904,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -14,169 +14,169 @@ import "time"
 // ACL - Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
 type ACL struct {
 	// REQUIRED; iSCSI initiator IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:client".
-	InitiatorIqn *string `json:"initiatorIqn,omitempty"`
+	InitiatorIqn *string
 
 	// REQUIRED; List of LUN names mapped to the ACL.
-	MappedLuns []*string `json:"mappedLuns,omitempty"`
+	MappedLuns []*string
 }
 
 // Disk - Azure Managed Disk to attach to the Disk Pool.
 type Disk struct {
 	// REQUIRED; Unique Azure Resource ID of the Managed Disk.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // DiskPool - Response for Disk Pool request.
 type DiskPool struct {
 	// REQUIRED; The geo-location where the resource lives.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties of Disk Pool.
-	Properties *DiskPoolProperties `json:"properties,omitempty"`
+	Properties *DiskPoolProperties
 
 	// Determines the SKU of the Disk pool
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource id. Indicates if this resource is managed by another Azure resource.
-	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
+	ManagedBy *string
 
 	// READ-ONLY; List of Azure resource ids that manage this resource.
-	ManagedByExtended []*string `json:"managedByExtended,omitempty" azure:"ro"`
+	ManagedByExtended []*string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource metadata required by ARM RPC
-	SystemData *SystemMetadata `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemMetadata
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiskPoolCreate - Request payload for create or update Disk Pool request.
 type DiskPoolCreate struct {
 	// REQUIRED; The geo-location where the resource lives.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties for Disk Pool create request.
-	Properties *DiskPoolCreateProperties `json:"properties,omitempty"`
+	Properties *DiskPoolCreateProperties
 
 	// REQUIRED; Determines the SKU of the Disk Pool
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Azure resource id. Indicates if this resource is managed by another Azure resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// List of Azure resource ids that manage this resource.
-	ManagedByExtended []*string `json:"managedByExtended,omitempty"`
+	ManagedByExtended []*string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiskPoolCreateProperties - Properties for Disk Pool create or update request.
 type DiskPoolCreateProperties struct {
 	// REQUIRED; Azure Resource ID of a Subnet for the Disk Pool.
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// List of additional capabilities for a Disk Pool.
-	AdditionalCapabilities []*string `json:"additionalCapabilities,omitempty"`
+	AdditionalCapabilities []*string
 
 	// Logical zone for Disk Pool resource; example: ["1"].
-	AvailabilityZones []*string `json:"availabilityZones,omitempty"`
+	AvailabilityZones []*string
 
 	// List of Azure Managed Disks to attach to a Disk Pool.
-	Disks []*Disk `json:"disks,omitempty"`
+	Disks []*Disk
 }
 
 // DiskPoolListResult - List of Disk Pools
 type DiskPoolListResult struct {
 	// REQUIRED; An array of Disk pool objects.
-	Value []*DiskPool `json:"value,omitempty"`
+	Value []*DiskPool
 
 	// READ-ONLY; URI to fetch the next section of the paginated response.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DiskPoolProperties - Disk Pool response properties.
 type DiskPoolProperties struct {
 	// REQUIRED; Logical zone for Disk Pool resource; example: ["1"].
-	AvailabilityZones []*string `json:"availabilityZones,omitempty"`
+	AvailabilityZones []*string
 
 	// REQUIRED; Operational status of the Disk Pool.
-	Status *OperationalStatus `json:"status,omitempty"`
+	Status *OperationalStatus
 
 	// REQUIRED; Azure Resource ID of a Subnet for the Disk Pool.
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// READ-ONLY; State of the operation on the resource.
-	ProvisioningState *ProvisioningStates `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningStates
 
 	// List of additional capabilities for Disk Pool.
-	AdditionalCapabilities []*string `json:"additionalCapabilities,omitempty"`
+	AdditionalCapabilities []*string
 
 	// List of Azure Managed Disks to attach to a Disk Pool.
-	Disks []*Disk `json:"disks,omitempty"`
+	Disks []*Disk
 }
 
 // DiskPoolUpdate - Request payload for Update Disk Pool request.
 type DiskPoolUpdate struct {
 	// REQUIRED; Properties for Disk Pool update request.
-	Properties *DiskPoolUpdateProperties `json:"properties,omitempty"`
+	Properties *DiskPoolUpdateProperties
 
 	// Azure resource id. Indicates if this resource is managed by another Azure resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// List of Azure resource ids that manage this resource.
-	ManagedByExtended []*string `json:"managedByExtended,omitempty"`
+	ManagedByExtended []*string
 
 	// Determines the SKU of the Disk Pool
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DiskPoolUpdateProperties - Properties for Disk Pool update request.
 type DiskPoolUpdateProperties struct {
 	// List of Azure Managed Disks to attach to a Disk Pool.
-	Disks []*Disk `json:"disks,omitempty"`
+	Disks []*Disk
 }
 
 // DiskPoolZoneInfo - Disk Pool SKU Details
 type DiskPoolZoneInfo struct {
 	// READ-ONLY; List of additional capabilities for Disk Pool.
-	AdditionalCapabilities []*string `json:"additionalCapabilities,omitempty" azure:"ro"`
+	AdditionalCapabilities []*string
 
 	// READ-ONLY; Logical zone for Disk Pool resource; example: ["1"].
-	AvailabilityZones []*string `json:"availabilityZones,omitempty" azure:"ro"`
+	AvailabilityZones []*string
 
 	// READ-ONLY; Determines the SKU of VM deployed for Disk Pool
-	SKU *SKU `json:"sku,omitempty" azure:"ro"`
+	SKU *SKU
 }
 
 // DiskPoolZoneListResult - List Disk Pool skus operation response.
 type DiskPoolZoneListResult struct {
 	// READ-ONLY; URI to fetch the next section of the paginated response.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The list of Disk Pool Skus.
-	Value []*DiskPoolZoneInfo `json:"value,omitempty" azure:"ro"`
+	Value []*DiskPoolZoneInfo
 }
 
 // DiskPoolZonesClientListOptions contains the optional parameters for the DiskPoolZonesClient.NewListPager method.
@@ -247,200 +247,200 @@ type DiskPoolsClientListOutboundNetworkDependenciesEndpointsOptions struct {
 // EndpointDependency - A domain name that a service is reached at, including details of the current connection status.
 type EndpointDependency struct {
 	// The domain name of the dependency.
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// The IP Addresses and Ports used when connecting to DomainName.
-	EndpointDetails []*EndpointDetail `json:"endpointDetails,omitempty"`
+	EndpointDetails []*EndpointDetail
 }
 
 // EndpointDetail - Current TCP connectivity information from the App Service Environment to a single endpoint.
 type EndpointDetail struct {
 	// An IP Address that Domain Name currently resolves to.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// Whether it is possible to create a TCP connection from the App Service Environment to this IpAddress at this Port.
-	IsAccessible *bool `json:"isAccessible,omitempty"`
+	IsAccessible *bool
 
 	// The time in milliseconds it takes for a TCP connection to be created from the App Service Environment to this IpAddress
 	// at this Port.
-	Latency *float64 `json:"latency,omitempty"`
+	Latency *float64
 
 	// The port an endpoint is connected to.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // Error - The resource management error response.
 type Error struct {
 	// RP error response.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponse - The resource management error response.
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // IscsiLun - LUN to expose the Azure Managed Disk.
 type IscsiLun struct {
 	// REQUIRED; Azure Resource ID of the Managed Disk.
-	ManagedDiskAzureResourceID *string `json:"managedDiskAzureResourceId,omitempty"`
+	ManagedDiskAzureResourceID *string
 
 	// REQUIRED; User defined name for iSCSI LUN; example: "lun0"
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; Specifies the Logical Unit Number of the iSCSI LUN.
-	Lun *int32 `json:"lun,omitempty" azure:"ro"`
+	Lun *int32
 }
 
 // IscsiTarget - Response for iSCSI Target requests.
 type IscsiTarget struct {
 	// REQUIRED; Properties for iSCSI Target operations.
-	Properties *IscsiTargetProperties `json:"properties,omitempty"`
+	Properties *IscsiTargetProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource id. Indicates if this resource is managed by another Azure resource.
-	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
+	ManagedBy *string
 
 	// READ-ONLY; List of Azure resource ids that manage this resource.
-	ManagedByExtended []*string `json:"managedByExtended,omitempty" azure:"ro"`
+	ManagedByExtended []*string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource metadata required by ARM RPC
-	SystemData *SystemMetadata `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemMetadata
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IscsiTargetCreate - Payload for iSCSI Target create or update requests.
 type IscsiTargetCreate struct {
 	// REQUIRED; Properties for iSCSI Target create request.
-	Properties *IscsiTargetCreateProperties `json:"properties,omitempty"`
+	Properties *IscsiTargetCreateProperties
 
 	// Azure resource id. Indicates if this resource is managed by another Azure resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// List of Azure resource ids that manage this resource.
-	ManagedByExtended []*string `json:"managedByExtended,omitempty"`
+	ManagedByExtended []*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IscsiTargetCreateProperties - Properties for iSCSI Target create or update request.
 type IscsiTargetCreateProperties struct {
 	// REQUIRED; Mode for Target connectivity.
-	ACLMode *IscsiTargetACLMode `json:"aclMode,omitempty"`
+	ACLMode *IscsiTargetACLMode
 
 	// List of LUNs to be exposed through iSCSI Target.
-	Luns []*IscsiLun `json:"luns,omitempty"`
+	Luns []*IscsiLun
 
 	// Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
-	StaticACLs []*ACL `json:"staticAcls,omitempty"`
+	StaticACLs []*ACL
 
 	// iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-	TargetIqn *string `json:"targetIqn,omitempty"`
+	TargetIqn *string
 }
 
 // IscsiTargetList - List of iSCSI Targets.
 type IscsiTargetList struct {
 	// REQUIRED; An array of iSCSI Targets in a Disk Pool.
-	Value []*IscsiTarget `json:"value,omitempty"`
+	Value []*IscsiTarget
 
 	// READ-ONLY; URI to fetch the next section of the paginated response.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // IscsiTargetProperties - Response properties for iSCSI Target operations.
 type IscsiTargetProperties struct {
 	// REQUIRED; Mode for Target connectivity.
-	ACLMode *IscsiTargetACLMode `json:"aclMode,omitempty"`
+	ACLMode *IscsiTargetACLMode
 
 	// REQUIRED; Operational status of the iSCSI Target.
-	Status *OperationalStatus `json:"status,omitempty"`
+	Status *OperationalStatus
 
 	// REQUIRED; iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-	TargetIqn *string `json:"targetIqn,omitempty"`
+	TargetIqn *string
 
 	// READ-ONLY; State of the operation on the resource.
-	ProvisioningState *ProvisioningStates `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningStates
 
 	// List of private IPv4 addresses to connect to the iSCSI Target.
-	Endpoints []*string `json:"endpoints,omitempty"`
+	Endpoints []*string
 
 	// List of LUNs to be exposed through iSCSI Target.
-	Luns []*IscsiLun `json:"luns,omitempty"`
+	Luns []*IscsiLun
 
 	// The port used by iSCSI Target portal group.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 
 	// Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
-	StaticACLs []*ACL `json:"staticAcls,omitempty"`
+	StaticACLs []*ACL
 
 	// READ-ONLY; List of identifiers for active sessions on the iSCSI target
-	Sessions []*string `json:"sessions,omitempty" azure:"ro"`
+	Sessions []*string
 }
 
 // IscsiTargetUpdate - Payload for iSCSI Target update requests.
 type IscsiTargetUpdate struct {
 	// REQUIRED; Properties for iSCSI Target update request.
-	Properties *IscsiTargetUpdateProperties `json:"properties,omitempty"`
+	Properties *IscsiTargetUpdateProperties
 
 	// Azure resource id. Indicates if this resource is managed by another Azure resource.
-	ManagedBy *string `json:"managedBy,omitempty"`
+	ManagedBy *string
 
 	// List of Azure resource ids that manage this resource.
-	ManagedByExtended []*string `json:"managedByExtended,omitempty"`
+	ManagedByExtended []*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IscsiTargetUpdateProperties - Properties for iSCSI Target update request.
 type IscsiTargetUpdateProperties struct {
 	// List of LUNs to be exposed through iSCSI Target.
-	Luns []*IscsiLun `json:"luns,omitempty"`
+	Luns []*IscsiLun
 
 	// Access Control List (ACL) for an iSCSI Target; defines LUN masking policy
-	StaticACLs []*ACL `json:"staticAcls,omitempty"`
+	StaticACLs []*ACL
 }
 
 // IscsiTargetsClientBeginCreateOrUpdateOptions contains the optional parameters for the IscsiTargetsClient.BeginCreateOrUpdate
@@ -476,25 +476,25 @@ type IscsiTargetsClientListByDiskPoolOptions struct {
 // OperationDisplay - Metadata about an operation.
 type OperationDisplay struct {
 	// REQUIRED; Localized friendly description for the operation, as it should be shown to the user.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// REQUIRED; Localized friendly name for the operation, as it should be shown to the user.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// REQUIRED; Localized friendly form of the resource provider name.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// REQUIRED; Localized friendly form of the resource type related to this action/operation.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - List of operations supported by the RP.
 type OperationListResult struct {
 	// REQUIRED; An array of operations supported by the StoragePool RP.
-	Value []*RPOperation `json:"value,omitempty"`
+	Value []*RPOperation
 
 	// URI to fetch the next section of the paginated response.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -507,150 +507,150 @@ type OperationsClientListOptions struct {
 type OutboundEnvironmentEndpoint struct {
 	// The type of service accessed by the App Service Environment, e.g., Azure Storage, Azure SQL Database, and Azure Active
 	// Directory.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// The endpoints that the App Service Environment reaches the service at.
-	Endpoints []*EndpointDependency `json:"endpoints,omitempty"`
+	Endpoints []*EndpointDependency
 }
 
 // OutboundEnvironmentEndpointList - Collection of Outbound Environment Endpoints
 type OutboundEnvironmentEndpointList struct {
 	// REQUIRED; Collection of resources.
-	Value []*OutboundEnvironmentEndpoint `json:"value,omitempty"`
+	Value []*OutboundEnvironmentEndpoint
 
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
 // and tags
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RPOperation - Description of a StoragePool RP Operation
 type RPOperation struct {
 	// REQUIRED; Additional metadata about RP operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// REQUIRED; Indicates whether the operation applies to data-plane.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// REQUIRED; The name of the operation being performed on this particular object
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Indicates the action type.
-	ActionType *string `json:"actionType,omitempty"`
+	ActionType *string
 
 	// The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // Resource - ARM resource model definition.
 type Resource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceSKUCapability - Capability a resource SKU has.
 type ResourceSKUCapability struct {
 	// READ-ONLY; Capability name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Capability value
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // ResourceSKUInfo - Resource SKU Details
 type ResourceSKUInfo struct {
 	// READ-ONLY; StoragePool RP API version
-	APIVersion *string `json:"apiVersion,omitempty" azure:"ro"`
+	APIVersion *string
 
 	// READ-ONLY; List of additional capabilities for StoragePool resource.
-	Capabilities []*ResourceSKUCapability `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*ResourceSKUCapability
 
 	// READ-ONLY; Zones and zone capabilities in those locations where the SKU is available.
-	LocationInfo *ResourceSKULocationInfo `json:"locationInfo,omitempty" azure:"ro"`
+	LocationInfo *ResourceSKULocationInfo
 
 	// READ-ONLY; Sku name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; StoragePool resource type
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
-	Restrictions []*ResourceSKURestrictions `json:"restrictions,omitempty" azure:"ro"`
+	Restrictions []*ResourceSKURestrictions
 
 	// READ-ONLY; Sku tier
-	Tier *string `json:"tier,omitempty" azure:"ro"`
+	Tier *string
 }
 
 // ResourceSKUListResult - List Disk Pool skus operation response.
 type ResourceSKUListResult struct {
 	// URI to fetch the next section of the paginated response.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of StoragePool resource skus.
-	Value []*ResourceSKUInfo `json:"value,omitempty"`
+	Value []*ResourceSKUInfo
 }
 
 // ResourceSKULocationInfo - Zone and capability info for resource sku
 type ResourceSKULocationInfo struct {
 	// READ-ONLY; Location of the SKU
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; Details of capabilities available to a SKU in specific zones.
-	ZoneDetails []*ResourceSKUZoneDetails `json:"zoneDetails,omitempty" azure:"ro"`
+	ZoneDetails []*ResourceSKUZoneDetails
 
 	// READ-ONLY; List of availability zones where the SKU is supported.
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 // ResourceSKURestrictionInfo - Describes an available Compute SKU Restriction Information.
 type ResourceSKURestrictionInfo struct {
 	// READ-ONLY; Locations where the SKU is restricted
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
+	Locations []*string
 
 	// READ-ONLY; List of availability zones where the SKU is restricted.
-	Zones []*string `json:"zones,omitempty" azure:"ro"`
+	Zones []*string
 }
 
 // ResourceSKURestrictions - Describes scaling information of a SKU.
 type ResourceSKURestrictions struct {
 	// READ-ONLY; The reason for restriction.
-	ReasonCode *ResourceSKURestrictionsReasonCode `json:"reasonCode,omitempty" azure:"ro"`
+	ReasonCode *ResourceSKURestrictionsReasonCode
 
 	// READ-ONLY; The information about the restriction where the SKU cannot be used.
-	RestrictionInfo *ResourceSKURestrictionInfo `json:"restrictionInfo,omitempty" azure:"ro"`
+	RestrictionInfo *ResourceSKURestrictionInfo
 
 	// READ-ONLY; The type of restrictions.
-	Type *ResourceSKURestrictionsType `json:"type,omitempty" azure:"ro"`
+	Type *ResourceSKURestrictionsType
 
 	// READ-ONLY; The value of restrictions. If the restriction type is set to location. This would be different locations where
 	// the SKU is restricted.
-	Values []*string `json:"values,omitempty" azure:"ro"`
+	Values []*string
 }
 
 // ResourceSKUZoneDetails - Describes The zonal capabilities of a SKU.
 type ResourceSKUZoneDetails struct {
 	// READ-ONLY; A list of capabilities that are available for the SKU in the specified list of zones.
-	Capabilities []*ResourceSKUCapability `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*ResourceSKUCapability
 
 	// READ-ONLY; The set of zones that the SKU is available in with the specified capabilities.
-	Name []*string `json:"name,omitempty" azure:"ro"`
+	Name []*string
 }
 
 // ResourceSKUsClientListOptions contains the optional parameters for the ResourceSKUsClient.NewListPager method.
@@ -661,47 +661,47 @@ type ResourceSKUsClientListOptions struct {
 // SKU - Sku for ARM resource
 type SKU struct {
 	// REQUIRED; Sku name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Sku tier
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // SystemMetadata - Metadata pertaining to creation and last modification of the resource.
 type SystemMetadata struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The type of identity that last modified the resource.
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource.
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

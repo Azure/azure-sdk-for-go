@@ -14,19 +14,19 @@ import "time"
 // AzureStackEdgeFormat - The reference to the Azure stack edge device.
 type AzureStackEdgeFormat struct {
 	// REQUIRED; The reference to the Azure stack edge device.
-	AzureStackEdge *SubResource `json:"azureStackEdge,omitempty"`
+	AzureStackEdge *SubResource
 
 	// REQUIRED; The type of the device.
-	DeviceType *DeviceType `json:"deviceType,omitempty"`
+	DeviceType *DeviceType
 
 	// READ-ONLY; The list of network functions deployed on the device.
-	NetworkFunctions []*SubResource `json:"networkFunctions,omitempty" azure:"ro"`
+	NetworkFunctions []*SubResource
 
 	// READ-ONLY; The provisioning state of the device resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The current device status.
-	Status *Status `json:"status,omitempty" azure:"ro"`
+	Status *Status
 }
 
 // GetDevicePropertiesFormat implements the DevicePropertiesFormatClassification interface for type AzureStackEdgeFormat.
@@ -42,7 +42,7 @@ func (a *AzureStackEdgeFormat) GetDevicePropertiesFormat() *DevicePropertiesForm
 // CustomProfile - Specifies the custom settings for the virtual machine.
 type CustomProfile struct {
 	// Path for metadata configuration.
-	MetadataConfigurationPath *string `json:"metadataConfigurationPath,omitempty"`
+	MetadataConfigurationPath *string
 }
 
 // DataDisk - Specifies information about the operating system disk used by the virtual machine.
@@ -50,47 +50,47 @@ type CustomProfile struct {
 // [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-windows-about-disks-vhds?toc=%2fazure%2fvirtual-machines%2fwindows%2ftoc.json].
 type DataDisk struct {
 	// Specifies how the virtual machine should be created.
-	CreateOption *DiskCreateOptionTypes `json:"createOption,omitempty"`
+	CreateOption *DiskCreateOptionTypes
 
 	// Specifies the size of an empty disk in gigabytes. This element can be used to overwrite the size of the disk in a virtual
 	// machine image.
-	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	DiskSizeGB *int32
 
 	// The name of data disk.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // Device resource.
 type Device struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Device properties.
-	Properties DevicePropertiesFormatClassification `json:"properties,omitempty"`
+	Properties DevicePropertiesFormatClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeviceListResult - Response for devices API service call.
 type DeviceListResult struct {
 	// A list of devices.
-	Value []*Device `json:"value,omitempty"`
+	Value []*Device
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DevicePropertiesFormatClassification provides polymorphic access to related types.
@@ -105,16 +105,16 @@ type DevicePropertiesFormatClassification interface {
 // DevicePropertiesFormat - Device properties.
 type DevicePropertiesFormat struct {
 	// REQUIRED; The type of the device.
-	DeviceType *DeviceType `json:"deviceType,omitempty"`
+	DeviceType *DeviceType
 
 	// READ-ONLY; The list of network functions deployed on the device.
-	NetworkFunctions []*SubResource `json:"networkFunctions,omitempty" azure:"ro"`
+	NetworkFunctions []*SubResource
 
 	// READ-ONLY; The provisioning state of the device resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The current device status.
-	Status *Status `json:"status,omitempty" azure:"ro"`
+	Status *Status
 }
 
 // GetDevicePropertiesFormat implements the DevicePropertiesFormatClassification interface for type DevicePropertiesFormat.
@@ -123,7 +123,7 @@ func (d *DevicePropertiesFormat) GetDevicePropertiesFormat() *DevicePropertiesFo
 // DeviceRegistrationKey - The device registration key.
 type DeviceRegistrationKey struct {
 	// READ-ONLY; The registration key for the device.
-	RegistrationKey *string `json:"registrationKey,omitempty" azure:"ro"`
+	RegistrationKey *string
 }
 
 // DevicesClientBeginCreateOrUpdateOptions contains the optional parameters for the DevicesClient.BeginCreateOrUpdate method.
@@ -168,231 +168,231 @@ type DevicesClientUpdateTagsOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // ImageReference - The image reference properties.
 type ImageReference struct {
 	// Specifies in decimal numbers, the exact version of image used to create the virtual machine.
-	ExactVersion *string `json:"exactVersion,omitempty"`
+	ExactVersion *string
 
 	// Specifies the offer of the image used to create the virtual machine.
-	Offer *string `json:"offer,omitempty"`
+	Offer *string
 
 	// The image publisher.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// The image SKU.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// Specifies the version of the image used to create the virtual machine. The allowed formats are Major.Minor.Build or 'latest'.
 	// Major, Minor, and Build are decimal numbers. Specify 'latest' to use the
 	// latest version of an image available at deploy time. Even if you use 'latest', the VM image will not automatically update
 	// after deploy time even if a new version becomes available.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // LinuxConfiguration - Specifies the Linux operating system settings on the virtual machine.
 type LinuxConfiguration struct {
 	// Specifies the ssh key configuration for a Linux OS.
-	SSH *SSHConfiguration `json:"ssh,omitempty"`
+	SSH *SSHConfiguration
 }
 
 // NetworkFunction - Network function resource response.
 type NetworkFunction struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// A unique read-only string that changes whenever the resource is updated.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Network function properties.
-	Properties *NetworkFunctionPropertiesFormat `json:"properties,omitempty"`
+	Properties *NetworkFunctionPropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkFunctionListResult - Response for network function API service call.
 type NetworkFunctionListResult struct {
 	// A list of network function resources in a subscription or resource group.
-	Value []*NetworkFunction `json:"value,omitempty"`
+	Value []*NetworkFunction
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // NetworkFunctionPropertiesFormat - Network function properties.
 type NetworkFunctionPropertiesFormat struct {
 	// The reference to the device resource. Once set, it cannot be updated.
-	Device *SubResource `json:"device,omitempty"`
+	Device *SubResource
 
 	// The parameters for the managed application.
-	ManagedApplicationParameters any `json:"managedApplicationParameters,omitempty"`
+	ManagedApplicationParameters any
 
 	// The network function container configurations from the user.
-	NetworkFunctionContainerConfigurations any `json:"networkFunctionContainerConfigurations,omitempty"`
+	NetworkFunctionContainerConfigurations any
 
 	// The network function configurations from the user.
-	NetworkFunctionUserConfigurations []*NetworkFunctionUserConfiguration `json:"networkFunctionUserConfigurations,omitempty"`
+	NetworkFunctionUserConfigurations []*NetworkFunctionUserConfiguration
 
 	// The sku name for the network function. Once set, it cannot be updated.
-	SKUName *string `json:"skuName,omitempty"`
+	SKUName *string
 
 	// The vendor name for the network function. Once set, it cannot be updated.
-	VendorName *string `json:"vendorName,omitempty"`
+	VendorName *string
 
 	// READ-ONLY; The resource URI of the managed application.
-	ManagedApplication *SubResource `json:"managedApplication,omitempty" azure:"ro"`
+	ManagedApplication *SubResource
 
 	// READ-ONLY; The provisioning state of the network function resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The sku type for the network function.
-	SKUType *SKUType `json:"skuType,omitempty" azure:"ro"`
+	SKUType *SKUType
 
 	// READ-ONLY; The service key for the network function resource.
-	ServiceKey *string `json:"serviceKey,omitempty" azure:"ro"`
+	ServiceKey *string
 
 	// READ-ONLY; The vendor provisioning state for the network function resource.
-	VendorProvisioningState *VendorProvisioningState `json:"vendorProvisioningState,omitempty" azure:"ro"`
+	VendorProvisioningState *VendorProvisioningState
 }
 
 // NetworkFunctionRoleConfiguration - Network function role configuration.
 type NetworkFunctionRoleConfiguration struct {
 	// Specifies the custom settings for the virtual machine.
-	CustomProfile *CustomProfile `json:"customProfile,omitempty"`
+	CustomProfile *CustomProfile
 
 	// The network interface configurations.
-	NetworkInterfaces []*NetworkInterface `json:"networkInterfaces,omitempty"`
+	NetworkInterfaces []*NetworkInterface
 
 	// Specifies the operating system settings for the role instance. This value can be updated during the deployment of network
 	// function.
-	OSProfile *OsProfile `json:"osProfile,omitempty"`
+	OSProfile *OsProfile
 
 	// The name of the network function role.
-	RoleName *string `json:"roleName,omitempty"`
+	RoleName *string
 
 	// Role type.
-	RoleType *NetworkFunctionRoleConfigurationType `json:"roleType,omitempty"`
+	RoleType *NetworkFunctionRoleConfigurationType
 
 	// Specifies the storage settings for the virtual machine disks.
-	StorageProfile *StorageProfile `json:"storageProfile,omitempty"`
+	StorageProfile *StorageProfile
 
 	// The user parameters for customers. The format of user data parameters has to be matched with the provided user data template.
-	UserDataParameters any `json:"userDataParameters,omitempty"`
+	UserDataParameters any
 
 	// The user data template for customers. This is a json schema template describing the format and data type of user data parameters.
-	UserDataTemplate any `json:"userDataTemplate,omitempty"`
+	UserDataTemplate any
 
 	// The size of the virtual machine.
-	VirtualMachineSize *VirtualMachineSizeTypes `json:"virtualMachineSize,omitempty"`
+	VirtualMachineSize *VirtualMachineSizeTypes
 }
 
 // NetworkFunctionRoleInstanceListResult - List of role instances of vendor network function.
 type NetworkFunctionRoleInstanceListResult struct {
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of role instances.
-	Value []*RoleInstance `json:"value,omitempty" azure:"ro"`
+	Value []*RoleInstance
 }
 
 // NetworkFunctionSKUDetails - The network function sku details.
 type NetworkFunctionSKUDetails struct {
 	// The network function sku type.
-	SKUType *SKUType `json:"skuType,omitempty"`
+	SKUType *SKUType
 
 	// The network function sku role details.
-	Value []*NetworkFunctionSKURoleDetails `json:"value,omitempty"`
+	Value []*NetworkFunctionSKURoleDetails
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // NetworkFunctionSKUListResult - A list of available network function skus.
 type NetworkFunctionSKUListResult struct {
 	// The network function vendor sku overview properties.
-	Value []*SKUOverview `json:"value,omitempty"`
+	Value []*SKUOverview
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // NetworkFunctionSKURoleDetails - The network function user configuration.
 type NetworkFunctionSKURoleDetails struct {
 	// The network interface configuration.
-	NetworkInterfaces []*NetworkInterface `json:"networkInterfaces,omitempty"`
+	NetworkInterfaces []*NetworkInterface
 
 	// The name of the network function role.
-	RoleName *string `json:"roleName,omitempty"`
+	RoleName *string
 
 	// The user parameters for customers.
-	UserDataParameters any `json:"userDataParameters,omitempty"`
+	UserDataParameters any
 
 	// The user data template for customers.
-	UserDataTemplate any `json:"userDataTemplate,omitempty"`
+	UserDataTemplate any
 }
 
 // NetworkFunctionTemplate - The network function template.
 type NetworkFunctionTemplate struct {
 	// An array of network function role definitions.
-	NetworkFunctionRoleConfigurations []*NetworkFunctionRoleConfiguration `json:"networkFunctionRoleConfigurations,omitempty"`
+	NetworkFunctionRoleConfigurations []*NetworkFunctionRoleConfiguration
 }
 
 // NetworkFunctionUserConfiguration - The network function user configuration.
 type NetworkFunctionUserConfiguration struct {
 	// The network interface configuration.
-	NetworkInterfaces []*NetworkInterface `json:"networkInterfaces,omitempty"`
+	NetworkInterfaces []*NetworkInterface
 
 	// Specifies the operating system settings for the role instance.
-	OSProfile *NetworkFunctionUserConfigurationOsProfile `json:"osProfile,omitempty"`
+	OSProfile *NetworkFunctionUserConfigurationOsProfile
 
 	// The name of the network function role.
-	RoleName *string `json:"roleName,omitempty"`
+	RoleName *string
 
 	// The user data parameters from the customer.
-	UserDataParameters any `json:"userDataParameters,omitempty"`
+	UserDataParameters any
 }
 
 // NetworkFunctionUserConfigurationOsProfile - Specifies the operating system settings for the role instance.
@@ -405,37 +405,37 @@ type NetworkFunctionUserConfigurationOsProfile struct {
 	// customData is passed to the VM to be saved as a file. For more information see Custom Data on Azure VMs [https://azure.microsoft.com/en-us/blog/custom-data-and-cloud-init-on-windows-azure/]
 	// For using cloud-init for your Linux VM, see Using cloud-init to customize a Linux VM during creation
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-cloud-init?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json]
-	CustomData *string `json:"customData,omitempty"`
+	CustomData *string
 }
 
 // NetworkFunctionVendor - The network function vendor.
 type NetworkFunctionVendor struct {
 	// Vendors of Hybrid Network service provider.
-	Properties *VendorDetails `json:"properties,omitempty"`
+	Properties *VendorDetails
 }
 
 // NetworkFunctionVendorConfiguration - Network function vendor configuration.
 type NetworkFunctionVendorConfiguration struct {
 	// The network interface configurations.
-	NetworkInterfaces []*NetworkInterface `json:"networkInterfaces,omitempty"`
+	NetworkInterfaces []*NetworkInterface
 
 	// Specifies the operating system settings for the role instance.
-	OSProfile *OsProfile `json:"osProfile,omitempty"`
+	OSProfile *OsProfile
 
 	// The name of the vendor network function role.
-	RoleName *string `json:"roleName,omitempty"`
+	RoleName *string
 
 	// READ-ONLY; The user parameters from the customer.
-	UserDataParameters any `json:"userDataParameters,omitempty" azure:"ro"`
+	UserDataParameters any
 }
 
 // NetworkFunctionVendorListResult - The network function vendor list result.
 type NetworkFunctionVendorListResult struct {
 	// A list of available network function vendors and skus.
-	Value []*NetworkFunctionVendor `json:"value,omitempty"`
+	Value []*NetworkFunctionVendor
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // NetworkFunctionVendorSKUsClientListBySKUOptions contains the optional parameters for the NetworkFunctionVendorSKUsClient.NewListBySKUPager
@@ -494,70 +494,70 @@ type NetworkFunctionsClientUpdateTagsOptions struct {
 // NetworkInterface - Network interface properties.
 type NetworkInterface struct {
 	// A list of IP configurations of the network interface.
-	IPConfigurations []*NetworkInterfaceIPConfiguration `json:"ipConfigurations,omitempty"`
+	IPConfigurations []*NetworkInterfaceIPConfiguration
 
 	// The MAC address of the network interface.
-	MacAddress *string `json:"macAddress,omitempty"`
+	MacAddress *string
 
 	// The name of the network interface.
-	NetworkInterfaceName *string `json:"networkInterfaceName,omitempty"`
+	NetworkInterfaceName *string
 
 	// The type of the VM switch.
-	VMSwitchType *VMSwitchType `json:"vmSwitchType,omitempty"`
+	VMSwitchType *VMSwitchType
 }
 
 // NetworkInterfaceIPConfiguration - Network interface IP configuration properties.
 type NetworkInterfaceIPConfiguration struct {
 	// The list of DNS servers IP addresses.
-	DNSServers []*string `json:"dnsServers,omitempty"`
+	DNSServers []*string
 
 	// The value of the gateway.
-	Gateway *string `json:"gateway,omitempty"`
+	Gateway *string
 
 	// The value of the IP address.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// IP address allocation method.
-	IPAllocationMethod *IPAllocationMethod `json:"ipAllocationMethod,omitempty"`
+	IPAllocationMethod *IPAllocationMethod
 
 	// IP address version.
-	IPVersion *IPVersion `json:"ipVersion,omitempty"`
+	IPVersion *IPVersion
 
 	// The value of the subnet.
-	Subnet *string `json:"subnet,omitempty"`
+	Subnet *string
 }
 
 // Operation - Object that describes a single Microsoft.HybridNetwork operation.
 type Operation struct {
 	// READ-ONLY; The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.HybridNetwork.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: Registration definition, registration assignment, etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationList - A list of the operations.
 type OperationList struct {
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of Microsoft.HybridNetwork operations.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -571,16 +571,16 @@ type OperationsClientListOptions struct {
 type OsDisk struct {
 	// Specifies the size of os disk in gigabytes. This is the fully expanded disk size needed of the VHD image on the ASE. This
 	// disk size should be greater than the size of the VHD provided in vhdUri.
-	DiskSizeGB *int32 `json:"diskSizeGB,omitempty"`
+	DiskSizeGB *int32
 
 	// The VHD name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The OS type.
-	OSType *OperatingSystemTypes `json:"osType,omitempty"`
+	OSType *OperatingSystemTypes
 
 	// The virtual hard disk.
-	Vhd *VirtualHardDisk `json:"vhd,omitempty"`
+	Vhd *VirtualHardDisk
 }
 
 // OsProfile - Specifies the operating system settings for the role instance.
@@ -598,7 +598,7 @@ type OsProfile struct {
 	// For a list of built-in system users on Linux that should not be used in this field, see Selecting User Names for Linux
 	// on Azure
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-usernames?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json].
-	AdminUsername *string `json:"adminUsername,omitempty"`
+	AdminUsername *string
 
 	// Specifies a base-64 encoded string of custom data. The base-64 encoded string is decoded to a binary array that is saved
 	// as a file on the virtual machine. The maximum length of the binary array is
@@ -608,102 +608,102 @@ type OsProfile struct {
 	// customData is passed to the VM to be saved as a file. For more information see Custom Data on Azure VMs [https://azure.microsoft.com/en-us/blog/custom-data-and-cloud-init-on-windows-azure/]
 	// For using cloud-init for your Linux VM, see Using cloud-init to customize a Linux VM during creation
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-using-cloud-init?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json]
-	CustomData *string `json:"customData,omitempty"`
+	CustomData *string
 
 	// Indicates if custom data is required to deploy this role.
-	CustomDataRequired *bool `json:"customDataRequired,omitempty"`
+	CustomDataRequired *bool
 
 	// Specifies the Linux operating system settings on the virtual machine.
 	// For a list of supported Linux distributions, see Linux on Azure-Endorsed Distributions
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json]
 	// For running non-endorsed distributions, see Information for Non-Endorsed Distributions
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json].
-	LinuxConfiguration *LinuxConfiguration `json:"linuxConfiguration,omitempty"`
+	LinuxConfiguration *LinuxConfiguration
 }
 
 // PreviewSubscription - Customer subscription which can use a sku.
 type PreviewSubscription struct {
 	// The Preview Subscription properties.
-	Properties *PreviewSubscriptionProperties `json:"properties,omitempty"`
+	Properties *PreviewSubscriptionProperties
 
 	// READ-ONLY; The ARM ID of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The preview subscription ID.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PreviewSubscriptionProperties - PreviewSubscription properties
 type PreviewSubscriptionProperties struct {
 	// READ-ONLY; The provisioning state of the PreviewSubscription resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // PreviewSubscriptionsList - A list of customer subscriptions which can use a sku.
 type PreviewSubscriptionsList struct {
 	// A list of preview subscriptions.
-	Value []*PreviewSubscription `json:"value,omitempty"`
+	Value []*PreviewSubscription
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RoleInstance - The role instance sub resource.
 type RoleInstance struct {
 	// The ARM ID of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The role instance name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The role instance properties.
-	Properties *RoleInstanceProperties `json:"properties,omitempty"`
+	Properties *RoleInstanceProperties
 
 	// The type of the resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 }
 
 // RoleInstanceProperties - The role instance properties of the network function.
 type RoleInstanceProperties struct {
 	// The operational state of the role instance.
-	OperationalState *OperationalState `json:"operationalState,omitempty"`
+	OperationalState *OperationalState
 
 	// READ-ONLY; The provisioning state of the RoleInstance resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // RoleInstancesClientBeginRestartOptions contains the optional parameters for the RoleInstancesClient.BeginRestart method.
@@ -737,16 +737,16 @@ type RoleInstancesClientListOptions struct {
 // SKUOverview - The network function sku overview.
 type SKUOverview struct {
 	// The vendor sku name.
-	SKUName *string `json:"skuName,omitempty"`
+	SKUName *string
 
 	// The vendor sku type.
-	SKUType *SKUType `json:"skuType,omitempty"`
+	SKUType *SKUType
 }
 
 // SSHConfiguration - SSH configuration for Linux based VMs running on Azure
 type SSHConfiguration struct {
 	// The list of SSH public keys used to authenticate with linux based VMs.
-	PublicKeys []*SSHPublicKey `json:"publicKeys,omitempty"`
+	PublicKeys []*SSHPublicKey
 }
 
 // SSHPublicKey - Contains information about SSH certificate public key and the path on the Linux VM where the public key
@@ -756,156 +756,156 @@ type SSHPublicKey struct {
 	// format.
 	// For creating ssh keys, see Create SSH keys on Linux and Mac for Linux VMs in Azure
 	// [https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-mac-create-ssh-keys?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json].
-	KeyData *string `json:"keyData,omitempty"`
+	KeyData *string
 
 	// Specifies the full path on the created VM where ssh public key is stored. If the file already exists, the specified key
 	// is appended to the file. Example: /home/user/.ssh/authorized_keys
-	Path *string `json:"path,omitempty"`
+	Path *string
 }
 
 // StorageProfile - Specifies the storage settings for the virtual machine disks.
 type StorageProfile struct {
 	// Specifies the parameters that are used to add a data disk to a virtual machine.
-	DataDisks []*DataDisk `json:"dataDisks,omitempty"`
+	DataDisks []*DataDisk
 
 	// The image reference properties.
-	ImageReference *ImageReference `json:"imageReference,omitempty"`
+	ImageReference *ImageReference
 
 	// Specifies information about the operating system disk used by the virtual machine.
-	OSDisk *OsDisk `json:"osDisk,omitempty"`
+	OSDisk *OsDisk
 }
 
 // SubResource - Reference to another sub resource.
 type SubResource struct {
 	// Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagsObject - Tags object for patch operations.
 type TagsObject struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Vendor resource.
 type Vendor struct {
 	// Vendor properties.
-	Properties *VendorPropertiesFormat `json:"properties,omitempty"`
+	Properties *VendorPropertiesFormat
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VendorDetails - The network function vendor details.
 type VendorDetails struct {
 	// The network function sku list.
-	SKUList []*SKUOverview `json:"skuList,omitempty"`
+	SKUList []*SKUOverview
 
 	// The network function vendor name.
-	VendorName *string `json:"vendorName,omitempty"`
+	VendorName *string
 }
 
 // VendorListResult - Response for vendors API service call.
 type VendorListResult struct {
 	// A list of vendors.
-	Value []*Vendor `json:"value,omitempty"`
+	Value []*Vendor
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // VendorNetworkFunction - Vendor network function sub resource.
 type VendorNetworkFunction struct {
 	// Network function details.
-	Properties *VendorNetworkFunctionPropertiesFormat `json:"properties,omitempty"`
+	Properties *VendorNetworkFunctionPropertiesFormat
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VendorNetworkFunctionListResult - Response for vendors API service call.
 type VendorNetworkFunctionListResult struct {
 	// A list of vendor network functions.
-	Value []*VendorNetworkFunction `json:"value,omitempty"`
+	Value []*VendorNetworkFunction
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // VendorNetworkFunctionPropertiesFormat - Vendor network function properties.
 type VendorNetworkFunctionPropertiesFormat struct {
 	// An array of network function vendor configurations.
-	NetworkFunctionVendorConfigurations []*NetworkFunctionVendorConfiguration `json:"networkFunctionVendorConfigurations,omitempty"`
+	NetworkFunctionVendorConfigurations []*NetworkFunctionVendorConfiguration
 
 	// The vendor controlled provisioning state of the vendor network function.
-	VendorProvisioningState *VendorProvisioningState `json:"vendorProvisioningState,omitempty"`
+	VendorProvisioningState *VendorProvisioningState
 
 	// READ-ONLY; The provisioning state of the vendor network function sub resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The name of the sku. Once set, it cannot be updated.
-	SKUName *string `json:"skuName,omitempty" azure:"ro"`
+	SKUName *string
 
 	// READ-ONLY; The sku type.
-	SKUType *SKUType `json:"skuType,omitempty" azure:"ro"`
+	SKUType *SKUType
 }
 
 // VendorNetworkFunctionsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorNetworkFunctionsClient.BeginCreateOrUpdate
@@ -930,37 +930,37 @@ type VendorNetworkFunctionsClientListOptions struct {
 // VendorPropertiesFormat - Vendor properties.
 type VendorPropertiesFormat struct {
 	// READ-ONLY; The provisioning state of the vendor resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; A list of IDs of the vendor skus offered by the vendor.
-	SKUs []*SubResource `json:"skus,omitempty" azure:"ro"`
+	SKUs []*SubResource
 }
 
 // VendorSKU - Sku sub resource.
 type VendorSKU struct {
 	// Vendor sku details.
-	Properties *VendorSKUPropertiesFormat `json:"properties,omitempty"`
+	Properties *VendorSKUPropertiesFormat
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VendorSKUListResult - Response for list vendor sku API service call.
 type VendorSKUListResult struct {
 	// A list of vendor skus offered by the vendor.
-	Value []*VendorSKU `json:"value,omitempty"`
+	Value []*VendorSKU
 
 	// READ-ONLY; The URI to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // VendorSKUPreviewClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUPreviewClient.BeginCreateOrUpdate
@@ -989,28 +989,28 @@ type VendorSKUPreviewClientListOptions struct {
 // VendorSKUPropertiesFormat - Sku properties
 type VendorSKUPropertiesFormat struct {
 	// The sku deployment mode.
-	DeploymentMode *SKUDeploymentMode `json:"deploymentMode,omitempty"`
+	DeploymentMode *SKUDeploymentMode
 
 	// The parameters for the managed application to be supplied by the vendor.
-	ManagedApplicationParameters any `json:"managedApplicationParameters,omitempty"`
+	ManagedApplicationParameters any
 
 	// The template for the managed application deployment.
-	ManagedApplicationTemplate any `json:"managedApplicationTemplate,omitempty"`
+	ManagedApplicationTemplate any
 
 	// The template definition of the network function.
-	NetworkFunctionTemplate *NetworkFunctionTemplate `json:"networkFunctionTemplate,omitempty"`
+	NetworkFunctionTemplate *NetworkFunctionTemplate
 
 	// The network function type.
-	NetworkFunctionType *NetworkFunctionType `json:"networkFunctionType,omitempty"`
+	NetworkFunctionType *NetworkFunctionType
 
 	// Indicates if the vendor sku is in preview mode.
-	Preview *bool `json:"preview,omitempty"`
+	Preview *bool
 
 	// The sku type.
-	SKUType *SKUType `json:"skuType,omitempty"`
+	SKUType *SKUType
 
 	// READ-ONLY; The provisioning state of the vendor sku sub resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // VendorSKUsClientBeginCreateOrUpdateOptions contains the optional parameters for the VendorSKUsClient.BeginCreateOrUpdate
@@ -1064,5 +1064,5 @@ type VendorsClientListBySubscriptionOptions struct {
 // VirtualHardDisk - Describes the uri of a disk.
 type VirtualHardDisk struct {
 	// Specifies the virtual hard disk's uri.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }

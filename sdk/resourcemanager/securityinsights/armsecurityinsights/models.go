@@ -14,25 +14,25 @@ import "time"
 // AADDataConnector - Represents AAD (Azure Active Directory) data connector.
 type AADDataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// AAD (Azure Active Directory) data connector properties.
-	Properties *AADDataConnectorProperties `json:"properties,omitempty"`
+	Properties *AADDataConnectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type AADDataConnector.
@@ -50,34 +50,34 @@ func (a *AADDataConnector) GetDataConnector() *DataConnector {
 // AADDataConnectorProperties - AAD (Azure Active Directory) data connector properties.
 type AADDataConnectorProperties struct {
 	// The available data types for the connector.
-	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
+	DataTypes *AlertsDataTypeOfDataConnector
 
 	// The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // AATPDataConnector - Represents AATP (Azure Advanced Threat Protection) data connector.
 type AATPDataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// AATP (Azure Advanced Threat Protection) data connector properties.
-	Properties *AATPDataConnectorProperties `json:"properties,omitempty"`
+	Properties *AATPDataConnectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type AATPDataConnector.
@@ -95,34 +95,34 @@ func (a *AATPDataConnector) GetDataConnector() *DataConnector {
 // AATPDataConnectorProperties - AATP (Azure Advanced Threat Protection) data connector properties.
 type AATPDataConnectorProperties struct {
 	// The available data types for the connector.
-	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
+	DataTypes *AlertsDataTypeOfDataConnector
 
 	// The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // ASCDataConnector - Represents ASC (Azure Security Center) data connector.
 type ASCDataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// ASC (Azure Security Center) data connector properties.
-	Properties *ASCDataConnectorProperties `json:"properties,omitempty"`
+	Properties *ASCDataConnectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type ASCDataConnector.
@@ -140,31 +140,31 @@ func (a *ASCDataConnector) GetDataConnector() *DataConnector {
 // ASCDataConnectorProperties - ASC (Azure Security Center) data connector properties.
 type ASCDataConnectorProperties struct {
 	// The available data types for the connector.
-	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
+	DataTypes *AlertsDataTypeOfDataConnector
 
 	// The subscription id to connect to, and get the data from.
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 }
 
 // AccountEntity - Represents an account entity.
 type AccountEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Account entity properties
-	Properties *AccountEntityProperties `json:"properties,omitempty"`
+	Properties *AccountEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type AccountEntity.
@@ -181,108 +181,108 @@ func (a *AccountEntity) GetEntity() *Entity {
 // AccountEntityProperties - Account entity property bag.
 type AccountEntityProperties struct {
 	// READ-ONLY; The Azure Active Directory tenant id.
-	AADTenantID *string `json:"aadTenantId,omitempty" azure:"ro"`
+	AADTenantID *string
 
 	// READ-ONLY; The Azure Active Directory user id.
-	AADUserID *string `json:"aadUserId,omitempty" azure:"ro"`
+	AADUserID *string
 
 	// READ-ONLY; The name of the account. This field should hold only the name without any domain added to it, i.e. administrator.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+	AccountName *string
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The fully qualified domain DNS name.
-	DNSDomain *string `json:"dnsDomain,omitempty" azure:"ro"`
+	DNSDomain *string
 
 	// READ-ONLY; The display name of the account.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The Host entity id that contains the account in case it is a local account (not domain joined)
-	HostEntityID *string `json:"hostEntityId,omitempty" azure:"ro"`
+	HostEntityID *string
 
 	// READ-ONLY; Determines whether this is a domain account.
-	IsDomainJoined *bool `json:"isDomainJoined,omitempty" azure:"ro"`
+	IsDomainJoined *bool
 
 	// READ-ONLY; The NetBIOS domain name as it appears in the alert format - domain\username. Examples: NT AUTHORITY.
-	NtDomain *string `json:"ntDomain,omitempty" azure:"ro"`
+	NtDomain *string
 
 	// READ-ONLY; The objectGUID attribute is a single-value attribute that is the unique identifier for the object, assigned
 	// by active directory.
-	ObjectGUID *string `json:"objectGuid,omitempty" azure:"ro"`
+	ObjectGUID *string
 
 	// READ-ONLY; The Azure Active Directory Passport User ID.
-	Puid *string `json:"puid,omitempty" azure:"ro"`
+	Puid *string
 
 	// READ-ONLY; The account security identifier, e.g. S-1-5-18.
-	Sid *string `json:"sid,omitempty" azure:"ro"`
+	Sid *string
 
 	// READ-ONLY; The user principal name suffix for the account, in some cases it is also the domain name. Examples: contoso.com.
-	UpnSuffix *string `json:"upnSuffix,omitempty" azure:"ro"`
+	UpnSuffix *string
 }
 
 // ActionRequest - Action for alert rule.
 type ActionRequest struct {
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Action properties for put request
-	Properties *ActionRequestProperties `json:"properties,omitempty"`
+	Properties *ActionRequestProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ActionRequestProperties - Action property bag.
 type ActionRequestProperties struct {
 	// REQUIRED; Logic App Resource Id, /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
+	LogicAppResourceID *string
 
 	// REQUIRED; Logic App Callback URL for this specific workflow.
-	TriggerURI *string `json:"triggerUri,omitempty"`
+	TriggerURI *string
 }
 
 // ActionResponse - Action for alert rule.
 type ActionResponse struct {
 	// Etag of the action.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Action properties for get request
-	Properties *ActionResponseProperties `json:"properties,omitempty"`
+	Properties *ActionResponseProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ActionResponseProperties - Action property bag.
 type ActionResponseProperties struct {
 	// REQUIRED; Logic App Resource Id, /subscriptions/{my-subscription}/resourceGroups/{my-resource-group}/providers/Microsoft.Logic/workflows/{my-workflow-id}.
-	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
+	LogicAppResourceID *string
 
 	// The name of the logic app's workflow.
-	WorkflowID *string `json:"workflowId,omitempty"`
+	WorkflowID *string
 }
 
 // ActionsClientCreateOrUpdateOptions contains the optional parameters for the ActionsClient.CreateOrUpdate method.
@@ -308,25 +308,25 @@ type ActionsClientListByAlertRuleOptions struct {
 // ActionsList - List all the actions.
 type ActionsList struct {
 	// REQUIRED; Array of actions.
-	Value []*ActionResponse `json:"value,omitempty"`
+	Value []*ActionResponse
 
 	// READ-ONLY; URL to fetch the next set of actions.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AlertDetailsOverride - Settings for how to dynamically override alert static details
 type AlertDetailsOverride struct {
 	// the format containing columns name(s) to override the alert description
-	AlertDescriptionFormat *string `json:"alertDescriptionFormat,omitempty"`
+	AlertDescriptionFormat *string
 
 	// the format containing columns name(s) to override the alert name
-	AlertDisplayNameFormat *string `json:"alertDisplayNameFormat,omitempty"`
+	AlertDisplayNameFormat *string
 
 	// the column name to take the alert severity from
-	AlertSeverityColumnName *string `json:"alertSeverityColumnName,omitempty"`
+	AlertSeverityColumnName *string
 
 	// the column name to take the alert tactics from
-	AlertTacticsColumnName *string `json:"alertTacticsColumnName,omitempty"`
+	AlertTacticsColumnName *string
 }
 
 // AlertRuleClassification provides polymorphic access to related types.
@@ -341,22 +341,22 @@ type AlertRuleClassification interface {
 // AlertRule - Alert rule.
 type AlertRule struct {
 	// REQUIRED; The alert rule kind
-	Kind *AlertRuleKind `json:"kind,omitempty"`
+	Kind *AlertRuleKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetAlertRule implements the AlertRuleClassification interface for type AlertRule.
@@ -374,19 +374,19 @@ type AlertRuleTemplateClassification interface {
 // AlertRuleTemplate - Alert rule template.
 type AlertRuleTemplate struct {
 	// REQUIRED; The alert rule kind
-	Kind *AlertRuleKind `json:"kind,omitempty"`
+	Kind *AlertRuleKind
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type AlertRuleTemplate.
@@ -395,10 +395,10 @@ func (a *AlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate { return a
 // AlertRuleTemplateDataSource - alert rule template data sources
 type AlertRuleTemplateDataSource struct {
 	// The connector id that provides the following data types
-	ConnectorID *string `json:"connectorId,omitempty"`
+	ConnectorID *string
 
 	// The data types used by the alert rule template
-	DataTypes []*string `json:"dataTypes,omitempty"`
+	DataTypes []*string
 }
 
 // AlertRuleTemplatesClientGetOptions contains the optional parameters for the AlertRuleTemplatesClient.Get method.
@@ -414,10 +414,10 @@ type AlertRuleTemplatesClientListOptions struct {
 // AlertRuleTemplatesList - List all the alert rule templates.
 type AlertRuleTemplatesList struct {
 	// REQUIRED; Array of alert rule templates.
-	Value []AlertRuleTemplateClassification `json:"value,omitempty"`
+	Value []AlertRuleTemplateClassification
 
 	// READ-ONLY; URL to fetch the next set of alert rule templates.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AlertRulesClientCreateOrUpdateOptions contains the optional parameters for the AlertRulesClient.CreateOrUpdate method.
@@ -443,36 +443,36 @@ type AlertRulesClientListOptions struct {
 // AlertRulesList - List all the alert rules.
 type AlertRulesList struct {
 	// REQUIRED; Array of alert rules.
-	Value []AlertRuleClassification `json:"value,omitempty"`
+	Value []AlertRuleClassification
 
 	// READ-ONLY; URL to fetch the next set of alert rules.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AlertsDataTypeOfDataConnector - Alerts data type for data connectors.
 type AlertsDataTypeOfDataConnector struct {
 	// Alerts data type connection.
-	Alerts *DataConnectorDataTypeCommon `json:"alerts,omitempty"`
+	Alerts *DataConnectorDataTypeCommon
 }
 
 type AutomationRule struct {
 	// REQUIRED; Automation rule properties
-	Properties *AutomationRuleProperties `json:"properties,omitempty"`
+	Properties *AutomationRuleProperties
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AutomationRuleActionClassification provides polymorphic access to related types.
@@ -487,10 +487,10 @@ type AutomationRuleActionClassification interface {
 // AutomationRuleAction - Describes an automation rule action
 type AutomationRuleAction struct {
 	// REQUIRED; The type of the automation rule action
-	ActionType *ActionType `json:"actionType,omitempty"`
+	ActionType *ActionType
 
 	// REQUIRED
-	Order *int32 `json:"order,omitempty"`
+	Order *int32
 }
 
 // GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleAction.
@@ -508,7 +508,7 @@ type AutomationRuleConditionClassification interface {
 // AutomationRuleCondition - Describes an automation rule condition
 type AutomationRuleCondition struct {
 	// REQUIRED
-	ConditionType *ConditionType `json:"conditionType,omitempty"`
+	ConditionType *ConditionType
 }
 
 // GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type AutomationRuleCondition.
@@ -517,11 +517,11 @@ func (a *AutomationRuleCondition) GetAutomationRuleCondition() *AutomationRuleCo
 // AutomationRuleModifyPropertiesAction - Describes an automation rule action to modify an object's properties.
 type AutomationRuleModifyPropertiesAction struct {
 	// REQUIRED; The type of the automation rule action
-	ActionType *ActionType `json:"actionType,omitempty"`
+	ActionType *ActionType
 
 	// REQUIRED
-	Order               *int32                    `json:"order,omitempty"`
-	ActionConfiguration *IncidentPropertiesAction `json:"actionConfiguration,omitempty"`
+	Order               *int32
+	ActionConfiguration *IncidentPropertiesAction
 }
 
 // GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleModifyPropertiesAction.
@@ -535,46 +535,46 @@ func (a *AutomationRuleModifyPropertiesAction) GetAutomationRuleAction() *Automa
 // AutomationRuleProperties - Automation rule properties
 type AutomationRuleProperties struct {
 	// REQUIRED; The actions to execute when the automation rule is triggered
-	Actions []AutomationRuleActionClassification `json:"actions,omitempty"`
+	Actions []AutomationRuleActionClassification
 
 	// REQUIRED; The display name of the automation rule
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; The order of execution of the automation rule
-	Order *int32 `json:"order,omitempty"`
+	Order *int32
 
 	// REQUIRED; Describes automation rule triggering logic
-	TriggeringLogic *AutomationRuleTriggeringLogic `json:"triggeringLogic,omitempty"`
+	TriggeringLogic *AutomationRuleTriggeringLogic
 
 	// READ-ONLY; Information on the client (user or application) that made some action
-	CreatedBy *ClientInfo `json:"createdBy,omitempty" azure:"ro"`
+	CreatedBy *ClientInfo
 
 	// READ-ONLY; The time the automation rule was created
-	CreatedTimeUTC *time.Time `json:"createdTimeUtc,omitempty" azure:"ro"`
+	CreatedTimeUTC *time.Time
 
 	// READ-ONLY; Information on the client (user or application) that made some action
-	LastModifiedBy *ClientInfo `json:"lastModifiedBy,omitempty" azure:"ro"`
+	LastModifiedBy *ClientInfo
 
 	// READ-ONLY; The last time the automation rule was updated
-	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
+	LastModifiedTimeUTC *time.Time
 }
 
 type AutomationRulePropertyValuesCondition struct {
-	Operator *AutomationRulePropertyConditionSupportedOperator `json:"operator,omitempty"`
+	Operator *AutomationRulePropertyConditionSupportedOperator
 
 	// The property to evaluate in an automation rule property condition
-	PropertyName   *AutomationRulePropertyConditionSupportedProperty `json:"propertyName,omitempty"`
-	PropertyValues []*string                                         `json:"propertyValues,omitempty"`
+	PropertyName   *AutomationRulePropertyConditionSupportedProperty
+	PropertyValues []*string
 }
 
 // AutomationRuleRunPlaybookAction - Describes an automation rule action to run a playbook
 type AutomationRuleRunPlaybookAction struct {
 	// REQUIRED; The type of the automation rule action
-	ActionType *ActionType `json:"actionType,omitempty"`
+	ActionType *ActionType
 
 	// REQUIRED
-	Order               *int32                    `json:"order,omitempty"`
-	ActionConfiguration *PlaybookActionProperties `json:"actionConfiguration,omitempty"`
+	Order               *int32
+	ActionConfiguration *PlaybookActionProperties
 }
 
 // GetAutomationRuleAction implements the AutomationRuleActionClassification interface for type AutomationRuleRunPlaybookAction.
@@ -588,19 +588,19 @@ func (a *AutomationRuleRunPlaybookAction) GetAutomationRuleAction() *AutomationR
 // AutomationRuleTriggeringLogic - Describes automation rule triggering logic
 type AutomationRuleTriggeringLogic struct {
 	// REQUIRED; Determines whether the automation rule is enabled or disabled
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// REQUIRED
-	TriggersOn *TriggersOn `json:"triggersOn,omitempty"`
+	TriggersOn *TriggersOn
 
 	// REQUIRED
-	TriggersWhen *TriggersWhen `json:"triggersWhen,omitempty"`
+	TriggersWhen *TriggersWhen
 
 	// The conditions to evaluate to determine if the automation rule should be triggered on a given object
-	Conditions []AutomationRuleConditionClassification `json:"conditions,omitempty"`
+	Conditions []AutomationRuleConditionClassification
 
 	// Determines when the automation rule should automatically expire and be disabled.
-	ExpirationTimeUTC *time.Time `json:"expirationTimeUtc,omitempty"`
+	ExpirationTimeUTC *time.Time
 }
 
 // AutomationRulesClientCreateOrUpdateOptions contains the optional parameters for the AutomationRulesClient.CreateOrUpdate
@@ -626,32 +626,32 @@ type AutomationRulesClientListOptions struct {
 }
 
 type AutomationRulesList struct {
-	NextLink *string           `json:"nextLink,omitempty"`
-	Value    []*AutomationRule `json:"value,omitempty"`
+	NextLink *string
+	Value    []*AutomationRule
 }
 
 // AwsCloudTrailDataConnector - Represents Amazon Web Services CloudTrail data connector.
 type AwsCloudTrailDataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Amazon Web Services CloudTrail data connector properties.
-	Properties *AwsCloudTrailDataConnectorProperties `json:"properties,omitempty"`
+	Properties *AwsCloudTrailDataConnectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type AwsCloudTrailDataConnector.
@@ -669,43 +669,43 @@ func (a *AwsCloudTrailDataConnector) GetDataConnector() *DataConnector {
 // AwsCloudTrailDataConnectorDataTypes - The available data types for Amazon Web Services CloudTrail data connector.
 type AwsCloudTrailDataConnectorDataTypes struct {
 	// Logs data type.
-	Logs *AwsCloudTrailDataConnectorDataTypesLogs `json:"logs,omitempty"`
+	Logs *AwsCloudTrailDataConnectorDataTypesLogs
 }
 
 // AwsCloudTrailDataConnectorDataTypesLogs - Logs data type.
 type AwsCloudTrailDataConnectorDataTypesLogs struct {
 	// Describe whether this data type connection is enabled or not.
-	State *DataTypeState `json:"state,omitempty"`
+	State *DataTypeState
 }
 
 // AwsCloudTrailDataConnectorProperties - Amazon Web Services CloudTrail data connector properties.
 type AwsCloudTrailDataConnectorProperties struct {
 	// The Aws Role Arn (with CloudTrailReadOnly policy) that is used to access the Aws account.
-	AwsRoleArn *string `json:"awsRoleArn,omitempty"`
+	AwsRoleArn *string
 
 	// The available data types for the connector.
-	DataTypes *AwsCloudTrailDataConnectorDataTypes `json:"dataTypes,omitempty"`
+	DataTypes *AwsCloudTrailDataConnectorDataTypes
 }
 
 // AzureResourceEntity - Represents an azure resource entity.
 type AzureResourceEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// AzureResource entity properties
-	Properties *AzureResourceEntityProperties `json:"properties,omitempty"`
+	Properties *AzureResourceEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type AzureResourceEntity.
@@ -722,89 +722,89 @@ func (a *AzureResourceEntity) GetEntity() *Entity {
 // AzureResourceEntityProperties - AzureResource entity property bag.
 type AzureResourceEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The azure resource id of the resource
-	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+	ResourceID *string
 
 	// READ-ONLY; The subscription id of the resource
-	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+	SubscriptionID *string
 }
 
 // Bookmark - Represents a bookmark in Azure Security Insights.
 type Bookmark struct {
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Bookmark properties
-	Properties *BookmarkProperties `json:"properties,omitempty"`
+	Properties *BookmarkProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BookmarkList - List all the bookmarks.
 type BookmarkList struct {
 	// REQUIRED; Array of bookmarks.
-	Value []*Bookmark `json:"value,omitempty"`
+	Value []*Bookmark
 
 	// READ-ONLY; URL to fetch the next set of cases.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // BookmarkProperties - Describes bookmark properties
 type BookmarkProperties struct {
 	// REQUIRED; The display name of the bookmark
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; The query of the bookmark.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// The time the bookmark was created
-	Created *time.Time `json:"created,omitempty"`
+	Created *time.Time
 
 	// Describes a user that created the bookmark
-	CreatedBy *UserInfo `json:"createdBy,omitempty"`
+	CreatedBy *UserInfo
 
 	// The bookmark event time
-	EventTime *time.Time `json:"eventTime,omitempty"`
+	EventTime *time.Time
 
 	// Describes an incident that relates to bookmark
-	IncidentInfo *IncidentInfo `json:"incidentInfo,omitempty"`
+	IncidentInfo *IncidentInfo
 
 	// List of labels relevant to this bookmark
-	Labels []*string `json:"labels,omitempty"`
+	Labels []*string
 
 	// The notes of the bookmark
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// The end time for the query
-	QueryEndTime *time.Time `json:"queryEndTime,omitempty"`
+	QueryEndTime *time.Time
 
 	// The query result of the bookmark.
-	QueryResult *string `json:"queryResult,omitempty"`
+	QueryResult *string
 
 	// The start time for the query
-	QueryStartTime *time.Time `json:"queryStartTime,omitempty"`
+	QueryStartTime *time.Time
 
 	// The last time the bookmark was updated
-	Updated *time.Time `json:"updated,omitempty"`
+	Updated *time.Time
 
 	// Describes a user that updated the bookmark
-	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	UpdatedBy *UserInfo
 }
 
 // BookmarksClientCreateOrUpdateOptions contains the optional parameters for the BookmarksClient.CreateOrUpdate method.
@@ -830,37 +830,37 @@ type BookmarksClientListOptions struct {
 // ClientInfo - Information on the client (user or application) that made some action
 type ClientInfo struct {
 	// The email of the client.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// The name of the client.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The object id of the client.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// The user principal name of the client.
-	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
+	UserPrincipalName *string
 }
 
 // CloudApplicationEntity - Represents a cloud application entity.
 type CloudApplicationEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// CloudApplication entity properties
-	Properties *CloudApplicationEntityProperties `json:"properties,omitempty"`
+	Properties *CloudApplicationEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type CloudApplicationEntity.
@@ -877,42 +877,42 @@ func (c *CloudApplicationEntity) GetEntity() *Entity {
 // CloudApplicationEntityProperties - CloudApplication entity property bag.
 type CloudApplicationEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The technical identifier of the application.
-	AppID *int32 `json:"appId,omitempty" azure:"ro"`
+	AppID *int32
 
 	// READ-ONLY; The name of the related cloud application.
-	AppName *string `json:"appName,omitempty" azure:"ro"`
+	AppName *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The user defined instance name of the cloud application. It is often used to distinguish between several applications
 	// of the same type that a customer has.
-	InstanceName *string `json:"instanceName,omitempty" azure:"ro"`
+	InstanceName *string
 }
 
 // DNSEntity - Represents a dns entity.
 type DNSEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Dns entity properties
-	Properties *DNSEntityProperties `json:"properties,omitempty"`
+	Properties *DNSEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type DNSEntity.
@@ -929,23 +929,23 @@ func (d *DNSEntity) GetEntity() *Entity {
 // DNSEntityProperties - Dns entity property bag.
 type DNSEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; An ip entity id for the dns server resolving the request
-	DNSServerIPEntityID *string `json:"dnsServerIpEntityId,omitempty" azure:"ro"`
+	DNSServerIPEntityID *string
 
 	// READ-ONLY; The name of the dns record associated with the alert
-	DomainName *string `json:"domainName,omitempty" azure:"ro"`
+	DomainName *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; An ip entity id for the dns request client
-	HostIPAddressEntityID *string `json:"hostIpAddressEntityId,omitempty" azure:"ro"`
+	HostIPAddressEntityID *string
 
 	// READ-ONLY; Ip entity identifiers for the resolved ip address.
-	IPAddressEntityIDs []*string `json:"ipAddressEntityIds,omitempty" azure:"ro"`
+	IPAddressEntityIDs []*string
 }
 
 // DataConnectorClassification provides polymorphic access to related types.
@@ -961,22 +961,22 @@ type DataConnectorClassification interface {
 // DataConnector - Data connector.
 type DataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type DataConnector.
@@ -985,16 +985,16 @@ func (d *DataConnector) GetDataConnector() *DataConnector { return d }
 // DataConnectorDataTypeCommon - Common field for data type in data connectors.
 type DataConnectorDataTypeCommon struct {
 	// Describe whether this data type connection is enabled or not.
-	State *DataTypeState `json:"state,omitempty"`
+	State *DataTypeState
 }
 
 // DataConnectorList - List all the data connectors.
 type DataConnectorList struct {
 	// REQUIRED; Array of data connectors.
-	Value []DataConnectorClassification `json:"value,omitempty"`
+	Value []DataConnectorClassification
 
 	// READ-ONLY; URL to fetch the next set of data connectors.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DataConnectorsClientCreateOrUpdateOptions contains the optional parameters for the DataConnectorsClient.CreateOrUpdate
@@ -1033,19 +1033,19 @@ type EntityClassification interface {
 // Entity - Specific entity.
 type Entity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type Entity.
@@ -1054,46 +1054,46 @@ func (e *Entity) GetEntity() *Entity { return e }
 // EntityMapping - Single entity mapping for the alert rule
 type EntityMapping struct {
 	// The V3 type of the mapped entity
-	EntityType *EntityMappingType `json:"entityType,omitempty"`
+	EntityType *EntityMappingType
 
 	// array of field mappings for the given entity mapping
-	FieldMappings []*FieldMapping `json:"fieldMappings,omitempty"`
+	FieldMappings []*FieldMapping
 }
 
 // EventGroupingSettings - Event grouping settings property bag.
 type EventGroupingSettings struct {
 	// The event grouping aggregation kinds
-	AggregationKind *EventGroupingAggregationKind `json:"aggregationKind,omitempty"`
+	AggregationKind *EventGroupingAggregationKind
 }
 
 // FieldMapping - A single field mapping of the mapped entity
 type FieldMapping struct {
 	// the column name to be mapped to the identifier
-	ColumnName *string `json:"columnName,omitempty"`
+	ColumnName *string
 
 	// the V3 identifier of the entity
-	Identifier *string `json:"identifier,omitempty"`
+	Identifier *string
 }
 
 // FileEntity - Represents a file entity.
 type FileEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// File entity properties
-	Properties *FileEntityProperties `json:"properties,omitempty"`
+	Properties *FileEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type FileEntity.
@@ -1110,44 +1110,44 @@ func (f *FileEntity) GetEntity() *Entity {
 // FileEntityProperties - File entity property bag.
 type FileEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The full path to the file.
-	Directory *string `json:"directory,omitempty" azure:"ro"`
+	Directory *string
 
 	// READ-ONLY; The file hash entity identifiers associated with this file
-	FileHashEntityIDs []*string `json:"fileHashEntityIds,omitempty" azure:"ro"`
+	FileHashEntityIDs []*string
 
 	// READ-ONLY; The file name without path (some alerts might not include path).
-	FileName *string `json:"fileName,omitempty" azure:"ro"`
+	FileName *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The Host entity id which the file belongs to
-	HostEntityID *string `json:"hostEntityId,omitempty" azure:"ro"`
+	HostEntityID *string
 }
 
 // FileHashEntity - Represents a file hash entity.
 type FileHashEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// FileHash entity properties
-	Properties *FileHashEntityProperties `json:"properties,omitempty"`
+	Properties *FileHashEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type FileHashEntity.
@@ -1164,41 +1164,41 @@ func (f *FileHashEntity) GetEntity() *Entity {
 // FileHashEntityProperties - FileHash entity property bag.
 type FileHashEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The hash algorithm type.
-	Algorithm *FileHashAlgorithm `json:"algorithm,omitempty" azure:"ro"`
+	Algorithm *FileHashAlgorithm
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The file hash value.
-	HashValue *string `json:"hashValue,omitempty" azure:"ro"`
+	HashValue *string
 }
 
 // FusionAlertRule - Represents Fusion alert rule.
 type FusionAlertRule struct {
 	// REQUIRED; The alert rule kind
-	Kind *AlertRuleKind `json:"kind,omitempty"`
+	Kind *AlertRuleKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Fusion alert rule properties
-	Properties *FusionAlertRuleProperties `json:"properties,omitempty"`
+	Properties *FusionAlertRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetAlertRule implements the AlertRuleClassification interface for type FusionAlertRule.
@@ -1216,46 +1216,46 @@ func (f *FusionAlertRule) GetAlertRule() *AlertRule {
 // FusionAlertRuleProperties - Fusion alert rule base property bag.
 type FusionAlertRuleProperties struct {
 	// REQUIRED; The Name of the alert rule template used to create this rule.
-	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
+	AlertRuleTemplateName *string
 
 	// REQUIRED; Determines whether this alert rule is enabled or disabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// READ-ONLY; The description of the alert rule.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The display name for alerts created by this alert rule.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The last time that this alert has been modified.
-	LastModifiedUTC *time.Time `json:"lastModifiedUtc,omitempty" azure:"ro"`
+	LastModifiedUTC *time.Time
 
 	// READ-ONLY; The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty" azure:"ro"`
+	Severity *AlertSeverity
 
 	// READ-ONLY; The tactics of the alert rule
-	Tactics []*AttackTactic `json:"tactics,omitempty" azure:"ro"`
+	Tactics []*AttackTactic
 }
 
 // FusionAlertRuleTemplate - Represents Fusion alert rule template.
 type FusionAlertRuleTemplate struct {
 	// REQUIRED; The alert rule kind
-	Kind *AlertRuleKind `json:"kind,omitempty"`
+	Kind *AlertRuleKind
 
 	// Fusion alert rule template properties
-	Properties *FusionAlertRuleTemplateProperties `json:"properties,omitempty"`
+	Properties *FusionAlertRuleTemplateProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type FusionAlertRuleTemplate.
@@ -1272,107 +1272,107 @@ func (f *FusionAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
 // FusionAlertRuleTemplateProperties - Represents Fusion alert rule template properties
 type FusionAlertRuleTemplateProperties struct {
 	// the number of alert rules that were created by this template
-	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	AlertRulesCreatedByTemplateCount *int32
 
 	// The description of the alert rule template.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name for alert rule template.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The required data connectors for this template
-	RequiredDataConnectors []*AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
+	RequiredDataConnectors []*AlertRuleTemplateDataSource
 
 	// The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty"`
+	Severity *AlertSeverity
 
 	// The alert rule template status.
-	Status *TemplateStatus `json:"status,omitempty"`
+	Status *TemplateStatus
 
 	// The tactics of the alert rule template
-	Tactics []*AttackTactic `json:"tactics,omitempty"`
+	Tactics []*AttackTactic
 
 	// READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *time.Time `json:"createdDateUTC,omitempty" azure:"ro"`
+	CreatedDateUTC *time.Time
 
 	// READ-ONLY; The time that this alert rule template was last updated.
-	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
+	LastUpdatedDateUTC *time.Time
 }
 
 // GeoLocation - The geo-location context attached to the ip entity
 type GeoLocation struct {
 	// READ-ONLY; Autonomous System Number
-	Asn *int32 `json:"asn,omitempty" azure:"ro"`
+	Asn *int32
 
 	// READ-ONLY; City name
-	City *string `json:"city,omitempty" azure:"ro"`
+	City *string
 
 	// READ-ONLY; The country code according to ISO 3166 format
-	CountryCode *string `json:"countryCode,omitempty" azure:"ro"`
+	CountryCode *string
 
 	// READ-ONLY; Country name according to ISO 3166 Alpha 2: the lowercase of the English Short Name
-	CountryName *string `json:"countryName,omitempty" azure:"ro"`
+	CountryName *string
 
 	// READ-ONLY; The longitude of the identified location, expressed as a floating point number with range of -180 to 180, with
 	// positive numbers representing East and negative numbers representing West. Latitude and
 	// longitude are derived from the city or postal code.
-	Latitude *float64 `json:"latitude,omitempty" azure:"ro"`
+	Latitude *float64
 
 	// READ-ONLY; The latitude of the identified location, expressed as a floating point number with range of - 90 to 90, with
 	// positive numbers representing North and negative numbers representing South. Latitude and
 	// longitude are derived from the city or postal code.
-	Longitude *float64 `json:"longitude,omitempty" azure:"ro"`
+	Longitude *float64
 
 	// READ-ONLY; State name
-	State *string `json:"state,omitempty" azure:"ro"`
+	State *string
 }
 
 // GroupingConfiguration - Grouping configuration property bag.
 type GroupingConfiguration struct {
 	// REQUIRED; Grouping enabled
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// REQUIRED; Limit the group to alerts created within the lookback duration (in ISO 8601 duration format)
-	LookbackDuration *string `json:"lookbackDuration,omitempty"`
+	LookbackDuration *string
 
 	// REQUIRED; Grouping matching method. When method is Selected at least one of groupByEntities, groupByAlertDetails, groupByCustomDetails
 	// must be provided and not empty.
-	MatchingMethod *MatchingMethod `json:"matchingMethod,omitempty"`
+	MatchingMethod *MatchingMethod
 
 	// REQUIRED; Re-open closed matching incidents
-	ReopenClosedIncident *bool `json:"reopenClosedIncident,omitempty"`
+	ReopenClosedIncident *bool
 
 	// A list of alert details to group by (when matchingMethod is Selected)
-	GroupByAlertDetails []*AlertDetail `json:"groupByAlertDetails,omitempty"`
+	GroupByAlertDetails []*AlertDetail
 
 	// A list of custom details keys to group by (when matchingMethod is Selected). Only keys defined in the current alert rule
 	// may be used.
-	GroupByCustomDetails []*string `json:"groupByCustomDetails,omitempty"`
+	GroupByCustomDetails []*string
 
 	// A list of entity types to group by (when matchingMethod is Selected). Only entities defined in the current alert rule may
 	// be used.
-	GroupByEntities []*EntityMappingType `json:"groupByEntities,omitempty"`
+	GroupByEntities []*EntityMappingType
 }
 
 // HostEntity - Represents a host entity.
 type HostEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Host entity properties
-	Properties *HostEntityProperties `json:"properties,omitempty"`
+	Properties *HostEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type HostEntity.
@@ -1389,60 +1389,60 @@ func (h *HostEntity) GetEntity() *Entity {
 // HostEntityProperties - Host entity property bag.
 type HostEntityProperties struct {
 	// The operating system type.
-	OSFamily *OSFamily `json:"osFamily,omitempty"`
+	OSFamily *OSFamily
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The azure resource id of the VM.
-	AzureID *string `json:"azureID,omitempty" azure:"ro"`
+	AzureID *string
 
 	// READ-ONLY; The DNS domain that this host belongs to. Should contain the compete DNS suffix for the domain
-	DNSDomain *string `json:"dnsDomain,omitempty" azure:"ro"`
+	DNSDomain *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The hostname without the domain suffix.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; Determines whether this host belongs to a domain.
-	IsDomainJoined *bool `json:"isDomainJoined,omitempty" azure:"ro"`
+	IsDomainJoined *bool
 
 	// READ-ONLY; The host name (pre-windows2000).
-	NetBiosName *string `json:"netBiosName,omitempty" azure:"ro"`
+	NetBiosName *string
 
 	// READ-ONLY; The NT domain that this host belongs to.
-	NtDomain *string `json:"ntDomain,omitempty" azure:"ro"`
+	NtDomain *string
 
 	// READ-ONLY; A free text representation of the operating system. This field is meant to hold specific versions the are more
 	// fine grained than OSFamily or future values not supported by OSFamily enumeration
-	OSVersion *string `json:"osVersion,omitempty" azure:"ro"`
+	OSVersion *string
 
 	// READ-ONLY; The OMS agent id, if the host has OMS agent installed.
-	OmsAgentID *string `json:"omsAgentID,omitempty" azure:"ro"`
+	OmsAgentID *string
 }
 
 // HuntingBookmark - Represents a Hunting bookmark entity.
 type HuntingBookmark struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// HuntingBookmark entity properties
-	Properties *HuntingBookmarkProperties `json:"properties,omitempty"`
+	Properties *HuntingBookmarkProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type HuntingBookmark.
@@ -1459,65 +1459,65 @@ func (h *HuntingBookmark) GetEntity() *Entity {
 // HuntingBookmarkProperties - Describes bookmark properties
 type HuntingBookmarkProperties struct {
 	// REQUIRED; The display name of the bookmark
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; The query of the bookmark.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// The time the bookmark was created
-	Created *time.Time `json:"created,omitempty"`
+	Created *time.Time
 
 	// Describes a user that created the bookmark
-	CreatedBy *UserInfo `json:"createdBy,omitempty"`
+	CreatedBy *UserInfo
 
 	// The time of the event
-	EventTime *time.Time `json:"eventTime,omitempty"`
+	EventTime *time.Time
 
 	// Describes an incident that relates to bookmark
-	IncidentInfo *IncidentInfo `json:"incidentInfo,omitempty"`
+	IncidentInfo *IncidentInfo
 
 	// List of labels relevant to this bookmark
-	Labels []*string `json:"labels,omitempty"`
+	Labels []*string
 
 	// The notes of the bookmark
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// The query result of the bookmark.
-	QueryResult *string `json:"queryResult,omitempty"`
+	QueryResult *string
 
 	// The last time the bookmark was updated
-	Updated *time.Time `json:"updated,omitempty"`
+	Updated *time.Time
 
 	// Describes a user that updated the bookmark
-	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	UpdatedBy *UserInfo
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 }
 
 // IPEntity - Represents an ip entity.
 type IPEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Ip entity properties
-	Properties *IPEntityProperties `json:"properties,omitempty"`
+	Properties *IPEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type IPEntity.
@@ -1534,116 +1534,116 @@ func (i *IPEntity) GetEntity() *Entity {
 // IPEntityProperties - Ip entity property bag.
 type IPEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The IP address as string, e.g. 127.0.0.1 (either in Ipv4 or Ipv6)
-	Address *string `json:"address,omitempty" azure:"ro"`
+	Address *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The geo-location context attached to the ip entity
-	Location *GeoLocation `json:"location,omitempty" azure:"ro"`
+	Location *GeoLocation
 
 	// READ-ONLY; A list of TI contexts attached to the ip entity.
-	ThreatIntelligence []*ThreatIntelligence `json:"threatIntelligence,omitempty" azure:"ro"`
+	ThreatIntelligence []*ThreatIntelligence
 }
 
 // Incident - Represents an incident in Azure Security Insights.
 type Incident struct {
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Incident properties
-	Properties *IncidentProperties `json:"properties,omitempty"`
+	Properties *IncidentProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IncidentAdditionalData - Incident additional data property bag.
 type IncidentAdditionalData struct {
 	// READ-ONLY; List of product names of alerts in the incident
-	AlertProductNames []*string `json:"alertProductNames,omitempty" azure:"ro"`
+	AlertProductNames []*string
 
 	// READ-ONLY; The number of alerts in the incident
-	AlertsCount *int32 `json:"alertsCount,omitempty" azure:"ro"`
+	AlertsCount *int32
 
 	// READ-ONLY; The number of bookmarks in the incident
-	BookmarksCount *int32 `json:"bookmarksCount,omitempty" azure:"ro"`
+	BookmarksCount *int32
 
 	// READ-ONLY; The number of comments in the incident
-	CommentsCount *int32 `json:"commentsCount,omitempty" azure:"ro"`
+	CommentsCount *int32
 
 	// READ-ONLY; The tactics associated with incident
-	Tactics []*AttackTactic `json:"tactics,omitempty" azure:"ro"`
+	Tactics []*AttackTactic
 }
 
 // IncidentAlertList - List of incident alerts.
 type IncidentAlertList struct {
 	// REQUIRED; Array of incident alerts.
-	Value []*SecurityAlert `json:"value,omitempty"`
+	Value []*SecurityAlert
 }
 
 // IncidentBookmarkList - List of incident bookmarks.
 type IncidentBookmarkList struct {
 	// REQUIRED; Array of incident bookmarks.
-	Value []*HuntingBookmark `json:"value,omitempty"`
+	Value []*HuntingBookmark
 }
 
 // IncidentComment - Represents an incident comment
 type IncidentComment struct {
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Incident comment properties
-	Properties *IncidentCommentProperties `json:"properties,omitempty"`
+	Properties *IncidentCommentProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // IncidentCommentList - List of incident comments.
 type IncidentCommentList struct {
 	// REQUIRED; Array of comments.
-	Value []*IncidentComment `json:"value,omitempty"`
+	Value []*IncidentComment
 
 	// READ-ONLY; URL to fetch the next set of comments.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // IncidentCommentProperties - Incident comment property bag.
 type IncidentCommentProperties struct {
 	// REQUIRED; The comment message
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// READ-ONLY; Describes the client that created the comment
-	Author *ClientInfo `json:"author,omitempty" azure:"ro"`
+	Author *ClientInfo
 
 	// READ-ONLY; The time the comment was created
-	CreatedTimeUTC *time.Time `json:"createdTimeUtc,omitempty" azure:"ro"`
+	CreatedTimeUTC *time.Time
 
 	// READ-ONLY; The time the comment was updated
-	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
+	LastModifiedTimeUTC *time.Time
 }
 
 // IncidentCommentsClientCreateOrUpdateOptions contains the optional parameters for the IncidentCommentsClient.CreateOrUpdate
@@ -1679,171 +1679,171 @@ type IncidentCommentsClientListOptions struct {
 // IncidentConfiguration - Incident Configuration property bag.
 type IncidentConfiguration struct {
 	// REQUIRED; Create incidents from alerts triggered by this analytics rule
-	CreateIncident *bool `json:"createIncident,omitempty"`
+	CreateIncident *bool
 
 	// Set how the alerts that are triggered by this analytics rule, are grouped into incidents
-	GroupingConfiguration *GroupingConfiguration `json:"groupingConfiguration,omitempty"`
+	GroupingConfiguration *GroupingConfiguration
 }
 
 // IncidentEntitiesResponse - The incident related entities response.
 type IncidentEntitiesResponse struct {
 	// Array of the incident related entities.
-	Entities []EntityClassification `json:"entities,omitempty"`
+	Entities []EntityClassification
 
 	// The metadata from the incident related entities results.
-	MetaData []*IncidentEntitiesResultsMetadata `json:"metaData,omitempty"`
+	MetaData []*IncidentEntitiesResultsMetadata
 }
 
 // IncidentEntitiesResultsMetadata - Information of a specific aggregation in the incident related entities result.
 type IncidentEntitiesResultsMetadata struct {
 	// REQUIRED; Total number of aggregations of the given kind in the incident related entities result.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// REQUIRED; The kind of the aggregated entity.
-	EntityKind *EntityKindEnum `json:"entityKind,omitempty"`
+	EntityKind *EntityKindEnum
 }
 
 // IncidentInfo - Describes related incident information for the bookmark
 type IncidentInfo struct {
 	// Incident Id
-	IncidentID *string `json:"incidentId,omitempty"`
+	IncidentID *string
 
 	// Relation Name
-	RelationName *string `json:"relationName,omitempty"`
+	RelationName *string
 
 	// The severity of the incident
-	Severity *IncidentSeverity `json:"severity,omitempty"`
+	Severity *IncidentSeverity
 
 	// The title of the incident
-	Title *string `json:"title,omitempty"`
+	Title *string
 }
 
 // IncidentLabel - Represents an incident label
 type IncidentLabel struct {
 	// REQUIRED; The name of the label
-	LabelName *string `json:"labelName,omitempty"`
+	LabelName *string
 
 	// READ-ONLY; The type of the label
-	LabelType *IncidentLabelType `json:"labelType,omitempty" azure:"ro"`
+	LabelType *IncidentLabelType
 }
 
 // IncidentList - List all the incidents.
 type IncidentList struct {
 	// REQUIRED; Array of incidents.
-	Value []*Incident `json:"value,omitempty"`
+	Value []*Incident
 
 	// READ-ONLY; URL to fetch the next set of incidents.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // IncidentOwnerInfo - Information on the user an incident is assigned to
 type IncidentOwnerInfo struct {
 	// The name of the user the incident is assigned to.
-	AssignedTo *string `json:"assignedTo,omitempty"`
+	AssignedTo *string
 
 	// The email of the user the incident is assigned to.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// The object id of the user the incident is assigned to.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// The user principal name of the user the incident is assigned to.
-	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
+	UserPrincipalName *string
 }
 
 // IncidentOwnerInfoAutoGenerated - Information on the user an incident is assigned to
 type IncidentOwnerInfoAutoGenerated struct {
 	// The name of the user the incident is assigned to.
-	AssignedTo *string `json:"assignedTo,omitempty"`
+	AssignedTo *string
 
 	// The email of the user the incident is assigned to.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// The object id of the user the incident is assigned to.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// The type of the owner the incident is assigned to.
-	OwnerType *OwnerType `json:"ownerType,omitempty"`
+	OwnerType *OwnerType
 
 	// The user principal name of the user the incident is assigned to.
-	UserPrincipalName *string `json:"userPrincipalName,omitempty"`
+	UserPrincipalName *string
 }
 
 // IncidentProperties - Describes incident properties
 type IncidentProperties struct {
 	// REQUIRED; The severity of the incident
-	Severity *IncidentSeverity `json:"severity,omitempty"`
+	Severity *IncidentSeverity
 
 	// REQUIRED; The status of the incident
-	Status *IncidentStatus `json:"status,omitempty"`
+	Status *IncidentStatus
 
 	// REQUIRED; The title of the incident
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// The reason the incident was closed
-	Classification *IncidentClassification `json:"classification,omitempty"`
+	Classification *IncidentClassification
 
 	// Describes the reason the incident was closed
-	ClassificationComment *string `json:"classificationComment,omitempty"`
+	ClassificationComment *string
 
 	// The classification reason the incident was closed with
-	ClassificationReason *IncidentClassificationReason `json:"classificationReason,omitempty"`
+	ClassificationReason *IncidentClassificationReason
 
 	// The description of the incident
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The time of the first activity in the incident
-	FirstActivityTimeUTC *time.Time `json:"firstActivityTimeUtc,omitempty"`
+	FirstActivityTimeUTC *time.Time
 
 	// List of labels relevant to this incident
-	Labels []*IncidentLabel `json:"labels,omitempty"`
+	Labels []*IncidentLabel
 
 	// The time of the last activity in the incident
-	LastActivityTimeUTC *time.Time `json:"lastActivityTimeUtc,omitempty"`
+	LastActivityTimeUTC *time.Time
 
 	// Describes a user that the incident is assigned to
-	Owner *IncidentOwnerInfo `json:"owner,omitempty"`
+	Owner *IncidentOwnerInfo
 
 	// READ-ONLY; Additional data on the incident
-	AdditionalData *IncidentAdditionalData `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData *IncidentAdditionalData
 
 	// READ-ONLY; The time the incident was created
-	CreatedTimeUTC *time.Time `json:"createdTimeUtc,omitempty" azure:"ro"`
+	CreatedTimeUTC *time.Time
 
 	// READ-ONLY; A sequential number
-	IncidentNumber *int32 `json:"incidentNumber,omitempty" azure:"ro"`
+	IncidentNumber *int32
 
 	// READ-ONLY; The deep-link url to the incident in Azure portal
-	IncidentURL *string `json:"incidentUrl,omitempty" azure:"ro"`
+	IncidentURL *string
 
 	// READ-ONLY; The last time the incident was updated
-	LastModifiedTimeUTC *time.Time `json:"lastModifiedTimeUtc,omitempty" azure:"ro"`
+	LastModifiedTimeUTC *time.Time
 
 	// READ-ONLY; List of resource ids of Analytic rules related to the incident
-	RelatedAnalyticRuleIDs []*string `json:"relatedAnalyticRuleIds,omitempty" azure:"ro"`
+	RelatedAnalyticRuleIDs []*string
 }
 
 type IncidentPropertiesAction struct {
 	// The reason the incident was closed
-	Classification *IncidentClassification `json:"classification,omitempty"`
+	Classification *IncidentClassification
 
 	// Describes the reason the incident was closed
-	ClassificationComment *string `json:"classificationComment,omitempty"`
+	ClassificationComment *string
 
 	// The classification reason the incident was closed with
-	ClassificationReason *IncidentClassificationReason `json:"classificationReason,omitempty"`
+	ClassificationReason *IncidentClassificationReason
 
 	// List of labels to add to the incident
-	Labels []*IncidentLabel `json:"labels,omitempty"`
+	Labels []*IncidentLabel
 
 	// Information on the user an incident is assigned to
-	Owner *IncidentOwnerInfoAutoGenerated `json:"owner,omitempty"`
+	Owner *IncidentOwnerInfoAutoGenerated
 
 	// The severity of the incident
-	Severity *IncidentSeverity `json:"severity,omitempty"`
+	Severity *IncidentSeverity
 
 	// The status of the incident
-	Status *IncidentStatus `json:"status,omitempty"`
+	Status *IncidentStatus
 }
 
 // IncidentRelationsClientCreateOrUpdateOptions contains the optional parameters for the IncidentRelationsClient.CreateOrUpdate
@@ -1923,22 +1923,22 @@ type IncidentsClientListOptions struct {
 // IoTDeviceEntity - Represents an IoT device entity.
 type IoTDeviceEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// IoTDevice entity properties
-	Properties *IoTDeviceEntityProperties `json:"properties,omitempty"`
+	Properties *IoTDeviceEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type IoTDeviceEntity.
@@ -1955,86 +1955,86 @@ func (i *IoTDeviceEntity) GetEntity() *Entity {
 // IoTDeviceEntityProperties - IoTDevice entity property bag.
 type IoTDeviceEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The ID of the IoT Device in the IoT Hub
-	DeviceID *string `json:"deviceId,omitempty" azure:"ro"`
+	DeviceID *string
 
 	// READ-ONLY; The friendly name of the device
-	DeviceName *string `json:"deviceName,omitempty" azure:"ro"`
+	DeviceName *string
 
 	// READ-ONLY; The type of the device
-	DeviceType *string `json:"deviceType,omitempty" azure:"ro"`
+	DeviceType *string
 
 	// READ-ONLY; The ID of the edge device
-	EdgeID *string `json:"edgeId,omitempty" azure:"ro"`
+	EdgeID *string
 
 	// READ-ONLY; The firmware version of the device
-	FirmwareVersion *string `json:"firmwareVersion,omitempty" azure:"ro"`
+	FirmwareVersion *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The Host entity id of this device
-	HostEntityID *string `json:"hostEntityId,omitempty" azure:"ro"`
+	HostEntityID *string
 
 	// READ-ONLY; The IP entity if of this device
-	IPAddressEntityID *string `json:"ipAddressEntityId,omitempty" azure:"ro"`
+	IPAddressEntityID *string
 
 	// READ-ONLY; The AzureResource entity id of the IoT Hub
-	IotHubEntityID *string `json:"iotHubEntityId,omitempty" azure:"ro"`
+	IotHubEntityID *string
 
 	// READ-ONLY; The ID of the security agent running on the device
-	IotSecurityAgentID *string `json:"iotSecurityAgentId,omitempty" azure:"ro"`
+	IotSecurityAgentID *string
 
 	// READ-ONLY; The MAC address of the device
-	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
+	MacAddress *string
 
 	// READ-ONLY; The model of the device
-	Model *string `json:"model,omitempty" azure:"ro"`
+	Model *string
 
 	// READ-ONLY; The operating system of the device
-	OperatingSystem *string `json:"operatingSystem,omitempty" azure:"ro"`
+	OperatingSystem *string
 
 	// READ-ONLY; A list of protocols of the IoTDevice entity.
-	Protocols []*string `json:"protocols,omitempty" azure:"ro"`
+	Protocols []*string
 
 	// READ-ONLY; The serial number of the device
-	SerialNumber *string `json:"serialNumber,omitempty" azure:"ro"`
+	SerialNumber *string
 
 	// READ-ONLY; The source of the device
-	Source *string `json:"source,omitempty" azure:"ro"`
+	Source *string
 
 	// READ-ONLY; A list of TI contexts attached to the IoTDevice entity.
-	ThreatIntelligence []*ThreatIntelligence `json:"threatIntelligence,omitempty" azure:"ro"`
+	ThreatIntelligence []*ThreatIntelligence
 
 	// READ-ONLY; The vendor of the device
-	Vendor *string `json:"vendor,omitempty" azure:"ro"`
+	Vendor *string
 }
 
 // MCASDataConnector - Represents MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// MCAS (Microsoft Cloud App Security) data connector properties.
-	Properties *MCASDataConnectorProperties `json:"properties,omitempty"`
+	Properties *MCASDataConnectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type MCASDataConnector.
@@ -2052,43 +2052,43 @@ func (m *MCASDataConnector) GetDataConnector() *DataConnector {
 // MCASDataConnectorDataTypes - The available data types for MCAS (Microsoft Cloud App Security) data connector.
 type MCASDataConnectorDataTypes struct {
 	// Alerts data type connection.
-	Alerts *DataConnectorDataTypeCommon `json:"alerts,omitempty"`
+	Alerts *DataConnectorDataTypeCommon
 
 	// Discovery log data type connection.
-	DiscoveryLogs *DataConnectorDataTypeCommon `json:"discoveryLogs,omitempty"`
+	DiscoveryLogs *DataConnectorDataTypeCommon
 }
 
 // MCASDataConnectorProperties - MCAS (Microsoft Cloud App Security) data connector properties.
 type MCASDataConnectorProperties struct {
 	// The available data types for the connector.
-	DataTypes *MCASDataConnectorDataTypes `json:"dataTypes,omitempty"`
+	DataTypes *MCASDataConnectorDataTypes
 
 	// The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // MDATPDataConnector - Represents MDATP (Microsoft Defender Advanced Threat Protection) data connector.
 type MDATPDataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
-	Properties *MDATPDataConnectorProperties `json:"properties,omitempty"`
+	Properties *MDATPDataConnectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type MDATPDataConnector.
@@ -2106,31 +2106,31 @@ func (m *MDATPDataConnector) GetDataConnector() *DataConnector {
 // MDATPDataConnectorProperties - MDATP (Microsoft Defender Advanced Threat Protection) data connector properties.
 type MDATPDataConnectorProperties struct {
 	// The available data types for the connector.
-	DataTypes *AlertsDataTypeOfDataConnector `json:"dataTypes,omitempty"`
+	DataTypes *AlertsDataTypeOfDataConnector
 
 	// The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // MailClusterEntity - Represents a mail cluster entity.
 type MailClusterEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Mail cluster entity properties
-	Properties *MailClusterEntityProperties `json:"properties,omitempty"`
+	Properties *MailClusterEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type MailClusterEntity.
@@ -2147,77 +2147,77 @@ func (m *MailClusterEntity) GetEntity() *Entity {
 // MailClusterEntityProperties - Mail cluster entity property bag.
 type MailClusterEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The cluster group
-	ClusterGroup *string `json:"clusterGroup,omitempty" azure:"ro"`
+	ClusterGroup *string
 
 	// READ-ONLY; The cluster query end time
-	ClusterQueryEndTime *time.Time `json:"clusterQueryEndTime,omitempty" azure:"ro"`
+	ClusterQueryEndTime *time.Time
 
 	// READ-ONLY; The cluster query start time
-	ClusterQueryStartTime *time.Time `json:"clusterQueryStartTime,omitempty" azure:"ro"`
+	ClusterQueryStartTime *time.Time
 
 	// READ-ONLY; The id of the cluster source
-	ClusterSourceIdentifier *string `json:"clusterSourceIdentifier,omitempty" azure:"ro"`
+	ClusterSourceIdentifier *string
 
 	// READ-ONLY; The type of the cluster source
-	ClusterSourceType *string `json:"clusterSourceType,omitempty" azure:"ro"`
+	ClusterSourceType *string
 
 	// READ-ONLY; Count of mail messages by DeliveryStatus string representation
-	CountByDeliveryStatus any `json:"countByDeliveryStatus,omitempty" azure:"ro"`
+	CountByDeliveryStatus any
 
 	// READ-ONLY; Count of mail messages by ProtectionStatus string representation
-	CountByProtectionStatus any `json:"countByProtectionStatus,omitempty" azure:"ro"`
+	CountByProtectionStatus any
 
 	// READ-ONLY; Count of mail messages by ThreatType string representation
-	CountByThreatType any `json:"countByThreatType,omitempty" azure:"ro"`
+	CountByThreatType any
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Is this a volume anomaly mail cluster
-	IsVolumeAnomaly *bool `json:"isVolumeAnomaly,omitempty" azure:"ro"`
+	IsVolumeAnomaly *bool
 
 	// READ-ONLY; The number of mail messages that are part of the mail cluster
-	MailCount *int32 `json:"mailCount,omitempty" azure:"ro"`
+	MailCount *int32
 
 	// READ-ONLY; The mail message IDs that are part of the mail cluster
-	NetworkMessageIDs []*string `json:"networkMessageIds,omitempty" azure:"ro"`
+	NetworkMessageIDs []*string
 
 	// READ-ONLY; The query that was used to identify the messages of the mail cluster
-	Query *string `json:"query,omitempty" azure:"ro"`
+	Query *string
 
 	// READ-ONLY; The query time
-	QueryTime *time.Time `json:"queryTime,omitempty" azure:"ro"`
+	QueryTime *time.Time
 
 	// READ-ONLY; The source of the mail cluster (default is 'O365 ATP')
-	Source *string `json:"source,omitempty" azure:"ro"`
+	Source *string
 
 	// READ-ONLY; The threats of mail messages that are part of the mail cluster
-	Threats []*string `json:"threats,omitempty" azure:"ro"`
+	Threats []*string
 }
 
 // MailMessageEntity - Represents a mail message entity.
 type MailMessageEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Mail message entity properties
-	Properties *MailMessageEntityProperties `json:"properties,omitempty"`
+	Properties *MailMessageEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type MailMessageEntity.
@@ -2234,108 +2234,108 @@ func (m *MailMessageEntity) GetEntity() *Entity {
 // MailMessageEntityProperties - Mail message entity property bag.
 type MailMessageEntityProperties struct {
 	// The directionality of this mail message
-	AntispamDirection *AntispamMailDirection `json:"antispamDirection,omitempty"`
+	AntispamDirection *AntispamMailDirection
 
 	// The bodyFingerprintBin1
-	BodyFingerprintBin1 *int32 `json:"bodyFingerprintBin1,omitempty"`
+	BodyFingerprintBin1 *int32
 
 	// The bodyFingerprintBin2
-	BodyFingerprintBin2 *int32 `json:"bodyFingerprintBin2,omitempty"`
+	BodyFingerprintBin2 *int32
 
 	// The bodyFingerprintBin3
-	BodyFingerprintBin3 *int32 `json:"bodyFingerprintBin3,omitempty"`
+	BodyFingerprintBin3 *int32
 
 	// The bodyFingerprintBin4
-	BodyFingerprintBin4 *int32 `json:"bodyFingerprintBin4,omitempty"`
+	BodyFingerprintBin4 *int32
 
 	// The bodyFingerprintBin5
-	BodyFingerprintBin5 *int32 `json:"bodyFingerprintBin5,omitempty"`
+	BodyFingerprintBin5 *int32
 
 	// The delivery action of this mail message like Delivered, Blocked, Replaced etc
-	DeliveryAction *DeliveryAction `json:"deliveryAction,omitempty"`
+	DeliveryAction *DeliveryAction
 
 	// The delivery location of this mail message like Inbox, JunkFolder etc
-	DeliveryLocation *DeliveryLocation `json:"deliveryLocation,omitempty"`
+	DeliveryLocation *DeliveryLocation
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The File entity ids of this mail message's attachments
-	FileEntityIDs []*string `json:"fileEntityIds,omitempty" azure:"ro"`
+	FileEntityIDs []*string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The internet message id of this mail message
-	InternetMessageID *string `json:"internetMessageId,omitempty" azure:"ro"`
+	InternetMessageID *string
 
 	// READ-ONLY; The language of this mail message
-	Language *string `json:"language,omitempty" azure:"ro"`
+	Language *string
 
 	// READ-ONLY; The network message id of this mail message
-	NetworkMessageID *string `json:"networkMessageId,omitempty" azure:"ro"`
+	NetworkMessageID *string
 
 	// READ-ONLY; The p1 sender's email address
-	P1Sender *string `json:"p1Sender,omitempty" azure:"ro"`
+	P1Sender *string
 
 	// READ-ONLY; The p1 sender's display name
-	P1SenderDisplayName *string `json:"p1SenderDisplayName,omitempty" azure:"ro"`
+	P1SenderDisplayName *string
 
 	// READ-ONLY; The p1 sender's domain
-	P1SenderDomain *string `json:"p1SenderDomain,omitempty" azure:"ro"`
+	P1SenderDomain *string
 
 	// READ-ONLY; The p2 sender's email address
-	P2Sender *string `json:"p2Sender,omitempty" azure:"ro"`
+	P2Sender *string
 
 	// READ-ONLY; The p2 sender's display name
-	P2SenderDisplayName *string `json:"p2SenderDisplayName,omitempty" azure:"ro"`
+	P2SenderDisplayName *string
 
 	// READ-ONLY; The p2 sender's domain
-	P2SenderDomain *string `json:"p2SenderDomain,omitempty" azure:"ro"`
+	P2SenderDomain *string
 
 	// READ-ONLY; The receive date of this message
-	ReceiveDate *time.Time `json:"receiveDate,omitempty" azure:"ro"`
+	ReceiveDate *time.Time
 
 	// READ-ONLY; The recipient of this mail message. Note that in case of multiple recipients the mail message is forked and
 	// each copy has one recipient
-	Recipient *string `json:"recipient,omitempty" azure:"ro"`
+	Recipient *string
 
 	// READ-ONLY; The sender's IP address
-	SenderIP *string `json:"senderIP,omitempty" azure:"ro"`
+	SenderIP *string
 
 	// READ-ONLY; The subject of this mail message
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 
 	// READ-ONLY; The threat detection methods
-	ThreatDetectionMethods []*string `json:"threatDetectionMethods,omitempty" azure:"ro"`
+	ThreatDetectionMethods []*string
 
 	// READ-ONLY; The threats of this mail message
-	Threats []*string `json:"threats,omitempty" azure:"ro"`
+	Threats []*string
 
 	// READ-ONLY; The Urls contained in this mail message
-	Urls []*string `json:"urls,omitempty" azure:"ro"`
+	Urls []*string
 }
 
 // MailboxEntity - Represents a mailbox entity.
 type MailboxEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Mailbox entity properties
-	Properties *MailboxEntityProperties `json:"properties,omitempty"`
+	Properties *MailboxEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type MailboxEntity.
@@ -2352,45 +2352,45 @@ func (m *MailboxEntity) GetEntity() *Entity {
 // MailboxEntityProperties - Mailbox entity property bag.
 type MailboxEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The mailbox's display name
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The AzureAD identifier of mailbox. Similar to AadUserId in account entity but this property is specific to mailbox
 	// object on office side
-	ExternalDirectoryObjectID *string `json:"externalDirectoryObjectId,omitempty" azure:"ro"`
+	ExternalDirectoryObjectID *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The mailbox's primary address
-	MailboxPrimaryAddress *string `json:"mailboxPrimaryAddress,omitempty" azure:"ro"`
+	MailboxPrimaryAddress *string
 
 	// READ-ONLY; The mailbox's UPN
-	Upn *string `json:"upn,omitempty" azure:"ro"`
+	Upn *string
 }
 
 // MalwareEntity - Represents a malware entity.
 type MalwareEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// File entity properties
-	Properties *MalwareEntityProperties `json:"properties,omitempty"`
+	Properties *MalwareEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type MalwareEntity.
@@ -2407,47 +2407,47 @@ func (m *MalwareEntity) GetEntity() *Entity {
 // MalwareEntityProperties - Malware entity property bag.
 type MalwareEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The malware category by the vendor, e.g. Trojan
-	Category *string `json:"category,omitempty" azure:"ro"`
+	Category *string
 
 	// READ-ONLY; List of linked file entity identifiers on which the malware was found
-	FileEntityIDs []*string `json:"fileEntityIds,omitempty" azure:"ro"`
+	FileEntityIDs []*string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The malware name by the vendor, e.g. Win32/Toga!rfn
-	MalwareName *string `json:"malwareName,omitempty" azure:"ro"`
+	MalwareName *string
 
 	// READ-ONLY; List of linked process entity identifiers on which the malware was found.
-	ProcessEntityIDs []*string `json:"processEntityIds,omitempty" azure:"ro"`
+	ProcessEntityIDs []*string
 }
 
 // MicrosoftSecurityIncidentCreationAlertRule - Represents MicrosoftSecurityIncidentCreation rule.
 type MicrosoftSecurityIncidentCreationAlertRule struct {
 	// REQUIRED; The alert rule kind
-	Kind *AlertRuleKind `json:"kind,omitempty"`
+	Kind *AlertRuleKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// MicrosoftSecurityIncidentCreation rule properties
-	Properties *MicrosoftSecurityIncidentCreationAlertRuleProperties `json:"properties,omitempty"`
+	Properties *MicrosoftSecurityIncidentCreationAlertRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetAlertRule implements the AlertRuleClassification interface for type MicrosoftSecurityIncidentCreationAlertRule.
@@ -2465,52 +2465,52 @@ func (m *MicrosoftSecurityIncidentCreationAlertRule) GetAlertRule() *AlertRule {
 // MicrosoftSecurityIncidentCreationAlertRuleProperties - MicrosoftSecurityIncidentCreation rule property bag.
 type MicrosoftSecurityIncidentCreationAlertRuleProperties struct {
 	// REQUIRED; The display name for alerts created by this alert rule.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; Determines whether this alert rule is enabled or disabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// REQUIRED; The alerts' productName on which the cases will be generated
-	ProductFilter *MicrosoftSecurityProductName `json:"productFilter,omitempty"`
+	ProductFilter *MicrosoftSecurityProductName
 
 	// The Name of the alert rule template used to create this rule.
-	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
+	AlertRuleTemplateName *string
 
 	// The description of the alert rule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// the alerts' displayNames on which the cases will not be generated
-	DisplayNamesExcludeFilter []*string `json:"displayNamesExcludeFilter,omitempty"`
+	DisplayNamesExcludeFilter []*string
 
 	// the alerts' displayNames on which the cases will be generated
-	DisplayNamesFilter []*string `json:"displayNamesFilter,omitempty"`
+	DisplayNamesFilter []*string
 
 	// the alerts' severities on which the cases will be generated
-	SeveritiesFilter []*AlertSeverity `json:"severitiesFilter,omitempty"`
+	SeveritiesFilter []*AlertSeverity
 
 	// READ-ONLY; The last time that this alert has been modified.
-	LastModifiedUTC *time.Time `json:"lastModifiedUtc,omitempty" azure:"ro"`
+	LastModifiedUTC *time.Time
 }
 
 // MicrosoftSecurityIncidentCreationAlertRuleTemplate - Represents MicrosoftSecurityIncidentCreation rule template.
 type MicrosoftSecurityIncidentCreationAlertRuleTemplate struct {
 	// REQUIRED; The alert rule kind
-	Kind *AlertRuleKind `json:"kind,omitempty"`
+	Kind *AlertRuleKind
 
 	// MicrosoftSecurityIncidentCreation rule template properties
-	Properties *MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties `json:"properties,omitempty"`
+	Properties *MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type MicrosoftSecurityIncidentCreationAlertRuleTemplate.
@@ -2527,61 +2527,61 @@ func (m *MicrosoftSecurityIncidentCreationAlertRuleTemplate) GetAlertRuleTemplat
 // MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties - MicrosoftSecurityIncidentCreation rule template properties
 type MicrosoftSecurityIncidentCreationAlertRuleTemplateProperties struct {
 	// REQUIRED; The alerts' productName on which the cases will be generated
-	ProductFilter *MicrosoftSecurityProductName `json:"productFilter,omitempty"`
+	ProductFilter *MicrosoftSecurityProductName
 
 	// the number of alert rules that were created by this template
-	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	AlertRulesCreatedByTemplateCount *int32
 
 	// The description of the alert rule template.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name for alert rule template.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// the alerts' displayNames on which the cases will not be generated
-	DisplayNamesExcludeFilter []*string `json:"displayNamesExcludeFilter,omitempty"`
+	DisplayNamesExcludeFilter []*string
 
 	// the alerts' displayNames on which the cases will be generated
-	DisplayNamesFilter []*string `json:"displayNamesFilter,omitempty"`
+	DisplayNamesFilter []*string
 
 	// The required data connectors for this template
-	RequiredDataConnectors []*AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
+	RequiredDataConnectors []*AlertRuleTemplateDataSource
 
 	// the alerts' severities on which the cases will be generated
-	SeveritiesFilter []*AlertSeverity `json:"severitiesFilter,omitempty"`
+	SeveritiesFilter []*AlertSeverity
 
 	// The alert rule template status.
-	Status *TemplateStatus `json:"status,omitempty"`
+	Status *TemplateStatus
 
 	// READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *time.Time `json:"createdDateUTC,omitempty" azure:"ro"`
+	CreatedDateUTC *time.Time
 
 	// READ-ONLY; The time that this alert rule template was last updated.
-	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
+	LastUpdatedDateUTC *time.Time
 }
 
 // OfficeDataConnector - Represents office data connector.
 type OfficeDataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Office data connector properties.
-	Properties *OfficeDataConnectorProperties `json:"properties,omitempty"`
+	Properties *OfficeDataConnectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type OfficeDataConnector.
@@ -2599,70 +2599,70 @@ func (o *OfficeDataConnector) GetDataConnector() *DataConnector {
 // OfficeDataConnectorDataTypes - The available data types for office data connector.
 type OfficeDataConnectorDataTypes struct {
 	// Exchange data type connection.
-	Exchange *OfficeDataConnectorDataTypesExchange `json:"exchange,omitempty"`
+	Exchange *OfficeDataConnectorDataTypesExchange
 
 	// SharePoint data type connection.
-	SharePoint *OfficeDataConnectorDataTypesSharePoint `json:"sharePoint,omitempty"`
+	SharePoint *OfficeDataConnectorDataTypesSharePoint
 
 	// Teams data type connection.
-	Teams *OfficeDataConnectorDataTypesTeams `json:"teams,omitempty"`
+	Teams *OfficeDataConnectorDataTypesTeams
 }
 
 // OfficeDataConnectorDataTypesExchange - Exchange data type connection.
 type OfficeDataConnectorDataTypesExchange struct {
 	// Describe whether this data type connection is enabled or not.
-	State *DataTypeState `json:"state,omitempty"`
+	State *DataTypeState
 }
 
 // OfficeDataConnectorDataTypesSharePoint - SharePoint data type connection.
 type OfficeDataConnectorDataTypesSharePoint struct {
 	// Describe whether this data type connection is enabled or not.
-	State *DataTypeState `json:"state,omitempty"`
+	State *DataTypeState
 }
 
 // OfficeDataConnectorDataTypesTeams - Teams data type connection.
 type OfficeDataConnectorDataTypesTeams struct {
 	// Describe whether this data type connection is enabled or not.
-	State *DataTypeState `json:"state,omitempty"`
+	State *DataTypeState
 }
 
 // OfficeDataConnectorProperties - Office data connector properties.
 type OfficeDataConnectorProperties struct {
 	// The available data types for the connector.
-	DataTypes *OfficeDataConnectorDataTypes `json:"dataTypes,omitempty"`
+	DataTypes *OfficeDataConnectorDataTypes
 
 	// The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // Operation provided by provider
 type Operation struct {
 	// Properties of the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the operation
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // OperationDisplay - Properties of the operation
 type OperationDisplay struct {
 	// Description of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation name
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Provider name
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource name
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -2673,39 +2673,39 @@ type OperationsClientListOptions struct {
 // OperationsList - Lists the operations available in the SecurityInsights RP.
 type OperationsList struct {
 	// REQUIRED; Array of operations
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 
 	// READ-ONLY; URL to fetch the next set of operations.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 type PlaybookActionProperties struct {
 	// REQUIRED; The resource id of the playbook resource
-	LogicAppResourceID *string `json:"logicAppResourceId,omitempty"`
+	LogicAppResourceID *string
 
 	// The tenant id of the playbook resource
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // ProcessEntity - Represents a process entity.
 type ProcessEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Process entity properties
-	Properties *ProcessEntityProperties `json:"properties,omitempty"`
+	Properties *ProcessEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type ProcessEntity.
@@ -2722,45 +2722,45 @@ func (p *ProcessEntity) GetEntity() *Entity {
 // ProcessEntityProperties - Process entity property bag.
 type ProcessEntityProperties struct {
 	// The elevation token associated with the process.
-	ElevationToken *ElevationToken `json:"elevationToken,omitempty"`
+	ElevationToken *ElevationToken
 
 	// READ-ONLY; The account entity id running the processes.
-	AccountEntityID *string `json:"accountEntityId,omitempty" azure:"ro"`
+	AccountEntityID *string
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The command line used to create the process
-	CommandLine *string `json:"commandLine,omitempty" azure:"ro"`
+	CommandLine *string
 
 	// READ-ONLY; The time when the process started to run
-	CreationTimeUTC *time.Time `json:"creationTimeUtc,omitempty" azure:"ro"`
+	CreationTimeUTC *time.Time
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The host entity id on which the process was running
-	HostEntityID *string `json:"hostEntityId,omitempty" azure:"ro"`
+	HostEntityID *string
 
 	// READ-ONLY; The session entity id in which the process was running
-	HostLogonSessionEntityID *string `json:"hostLogonSessionEntityId,omitempty" azure:"ro"`
+	HostLogonSessionEntityID *string
 
 	// READ-ONLY; Image file entity id
-	ImageFileEntityID *string `json:"imageFileEntityId,omitempty" azure:"ro"`
+	ImageFileEntityID *string
 
 	// READ-ONLY; The parent process entity id.
-	ParentProcessEntityID *string `json:"parentProcessEntityId,omitempty" azure:"ro"`
+	ParentProcessEntityID *string
 
 	// READ-ONLY; The process ID
-	ProcessID *string `json:"processId,omitempty" azure:"ro"`
+	ProcessID *string
 }
 
 // PropertyConditionProperties - Describes an automation rule condition that evaluates a property's value
 type PropertyConditionProperties struct {
 	// REQUIRED
-	ConditionType       *ConditionType                         `json:"conditionType,omitempty"`
-	ConditionProperties *AutomationRulePropertyValuesCondition `json:"conditionProperties,omitempty"`
+	ConditionType       *ConditionType
+	ConditionProperties *AutomationRulePropertyValuesCondition
 }
 
 // GetAutomationRuleCondition implements the AutomationRuleConditionClassification interface for type PropertyConditionProperties.
@@ -2773,22 +2773,22 @@ func (p *PropertyConditionProperties) GetAutomationRuleCondition() *AutomationRu
 // RegistryKeyEntity - Represents a registry key entity.
 type RegistryKeyEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// RegistryKey entity properties
-	Properties *RegistryKeyEntityProperties `json:"properties,omitempty"`
+	Properties *RegistryKeyEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type RegistryKeyEntity.
@@ -2805,38 +2805,38 @@ func (r *RegistryKeyEntity) GetEntity() *Entity {
 // RegistryKeyEntityProperties - RegistryKey entity property bag.
 type RegistryKeyEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; the hive that holds the registry key.
-	Hive *RegistryHive `json:"hive,omitempty" azure:"ro"`
+	Hive *RegistryHive
 
 	// READ-ONLY; The registry key path.
-	Key *string `json:"key,omitempty" azure:"ro"`
+	Key *string
 }
 
 // RegistryValueEntity - Represents a registry value entity.
 type RegistryValueEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// RegistryKey entity properties
-	Properties *RegistryValueEntityProperties `json:"properties,omitempty"`
+	Properties *RegistryValueEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type RegistryValueEntity.
@@ -2853,93 +2853,93 @@ func (r *RegistryValueEntity) GetEntity() *Entity {
 // RegistryValueEntityProperties - RegistryValue entity property bag.
 type RegistryValueEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The registry key entity id.
-	KeyEntityID *string `json:"keyEntityId,omitempty" azure:"ro"`
+	KeyEntityID *string
 
 	// READ-ONLY; String formatted representation of the value data.
-	ValueData *string `json:"valueData,omitempty" azure:"ro"`
+	ValueData *string
 
 	// READ-ONLY; The registry value name.
-	ValueName *string `json:"valueName,omitempty" azure:"ro"`
+	ValueName *string
 
 	// READ-ONLY; Specifies the data types to use when storing values in the registry, or identifies the data type of a value
 	// in the registry.
-	ValueType *RegistryValueKind `json:"valueType,omitempty" azure:"ro"`
+	ValueType *RegistryValueKind
 }
 
 // Relation - Represents a relation between two resources
 type Relation struct {
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Relation properties
-	Properties *RelationProperties `json:"properties,omitempty"`
+	Properties *RelationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RelationList - List of relations.
 type RelationList struct {
 	// REQUIRED; Array of relations.
-	Value []*Relation `json:"value,omitempty"`
+	Value []*Relation
 
 	// READ-ONLY; URL to fetch the next set of relations.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // RelationProperties - Relation property bag.
 type RelationProperties struct {
 	// REQUIRED; The resource ID of the related resource
-	RelatedResourceID *string `json:"relatedResourceId,omitempty"`
+	RelatedResourceID *string
 
 	// READ-ONLY; The resource kind of the related resource
-	RelatedResourceKind *string `json:"relatedResourceKind,omitempty" azure:"ro"`
+	RelatedResourceKind *string
 
 	// READ-ONLY; The name of the related resource
-	RelatedResourceName *string `json:"relatedResourceName,omitempty" azure:"ro"`
+	RelatedResourceName *string
 
 	// READ-ONLY; The resource type of the related resource
-	RelatedResourceType *string `json:"relatedResourceType,omitempty" azure:"ro"`
+	RelatedResourceType *string
 }
 
 // ScheduledAlertRule - Represents scheduled alert rule.
 type ScheduledAlertRule struct {
 	// REQUIRED; The alert rule kind
-	Kind *AlertRuleKind `json:"kind,omitempty"`
+	Kind *AlertRuleKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Scheduled alert rule properties
-	Properties *ScheduledAlertRuleProperties `json:"properties,omitempty"`
+	Properties *ScheduledAlertRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetAlertRule implements the AlertRuleClassification interface for type ScheduledAlertRule.
@@ -2957,85 +2957,85 @@ func (s *ScheduledAlertRule) GetAlertRule() *AlertRule {
 // ScheduledAlertRuleProperties - Scheduled alert rule base property bag.
 type ScheduledAlertRuleProperties struct {
 	// REQUIRED; The display name for alerts created by this alert rule.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; Determines whether this alert rule is enabled or disabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// REQUIRED; The suppression (in ISO 8601 duration format) to wait since last time this alert rule been triggered.
-	SuppressionDuration *string `json:"suppressionDuration,omitempty"`
+	SuppressionDuration *string
 
 	// REQUIRED; Determines whether the suppression for this alert rule is enabled or disabled.
-	SuppressionEnabled *bool `json:"suppressionEnabled,omitempty"`
+	SuppressionEnabled *bool
 
 	// The alert details override settings
-	AlertDetailsOverride *AlertDetailsOverride `json:"alertDetailsOverride,omitempty"`
+	AlertDetailsOverride *AlertDetailsOverride
 
 	// The Name of the alert rule template used to create this rule.
-	AlertRuleTemplateName *string `json:"alertRuleTemplateName,omitempty"`
+	AlertRuleTemplateName *string
 
 	// Dictionary of string key-value pairs of columns to be attached to the alert
-	CustomDetails map[string]*string `json:"customDetails,omitempty"`
+	CustomDetails map[string]*string
 
 	// The description of the alert rule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Array of the entity mappings of the alert rule
-	EntityMappings []*EntityMapping `json:"entityMappings,omitempty"`
+	EntityMappings []*EntityMapping
 
 	// The event grouping settings.
-	EventGroupingSettings *EventGroupingSettings `json:"eventGroupingSettings,omitempty"`
+	EventGroupingSettings *EventGroupingSettings
 
 	// The settings of the incidents that created from alerts triggered by this analytics rule
-	IncidentConfiguration *IncidentConfiguration `json:"incidentConfiguration,omitempty"`
+	IncidentConfiguration *IncidentConfiguration
 
 	// The query that creates alerts for this rule.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// The frequency (in ISO 8601 duration format) for this alert rule to run.
-	QueryFrequency *string `json:"queryFrequency,omitempty"`
+	QueryFrequency *string
 
 	// The period (in ISO 8601 duration format) that this alert rule looks at.
-	QueryPeriod *string `json:"queryPeriod,omitempty"`
+	QueryPeriod *string
 
 	// The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty"`
+	Severity *AlertSeverity
 
 	// The tactics of the alert rule
-	Tactics []*AttackTactic `json:"tactics,omitempty"`
+	Tactics []*AttackTactic
 
 	// The version of the alert rule template used to create this rule - in format , where all are numbers, for example 0
-	TemplateVersion *string `json:"templateVersion,omitempty"`
+	TemplateVersion *string
 
 	// The operation against the threshold that triggers alert rule.
-	TriggerOperator *TriggerOperator `json:"triggerOperator,omitempty"`
+	TriggerOperator *TriggerOperator
 
 	// The threshold triggers this alert rule.
-	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
+	TriggerThreshold *int32
 
 	// READ-ONLY; The last time that this alert rule has been modified.
-	LastModifiedUTC *time.Time `json:"lastModifiedUtc,omitempty" azure:"ro"`
+	LastModifiedUTC *time.Time
 }
 
 // ScheduledAlertRuleTemplate - Represents scheduled alert rule template.
 type ScheduledAlertRuleTemplate struct {
 	// REQUIRED; The alert rule kind
-	Kind *AlertRuleKind `json:"kind,omitempty"`
+	Kind *AlertRuleKind
 
 	// Scheduled alert rule template properties
-	Properties *ScheduledAlertRuleTemplateProperties `json:"properties,omitempty"`
+	Properties *ScheduledAlertRuleTemplateProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetAlertRuleTemplate implements the AlertRuleTemplateClassification interface for type ScheduledAlertRuleTemplate.
@@ -3052,82 +3052,82 @@ func (s *ScheduledAlertRuleTemplate) GetAlertRuleTemplate() *AlertRuleTemplate {
 // ScheduledAlertRuleTemplateProperties - Scheduled alert rule template properties
 type ScheduledAlertRuleTemplateProperties struct {
 	// The alert details override settings
-	AlertDetailsOverride *AlertDetailsOverride `json:"alertDetailsOverride,omitempty"`
+	AlertDetailsOverride *AlertDetailsOverride
 
 	// the number of alert rules that were created by this template
-	AlertRulesCreatedByTemplateCount *int32 `json:"alertRulesCreatedByTemplateCount,omitempty"`
+	AlertRulesCreatedByTemplateCount *int32
 
 	// Dictionary of string key-value pairs of columns to be attached to the alert
-	CustomDetails map[string]*string `json:"customDetails,omitempty"`
+	CustomDetails map[string]*string
 
 	// The description of the alert rule template.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name for alert rule template.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Array of the entity mappings of the alert rule
-	EntityMappings []*EntityMapping `json:"entityMappings,omitempty"`
+	EntityMappings []*EntityMapping
 
 	// The event grouping settings.
-	EventGroupingSettings *EventGroupingSettings `json:"eventGroupingSettings,omitempty"`
+	EventGroupingSettings *EventGroupingSettings
 
 	// The query that creates alerts for this rule.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// The frequency (in ISO 8601 duration format) for this alert rule to run.
-	QueryFrequency *string `json:"queryFrequency,omitempty"`
+	QueryFrequency *string
 
 	// The period (in ISO 8601 duration format) that this alert rule looks at.
-	QueryPeriod *string `json:"queryPeriod,omitempty"`
+	QueryPeriod *string
 
 	// The required data connectors for this template
-	RequiredDataConnectors []*AlertRuleTemplateDataSource `json:"requiredDataConnectors,omitempty"`
+	RequiredDataConnectors []*AlertRuleTemplateDataSource
 
 	// The severity for alerts created by this alert rule.
-	Severity *AlertSeverity `json:"severity,omitempty"`
+	Severity *AlertSeverity
 
 	// The alert rule template status.
-	Status *TemplateStatus `json:"status,omitempty"`
+	Status *TemplateStatus
 
 	// The tactics of the alert rule template
-	Tactics []*AttackTactic `json:"tactics,omitempty"`
+	Tactics []*AttackTactic
 
 	// The operation against the threshold that triggers alert rule.
-	TriggerOperator *TriggerOperator `json:"triggerOperator,omitempty"`
+	TriggerOperator *TriggerOperator
 
 	// The threshold triggers this alert rule.
-	TriggerThreshold *int32 `json:"triggerThreshold,omitempty"`
+	TriggerThreshold *int32
 
 	// The version of this template - in format , where all are numbers. For example .
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; The time that this alert rule template has been added.
-	CreatedDateUTC *time.Time `json:"createdDateUTC,omitempty" azure:"ro"`
+	CreatedDateUTC *time.Time
 
 	// READ-ONLY; The time that this alert rule template was last updated.
-	LastUpdatedDateUTC *time.Time `json:"lastUpdatedDateUTC,omitempty" azure:"ro"`
+	LastUpdatedDateUTC *time.Time
 }
 
 // SecurityAlert - Represents a security alert entity.
 type SecurityAlert struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// SecurityAlert entity properties
-	Properties *SecurityAlertProperties `json:"properties,omitempty"`
+	Properties *SecurityAlertProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type SecurityAlert.
@@ -3144,117 +3144,117 @@ func (s *SecurityAlert) GetEntity() *Entity {
 // SecurityAlertProperties - SecurityAlert entity property bag.
 type SecurityAlertProperties struct {
 	// The severity of the alert
-	Severity *AlertSeverity `json:"severity,omitempty"`
+	Severity *AlertSeverity
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The display name of the alert.
-	AlertDisplayName *string `json:"alertDisplayName,omitempty" azure:"ro"`
+	AlertDisplayName *string
 
 	// READ-ONLY; The uri link of the alert.
-	AlertLink *string `json:"alertLink,omitempty" azure:"ro"`
+	AlertLink *string
 
 	// READ-ONLY; The type name of the alert.
-	AlertType *string `json:"alertType,omitempty" azure:"ro"`
+	AlertType *string
 
 	// READ-ONLY; Display name of the main entity being reported on.
-	CompromisedEntity *string `json:"compromisedEntity,omitempty" azure:"ro"`
+	CompromisedEntity *string
 
 	// READ-ONLY; The confidence level of this alert.
-	ConfidenceLevel *ConfidenceLevel `json:"confidenceLevel,omitempty" azure:"ro"`
+	ConfidenceLevel *ConfidenceLevel
 
 	// READ-ONLY; The confidence reasons
-	ConfidenceReasons []*SecurityAlertPropertiesConfidenceReasonsItem `json:"confidenceReasons,omitempty" azure:"ro"`
+	ConfidenceReasons []*SecurityAlertPropertiesConfidenceReasonsItem
 
 	// READ-ONLY; The confidence score of the alert.
-	ConfidenceScore *float64 `json:"confidenceScore,omitempty" azure:"ro"`
+	ConfidenceScore *float64
 
 	// READ-ONLY; The confidence score calculation status, i.e. indicating if score calculation is pending for this alert, not
 	// applicable or final.
-	ConfidenceScoreStatus *ConfidenceScoreStatus `json:"confidenceScoreStatus,omitempty" azure:"ro"`
+	ConfidenceScoreStatus *ConfidenceScoreStatus
 
 	// READ-ONLY; Alert description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The impact end time of the alert (the time of the last event contributing to the alert).
-	EndTimeUTC *time.Time `json:"endTimeUtc,omitempty" azure:"ro"`
+	EndTimeUTC *time.Time
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; Holds the alert intent stage(s) mapping for this alert.
-	Intent *KillChainIntent `json:"intent,omitempty" azure:"ro"`
+	Intent *KillChainIntent
 
 	// READ-ONLY; The time the alert was made available for consumption.
-	ProcessingEndTime *time.Time `json:"processingEndTime,omitempty" azure:"ro"`
+	ProcessingEndTime *time.Time
 
 	// READ-ONLY; The name of a component inside the product which generated the alert.
-	ProductComponentName *string `json:"productComponentName,omitempty" azure:"ro"`
+	ProductComponentName *string
 
 	// READ-ONLY; The name of the product which published this alert.
-	ProductName *string `json:"productName,omitempty" azure:"ro"`
+	ProductName *string
 
 	// READ-ONLY; The version of the product generating the alert.
-	ProductVersion *string `json:"productVersion,omitempty" azure:"ro"`
+	ProductVersion *string
 
 	// READ-ONLY; The identifier of the alert inside the product which generated the alert.
-	ProviderAlertID *string `json:"providerAlertId,omitempty" azure:"ro"`
+	ProviderAlertID *string
 
 	// READ-ONLY; Manual action items to take to remediate the alert.
-	RemediationSteps []*string `json:"remediationSteps,omitempty" azure:"ro"`
+	RemediationSteps []*string
 
 	// READ-ONLY; The list of resource identifiers of the alert.
-	ResourceIdentifiers []any `json:"resourceIdentifiers,omitempty" azure:"ro"`
+	ResourceIdentifiers []any
 
 	// READ-ONLY; The impact start time of the alert (the time of the first event contributing to the alert).
-	StartTimeUTC *time.Time `json:"startTimeUtc,omitempty" azure:"ro"`
+	StartTimeUTC *time.Time
 
 	// READ-ONLY; The lifecycle status of the alert.
-	Status *AlertStatus `json:"status,omitempty" azure:"ro"`
+	Status *AlertStatus
 
 	// READ-ONLY; Holds the product identifier of the alert for the product.
-	SystemAlertID *string `json:"systemAlertId,omitempty" azure:"ro"`
+	SystemAlertID *string
 
 	// READ-ONLY; The tactics of the alert
-	Tactics []*AttackTactic `json:"tactics,omitempty" azure:"ro"`
+	Tactics []*AttackTactic
 
 	// READ-ONLY; The time the alert was generated.
-	TimeGenerated *time.Time `json:"timeGenerated,omitempty" azure:"ro"`
+	TimeGenerated *time.Time
 
 	// READ-ONLY; The name of the vendor that raise the alert.
-	VendorName *string `json:"vendorName,omitempty" azure:"ro"`
+	VendorName *string
 }
 
 // SecurityAlertPropertiesConfidenceReasonsItem - confidence reason item
 type SecurityAlertPropertiesConfidenceReasonsItem struct {
 	// READ-ONLY; The reason's description
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 
 	// READ-ONLY; The type (category) of the reason
-	ReasonType *string `json:"reasonType,omitempty" azure:"ro"`
+	ReasonType *string
 }
 
 // SecurityGroupEntity - Represents a security group entity.
 type SecurityGroupEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// SecurityGroup entity properties
-	Properties *SecurityGroupEntityProperties `json:"properties,omitempty"`
+	Properties *SecurityGroupEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type SecurityGroupEntity.
@@ -3271,47 +3271,47 @@ func (s *SecurityGroupEntity) GetEntity() *Entity {
 // SecurityGroupEntityProperties - SecurityGroup entity property bag.
 type SecurityGroupEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The group distinguished name
-	DistinguishedName *string `json:"distinguishedName,omitempty" azure:"ro"`
+	DistinguishedName *string
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; A single-value attribute that is the unique identifier for the object, assigned by active directory.
-	ObjectGUID *string `json:"objectGuid,omitempty" azure:"ro"`
+	ObjectGUID *string
 
 	// READ-ONLY; The SID attribute is a single-value attribute that specifies the security identifier (SID) of the group
-	Sid *string `json:"sid,omitempty" azure:"ro"`
+	Sid *string
 }
 
 // SentinelOnboardingState - Sentinel onboarding state
 type SentinelOnboardingState struct {
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// The Sentinel onboarding state object
-	Properties *SentinelOnboardingStateProperties `json:"properties,omitempty"`
+	Properties *SentinelOnboardingStateProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SentinelOnboardingStateProperties - The Sentinel onboarding state properties
 type SentinelOnboardingStateProperties struct {
 	// Flag that indicates the status of the CMK setting
-	CustomerManagedKey *bool `json:"customerManagedKey,omitempty"`
+	CustomerManagedKey *bool
 }
 
 // SentinelOnboardingStatesClientCreateOptions contains the optional parameters for the SentinelOnboardingStatesClient.Create
@@ -3341,28 +3341,28 @@ type SentinelOnboardingStatesClientListOptions struct {
 // SentinelOnboardingStatesList - List of the Sentinel onboarding states
 type SentinelOnboardingStatesList struct {
 	// REQUIRED; Array of Sentinel onboarding states
-	Value []*SentinelOnboardingState `json:"value,omitempty"`
+	Value []*SentinelOnboardingState
 }
 
 // SubmissionMailEntity - Represents a submission mail entity.
 type SubmissionMailEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Submission mail entity properties
-	Properties *SubmissionMailEntityProperties `json:"properties,omitempty"`
+	Properties *SubmissionMailEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type SubmissionMailEntity.
@@ -3379,86 +3379,86 @@ func (s *SubmissionMailEntity) GetEntity() *Entity {
 // SubmissionMailEntityProperties - Submission mail entity property bag.
 type SubmissionMailEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; The network message id of email to which submission belongs
-	NetworkMessageID *string `json:"networkMessageId,omitempty" azure:"ro"`
+	NetworkMessageID *string
 
 	// READ-ONLY; The recipient of the mail
-	Recipient *string `json:"recipient,omitempty" azure:"ro"`
+	Recipient *string
 
 	// READ-ONLY; The submission type for the given instance. This maps to Junk, Phish, Malware or NotJunk.
-	ReportType *string `json:"reportType,omitempty" azure:"ro"`
+	ReportType *string
 
 	// READ-ONLY; The sender of the mail
-	Sender *string `json:"sender,omitempty" azure:"ro"`
+	Sender *string
 
 	// READ-ONLY; The sender's IP
-	SenderIP *string `json:"senderIp,omitempty" azure:"ro"`
+	SenderIP *string
 
 	// READ-ONLY; The subject of submission mail
-	Subject *string `json:"subject,omitempty" azure:"ro"`
+	Subject *string
 
 	// READ-ONLY; The submission date
-	SubmissionDate *time.Time `json:"submissionDate,omitempty" azure:"ro"`
+	SubmissionDate *time.Time
 
 	// READ-ONLY; The submission id
-	SubmissionID *string `json:"submissionId,omitempty" azure:"ro"`
+	SubmissionID *string
 
 	// READ-ONLY; The submitter
-	Submitter *string `json:"submitter,omitempty" azure:"ro"`
+	Submitter *string
 
 	// READ-ONLY; The Time stamp when the message is received (Mail)
-	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
+	Timestamp *time.Time
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TIDataConnector - Represents threat intelligence data connector.
 type TIDataConnector struct {
 	// REQUIRED; The data connector kind
-	Kind *DataConnectorKind `json:"kind,omitempty"`
+	Kind *DataConnectorKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// TI (Threat Intelligence) data connector properties.
-	Properties *TIDataConnectorProperties `json:"properties,omitempty"`
+	Properties *TIDataConnectorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDataConnector implements the DataConnectorClassification interface for type TIDataConnector.
@@ -3476,124 +3476,124 @@ func (t *TIDataConnector) GetDataConnector() *DataConnector {
 // TIDataConnectorDataTypes - The available data types for TI (Threat Intelligence) data connector.
 type TIDataConnectorDataTypes struct {
 	// Data type for indicators connection.
-	Indicators *TIDataConnectorDataTypesIndicators `json:"indicators,omitempty"`
+	Indicators *TIDataConnectorDataTypesIndicators
 }
 
 // TIDataConnectorDataTypesIndicators - Data type for indicators connection.
 type TIDataConnectorDataTypesIndicators struct {
 	// Describe whether this data type connection is enabled or not.
-	State *DataTypeState `json:"state,omitempty"`
+	State *DataTypeState
 }
 
 // TIDataConnectorProperties - TI (Threat Intelligence) data connector properties.
 type TIDataConnectorProperties struct {
 	// The available data types for the connector.
-	DataTypes *TIDataConnectorDataTypes `json:"dataTypes,omitempty"`
+	DataTypes *TIDataConnectorDataTypes
 
 	// The tenant id to connect to, and get the data from.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The lookback period for the feed to be imported.
-	TipLookbackPeriod *time.Time `json:"tipLookbackPeriod,omitempty"`
+	TipLookbackPeriod *time.Time
 }
 
 // ThreatIntelligence property bag.
 type ThreatIntelligence struct {
 	// READ-ONLY; Confidence (must be between 0 and 1)
-	Confidence *float64 `json:"confidence,omitempty" azure:"ro"`
+	Confidence *float64
 
 	// READ-ONLY; Name of the provider from whom this Threat Intelligence information was received
-	ProviderName *string `json:"providerName,omitempty" azure:"ro"`
+	ProviderName *string
 
 	// READ-ONLY; Report link
-	ReportLink *string `json:"reportLink,omitempty" azure:"ro"`
+	ReportLink *string
 
 	// READ-ONLY; Threat description (free text)
-	ThreatDescription *string `json:"threatDescription,omitempty" azure:"ro"`
+	ThreatDescription *string
 
 	// READ-ONLY; Threat name (e.g. "Jedobot malware")
-	ThreatName *string `json:"threatName,omitempty" azure:"ro"`
+	ThreatName *string
 
 	// READ-ONLY; Threat type (e.g. "Botnet")
-	ThreatType *string `json:"threatType,omitempty" azure:"ro"`
+	ThreatType *string
 }
 
 // ThreatIntelligenceAppendTags - Array of tags to be appended to the threat intelligence indicator.
 type ThreatIntelligenceAppendTags struct {
 	// List of tags to be appended.
-	ThreatIntelligenceTags []*string `json:"threatIntelligenceTags,omitempty"`
+	ThreatIntelligenceTags []*string
 }
 
 // ThreatIntelligenceExternalReference - Describes external reference
 type ThreatIntelligenceExternalReference struct {
 	// External reference description
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// External reference ID
-	ExternalID *string `json:"externalId,omitempty"`
+	ExternalID *string
 
 	// External reference hashes
-	Hashes map[string]*string `json:"hashes,omitempty"`
+	Hashes map[string]*string
 
 	// External reference source name
-	SourceName *string `json:"sourceName,omitempty"`
+	SourceName *string
 
 	// External reference URL
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // ThreatIntelligenceFilteringCriteria - Filtering criteria for querying threat intelligence indicators.
 type ThreatIntelligenceFilteringCriteria struct {
 	// Ids of threat intelligence indicators
-	IDs []*string `json:"ids,omitempty"`
+	IDs []*string
 
 	// Parameter to include/exclude disabled indicators.
-	IncludeDisabled *bool `json:"includeDisabled,omitempty"`
+	IncludeDisabled *bool
 
 	// Keywords for searching threat intelligence indicators
-	Keywords []*string `json:"keywords,omitempty"`
+	Keywords []*string
 
 	// Maximum confidence.
-	MaxConfidence *int32 `json:"maxConfidence,omitempty"`
+	MaxConfidence *int32
 
 	// End time for ValidUntil filter.
-	MaxValidUntil *string `json:"maxValidUntil,omitempty"`
+	MaxValidUntil *string
 
 	// Minimum confidence.
-	MinConfidence *int32 `json:"minConfidence,omitempty"`
+	MinConfidence *int32
 
 	// Start time for ValidUntil filter.
-	MinValidUntil *string `json:"minValidUntil,omitempty"`
+	MinValidUntil *string
 
 	// Page size
-	PageSize *int32 `json:"pageSize,omitempty"`
+	PageSize *int32
 
 	// Pattern types
-	PatternTypes []*string `json:"patternTypes,omitempty"`
+	PatternTypes []*string
 
 	// Skip token.
-	SkipToken *string `json:"skipToken,omitempty"`
+	SkipToken *string
 
 	// Columns to sort by and sorting order
-	SortBy []*ThreatIntelligenceSortingCriteria `json:"sortBy,omitempty"`
+	SortBy []*ThreatIntelligenceSortingCriteria
 
 	// Sources of threat intelligence indicators
-	Sources []*string `json:"sources,omitempty"`
+	Sources []*string
 
 	// Threat types of threat intelligence indicators
-	ThreatTypes []*string `json:"threatTypes,omitempty"`
+	ThreatTypes []*string
 }
 
 // ThreatIntelligenceGranularMarkingModel - Describes threat granular marking model entity
 type ThreatIntelligenceGranularMarkingModel struct {
 	// Language granular marking model
-	Language *string `json:"language,omitempty"`
+	Language *string
 
 	// marking reference granular marking model
-	MarkingRef *int32 `json:"markingRef,omitempty"`
+	MarkingRef *int32
 
 	// granular marking model selectors
-	Selectors []*string `json:"selectors,omitempty"`
+	Selectors []*string
 }
 
 // ThreatIntelligenceIndicatorClientAppendTagsOptions contains the optional parameters for the ThreatIntelligenceIndicatorClient.AppendTags
@@ -3647,25 +3647,25 @@ type ThreatIntelligenceIndicatorMetricsClientListOptions struct {
 // ThreatIntelligenceIndicatorModel - Threat intelligence indicator entity.
 type ThreatIntelligenceIndicatorModel struct {
 	// REQUIRED; The kind of the entity.
-	Kind *ThreatIntelligenceResourceInnerKind `json:"kind,omitempty"`
+	Kind *ThreatIntelligenceResourceInnerKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Threat Intelligence Entity properties
-	Properties *ThreatIntelligenceIndicatorProperties `json:"properties,omitempty"`
+	Properties *ThreatIntelligenceIndicatorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetThreatIntelligenceInformation implements the ThreatIntelligenceInformationClassification interface for type ThreatIntelligenceIndicatorModel.
@@ -3683,95 +3683,95 @@ func (t *ThreatIntelligenceIndicatorModel) GetThreatIntelligenceInformation() *T
 // ThreatIntelligenceIndicatorProperties - Describes threat intelligence entity properties
 type ThreatIntelligenceIndicatorProperties struct {
 	// Confidence of threat intelligence entity
-	Confidence *int32 `json:"confidence,omitempty"`
+	Confidence *int32
 
 	// Created by
-	Created *string `json:"created,omitempty"`
+	Created *string
 
 	// Created by reference of threat intelligence entity
-	CreatedByRef *string `json:"createdByRef,omitempty"`
+	CreatedByRef *string
 
 	// Is threat intelligence entity defanged
-	Defanged *bool `json:"defanged,omitempty"`
+	Defanged *bool
 
 	// Description of a threat intelligence entity
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Display name of a threat intelligence entity
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Extensions map
-	Extensions map[string]any `json:"extensions,omitempty"`
+	Extensions map[string]any
 
 	// External ID of threat intelligence entity
-	ExternalID *string `json:"externalId,omitempty"`
+	ExternalID *string
 
 	// External last updated time in UTC
-	ExternalLastUpdatedTimeUTC *string `json:"externalLastUpdatedTimeUtc,omitempty"`
+	ExternalLastUpdatedTimeUTC *string
 
 	// External References
-	ExternalReferences []*ThreatIntelligenceExternalReference `json:"externalReferences,omitempty"`
+	ExternalReferences []*ThreatIntelligenceExternalReference
 
 	// Granular Markings
-	GranularMarkings []*ThreatIntelligenceGranularMarkingModel `json:"granularMarkings,omitempty"`
+	GranularMarkings []*ThreatIntelligenceGranularMarkingModel
 
 	// Indicator types of threat intelligence entities
-	IndicatorTypes []*string `json:"indicatorTypes,omitempty"`
+	IndicatorTypes []*string
 
 	// Kill chain phases
-	KillChainPhases []*ThreatIntelligenceKillChainPhase `json:"killChainPhases,omitempty"`
+	KillChainPhases []*ThreatIntelligenceKillChainPhase
 
 	// Labels of threat intelligence entity
-	Labels []*string `json:"labels,omitempty"`
+	Labels []*string
 
 	// Language of threat intelligence entity
-	Language *string `json:"language,omitempty"`
+	Language *string
 
 	// Last updated time in UTC
-	LastUpdatedTimeUTC *string `json:"lastUpdatedTimeUtc,omitempty"`
+	LastUpdatedTimeUTC *string
 
 	// Modified by
-	Modified *string `json:"modified,omitempty"`
+	Modified *string
 
 	// Threat intelligence entity object marking references
-	ObjectMarkingRefs []*string `json:"objectMarkingRefs,omitempty"`
+	ObjectMarkingRefs []*string
 
 	// Parsed patterns
-	ParsedPattern []*ThreatIntelligenceParsedPattern `json:"parsedPattern,omitempty"`
+	ParsedPattern []*ThreatIntelligenceParsedPattern
 
 	// Pattern of a threat intelligence entity
-	Pattern *string `json:"pattern,omitempty"`
+	Pattern *string
 
 	// Pattern type of a threat intelligence entity
-	PatternType *string `json:"patternType,omitempty"`
+	PatternType *string
 
 	// Pattern version of a threat intelligence entity
-	PatternVersion *string `json:"patternVersion,omitempty"`
+	PatternVersion *string
 
 	// Is threat intelligence entity revoked
-	Revoked *bool `json:"revoked,omitempty"`
+	Revoked *bool
 
 	// Source of a threat intelligence entity
-	Source *string `json:"source,omitempty"`
+	Source *string
 
 	// List of tags
-	ThreatIntelligenceTags []*string `json:"threatIntelligenceTags,omitempty"`
+	ThreatIntelligenceTags []*string
 
 	// Threat types
-	ThreatTypes []*string `json:"threatTypes,omitempty"`
+	ThreatTypes []*string
 
 	// Valid from
-	ValidFrom *string `json:"validFrom,omitempty"`
+	ValidFrom *string
 
 	// Valid until
-	ValidUntil *string `json:"validUntil,omitempty"`
+	ValidUntil *string
 
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 }
 
 // ThreatIntelligenceIndicatorsClientListOptions contains the optional parameters for the ThreatIntelligenceIndicatorsClient.NewListPager
@@ -3801,22 +3801,22 @@ type ThreatIntelligenceInformationClassification interface {
 // ThreatIntelligenceInformation - Threat intelligence information object.
 type ThreatIntelligenceInformation struct {
 	// REQUIRED; The kind of the entity.
-	Kind *ThreatIntelligenceResourceInnerKind `json:"kind,omitempty"`
+	Kind *ThreatIntelligenceResourceInnerKind
 
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetThreatIntelligenceInformation implements the ThreatIntelligenceInformationClassification interface for type ThreatIntelligenceInformation.
@@ -3827,103 +3827,103 @@ func (t *ThreatIntelligenceInformation) GetThreatIntelligenceInformation() *Thre
 // ThreatIntelligenceInformationList - List of all the threat intelligence information objects.
 type ThreatIntelligenceInformationList struct {
 	// REQUIRED; Array of threat intelligence information objects.
-	Value []ThreatIntelligenceInformationClassification `json:"value,omitempty"`
+	Value []ThreatIntelligenceInformationClassification
 
 	// READ-ONLY; URL to fetch the next set of information objects.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ThreatIntelligenceKillChainPhase - Describes threat kill chain phase entity
 type ThreatIntelligenceKillChainPhase struct {
 	// Kill chainName name
-	KillChainName *string `json:"killChainName,omitempty"`
+	KillChainName *string
 
 	// Phase name
-	PhaseName *string `json:"phaseName,omitempty"`
+	PhaseName *string
 }
 
 // ThreatIntelligenceMetric - Describes threat intelligence metric
 type ThreatIntelligenceMetric struct {
 	// Last updated indicator metric
-	LastUpdatedTimeUTC *string `json:"lastUpdatedTimeUtc,omitempty"`
+	LastUpdatedTimeUTC *string
 
 	// Pattern type metrics
-	PatternTypeMetrics []*ThreatIntelligenceMetricEntity `json:"patternTypeMetrics,omitempty"`
+	PatternTypeMetrics []*ThreatIntelligenceMetricEntity
 
 	// Source metrics
-	SourceMetrics []*ThreatIntelligenceMetricEntity `json:"sourceMetrics,omitempty"`
+	SourceMetrics []*ThreatIntelligenceMetricEntity
 
 	// Threat type metrics
-	ThreatTypeMetrics []*ThreatIntelligenceMetricEntity `json:"threatTypeMetrics,omitempty"`
+	ThreatTypeMetrics []*ThreatIntelligenceMetricEntity
 }
 
 // ThreatIntelligenceMetricEntity - Describes threat intelligence metric entity
 type ThreatIntelligenceMetricEntity struct {
 	// Metric name
-	MetricName *string `json:"metricName,omitempty"`
+	MetricName *string
 
 	// Metric value
-	MetricValue *int32 `json:"metricValue,omitempty"`
+	MetricValue *int32
 }
 
 // ThreatIntelligenceMetrics - Threat intelligence metrics.
 type ThreatIntelligenceMetrics struct {
 	// Threat intelligence metrics.
-	Properties *ThreatIntelligenceMetric `json:"properties,omitempty"`
+	Properties *ThreatIntelligenceMetric
 }
 
 // ThreatIntelligenceMetricsList - List of all the threat intelligence metric fields (type/threat type/source).
 type ThreatIntelligenceMetricsList struct {
 	// REQUIRED; Array of threat intelligence metric fields (type/threat type/source).
-	Value []*ThreatIntelligenceMetrics `json:"value,omitempty"`
+	Value []*ThreatIntelligenceMetrics
 }
 
 // ThreatIntelligenceParsedPattern - Describes parsed pattern entity
 type ThreatIntelligenceParsedPattern struct {
 	// Pattern type key
-	PatternTypeKey *string `json:"patternTypeKey,omitempty"`
+	PatternTypeKey *string
 
 	// Pattern type keys
-	PatternTypeValues []*ThreatIntelligenceParsedPatternTypeValue `json:"patternTypeValues,omitempty"`
+	PatternTypeValues []*ThreatIntelligenceParsedPatternTypeValue
 }
 
 // ThreatIntelligenceParsedPatternTypeValue - Describes threat kill chain phase entity
 type ThreatIntelligenceParsedPatternTypeValue struct {
 	// Value of parsed pattern
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// Type of the value
-	ValueType *string `json:"valueType,omitempty"`
+	ValueType *string
 }
 
 // ThreatIntelligenceSortingCriteria - List of available columns for sorting
 type ThreatIntelligenceSortingCriteria struct {
 	// Column name
-	ItemKey *string `json:"itemKey,omitempty"`
+	ItemKey *string
 
 	// Sorting order (ascending/descending/unsorted).
-	SortOrder *ThreatIntelligenceSortingOrder `json:"sortOrder,omitempty"`
+	SortOrder *ThreatIntelligenceSortingOrder
 }
 
 // URLEntity - Represents a url entity.
 type URLEntity struct {
 	// REQUIRED; The kind of the entity.
-	Kind *EntityKindEnum `json:"kind,omitempty"`
+	Kind *EntityKindEnum
 
 	// Url entity properties
-	Properties *URLEntityProperties `json:"properties,omitempty"`
+	Properties *URLEntityProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetEntity implements the EntityClassification interface for type URLEntity.
@@ -3940,110 +3940,110 @@ func (u *URLEntity) GetEntity() *Entity {
 // URLEntityProperties - Url entity property bag.
 type URLEntityProperties struct {
 	// READ-ONLY; A bag of custom fields that should be part of the entity and will be presented to the user.
-	AdditionalData map[string]any `json:"additionalData,omitempty" azure:"ro"`
+	AdditionalData map[string]any
 
 	// READ-ONLY; The graph item display name which is a short humanly readable description of the graph item instance. This property
 	// is optional and might be system generated.
-	FriendlyName *string `json:"friendlyName,omitempty" azure:"ro"`
+	FriendlyName *string
 
 	// READ-ONLY; A full URL the entity points to
-	URL *string `json:"url,omitempty" azure:"ro"`
+	URL *string
 }
 
 // UserInfo - User information that made some action
 type UserInfo struct {
 	// The object id of the user.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// READ-ONLY; The email of the user.
-	Email *string `json:"email,omitempty" azure:"ro"`
+	Email *string
 
 	// READ-ONLY; The name of the user.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // Watchlist - Represents a Watchlist in Azure Security Insights.
 type Watchlist struct {
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Watchlist properties
-	Properties *WatchlistProperties `json:"properties,omitempty"`
+	Properties *WatchlistProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WatchlistItem - Represents a Watchlist Item in Azure Security Insights.
 type WatchlistItem struct {
 	// Etag of the azure resource
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Watchlist Item properties
-	Properties *WatchlistItemProperties `json:"properties,omitempty"`
+	Properties *WatchlistItemProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WatchlistItemList - List all the watchlist items.
 type WatchlistItemList struct {
 	// REQUIRED; Array of watchlist items.
-	Value []*WatchlistItem `json:"value,omitempty"`
+	Value []*WatchlistItem
 
 	// READ-ONLY; URL to fetch the next set of watchlist items.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // WatchlistItemProperties - Describes watchlist item properties
 type WatchlistItemProperties struct {
 	// REQUIRED; key-value pairs for a watchlist item
-	ItemsKeyValue any `json:"itemsKeyValue,omitempty"`
+	ItemsKeyValue any
 
 	// The time the watchlist item was created
-	Created *time.Time `json:"created,omitempty"`
+	Created *time.Time
 
 	// Describes a user that created the watchlist item
-	CreatedBy *UserInfo `json:"createdBy,omitempty"`
+	CreatedBy *UserInfo
 
 	// key-value pairs for a watchlist item entity mapping
-	EntityMapping any `json:"entityMapping,omitempty"`
+	EntityMapping any
 
 	// A flag that indicates if the watchlist item is deleted or not
-	IsDeleted *bool `json:"isDeleted,omitempty"`
+	IsDeleted *bool
 
 	// The tenantId to which the watchlist item belongs to
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The last time the watchlist item was updated
-	Updated *time.Time `json:"updated,omitempty"`
+	Updated *time.Time
 
 	// Describes a user that updated the watchlist item
-	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	UpdatedBy *UserInfo
 
 	// The id (a Guid) of the watchlist item
-	WatchlistItemID *string `json:"watchlistItemId,omitempty"`
+	WatchlistItemID *string
 
 	// The type of the watchlist item
-	WatchlistItemType *string `json:"watchlistItemType,omitempty"`
+	WatchlistItemType *string
 }
 
 // WatchlistItemsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistItemsClient.CreateOrUpdate
@@ -4073,76 +4073,76 @@ type WatchlistItemsClientListOptions struct {
 // WatchlistList - List all the watchlists.
 type WatchlistList struct {
 	// REQUIRED; Array of watchlist.
-	Value []*Watchlist `json:"value,omitempty"`
+	Value []*Watchlist
 
 	// READ-ONLY; URL to fetch the next set of watchlists.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // WatchlistProperties - Describes watchlist properties
 type WatchlistProperties struct {
 	// REQUIRED; The display name of the watchlist
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// REQUIRED; The search key is used to optimize query performance when using watchlists for joins with other data. For example,
 	// enable a column with IP addresses to be the designated SearchKey field, then use this
 	// field as the key field when joining to other event data by IP address.
-	ItemsSearchKey *string `json:"itemsSearchKey,omitempty"`
+	ItemsSearchKey *string
 
 	// REQUIRED; The provider of the watchlist
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// REQUIRED; The source of the watchlist
-	Source *Source `json:"source,omitempty"`
+	Source *Source
 
 	// The content type of the raw content. For now, only text/csv is valid
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// The time the watchlist was created
-	Created *time.Time `json:"created,omitempty"`
+	Created *time.Time
 
 	// Describes a user that created the watchlist
-	CreatedBy *UserInfo `json:"createdBy,omitempty"`
+	CreatedBy *UserInfo
 
 	// The default duration of a watchlist (in ISO 8601 duration format)
-	DefaultDuration *string `json:"defaultDuration,omitempty"`
+	DefaultDuration *string
 
 	// A description of the watchlist
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// A flag that indicates if the watchlist is deleted or not
-	IsDeleted *bool `json:"isDeleted,omitempty"`
+	IsDeleted *bool
 
 	// List of labels relevant to this watchlist
-	Labels []*string `json:"labels,omitempty"`
+	Labels []*string
 
 	// The number of lines in a csv content to skip before the header
-	NumberOfLinesToSkip *int32 `json:"numberOfLinesToSkip,omitempty"`
+	NumberOfLinesToSkip *int32
 
 	// The raw content that represents to watchlist items to create. Example : This line will be skipped header1,header2 value1,value2
-	RawContent *string `json:"rawContent,omitempty"`
+	RawContent *string
 
 	// The tenantId where the watchlist belongs to
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The last time the watchlist was updated
-	Updated *time.Time `json:"updated,omitempty"`
+	Updated *time.Time
 
 	// Describes a user that updated the watchlist
-	UpdatedBy *UserInfo `json:"updatedBy,omitempty"`
+	UpdatedBy *UserInfo
 
 	// The status of the Watchlist upload : New, InProgress or Complete. Note : When a Watchlist upload status is InProgress,
 	// the Watchlist cannot be deleted
-	UploadStatus *string `json:"uploadStatus,omitempty"`
+	UploadStatus *string
 
 	// The alias of the watchlist
-	WatchlistAlias *string `json:"watchlistAlias,omitempty"`
+	WatchlistAlias *string
 
 	// The id (a Guid) of the watchlist
-	WatchlistID *string `json:"watchlistId,omitempty"`
+	WatchlistID *string
 
 	// The type of the watchlist
-	WatchlistType *string `json:"watchlistType,omitempty"`
+	WatchlistType *string
 }
 
 // WatchlistsClientCreateOrUpdateOptions contains the optional parameters for the WatchlistsClient.CreateOrUpdate method.

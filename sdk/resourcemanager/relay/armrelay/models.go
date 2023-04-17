@@ -14,167 +14,167 @@ import "time"
 // AccessKeys - Namespace/Relay Connection String
 type AccessKeys struct {
 	// A string that describes the authorization rule.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// Primary connection string of the created namespace authorization rule.
-	PrimaryConnectionString *string `json:"primaryConnectionString,omitempty"`
+	PrimaryConnectionString *string
 
 	// A base64-encoded 256-bit primary key for signing and validating the SAS token.
-	PrimaryKey *string `json:"primaryKey,omitempty"`
+	PrimaryKey *string
 
 	// Secondary connection string of the created namespace authorization rule.
-	SecondaryConnectionString *string `json:"secondaryConnectionString,omitempty"`
+	SecondaryConnectionString *string
 
 	// A base64-encoded 256-bit secondary key for signing and validating the SAS token.
-	SecondaryKey *string `json:"secondaryKey,omitempty"`
+	SecondaryKey *string
 }
 
 // AuthorizationRule - Single item in a List or Get AuthorizationRule operation
 type AuthorizationRule struct {
 	// Properties supplied to create or update AuthorizationRule
-	Properties *AuthorizationRuleProperties `json:"properties,omitempty"`
+	Properties *AuthorizationRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AuthorizationRuleListResult - The response from the list namespace operation.
 type AuthorizationRuleListResult struct {
 	// Link to the next set of results. Not empty if value contains incomplete list of authorization rules.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the list authorization rules operation.
-	Value []*AuthorizationRule `json:"value,omitempty"`
+	Value []*AuthorizationRule
 }
 
 // AuthorizationRuleProperties - Properties supplied to create or update AuthorizationRule
 type AuthorizationRuleProperties struct {
 	// REQUIRED; The rights associated with the rule.
-	Rights []*AccessRights `json:"rights,omitempty"`
+	Rights []*AccessRights
 }
 
 // CheckNameAvailability - Description of the check name availability request properties.
 type CheckNameAvailability struct {
 	// REQUIRED; The namespace name to check for availability. The namespace name can contain only letters, numbers, and hyphens.
 	// The namespace must start with a letter, and it must end with a letter or number.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // CheckNameAvailabilityResult - Description of the check name availability request properties.
 type CheckNameAvailabilityResult struct {
 	// Value indicating namespace is available. Returns true if the namespace is available; otherwise, false.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason for unavailability of a namespace.
-	Reason *UnavailableReason `json:"reason,omitempty"`
+	Reason *UnavailableReason
 
 	// READ-ONLY; The detailed info regarding the reason associated with the namespace.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // ConnectionState information.
 type ConnectionState struct {
 	// Description of the connection state.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Status of the connection.
-	Status *PrivateLinkConnectionStatus `json:"status,omitempty"`
+	Status *PrivateLinkConnectionStatus
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // HybridConnection - Description of hybrid connection resource.
 type HybridConnection struct {
 	// Properties of the HybridConnection.
-	Properties *HybridConnectionProperties `json:"properties,omitempty"`
+	Properties *HybridConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HybridConnectionListResult - The response of the list hybrid connection operation.
 type HybridConnectionListResult struct {
 	// Link to the next set of results. Not empty if value contains incomplete list hybrid connection operation.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the list hybrid connections.
-	Value []*HybridConnection `json:"value,omitempty"`
+	Value []*HybridConnection
 }
 
 // HybridConnectionProperties - Properties of the HybridConnection.
 type HybridConnectionProperties struct {
 	// Returns true if client authorization is needed for this hybrid connection; otherwise, false.
-	RequiresClientAuthorization *bool `json:"requiresClientAuthorization,omitempty"`
+	RequiresClientAuthorization *bool
 
 	// The usermetadata is a placeholder to store user-defined string data for the hybrid connection endpoint. For example, it
 	// can be used to store descriptive data, such as a list of teams and their contact
 	// information. Also, user-defined configuration settings can be stored.
-	UserMetadata *string `json:"userMetadata,omitempty"`
+	UserMetadata *string
 
 	// READ-ONLY; The time the hybrid connection was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; The number of listeners for this hybrid connection. Note that min : 1 and max:25 are supported.
-	ListenerCount *int32 `json:"listenerCount,omitempty" azure:"ro"`
+	ListenerCount *int32
 
 	// READ-ONLY; The time the namespace was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *time.Time
 }
 
 // HybridConnectionsClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the HybridConnectionsClient.CreateOrUpdateAuthorizationRule
@@ -237,73 +237,73 @@ type HybridConnectionsClientRegenerateKeysOptions struct {
 // NWRuleSetIPRules - The response from the List namespace operation.
 type NWRuleSetIPRules struct {
 	// The IP Filter Action
-	Action *NetworkRuleIPAction `json:"action,omitempty"`
+	Action *NetworkRuleIPAction
 
 	// IP Mask
-	IPMask *string `json:"ipMask,omitempty"`
+	IPMask *string
 }
 
 // Namespace - Description of a namespace resource.
 type Namespace struct {
 	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Description of Relay namespace
-	Properties *NamespaceProperties `json:"properties,omitempty"`
+	Properties *NamespaceProperties
 
 	// SKU of the namespace.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NamespaceListResult - The response from the list namespace operation.
 type NamespaceListResult struct {
 	// Link to the next set of results. Not empty if value contains incomplete list of namespaces.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the list namespace operation.
-	Value []*Namespace `json:"value,omitempty"`
+	Value []*Namespace
 }
 
 // NamespaceProperties - Properties of the namespace.
 type NamespaceProperties struct {
 	// List of private endpoint connections.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// This determines if traffic is allowed over public network. By default it is enabled.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// READ-ONLY; The time the namespace was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; Identifier for Azure Insights metrics.
-	MetricID *string `json:"metricId,omitempty" azure:"ro"`
+	MetricID *string
 
 	// READ-ONLY; Provisioning state of the Namespace.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Endpoint you can use to perform Service Bus operations.
-	ServiceBusEndpoint *string `json:"serviceBusEndpoint,omitempty" azure:"ro"`
+	ServiceBusEndpoint *string
 
 	// READ-ONLY; Status of the Namespace.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; The time the namespace was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *time.Time
 }
 
 // NamespacesClientBeginCreateOrUpdateOptions contains the optional parameters for the NamespacesClient.BeginCreateOrUpdate
@@ -394,71 +394,71 @@ type NamespacesClientUpdateOptions struct {
 // NetworkRuleSet - Description of topic resource.
 type NetworkRuleSet struct {
 	// NetworkRuleSet properties
-	Properties *NetworkRuleSetProperties `json:"properties,omitempty"`
+	Properties *NetworkRuleSetProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkRuleSetProperties - NetworkRuleSet properties
 type NetworkRuleSetProperties struct {
 	// Default Action for Network Rule Set
-	DefaultAction *DefaultAction `json:"defaultAction,omitempty"`
+	DefaultAction *DefaultAction
 
 	// List of IpRules
-	IPRules []*NWRuleSetIPRules `json:"ipRules,omitempty"`
+	IPRules []*NWRuleSetIPRules
 }
 
 // Operation - A Relay REST API operation
 type Operation struct {
 	// Properties of the operation
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// READ-ONLY; Display of the operation
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Origin of the operation
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // OperationDisplay - Operation display payload
 type OperationDisplay struct {
 	// READ-ONLY; Localized friendly description for the operation
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Localized friendly name for the operation
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Resource provider of the operation
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource of the operation
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Relay operations. It contains a list of operations and a URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Relay operations supported by the Microsoft.EventHub resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -469,49 +469,49 @@ type OperationsClientListOptions struct {
 // PrivateEndpoint information.
 type PrivateEndpoint struct {
 	// The ARM identifier for Private Endpoint.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateEndpointConnection - Properties of the PrivateEndpointConnection.
 type PrivateEndpointConnection struct {
 	// Properties of the PrivateEndpointConnection.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - Result of the list of all private endpoint connections operation.
 type PrivateEndpointConnectionListResult struct {
 	// A link for the next page of private endpoint connection resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of private endpoint connection resources.
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the private endpoint connection resource.
 type PrivateEndpointConnectionProperties struct {
 	// The Private Endpoint resource for this Connection.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// Details about the state of the connection.
-	PrivateLinkServiceConnectionState *ConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *ConnectionState
 
 	// Provisioning state of the Private Endpoint Connection.
-	ProvisioningState *EndPointProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *EndPointProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
@@ -542,28 +542,28 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateLinkResource - Information of the private link resource.
 type PrivateLinkResource struct {
 	// Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the resource
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties of the private link resource.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// Type of the resource
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // PrivateLinkResourceProperties - Properties of PrivateLinkResource
 type PrivateLinkResourceProperties struct {
 	// The private link resource group id.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty"`
+	RequiredMembers []*string
 
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -579,131 +579,131 @@ type PrivateLinkResourcesClientListOptions struct {
 // PrivateLinkResourcesListResult - Result of the List private link resources operation.
 type PrivateLinkResourcesListResult struct {
 	// A link for the next page of private link resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A collection of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // ProxyResource - Common fields that are returned in the response for all Azure Resource Manager resources
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RegenerateAccessKeyParameters - Parameters supplied to the regenerate authorization rule operation, specifies which key
 // needs to be reset.
 type RegenerateAccessKeyParameters struct {
 	// REQUIRED; The access key to regenerate.
-	KeyType *KeyType `json:"keyType,omitempty"`
+	KeyType *KeyType
 
 	// Optional. If the key value is provided, this is set to key type, or autogenerated key value set for key type.
-	Key *string `json:"key,omitempty"`
+	Key *string
 }
 
 // Resource - The resource definition.
 type Resource struct {
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceNamespacePatch - Definition of resource.
 type ResourceNamespacePatch struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKU of the namespace.
 type SKU struct {
 	// REQUIRED; Name of this SKU.
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 
 	// The tier of this SKU.
-	Tier *SKUTier `json:"tier,omitempty"`
+	Tier *SKUTier
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - Definition of resource.
 type TrackedResource struct {
 	// REQUIRED; Resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UpdateParameters - Description of a namespace resource.
 type UpdateParameters struct {
 	// Description of Relay namespace.
-	Properties *NamespaceProperties `json:"properties,omitempty"`
+	Properties *NamespaceProperties
 
 	// SKU of the namespace.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions contains the optional parameters for the WCFRelaysClient.CreateOrUpdateAuthorizationRule
@@ -764,58 +764,58 @@ type WCFRelaysClientRegenerateKeysOptions struct {
 // WcfRelay - Description of the WCF relay resource.
 type WcfRelay struct {
 	// Properties of the WCF relay.
-	Properties *WcfRelayProperties `json:"properties,omitempty"`
+	Properties *WcfRelayProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.EventHub/Namespaces" or "Microsoft.EventHub/Namespaces/EventHubs"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WcfRelayProperties - Properties of the WCF relay.
 type WcfRelayProperties struct {
 	// WCF relay type.
-	RelayType *Relaytype `json:"relayType,omitempty"`
+	RelayType *Relaytype
 
 	// Returns true if client authorization is needed for this relay; otherwise, false.
-	RequiresClientAuthorization *bool `json:"requiresClientAuthorization,omitempty"`
+	RequiresClientAuthorization *bool
 
 	// Returns true if transport security is needed for this relay; otherwise, false.
-	RequiresTransportSecurity *bool `json:"requiresTransportSecurity,omitempty"`
+	RequiresTransportSecurity *bool
 
 	// The usermetadata is a placeholder to store user-defined string data for the WCF Relay endpoint. For example, it can be
 	// used to store descriptive data, such as list of teams and their contact
 	// information. Also, user-defined configuration settings can be stored.
-	UserMetadata *string `json:"userMetadata,omitempty"`
+	UserMetadata *string
 
 	// READ-ONLY; The time the WCF relay was created.
-	CreatedAt *time.Time `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *time.Time
 
 	// READ-ONLY; Returns true if the relay is dynamic; otherwise, false.
-	IsDynamic *bool `json:"isDynamic,omitempty" azure:"ro"`
+	IsDynamic *bool
 
 	// READ-ONLY; The number of listeners for this relay. Note that min :1 and max:25 are supported.
-	ListenerCount *int32 `json:"listenerCount,omitempty" azure:"ro"`
+	ListenerCount *int32
 
 	// READ-ONLY; The time the namespace was updated.
-	UpdatedAt *time.Time `json:"updatedAt,omitempty" azure:"ro"`
+	UpdatedAt *time.Time
 }
 
 // WcfRelaysListResult - The response of the list WCF relay operation.
 type WcfRelaysListResult struct {
 	// Link to the next set of results. Not empty if value contains incomplete list of WCF relays.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Result of the list WCF relay operation.
-	Value []*WcfRelay `json:"value,omitempty"`
+	Value []*WcfRelay
 }

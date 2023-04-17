@@ -577,7 +577,7 @@ func (d DataSource) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", d.ID)
 	populate(objectMap, "kind", d.Kind)
 	populate(objectMap, "name", d.Name)
-	populate(objectMap, "properties", &d.Properties)
+	populateAny(objectMap, "properties", d.Properties)
 	populate(objectMap, "tags", d.Tags)
 	populate(objectMap, "type", d.Type)
 	return json.Marshal(objectMap)
@@ -744,7 +744,7 @@ func (d *DestinationMetaData) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -2710,7 +2710,7 @@ func (w WorkspacePurgeBodyFilters) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "column", w.Column)
 	populate(objectMap, "key", w.Key)
 	populate(objectMap, "operator", w.Operator)
-	populate(objectMap, "value", &w.Value)
+	populateAny(objectMap, "value", w.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -2838,6 +2838,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

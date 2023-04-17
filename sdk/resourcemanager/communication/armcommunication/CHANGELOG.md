@@ -1,6 +1,12 @@
 # Release History
 
-## 2.0.0 (2023-04-28)
+## 2.0.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 2.0.0 (2023-04-04)
 ### Breaking Changes
 
 - Type of `ServiceProperties.ProvisioningState` has been changed from `*ProvisioningState` to `*CommunicationServicesProvisioningState`

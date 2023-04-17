@@ -6855,7 +6855,7 @@ func (b BastionActiveSession) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "resourceType", b.ResourceType)
 	populate(objectMap, "sessionDurationInMins", b.SessionDurationInMins)
 	populate(objectMap, "sessionId", b.SessionID)
-	populate(objectMap, "startTime", &b.StartTime)
+	populateAny(objectMap, "startTime", b.StartTime)
 	populate(objectMap, "targetHostName", b.TargetHostName)
 	populate(objectMap, "targetIpAddress", b.TargetIPAddress)
 	populate(objectMap, "targetResourceGroup", b.TargetResourceGroup)
@@ -33643,6 +33643,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

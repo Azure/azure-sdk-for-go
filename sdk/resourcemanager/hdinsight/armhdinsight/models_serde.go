@@ -1157,7 +1157,7 @@ func (c ClusterDefinition) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "blueprint", c.Blueprint)
 	populate(objectMap, "componentVersion", c.ComponentVersion)
-	populate(objectMap, "configurations", &c.Configurations)
+	populateAny(objectMap, "configurations", c.Configurations)
 	populate(objectMap, "kind", c.Kind)
 	return json.Marshal(objectMap)
 }
@@ -4302,6 +4302,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

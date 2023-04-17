@@ -1,4 +1,5 @@
 # Azure Key Vault Secrets client module for Go
+> Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets instead
 
 Azure Key Vault helps solve the following problems:
 * Secrets management (this module) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets

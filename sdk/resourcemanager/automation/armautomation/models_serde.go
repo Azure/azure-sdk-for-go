@@ -3329,7 +3329,7 @@ func (e *EncryptionProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type EncryptionPropertiesIdentity.
 func (e EncryptionPropertiesIdentity) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "userAssignedIdentity", &e.UserAssignedIdentity)
+	populateAny(objectMap, "userAssignedIdentity", e.UserAssignedIdentity)
 	return json.Marshal(objectMap)
 }
 
@@ -6416,7 +6416,7 @@ func (s ScheduleCreateOrUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", s.Description)
 	populateTimeRFC3339(objectMap, "expiryTime", s.ExpiryTime)
 	populate(objectMap, "frequency", s.Frequency)
-	populate(objectMap, "interval", &s.Interval)
+	populateAny(objectMap, "interval", s.Interval)
 	populateTimeRFC3339(objectMap, "startTime", s.StartTime)
 	populate(objectMap, "timeZone", s.TimeZone)
 	return json.Marshal(objectMap)
@@ -6500,7 +6500,7 @@ func (s ScheduleProperties) MarshalJSON() ([]byte, error) {
 	populateTimeRFC3339(objectMap, "expiryTime", s.ExpiryTime)
 	populate(objectMap, "expiryTimeOffsetMinutes", s.ExpiryTimeOffsetMinutes)
 	populate(objectMap, "frequency", s.Frequency)
-	populate(objectMap, "interval", &s.Interval)
+	populateAny(objectMap, "interval", s.Interval)
 	populate(objectMap, "isEnabled", s.IsEnabled)
 	populateTimeRFC3339(objectMap, "lastModifiedTime", s.LastModifiedTime)
 	populateTimeRFC3339(objectMap, "nextRun", s.NextRun)
@@ -9352,6 +9352,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -11,7 +11,7 @@ package armapimanagement
 
 const (
 	moduleName    = "armapimanagement"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // APIManagementSKUCapacityScaleType - The scale type applicable to the sku.

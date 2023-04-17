@@ -36,55 +36,55 @@ type ClientListOptions struct {
 // CommonResourceProperties - Resource properties.
 type CommonResourceProperties struct {
 	// READ-ONLY; Resource ID
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type. Example: "Microsoft.Quota/quotas"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CreateGenericQuotaRequestParameters - Quota change requests information.
 type CreateGenericQuotaRequestParameters struct {
 	// Quota change requests.
-	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
+	Value []*CurrentQuotaLimitBase
 }
 
 // CurrentQuotaLimitBase - Quota limit.
 type CurrentQuotaLimitBase struct {
 	// Quota properties for the specified resource, based on the API called, Quotas or Usages.
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CurrentUsagesBase - Resource usage.
 type CurrentUsagesBase struct {
 	// Usage properties for the specified resource.
-	Properties *UsagesProperties `json:"properties,omitempty"`
+	Properties *UsagesProperties
 
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExceptionResponse - Error.
 type ExceptionResponse struct {
 	// API error details.
-	Error *ServiceError `json:"error,omitempty"`
+	Error *ServiceError
 }
 
 // LimitJSONObjectClassification provides polymorphic access to related types.
@@ -99,7 +99,7 @@ type LimitJSONObjectClassification interface {
 // LimitJSONObject - LimitJson abstract class.
 type LimitJSONObject struct {
 	// REQUIRED; The limit object type.
-	LimitObjectType *LimitType `json:"limitObjectType,omitempty"`
+	LimitObjectType *LimitType
 }
 
 // GetLimitJSONObject implements the LimitJSONObjectClassification interface for type LimitJSONObject.
@@ -108,13 +108,13 @@ func (l *LimitJSONObject) GetLimitJSONObject() *LimitJSONObject { return l }
 // LimitObject - The resource quota limit value.
 type LimitObject struct {
 	// REQUIRED; The limit object type.
-	LimitObjectType *LimitType `json:"limitObjectType,omitempty"`
+	LimitObjectType *LimitType
 
 	// REQUIRED; The quota/limit value
-	Value *int32 `json:"value,omitempty"`
+	Value *int32
 
 	// The quota or usages limit types.
-	LimitType *QuotaLimitTypes `json:"limitType,omitempty"`
+	LimitType *QuotaLimitTypes
 }
 
 // GetLimitJSONObject implements the LimitJSONObjectClassification interface for type LimitObject.
@@ -127,19 +127,19 @@ func (l *LimitObject) GetLimitJSONObject() *LimitJSONObject {
 // Limits - Quota limits.
 type Limits struct {
 	// The URI used to fetch the next page of quota limits. When there are no more pages, this string is null.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of quota limits.
-	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
+	Value []*CurrentQuotaLimitBase
 }
 
 // LimitsResponse - Quota limits request response.
 type LimitsResponse struct {
 	// The URI used to fetch the next page of quota limits. When there are no more pages, this is null.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of quota limits with the quota request status.
-	Value []*CurrentQuotaLimitBase `json:"value,omitempty"`
+	Value []*CurrentQuotaLimitBase
 }
 
 // OperationClientListOptions contains the optional parameters for the OperationClient.NewListPager method.
@@ -149,155 +149,155 @@ type OperationClientListOptions struct {
 
 type OperationDisplay struct {
 	// Operation description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation name.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Provider name.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource name.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 type OperationList struct {
 	// URL to get the next page of items.
-	NextLink *string              `json:"nextLink,omitempty"`
-	Value    []*OperationResponse `json:"value,omitempty"`
+	NextLink *string
+	Value    []*OperationResponse
 }
 
 type OperationResponse struct {
-	Display *OperationDisplay `json:"display,omitempty"`
-	Name    *string           `json:"name,omitempty"`
-	Origin  *string           `json:"origin,omitempty"`
+	Display *OperationDisplay
+	Name    *string
+	Origin  *string
 }
 
 // Properties - Quota properties for the specified resource.
 type Properties struct {
 	// Resource quota limit properties.
-	Limit LimitJSONObjectClassification `json:"limit,omitempty"`
+	Limit LimitJSONObjectClassification
 
 	// Resource name provided by the resource provider. Use this property name when requesting quota.
-	Name *ResourceName `json:"name,omitempty"`
+	Name *ResourceName
 
 	// Additional properties for the specific resource provider.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
-	// The name of the resource type. Optional field.
-	ResourceType *string `json:"resourceType,omitempty"`
+	// Resource type name.
+	ResourceType *string
 
 	// READ-ONLY; States if quota can be requested for this resource.
-	IsQuotaApplicable *bool `json:"isQuotaApplicable,omitempty" azure:"ro"`
+	IsQuotaApplicable *bool
 
 	// READ-ONLY; The time period over which the quota usage values are summarized. For example: *P1D (per one day) *PT1M (per
 	// one minute) *PT1S (per one second). This parameter is optional because, for some resources
 	// like compute, the period is irrelevant.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty" azure:"ro"`
+	QuotaPeriod *string
 
 	// READ-ONLY; The quota units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
 	// in the request body of your PUT operation.
-	Unit *string `json:"unit,omitempty" azure:"ro"`
+	Unit *string
 }
 
 // RequestDetails - List of quota requests with details.
 type RequestDetails struct {
 	// Quota request details.
-	Properties *RequestProperties `json:"properties,omitempty"`
+	Properties *RequestProperties
 
 	// READ-ONLY; Quota request ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Quota request name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type. "Microsoft.Quota/quotas".
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RequestDetailsList - Quota request information.
 type RequestDetailsList struct {
 	// The URI for fetching the next page of quota limits. When there are no more pages, this string is null.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Quota request details.
-	Value []*RequestDetails `json:"value,omitempty"`
+	Value []*RequestDetails
 }
 
 // RequestOneResourceProperties - Quota request.
 type RequestOneResourceProperties struct {
 	// Error details of the quota request.
-	Error *ServiceErrorDetail `json:"error,omitempty"`
+	Error *ServiceErrorDetail
 
 	// Resource quota limit properties.
-	Limit *LimitObject `json:"limit,omitempty"`
+	Limit *LimitObject
 
 	// Resource name provided by the resource provider. Use this property name when requesting quota.
-	Name *ResourceName `json:"name,omitempty"`
+	Name *ResourceName
 
 	// Additional properties for the specific resource provider.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
-	// The name of the resource type. Optional field.
-	ResourceType *string `json:"resourceType,omitempty"`
+	// Resource type name.
+	ResourceType *string
 
 	// The quota limit units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
 	// in the request body of your PUT operation.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 
 	// READ-ONLY; Usage information for the current resource.
-	CurrentValue *int32 `json:"currentValue,omitempty" azure:"ro"`
+	CurrentValue *int32
 
 	// READ-ONLY; States if quota can be requested for this resource.
-	IsQuotaApplicable *bool `json:"isQuotaApplicable,omitempty" azure:"ro"`
+	IsQuotaApplicable *bool
 
 	// READ-ONLY; User-friendly status message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Quota request status.
-	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *QuotaRequestState
 
 	// READ-ONLY; The time period over which the quota usage values are summarized. For example: *P1D (per one day) *PT1M (per
 	// one minute) *PT1S (per one second). This parameter is optional because, for some resources
 	// like compute, the period is irrelevant.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty" azure:"ro"`
+	QuotaPeriod *string
 
 	// READ-ONLY; Quota request submission time. The date conforms to the following ISO 8601 standard format: yyyy-MM-ddTHH:mm:ssZ.
-	RequestSubmitTime *time.Time `json:"requestSubmitTime,omitempty" azure:"ro"`
+	RequestSubmitTime *time.Time
 }
 
 // RequestOneResourceSubmitResponse - Quota request response.
 type RequestOneResourceSubmitResponse struct {
 	// Quota request details.
-	Properties *RequestOneResourceProperties `json:"properties,omitempty"`
+	Properties *RequestOneResourceProperties
 
 	// READ-ONLY; Quota request ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the quota request.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type. "Microsoft.Quota/ServiceLimitRequests"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RequestProperties - Quota request properties.
 type RequestProperties struct {
 	// Error details of the quota request.
-	Error *ServiceErrorDetail `json:"error,omitempty"`
+	Error *ServiceErrorDetail
 
 	// Quota request details.
-	Value []*SubRequest `json:"value,omitempty"`
+	Value []*SubRequest
 
 	// READ-ONLY; User-friendly status message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The quota request status.
-	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *QuotaRequestState
 
 	// READ-ONLY; The quota request submission time. The date conforms to the following format specified by the ISO 8601 standard:
 	// yyyy-MM-ddTHH:mm:ssZ
-	RequestSubmitTime *time.Time `json:"requestSubmitTime,omitempty" azure:"ro"`
+	RequestSubmitTime *time.Time
 }
 
 // RequestStatusClientGetOptions contains the optional parameters for the RequestStatusClient.Get method.
@@ -323,117 +323,117 @@ type RequestStatusClientListOptions struct {
 // RequestStatusDetails - Quota request status details.
 type RequestStatusDetails struct {
 	// Resource quota limit properties.
-	Limit *LimitObject `json:"limit,omitempty"`
+	Limit *LimitObject
 
 	// Resource name provided by the resource provider. Use this property name when requesting quota.
-	Name *ResourceName `json:"name,omitempty"`
+	Name *ResourceName
 
 	// Additional properties for the specific resource provider.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
-	// The name of the resource type. Optional field.
-	ResourceType *string `json:"resourceType,omitempty"`
+	// Resource type name.
+	ResourceType *string
 
 	// The quota limit units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
 	// in the request body of your PUT operation.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 
 	// READ-ONLY; User-friendly message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Quota request status.
-	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *QuotaRequestState
 
 	// READ-ONLY; The time period over which the quota usage values are summarized. For example: *P1D (per one day) *PT1M (per
 	// one minute) *PT1S (per one second). This parameter is optional because, for some resources
 	// like compute, the period is irrelevant.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty" azure:"ro"`
+	QuotaPeriod *string
 }
 
 // RequestSubmitResponse - Quota request response.
 type RequestSubmitResponse struct {
 	// Quota request details.
-	Properties *RequestProperties `json:"properties,omitempty"`
+	Properties *RequestProperties
 
 	// READ-ONLY; Quota request ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Quota request name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type. "Microsoft.Quota/quotas".
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RequestSubmitResponse202 - The quota request response with the quota request ID.
 type RequestSubmitResponse202 struct {
 	// Quota request status.
-	Properties *RequestStatusDetails `json:"properties,omitempty"`
+	Properties *RequestStatusDetails
 
 	// READ-ONLY; The quota request ID. To check the request status, use the id value in a Quota Request Status [https://docs.microsoft.com/en-us/rest/api/reserved-vm-instances/quotarequeststatus/get]
 	// GET operation.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Operation ID.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceName - Name of the resource provided by the resource Provider. When requesting quota, use this property name.
 type ResourceName struct {
 	// Resource name.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// READ-ONLY; Resource display name.
-	LocalizedValue *string `json:"localizedValue,omitempty" azure:"ro"`
+	LocalizedValue *string
 }
 
 // ServiceError - API error details.
 type ServiceError struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// READ-ONLY; List of error details.
-	Details []*ServiceErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ServiceErrorDetail
 }
 
 // ServiceErrorDetail - Error details.
 type ServiceErrorDetail struct {
 	// READ-ONLY; Error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // SubRequest - Request property.
 type SubRequest struct {
 	// Resource quota limit properties.
-	Limit LimitJSONObjectClassification `json:"limit,omitempty"`
+	Limit LimitJSONObjectClassification
 
 	// Resource name.
-	Name *ResourceName `json:"name,omitempty"`
+	Name *ResourceName
 
 	// Quota limit units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response in the
 	// request body of your PUT operation.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 
 	// READ-ONLY; User-friendly status message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The quota request status.
-	ProvisioningState *QuotaRequestState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *QuotaRequestState
 
 	// READ-ONLY; Resource type for which the quota properties were requested.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; Quota request ID.
-	SubRequestID *string `json:"subRequestId,omitempty" azure:"ro"`
+	SubRequestID *string
 }
 
 // UsagesClientGetOptions contains the optional parameters for the UsagesClient.Get method.
@@ -449,44 +449,44 @@ type UsagesClientListOptions struct {
 // UsagesLimits - Quota limits.
 type UsagesLimits struct {
 	// The URI used to fetch the next page of quota limits. When there are no more pages, this is null.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of quota limits.
-	Value []*CurrentUsagesBase `json:"value,omitempty"`
+	Value []*CurrentUsagesBase
 }
 
 // UsagesObject - The resource usages value.
 type UsagesObject struct {
 	// REQUIRED; The usages value.
-	Value *int32 `json:"value,omitempty"`
+	Value *int32
 
 	// The quota or usages limit types.
-	UsagesType *UsagesTypes `json:"usagesType,omitempty"`
+	UsagesType *UsagesTypes
 }
 
 // UsagesProperties - Usage properties for the specified resource.
 type UsagesProperties struct {
 	// Resource name provided by the resource provider. Use this property name when requesting quota.
-	Name *ResourceName `json:"name,omitempty"`
+	Name *ResourceName
 
 	// Additional properties for the specific resource provider.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
-	// The name of the resource type. Optional field.
-	ResourceType *string `json:"resourceType,omitempty"`
+	// The name of the resource type.
+	ResourceType *string
 
 	// The quota limit properties for this resource.
-	Usages *UsagesObject `json:"usages,omitempty"`
+	Usages *UsagesObject
 
 	// READ-ONLY; States if quota can be requested for this resource.
-	IsQuotaApplicable *bool `json:"isQuotaApplicable,omitempty" azure:"ro"`
+	IsQuotaApplicable *bool
 
 	// READ-ONLY; The time period for the summary of the quota usage values. For example: *P1D (per one day) *PT1M (per one minute)
 	// *PT1S (per one second). This parameter is optional because it is not relevant for all
 	// resources such as compute.
-	QuotaPeriod *string `json:"quotaPeriod,omitempty" azure:"ro"`
+	QuotaPeriod *string
 
 	// READ-ONLY; The units for the quota usage, such as Count and Bytes. When requesting quota, use the unit value returned in
 	// the GET response in the request body of your PUT operation.
-	Unit *string `json:"unit,omitempty" azure:"ro"`
+	Unit *string
 }

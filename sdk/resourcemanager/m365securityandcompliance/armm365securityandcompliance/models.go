@@ -14,59 +14,59 @@ import "time"
 // ErrorDetails - Error details.
 type ErrorDetails struct {
 	// Object containing error details.
-	Error *ErrorDetailsInternal `json:"error,omitempty"`
+	Error *ErrorDetailsInternal
 }
 
 // ErrorDetailsInternal - Error details.
 type ErrorDetailsInternal struct {
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The target of the particular error.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // Operation - Service REST API operation.
 type Operation struct {
 	// READ-ONLY; The information displayed about the operation.
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Default value is 'user,system'.
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Friendly description for the operation,
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Name of the operation
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Service provider: Microsoft.M365SecurityAndCompliance
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource Type: Services
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of service operations. It contains a list of operations and a URL link to get the next set
 // of results.
 type OperationListResult struct {
 	// READ-ONLY; The link used to get the next page of service description objects.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of service operations supported by the Microsoft.M365SecurityAndCompliance resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
@@ -77,19 +77,19 @@ type OperationResultsClientGetOptions struct {
 // OperationResultsDescription - The properties indicating the operation result of an operation on a service.
 type OperationResultsDescription struct {
 	// Additional properties of the operation result.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// READ-ONLY; The ID of the operation returned.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the operation result.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The time that the operation was started.
-	StartTime *string `json:"startTime,omitempty" azure:"ro"`
+	StartTime *string
 
 	// READ-ONLY; The status of the operation being performed.
-	Status *OperationResultStatus `json:"status,omitempty" azure:"ro"`
+	Status *OperationResultStatus
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -100,46 +100,46 @@ type OperationsClientListOptions struct {
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsAdtAPIClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsAdtAPIClient.BeginCreateOrUpdate
@@ -301,40 +301,40 @@ type PrivateEndpointConnectionsSecClientListByServiceOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesAdtAPIClientGetOptions contains the optional parameters for the PrivateLinkResourcesAdtAPIClient.Get
@@ -410,13 +410,13 @@ type PrivateLinkResourcesSecClientListByServiceOptions struct {
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // PrivateLinkServicesForEDMUploadClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForEDMUploadClient.BeginCreateOrUpdate
@@ -454,43 +454,43 @@ type PrivateLinkServicesForEDMUploadClientListOptions struct {
 // PrivateLinkServicesForEDMUploadDescription - The description of the service.
 type PrivateLinkServicesForEDMUploadDescription struct {
 	// REQUIRED; The kind of the service.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// An etag associated with the resource, used for optimistic concurrency when editing it.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Setting indicating whether the service has a managed identity associated with it.
-	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+	Identity *ServicesResourceIdentity
 
 	// The common properties of a service.
-	Properties *ServicesProperties `json:"properties,omitempty"`
+	Properties *ServicesProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkServicesForEDMUploadDescriptionListResult - A list of service description objects with a next link.
 type PrivateLinkServicesForEDMUploadDescriptionListResult struct {
 	// A list of service description objects.
-	Value []*PrivateLinkServicesForEDMUploadDescription `json:"value,omitempty"`
+	Value []*PrivateLinkServicesForEDMUploadDescription
 
 	// READ-ONLY; The link used to get the next page of service description objects.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateLinkServicesForM365ComplianceCenterClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365ComplianceCenterClient.BeginCreateOrUpdate
@@ -535,43 +535,43 @@ type PrivateLinkServicesForM365ComplianceCenterClientListOptions struct {
 // PrivateLinkServicesForM365ComplianceCenterDescription - The description of the service.
 type PrivateLinkServicesForM365ComplianceCenterDescription struct {
 	// REQUIRED; The kind of the service.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// An etag associated with the resource, used for optimistic concurrency when editing it.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Setting indicating whether the service has a managed identity associated with it.
-	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+	Identity *ServicesResourceIdentity
 
 	// The common properties of a service.
-	Properties *ServicesProperties `json:"properties,omitempty"`
+	Properties *ServicesProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkServicesForM365ComplianceCenterDescriptionListResult - A list of service description objects with a next link.
 type PrivateLinkServicesForM365ComplianceCenterDescriptionListResult struct {
 	// A list of service description objects.
-	Value []*PrivateLinkServicesForM365ComplianceCenterDescription `json:"value,omitempty"`
+	Value []*PrivateLinkServicesForM365ComplianceCenterDescription
 
 	// READ-ONLY; The link used to get the next page of service description objects.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateLinkServicesForM365SecurityCenterClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForM365SecurityCenterClient.BeginCreateOrUpdate
@@ -616,43 +616,43 @@ type PrivateLinkServicesForM365SecurityCenterClientListOptions struct {
 // PrivateLinkServicesForM365SecurityCenterDescription - The description of the service.
 type PrivateLinkServicesForM365SecurityCenterDescription struct {
 	// REQUIRED; The kind of the service.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// An etag associated with the resource, used for optimistic concurrency when editing it.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Setting indicating whether the service has a managed identity associated with it.
-	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+	Identity *ServicesResourceIdentity
 
 	// The common properties of a service.
-	Properties *ServicesProperties `json:"properties,omitempty"`
+	Properties *ServicesProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkServicesForM365SecurityCenterDescriptionListResult - A list of service description objects with a next link.
 type PrivateLinkServicesForM365SecurityCenterDescriptionListResult struct {
 	// A list of service description objects.
-	Value []*PrivateLinkServicesForM365SecurityCenterDescription `json:"value,omitempty"`
+	Value []*PrivateLinkServicesForM365SecurityCenterDescription
 
 	// READ-ONLY; The link used to get the next page of service description objects.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateLinkServicesForMIPPolicySyncClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForMIPPolicySyncClient.BeginCreateOrUpdate
@@ -697,43 +697,43 @@ type PrivateLinkServicesForMIPPolicySyncClientListOptions struct {
 // PrivateLinkServicesForMIPPolicySyncDescription - The description of the service.
 type PrivateLinkServicesForMIPPolicySyncDescription struct {
 	// REQUIRED; The kind of the service.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// An etag associated with the resource, used for optimistic concurrency when editing it.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Setting indicating whether the service has a managed identity associated with it.
-	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+	Identity *ServicesResourceIdentity
 
 	// The common properties of a service.
-	Properties *ServicesProperties `json:"properties,omitempty"`
+	Properties *ServicesProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkServicesForMIPPolicySyncDescriptionListResult - A list of service description objects with a next link.
 type PrivateLinkServicesForMIPPolicySyncDescriptionListResult struct {
 	// A list of service description objects.
-	Value []*PrivateLinkServicesForMIPPolicySyncDescription `json:"value,omitempty"`
+	Value []*PrivateLinkServicesForMIPPolicySyncDescription
 
 	// READ-ONLY; The link used to get the next page of service description objects.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateLinkServicesForO365ManagementActivityAPIClientBeginCreateOrUpdateOptions contains the optional parameters for the
@@ -778,44 +778,44 @@ type PrivateLinkServicesForO365ManagementActivityAPIClientListOptions struct {
 // PrivateLinkServicesForO365ManagementActivityAPIDescription - The description of the service.
 type PrivateLinkServicesForO365ManagementActivityAPIDescription struct {
 	// REQUIRED; The kind of the service.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// An etag associated with the resource, used for optimistic concurrency when editing it.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Setting indicating whether the service has a managed identity associated with it.
-	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+	Identity *ServicesResourceIdentity
 
 	// The common properties of a service.
-	Properties *ServicesProperties `json:"properties,omitempty"`
+	Properties *ServicesProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult - A list of service description objects with a next
 // link.
 type PrivateLinkServicesForO365ManagementActivityAPIDescriptionListResult struct {
 	// A list of service description objects.
-	Value []*PrivateLinkServicesForO365ManagementActivityAPIDescription `json:"value,omitempty"`
+	Value []*PrivateLinkServicesForO365ManagementActivityAPIDescription
 
 	// READ-ONLY; The link used to get the next page of service description objects.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateLinkServicesForSCCPowershellClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkServicesForSCCPowershellClient.BeginCreateOrUpdate
@@ -860,106 +860,106 @@ type PrivateLinkServicesForSCCPowershellClientListOptions struct {
 // PrivateLinkServicesForSCCPowershellDescription - The description of the service.
 type PrivateLinkServicesForSCCPowershellDescription struct {
 	// REQUIRED; The kind of the service.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// An etag associated with the resource, used for optimistic concurrency when editing it.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Setting indicating whether the service has a managed identity associated with it.
-	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+	Identity *ServicesResourceIdentity
 
 	// The common properties of a service.
-	Properties *ServicesProperties `json:"properties,omitempty"`
+	Properties *ServicesProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkServicesForSCCPowershellDescriptionListResult - A list of service description objects with a next link.
 type PrivateLinkServicesForSCCPowershellDescriptionListResult struct {
 	// A list of service description objects.
-	Value []*PrivateLinkServicesForSCCPowershellDescription `json:"value,omitempty"`
+	Value []*PrivateLinkServicesForSCCPowershellDescription
 
 	// READ-ONLY; The link used to get the next page of service description objects.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceAccessPolicyEntry - An access policy entry.
 type ServiceAccessPolicyEntry struct {
 	// REQUIRED; An Azure AD object ID (User or Apps) that is allowed access to the FHIR service.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 }
 
 // ServiceAuthenticationConfigurationInfo - Authentication configuration information
 type ServiceAuthenticationConfigurationInfo struct {
 	// The audience url for the service
-	Audience *string `json:"audience,omitempty"`
+	Audience *string
 
 	// The authority url for the service
-	Authority *string `json:"authority,omitempty"`
+	Authority *string
 
 	// If the SMART on FHIR proxy is enabled
-	SmartProxyEnabled *bool `json:"smartProxyEnabled,omitempty"`
+	SmartProxyEnabled *bool
 }
 
 // ServiceCorsConfigurationInfo - The settings for the CORS configuration of the service instance.
 type ServiceCorsConfigurationInfo struct {
 	// If credentials are allowed via CORS.
-	AllowCredentials *bool `json:"allowCredentials,omitempty"`
+	AllowCredentials *bool
 
 	// The headers to be allowed via CORS.
-	Headers []*string `json:"headers,omitempty"`
+	Headers []*string
 
 	// The max age to be allowed via CORS.
-	MaxAge *int64 `json:"maxAge,omitempty"`
+	MaxAge *int64
 
 	// The methods to be allowed via CORS.
-	Methods []*string `json:"methods,omitempty"`
+	Methods []*string
 
 	// The origins to be allowed via CORS.
-	Origins []*string `json:"origins,omitempty"`
+	Origins []*string
 }
 
 // ServiceCosmosDbConfigurationInfo - The settings for the Cosmos DB database backing the service.
 type ServiceCosmosDbConfigurationInfo struct {
 	// The URI of the customer-managed key for the backing database.
-	KeyVaultKeyURI *string `json:"keyVaultKeyUri,omitempty"`
+	KeyVaultKeyURI *string
 
 	// The provisioned throughput for the backing database.
-	OfferThroughput *int64 `json:"offerThroughput,omitempty"`
+	OfferThroughput *int64
 }
 
 // ServiceExportConfigurationInfo - Export operation configuration information
 type ServiceExportConfigurationInfo struct {
 	// The name of the default export storage account.
-	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	StorageAccountName *string
 }
 
 // ServicesClientBeginDeleteOptions contains the optional parameters for the ServicesClient.BeginDelete method.
@@ -971,104 +971,104 @@ type ServicesClientBeginDeleteOptions struct {
 // ServicesPatchDescription - The description of the service.
 type ServicesPatchDescription struct {
 	// The properties for updating a service instance.
-	Properties *ServicesPropertiesUpdateParameters `json:"properties,omitempty"`
+	Properties *ServicesPropertiesUpdateParameters
 
 	// Instance tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ServicesProperties - The properties of a service instance.
 type ServicesProperties struct {
 	// The access policies of the service instance.
-	AccessPolicies []*ServiceAccessPolicyEntry `json:"accessPolicies,omitempty"`
+	AccessPolicies []*ServiceAccessPolicyEntry
 
 	// The authentication configuration for the service instance.
-	AuthenticationConfiguration *ServiceAuthenticationConfigurationInfo `json:"authenticationConfiguration,omitempty"`
+	AuthenticationConfiguration *ServiceAuthenticationConfigurationInfo
 
 	// The settings for the CORS configuration of the service instance.
-	CorsConfiguration *ServiceCorsConfigurationInfo `json:"corsConfiguration,omitempty"`
+	CorsConfiguration *ServiceCorsConfigurationInfo
 
 	// The settings for the Cosmos DB database backing the service.
-	CosmosDbConfiguration *ServiceCosmosDbConfigurationInfo `json:"cosmosDbConfiguration,omitempty"`
+	CosmosDbConfiguration *ServiceCosmosDbConfigurationInfo
 
 	// The settings for the export operation of the service instance.
-	ExportConfiguration *ServiceExportConfigurationInfo `json:"exportConfiguration,omitempty"`
+	ExportConfiguration *ServiceExportConfigurationInfo
 
 	// The list of private endpoint connections that are set up for this resource.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// Control permission for data plane traffic coming from public networks while private endpoint is enabled.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// READ-ONLY; The provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ServicesPropertiesUpdateParameters - The properties for updating a service instance.
 type ServicesPropertiesUpdateParameters struct {
 	// Control permission for data plane traffic coming from public networks while private endpoint is enabled.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 }
 
 // ServicesResource - The common properties of a service.
 type ServicesResource struct {
 	// REQUIRED; The kind of the service.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// An etag associated with the resource, used for optimistic concurrency when editing it.
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Setting indicating whether the service has a managed identity associated with it.
-	Identity *ServicesResourceIdentity `json:"identity,omitempty"`
+	Identity *ServicesResourceIdentity
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Required property for system data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServicesResourceIdentity - Setting indicating whether the service has a managed identity associated with it.
 type ServicesResourceIdentity struct {
 	// Type of identity being specified, currently SystemAssigned and None are allowed.
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// READ-ONLY; The principal ID of the resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }

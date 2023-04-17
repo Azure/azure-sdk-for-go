@@ -14,188 +14,188 @@ import "time"
 // AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network.
 type AddressSpace struct {
 	// A list of address blocks reserved for this virtual network in CIDR notation.
-	AddressPrefixes []*string `json:"addressPrefixes,omitempty"`
+	AddressPrefixes []*string
 }
 
 // CreatedBy - Provides details of the entity that created/updated the workspace.
 type CreatedBy struct {
 	// READ-ONLY; The application ID of the application that initiated the creation of the workspace. For example, Azure Portal.
-	ApplicationID *string `json:"applicationId,omitempty" azure:"ro"`
+	ApplicationID *string
 
 	// READ-ONLY; The Object ID that created the workspace.
-	Oid *string `json:"oid,omitempty" azure:"ro"`
+	Oid *string
 
 	// READ-ONLY; The Personal Object ID corresponding to the object ID above
-	Puid *string `json:"puid,omitempty" azure:"ro"`
+	Puid *string
 }
 
 // Encryption - The object that contains details of encryption used on the workspace.
 type Encryption struct {
 	// The name of KeyVault key.
-	KeyName *string `json:"KeyName,omitempty"`
+	KeyName *string
 
 	// The encryption keySource (provider). Possible values (case-insensitive): Default, Microsoft.Keyvault
-	KeySource *KeySource `json:"keySource,omitempty"`
+	KeySource *KeySource
 
 	// The Uri of KeyVault.
-	KeyVaultURI *string `json:"keyvaulturi,omitempty"`
+	KeyVaultURI *string
 
 	// The version of KeyVault key.
-	KeyVersion *string `json:"keyversion,omitempty"`
+	KeyVersion *string
 }
 
 // EncryptionEntitiesDefinition - Encryption entities for databricks workspace resource.
 type EncryptionEntitiesDefinition struct {
 	// Encryption properties for the databricks managed services.
-	ManagedServices *EncryptionV2 `json:"managedServices,omitempty"`
+	ManagedServices *EncryptionV2
 }
 
 // EncryptionV2 - The object that contains details of encryption used on the workspace.
 type EncryptionV2 struct {
 	// REQUIRED; The encryption keySource (provider). Possible values (case-insensitive): Microsoft.Keyvault
-	KeySource *EncryptionKeySource `json:"keySource,omitempty"`
+	KeySource *EncryptionKeySource
 
 	// Key Vault input properties for encryption.
-	KeyVaultProperties *EncryptionV2KeyVaultProperties `json:"keyVaultProperties,omitempty"`
+	KeyVaultProperties *EncryptionV2KeyVaultProperties
 }
 
 // EncryptionV2KeyVaultProperties - Key Vault input properties for encryption.
 type EncryptionV2KeyVaultProperties struct {
 	// REQUIRED; The name of KeyVault key.
-	KeyName *string `json:"keyName,omitempty"`
+	KeyName *string
 
 	// REQUIRED; The Uri of KeyVault.
-	KeyVaultURI *string `json:"keyVaultUri,omitempty"`
+	KeyVaultURI *string
 
 	// REQUIRED; The version of KeyVault key.
-	KeyVersion *string `json:"keyVersion,omitempty"`
+	KeyVersion *string
 }
 
 // EndpointDependency - A domain name or IP address the Workspace is reaching at.
 type EndpointDependency struct {
 	// The domain name of the dependency.
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// The Ports used when connecting to domainName.
-	EndpointDetails []*EndpointDetail `json:"endpointDetails,omitempty"`
+	EndpointDetails []*EndpointDetail
 }
 
 // EndpointDetail - Connect information from the Workspace to a single endpoint.
 type EndpointDetail struct {
 	// An IP Address that Domain Name currently resolves to.
-	IPAddress *string `json:"ipAddress,omitempty"`
+	IPAddress *string
 
 	// Whether it is possible to create a connection from the Workspace to this IpAddress at this Port.
-	IsAccessible *bool `json:"isAccessible,omitempty"`
+	IsAccessible *bool
 
 	// The time in milliseconds it takes for the connection to be created from the Workspace to this IpAddress at this Port.
-	Latency *float64 `json:"latency,omitempty"`
+	Latency *float64
 
 	// The port an endpoint is connected to.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // ErrorDetail - Error details.
 type ErrorDetail struct {
 	// REQUIRED; The error's code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicates which property in the request is responsible for the error.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ErrorInfo - The code and message for an error.
 type ErrorInfo struct {
 	// REQUIRED; A machine readable error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// error details.
-	Details []*ErrorDetail `json:"details,omitempty"`
+	Details []*ErrorDetail
 
 	// Inner error details if they exist.
-	Innererror *string `json:"innererror,omitempty"`
+	Innererror *string
 }
 
 // ErrorResponse - Contains details when the response code indicates an error.
 type ErrorResponse struct {
 	// REQUIRED; The error details.
-	Error *ErrorInfo `json:"error,omitempty"`
+	Error *ErrorInfo
 }
 
 // GroupIDInformation - The group information for creating a private endpoint on a workspace
 type GroupIDInformation struct {
 	// REQUIRED; The group id properties.
-	Properties *GroupIDInformationProperties `json:"properties,omitempty"`
+	Properties *GroupIDInformationProperties
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GroupIDInformationProperties - The properties for a group information object
 type GroupIDInformationProperties struct {
 	// The group id
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The required members for a specific group id
-	RequiredMembers []*string `json:"requiredMembers,omitempty"`
+	RequiredMembers []*string
 
 	// The required DNS zones for a specific group id
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 }
 
 // ManagedIdentityConfiguration - The Managed Identity details for storage account.
 type ManagedIdentityConfiguration struct {
 	// READ-ONLY; The objectId of the Managed Identity that is linked to the Managed Storage account.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant Id where the Managed Identity is created.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 
 	// READ-ONLY; The type of Identity created. It can be either SystemAssigned or UserAssigned.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Operation - REST API operation
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.ResourceProvider
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Resource Provider operations. It contains a list of operations and
 // a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Resource Provider operations supported by the Resource Provider resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -206,10 +206,10 @@ type OperationsClientListOptions struct {
 // OutboundEnvironmentEndpoint - Egress endpoints which Workspace connects to for common purposes.
 type OutboundEnvironmentEndpoint struct {
 	// The category of endpoints accessed by the Workspace, e.g. azure-storage, azure-mysql, etc.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// The endpoints that Workspace connect to
-	Endpoints []*EndpointDependency `json:"endpoints,omitempty"`
+	Endpoints []*EndpointDependency
 }
 
 // OutboundNetworkDependenciesEndpointsClientListOptions contains the optional parameters for the OutboundNetworkDependenciesEndpointsClient.List
@@ -221,34 +221,34 @@ type OutboundNetworkDependenciesEndpointsClientListOptions struct {
 // PrivateEndpoint - The private endpoint property of a private endpoint connection
 type PrivateEndpoint struct {
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The private endpoint connection of a workspace
 type PrivateEndpointConnection struct {
 	// REQUIRED; The private endpoint connection properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; The resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionProperties - The properties of a private endpoint connection
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; Private endpoint connection state
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// Private endpoint
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; Provisioning state of the private endpoint connection.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
@@ -280,10 +280,10 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateEndpointConnectionsList - List of private link connections.
 type PrivateEndpointConnectionsList struct {
 	// The URL to get the next set of endpoint connections.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of returned private endpoint connection.
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -300,82 +300,82 @@ type PrivateLinkResourcesClientListOptions struct {
 // PrivateLinkResourcesList - The available private link resources for a workspace
 type PrivateLinkResourcesList struct {
 	// The URL to get the next set of private link resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of available private link resources for a workspace
-	Value []*GroupIDInformation `json:"value,omitempty"`
+	Value []*GroupIDInformation
 }
 
 // PrivateLinkServiceConnectionState - The current state of a private endpoint connection
 type PrivateLinkServiceConnectionState struct {
 	// REQUIRED; The status of a private endpoint connection
-	Status *PrivateLinkServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateLinkServiceConnectionStatus
 
 	// Actions required for a private endpoint connection
-	ActionRequired *string `json:"actionRequired,omitempty"`
+	ActionRequired *string
 
 	// The description for the current state of a private endpoint connection
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // Resource - The core properties of ARM resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKU for the resource.
 type SKU struct {
 	// REQUIRED; The SKU name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The SKU tier.
-	Tier *string `json:"tier,omitempty"`
+	Tier *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VNetPeeringClientBeginCreateOrUpdateOptions contains the optional parameters for the VNetPeeringClient.BeginCreateOrUpdate
@@ -405,273 +405,273 @@ type VNetPeeringClientListByWorkspaceOptions struct {
 // VirtualNetworkPeering - Peerings in a VirtualNetwork resource
 type VirtualNetworkPeering struct {
 	// REQUIRED; List of properties for vNet Peering
-	Properties *VirtualNetworkPeeringPropertiesFormat `json:"properties,omitempty"`
+	Properties *VirtualNetworkPeeringPropertiesFormat
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the virtual network peering resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; type of the virtual network peering resource
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VirtualNetworkPeeringList - Gets all virtual network peerings under a workspace.
 type VirtualNetworkPeeringList struct {
 	// URL to get the next set of virtual network peering list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of virtual network peerings on workspace.
-	Value []*VirtualNetworkPeering `json:"value,omitempty"`
+	Value []*VirtualNetworkPeering
 }
 
 // VirtualNetworkPeeringPropertiesFormat - Properties of the virtual network peering.
 type VirtualNetworkPeeringPropertiesFormat struct {
 	// REQUIRED; The remote virtual network should be in the same region. See here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
-	RemoteVirtualNetwork *VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork `json:"remoteVirtualNetwork,omitempty"`
+	RemoteVirtualNetwork *VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork
 
 	// Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network.
-	AllowForwardedTraffic *bool `json:"allowForwardedTraffic,omitempty"`
+	AllowForwardedTraffic *bool
 
 	// If gateway links can be used in remote virtual networking to link to this virtual network.
-	AllowGatewayTransit *bool `json:"allowGatewayTransit,omitempty"`
+	AllowGatewayTransit *bool
 
 	// Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space.
-	AllowVirtualNetworkAccess *bool `json:"allowVirtualNetworkAccess,omitempty"`
+	AllowVirtualNetworkAccess *bool
 
 	// The reference to the databricks virtual network address space.
-	DatabricksAddressSpace *AddressSpace `json:"databricksAddressSpace,omitempty"`
+	DatabricksAddressSpace *AddressSpace
 
 	// The remote virtual network should be in the same region. See here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
-	DatabricksVirtualNetwork *VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork `json:"databricksVirtualNetwork,omitempty"`
+	DatabricksVirtualNetwork *VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork
 
 	// The reference to the remote virtual network address space.
-	RemoteAddressSpace *AddressSpace `json:"remoteAddressSpace,omitempty"`
+	RemoteAddressSpace *AddressSpace
 
 	// If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering
 	// is also true, virtual network will use gateways of remote virtual network
 	// for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a
 	// gateway.
-	UseRemoteGateways *bool `json:"useRemoteGateways,omitempty"`
+	UseRemoteGateways *bool
 
 	// READ-ONLY; The status of the virtual network peering.
-	PeeringState *PeeringState `json:"peeringState,omitempty" azure:"ro"`
+	PeeringState *PeeringState
 
 	// READ-ONLY; The provisioning state of the virtual network peering resource.
-	ProvisioningState *PeeringProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PeeringProvisioningState
 }
 
 // VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork - The remote virtual network should be in the same region.
 // See here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
 type VirtualNetworkPeeringPropertiesFormatDatabricksVirtualNetwork struct {
 	// The Id of the databricks virtual network.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork - The remote virtual network should be in the same region. See
 // here to learn more (https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/vnet-peering).
 type VirtualNetworkPeeringPropertiesFormatRemoteVirtualNetwork struct {
 	// The Id of the remote virtual network.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // Workspace - Information about workspace.
 type Workspace struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The workspace properties.
-	Properties *WorkspaceProperties `json:"properties,omitempty"`
+	Properties *WorkspaceProperties
 
 	// The SKU of the resource.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkspaceCustomBooleanParameter - The value which should be used for this field.
 type WorkspaceCustomBooleanParameter struct {
 	// REQUIRED; The value which should be used for this field.
-	Value *bool `json:"value,omitempty"`
+	Value *bool
 
 	// READ-ONLY; The type of variable that this is
-	Type *CustomParameterType `json:"type,omitempty" azure:"ro"`
+	Type *CustomParameterType
 }
 
 // WorkspaceCustomObjectParameter - The value which should be used for this field.
 type WorkspaceCustomObjectParameter struct {
 	// REQUIRED; The value which should be used for this field.
-	Value any `json:"value,omitempty"`
+	Value any
 
 	// READ-ONLY; The type of variable that this is
-	Type *CustomParameterType `json:"type,omitempty" azure:"ro"`
+	Type *CustomParameterType
 }
 
 // WorkspaceCustomParameters - Custom Parameters used for Cluster Creation.
 type WorkspaceCustomParameters struct {
 	// The ID of a Azure Machine Learning workspace to link with Databricks workspace
-	AmlWorkspaceID *WorkspaceCustomStringParameter `json:"amlWorkspaceId,omitempty"`
+	AmlWorkspaceID *WorkspaceCustomStringParameter
 
 	// The name of the Private Subnet within the Virtual Network
-	CustomPrivateSubnetName *WorkspaceCustomStringParameter `json:"customPrivateSubnetName,omitempty"`
+	CustomPrivateSubnetName *WorkspaceCustomStringParameter
 
 	// The name of a Public Subnet within the Virtual Network
-	CustomPublicSubnetName *WorkspaceCustomStringParameter `json:"customPublicSubnetName,omitempty"`
+	CustomPublicSubnetName *WorkspaceCustomStringParameter
 
 	// The ID of a Virtual Network where this Databricks Cluster should be created
-	CustomVirtualNetworkID *WorkspaceCustomStringParameter `json:"customVirtualNetworkId,omitempty"`
+	CustomVirtualNetworkID *WorkspaceCustomStringParameter
 
 	// Should the Public IP be Disabled?
-	EnableNoPublicIP *WorkspaceCustomBooleanParameter `json:"enableNoPublicIp,omitempty"`
+	EnableNoPublicIP *WorkspaceCustomBooleanParameter
 
 	// Contains the encryption details for Customer-Managed Key (CMK) enabled workspace.
-	Encryption *WorkspaceEncryptionParameter `json:"encryption,omitempty"`
+	Encryption *WorkspaceEncryptionParameter
 
 	// Name of the outbound Load Balancer Backend Pool for Secure Cluster Connectivity (No Public IP).
-	LoadBalancerBackendPoolName *WorkspaceCustomStringParameter `json:"loadBalancerBackendPoolName,omitempty"`
+	LoadBalancerBackendPoolName *WorkspaceCustomStringParameter
 
 	// Resource URI of Outbound Load balancer for Secure Cluster Connectivity (No Public IP) workspace.
-	LoadBalancerID *WorkspaceCustomStringParameter `json:"loadBalancerId,omitempty"`
+	LoadBalancerID *WorkspaceCustomStringParameter
 
 	// Name of the NAT gateway for Secure Cluster Connectivity (No Public IP) workspace subnets.
-	NatGatewayName *WorkspaceCustomStringParameter `json:"natGatewayName,omitempty"`
+	NatGatewayName *WorkspaceCustomStringParameter
 
 	// Prepare the workspace for encryption. Enables the Managed Identity for managed storage account.
-	PrepareEncryption *WorkspaceCustomBooleanParameter `json:"prepareEncryption,omitempty"`
+	PrepareEncryption *WorkspaceCustomBooleanParameter
 
 	// Name of the Public IP for No Public IP workspace with managed vNet.
-	PublicIPName *WorkspaceCustomStringParameter `json:"publicIpName,omitempty"`
+	PublicIPName *WorkspaceCustomStringParameter
 
 	// A boolean indicating whether or not the DBFS root file system will be enabled with secondary layer of encryption with platform
 	// managed keys for data at rest.
-	RequireInfrastructureEncryption *WorkspaceCustomBooleanParameter `json:"requireInfrastructureEncryption,omitempty"`
+	RequireInfrastructureEncryption *WorkspaceCustomBooleanParameter
 
 	// Default DBFS storage account name.
-	StorageAccountName *WorkspaceCustomStringParameter `json:"storageAccountName,omitempty"`
+	StorageAccountName *WorkspaceCustomStringParameter
 
 	// Storage account SKU name, ex: StandardGRS, StandardLRS. Refer https://aka.ms/storageskus for valid inputs.
-	StorageAccountSKUName *WorkspaceCustomStringParameter `json:"storageAccountSkuName,omitempty"`
+	StorageAccountSKUName *WorkspaceCustomStringParameter
 
 	// Address prefix for Managed virtual network. Default value for this input is 10.139.
-	VnetAddressPrefix *WorkspaceCustomStringParameter `json:"vnetAddressPrefix,omitempty"`
+	VnetAddressPrefix *WorkspaceCustomStringParameter
 
 	// READ-ONLY; Tags applied to resources under Managed resource group. These can be updated by updating tags at workspace level.
-	ResourceTags *WorkspaceCustomObjectParameter `json:"resourceTags,omitempty" azure:"ro"`
+	ResourceTags *WorkspaceCustomObjectParameter
 }
 
 // WorkspaceCustomStringParameter - The Value.
 type WorkspaceCustomStringParameter struct {
 	// REQUIRED; The value which should be used for this field.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// READ-ONLY; The type of variable that this is
-	Type *CustomParameterType `json:"type,omitempty" azure:"ro"`
+	Type *CustomParameterType
 }
 
 // WorkspaceEncryptionParameter - The object that contains details of encryption used on the workspace.
 type WorkspaceEncryptionParameter struct {
 	// The value which should be used for this field.
-	Value *Encryption `json:"value,omitempty"`
+	Value *Encryption
 
 	// READ-ONLY; The type of variable that this is
-	Type *CustomParameterType `json:"type,omitempty" azure:"ro"`
+	Type *CustomParameterType
 }
 
 // WorkspaceListResult - List of workspaces.
 type WorkspaceListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The array of workspaces.
-	Value []*Workspace `json:"value,omitempty"`
+	Value []*Workspace
 }
 
 // WorkspaceProperties - The workspace properties.
 type WorkspaceProperties struct {
 	// REQUIRED; The managed resource group Id.
-	ManagedResourceGroupID *string `json:"managedResourceGroupId,omitempty"`
+	ManagedResourceGroupID *string
 
 	// The workspace provider authorizations.
-	Authorizations []*WorkspaceProviderAuthorization `json:"authorizations,omitempty"`
+	Authorizations []*WorkspaceProviderAuthorization
 
 	// Indicates the Object ID, PUID and Application ID of entity that created the workspace.
-	CreatedBy *CreatedBy `json:"createdBy,omitempty"`
+	CreatedBy *CreatedBy
 
 	// Encryption properties for databricks workspace
-	Encryption *WorkspacePropertiesEncryption `json:"encryption,omitempty"`
+	Encryption *WorkspacePropertiesEncryption
 
 	// The workspace's custom parameters.
-	Parameters *WorkspaceCustomParameters `json:"parameters,omitempty"`
+	Parameters *WorkspaceCustomParameters
 
 	// The network access type for accessing workspace. Set value to disabled to access workspace only via private link.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Gets or sets a value indicating whether data plane (clusters) to control plane communication happen over private endpoint.
 	// Supported values are 'AllRules' and 'NoAzureDatabricksRules'.
 	// 'NoAzureServiceRules' value is for internal use only.
-	RequiredNsgRules *RequiredNsgRules `json:"requiredNsgRules,omitempty"`
+	RequiredNsgRules *RequiredNsgRules
 
 	// The details of Managed Identity of Storage Account
-	StorageAccountIdentity *ManagedIdentityConfiguration `json:"storageAccountIdentity,omitempty"`
+	StorageAccountIdentity *ManagedIdentityConfiguration
 
 	// The blob URI where the UI definition file is located.
-	UIDefinitionURI *string `json:"uiDefinitionUri,omitempty"`
+	UIDefinitionURI *string
 
 	// Indicates the Object ID, PUID and Application ID of entity that last updated the workspace.
-	UpdatedBy *CreatedBy `json:"updatedBy,omitempty"`
+	UpdatedBy *CreatedBy
 
 	// READ-ONLY; Specifies the date and time when the workspace is created.
-	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
+	CreatedDateTime *time.Time
 
 	// READ-ONLY; Private endpoint connections created on the workspace
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; The workspace provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The unique identifier of the databricks workspace in databricks control plane.
-	WorkspaceID *string `json:"workspaceId,omitempty" azure:"ro"`
+	WorkspaceID *string
 
 	// READ-ONLY; The workspace URL which is of the format 'adb-{workspaceId}.{random}.azuredatabricks.net'
-	WorkspaceURL *string `json:"workspaceUrl,omitempty" azure:"ro"`
+	WorkspaceURL *string
 }
 
 // WorkspacePropertiesEncryption - Encryption properties for databricks workspace
 type WorkspacePropertiesEncryption struct {
 	// REQUIRED; Encryption entities definition for the workspace.
-	Entities *EncryptionEntitiesDefinition `json:"entities,omitempty"`
+	Entities *EncryptionEntitiesDefinition
 }
 
 // WorkspaceProviderAuthorization - The workspace provider authorization.
 type WorkspaceProviderAuthorization struct {
 	// REQUIRED; The provider's principal identifier. This is the identity that the provider will use to call ARM to manage the
 	// workspace resources.
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// REQUIRED; The provider's role definition identifier. This role will define all the permissions that the provider must have
 	// on the workspace's container resource group. This role definition cannot have
 	// permission to delete the resource group.
-	RoleDefinitionID *string `json:"roleDefinitionId,omitempty"`
+	RoleDefinitionID *string
 }
 
 // WorkspaceUpdate - An update to a workspace.
 type WorkspaceUpdate struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate

@@ -458,7 +458,7 @@ func (d DataControllerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "clusterId", d.ClusterID)
 	populate(objectMap, "extensionId", d.ExtensionID)
 	populate(objectMap, "infrastructure", d.Infrastructure)
-	populate(objectMap, "k8sRaw", &d.K8SRaw)
+	populateAny(objectMap, "k8sRaw", d.K8SRaw)
 	populateTimeRFC3339(objectMap, "lastUploadedDate", d.LastUploadedDate)
 	populate(objectMap, "logAnalyticsWorkspaceConfig", d.LogAnalyticsWorkspaceConfig)
 	populate(objectMap, "logsDashboardCredential", d.LogsDashboardCredential)
@@ -1172,7 +1172,7 @@ func (p PostgresInstanceProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "admin", p.Admin)
 	populate(objectMap, "basicLoginInformation", p.BasicLoginInformation)
 	populate(objectMap, "dataControllerId", p.DataControllerID)
-	populate(objectMap, "k8sRaw", &p.K8SRaw)
+	populateAny(objectMap, "k8sRaw", p.K8SRaw)
 	populateTimeRFC3339(objectMap, "lastUploadedDate", p.LastUploadedDate)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
 	return json.Marshal(objectMap)
@@ -2070,6 +2070,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

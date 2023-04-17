@@ -14,13 +14,13 @@ import "time"
 // AggregateFunctionProperties - The properties that are associated with an aggregate function.
 type AggregateFunctionProperties struct {
 	// REQUIRED; Indicates the type of function.
-	Type       *string                `json:"type,omitempty"`
-	Properties *FunctionConfiguration `json:"properties,omitempty"`
+	Type       *string
+	Properties *FunctionConfiguration
 
 	// READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 }
 
 // GetFunctionProperties implements the FunctionPropertiesClassification interface for type AggregateFunctionProperties.
@@ -36,10 +36,10 @@ func (a *AggregateFunctionProperties) GetFunctionProperties() *FunctionPropertie
 // in Avro format.
 type AvroSerialization struct {
 	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
-	Type *EventSerializationType `json:"type,omitempty"`
+	Type *EventSerializationType
 
 	// The properties that are associated with the Avro serialization type. Required on PUT (CreateOrReplace) requests.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // GetSerialization implements the SerializationClassification interface for type AvroSerialization.
@@ -52,10 +52,10 @@ func (a *AvroSerialization) GetSerialization() *Serialization {
 // AzureDataLakeStoreOutputDataSource - Describes an Azure Data Lake Store output data source.
 type AzureDataLakeStoreOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an Azure Data Lake Store output. Required on PUT (CreateOrReplace) requests.
-	Properties *AzureDataLakeStoreOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *AzureDataLakeStoreOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureDataLakeStoreOutputDataSource.
@@ -68,46 +68,46 @@ func (a *AzureDataLakeStoreOutputDataSource) GetOutputDataSource() *OutputDataSo
 // AzureDataLakeStoreOutputDataSourceProperties - The properties that are associated with an Azure Data Lake Store.
 type AzureDataLakeStoreOutputDataSourceProperties struct {
 	// The name of the Azure Data Lake Store account. Required on PUT (CreateOrReplace) requests.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The date format. Wherever {date} appears in filePathPrefix, the value of this property is used as the date format instead.
-	DateFormat *string `json:"dateFormat,omitempty"`
+	DateFormat *string
 
 	// The location of the file to which the output should be written to. Required on PUT (CreateOrReplace) requests.
-	FilePathPrefix *string `json:"filePathPrefix,omitempty"`
+	FilePathPrefix *string
 
 	// A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source.
 	// A valid refresh token is currently only obtainable via the Azure Portal. It
 	// is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate
 	// the data source which will update this property with a valid refresh
 	// token. Required on PUT (CreateOrReplace) requests.
-	RefreshToken *string `json:"refreshToken,omitempty"`
+	RefreshToken *string
 
 	// The tenant id of the user used to obtain the refresh token. Required on PUT (CreateOrReplace) requests.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The time format. Wherever {time} appears in filePathPrefix, the value of this property is used as the time format instead.
-	TimeFormat *string `json:"timeFormat,omitempty"`
+	TimeFormat *string
 
 	// The user display name of the user that was used to obtain the refresh token. Use this property to help remember which user
 	// was used to obtain the refresh token.
-	TokenUserDisplayName *string `json:"tokenUserDisplayName,omitempty"`
+	TokenUserDisplayName *string
 
 	// The user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember
 	// which user was used to obtain the refresh token.
-	TokenUserPrincipalName *string `json:"tokenUserPrincipalName,omitempty"`
+	TokenUserPrincipalName *string
 }
 
 // AzureFunctionOutputDataSource - Defines the metadata of AzureFunctionOutputDataSource
 type AzureFunctionOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with a Azure Function output. Required on PUT (CreateOrReplace) requests.
-	Properties *AzureFunctionOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *AzureFunctionOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureFunctionOutputDataSource.
@@ -120,30 +120,30 @@ func (a *AzureFunctionOutputDataSource) GetOutputDataSource() *OutputDataSource 
 // AzureFunctionOutputDataSourceProperties - The properties that are associated with an Azure Function output.
 type AzureFunctionOutputDataSourceProperties struct {
 	// If you want to use an Azure Function from another subscription, you can do so by providing the key to access your function.
-	APIKey *string `json:"apiKey,omitempty"`
+	APIKey *string
 
 	// The name of your Azure Functions app.
-	FunctionAppName *string `json:"functionAppName,omitempty"`
+	FunctionAppName *string
 
 	// The name of the function in your Azure Functions app.
-	FunctionName *string `json:"functionName,omitempty"`
+	FunctionName *string
 
 	// A property that lets you specify the maximum number of events in each batch that's sent to Azure Functions. The default
 	// value is 100.
-	MaxBatchCount *float32 `json:"maxBatchCount,omitempty"`
+	MaxBatchCount *float32
 
 	// A property that lets you set the maximum size for each output batch that's sent to your Azure function. The input unit
 	// is in bytes. By default, this value is 262,144 bytes (256 KB).
-	MaxBatchSize *float32 `json:"maxBatchSize,omitempty"`
+	MaxBatchSize *float32
 }
 
 // AzureMachineLearningWebServiceFunctionBinding - The binding to an Azure Machine Learning web service.
 type AzureMachineLearningWebServiceFunctionBinding struct {
 	// REQUIRED; Indicates the function binding type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The binding properties associated with an Azure Machine learning web service.
-	Properties *AzureMachineLearningWebServiceFunctionBindingProperties `json:"properties,omitempty"`
+	Properties *AzureMachineLearningWebServiceFunctionBindingProperties
 }
 
 // GetFunctionBinding implements the FunctionBindingClassification interface for type AzureMachineLearningWebServiceFunctionBinding.
@@ -157,20 +157,20 @@ func (a *AzureMachineLearningWebServiceFunctionBinding) GetFunctionBinding() *Fu
 // web service.
 type AzureMachineLearningWebServiceFunctionBindingProperties struct {
 	// The API key used to authenticate with Request-Response endpoint.
-	APIKey *string `json:"apiKey,omitempty"`
+	APIKey *string
 
 	// Number between 1 and 10000 describing maximum number of rows for every Azure ML RRS execute request. Default is 1000.
-	BatchSize *int32 `json:"batchSize,omitempty"`
+	BatchSize *int32
 
 	// The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here:
 	// https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string
 
 	// The inputs for the Azure Machine Learning web service endpoint.
-	Inputs *AzureMachineLearningWebServiceInputs `json:"inputs,omitempty"`
+	Inputs *AzureMachineLearningWebServiceInputs
 
 	// A list of outputs from the Azure Machine Learning web service endpoint execution.
-	Outputs []*AzureMachineLearningWebServiceOutputColumn `json:"outputs,omitempty"`
+	Outputs []*AzureMachineLearningWebServiceOutputColumn
 }
 
 // AzureMachineLearningWebServiceFunctionBindingRetrievalProperties - The binding retrieval properties associated with an
@@ -178,20 +178,20 @@ type AzureMachineLearningWebServiceFunctionBindingProperties struct {
 type AzureMachineLearningWebServiceFunctionBindingRetrievalProperties struct {
 	// The Request-Response execute endpoint of the Azure Machine Learning web service. Find out more here:
 	// https://docs.microsoft.com/en-us/azure/machine-learning/machine-learning-consume-web-services#request-response-service-rrs
-	ExecuteEndpoint *string `json:"executeEndpoint,omitempty"`
+	ExecuteEndpoint *string
 
 	// The function type.
-	UdfType *string `json:"udfType,omitempty"`
+	UdfType *string
 }
 
 // AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters - The parameters needed to retrieve the default
 // function definition for an Azure Machine Learning web service function.
 type AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParameters struct {
 	// REQUIRED; Indicates the function binding type.
-	BindingType *string `json:"bindingType,omitempty"`
+	BindingType *string
 
 	// The binding retrieval properties associated with an Azure Machine learning web service.
-	BindingRetrievalProperties *AzureMachineLearningWebServiceFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
+	BindingRetrievalProperties *AzureMachineLearningWebServiceFunctionBindingRetrievalProperties
 }
 
 // GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
@@ -206,68 +206,68 @@ func (a *AzureMachineLearningWebServiceFunctionRetrieveDefaultDefinitionParamete
 type AzureMachineLearningWebServiceInputColumn struct {
 	// The (Azure Machine Learning supported) data type of the input column. A list of valid Azure Machine Learning data types
 	// are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
-	DataType *string `json:"dataType,omitempty"`
+	DataType *string
 
 	// The zero based index of the function parameter this input maps to.
-	MapTo *int32 `json:"mapTo,omitempty"`
+	MapTo *int32
 
 	// The name of the input column.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // AzureMachineLearningWebServiceInputs - The inputs for the Azure Machine Learning web service endpoint.
 type AzureMachineLearningWebServiceInputs struct {
 	// A list of input columns for the Azure Machine Learning web service endpoint.
-	ColumnNames []*AzureMachineLearningWebServiceInputColumn `json:"columnNames,omitempty"`
+	ColumnNames []*AzureMachineLearningWebServiceInputColumn
 
 	// The name of the input. This is the name provided while authoring the endpoint.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // AzureMachineLearningWebServiceOutputColumn - Describes an output column for the Azure Machine Learning web service endpoint.
 type AzureMachineLearningWebServiceOutputColumn struct {
 	// The (Azure Machine Learning supported) data type of the output column. A list of valid Azure Machine Learning data types
 	// are described at https://msdn.microsoft.com/en-us/library/azure/dn905923.aspx .
-	DataType *string `json:"dataType,omitempty"`
+	DataType *string
 
 	// The name of the output column.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // AzureSQLDatabaseDataSourceProperties - The properties that are associated with an Azure SQL database data source.
 type AzureSQLDatabaseDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Database *string `json:"database,omitempty"`
+	Database *string
 
 	// Max Batch count for write to Sql database, the default value is 10,000. Optional on PUT requests.
-	MaxBatchCount *float32 `json:"maxBatchCount,omitempty"`
+	MaxBatchCount *float32
 
 	// Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT requests.
-	MaxWriterCount *float32 `json:"maxWriterCount,omitempty"`
+	MaxWriterCount *float32
 
 	// The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Server *string `json:"server,omitempty"`
+	Server *string
 
 	// The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Table *string `json:"table,omitempty"`
+	Table *string
 
 	// The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	User *string `json:"user,omitempty"`
+	User *string
 }
 
 // AzureSQLDatabaseOutputDataSource - Describes an Azure SQL database output data source.
 type AzureSQLDatabaseOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an Azure SQL database output. Required on PUT (CreateOrReplace) requests.
-	Properties *AzureSQLDatabaseOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *AzureSQLDatabaseOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureSQLDatabaseOutputDataSource.
@@ -280,37 +280,37 @@ func (a *AzureSQLDatabaseOutputDataSource) GetOutputDataSource() *OutputDataSour
 // AzureSQLDatabaseOutputDataSourceProperties - The properties that are associated with an Azure SQL database output.
 type AzureSQLDatabaseOutputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Database *string `json:"database,omitempty"`
+	Database *string
 
 	// Max Batch count for write to Sql database, the default value is 10,000. Optional on PUT requests.
-	MaxBatchCount *float32 `json:"maxBatchCount,omitempty"`
+	MaxBatchCount *float32
 
 	// Max Writer count, currently only 1(single writer) and 0(based on query partition) are available. Optional on PUT requests.
-	MaxWriterCount *float32 `json:"maxWriterCount,omitempty"`
+	MaxWriterCount *float32
 
 	// The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Server *string `json:"server,omitempty"`
+	Server *string
 
 	// The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Table *string `json:"table,omitempty"`
+	Table *string
 
 	// The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	User *string `json:"user,omitempty"`
+	User *string
 }
 
 // AzureSQLReferenceInputDataSource - Describes an Azure SQL database reference input data source.
 type AzureSQLReferenceInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with SQL DB input containing reference data. Required on PUT (CreateOrReplace) requests.
-	Properties *AzureSQLReferenceInputDataSourceProperties `json:"properties,omitempty"`
+	Properties *AzureSQLReferenceInputDataSourceProperties
 }
 
 // GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type AzureSQLReferenceInputDataSource.
@@ -324,64 +324,64 @@ func (a *AzureSQLReferenceInputDataSource) GetReferenceInputDataSource() *Refere
 // data. Required on PUT (CreateOrReplace) requests.
 type AzureSQLReferenceInputDataSourceProperties struct {
 	// This element is associated with the datasource element. This is the name of the database that output will be written to.
-	Database *string `json:"database,omitempty"`
+	Database *string
 
 	// This element is associated with the datasource element. This query is used to fetch incremental changes from the SQL database.
 	// To use this option, we recommend using temporal tables in Azure SQL
 	// Database.
-	DeltaSnapshotQuery *string `json:"deltaSnapshotQuery,omitempty"`
+	DeltaSnapshotQuery *string
 
 	// This element is associated with the datasource element. This query is used to fetch data from the sql database.
-	FullSnapshotQuery *string `json:"fullSnapshotQuery,omitempty"`
+	FullSnapshotQuery *string
 
 	// This element is associated with the datasource element. This is the password that will be used to connect to the SQL Database
 	// instance.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// This element is associated with the datasource element. This indicates how frequently the data will be fetched from the
 	// database. It is of DateTime format.
-	RefreshRate *string `json:"refreshRate,omitempty"`
+	RefreshRate *string
 
 	// Indicates the type of data refresh option.
-	RefreshType *RefreshType `json:"refreshType,omitempty"`
+	RefreshType *RefreshType
 
 	// This element is associated with the datasource element. This is the name of the server that contains the database that
 	// will be written to.
-	Server *string `json:"server,omitempty"`
+	Server *string
 
 	// This element is associated with the datasource element. The name of the table in the Azure SQL database..
-	Table *string `json:"table,omitempty"`
+	Table *string
 
 	// This element is associated with the datasource element. This is the user name that will be used to connect to the SQL Database
 	// instance.
-	User *string `json:"user,omitempty"`
+	User *string
 }
 
 // AzureSynapseDataSourceProperties - The properties that are associated with an Azure SQL database data source.
 type AzureSynapseDataSourceProperties struct {
 	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Database *string `json:"database,omitempty"`
+	Database *string
 
 	// The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Server *string `json:"server,omitempty"`
+	Server *string
 
 	// The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Table *string `json:"table,omitempty"`
+	Table *string
 
 	// The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	User *string `json:"user,omitempty"`
+	User *string
 }
 
 // AzureSynapseOutputDataSource - Describes an Azure Synapse output data source.
 type AzureSynapseOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an Azure Synapse output. Required on PUT (CreateOrReplace) requests.
-	Properties *AzureSynapseOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *AzureSynapseOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureSynapseOutputDataSource.
@@ -394,28 +394,28 @@ func (a *AzureSynapseOutputDataSource) GetOutputDataSource() *OutputDataSource {
 // AzureSynapseOutputDataSourceProperties - The properties that are associated with an Azure Synapse output.
 type AzureSynapseOutputDataSourceProperties struct {
 	// The name of the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Database *string `json:"database,omitempty"`
+	Database *string
 
 	// The password that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// The name of the SQL server containing the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Server *string `json:"server,omitempty"`
+	Server *string
 
 	// The name of the table in the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	Table *string `json:"table,omitempty"`
+	Table *string
 
 	// The user name that will be used to connect to the Azure SQL database. Required on PUT (CreateOrReplace) requests.
-	User *string `json:"user,omitempty"`
+	User *string
 }
 
 // AzureTableOutputDataSource - Describes an Azure Table output data source.
 type AzureTableOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an Azure Table output. Required on PUT (CreateOrReplace) requests.
-	Properties *AzureTableOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *AzureTableOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type AzureTableOutputDataSource.
@@ -428,62 +428,62 @@ func (a *AzureTableOutputDataSource) GetOutputDataSource() *OutputDataSource {
 // AzureTableOutputDataSourceProperties - The properties that are associated with an Azure Table output.
 type AzureTableOutputDataSourceProperties struct {
 	// The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-	AccountKey *string `json:"accountKey,omitempty"`
+	AccountKey *string
 
 	// The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// The number of rows to write to the Azure Table at a time.
-	BatchSize *int32 `json:"batchSize,omitempty"`
+	BatchSize *int32
 
 	// If specified, each item in the array is the name of a column to remove (if present) from output event entities.
-	ColumnsToRemove []*string `json:"columnsToRemove,omitempty"`
+	ColumnsToRemove []*string
 
 	// This element indicates the name of a column from the SELECT statement in the query that will be used as the partition key
 	// for the Azure Table. Required on PUT (CreateOrReplace) requests.
-	PartitionKey *string `json:"partitionKey,omitempty"`
+	PartitionKey *string
 
 	// This element indicates the name of a column from the SELECT statement in the query that will be used as the row key for
 	// the Azure Table. Required on PUT (CreateOrReplace) requests.
-	RowKey *string `json:"rowKey,omitempty"`
+	RowKey *string
 
 	// The name of the Azure Table. Required on PUT (CreateOrReplace) requests.
-	Table *string `json:"table,omitempty"`
+	Table *string
 }
 
 // BlobDataSourceProperties - The properties that are associated with a blob data source.
 type BlobDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
-	Container *string `json:"container,omitempty"`
+	Container *string
 
 	// The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead.
-	DateFormat *string `json:"dateFormat,omitempty"`
+	DateFormat *string
 
 	// The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine
 	// whether or not they should be included as input or output to the job. See
 	// https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
 	// for a more detailed explanation
 	// and example.
-	PathPattern *string `json:"pathPattern,omitempty"`
+	PathPattern *string
 
 	// A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
-	StorageAccounts []*StorageAccount `json:"storageAccounts,omitempty"`
+	StorageAccounts []*StorageAccount
 
 	// The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
-	TimeFormat *string `json:"timeFormat,omitempty"`
+	TimeFormat *string
 }
 
 // BlobOutputDataSource - Describes a blob output data source.
 type BlobOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with a blob output. Required on PUT (CreateOrReplace) requests.
-	Properties *BlobOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *BlobOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type BlobOutputDataSource.
@@ -496,36 +496,36 @@ func (b *BlobOutputDataSource) GetOutputDataSource() *OutputDataSource {
 // BlobOutputDataSourceProperties - The properties that are associated with a blob output.
 type BlobOutputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
-	Container *string `json:"container,omitempty"`
+	Container *string
 
 	// The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead.
-	DateFormat *string `json:"dateFormat,omitempty"`
+	DateFormat *string
 
 	// The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine
 	// whether or not they should be included as input or output to the job. See
 	// https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
 	// for a more detailed explanation
 	// and example.
-	PathPattern *string `json:"pathPattern,omitempty"`
+	PathPattern *string
 
 	// A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
-	StorageAccounts []*StorageAccount `json:"storageAccounts,omitempty"`
+	StorageAccounts []*StorageAccount
 
 	// The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
-	TimeFormat *string `json:"timeFormat,omitempty"`
+	TimeFormat *string
 }
 
 // BlobReferenceInputDataSource - Describes a blob input data source that contains reference data.
 type BlobReferenceInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with a blob input containing reference data. Required on PUT (CreateOrReplace) requests.
-	Properties *BlobReferenceInputDataSourceProperties `json:"properties,omitempty"`
+	Properties *BlobReferenceInputDataSourceProperties
 }
 
 // GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type BlobReferenceInputDataSource.
@@ -538,36 +538,36 @@ func (b *BlobReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceI
 // BlobReferenceInputDataSourceProperties - The properties that are associated with a blob input containing reference data.
 type BlobReferenceInputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
-	Container *string `json:"container,omitempty"`
+	Container *string
 
 	// The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead.
-	DateFormat *string `json:"dateFormat,omitempty"`
+	DateFormat *string
 
 	// The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine
 	// whether or not they should be included as input or output to the job. See
 	// https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
 	// for a more detailed explanation
 	// and example.
-	PathPattern *string `json:"pathPattern,omitempty"`
+	PathPattern *string
 
 	// A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
-	StorageAccounts []*StorageAccount `json:"storageAccounts,omitempty"`
+	StorageAccounts []*StorageAccount
 
 	// The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
-	TimeFormat *string `json:"timeFormat,omitempty"`
+	TimeFormat *string
 }
 
 // BlobStreamInputDataSource - Describes a blob input data source that contains stream data.
 type BlobStreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with a blob input containing stream data. Required on PUT (CreateOrReplace) requests.
-	Properties *BlobStreamInputDataSourceProperties `json:"properties,omitempty"`
+	Properties *BlobStreamInputDataSourceProperties
 }
 
 // GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type BlobStreamInputDataSource.
@@ -580,40 +580,40 @@ func (b *BlobStreamInputDataSource) GetStreamInputDataSource() *StreamInputDataS
 // BlobStreamInputDataSourceProperties - The properties that are associated with a blob input containing stream data.
 type BlobStreamInputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of a container within the associated Storage account. This container contains either the blob(s) to be read from
 	// or written to. Required on PUT (CreateOrReplace) requests.
-	Container *string `json:"container,omitempty"`
+	Container *string
 
 	// The date format. Wherever {date} appears in pathPattern, the value of this property is used as the date format instead.
-	DateFormat *string `json:"dateFormat,omitempty"`
+	DateFormat *string
 
 	// The blob path pattern. Not a regular expression. It represents a pattern against which blob names will be matched to determine
 	// whether or not they should be included as input or output to the job. See
 	// https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input or https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output
 	// for a more detailed explanation
 	// and example.
-	PathPattern *string `json:"pathPattern,omitempty"`
+	PathPattern *string
 
 	// The partition count of the blob input data source. Range 1 - 1024.
-	SourcePartitionCount *int32 `json:"sourcePartitionCount,omitempty"`
+	SourcePartitionCount *int32
 
 	// A list of one or more Azure Storage accounts. Required on PUT (CreateOrReplace) requests.
-	StorageAccounts []*StorageAccount `json:"storageAccounts,omitempty"`
+	StorageAccounts []*StorageAccount
 
 	// The time format. Wherever {time} appears in pathPattern, the value of this property is used as the time format instead.
-	TimeFormat *string `json:"timeFormat,omitempty"`
+	TimeFormat *string
 }
 
 // CSVSerialization - Describes how data from an input is serialized or how data is serialized when written to an output in
 // CSV format.
 type CSVSerialization struct {
 	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
-	Type *EventSerializationType `json:"type,omitempty"`
+	Type *EventSerializationType
 
 	// The properties that are associated with the CSV serialization type. Required on PUT (CreateOrReplace) requests.
-	Properties *CSVSerializationProperties `json:"properties,omitempty"`
+	Properties *CSVSerializationProperties
 }
 
 // GetSerialization implements the SerializationClassification interface for type CSVSerialization.
@@ -627,97 +627,97 @@ func (c *CSVSerialization) GetSerialization() *Serialization {
 type CSVSerializationProperties struct {
 	// Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output.
 	// Required on PUT (CreateOrReplace) requests.
-	Encoding *Encoding `json:"encoding,omitempty"`
+	Encoding *Encoding
 
 	// Specifies the delimiter that will be used to separate comma-separated value (CSV) records. See https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-input
 	// or
 	// https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for a list of supported values. Required
 	// on PUT (CreateOrReplace) requests.
-	FieldDelimiter *string `json:"fieldDelimiter,omitempty"`
+	FieldDelimiter *string
 }
 
 // Cluster - A Stream Analytics Cluster object
 type Cluster struct {
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties associated with a Stream Analytics cluster.
-	Properties *ClusterProperties `json:"properties,omitempty"`
+	Properties *ClusterProperties
 
 	// The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate) requests.
-	SKU *ClusterSKU `json:"sku,omitempty"`
+	SKU *ClusterSKU
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The current entity tag for the cluster. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClusterInfo - The properties associated with a Stream Analytics cluster.
 type ClusterInfo struct {
 	// The resource id of cluster.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // ClusterJob - A streaming job.
 type ClusterJob struct {
 	// READ-ONLY; Resource ID of the streaming job.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The current execution state of the streaming job.
-	JobState *JobState `json:"jobState,omitempty" azure:"ro"`
+	JobState *JobState
 
 	// READ-ONLY; The number of streaming units that are used by the streaming job.
-	StreamingUnits *int32 `json:"streamingUnits,omitempty" azure:"ro"`
+	StreamingUnits *int32
 }
 
 // ClusterJobListResult - A list of streaming jobs. Populated by a List operation.
 type ClusterJobListResult struct {
 	// READ-ONLY; The URL to fetch the next set of streaming jobs.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of streaming jobs.
-	Value []*ClusterJob `json:"value,omitempty" azure:"ro"`
+	Value []*ClusterJob
 }
 
 // ClusterListResult - A list of clusters populated by a 'list' operation.
 type ClusterListResult struct {
 	// READ-ONLY; The URL to fetch the next set of clusters.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of clusters.
-	Value []*Cluster `json:"value,omitempty" azure:"ro"`
+	Value []*Cluster
 }
 
 // ClusterProperties - The properties associated with a Stream Analytics cluster.
 type ClusterProperties struct {
 	// READ-ONLY; Represents the number of streaming units currently being used on the cluster.
-	CapacityAllocated *int32 `json:"capacityAllocated,omitempty" azure:"ro"`
+	CapacityAllocated *int32
 
 	// READ-ONLY; Represents the sum of the SUs of all streaming jobs associated with the cluster. If all of the jobs were running,
 	// this would be the capacity allocated.
-	CapacityAssigned *int32 `json:"capacityAssigned,omitempty" azure:"ro"`
+	CapacityAssigned *int32
 
 	// READ-ONLY; Unique identifier for the cluster.
-	ClusterID *string `json:"clusterId,omitempty" azure:"ro"`
+	ClusterID *string
 
 	// READ-ONLY; The date this cluster was created.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The status of the cluster provisioning. The three terminal states are: Succeeded, Failed and Canceled
-	ProvisioningState *ClusterProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ClusterProvisioningState
 }
 
 // ClusterSKU - The SKU of the cluster. This determines the size/capacity of the cluster. Required on PUT (CreateOrUpdate)
@@ -726,10 +726,10 @@ type ClusterSKU struct {
 	// Denotes the number of streaming units the cluster can support. Valid values for this property are multiples of 36 with
 	// a minimum value of 36 and maximum value of 216. Required on PUT (CreateOrUpdate)
 	// requests.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// Specifies the SKU name of the cluster. Required on PUT (CreateOrUpdate) requests.
-	Name *ClusterSKUName `json:"name,omitempty"`
+	Name *ClusterSKUName
 }
 
 // ClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the ClustersClient.BeginCreateOrUpdate method.
@@ -785,37 +785,37 @@ type ClustersClientListStreamingJobsOptions struct {
 // Compression - Describes how input data is compressed
 type Compression struct {
 	// REQUIRED; Indicates the type of compression that the input uses. Required on PUT (CreateOrReplace) requests.
-	Type *CompressionType `json:"type,omitempty"`
+	Type *CompressionType
 }
 
 // DiagnosticCondition - Condition applicable to the resource, or to the job overall, that warrant customer attention.
 type DiagnosticCondition struct {
 	// READ-ONLY; The opaque diagnostic code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The human-readable message describing the condition in detail. Localized in the Accept-Language of the client
 	// request.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The UTC timestamp of when the condition started. Customers should be able to find a corresponding event in the
 	// ops log around this time.
-	Since *string `json:"since,omitempty" azure:"ro"`
+	Since *string
 }
 
 // Diagnostics - Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
 type Diagnostics struct {
 	// READ-ONLY; A collection of zero or more conditions applicable to the resource, or to the job overall, that warrant customer
 	// attention.
-	Conditions []*DiagnosticCondition `json:"conditions,omitempty" azure:"ro"`
+	Conditions []*DiagnosticCondition
 }
 
 // DocumentDbOutputDataSource - Describes a DocumentDB output data source.
 type DocumentDbOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with a DocumentDB output. Required on PUT (CreateOrReplace) requests.
-	Properties *DocumentDbOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *DocumentDbOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type DocumentDbOutputDataSource.
@@ -828,98 +828,98 @@ func (d *DocumentDbOutputDataSource) GetOutputDataSource() *OutputDataSource {
 // DocumentDbOutputDataSourceProperties - The properties that are associated with a DocumentDB output.
 type DocumentDbOutputDataSourceProperties struct {
 	// The DocumentDB account name or ID. Required on PUT (CreateOrReplace) requests.
-	AccountID *string `json:"accountId,omitempty"`
+	AccountID *string
 
 	// The account key for the DocumentDB account. Required on PUT (CreateOrReplace) requests.
-	AccountKey *string `json:"accountKey,omitempty"`
+	AccountKey *string
 
 	// The collection name pattern for the collections to be used. The collection name format can be constructed using the optional
 	// {partition} token, where partitions start from 0. See the DocumentDB
 	// section of https://docs.microsoft.com/en-us/rest/api/streamanalytics/stream-analytics-output for more information. Required
 	// on PUT (CreateOrReplace) requests.
-	CollectionNamePattern *string `json:"collectionNamePattern,omitempty"`
+	CollectionNamePattern *string
 
 	// The name of the DocumentDB database. Required on PUT (CreateOrReplace) requests.
-	Database *string `json:"database,omitempty"`
+	Database *string
 
 	// The name of the field in output events used to specify the primary key which insert or update operations are based on.
-	DocumentID *string `json:"documentId,omitempty"`
+	DocumentID *string
 
 	// The name of the field in output events used to specify the key for partitioning output across collections. If 'collectionNamePattern'
 	// contains the {partition} token, this property is required to be
 	// specified.
-	PartitionKey *string `json:"partitionKey,omitempty"`
+	PartitionKey *string
 }
 
 // Error - Common error representation.
 type Error struct {
 	// Error definition properties.
-	Error *ErrorError `json:"error,omitempty"`
+	Error *ErrorError
 }
 
 // ErrorDetails - Common error details representation.
 type ErrorDetails struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Error target.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ErrorError - Error definition properties.
 type ErrorError struct {
 	// Error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error details.
-	Details []*ErrorDetails `json:"details,omitempty"`
+	Details []*ErrorDetails
 
 	// Error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Error target.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ErrorResponse - Describes the error that occurred.
 type ErrorResponse struct {
 	// READ-ONLY; Error code associated with the error that occurred.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Describes the error in detail.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // EventHubDataSourceProperties - The common properties that are associated with Event Hub data sources.
 type EventHubDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-	EventHubName *string `json:"eventHubName,omitempty"`
+	EventHubName *string
 
 	// The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
 	// (CreateOrReplace) requests.
-	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
+	ServiceBusNamespace *string
 
 	// The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
-	SharedAccessPolicyKey *string `json:"sharedAccessPolicyKey,omitempty"`
+	SharedAccessPolicyKey *string
 
 	// The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace)
 	// requests.
-	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
+	SharedAccessPolicyName *string
 }
 
 // EventHubOutputDataSource - Describes an Event Hub output data source.
 type EventHubOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests.
-	Properties *EventHubOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *EventHubOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type EventHubOutputDataSource.
@@ -932,36 +932,36 @@ func (e *EventHubOutputDataSource) GetOutputDataSource() *OutputDataSource {
 // EventHubOutputDataSourceProperties - The properties that are associated with an Event Hub output.
 type EventHubOutputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-	EventHubName *string `json:"eventHubName,omitempty"`
+	EventHubName *string
 
 	// The key/column that is used to determine to which partition to send event data.
-	PartitionKey *string `json:"partitionKey,omitempty"`
+	PartitionKey *string
 
 	// The properties associated with this Event Hub output.
-	PropertyColumns []*string `json:"propertyColumns,omitempty"`
+	PropertyColumns []*string
 
 	// The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
 	// (CreateOrReplace) requests.
-	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
+	ServiceBusNamespace *string
 
 	// The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
-	SharedAccessPolicyKey *string `json:"sharedAccessPolicyKey,omitempty"`
+	SharedAccessPolicyKey *string
 
 	// The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace)
 	// requests.
-	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
+	SharedAccessPolicyName *string
 }
 
 // EventHubStreamInputDataSource - Describes an Event Hub input data source that contains stream data.
 type EventHubStreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
-	Properties *EventHubStreamInputDataSourceProperties `json:"properties,omitempty"`
+	Properties *EventHubStreamInputDataSourceProperties
 }
 
 // GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type EventHubStreamInputDataSource.
@@ -974,35 +974,35 @@ func (e *EventHubStreamInputDataSource) GetStreamInputDataSource() *StreamInputD
 // EventHubStreamInputDataSourceProperties - The properties that are associated with a Event Hub input containing stream data.
 type EventHubStreamInputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying distinct consumer
 	// group names for multiple inputs allows each of those inputs to receive the
 	// same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer group.
-	ConsumerGroupName *string `json:"consumerGroupName,omitempty"`
+	ConsumerGroupName *string
 
 	// The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-	EventHubName *string `json:"eventHubName,omitempty"`
+	EventHubName *string
 
 	// The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
 	// (CreateOrReplace) requests.
-	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
+	ServiceBusNamespace *string
 
 	// The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
-	SharedAccessPolicyKey *string `json:"sharedAccessPolicyKey,omitempty"`
+	SharedAccessPolicyKey *string
 
 	// The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace)
 	// requests.
-	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
+	SharedAccessPolicyName *string
 }
 
 // EventHubV2OutputDataSource - Describes an Event Hub output data source.
 type EventHubV2OutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an Event Hub output. Required on PUT (CreateOrReplace) requests.
-	Properties *EventHubOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *EventHubOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type EventHubV2OutputDataSource.
@@ -1015,10 +1015,10 @@ func (e *EventHubV2OutputDataSource) GetOutputDataSource() *OutputDataSource {
 // EventHubV2StreamInputDataSource - Describes an Event Hub input data source that contains stream data.
 type EventHubV2StreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an Event Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
-	Properties *EventHubStreamInputDataSourceProperties `json:"properties,omitempty"`
+	Properties *EventHubStreamInputDataSourceProperties
 }
 
 // GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type EventHubV2StreamInputDataSource.
@@ -1032,16 +1032,16 @@ func (e *EventHubV2StreamInputDataSource) GetStreamInputDataSource() *StreamInpu
 // under a streaming job.
 type Function struct {
 	// Resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The properties that are associated with a function.
-	Properties FunctionPropertiesClassification `json:"properties,omitempty"`
+	Properties FunctionPropertiesClassification
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FunctionBindingClassification provides polymorphic access to related types.
@@ -1057,7 +1057,7 @@ type FunctionBindingClassification interface {
 // this describes the endpoint.
 type FunctionBinding struct {
 	// REQUIRED; Indicates the function binding type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetFunctionBinding implements the FunctionBindingClassification interface for type FunctionBinding.
@@ -1066,11 +1066,11 @@ func (f *FunctionBinding) GetFunctionBinding() *FunctionBinding { return f }
 type FunctionConfiguration struct {
 	// The physical binding of the function. For example, in the Azure Machine Learning web service’s case, this describes the
 	// endpoint.
-	Binding FunctionBindingClassification `json:"binding,omitempty"`
-	Inputs  []*FunctionInput              `json:"inputs,omitempty"`
+	Binding FunctionBindingClassification
+	Inputs  []*FunctionInput
 
 	// Describes the output of a function.
-	Output *FunctionOutput `json:"output,omitempty"`
+	Output *FunctionOutput
 }
 
 // FunctionInput - Describes one input parameter of a function.
@@ -1078,27 +1078,27 @@ type FunctionInput struct {
 	// The (Azure Stream Analytics supported) data type of the function input parameter. A list of valid Azure Stream Analytics
 	// data types are described at
 	// https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx
-	DataType *string `json:"dataType,omitempty"`
+	DataType *string
 
 	// A flag indicating if the parameter is a configuration parameter. True if this input parameter is expected to be a constant.
 	// Default is false.
-	IsConfigurationParameter *bool `json:"isConfigurationParameter,omitempty"`
+	IsConfigurationParameter *bool
 }
 
 // FunctionListResult - Object containing a list of functions under a streaming job.
 type FunctionListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of functions under a streaming job. Populated by a 'List' operation.
-	Value []*Function `json:"value,omitempty" azure:"ro"`
+	Value []*Function
 }
 
 // FunctionOutput - Describes the output of a function.
 type FunctionOutput struct {
 	// The (Azure Stream Analytics supported) data type of the function output. A list of valid Azure Stream Analytics data types
 	// are described at https://msdn.microsoft.com/en-us/library/azure/dn835065.aspx
-	DataType *string `json:"dataType,omitempty"`
+	DataType *string
 }
 
 // FunctionPropertiesClassification provides polymorphic access to related types.
@@ -1113,13 +1113,13 @@ type FunctionPropertiesClassification interface {
 // FunctionProperties - The properties that are associated with a function.
 type FunctionProperties struct {
 	// REQUIRED; Indicates the type of function.
-	Type       *string                `json:"type,omitempty"`
-	Properties *FunctionConfiguration `json:"properties,omitempty"`
+	Type       *string
+	Properties *FunctionConfiguration
 
 	// READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 }
 
 // GetFunctionProperties implements the FunctionPropertiesClassification interface for type FunctionProperties.
@@ -1139,7 +1139,7 @@ type FunctionRetrieveDefaultDefinitionParametersClassification interface {
 // for.
 type FunctionRetrieveDefaultDefinitionParameters struct {
 	// REQUIRED; Indicates the function binding type.
-	BindingType *string `json:"bindingType,omitempty"`
+	BindingType *string
 }
 
 // GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
@@ -1206,38 +1206,38 @@ type FunctionsClientUpdateOptions struct {
 // Identity - Describes how identity is verified
 type Identity struct {
 	// The identity principal ID
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// The identity tenantId
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// The identity type
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // Input - An input object, containing all information associated with the named input. All inputs are contained under a streaming
 // job.
 type Input struct {
 	// Resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The properties that are associated with an input. Required on PUT (CreateOrReplace) requests.
-	Properties InputPropertiesClassification `json:"properties,omitempty"`
+	Properties InputPropertiesClassification
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // InputListResult - Object containing a list of inputs under a streaming job.
 type InputListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of inputs under a streaming job. Populated by a 'List' operation.
-	Value []*Input `json:"value,omitempty" azure:"ro"`
+	Value []*Input
 }
 
 // InputPropertiesClassification provides polymorphic access to related types.
@@ -1252,25 +1252,25 @@ type InputPropertiesClassification interface {
 // InputProperties - The properties that are associated with an input.
 type InputProperties struct {
 	// REQUIRED; Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Describes how input data is compressed
-	Compression *Compression `json:"compression,omitempty"`
+	Compression *Compression
 
 	// partitionKey Describes a key in the input data which is used for partitioning the input data
-	PartitionKey *string `json:"partitionKey,omitempty"`
+	PartitionKey *string
 
 	// Describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace)
 	// requests.
-	Serialization SerializationClassification `json:"serialization,omitempty"`
+	Serialization SerializationClassification
 
 	// READ-ONLY; Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
-	Diagnostics *Diagnostics `json:"diagnostics,omitempty" azure:"ro"`
+	Diagnostics *Diagnostics
 
 	// READ-ONLY; The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match headers
 	// for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 }
 
 // GetInputProperties implements the InputPropertiesClassification interface for type InputProperties.
@@ -1327,10 +1327,10 @@ type InputsClientUpdateOptions struct {
 // IoTHubStreamInputDataSource - Describes an IoT Hub input data source that contains stream data.
 type IoTHubStreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with an IoT Hub input containing stream data. Required on PUT (CreateOrReplace) requests.
-	Properties *IoTHubStreamInputDataSourceProperties `json:"properties,omitempty"`
+	Properties *IoTHubStreamInputDataSourceProperties
 }
 
 // GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type IoTHubStreamInputDataSource.
@@ -1344,30 +1344,30 @@ func (i *IoTHubStreamInputDataSource) GetStreamInputDataSource() *StreamInputDat
 type IoTHubStreamInputDataSourceProperties struct {
 	// The name of an IoT Hub Consumer Group that should be used to read events from the IoT Hub. If not specified, the input
 	// uses the Iot Hub’s default consumer group.
-	ConsumerGroupName *string `json:"consumerGroupName,omitempty"`
+	ConsumerGroupName *string
 
 	// The IoT Hub endpoint to connect to (ie. messages/events, messages/operationsMonitoringEvents, etc.).
-	Endpoint *string `json:"endpoint,omitempty"`
+	Endpoint *string
 
 	// The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests.
-	IotHubNamespace *string `json:"iotHubNamespace,omitempty"`
+	IotHubNamespace *string
 
 	// The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
-	SharedAccessPolicyKey *string `json:"sharedAccessPolicyKey,omitempty"`
+	SharedAccessPolicyKey *string
 
 	// The shared access policy name for the IoT Hub. This policy must contain at least the Service connect permission. Required
 	// on PUT (CreateOrReplace) requests.
-	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
+	SharedAccessPolicyName *string
 }
 
 // JSONSerialization - Describes how data from an input is serialized or how data is serialized when written to an output
 // in JSON format.
 type JSONSerialization struct {
 	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
-	Type *EventSerializationType `json:"type,omitempty"`
+	Type *EventSerializationType
 
 	// The properties that are associated with the JSON serialization type. Required on PUT (CreateOrReplace) requests.
-	Properties *JSONSerializationProperties `json:"properties,omitempty"`
+	Properties *JSONSerializationProperties
 }
 
 // GetSerialization implements the SerializationClassification interface for type JSONSerialization.
@@ -1381,23 +1381,23 @@ func (j *JSONSerialization) GetSerialization() *Serialization {
 type JSONSerializationProperties struct {
 	// Specifies the encoding of the incoming data in the case of input and the encoding of outgoing data in the case of output.
 	// Required on PUT (CreateOrReplace) requests.
-	Encoding *Encoding `json:"encoding,omitempty"`
+	Encoding *Encoding
 
 	// This property only applies to JSON serialization of outputs only. It is not applicable to inputs. This property specifies
 	// the format of the JSON the output will be written in. The currently supported
 	// values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new line and
 	// 'array' indicating the output will be formatted as an array of JSON objects.
 	// Default value is 'lineSeparated' if left null.
-	Format *JSONOutputSerializationFormat `json:"format,omitempty"`
+	Format *JSONOutputSerializationFormat
 }
 
 // JavaScriptFunctionBinding - The binding to a JavaScript function.
 type JavaScriptFunctionBinding struct {
 	// REQUIRED; Indicates the function binding type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The binding properties associated with a JavaScript function.
-	Properties *JavaScriptFunctionBindingProperties `json:"properties,omitempty"`
+	Properties *JavaScriptFunctionBindingProperties
 }
 
 // GetFunctionBinding implements the FunctionBindingClassification interface for type JavaScriptFunctionBinding.
@@ -1410,26 +1410,26 @@ func (j *JavaScriptFunctionBinding) GetFunctionBinding() *FunctionBinding {
 // JavaScriptFunctionBindingProperties - The binding properties associated with a JavaScript function.
 type JavaScriptFunctionBindingProperties struct {
 	// The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'
-	Script *string `json:"script,omitempty"`
+	Script *string
 }
 
 // JavaScriptFunctionBindingRetrievalProperties - The binding retrieval properties associated with a JavaScript function.
 type JavaScriptFunctionBindingRetrievalProperties struct {
 	// The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
-	Script *string `json:"script,omitempty"`
+	Script *string
 
 	// The function type.
-	UdfType *string `json:"udfType,omitempty"`
+	UdfType *string
 }
 
 // JavaScriptFunctionRetrieveDefaultDefinitionParameters - The parameters needed to retrieve the default function definition
 // for a JavaScript function.
 type JavaScriptFunctionRetrieveDefaultDefinitionParameters struct {
 	// REQUIRED; Indicates the function binding type.
-	BindingType *string `json:"bindingType,omitempty"`
+	BindingType *string
 
 	// The binding retrieval properties associated with a JavaScript function.
-	BindingRetrievalProperties *JavaScriptFunctionBindingRetrievalProperties `json:"bindingRetrievalProperties,omitempty"`
+	BindingRetrievalProperties *JavaScriptFunctionBindingRetrievalProperties
 }
 
 // GetFunctionRetrieveDefaultDefinitionParameters implements the FunctionRetrieveDefaultDefinitionParametersClassification
@@ -1443,13 +1443,13 @@ func (j *JavaScriptFunctionRetrieveDefaultDefinitionParameters) GetFunctionRetri
 // JobStorageAccount - The properties that are associated with an Azure Storage account with MSI
 type JobStorageAccount struct {
 	// The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-	AccountKey *string `json:"accountKey,omitempty"`
+	AccountKey *string
 
 	// The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 }
 
 // OAuthBasedDataSourceProperties - The properties that are associated with data sources that use OAuth as their authentication
@@ -1460,52 +1460,52 @@ type OAuthBasedDataSourceProperties struct {
 	// is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate
 	// the data source which will update this property with a valid refresh
 	// token. Required on PUT (CreateOrReplace) requests.
-	RefreshToken *string `json:"refreshToken,omitempty"`
+	RefreshToken *string
 
 	// The user display name of the user that was used to obtain the refresh token. Use this property to help remember which user
 	// was used to obtain the refresh token.
-	TokenUserDisplayName *string `json:"tokenUserDisplayName,omitempty"`
+	TokenUserDisplayName *string
 
 	// The user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember
 	// which user was used to obtain the refresh token.
-	TokenUserPrincipalName *string `json:"tokenUserPrincipalName,omitempty"`
+	TokenUserPrincipalName *string
 }
 
 // Operation - A Stream Analytics REST API operation
 type Operation struct {
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// READ-ONLY; Contains the localized display information for this particular operation / action.
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; The name of the operation being performed on this particular object.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationDisplay - Contains the localized display information for this particular operation / action.
 type OperationDisplay struct {
 	// READ-ONLY; The localized friendly description for the operation.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The localized friendly name for the operation.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly form of the resource type related to this action/operation.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Stream Analytics operations. It contains a list of operations and a
 // URL link to get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Stream Analytics operations supported by the Microsoft.StreamAnalytics resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1517,16 +1517,16 @@ type OperationsClientListOptions struct {
 // a streaming job.
 type Output struct {
 	// Resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The properties that are associated with an output. Required on PUT (CreateOrReplace) requests.
-	Properties *OutputProperties `json:"properties,omitempty"`
+	Properties *OutputProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OutputDataSourceClassification provides polymorphic access to related types.
@@ -1543,7 +1543,7 @@ type OutputDataSourceClassification interface {
 // OutputDataSource - Describes the data source that output will be written to.
 type OutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type OutputDataSource.
@@ -1552,34 +1552,34 @@ func (o *OutputDataSource) GetOutputDataSource() *OutputDataSource { return o }
 // OutputListResult - Object containing a list of outputs under a streaming job.
 type OutputListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of outputs under a streaming job. Populated by a 'List' operation.
-	Value []*Output `json:"value,omitempty" azure:"ro"`
+	Value []*Output
 }
 
 // OutputProperties - The properties that are associated with an output.
 type OutputProperties struct {
 	// Describes the data source that output will be written to. Required on PUT (CreateOrReplace) requests.
-	Datasource OutputDataSourceClassification `json:"datasource,omitempty"`
+	Datasource OutputDataSourceClassification
 
 	// Describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace)
 	// requests.
-	Serialization SerializationClassification `json:"serialization,omitempty"`
+	Serialization SerializationClassification
 
 	// The size window to constrain a Stream Analytics output to.
-	SizeWindow *float32 `json:"sizeWindow,omitempty"`
+	SizeWindow *float32
 
 	// The time frame for filtering Stream Analytics job outputs.
-	TimeWindow *string `json:"timeWindow,omitempty"`
+	TimeWindow *string
 
 	// READ-ONLY; Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
-	Diagnostics *Diagnostics `json:"diagnostics,omitempty" azure:"ro"`
+	Diagnostics *Diagnostics
 
 	// READ-ONLY; The current entity tag for the output. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 }
 
 // OutputsClientBeginTestOptions contains the optional parameters for the OutputsClient.BeginTest method.
@@ -1634,10 +1634,10 @@ type OutputsClientUpdateOptions struct {
 // in Parquet format.
 type ParquetSerialization struct {
 	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
-	Type *EventSerializationType `json:"type,omitempty"`
+	Type *EventSerializationType
 
 	// The properties that are associated with the Parquet serialization type. Required on PUT (CreateOrReplace) requests.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // GetSerialization implements the SerializationClassification interface for type ParquetSerialization.
@@ -1650,10 +1650,10 @@ func (p *ParquetSerialization) GetSerialization() *Serialization {
 // PowerBIOutputDataSource - Describes a Power BI output data source.
 type PowerBIOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with a Power BI output. Required on PUT (CreateOrReplace) requests.
-	Properties *PowerBIOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *PowerBIOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type PowerBIOutputDataSource.
@@ -1666,71 +1666,71 @@ func (p *PowerBIOutputDataSource) GetOutputDataSource() *OutputDataSource {
 // PowerBIOutputDataSourceProperties - The properties that are associated with a Power BI output.
 type PowerBIOutputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The name of the Power BI dataset. Required on PUT (CreateOrReplace) requests.
-	Dataset *string `json:"dataset,omitempty"`
+	Dataset *string
 
 	// The ID of the Power BI group.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// The name of the Power BI group. Use this property to help remember which specific Power BI group id was used.
-	GroupName *string `json:"groupName,omitempty"`
+	GroupName *string
 
 	// A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the data source.
 	// A valid refresh token is currently only obtainable via the Azure Portal. It
 	// is recommended to put a dummy string value here when creating the data source and then going to the Azure Portal to authenticate
 	// the data source which will update this property with a valid refresh
 	// token. Required on PUT (CreateOrReplace) requests.
-	RefreshToken *string `json:"refreshToken,omitempty"`
+	RefreshToken *string
 
 	// The name of the Power BI table under the specified dataset. Required on PUT (CreateOrReplace) requests.
-	Table *string `json:"table,omitempty"`
+	Table *string
 
 	// The user display name of the user that was used to obtain the refresh token. Use this property to help remember which user
 	// was used to obtain the refresh token.
-	TokenUserDisplayName *string `json:"tokenUserDisplayName,omitempty"`
+	TokenUserDisplayName *string
 
 	// The user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help remember
 	// which user was used to obtain the refresh token.
-	TokenUserPrincipalName *string `json:"tokenUserPrincipalName,omitempty"`
+	TokenUserPrincipalName *string
 }
 
 // PrivateEndpoint - Complete information about the private endpoint.
 type PrivateEndpoint struct {
 	// The properties associated with a private endpoint.
-	Properties *PrivateEndpointProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointProperties
 
 	// READ-ONLY; Unique opaque string (generally a GUID) that represents the metadata state of the resource (private endpoint)
 	// and changes whenever the resource is updated. Required on PUT (CreateOrUpdate) requests.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointListResult - A list of private endpoints.
 type PrivateEndpointListResult struct {
 	// READ-ONLY; The URL to fetch the next set of private endpoints.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of private endpoints.
-	Value []*PrivateEndpoint `json:"value,omitempty" azure:"ro"`
+	Value []*PrivateEndpoint
 }
 
 // PrivateEndpointProperties - The properties associated with a private endpoint.
 type PrivateEndpointProperties struct {
 	// A list of connections to the remote resource. Immutable after it is set.
-	ManualPrivateLinkServiceConnections []*PrivateLinkServiceConnection `json:"manualPrivateLinkServiceConnections,omitempty"`
+	ManualPrivateLinkServiceConnections []*PrivateLinkServiceConnection
 
 	// READ-ONLY; The date when this private endpoint was created.
-	CreatedDate *string `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *string
 }
 
 // PrivateEndpointsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointsClient.BeginDelete method.
@@ -1765,48 +1765,48 @@ type PrivateEndpointsClientListByClusterOptions struct {
 // resource.
 type PrivateLinkConnectionState struct {
 	// READ-ONLY; A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty" azure:"ro"`
+	ActionsRequired *string
 
 	// READ-ONLY; The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Indicates whether the connection has been Approved/Rejected/Removed by the owner of the remote resource/service.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // PrivateLinkServiceConnection - A grouping of information about the connection to the remote resource.
 type PrivateLinkServiceConnection struct {
 	// Bag of properties defining a privatelinkServiceConnection.
-	Properties *PrivateLinkServiceConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkServiceConnectionProperties
 }
 
 // PrivateLinkServiceConnectionProperties - Bag of properties defining a privatelinkServiceConnection.
 type PrivateLinkServiceConnectionProperties struct {
 	// The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to. Required on PUT
 	// (CreateOrUpdate) requests.
-	GroupIDs []*string `json:"groupIds,omitempty"`
+	GroupIDs []*string
 
 	// A collection of read-only information about the state of the connection to the private remote resource.
-	PrivateLinkServiceConnectionState *PrivateLinkConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkConnectionState
 
 	// The resource id of the private link service. Required on PUT (CreateOrUpdate) requests.
-	PrivateLinkServiceID *string `json:"privateLinkServiceId,omitempty"`
+	PrivateLinkServiceID *string
 
 	// READ-ONLY; A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars.
-	RequestMessage *string `json:"requestMessage,omitempty" azure:"ro"`
+	RequestMessage *string
 }
 
 // ProxyResource - The resource model definition for a ARM proxy resource. It will have everything other than required location
 // and tags
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReferenceInputDataSourceClassification provides polymorphic access to related types.
@@ -1821,7 +1821,7 @@ type ReferenceInputDataSourceClassification interface {
 // ReferenceInputDataSource - Describes an input data source that contains reference data.
 type ReferenceInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing reference data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetReferenceInputDataSource implements the ReferenceInputDataSourceClassification interface for type ReferenceInputDataSource.
@@ -1830,28 +1830,28 @@ func (r *ReferenceInputDataSource) GetReferenceInputDataSource() *ReferenceInput
 // ReferenceInputProperties - The properties that are associated with an input containing reference data.
 type ReferenceInputProperties struct {
 	// REQUIRED; Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Describes how input data is compressed
-	Compression *Compression `json:"compression,omitempty"`
+	Compression *Compression
 
 	// Describes an input data source that contains reference data. Required on PUT (CreateOrReplace) requests.
-	Datasource ReferenceInputDataSourceClassification `json:"datasource,omitempty"`
+	Datasource ReferenceInputDataSourceClassification
 
 	// partitionKey Describes a key in the input data which is used for partitioning the input data
-	PartitionKey *string `json:"partitionKey,omitempty"`
+	PartitionKey *string
 
 	// Describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace)
 	// requests.
-	Serialization SerializationClassification `json:"serialization,omitempty"`
+	Serialization SerializationClassification
 
 	// READ-ONLY; Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
-	Diagnostics *Diagnostics `json:"diagnostics,omitempty" azure:"ro"`
+	Diagnostics *Diagnostics
 
 	// READ-ONLY; The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match headers
 	// for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 }
 
 // GetInputProperties implements the InputPropertiesClassification interface for type ReferenceInputProperties.
@@ -1869,40 +1869,40 @@ func (r *ReferenceInputProperties) GetInputProperties() *InputProperties {
 // Resource - The base resource definition
 type Resource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceTestStatus - Describes the status of the test operation along with error information, if applicable.
 type ResourceTestStatus struct {
 	// READ-ONLY; Describes the error that occurred.
-	Error *ErrorResponse `json:"error,omitempty" azure:"ro"`
+	Error *ErrorResponse
 
 	// READ-ONLY; The status of the test operation.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // SKU - The properties that are associated with a SKU.
 type SKU struct {
 	// The name of the SKU. Required on PUT (CreateOrReplace) requests.
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 }
 
 // ScalarFunctionProperties - The properties that are associated with a scalar function.
 type ScalarFunctionProperties struct {
 	// REQUIRED; Indicates the type of function.
-	Type       *string                `json:"type,omitempty"`
-	Properties *FunctionConfiguration `json:"properties,omitempty"`
+	Type       *string
+	Properties *FunctionConfiguration
 
 	// READ-ONLY; The current entity tag for the function. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 }
 
 // GetFunctionProperties implements the FunctionPropertiesClassification interface for type ScalarFunctionProperties.
@@ -1917,7 +1917,7 @@ func (s *ScalarFunctionProperties) GetFunctionProperties() *FunctionProperties {
 // ScaleStreamingJobParameters - Parameters supplied to the Scale Streaming Job operation.
 type ScaleStreamingJobParameters struct {
 	// Specifies the number of streaming units that the streaming job will scale to.
-	StreamingUnits *int32 `json:"streamingUnits,omitempty"`
+	StreamingUnits *int32
 }
 
 // SerializationClassification provides polymorphic access to related types.
@@ -1932,7 +1932,7 @@ type SerializationClassification interface {
 // Serialization - Describes how data from an input is serialized or how data is serialized when written to an output.
 type Serialization struct {
 	// REQUIRED; Indicates the type of serialization that the input or output uses. Required on PUT (CreateOrReplace) requests.
-	Type *EventSerializationType `json:"type,omitempty"`
+	Type *EventSerializationType
 }
 
 // GetSerialization implements the SerializationClassification interface for type Serialization.
@@ -1942,27 +1942,27 @@ func (s *Serialization) GetSerialization() *Serialization { return s }
 // Event Hubs, etc.).
 type ServiceBusDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
 	// (CreateOrReplace) requests.
-	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
+	ServiceBusNamespace *string
 
 	// The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
-	SharedAccessPolicyKey *string `json:"sharedAccessPolicyKey,omitempty"`
+	SharedAccessPolicyKey *string
 
 	// The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace)
 	// requests.
-	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
+	SharedAccessPolicyName *string
 }
 
 // ServiceBusQueueOutputDataSource - Describes a Service Bus Queue output data source.
 type ServiceBusQueueOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with a Service Bus Queue output. Required on PUT (CreateOrReplace) requests.
-	Properties *ServiceBusQueueOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *ServiceBusQueueOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type ServiceBusQueueOutputDataSource.
@@ -1975,38 +1975,38 @@ func (s *ServiceBusQueueOutputDataSource) GetOutputDataSource() *OutputDataSourc
 // ServiceBusQueueOutputDataSourceProperties - The properties that are associated with a Service Bus Queue output.
 type ServiceBusQueueOutputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// A string array of the names of output columns to be attached to Service Bus messages as custom properties.
-	PropertyColumns []*string `json:"propertyColumns,omitempty"`
+	PropertyColumns []*string
 
 	// The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests.
-	QueueName *string `json:"queueName,omitempty"`
+	QueueName *string
 
 	// The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
 	// (CreateOrReplace) requests.
-	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
+	ServiceBusNamespace *string
 
 	// The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
-	SharedAccessPolicyKey *string `json:"sharedAccessPolicyKey,omitempty"`
+	SharedAccessPolicyKey *string
 
 	// The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace)
 	// requests.
-	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
+	SharedAccessPolicyName *string
 
 	// The system properties associated with the Service Bus Queue. The following system properties are supported: ReplyToSessionId,
 	// ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey,
 	// SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-	SystemPropertyColumns any `json:"systemPropertyColumns,omitempty"`
+	SystemPropertyColumns any
 }
 
 // ServiceBusTopicOutputDataSource - Describes a Service Bus Topic output data source.
 type ServiceBusTopicOutputDataSource struct {
 	// REQUIRED; Indicates the type of data source output will be written to. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// The properties that are associated with a Service Bus Topic output. Required on PUT (CreateOrReplace) requests.
-	Properties *ServiceBusTopicOutputDataSourceProperties `json:"properties,omitempty"`
+	Properties *ServiceBusTopicOutputDataSourceProperties
 }
 
 // GetOutputDataSource implements the OutputDataSourceClassification interface for type ServiceBusTopicOutputDataSource.
@@ -2019,29 +2019,29 @@ func (s *ServiceBusTopicOutputDataSource) GetOutputDataSource() *OutputDataSourc
 // ServiceBusTopicOutputDataSourceProperties - The properties that are associated with a Service Bus Topic output.
 type ServiceBusTopicOutputDataSourceProperties struct {
 	// Authentication Mode.
-	AuthenticationMode *AuthenticationMode `json:"authenticationMode,omitempty"`
+	AuthenticationMode *AuthenticationMode
 
 	// A string array of the names of output columns to be attached to Service Bus messages as custom properties.
-	PropertyColumns []*string `json:"propertyColumns,omitempty"`
+	PropertyColumns []*string
 
 	// The namespace that is associated with the desired Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT
 	// (CreateOrReplace) requests.
-	ServiceBusNamespace *string `json:"serviceBusNamespace,omitempty"`
+	ServiceBusNamespace *string
 
 	// The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
-	SharedAccessPolicyKey *string `json:"sharedAccessPolicyKey,omitempty"`
+	SharedAccessPolicyKey *string
 
 	// The shared access policy name for the Event Hub, Service Bus Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace)
 	// requests.
-	SharedAccessPolicyName *string `json:"sharedAccessPolicyName,omitempty"`
+	SharedAccessPolicyName *string
 
 	// The system properties associated with the Service Bus Topic Output. The following system properties are supported: ReplyToSessionId,
 	// ContentType, To, Subject, CorrelationId, TimeToLive, PartitionKey,
 	// SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-	SystemPropertyColumns map[string]*string `json:"systemPropertyColumns,omitempty"`
+	SystemPropertyColumns map[string]*string
 
 	// The name of the Service Bus Topic. Required on PUT (CreateOrReplace) requests.
-	TopicName *string `json:"topicName,omitempty"`
+	TopicName *string
 }
 
 // StartStreamingJobParameters - Parameters supplied to the Start Streaming Job operation.
@@ -2049,21 +2049,21 @@ type StartStreamingJobParameters struct {
 	// Value may be JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the starting point of the output event
 	// stream should start whenever the job is started, start at a custom user time
 	// stamp specified via the outputStartTime property, or start from the last event output time.
-	OutputStartMode *OutputStartMode `json:"outputStartMode,omitempty"`
+	OutputStartMode *OutputStartMode
 
 	// Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null
 	// to indicate that the output event stream will start whenever the streaming job is
 	// started. This property must have a value if outputStartMode is set to CustomTime.
-	OutputStartTime *time.Time `json:"outputStartTime,omitempty"`
+	OutputStartTime *time.Time
 }
 
 // StorageAccount - The properties that are associated with an Azure Storage account
 type StorageAccount struct {
 	// The account key for the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-	AccountKey *string `json:"accountKey,omitempty"`
+	AccountKey *string
 
 	// The name of the Azure Storage account. Required on PUT (CreateOrReplace) requests.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 }
 
 // StreamInputDataSourceClassification provides polymorphic access to related types.
@@ -2079,7 +2079,7 @@ type StreamInputDataSourceClassification interface {
 // StreamInputDataSource - Describes an input data source that contains stream data.
 type StreamInputDataSource struct {
 	// REQUIRED; Indicates the type of input data source containing stream data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetStreamInputDataSource implements the StreamInputDataSourceClassification interface for type StreamInputDataSource.
@@ -2088,28 +2088,28 @@ func (s *StreamInputDataSource) GetStreamInputDataSource() *StreamInputDataSourc
 // StreamInputProperties - The properties that are associated with an input containing stream data.
 type StreamInputProperties struct {
 	// REQUIRED; Indicates whether the input is a source of reference data or stream data. Required on PUT (CreateOrReplace) requests.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// Describes how input data is compressed
-	Compression *Compression `json:"compression,omitempty"`
+	Compression *Compression
 
 	// Describes an input data source that contains stream data. Required on PUT (CreateOrReplace) requests.
-	Datasource StreamInputDataSourceClassification `json:"datasource,omitempty"`
+	Datasource StreamInputDataSourceClassification
 
 	// partitionKey Describes a key in the input data which is used for partitioning the input data
-	PartitionKey *string `json:"partitionKey,omitempty"`
+	PartitionKey *string
 
 	// Describes how data from an input is serialized or how data is serialized when written to an output. Required on PUT (CreateOrReplace)
 	// requests.
-	Serialization SerializationClassification `json:"serialization,omitempty"`
+	Serialization SerializationClassification
 
 	// READ-ONLY; Describes conditions applicable to the Input, Output, or the job overall, that warrant customer attention.
-	Diagnostics *Diagnostics `json:"diagnostics,omitempty" azure:"ro"`
+	Diagnostics *Diagnostics
 
 	// READ-ONLY; The current entity tag for the input. This is an opaque string. You can use it to detect whether the resource
 	// has changed between requests. You can also use it in the If-Match or If-None-Match headers
 	// for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 }
 
 // GetInputProperties implements the InputPropertiesClassification interface for type StreamInputProperties.
@@ -2127,130 +2127,130 @@ func (s *StreamInputProperties) GetInputProperties() *InputProperties {
 // StreamingJob - A streaming job object, containing all information associated with the named streaming job.
 type StreamingJob struct {
 	// Describes the system-assigned managed identity assigned to this job that can be used to authenticate with inputs and outputs.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The properties that are associated with a streaming job. Required on PUT (CreateOrReplace) requests.
-	Properties *StreamingJobProperties `json:"properties,omitempty"`
+	Properties *StreamingJobProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StreamingJobListResult - Object containing a list of streaming jobs.
 type StreamingJobListResult struct {
 	// READ-ONLY; The link (url) to the next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; A list of streaming jobs. Populated by a 'List' operation.
-	Value []*StreamingJob `json:"value,omitempty" azure:"ro"`
+	Value []*StreamingJob
 }
 
 // StreamingJobProperties - The properties that are associated with a streaming job.
 type StreamingJobProperties struct {
 	// The cluster which streaming jobs will run on.
-	Cluster *ClusterInfo `json:"cluster,omitempty"`
+	Cluster *ClusterInfo
 
 	// Controls certain runtime behaviors of the streaming job.
-	CompatibilityLevel *CompatibilityLevel `json:"compatibilityLevel,omitempty"`
+	CompatibilityLevel *CompatibilityLevel
 
 	// Valid values are JobStorageAccount and SystemAccount. If set to JobStorageAccount, this requires the user to also specify
 	// jobStorageAccount property. .
-	ContentStoragePolicy *ContentStoragePolicy `json:"contentStoragePolicy,omitempty"`
+	ContentStoragePolicy *ContentStoragePolicy
 
 	// The data locale of the stream analytics job. Value should be the name of a supported .NET Culture from the set
 	// https://msdn.microsoft.com/en-us/library/system.globalization.culturetypes(v=vs.110).aspx. Defaults to 'en-US' if none
 	// specified.
-	DataLocale *string `json:"dataLocale,omitempty"`
+	DataLocale *string
 
 	// The maximum tolerable delay in seconds where events arriving late could be included. Supported range is -1 to 1814399 (20.23:59:59
 	// days) and -1 is used to specify wait indefinitely. If the property is
 	// absent, it is interpreted to have a value of -1.
-	EventsLateArrivalMaxDelayInSeconds *int32 `json:"eventsLateArrivalMaxDelayInSeconds,omitempty"`
+	EventsLateArrivalMaxDelayInSeconds *int32
 
 	// The maximum tolerable delay in seconds where out-of-order events can be adjusted to be back in order.
-	EventsOutOfOrderMaxDelayInSeconds *int32 `json:"eventsOutOfOrderMaxDelayInSeconds,omitempty"`
+	EventsOutOfOrderMaxDelayInSeconds *int32
 
 	// Indicates the policy to apply to events that arrive out of order in the input event stream.
-	EventsOutOfOrderPolicy *EventsOutOfOrderPolicy `json:"eventsOutOfOrderPolicy,omitempty"`
+	EventsOutOfOrderPolicy *EventsOutOfOrderPolicy
 
 	// A list of one or more functions for the streaming job. The name property for each function is required when specifying
 	// this property in a PUT request. This property cannot be modify via a PATCH
 	// operation. You must use the PATCH API available for the individual transformation.
-	Functions []*Function `json:"functions,omitempty"`
+	Functions []*Function
 
 	// A list of one or more inputs to the streaming job. The name property for each input is required when specifying this property
 	// in a PUT request. This property cannot be modify via a PATCH operation.
 	// You must use the PATCH API available for the individual input.
-	Inputs []*Input `json:"inputs,omitempty"`
+	Inputs []*Input
 
 	// The properties that are associated with an Azure Storage account with MSI
-	JobStorageAccount *JobStorageAccount `json:"jobStorageAccount,omitempty"`
+	JobStorageAccount *JobStorageAccount
 
 	// Describes the type of the job. Valid modes are Cloud and 'Edge'.
-	JobType *JobType `json:"jobType,omitempty"`
+	JobType *JobType
 
 	// Indicates the policy to apply to events that arrive at the output and cannot be written to the external storage due to
 	// being malformed (missing column values, column values of wrong type or size).
-	OutputErrorPolicy *OutputErrorPolicy `json:"outputErrorPolicy,omitempty"`
+	OutputErrorPolicy *OutputErrorPolicy
 
 	// This property should only be utilized when it is desired that the job be started immediately upon creation. Value may be
 	// JobStartTime, CustomTime, or LastOutputEventTime to indicate whether the
 	// starting point of the output event stream should start whenever the job is started, start at a custom user time stamp specified
 	// via the outputStartTime property, or start from the last event output
 	// time.
-	OutputStartMode *OutputStartMode `json:"outputStartMode,omitempty"`
+	OutputStartMode *OutputStartMode
 
 	// Value is either an ISO-8601 formatted time stamp that indicates the starting point of the output event stream, or null
 	// to indicate that the output event stream will start whenever the streaming job is
 	// started. This property must have a value if outputStartMode is set to CustomTime.
-	OutputStartTime *time.Time `json:"outputStartTime,omitempty"`
+	OutputStartTime *time.Time
 
 	// A list of one or more outputs for the streaming job. The name property for each output is required when specifying this
 	// property in a PUT request. This property cannot be modify via a PATCH operation.
 	// You must use the PATCH API available for the individual output.
-	Outputs []*Output `json:"outputs,omitempty"`
+	Outputs []*Output
 
 	// Describes the SKU of the streaming job. Required on PUT (CreateOrReplace) requests.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Indicates the query and the number of streaming units to use for the streaming job. The name property of the transformation
 	// is required when specifying this property in a PUT request. This property
 	// cannot be modify via a PATCH operation. You must use the PATCH API available for the individual transformation.
-	Transformation *Transformation `json:"transformation,omitempty"`
+	Transformation *Transformation
 
 	// READ-ONLY; Value is an ISO-8601 formatted UTC timestamp indicating when the streaming job was created.
-	CreatedDate *time.Time `json:"createdDate,omitempty" azure:"ro"`
+	CreatedDate *time.Time
 
 	// READ-ONLY; The current entity tag for the streaming job. This is an opaque string. You can use it to detect whether the
 	// resource has changed between requests. You can also use it in the If-Match or If-None-Match
 	// headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; A GUID uniquely identifying the streaming job. This GUID is generated upon creation of the streaming job.
-	JobID *string `json:"jobId,omitempty" azure:"ro"`
+	JobID *string
 
 	// READ-ONLY; Describes the state of the streaming job.
-	JobState *string `json:"jobState,omitempty" azure:"ro"`
+	JobState *string
 
 	// READ-ONLY; Value is either an ISO-8601 formatted timestamp indicating the last output event time of the streaming job or
 	// null indicating that output has not yet been produced. In case of multiple outputs or
 	// multiple streams, this shows the latest value in that set.
-	LastOutputEventTime *time.Time `json:"lastOutputEventTime,omitempty" azure:"ro"`
+	LastOutputEventTime *time.Time
 
 	// READ-ONLY; Describes the provisioning status of the streaming job.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // StreamingJobsClientBeginCreateOrReplaceOptions contains the optional parameters for the StreamingJobsClient.BeginCreateOrReplace
@@ -2329,44 +2329,44 @@ type StreamingJobsClientUpdateOptions struct {
 // SubResource - The base sub-resource model definition.
 type SubResource struct {
 	// Resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SubscriptionQuota - Describes the current quota for the subscription.
 type SubscriptionQuota struct {
 	// Resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Describes the properties of the quota.
-	Properties *SubscriptionQuotaProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *SubscriptionQuotaProperties
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SubscriptionQuotaProperties - Describes the properties of the quota.
 type SubscriptionQuotaProperties struct {
 	// READ-ONLY; The current usage of this resource.
-	CurrentCount *int32 `json:"currentCount,omitempty" azure:"ro"`
+	CurrentCount *int32
 
 	// READ-ONLY; The max permitted usage of this resource.
-	MaxCount *int32 `json:"maxCount,omitempty" azure:"ro"`
+	MaxCount *int32
 }
 
 // SubscriptionQuotasListResult - Result of the GetQuotas operation. It contains a list of quotas for the subscription in
 // a particular region.
 type SubscriptionQuotasListResult struct {
 	// READ-ONLY; List of quotas for the subscription in a particular region.
-	Value []*SubscriptionQuota `json:"value,omitempty" azure:"ro"`
+	Value []*SubscriptionQuota
 }
 
 // SubscriptionsClientListQuotasOptions contains the optional parameters for the SubscriptionsClient.ListQuotas method.
@@ -2377,35 +2377,35 @@ type SubscriptionsClientListQuotasOptions struct {
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Transformation - A transformation object, containing all information associated with the named transformation. All transformations
 // are contained under a streaming job.
 type Transformation struct {
 	// Resource name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The properties that are associated with a transformation. Required on PUT (CreateOrReplace) requests.
-	Properties *TransformationProperties `json:"properties,omitempty"`
+	Properties *TransformationProperties
 
 	// READ-ONLY; Resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TransformationProperties - The properties that are associated with a transformation.
@@ -2413,18 +2413,18 @@ type TransformationProperties struct {
 	// Specifies the query that will be run in the streaming job. You can learn more about the Stream Analytics Query Language
 	// (SAQL) here: https://msdn.microsoft.com/library/azure/dn834998 . Required on PUT
 	// (CreateOrReplace) requests.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// Specifies the number of streaming units that the streaming job uses.
-	StreamingUnits *int32 `json:"streamingUnits,omitempty"`
+	StreamingUnits *int32
 
 	// Specifies the valid streaming units a streaming job can scale to.
-	ValidStreamingUnits []*int32 `json:"validStreamingUnits,omitempty"`
+	ValidStreamingUnits []*int32
 
 	// READ-ONLY; The current entity tag for the transformation. This is an opaque string. You can use it to detect whether the
 	// resource has changed between requests. You can also use it in the If-Match or
 	// If-None-Match headers for write operations for optimistic concurrency.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 }
 
 // TransformationsClientCreateOrReplaceOptions contains the optional parameters for the TransformationsClient.CreateOrReplace

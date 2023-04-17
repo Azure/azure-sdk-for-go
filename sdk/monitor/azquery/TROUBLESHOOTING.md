@@ -85,15 +85,17 @@ The error message in `innererror` may include the location where the Kusto query
 
 ### Troubleshooting empty log query results
 
-If your Kusto query returns empty no logs, please validate the following:
+If your Kusto query returns empty with no logs, please validate the following:
 
-- You have the right workspace ID
+- You have the right workspace ID or resource ID
 - You are setting the correct time interval for the query. Try lengthening the time interval for your query to see if that
   returns any results.
 - If your Kusto query also has a time interval, the query is evaluated for the intersection of the time interval in the
   query string and the time interval set in the `Body.Timespan` field of the request query. The intersection of
   these time intervals may not have any logs. To avoid any confusion, it's recommended to remove any time interval in
   the Kusto query string and use `Body.Timespan` explicitly.
+- Your workspace or resource actually has logs to query. Sometimes, especially with newly created resources,
+  there are no logs yet to query.
 
 ### Troubleshooting server timeouts when executing logs query request
 

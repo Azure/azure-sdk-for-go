@@ -47,73 +47,73 @@ type DefenderSettingsClientPackageDownloadsOptions struct {
 // DefenderSettingsList - List of IoT Defender settings
 type DefenderSettingsList struct {
 	// READ-ONLY; List data
-	Value []*DefenderSettingsModel `json:"value,omitempty" azure:"ro"`
+	Value []*DefenderSettingsModel
 }
 
 // DefenderSettingsModel - IoT Defender settings
 type DefenderSettingsModel struct {
 	// IoT Defender settings properties
-	Properties *DefenderSettingsProperties `json:"properties,omitempty"`
+	Properties *DefenderSettingsProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DefenderSettingsProperties - IoT Defender settings properties
 type DefenderSettingsProperties struct {
 	// REQUIRED; Size of the device quota. Value is required to be in multiples of 100.
-	DeviceQuota *int32 `json:"deviceQuota,omitempty"`
+	DeviceQuota *int32
 
 	// REQUIRED; MDE integration configuration
-	MdeIntegration *DefenderSettingsPropertiesMdeIntegration `json:"mdeIntegration,omitempty"`
+	MdeIntegration *DefenderSettingsPropertiesMdeIntegration
 
 	// REQUIRED; The kind of onboarding for the subscription
-	OnboardingKind *OnboardingKind `json:"onboardingKind,omitempty"`
+	OnboardingKind *OnboardingKind
 
 	// REQUIRED; Sentinel Workspace Resource Ids
-	SentinelWorkspaceResourceIDs []*string `json:"sentinelWorkspaceResourceIds,omitempty"`
+	SentinelWorkspaceResourceIDs []*string
 
 	// READ-ONLY; End time of the evaluation period, if such exist
-	EvaluationEndTime *time.Time `json:"evaluationEndTime,omitempty" azure:"ro"`
+	EvaluationEndTime *time.Time
 }
 
 // DefenderSettingsPropertiesMdeIntegration - MDE integration configuration
 type DefenderSettingsPropertiesMdeIntegration struct {
 	// REQUIRED; Integration status
-	Status *MdeIntegration `json:"status,omitempty"`
+	Status *MdeIntegration
 }
 
 // DeviceGroupList - List of device groups
 type DeviceGroupList struct {
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List data
-	Value []*DeviceGroupModel `json:"value,omitempty" azure:"ro"`
+	Value []*DeviceGroupModel
 }
 
 // DeviceGroupModel - Device group
 type DeviceGroupModel struct {
 	// Device group properties
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeviceGroupsClientCreateOrUpdateOptions contains the optional parameters for the DeviceGroupsClient.CreateOrUpdate method.
@@ -139,142 +139,142 @@ type DeviceGroupsClientListOptions struct {
 // DeviceList - List of devices
 type DeviceList struct {
 	// READ-ONLY; When there are too many devices for one page, use this URI to fetch the next page.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List data
-	Value []*DeviceModel `json:"value,omitempty" azure:"ro"`
+	Value []*DeviceModel
 }
 
 // DeviceModel - Device
 type DeviceModel struct {
 	// Device properties
-	Properties *DeviceProperties `json:"properties,omitempty"`
+	Properties *DeviceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DeviceProperties - Device properties
 type DeviceProperties struct {
 	// A bag of fields which extends the device information.
-	AdditionalFields any `json:"additionalFields,omitempty"`
+	AdditionalFields any
 
 	// Authorized state of the device.
-	AuthorizedState *AuthorizedState `json:"authorizedState,omitempty"`
+	AuthorizedState *AuthorizedState
 
 	// Device business function
-	BusinessFunction *string `json:"businessFunction,omitempty"`
+	BusinessFunction *string
 
 	// Device criticality.
-	Criticality *Criticality `json:"criticality,omitempty"`
+	Criticality *Criticality
 
 	// Device category id
-	DeviceCategoryID *int32 `json:"deviceCategoryId,omitempty"`
+	DeviceCategoryID *int32
 
 	// Device name
-	DeviceName *string `json:"deviceName,omitempty"`
+	DeviceName *string
 
 	// Device sub type id
-	DeviceSubTypeID *int32 `json:"deviceSubTypeId,omitempty"`
+	DeviceSubTypeID *int32
 
 	// Device tags
-	DeviceTags []*string `json:"deviceTags,omitempty"`
+	DeviceTags []*string
 
 	// Device type id
-	DeviceTypeID *int32 `json:"deviceTypeId,omitempty"`
+	DeviceTypeID *int32
 
 	// List of device firmwares.
-	Firmwares []*Firmware `json:"firmwares,omitempty"`
+	Firmwares []*Firmware
 
 	// Device hardware data
-	Hardware *Hardware `json:"hardware,omitempty"`
+	Hardware *Hardware
 
 	// Device operating system data
-	OperatingSystem *OperatingSystem `json:"operatingSystem,omitempty"`
+	OperatingSystem *OperatingSystem
 
 	// List of device packages
-	Packages []*Package `json:"packages,omitempty"`
+	Packages []*Package
 
 	// Purdue level of the device.
-	PurdueLevel *PurdueLevel `json:"purdueLevel,omitempty"`
+	PurdueLevel *PurdueLevel
 
 	// READ-ONLY; List of Common Platform Enumeration (CPE)
-	Cpes []*string `json:"cpes,omitempty" azure:"ro"`
+	Cpes []*string
 
 	// READ-ONLY; Device category display name
-	DeviceCategoryDisplayName *string `json:"deviceCategoryDisplayName,omitempty" azure:"ro"`
+	DeviceCategoryDisplayName *string
 
 	// READ-ONLY; Device data source.
-	DeviceDataSource *DeviceDataSource `json:"deviceDataSource,omitempty" azure:"ro"`
+	DeviceDataSource *DeviceDataSource
 
 	// READ-ONLY; Device status.
-	DeviceStatus *DeviceStatus `json:"deviceStatus,omitempty" azure:"ro"`
+	DeviceStatus *DeviceStatus
 
 	// READ-ONLY; Device sub type display name
-	DeviceSubTypeDisplayName *string `json:"deviceSubTypeDisplayName,omitempty" azure:"ro"`
+	DeviceSubTypeDisplayName *string
 
 	// READ-ONLY; Device type display name
-	DeviceTypeDisplayName *string `json:"deviceTypeDisplayName,omitempty" azure:"ro"`
+	DeviceTypeDisplayName *string
 
 	// READ-ONLY; First time the device was seen.
-	FirstSeen *time.Time `json:"firstSeen,omitempty" azure:"ro"`
+	FirstSeen *time.Time
 
 	// READ-ONLY; last time the device was programming or programed.
-	LastProgrammingTime *time.Time `json:"lastProgrammingTime,omitempty" azure:"ro"`
+	LastProgrammingTime *time.Time
 
 	// READ-ONLY; Last time the device was seen.
-	LastSeen *time.Time `json:"lastSeen,omitempty" azure:"ro"`
+	LastSeen *time.Time
 
 	// READ-ONLY; Last time the device was updated by the profiler.
-	LastUpdated *time.Time `json:"lastUpdated,omitempty" azure:"ro"`
+	LastUpdated *time.Time
 
 	// READ-ONLY; List of merged devices data
-	MergedDevices []*MergedDevice `json:"mergedDevices,omitempty" azure:"ro"`
+	MergedDevices []*MergedDevice
 
 	// READ-ONLY; The device Id that this device was merged into
-	MergedToDeviceID *string `json:"mergedToDeviceId,omitempty" azure:"ro"`
+	MergedToDeviceID *string
 
 	// READ-ONLY; List of the device network interface cards.
-	Nics []*Nic `json:"nics,omitempty" azure:"ro"`
+	Nics []*Nic
 
 	// READ-ONLY; Device onboarding status.
-	OnboardingStatus *OnboardingStatus `json:"onboardingStatus,omitempty" azure:"ro"`
+	OnboardingStatus *OnboardingStatus
 
 	// READ-ONLY; For nested device, this is the parent device id.
-	ParentDeviceID *string `json:"parentDeviceId,omitempty" azure:"ro"`
+	ParentDeviceID *string
 
 	// READ-ONLY; For nested device, this is the rack number in the parent device that holds the nested device.
-	ParentRackNumber *int32 `json:"parentRackNumber,omitempty" azure:"ro"`
+	ParentRackNumber *int32
 
 	// READ-ONLY; For nested device, this is the slot number in the parent device that holds the nested device.
-	ParentSlotNumber *int32 `json:"parentSlotNumber,omitempty" azure:"ro"`
+	ParentSlotNumber *int32
 
 	// READ-ONLY; Confidence of the device profile
-	ProfilingConfidence *int32 `json:"profilingConfidence,omitempty" azure:"ro"`
+	ProfilingConfidence *int32
 
 	// READ-ONLY; Indicates whether this device is programming
-	ProgrammingState *ProgrammingState `json:"programmingState,omitempty" azure:"ro"`
+	ProgrammingState *ProgrammingState
 
 	// READ-ONLY; risk score of the device.
-	RiskScore *int32 `json:"riskScore,omitempty" azure:"ro"`
+	RiskScore *int32
 
 	// READ-ONLY; Version of the device model schema
-	SchemaVersion *string `json:"schemaVersion,omitempty" azure:"ro"`
+	SchemaVersion *string
 
 	// READ-ONLY; Sensor that scanned this device.
-	Sensor *Sensor `json:"sensor,omitempty" azure:"ro"`
+	Sensor *Sensor
 
 	// READ-ONLY; List of the device slot in the backplane
-	Slots []*Slot `json:"slots,omitempty" azure:"ro"`
+	Slots []*Slot
 }
 
 // DevicesClientGetOptions contains the optional parameters for the DevicesClient.Get method.
@@ -291,143 +291,143 @@ type DevicesClientListOptions struct {
 // DimensionProperties - properties for dimension
 type DimensionProperties struct {
 	// localized display name of the dimension to customer
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// dimension name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// flag indicating whether this dimension should be included to the customer in Azure Monitor logs (aka Shoebox)
-	ToBeExportedForCustomer *bool `json:"toBeExportedForCustomer,omitempty"`
+	ToBeExportedForCustomer *bool
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorModel - Default error model
 type ErrorModel struct {
 	// READ-ONLY; Gets or sets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets or sets the details.
-	Details []*ErrorModel `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorModel
 
 	// READ-ONLY; Gets or sets the messages.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Gets or sets the target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // ErrorResponseModel - Default error response model
 type ErrorResponseModel struct {
 	// READ-ONLY; Gets or sets the error.
-	Error *ErrorResponseModelError `json:"error,omitempty" azure:"ro"`
+	Error *ErrorResponseModelError
 }
 
 // ErrorResponseModelError - Gets or sets the error.
 type ErrorResponseModelError struct {
 	// READ-ONLY; Gets or sets the code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Gets or sets the details.
-	Details []*ErrorModel `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorModel
 
 	// READ-ONLY; Gets or sets the messages.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Gets or sets the target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // Firmware - Device firmware data
 type Firmware struct {
 	// A bag of fields which extends the firmware information.
-	AdditionalFields any `json:"additionalFields,omitempty"`
+	AdditionalFields any
 
 	// Firmware module address.
-	ModuleAddress *string `json:"moduleAddress,omitempty"`
+	ModuleAddress *string
 
 	// Firmware name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Firmware serial.
-	Serial *string `json:"serial,omitempty"`
+	Serial *string
 
 	// Firmware vendor.
-	Vendor *string `json:"vendor,omitempty"`
+	Vendor *string
 
 	// Firmware version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // Hardware - Device hardware data
 type Hardware struct {
 	// Hardware model.
-	Model *string `json:"model,omitempty"`
+	Model *string
 
 	// Hardware serial number.
-	SerialNumber *string `json:"serialNumber,omitempty"`
+	SerialNumber *string
 
 	// Hardware vendor.
-	Vendor *string `json:"vendor,omitempty"`
+	Vendor *string
 }
 
 // LocationList - List of Defender for IoT locations
 type LocationList struct {
 	// READ-ONLY; Link to next page of resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List data
-	Value []*LocationModel `json:"value,omitempty" azure:"ro"`
+	Value []*LocationModel
 }
 
 // LocationModel - IoT Defender location
 type LocationModel struct {
 	// IoT Defender location properties
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
@@ -443,55 +443,55 @@ type LocationsClientListOptions struct {
 // MergedDevice - Merged device data
 type MergedDevice struct {
 	// READ-ONLY; Device data source
-	DeviceDataSource *DeviceDataSource `json:"deviceDataSource,omitempty" azure:"ro"`
+	DeviceDataSource *DeviceDataSource
 
 	// READ-ONLY; device id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Device sensor data
-	Sensor *Sensor `json:"sensor,omitempty" azure:"ro"`
+	Sensor *Sensor
 }
 
 // Nic - Network interface card properties
 type Nic struct {
 	// READ-ONLY; Ipv4 address
-	IPv4Address *string `json:"ipv4Address,omitempty" azure:"ro"`
+	IPv4Address *string
 
 	// READ-ONLY; Ipv6 address
-	IPv6Address *string `json:"ipv6Address,omitempty" azure:"ro"`
+	IPv6Address *string
 
 	// READ-ONLY; Last seen time
-	LastSeen *time.Time `json:"lastSeen,omitempty" azure:"ro"`
+	LastSeen *time.Time
 
 	// READ-ONLY; Mac address
-	MacAddress *string `json:"macAddress,omitempty" azure:"ro"`
+	MacAddress *string
 
 	// READ-ONLY; Indicates whether the association of the mac to the ip address is certain or a guess.
-	MacCertainty *MacCertainty `json:"macCertainty,omitempty" azure:"ro"`
+	MacCertainty *MacCertainty
 
 	// READ-ONLY; Network adapter vendor.
-	NetworkAdapterVendor *string `json:"networkAdapterVendor,omitempty" azure:"ro"`
+	NetworkAdapterVendor *string
 
 	// READ-ONLY; List of virtual LAN (vlan)
-	Vlans []*string `json:"vlans,omitempty" azure:"ro"`
+	Vlans []*string
 }
 
 // OnPremiseSensor - On-premise IoT sensor
 type OnPremiseSensor struct {
 	// On-premise IoT sensor properties
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OnPremiseSensorsClientCreateOrUpdateOptions contains the optional parameters for the OnPremiseSensorsClient.CreateOrUpdate
@@ -530,137 +530,137 @@ type OnPremiseSensorsClientListOptions struct {
 // OnPremiseSensorsList - List of on-premise IoT sensors
 type OnPremiseSensorsList struct {
 	// READ-ONLY; List data
-	Value []*OnPremiseSensor `json:"value,omitempty" azure:"ro"`
+	Value []*OnPremiseSensor
 }
 
 // OperatingSystem - Device operating system data
 type OperatingSystem struct {
 	// OS architecture
-	Architecture *string `json:"architecture,omitempty"`
+	Architecture *string
 
 	// OS build
-	Build *string `json:"build,omitempty"`
+	Build *string
 
 	// OS distribution
-	Distribution *string `json:"distribution,omitempty"`
+	Distribution *string
 
 	// OS platform
-	Platform *string `json:"platform,omitempty"`
+	Platform *string
 
 	// OS version
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // Operation resource
 type Operation struct {
 	// Properties on the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Whether operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Operation name for display purposes
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// properties for the operation meta info
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 }
 
 // OperationDisplay - The response model for get operation properties
 type OperationDisplay struct {
 	// Description of the operation for display purposes
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the operation for display purposes
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the provider for display purposes
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Name of the resource type for display purposes
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationList - Paged list of operation resources
 type OperationList struct {
 	// REQUIRED; Collection of items of type results.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 
 	// Total item count.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// The Url of next result page.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // OperationMetaLogSpecification - log specifications for operation api
 type OperationMetaLogSpecification struct {
 	// blob duration of the log
-	BlobDuration *string `json:"blobDuration,omitempty"`
+	BlobDuration *string
 
 	// localized name of the log category
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// name of the log category
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationMetaMetricSpecification - metric specifications for the operation
 type OperationMetaMetricSpecification struct {
 	// aggregation type of metric
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// properties for dimension
-	Dimensions []*DimensionProperties `json:"dimensions,omitempty"`
+	Dimensions []*DimensionProperties
 
 	// description of the metric
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// localized name of the metric
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// enable regional mdm account
-	EnableRegionalMdmAccount *string `json:"enableRegionalMdmAccount,omitempty"`
+	EnableRegionalMdmAccount *string
 
 	// internal metric name
-	InternalMetricName *string `json:"internalMetricName,omitempty"`
+	InternalMetricName *string
 
 	// name of the metric
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// dimension name use to replace resource id if specified
-	ResourceIDDimensionNameOverride *string `json:"resourceIdDimensionNameOverride,omitempty"`
+	ResourceIDDimensionNameOverride *string
 
 	// Metric namespace. Only set the namespace if different from the default value, leaving it empty makes it use the value from
 	// the ARM manifest.
-	SourceMdmNamespace *string `json:"sourceMdmNamespace,omitempty"`
+	SourceMdmNamespace *string
 
 	// supported aggregation types
-	SupportedAggregationTypes []*string `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*string
 
 	// supported time grain types
-	SupportedTimeGrainTypes []*string `json:"supportedTimeGrainTypes,omitempty"`
+	SupportedTimeGrainTypes []*string
 
 	// units for the metric
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // OperationMetaServiceSpecification - The operation meta service specification
 type OperationMetaServiceSpecification struct {
 	// log specifications for the operation
-	LogSpecifications []*OperationMetaLogSpecification `json:"logSpecifications,omitempty"`
+	LogSpecifications []*OperationMetaLogSpecification
 
 	// metric specifications for the operation
-	MetricSpecifications []*OperationMetaMetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*OperationMetaMetricSpecification
 }
 
 // OperationProperties - properties on meta info
 type OperationProperties struct {
 	// meta service specification
-	ServiceSpecification *OperationMetaServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *OperationMetaServiceSpecification
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -671,206 +671,206 @@ type OperationsClientListOptions struct {
 // Package - Device package data
 type Package struct {
 	// Package name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Package version.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // PackageDownloadInfo - Information on a specific package download
 type PackageDownloadInfo struct {
 	// READ-ONLY; Download link
-	Link *string `json:"link,omitempty" azure:"ro"`
+	Link *string
 
 	// READ-ONLY; Version number
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 
 	// READ-ONLY; Kind of the version
-	VersionKind *VersionKind `json:"versionKind,omitempty" azure:"ro"`
+	VersionKind *VersionKind
 }
 
 // PackageDownloads - Information about package downloads
 type PackageDownloads struct {
 	// READ-ONLY; Authorized devices import template
-	AuthorizedDevicesImportTemplate []*PackageDownloadInfo `json:"authorizedDevicesImportTemplate,omitempty" azure:"ro"`
+	AuthorizedDevicesImportTemplate []*PackageDownloadInfo
 
 	// READ-ONLY; All downloads for Central Manager
-	CentralManager *PackageDownloadsCentralManager `json:"centralManager,omitempty" azure:"ro"`
+	CentralManager *PackageDownloadsCentralManager
 
 	// READ-ONLY; Authorized devices import template
-	DeviceInformationUpdateImportTemplate []*PackageDownloadInfo `json:"deviceInformationUpdateImportTemplate,omitempty" azure:"ro"`
+	DeviceInformationUpdateImportTemplate []*PackageDownloadInfo
 
 	// READ-ONLY; Contains all Sensor binary downloads
-	Sensor *PackageDownloadsSensor `json:"sensor,omitempty" azure:"ro"`
+	Sensor *PackageDownloadsSensor
 
 	// READ-ONLY; SNMP Server file
-	Snmp []*PackageDownloadInfo `json:"snmp,omitempty" azure:"ro"`
+	Snmp []*PackageDownloadInfo
 
 	// READ-ONLY; All downloads for threat intelligence
-	ThreatIntelligence []*PackageDownloadInfo `json:"threatIntelligence,omitempty" azure:"ro"`
+	ThreatIntelligence []*PackageDownloadInfo
 
 	// READ-ONLY; Used for local configuration export
-	WmiTool []*PackageDownloadInfo `json:"wmiTool,omitempty" azure:"ro"`
+	WmiTool []*PackageDownloadInfo
 }
 
 // PackageDownloadsCentralManager - All downloads for Central Manager
 type PackageDownloadsCentralManager struct {
 	// READ-ONLY; Contains full package downloads
-	Full *PackageDownloadsCentralManagerFull `json:"full,omitempty" azure:"ro"`
+	Full *PackageDownloadsCentralManagerFull
 
 	// READ-ONLY; Central Manager upgrade package downloads (on existing installations)
-	Upgrade []*UpgradePackageDownloadInfo `json:"upgrade,omitempty" azure:"ro"`
+	Upgrade []*UpgradePackageDownloadInfo
 }
 
 // PackageDownloadsCentralManagerFull - Contains full package downloads
 type PackageDownloadsCentralManagerFull struct {
 	// READ-ONLY; Contains all ISO full versions of the Central Manager
-	Iso []*PackageDownloadInfo `json:"iso,omitempty" azure:"ro"`
+	Iso []*PackageDownloadInfo
 
 	// READ-ONLY; Contains all OVF (virtual machine) full versions of the Central Manager
-	Ovf *PackageDownloadsCentralManagerFullOvf `json:"ovf,omitempty" azure:"ro"`
+	Ovf *PackageDownloadsCentralManagerFullOvf
 }
 
 // PackageDownloadsCentralManagerFullOvf - Contains all OVF (virtual machine) full versions of the Central Manager
 type PackageDownloadsCentralManagerFullOvf struct {
 	// READ-ONLY; The Enterprise package type
-	Enterprise []*PackageDownloadInfo `json:"enterprise,omitempty" azure:"ro"`
+	Enterprise []*PackageDownloadInfo
 
 	// READ-ONLY; The EnterpriseHighAvailability package type
-	EnterpriseHighAvailability []*PackageDownloadInfo `json:"enterpriseHighAvailability,omitempty" azure:"ro"`
+	EnterpriseHighAvailability []*PackageDownloadInfo
 
 	// READ-ONLY; The Medium package type
-	Medium []*PackageDownloadInfo `json:"medium,omitempty" azure:"ro"`
+	Medium []*PackageDownloadInfo
 
 	// READ-ONLY; The MediumHighAvailability package type
-	MediumHighAvailability []*PackageDownloadInfo `json:"mediumHighAvailability,omitempty" azure:"ro"`
+	MediumHighAvailability []*PackageDownloadInfo
 }
 
 // PackageDownloadsSensor - Contains all Sensor binary downloads
 type PackageDownloadsSensor struct {
 	// Sensor upgrade package downloads (on existing installations)
-	Upgrade []*UpgradePackageDownloadInfo `json:"upgrade,omitempty"`
+	Upgrade []*UpgradePackageDownloadInfo
 
 	// READ-ONLY; Contains full package downloads
-	Full *PackageDownloadsSensorFull `json:"full,omitempty" azure:"ro"`
+	Full *PackageDownloadsSensorFull
 }
 
 // PackageDownloadsSensorFull - Contains full package downloads
 type PackageDownloadsSensorFull struct {
 	// Contains all OVF (virtual machine) full versions for the sensor
-	Ovf *PackageDownloadsSensorFullOvf `json:"ovf,omitempty"`
+	Ovf *PackageDownloadsSensorFullOvf
 
 	// READ-ONLY; Contains all ISO full versions for the sensor
-	Iso []*PackageDownloadInfo `json:"iso,omitempty" azure:"ro"`
+	Iso []*PackageDownloadInfo
 }
 
 // PackageDownloadsSensorFullOvf - Contains all OVF (virtual machine) full versions for the sensor
 type PackageDownloadsSensorFullOvf struct {
 	// READ-ONLY; Enterprise package type
-	Enterprise []*PackageDownloadInfo `json:"enterprise,omitempty" azure:"ro"`
+	Enterprise []*PackageDownloadInfo
 
 	// READ-ONLY; Line package type
-	Line []*PackageDownloadInfo `json:"line,omitempty" azure:"ro"`
+	Line []*PackageDownloadInfo
 
 	// READ-ONLY; Medium package type
-	Medium []*PackageDownloadInfo `json:"medium,omitempty" azure:"ro"`
+	Medium []*PackageDownloadInfo
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResetPasswordInput - Reset password input.
 type ResetPasswordInput struct {
 	// The appliance id of the sensor.
-	ApplianceID *string `json:"applianceId,omitempty"`
+	ApplianceID *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Sensor that scanned the device
 type Sensor struct {
 	// READ-ONLY; Sensor name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Sensor site.
-	Site *string `json:"site,omitempty" azure:"ro"`
+	Site *string
 
 	// READ-ONLY; Sensor type.
-	Type *SensorType `json:"type,omitempty" azure:"ro"`
+	Type *SensorType
 
 	// READ-ONLY; Sensor zone.
-	Zone *string `json:"zone,omitempty" azure:"ro"`
+	Zone *string
 }
 
 // SensorModel - IoT sensor model
 type SensorModel struct {
 	// IoT sensor properties
-	Properties *SensorProperties `json:"properties,omitempty"`
+	Properties *SensorProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SensorProperties - IoT sensor properties
 type SensorProperties struct {
 	// Type of sensor
-	SensorType *SensorType `json:"sensorType,omitempty"`
+	SensorType *SensorType
 
 	// TI Automatic mode status of the IoT sensor
-	TiAutomaticUpdates *bool `json:"tiAutomaticUpdates,omitempty"`
+	TiAutomaticUpdates *bool
 
 	// Zone of the IoT sensor
-	Zone *string `json:"zone,omitempty"`
+	Zone *string
 
 	// READ-ONLY; Last connectivity time of the IoT sensor
-	ConnectivityTime *string `json:"connectivityTime,omitempty" azure:"ro"`
+	ConnectivityTime *string
 
 	// READ-ONLY; Dynamic mode status of the IoT sensor
-	DynamicLearning *bool `json:"dynamicLearning,omitempty" azure:"ro"`
+	DynamicLearning *bool
 
 	// READ-ONLY; Learning mode status of the IoT sensor
-	LearningMode *bool `json:"learningMode,omitempty" azure:"ro"`
+	LearningMode *bool
 
 	// READ-ONLY; Status of the IoT sensor
-	SensorStatus *SensorStatus `json:"sensorStatus,omitempty" azure:"ro"`
+	SensorStatus *SensorStatus
 
 	// READ-ONLY; Version of the IoT sensor
-	SensorVersion *string `json:"sensorVersion,omitempty" azure:"ro"`
+	SensorVersion *string
 
 	// READ-ONLY; TI Status of the IoT sensor
-	TiStatus *TiStatus `json:"tiStatus,omitempty" azure:"ro"`
+	TiStatus *TiStatus
 
 	// READ-ONLY; TI Version of the IoT sensor
-	TiVersion *string `json:"tiVersion,omitempty" azure:"ro"`
+	TiVersion *string
 }
 
 // SensorsClientCreateOrUpdateOptions contains the optional parameters for the SensorsClient.CreateOrUpdate method.
@@ -913,34 +913,34 @@ type SensorsClientTriggerTiPackageUpdateOptions struct {
 // SensorsList - List of IoT sensors
 type SensorsList struct {
 	// READ-ONLY; List data
-	Value []*SensorModel `json:"value,omitempty" azure:"ro"`
+	Value []*SensorModel
 }
 
 // SiteModel - IoT site model
 type SiteModel struct {
 	// IoT site properties
-	Properties *SiteProperties `json:"properties,omitempty"`
+	Properties *SiteProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteProperties - IoT site properties
 type SiteProperties struct {
 	// REQUIRED; Display name of the IoT site
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Tags of the IoT site
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // SitesClientCreateOrUpdateOptions contains the optional parameters for the SitesClient.CreateOrUpdate method.
@@ -966,80 +966,80 @@ type SitesClientListOptions struct {
 // SitesList - List of IoT sites
 type SitesList struct {
 	// READ-ONLY; List data
-	Value []*SiteModel `json:"value,omitempty" azure:"ro"`
+	Value []*SiteModel
 }
 
 // Slot data in PLC backplane
 type Slot struct {
 	// A bag of fields which extends the slot information.
-	AdditionalData any `json:"additionalData,omitempty"`
+	AdditionalData any
 
 	// Firmware revision of the slot.
-	FirmwareVersion *string `json:"firmwareVersion,omitempty"`
+	FirmwareVersion *string
 
 	// Hardware revision of the slot.
-	HardwareRevision *string `json:"hardwareRevision,omitempty"`
+	HardwareRevision *string
 
 	// Hardware vendor of the slot.
-	HardwareVendor *string `json:"hardwareVendor,omitempty"`
+	HardwareVendor *string
 
 	// Model of the slot.
-	Model *string `json:"model,omitempty"`
+	Model *string
 
 	// Module version of the slot.
-	ModuleVersion *string `json:"moduleVersion,omitempty"`
+	ModuleVersion *string
 
 	// Product code of the slot.
-	ProductCode *string `json:"productCode,omitempty"`
+	ProductCode *string
 
 	// Serial number of the slot.
-	SerialNumber *string `json:"serialNumber,omitempty"`
+	SerialNumber *string
 
 	// Slot type.
-	SlotType *SlotType `json:"slotType,omitempty"`
+	SlotType *SlotType
 
 	// READ-ONLY; List of Common Platform Enumeration (CPE) of the slot
-	Cpes []*string `json:"cpes,omitempty" azure:"ro"`
+	Cpes []*string
 
 	// READ-ONLY; Rack number in the backplane
-	RackNumber *int32 `json:"rackNumber,omitempty" azure:"ro"`
+	RackNumber *int32
 
 	// READ-ONLY; Slot number inside the rack
-	SlotNumber *int32 `json:"slotNumber,omitempty" azure:"ro"`
+	SlotNumber *int32
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // UpgradePackageDownloadInfo - Information on a specific package upgrade download
 type UpgradePackageDownloadInfo struct {
 	// READ-ONLY; Minimum base version for upgrade
-	FromVersion *string `json:"fromVersion,omitempty" azure:"ro"`
+	FromVersion *string
 
 	// READ-ONLY; Download link
-	Link *string `json:"link,omitempty" azure:"ro"`
+	Link *string
 
 	// READ-ONLY; Version number
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 
 	// READ-ONLY; Kind of the version
-	VersionKind *VersionKind `json:"versionKind,omitempty" azure:"ro"`
+	VersionKind *VersionKind
 }

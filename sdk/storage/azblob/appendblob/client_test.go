@@ -190,7 +190,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithMD5() {
 	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
 	_, err = abClient.Create(context.Background(), nil)
 	_require.Nil(err)
-	// _require.Equal(resp.RawResponse.StatusCode, 201)
 
 	// test append block with valid MD5 value
 	readerToBody, body := testcommon.GetDataAndReader(testName, 1024)
@@ -225,6 +224,46 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithMD5() {
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// set up abClient to test
+	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// test append block with valid MD5 value
+	readerToBody, body := testcommon.GetDataAndReader(testName, 1024)
+	crc64Value := crc64.Checksum(body, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+	appendBlockOptions := appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeCRC64(crc64Value),
+	}
+	appendResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
+	_require.Nil(err)
+	_require.EqualValues(appendResp.ContentCRC64, crc)
+
+	// test append block with bad CRC64 value
+	readerToBody, body = testcommon.GetDataAndReader(testName, 1024)
+	badCRC64 := rand.Uint64()
+	_ = body
+	appendBlockOptions = appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeCRC64(badCRC64),
+	}
+	appendResp, err = abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
+	_require.NotNil(err)
+
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
@@ -319,7 +358,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
 	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
 
-	//ctx := ctx
 	contentSize := 4 * 1024 // 4KB
 	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
 	contentMD5 := md5.Sum(sourceData)
@@ -406,6 +444,90 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithMD5() {
 	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
 	_require.NotNil(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
+}
+
+func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4KB
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	crc64Value := crc64.Checksum(sourceData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+	srcBlob := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appendsrc"))
+	destBlob := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName("appenddest"))
+
+	// Prepare source abClient for copy.
+	_, err = srcBlob.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	appendResp, err := srcBlob.AppendBlock(context.Background(), streaming.NopCloser(r), nil)
+	_require.Nil(err)
+	_require.EqualValues(appendResp.ContentCRC64, crc)
+
+	// Get source abClient URL with SAS for AppendBlockFromURL.
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+	perms := sas.BlobPermissions{Read: true}
+
+	srcBlobParts.SAS, err = sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   perms.String(),
+	}.SignWithSharedKey(credential)
+	if err != nil {
+		s.T().Fatal(err)
+	}
+
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	// Append block from URL.
+	_, err = destBlob.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	count := int64(contentSize)
+	appendBlockURLOptions := appendblob.AppendBlockFromURLOptions{
+		Range:                   blob.HTTPRange{Offset: 0, Count: count},
+		SourceContentValidation: blob.SourceContentValidationTypeCRC64(crc),
+	}
+	appendFromURLResp, err := destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
+	_require.Nil(err)
+
+	// TODO: This fails because ContentCRC64 is not returned in the response, verify if this is expected behavior
+	_require.EqualValues(appendFromURLResp.ContentCRC64, crc)
+
+	// Check data integrity through downloading.
+	destBuffer := make([]byte, 4*1024)
+	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
+	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
+	_require.Nil(err)
+	_require.Equal(destBuffer, sourceData)
+
+	// Test append block from URL with bad MD5 value
+	r, sourceData = testcommon.GetDataAndReader(testName, 16)
+	crc64Value = crc64.Checksum(sourceData, shared.CRC64Table)
+	badCRC := make([]byte, 8)
+	binary.LittleEndian.PutUint64(badCRC, crc64Value)
+	appendBlockURLOptions = appendblob.AppendBlockFromURLOptions{
+		Range:                   blob.HTTPRange{Offset: 0, Count: count},
+		SourceContentValidation: blob.SourceContentValidationTypeCRC64(crc),
+	}
+	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
+	
+	// TODO: This does not fail when it should because wrong CRC64 is passed, verify if this is expected
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
 }
 
 func (s *AppendBlobRecordedTestsSuite) TestAppendBlockFromURLCopySourceAuth() {

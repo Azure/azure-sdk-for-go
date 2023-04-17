@@ -14,199 +14,199 @@ import "time"
 // BucketDefinition - Parameters to reconcile to the GitRepository source kind type.
 type BucketDefinition struct {
 	// Plaintext access key used to securely access the S3 bucket
-	AccessKey *string `json:"accessKey,omitempty"`
+	AccessKey *string
 
 	// The bucket name to sync from the url endpoint for the flux configuration.
-	BucketName *string `json:"bucketName,omitempty"`
+	BucketName *string
 
 	// Specify whether to use insecure communication when puling data from the S3 bucket.
-	Insecure *bool `json:"insecure,omitempty"`
+	Insecure *bool
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
 	// configuration secrets.
-	LocalAuthRef *string `json:"localAuthRef,omitempty"`
+	LocalAuthRef *string
 
 	// The interval at which to re-reconcile the cluster git repository source with the remote.
-	SyncIntervalInSeconds *int64 `json:"syncIntervalInSeconds,omitempty"`
+	SyncIntervalInSeconds *int64
 
 	// The maximum time to attempt to reconcile the cluster git repository source with the remote.
-	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
+	TimeoutInSeconds *int64
 
 	// The URL to sync for the flux configuration S3 bucket.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // BucketPatchDefinition - Parameters to reconcile to the GitRepository source kind type.
 type BucketPatchDefinition struct {
 	// Plaintext access key used to securely access the S3 bucket
-	AccessKey *string `json:"accessKey,omitempty"`
+	AccessKey *string
 
 	// The bucket name to sync from the url endpoint for the flux configuration.
-	BucketName *string `json:"bucketName,omitempty"`
+	BucketName *string
 
 	// Specify whether to use insecure communication when puling data from the S3 bucket.
-	Insecure *bool `json:"insecure,omitempty"`
+	Insecure *bool
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
 	// configuration secrets.
-	LocalAuthRef *string `json:"localAuthRef,omitempty"`
+	LocalAuthRef *string
 
 	// The interval at which to re-reconcile the cluster git repository source with the remote.
-	SyncIntervalInSeconds *int64 `json:"syncIntervalInSeconds,omitempty"`
+	SyncIntervalInSeconds *int64
 
 	// The maximum time to attempt to reconcile the cluster git repository source with the remote.
-	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
+	TimeoutInSeconds *int64
 
 	// The URL to sync for the flux configuration S3 bucket.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // ComplianceStatus - Compliance Status details
 type ComplianceStatus struct {
 	// Datetime the configuration was last applied.
-	LastConfigApplied *time.Time `json:"lastConfigApplied,omitempty"`
+	LastConfigApplied *time.Time
 
 	// Message from when the configuration was applied.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Level of the message.
-	MessageLevel *MessageLevelType `json:"messageLevel,omitempty"`
+	MessageLevel *MessageLevelType
 
 	// READ-ONLY; The compliance state of the configuration.
-	ComplianceState *ComplianceStateType `json:"complianceState,omitempty" azure:"ro"`
+	ComplianceState *ComplianceStateType
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Extension - The Extension object.
 type Extension struct {
 	// Identity of the Extension resource
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Properties of an Extension resource
-	Properties *ExtensionProperties `json:"properties,omitempty"`
+	Properties *ExtensionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExtensionProperties - Properties of an Extension resource
 type ExtensionProperties struct {
 	// Identity of the Extension resource in an AKS cluster
-	AksAssignedIdentity *ExtensionPropertiesAksAssignedIdentity `json:"aksAssignedIdentity,omitempty"`
+	AksAssignedIdentity *ExtensionPropertiesAksAssignedIdentity
 
 	// Flag to note if this extension participates in auto upgrade of minor version, or not.
-	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
+	AutoUpgradeMinorVersion *bool
 
 	// Configuration settings that are sensitive, as name-value pairs for configuring this extension.
-	ConfigurationProtectedSettings map[string]*string `json:"configurationProtectedSettings,omitempty"`
+	ConfigurationProtectedSettings map[string]*string
 
 	// Configuration settings, as name-value pairs for configuring this extension.
-	ConfigurationSettings map[string]*string `json:"configurationSettings,omitempty"`
+	ConfigurationSettings map[string]*string
 
 	// Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with
 	// Microsoft.KubernetesConfiguration by the Extension publisher.
-	ExtensionType *string `json:"extensionType,omitempty"`
+	ExtensionType *string
 
 	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion
 	// is 'true'.
-	ReleaseTrain *string `json:"releaseTrain,omitempty"`
+	ReleaseTrain *string
 
 	// Scope at which the extension is installed.
-	Scope *Scope `json:"scope,omitempty"`
+	Scope *Scope
 
 	// Status from this extension.
-	Statuses []*ExtensionStatus `json:"statuses,omitempty"`
+	Statuses []*ExtensionStatus
 
 	// User-specified version of the extension for this extension to 'pin'. To use 'version', autoUpgradeMinorVersion must be
 	// 'false'.
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; Custom Location settings properties.
-	CustomLocationSettings map[string]*string `json:"customLocationSettings,omitempty" azure:"ro"`
+	CustomLocationSettings map[string]*string
 
 	// READ-ONLY; Error information from the Agent - e.g. errors during installation.
-	ErrorInfo *ErrorDetail `json:"errorInfo,omitempty" azure:"ro"`
+	ErrorInfo *ErrorDetail
 
 	// READ-ONLY; Installed version of the extension.
-	InstalledVersion *string `json:"installedVersion,omitempty" azure:"ro"`
+	InstalledVersion *string
 
 	// READ-ONLY; Uri of the Helm package
-	PackageURI *string `json:"packageUri,omitempty" azure:"ro"`
+	PackageURI *string
 
 	// READ-ONLY; Status of installation of this extension.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ExtensionPropertiesAksAssignedIdentity - Identity of the Extension resource in an AKS cluster
 type ExtensionPropertiesAksAssignedIdentity struct {
 	// The identity type.
-	Type *AKSIdentityType `json:"type,omitempty"`
+	Type *AKSIdentityType
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ExtensionStatus - Status from the extension.
 type ExtensionStatus struct {
 	// Status code provided by the Extension
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Short description of status of the extension.
-	DisplayStatus *string `json:"displayStatus,omitempty"`
+	DisplayStatus *string
 
 	// Level of the status.
-	Level *LevelType `json:"level,omitempty"`
+	Level *LevelType
 
 	// Detailed message of the status from the Extension.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// DateLiteral (per ISO8601) noting the time of installation status.
-	Time *string `json:"time,omitempty"`
+	Time *string
 }
 
 // ExtensionsClientBeginCreateOptions contains the optional parameters for the ExtensionsClient.BeginCreate method.
@@ -243,10 +243,10 @@ type ExtensionsClientListOptions struct {
 // the next set of results.
 type ExtensionsList struct {
 	// READ-ONLY; URL to get the next set of extension objects, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Extensions within a Kubernetes cluster.
-	Value []*Extension `json:"value,omitempty" azure:"ro"`
+	Value []*Extension
 }
 
 // FluxConfigOperationStatusClientGetOptions contains the optional parameters for the FluxConfigOperationStatusClient.Get
@@ -258,100 +258,100 @@ type FluxConfigOperationStatusClientGetOptions struct {
 // FluxConfiguration - The Flux Configuration object returned in Get & Put response.
 type FluxConfiguration struct {
 	// Properties to create a Flux Configuration resource
-	Properties *FluxConfigurationProperties `json:"properties,omitempty"`
+	Properties *FluxConfigurationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FluxConfigurationPatch - The Flux Configuration Patch Request object.
 type FluxConfigurationPatch struct {
 	// Updatable properties of an Flux Configuration Patch Request
-	Properties *FluxConfigurationPatchProperties `json:"properties,omitempty"`
+	Properties *FluxConfigurationPatchProperties
 }
 
 // FluxConfigurationPatchProperties - Updatable properties of an Flux Configuration Patch Request
 type FluxConfigurationPatchProperties struct {
 	// Parameters to reconcile to the Bucket source kind type.
-	Bucket *BucketPatchDefinition `json:"bucket,omitempty"`
+	Bucket *BucketPatchDefinition
 
 	// Key-value pairs of protected configuration settings for the configuration
-	ConfigurationProtectedSettings map[string]*string `json:"configurationProtectedSettings,omitempty"`
+	ConfigurationProtectedSettings map[string]*string
 
 	// Parameters to reconcile to the GitRepository source kind type.
-	GitRepository *GitRepositoryPatchDefinition `json:"gitRepository,omitempty"`
+	GitRepository *GitRepositoryPatchDefinition
 
 	// Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
-	Kustomizations map[string]*KustomizationPatchDefinition `json:"kustomizations,omitempty"`
+	Kustomizations map[string]*KustomizationPatchDefinition
 
 	// Source Kind to pull the configuration data from.
-	SourceKind *SourceKindType `json:"sourceKind,omitempty"`
+	SourceKind *SourceKindType
 
 	// Whether this configuration should suspend its reconciliation of its kustomizations and sources.
-	Suspend *bool `json:"suspend,omitempty"`
+	Suspend *bool
 }
 
 // FluxConfigurationProperties - Properties to create a Flux Configuration resource
 type FluxConfigurationProperties struct {
 	// Parameters to reconcile to the Bucket source kind type.
-	Bucket *BucketDefinition `json:"bucket,omitempty"`
+	Bucket *BucketDefinition
 
 	// Key-value pairs of protected configuration settings for the configuration
-	ConfigurationProtectedSettings map[string]*string `json:"configurationProtectedSettings,omitempty"`
+	ConfigurationProtectedSettings map[string]*string
 
 	// Parameters to reconcile to the GitRepository source kind type.
-	GitRepository *GitRepositoryDefinition `json:"gitRepository,omitempty"`
+	GitRepository *GitRepositoryDefinition
 
 	// Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster.
-	Kustomizations map[string]*KustomizationDefinition `json:"kustomizations,omitempty"`
+	Kustomizations map[string]*KustomizationDefinition
 
 	// The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and
 	// period only.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// Scope at which the operator will be installed.
-	Scope *ScopeType `json:"scope,omitempty"`
+	Scope *ScopeType
 
 	// Source Kind to pull the configuration data from.
-	SourceKind *SourceKindType `json:"sourceKind,omitempty"`
+	SourceKind *SourceKindType
 
 	// Whether this configuration should suspend its reconciliation of its kustomizations and sources.
-	Suspend *bool `json:"suspend,omitempty"`
+	Suspend *bool
 
 	// READ-ONLY; Combined status of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed
 	// objects.
-	ComplianceState *FluxComplianceState `json:"complianceState,omitempty" azure:"ro"`
+	ComplianceState *FluxComplianceState
 
 	// READ-ONLY; Error message returned to the user in the case of provisioning failure.
-	ErrorMessage *string `json:"errorMessage,omitempty" azure:"ro"`
+	ErrorMessage *string
 
 	// READ-ONLY; Status of the creation of the fluxConfiguration.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Public Key associated with this fluxConfiguration (either generated within the cluster or provided by the user).
-	RepositoryPublicKey *string `json:"repositoryPublicKey,omitempty" azure:"ro"`
+	RepositoryPublicKey *string
 
 	// READ-ONLY; Branch and/or SHA of the source commit synced with the cluster.
-	SourceSyncedCommitID *string `json:"sourceSyncedCommitId,omitempty" azure:"ro"`
+	SourceSyncedCommitID *string
 
 	// READ-ONLY; Datetime the fluxConfiguration synced its source on the cluster.
-	SourceUpdatedAt *time.Time `json:"sourceUpdatedAt,omitempty" azure:"ro"`
+	SourceUpdatedAt *time.Time
 
 	// READ-ONLY; Datetime the fluxConfiguration synced its status on the cluster with Azure.
-	StatusUpdatedAt *time.Time `json:"statusUpdatedAt,omitempty" azure:"ro"`
+	StatusUpdatedAt *time.Time
 
 	// READ-ONLY; Statuses of the Flux Kubernetes resources created by the fluxConfiguration or created by the managed objects
 	// provisioned by the fluxConfiguration.
-	Statuses []*ObjectStatusDefinition `json:"statuses,omitempty" azure:"ro"`
+	Statuses []*ObjectStatusDefinition
 }
 
 // FluxConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the FluxConfigurationsClient.BeginCreateOrUpdate
@@ -391,133 +391,133 @@ type FluxConfigurationsClientListOptions struct {
 // and a URL link to get the next set of results.
 type FluxConfigurationsList struct {
 	// READ-ONLY; URL to get the next set of configuration objects, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Flux Configurations within a Kubernetes cluster.
-	Value []*FluxConfiguration `json:"value,omitempty" azure:"ro"`
+	Value []*FluxConfiguration
 }
 
 // GitRepositoryDefinition - Parameters to reconcile to the GitRepository source kind type.
 type GitRepositoryDefinition struct {
 	// Base64-encoded HTTPS certificate authority contents used to access git private git repositories over HTTPS
-	HTTPSCACert *string `json:"httpsCACert,omitempty"`
+	HTTPSCACert *string
 
 	// Plaintext HTTPS username used to access private git repositories over HTTPS
-	HTTPSUser *string `json:"httpsUser,omitempty"`
+	HTTPSUser *string
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
 	// configuration secrets.
-	LocalAuthRef *string `json:"localAuthRef,omitempty"`
+	LocalAuthRef *string
 
 	// The source reference for the GitRepository object.
-	RepositoryRef *RepositoryRefDefinition `json:"repositoryRef,omitempty"`
+	RepositoryRef *RepositoryRefDefinition
 
 	// Base64-encoded known_hosts value containing public SSH keys required to access private git repositories over SSH
-	SSHKnownHosts *string `json:"sshKnownHosts,omitempty"`
+	SSHKnownHosts *string
 
 	// The interval at which to re-reconcile the cluster git repository source with the remote.
-	SyncIntervalInSeconds *int64 `json:"syncIntervalInSeconds,omitempty"`
+	SyncIntervalInSeconds *int64
 
 	// The maximum time to attempt to reconcile the cluster git repository source with the remote.
-	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
+	TimeoutInSeconds *int64
 
 	// The URL to sync for the flux configuration git repository.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // GitRepositoryPatchDefinition - Parameters to reconcile to the GitRepository source kind type.
 type GitRepositoryPatchDefinition struct {
 	// Base64-encoded HTTPS certificate authority contents used to access git private git repositories over HTTPS
-	HTTPSCACert *string `json:"httpsCACert,omitempty"`
+	HTTPSCACert *string
 
 	// Plaintext HTTPS username used to access private git repositories over HTTPS
-	HTTPSUser *string `json:"httpsUser,omitempty"`
+	HTTPSUser *string
 
 	// Name of a local secret on the Kubernetes cluster to use as the authentication secret rather than the managed or user-provided
 	// configuration secrets.
-	LocalAuthRef *string `json:"localAuthRef,omitempty"`
+	LocalAuthRef *string
 
 	// The source reference for the GitRepository object.
-	RepositoryRef *RepositoryRefDefinition `json:"repositoryRef,omitempty"`
+	RepositoryRef *RepositoryRefDefinition
 
 	// Base64-encoded known_hosts value containing public SSH keys required to access private git repositories over SSH
-	SSHKnownHosts *string `json:"sshKnownHosts,omitempty"`
+	SSHKnownHosts *string
 
 	// The interval at which to re-reconcile the cluster git repository source with the remote.
-	SyncIntervalInSeconds *int64 `json:"syncIntervalInSeconds,omitempty"`
+	SyncIntervalInSeconds *int64
 
 	// The maximum time to attempt to reconcile the cluster git repository source with the remote.
-	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
+	TimeoutInSeconds *int64
 
 	// The URL to sync for the flux configuration git repository.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // HelmOperatorProperties - Properties for Helm operator.
 type HelmOperatorProperties struct {
 	// Values override for the operator Helm chart.
-	ChartValues *string `json:"chartValues,omitempty"`
+	ChartValues *string
 
 	// Version of the operator Helm chart.
-	ChartVersion *string `json:"chartVersion,omitempty"`
+	ChartVersion *string
 }
 
 // HelmReleasePropertiesDefinition - Properties for HelmRelease objects
 type HelmReleasePropertiesDefinition struct {
 	// Total number of times that the HelmRelease failed to install or upgrade
-	FailureCount *int64 `json:"failureCount,omitempty"`
+	FailureCount *int64
 
 	// The reference to the HelmChart object used as the source to this HelmRelease
-	HelmChartRef *ObjectReferenceDefinition `json:"helmChartRef,omitempty"`
+	HelmChartRef *ObjectReferenceDefinition
 
 	// Number of times that the HelmRelease failed to install
-	InstallFailureCount *int64 `json:"installFailureCount,omitempty"`
+	InstallFailureCount *int64
 
 	// The revision number of the last released object change
-	LastRevisionApplied *int64 `json:"lastRevisionApplied,omitempty"`
+	LastRevisionApplied *int64
 
 	// Number of times that the HelmRelease failed to upgrade
-	UpgradeFailureCount *int64 `json:"upgradeFailureCount,omitempty"`
+	UpgradeFailureCount *int64
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // KustomizationDefinition - The Kustomization defining how to reconcile the artifact pulled by the source type on the cluster.
 type KustomizationDefinition struct {
 	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies
 	// have completed their reconciliation.
-	DependsOn []*string `json:"dependsOn,omitempty"`
+	DependsOn []*string
 
 	// Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change.
-	Force *bool `json:"force,omitempty"`
+	Force *bool
 
 	// The path in the source reference to reconcile on the cluster.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Enable/disable garbage collections of Kubernetes objects created by this Kustomization.
-	Prune *bool `json:"prune,omitempty"`
+	Prune *bool
 
 	// The interval at which to re-reconcile the Kustomization on the cluster in the event of failure on reconciliation.
-	RetryIntervalInSeconds *int64 `json:"retryIntervalInSeconds,omitempty"`
+	RetryIntervalInSeconds *int64
 
 	// The interval at which to re-reconcile the Kustomization on the cluster.
-	SyncIntervalInSeconds *int64 `json:"syncIntervalInSeconds,omitempty"`
+	SyncIntervalInSeconds *int64
 
 	// The maximum time to attempt to reconcile the Kustomization on the cluster.
-	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
+	TimeoutInSeconds *int64
 
 	// READ-ONLY; Name of the Kustomization, matching the key in the Kustomizations object map.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // KustomizationPatchDefinition - The Kustomization defining how to reconcile the artifact pulled by the source type on the
@@ -525,76 +525,76 @@ type KustomizationDefinition struct {
 type KustomizationPatchDefinition struct {
 	// Specifies other Kustomizations that this Kustomization depends on. This Kustomization will not reconcile until all dependencies
 	// have completed their reconciliation.
-	DependsOn []*string `json:"dependsOn,omitempty"`
+	DependsOn []*string
 
 	// Enable/disable re-creating Kubernetes resources on the cluster when patching fails due to an immutable field change.
-	Force *bool `json:"force,omitempty"`
+	Force *bool
 
 	// The path in the source reference to reconcile on the cluster.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// Enable/disable garbage collections of Kubernetes objects created by this Kustomization.
-	Prune *bool `json:"prune,omitempty"`
+	Prune *bool
 
 	// The interval at which to re-reconcile the Kustomization on the cluster in the event of failure on reconciliation.
-	RetryIntervalInSeconds *int64 `json:"retryIntervalInSeconds,omitempty"`
+	RetryIntervalInSeconds *int64
 
 	// The interval at which to re-reconcile the Kustomization on the cluster.
-	SyncIntervalInSeconds *int64 `json:"syncIntervalInSeconds,omitempty"`
+	SyncIntervalInSeconds *int64
 
 	// The maximum time to attempt to reconcile the Kustomization on the cluster.
-	TimeoutInSeconds *int64 `json:"timeoutInSeconds,omitempty"`
+	TimeoutInSeconds *int64
 }
 
 // ObjectReferenceDefinition - Object reference to a Kubernetes object on a cluster
 type ObjectReferenceDefinition struct {
 	// Name of the object
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Namespace of the object
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 }
 
 // ObjectStatusConditionDefinition - Status condition of Kubernetes object
 type ObjectStatusConditionDefinition struct {
 	// Last time this status condition has changed
-	LastTransitionTime *time.Time `json:"lastTransitionTime,omitempty"`
+	LastTransitionTime *time.Time
 
 	// A more verbose description of the object status condition
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Reason for the specified status condition type status
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 
 	// Status of the Kubernetes object condition type
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Object status condition type for this object
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ObjectStatusDefinition - Statuses of objects deployed by the user-specified kustomizations from the git repository.
 type ObjectStatusDefinition struct {
 	// Object reference to the Kustomization that applied this object
-	AppliedBy *ObjectReferenceDefinition `json:"appliedBy,omitempty"`
+	AppliedBy *ObjectReferenceDefinition
 
 	// Compliance state of the applied object showing whether the applied object has come into a ready state on the cluster.
-	ComplianceState *FluxComplianceState `json:"complianceState,omitempty"`
+	ComplianceState *FluxComplianceState
 
 	// Additional properties that are provided from objects of the HelmRelease kind
-	HelmReleaseProperties *HelmReleasePropertiesDefinition `json:"helmReleaseProperties,omitempty"`
+	HelmReleaseProperties *HelmReleasePropertiesDefinition
 
 	// Kind of the applied object
-	Kind *string `json:"kind,omitempty"`
+	Kind *string
 
 	// Name of the applied object
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Namespace of the applied object
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// List of Kubernetes object status conditions present on the cluster
-	StatusConditions []*ObjectStatusConditionDefinition `json:"statusConditions,omitempty"`
+	StatusConditions []*ObjectStatusConditionDefinition
 }
 
 // OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
@@ -610,28 +610,28 @@ type OperationStatusClientListOptions struct {
 // OperationStatusList - The async operations in progress, in the cluster.
 type OperationStatusList struct {
 	// READ-ONLY; URL to get the next set of Operation Result objects, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of async operations in progress, in the cluster.
-	Value []*OperationStatusResult `json:"value,omitempty" azure:"ro"`
+	Value []*OperationStatusResult
 }
 
 // OperationStatusResult - The current status of an async operation.
 type OperationStatusResult struct {
 	// REQUIRED; Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// Fully qualified ID for the async operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the async operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Additional information, if available.
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// READ-ONLY; If present, details of the operation error.
-	Error *ErrorDetail `json:"error,omitempty" azure:"ro"`
+	Error *ErrorDetail
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -642,200 +642,200 @@ type OperationsClientListOptions struct {
 // PatchExtension - The Extension Patch Request object.
 type PatchExtension struct {
 	// Updatable properties of an Extension Patch Request
-	Properties *PatchExtensionProperties `json:"properties,omitempty"`
+	Properties *PatchExtensionProperties
 }
 
 // PatchExtensionProperties - Updatable properties of an Extension Patch Request
 type PatchExtensionProperties struct {
 	// Flag to note if this extension participates in auto upgrade of minor version, or not.
-	AutoUpgradeMinorVersion *bool `json:"autoUpgradeMinorVersion,omitempty"`
+	AutoUpgradeMinorVersion *bool
 
 	// Configuration settings that are sensitive, as name-value pairs for configuring this extension.
-	ConfigurationProtectedSettings map[string]*string `json:"configurationProtectedSettings,omitempty"`
+	ConfigurationProtectedSettings map[string]*string
 
 	// Configuration settings, as name-value pairs for configuring this extension.
-	ConfigurationSettings map[string]*string `json:"configurationSettings,omitempty"`
+	ConfigurationSettings map[string]*string
 
 	// ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion
 	// is 'true'.
-	ReleaseTrain *string `json:"releaseTrain,omitempty"`
+	ReleaseTrain *string
 
 	// Version of the extension for this extension, if it is 'pinned' to a specific version. autoUpgradeMinorVersion must be 'false'.
-	Version *string `json:"version,omitempty"`
+	Version *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RepositoryRefDefinition - The source reference for the GitRepository object.
 type RepositoryRefDefinition struct {
 	// The git repository branch name to checkout.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// The commit SHA to checkout. This value must be combined with the branch name to be valid. This takes precedence over semver.
-	Commit *string `json:"commit,omitempty"`
+	Commit *string
 
 	// The semver range used to match against git repository tags. This takes precedence over tag.
-	Semver *string `json:"semver,omitempty"`
+	Semver *string
 
 	// The git repository tag name to checkout. This takes precedence over branch.
-	Tag *string `json:"tag,omitempty"`
+	Tag *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceProviderOperation - Supported operation of this resource provider.
 type ResourceProviderOperation struct {
 	// Display metadata associated with the operation.
-	Display *ResourceProviderOperationDisplay `json:"display,omitempty"`
+	Display *ResourceProviderOperationDisplay
 
 	// Operation name, in format of {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; The flag that indicates whether the operation applies to data plane.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; Origin of the operation
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // ResourceProviderOperationDisplay - Display metadata associated with the operation.
 type ResourceProviderOperationDisplay struct {
 	// Description of this operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Type of operation: get, read, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Resource provider: Microsoft KubernetesConfiguration.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // ResourceProviderOperationList - Result of the request to list operations.
 type ResourceProviderOperationList struct {
 	// List of operations supported by this resource provider.
-	Value []*ResourceProviderOperation `json:"value,omitempty"`
+	Value []*ResourceProviderOperation
 
 	// READ-ONLY; URL to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // Scope of the extension. It can be either Cluster or Namespace; but not both.
 type Scope struct {
 	// Specifies that the scope of the extension is Cluster
-	Cluster *ScopeCluster `json:"cluster,omitempty"`
+	Cluster *ScopeCluster
 
 	// Specifies that the scope of the extension is Namespace
-	Namespace *ScopeNamespace `json:"namespace,omitempty"`
+	Namespace *ScopeNamespace
 }
 
 // ScopeCluster - Specifies that the scope of the extension is Cluster
 type ScopeCluster struct {
 	// Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist,
 	// it will be created
-	ReleaseNamespace *string `json:"releaseNamespace,omitempty"`
+	ReleaseNamespace *string
 }
 
 // ScopeNamespace - Specifies that the scope of the extension is Namespace
 type ScopeNamespace struct {
 	// Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will
 	// be created
-	TargetNamespace *string `json:"targetNamespace,omitempty"`
+	TargetNamespace *string
 }
 
 // SourceControlConfiguration - The SourceControl Configuration object returned in Get & Put response.
 type SourceControlConfiguration struct {
 	// Properties to create a Source Control Configuration resource
-	Properties *SourceControlConfigurationProperties `json:"properties,omitempty"`
+	Properties *SourceControlConfigurationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Top level metadata https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/common-api-contracts.md#system-metadata-for-all-azure-resources
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SourceControlConfigurationList - Result of the request to list Source Control Configurations. It contains a list of SourceControlConfiguration
 // objects and a URL link to get the next set of results.
 type SourceControlConfigurationList struct {
 	// READ-ONLY; URL to get the next set of configuration objects, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Source Control Configurations within a Kubernetes cluster.
-	Value []*SourceControlConfiguration `json:"value,omitempty" azure:"ro"`
+	Value []*SourceControlConfiguration
 }
 
 // SourceControlConfigurationProperties - Properties to create a Source Control Configuration resource
 type SourceControlConfigurationProperties struct {
 	// Name-value pairs of protected configuration settings for the configuration
-	ConfigurationProtectedSettings map[string]*string `json:"configurationProtectedSettings,omitempty"`
+	ConfigurationProtectedSettings map[string]*string
 
 	// Option to enable Helm Operator for this git configuration.
-	EnableHelmOperator *bool `json:"enableHelmOperator,omitempty"`
+	EnableHelmOperator *bool
 
 	// Properties for Helm operator.
-	HelmOperatorProperties *HelmOperatorProperties `json:"helmOperatorProperties,omitempty"`
+	HelmOperatorProperties *HelmOperatorProperties
 
 	// Instance name of the operator - identifying the specific configuration.
-	OperatorInstanceName *string `json:"operatorInstanceName,omitempty"`
+	OperatorInstanceName *string
 
 	// The namespace to which this operator is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period
 	// only.
-	OperatorNamespace *string `json:"operatorNamespace,omitempty"`
+	OperatorNamespace *string
 
 	// Any Parameters for the Operator instance in string format.
-	OperatorParams *string `json:"operatorParams,omitempty"`
+	OperatorParams *string
 
 	// Scope at which the operator will be installed.
-	OperatorScope *OperatorScopeType `json:"operatorScope,omitempty"`
+	OperatorScope *OperatorScopeType
 
 	// Type of the operator
-	OperatorType *OperatorType `json:"operatorType,omitempty"`
+	OperatorType *OperatorType
 
 	// Url of the SourceControl Repository.
-	RepositoryURL *string `json:"repositoryUrl,omitempty"`
+	RepositoryURL *string
 
 	// Base64-encoded known_hosts contents containing public SSH keys required to access private Git instances
-	SSHKnownHostsContents *string `json:"sshKnownHostsContents,omitempty"`
+	SSHKnownHostsContents *string
 
 	// READ-ONLY; Compliance Status of the Configuration
-	ComplianceStatus *ComplianceStatus `json:"complianceStatus,omitempty" azure:"ro"`
+	ComplianceStatus *ComplianceStatus
 
 	// READ-ONLY; The provisioning state of the resource provider.
-	ProvisioningState *ProvisioningStateType `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningStateType
 
 	// READ-ONLY; Public Key associated with this SourceControl configuration (either generated within the cluster or provided
 	// by the user).
-	RepositoryPublicKey *string `json:"repositoryPublicKey,omitempty" azure:"ro"`
+	RepositoryPublicKey *string
 }
 
 // SourceControlConfigurationsClientBeginDeleteOptions contains the optional parameters for the SourceControlConfigurationsClient.BeginDelete
@@ -866,20 +866,20 @@ type SourceControlConfigurationsClientListOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }

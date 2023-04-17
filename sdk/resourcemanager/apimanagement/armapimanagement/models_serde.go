@@ -3772,7 +3772,7 @@ func (c ContentTypeContractProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", c.Description)
 	populate(objectMap, "id", c.ID)
 	populate(objectMap, "name", c.Name)
-	populate(objectMap, "schema", &c.Schema)
+	populateAny(objectMap, "schema", c.Schema)
 	populate(objectMap, "version", c.Version)
 	return json.Marshal(objectMap)
 }
@@ -5096,9 +5096,9 @@ func (g *GlobalSchemaContract) UnmarshalJSON(data []byte) error {
 func (g GlobalSchemaContractProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "description", g.Description)
-	populate(objectMap, "document", &g.Document)
+	populateAny(objectMap, "document", g.Document)
 	populate(objectMap, "schemaType", g.SchemaType)
-	populate(objectMap, "value", &g.Value)
+	populateAny(objectMap, "value", g.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -7382,7 +7382,7 @@ func (o Operation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "display", o.Display)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "origin", o.Origin)
-	populate(objectMap, "properties", &o.Properties)
+	populateAny(objectMap, "properties", o.Properties)
 	return json.Marshal(objectMap)
 }
 
@@ -8046,7 +8046,7 @@ func (p ParameterExampleContract) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "description", p.Description)
 	populate(objectMap, "externalValue", p.ExternalValue)
 	populate(objectMap, "summary", p.Summary)
-	populate(objectMap, "value", &p.Value)
+	populateAny(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
 }
 
@@ -11148,8 +11148,8 @@ func (s *SchemaContractProperties) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type SchemaDocumentProperties.
 func (s SchemaDocumentProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "components", &s.Components)
-	populate(objectMap, "definitions", &s.Definitions)
+	populateAny(objectMap, "components", s.Components)
+	populateAny(objectMap, "definitions", s.Definitions)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
 }
@@ -13694,6 +13694,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

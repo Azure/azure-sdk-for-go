@@ -11,7 +11,7 @@ package armstorsimple8000series
 
 const (
 	moduleName    = "armstorsimple8000series"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // AlertEmailNotificationStatus - Indicates whether email notification enabled or not.

@@ -11,7 +11,7 @@ package armcdn
 
 const (
 	moduleName    = "armcdn"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // AFDEndpointProtocols - Supported protocols for the customer's endpoint.

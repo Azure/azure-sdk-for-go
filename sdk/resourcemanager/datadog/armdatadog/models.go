@@ -13,190 +13,190 @@ import "time"
 
 type APIKey struct {
 	// REQUIRED; The value of the API key.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// The time of creation of the API key.
-	Created *string `json:"created,omitempty"`
+	Created *string
 
 	// The user that created the API key.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The name of the API key.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // APIKeyListResponse - Response of a list operation.
 type APIKeyListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*APIKey `json:"value,omitempty"`
+	Value []*APIKey
 }
 
 // AgreementProperties - Terms properties.
 type AgreementProperties struct {
 	// If any version of the terms have been accepted, otherwise false.
-	Accepted *bool `json:"accepted,omitempty"`
+	Accepted *bool
 
 	// Link to HTML with Microsoft and Publisher terms.
-	LicenseTextLink *string `json:"licenseTextLink,omitempty"`
+	LicenseTextLink *string
 
 	// Plan identifier string.
-	Plan *string `json:"plan,omitempty"`
+	Plan *string
 
 	// Link to the privacy policy of the publisher.
-	PrivacyPolicyLink *string `json:"privacyPolicyLink,omitempty"`
+	PrivacyPolicyLink *string
 
 	// Product identifier string.
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// Publisher identifier string.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// Date and time in UTC of when the terms were accepted. This is empty if Accepted is false.
-	RetrieveDatetime *time.Time `json:"retrieveDatetime,omitempty"`
+	RetrieveDatetime *time.Time
 
 	// Terms signature.
-	Signature *string `json:"signature,omitempty"`
+	Signature *string
 }
 
 type AgreementResource struct {
 	// Represents the properties of the resource.
-	Properties *AgreementProperties `json:"properties,omitempty"`
+	Properties *AgreementProperties
 
 	// READ-ONLY; ARM id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the agreement.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AgreementResourceListResponse - Response of a list operation.
 type AgreementResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*AgreementResource `json:"value,omitempty"`
+	Value []*AgreementResource
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
 // from being monitored.
 type FilteringTag struct {
 	// Valid actions for a filtering tag. Exclusion takes priority over inclusion.
-	Action *TagAction `json:"action,omitempty"`
+	Action *TagAction
 
 	// The name (also known as the key) of the tag.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the tag.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 type Host struct {
 	// The aliases for the host.
-	Aliases []*string `json:"aliases,omitempty"`
+	Aliases []*string
 
 	// The Datadog integrations reporting metrics for the host.
-	Apps []*string     `json:"apps,omitempty"`
-	Meta *HostMetadata `json:"meta,omitempty"`
+	Apps []*string
+	Meta *HostMetadata
 
 	// The name of the host.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // HostListResponse - Response of a list operation.
 type HostListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*Host `json:"value,omitempty"`
+	Value []*Host
 }
 
 type HostMetadata struct {
 	// The agent version.
-	AgentVersion  *string        `json:"agentVersion,omitempty"`
-	InstallMethod *InstallMethod `json:"installMethod,omitempty"`
-	LogsAgent     *LogsAgent     `json:"logsAgent,omitempty"`
+	AgentVersion  *string
+	InstallMethod *InstallMethod
+	LogsAgent     *LogsAgent
 }
 
 type IdentityProperties struct {
 	// Identity type
-	Type *ManagedIdentityTypes `json:"type,omitempty"`
+	Type *ManagedIdentityTypes
 
 	// READ-ONLY; The identity ID.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 type InstallMethod struct {
 	// The installer version.
-	InstallerVersion *string `json:"installerVersion,omitempty"`
+	InstallerVersion *string
 
 	// The tool.
-	Tool *string `json:"tool,omitempty"`
+	Tool *string
 
 	// The tool version.
-	ToolVersion *string `json:"toolVersion,omitempty"`
+	ToolVersion *string
 }
 
 // LinkedResource - The definition of a linked resource.
 type LinkedResource struct {
 	// The ARM id of the linked resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // LinkedResourceListResponse - Response of a list operation.
 type LinkedResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*LinkedResource `json:"value,omitempty"`
+	Value []*LinkedResource
 }
 
 // LogRules - Set of rules for sending logs for the Monitor resource.
@@ -205,21 +205,21 @@ type LogRules struct {
 	// all resources will be captured. If only Exclude action is specified, the
 	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include
 	// resources with the associated tags.
-	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
+	FilteringTags []*FilteringTag
 
 	// Flag specifying if AAD logs should be sent for the Monitor resource.
-	SendAADLogs *bool `json:"sendAadLogs,omitempty"`
+	SendAADLogs *bool
 
 	// Flag specifying if Azure resource logs should be sent for the Monitor resource.
-	SendResourceLogs *bool `json:"sendResourceLogs,omitempty"`
+	SendResourceLogs *bool
 
 	// Flag specifying if Azure subscription logs should be sent for the Monitor resource.
-	SendSubscriptionLogs *bool `json:"sendSubscriptionLogs,omitempty"`
+	SendSubscriptionLogs *bool
 }
 
 type LogsAgent struct {
 	// The transport.
-	Transport *string `json:"transport,omitempty"`
+	Transport *string
 }
 
 // MarketplaceAgreementsClientCreateOrUpdateOptions contains the optional parameters for the MarketplaceAgreementsClient.CreateOrUpdate
@@ -239,148 +239,148 @@ type MetricRules struct {
 	// List of filtering tags to be used for capturing metrics. If empty, all resources will be captured. If only Exclude action
 	// is specified, the rules will apply to the list of all available resources. If
 	// Include actions are specified, the rules will only include resources with the associated tags.
-	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
+	FilteringTags []*FilteringTag
 }
 
 // MonitorProperties - Properties specific to the monitor resource.
 type MonitorProperties struct {
 	// Datadog organization properties
-	DatadogOrganizationProperties *OrganizationProperties `json:"datadogOrganizationProperties,omitempty"`
+	DatadogOrganizationProperties *OrganizationProperties
 
 	// Flag specifying if the resource monitoring is enabled or disabled.
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
+	MonitoringStatus *MonitoringStatus
 
 	// User info
-	UserInfo *UserInfo `json:"userInfo,omitempty"`
+	UserInfo *UserInfo
 
 	// READ-ONLY
-	LiftrResourceCategory *LiftrResourceCategories `json:"liftrResourceCategory,omitempty" azure:"ro"`
+	LiftrResourceCategory *LiftrResourceCategories
 
 	// READ-ONLY; The priority of the resource.
-	LiftrResourcePreference *int32 `json:"liftrResourcePreference,omitempty" azure:"ro"`
+	LiftrResourcePreference *int32
 
 	// READ-ONLY; Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource
 	// will go in Suspended state.
-	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty" azure:"ro"`
+	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus
 
 	// READ-ONLY
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 type MonitorResource struct {
 	// REQUIRED
-	Location *string             `json:"location,omitempty"`
-	Identity *IdentityProperties `json:"identity,omitempty"`
+	Location *string
+	Identity *IdentityProperties
 
 	// Properties specific to the monitor resource.
-	Properties *MonitorProperties `json:"properties,omitempty"`
-	SKU        *ResourceSKU       `json:"sku,omitempty"`
+	Properties *MonitorProperties
+	SKU        *ResourceSKU
 
 	// Dictionary of
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; ARM id of the monitor resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the monitor resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the monitor resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MonitorResourceListResponse - Response of a list operation.
 type MonitorResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitorResource `json:"value,omitempty"`
+	Value []*MonitorResource
 }
 
 // MonitorResourceUpdateParameters - The parameters for a PATCH request to a monitor resource.
 type MonitorResourceUpdateParameters struct {
 	// The set of properties that can be update in a PATCH request to a monitor resource.
-	Properties *MonitorUpdateProperties `json:"properties,omitempty"`
-	SKU        *ResourceSKU             `json:"sku,omitempty"`
+	Properties *MonitorUpdateProperties
+	SKU        *ResourceSKU
 
 	// The new tags of the monitor resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // MonitorUpdateProperties - The set of properties that can be update in a PATCH request to a monitor resource.
 type MonitorUpdateProperties struct {
 	// Flag specifying if the resource monitoring is enabled or disabled.
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
+	MonitoringStatus *MonitoringStatus
 }
 
 // MonitoredResource - The properties of a resource currently being monitored by the Datadog monitor resource.
 type MonitoredResource struct {
 	// The ARM id of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Reason for why the resource is sending logs (or why it is not sending).
-	ReasonForLogsStatus *string `json:"reasonForLogsStatus,omitempty"`
+	ReasonForLogsStatus *string
 
 	// Reason for why the resource is sending metrics (or why it is not sending).
-	ReasonForMetricsStatus *string `json:"reasonForMetricsStatus,omitempty"`
+	ReasonForMetricsStatus *string
 
 	// Flag indicating if resource is sending logs to Datadog.
-	SendingLogs *bool `json:"sendingLogs,omitempty"`
+	SendingLogs *bool
 
 	// Flag indicating if resource is sending metrics to Datadog.
-	SendingMetrics *bool `json:"sendingMetrics,omitempty"`
+	SendingMetrics *bool
 }
 
 // MonitoredResourceListResponse - Response of a list operation.
 type MonitoredResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitoredResource `json:"value,omitempty"`
+	Value []*MonitoredResource
 }
 
 // MonitoringTagRules - Capture logs and metrics of Azure resources based on ARM tags.
 type MonitoringTagRules struct {
 	// Definition of the properties for a TagRules resource.
-	Properties *MonitoringTagRulesProperties `json:"properties,omitempty"`
+	Properties *MonitoringTagRulesProperties
 
 	// READ-ONLY; The id of the rule set.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the rule set.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the rule set.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MonitoringTagRulesListResponse - Response of a list operation.
 type MonitoringTagRulesListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitoringTagRules `json:"value,omitempty"`
+	Value []*MonitoringTagRules
 }
 
 // MonitoringTagRulesProperties - Definition of the properties for a TagRules resource.
 type MonitoringTagRulesProperties struct {
 	// Set of rules for sending logs for the Monitor resource.
-	LogRules *LogRules `json:"logRules,omitempty"`
+	LogRules *LogRules
 
 	// Set of rules for sending metrics for the Monitor resource.
-	MetricRules *MetricRules `json:"metricRules,omitempty"`
+	MetricRules *MetricRules
 
 	// READ-ONLY
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
@@ -460,37 +460,37 @@ type MonitorsClientSetDefaultKeyOptions struct {
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation, e.g., 'Write monitors'.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type, e.g., read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider, i.e., Microsoft.Datadog.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Type on which the operation is performed, e.g., 'monitors'.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of GET request to list the Microsoft.Datadog operations.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of operations supported by the Microsoft.Datadog provider.
-	Value []*OperationResult `json:"value,omitempty"`
+	Value []*OperationResult
 }
 
 // OperationResult - A Microsoft.Datadog REST API operation.
 type OperationResult struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Operation name, i.e., {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -501,37 +501,37 @@ type OperationsClientListOptions struct {
 // OrganizationProperties - Datadog organization properties
 type OrganizationProperties struct {
 	// Api key associated to the Datadog organization.
-	APIKey *string `json:"apiKey,omitempty"`
+	APIKey *string
 
 	// Application key associated to the Datadog organization.
-	ApplicationKey *string `json:"applicationKey,omitempty"`
+	ApplicationKey *string
 
 	// The Id of the Enterprise App used for Single sign on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+	EnterpriseAppID *string
 
 	// The auth code used to linking to an existing datadog organization.
-	LinkingAuthCode *string `json:"linkingAuthCode,omitempty"`
+	LinkingAuthCode *string
 
 	// The client_id from an existing in exchange for an auth token to link organization.
-	LinkingClientID *string `json:"linkingClientId,omitempty"`
+	LinkingClientID *string
 
 	// The redirect uri for linking.
-	RedirectURI *string `json:"redirectUri,omitempty"`
+	RedirectURI *string
 
 	// READ-ONLY; Id of the Datadog organization.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the Datadog organization.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 type ResourceSKU struct {
 	// REQUIRED; Name of the SKU.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 type SetPasswordLink struct {
-	SetPasswordLink *string `json:"setPasswordLink,omitempty"`
+	SetPasswordLink *string
 }
 
 // SingleSignOnConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnConfigurationsClient.BeginCreateOrUpdate
@@ -556,62 +556,62 @@ type SingleSignOnConfigurationsClientListOptions struct {
 
 type SingleSignOnProperties struct {
 	// The Id of the Enterprise App used for Single sign-on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+	EnterpriseAppID *string
 
 	// Various states of the SSO resource
-	SingleSignOnState *SingleSignOnStates `json:"singleSignOnState,omitempty"`
+	SingleSignOnState *SingleSignOnStates
 
 	// READ-ONLY
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The login URL specific to this Datadog Organization.
-	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty" azure:"ro"`
+	SingleSignOnURL *string
 }
 
 type SingleSignOnResource struct {
-	Properties *SingleSignOnProperties `json:"properties,omitempty"`
+	Properties *SingleSignOnProperties
 
 	// READ-ONLY; ARM id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the configuration.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SingleSignOnResourceListResponse - Response of a list operation.
 type SingleSignOnResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*SingleSignOnResource `json:"value,omitempty"`
+	Value []*SingleSignOnResource
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagRulesClientCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.CreateOrUpdate method.
@@ -632,11 +632,11 @@ type TagRulesClientListOptions struct {
 // UserInfo - User info
 type UserInfo struct {
 	// Email of the user used by Datadog for contacting them if needed
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 
 	// Name of the user
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Phone number of the user used by Datadog for contacting them if needed
-	PhoneNumber *string `json:"phoneNumber,omitempty"`
+	PhoneNumber *string
 }

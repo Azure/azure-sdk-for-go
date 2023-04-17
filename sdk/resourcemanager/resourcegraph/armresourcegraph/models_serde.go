@@ -326,7 +326,7 @@ func (f *FacetRequestOptions) UnmarshalJSON(data []byte) error {
 func (f FacetResult) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "count", f.Count)
-	populate(objectMap, "data", &f.Data)
+	populateAny(objectMap, "data", f.Data)
 	populate(objectMap, "expression", f.Expression)
 	objectMap["resultType"] = "FacetResult"
 	populate(objectMap, "totalRecords", f.TotalRecords)
@@ -560,7 +560,7 @@ func (q *QueryRequestOptions) UnmarshalJSON(data []byte) error {
 func (q QueryResponse) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "count", q.Count)
-	populate(objectMap, "data", &q.Data)
+	populateAny(objectMap, "data", q.Data)
 	populate(objectMap, "facets", q.Facets)
 	populate(objectMap, "resultTruncated", q.ResultTruncated)
 	populate(objectMap, "$skipToken", q.SkipToken)
@@ -722,6 +722,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

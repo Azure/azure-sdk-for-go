@@ -44,133 +44,133 @@ type ControllerClientPatchOptions struct {
 // ControllerDetails - controller details
 type ControllerDetails struct {
 	// controller arm resource id
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // ControllerResource - Represents an instance of a resource.
 type ControllerResource struct {
 	// Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; An identifier that represents the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ControllerResourceUpdateParameters - Parameters for updating a resource.
 type ControllerResourceUpdateParameters struct {
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DelegatedController - Represents an instance of a DNC controller.
 type DelegatedController struct {
 	// Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; An identifier that represents the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Properties of the provision operation request.
-	Properties *DelegatedControllerProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *DelegatedControllerProperties
 
 	// READ-ONLY; The type of resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DelegatedControllerProperties - Properties of Delegated controller resource.
 type DelegatedControllerProperties struct {
 	// READ-ONLY; dnc application id should be used by customer to authenticate with dnc gateway.
-	DncAppID *string `json:"dncAppId,omitempty" azure:"ro"`
+	DncAppID *string
 
 	// READ-ONLY; dnc endpoint url that customers can use to connect to
-	DncEndpoint *string `json:"dncEndpoint,omitempty" azure:"ro"`
+	DncEndpoint *string
 
 	// READ-ONLY; tenant id of dnc application id
-	DncTenantID *string `json:"dncTenantId,omitempty" azure:"ro"`
+	DncTenantID *string
 
 	// READ-ONLY; The current state of dnc controller resource.
-	ProvisioningState *ControllerState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ControllerState
 
 	// READ-ONLY; Resource guid.
-	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
+	ResourceGUID *string
 }
 
 // DelegatedControllers - An array of Delegated controller resources.
 type DelegatedControllers struct {
 	// REQUIRED; An array of Delegated controller resources.
-	Value []*DelegatedController `json:"value,omitempty"`
+	Value []*DelegatedController
 
 	// READ-ONLY; The URL to get the next set of controllers.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DelegatedSubnet - Represents an instance of a orchestrator.
 type DelegatedSubnet struct {
 	// Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the provision operation request.
-	Properties *DelegatedSubnetProperties `json:"properties,omitempty"`
+	Properties *DelegatedSubnetProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; An identifier that represents the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DelegatedSubnetProperties - Properties of delegated subnet
 type DelegatedSubnetProperties struct {
 	// Properties of the controller.
-	ControllerDetails *ControllerDetails `json:"controllerDetails,omitempty"`
+	ControllerDetails *ControllerDetails
 
 	// subnet details
-	SubnetDetails *SubnetDetails `json:"subnetDetails,omitempty"`
+	SubnetDetails *SubnetDetails
 
 	// READ-ONLY; The current state of dnc delegated subnet resource.
-	ProvisioningState *DelegatedSubnetState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *DelegatedSubnetState
 
 	// READ-ONLY; Resource guid.
-	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
+	ResourceGUID *string
 }
 
 // DelegatedSubnetResource - Represents an instance of a resource.
 type DelegatedSubnetResource struct {
 	// Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; An identifier that represents the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DelegatedSubnetServiceClientBeginDeleteDetailsOptions contains the optional parameters for the DelegatedSubnetServiceClient.BeginDeleteDetails
@@ -217,93 +217,93 @@ type DelegatedSubnetServiceClientListBySubscriptionOptions struct {
 // DelegatedSubnets - An array of DelegatedSubnet resources.
 type DelegatedSubnets struct {
 	// REQUIRED; An array of DelegatedSubnet resources.
-	Value []*DelegatedSubnet `json:"value,omitempty"`
+	Value []*DelegatedSubnet
 
 	// READ-ONLY; The URL to get the next set of DelegatedSubnet resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -314,40 +314,40 @@ type OperationsClientListOptions struct {
 // Orchestrator - Represents an instance of a orchestrator.
 type Orchestrator struct {
 	// REQUIRED; The kind of workbook. Choices are user and shared.
-	Kind *OrchestratorKind `json:"kind,omitempty"`
+	Kind *OrchestratorKind
 
 	// The identity of the orchestrator
-	Identity *OrchestratorIdentity `json:"identity,omitempty"`
+	Identity *OrchestratorIdentity
 
 	// Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the provision operation request.
-	Properties *OrchestratorResourceProperties `json:"properties,omitempty"`
+	Properties *OrchestratorResourceProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; An identifier that represents the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type OrchestratorIdentity struct {
 	// The type of identity used for orchestrator cluster. Type 'SystemAssigned' will use an implicitly created identity orchestrator
 	// clusters
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// READ-ONLY; The principal id of the system assigned identity which is used by orchestrator.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant id of the system assigned identity which is used by orchestrator.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // OrchestratorInstanceServiceClientBeginCreateOptions contains the optional parameters for the OrchestratorInstanceServiceClient.BeginCreate
@@ -393,77 +393,77 @@ type OrchestratorInstanceServiceClientPatchOptions struct {
 // OrchestratorResource - Represents an instance of a resource.
 type OrchestratorResource struct {
 	// REQUIRED; The kind of workbook. Choices are user and shared.
-	Kind *OrchestratorKind `json:"kind,omitempty"`
+	Kind *OrchestratorKind
 
 	// The identity of the orchestrator
-	Identity *OrchestratorIdentity `json:"identity,omitempty"`
+	Identity *OrchestratorIdentity
 
 	// Location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; An identifier that represents the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // OrchestratorResourceProperties - Properties of orchestrator
 type OrchestratorResourceProperties struct {
 	// REQUIRED; Properties of the controller.
-	ControllerDetails *ControllerDetails `json:"controllerDetails,omitempty"`
+	ControllerDetails *ControllerDetails
 
 	// K8s APIServer url. Either one of apiServerEndpoint or privateLinkResourceId can be specified
-	APIServerEndpoint *string `json:"apiServerEndpoint,omitempty"`
+	APIServerEndpoint *string
 
 	// RootCA certificate of kubernetes cluster base64 encoded
-	ClusterRootCA *string `json:"clusterRootCA,omitempty"`
+	ClusterRootCA *string
 
 	// AAD ID used with apiserver
-	OrchestratorAppID *string `json:"orchestratorAppId,omitempty"`
+	OrchestratorAppID *string
 
 	// TenantID of server App ID
-	OrchestratorTenantID *string `json:"orchestratorTenantId,omitempty"`
+	OrchestratorTenantID *string
 
 	// private link arm resource id. Either one of apiServerEndpoint or privateLinkResourceId can be specified
-	PrivateLinkResourceID *string `json:"privateLinkResourceId,omitempty"`
+	PrivateLinkResourceID *string
 
 	// READ-ONLY; The current state of orchestratorInstance resource.
-	ProvisioningState *OrchestratorInstanceState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *OrchestratorInstanceState
 
 	// READ-ONLY; Resource guid.
-	ResourceGUID *string `json:"resourceGuid,omitempty" azure:"ro"`
+	ResourceGUID *string
 }
 
 // OrchestratorResourceUpdateParameters - Parameters for updating a resource.
 type OrchestratorResourceUpdateParameters struct {
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // Orchestrators - An array of OrchestratorInstance resources.
 type Orchestrators struct {
 	// REQUIRED; An array of OrchestratorInstance resources.
-	Value []*Orchestrator `json:"value,omitempty"`
+	Value []*Orchestrator
 
 	// READ-ONLY; The URL to get the next set of orchestrators.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ResourceUpdateParameters - Parameters for updating a resource.
 type ResourceUpdateParameters struct {
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // SubnetDetails - Properties of orchestrator
 type SubnetDetails struct {
 	// subnet arm resource id
-	ID *string `json:"id,omitempty"`
+	ID *string
 }

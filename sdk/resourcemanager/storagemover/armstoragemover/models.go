@@ -14,85 +14,85 @@ import "time"
 // Agent - The Agent resource.
 type Agent struct {
 	// REQUIRED
-	Properties *AgentProperties `json:"properties,omitempty"`
+	Properties *AgentProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AgentList - List of Agents.
 type AgentList struct {
 	// READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers
 	// exceed maximum page size.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY
-	Value []*Agent `json:"value,omitempty" azure:"ro"`
+	Value []*Agent
 }
 
 type AgentProperties struct {
 	// REQUIRED; The fully qualified resource ID of the Hybrid Compute resource for the Agent.
-	ArcResourceID *string `json:"arcResourceId,omitempty"`
+	ArcResourceID *string
 
 	// REQUIRED; The VM UUID of the Hybrid Compute resource for the Agent.
-	ArcVMUUID *string `json:"arcVmUuid,omitempty"`
+	ArcVMUUID *string
 
 	// A description for the Agent.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The Agent status.
-	AgentStatus *AgentStatus `json:"agentStatus,omitempty" azure:"ro"`
+	AgentStatus *AgentStatus
 
 	// READ-ONLY; The Agent version.
-	AgentVersion *string `json:"agentVersion,omitempty" azure:"ro"`
+	AgentVersion *string
 
 	// READ-ONLY
-	ErrorDetails *AgentPropertiesErrorDetails `json:"errorDetails,omitempty" azure:"ro"`
+	ErrorDetails *AgentPropertiesErrorDetails
 
 	// READ-ONLY; The last updated time of the Agent status.
-	LastStatusUpdate *time.Time `json:"lastStatusUpdate,omitempty" azure:"ro"`
+	LastStatusUpdate *time.Time
 
 	// READ-ONLY; Local IP address reported by the Agent.
-	LocalIPAddress *string `json:"localIPAddress,omitempty" azure:"ro"`
+	LocalIPAddress *string
 
 	// READ-ONLY; Available memory reported by the Agent, in MB.
-	MemoryInMB *int64 `json:"memoryInMB,omitempty" azure:"ro"`
+	MemoryInMB *int64
 
 	// READ-ONLY; Available compute cores reported by the Agent.
-	NumberOfCores *int64 `json:"numberOfCores,omitempty" azure:"ro"`
+	NumberOfCores *int64
 
 	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Uptime of the Agent in seconds.
-	UptimeInSeconds *int64 `json:"uptimeInSeconds,omitempty" azure:"ro"`
+	UptimeInSeconds *int64
 }
 
 type AgentPropertiesErrorDetails struct {
 	// Error code reported by Agent
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Expanded description of reported error code
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // AgentUpdateParameters - The Agent resource.
 type AgentUpdateParameters struct {
-	Properties *AgentUpdateProperties `json:"properties,omitempty"`
+	Properties *AgentUpdateProperties
 }
 
 type AgentUpdateProperties struct {
 	// A description for the Agent.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // AgentsClientBeginDeleteOptions contains the optional parameters for the AgentsClient.BeginDelete method.
@@ -123,19 +123,19 @@ type AgentsClientUpdateOptions struct {
 
 type AzureStorageBlobContainerEndpointProperties struct {
 	// REQUIRED; The name of the Storage blob container that is the target destination.
-	BlobContainerName *string `json:"blobContainerName,omitempty"`
+	BlobContainerName *string
 
 	// REQUIRED; The Endpoint resource type.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// REQUIRED; The Azure Resource ID of the storage account that is the target destination.
-	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
+	StorageAccountResourceID *string
 
 	// A description for the Endpoint.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // GetEndpointBaseProperties implements the EndpointBasePropertiesClassification interface for type AzureStorageBlobContainerEndpointProperties.
@@ -150,19 +150,19 @@ func (a *AzureStorageBlobContainerEndpointProperties) GetEndpointBaseProperties(
 // Endpoint - The Endpoint resource, which contains information about file sources and targets.
 type Endpoint struct {
 	// REQUIRED; The resource specific properties for the Storage Mover resource.
-	Properties EndpointBasePropertiesClassification `json:"properties,omitempty"`
+	Properties EndpointBasePropertiesClassification
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EndpointBasePropertiesClassification provides polymorphic access to related types.
@@ -177,13 +177,13 @@ type EndpointBasePropertiesClassification interface {
 // EndpointBaseProperties - The resource specific properties for the Storage Mover resource.
 type EndpointBaseProperties struct {
 	// REQUIRED; The Endpoint resource type.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// A description for the Endpoint.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // GetEndpointBaseProperties implements the EndpointBasePropertiesClassification interface for type EndpointBaseProperties.
@@ -192,23 +192,23 @@ func (e *EndpointBaseProperties) GetEndpointBaseProperties() *EndpointBaseProper
 // EndpointBaseUpdateParameters - The Endpoint resource.
 type EndpointBaseUpdateParameters struct {
 	// The Endpoint resource, which contains information about file sources and targets.
-	Properties *EndpointBaseUpdateProperties `json:"properties,omitempty"`
+	Properties *EndpointBaseUpdateProperties
 }
 
 // EndpointBaseUpdateProperties - The Endpoint resource, which contains information about file sources and targets.
 type EndpointBaseUpdateProperties struct {
 	// A description for the Endpoint.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // EndpointList - List of Endpoints.
 type EndpointList struct {
 	// READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers
 	// exceed maximum page size.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY
-	Value []*Endpoint `json:"value,omitempty" azure:"ro"`
+	Value []*Endpoint
 }
 
 // EndpointsClientBeginDeleteOptions contains the optional parameters for the EndpointsClient.BeginDelete method.
@@ -240,92 +240,92 @@ type EndpointsClientUpdateOptions struct {
 // JobDefinition - The Job Definition resource.
 type JobDefinition struct {
 	// REQUIRED; Job definition properties.
-	Properties *JobDefinitionProperties `json:"properties,omitempty"`
+	Properties *JobDefinitionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobDefinitionList - List of Job Definitions.
 type JobDefinitionList struct {
 	// READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers
 	// exceed maximum page size.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY
-	Value []*JobDefinition `json:"value,omitempty" azure:"ro"`
+	Value []*JobDefinition
 }
 
 // JobDefinitionProperties - Job definition properties.
 type JobDefinitionProperties struct {
 	// REQUIRED; Strategy to use for copy.
-	CopyMode *CopyMode `json:"copyMode,omitempty"`
+	CopyMode *CopyMode
 
 	// REQUIRED; The name of the source Endpoint.
-	SourceName *string `json:"sourceName,omitempty"`
+	SourceName *string
 
 	// REQUIRED; The name of the target Endpoint.
-	TargetName *string `json:"targetName,omitempty"`
+	TargetName *string
 
 	// Name of the Agent to assign for new Job Runs of this Job Definition.
-	AgentName *string `json:"agentName,omitempty"`
+	AgentName *string
 
 	// A description for the Job Definition.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The subpath to use when reading from the source Endpoint.
-	SourceSubpath *string `json:"sourceSubpath,omitempty"`
+	SourceSubpath *string
 
 	// The subpath to use when writing to the target Endpoint.
-	TargetSubpath *string `json:"targetSubpath,omitempty"`
+	TargetSubpath *string
 
 	// READ-ONLY; Fully qualified resource id of the Agent to assign for new Job Runs of this Job Definition.
-	AgentResourceID *string `json:"agentResourceId,omitempty" azure:"ro"`
+	AgentResourceID *string
 
 	// READ-ONLY; The name of the Job Run in a non-terminal state, if exists.
-	LatestJobRunName *string `json:"latestJobRunName,omitempty" azure:"ro"`
+	LatestJobRunName *string
 
 	// READ-ONLY; The fully qualified resource ID of the Job Run in a non-terminal state, if exists.
-	LatestJobRunResourceID *string `json:"latestJobRunResourceId,omitempty" azure:"ro"`
+	LatestJobRunResourceID *string
 
 	// READ-ONLY; The current status of the Job Run in a non-terminal state, if exists.
-	LatestJobRunStatus *JobRunStatus `json:"latestJobRunStatus,omitempty" azure:"ro"`
+	LatestJobRunStatus *JobRunStatus
 
 	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Fully qualified resource ID of the source Endpoint.
-	SourceResourceID *string `json:"sourceResourceId,omitempty" azure:"ro"`
+	SourceResourceID *string
 
 	// READ-ONLY; Fully qualified resource ID of the target Endpoint.
-	TargetResourceID *string `json:"targetResourceId,omitempty" azure:"ro"`
+	TargetResourceID *string
 }
 
 // JobDefinitionUpdateParameters - The Job Definition resource.
 type JobDefinitionUpdateParameters struct {
 	// Job definition properties.
-	Properties *JobDefinitionUpdateProperties `json:"properties,omitempty"`
+	Properties *JobDefinitionUpdateProperties
 }
 
 // JobDefinitionUpdateProperties - Job definition properties.
 type JobDefinitionUpdateProperties struct {
 	// Name of the Agent to assign for new Job Runs of this Job Definition.
-	AgentName *string `json:"agentName,omitempty"`
+	AgentName *string
 
 	// Strategy to use for copy.
-	CopyMode *CopyMode `json:"copyMode,omitempty"`
+	CopyMode *CopyMode
 
 	// A description for the Job Definition.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // JobDefinitionsClientBeginDeleteOptions contains the optional parameters for the JobDefinitionsClient.BeginDelete method.
@@ -368,134 +368,134 @@ type JobDefinitionsClientUpdateOptions struct {
 // JobRun - The Job Run resource.
 type JobRun struct {
 	// Job run properties.
-	Properties *JobRunProperties `json:"properties,omitempty"`
+	Properties *JobRunProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobRunError - Error type
 type JobRunError struct {
 	// Error code of the given entry.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message of the given entry.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Target of the given error entry.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // JobRunList - List of Job Runs.
 type JobRunList struct {
 	// READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers
 	// exceed maximum page size.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY
-	Value []*JobRun `json:"value,omitempty" azure:"ro"`
+	Value []*JobRun
 }
 
 // JobRunProperties - Job run properties.
 type JobRunProperties struct {
 	// READ-ONLY; Name of the Agent assigned to this run.
-	AgentName *string `json:"agentName,omitempty" azure:"ro"`
+	AgentName *string
 
 	// READ-ONLY; Fully qualified resource id of the Agent assigned to this run.
-	AgentResourceID *string `json:"agentResourceId,omitempty" azure:"ro"`
+	AgentResourceID *string
 
 	// READ-ONLY; Bytes of data that will not be transferred, as they are excluded by user configuration.
-	BytesExcluded *int64 `json:"bytesExcluded,omitempty" azure:"ro"`
+	BytesExcluded *int64
 
 	// READ-ONLY; Bytes of data that were attempted to transfer and failed.
-	BytesFailed *int64 `json:"bytesFailed,omitempty" azure:"ro"`
+	BytesFailed *int64
 
 	// READ-ONLY; Bytes of data that will not be transferred, as they are already found on target (e.g. mirror mode).
-	BytesNoTransferNeeded *int64 `json:"bytesNoTransferNeeded,omitempty" azure:"ro"`
+	BytesNoTransferNeeded *int64
 
 	// READ-ONLY; Bytes of data scanned so far in source.
-	BytesScanned *int64 `json:"bytesScanned,omitempty" azure:"ro"`
+	BytesScanned *int64
 
 	// READ-ONLY; Bytes of data successfully transferred to target.
-	BytesTransferred *int64 `json:"bytesTransferred,omitempty" azure:"ro"`
+	BytesTransferred *int64
 
 	// READ-ONLY; Bytes of data that will not be transferred, as they are unsupported on target.
-	BytesUnsupported *int64 `json:"bytesUnsupported,omitempty" azure:"ro"`
+	BytesUnsupported *int64
 
 	// READ-ONLY; Error details.
-	Error *JobRunError `json:"error,omitempty" azure:"ro"`
+	Error *JobRunError
 
 	// READ-ONLY; End time of the run. Null if Agent has not reported that the job has ended.
-	ExecutionEndTime *time.Time `json:"executionEndTime,omitempty" azure:"ro"`
+	ExecutionEndTime *time.Time
 
 	// READ-ONLY; Start time of the run. Null if no Agent reported that the job has started.
-	ExecutionStartTime *time.Time `json:"executionStartTime,omitempty" azure:"ro"`
+	ExecutionStartTime *time.Time
 
 	// READ-ONLY; Number of items that will not be transferred, as they are excluded by user configuration.
-	ItemsExcluded *int64 `json:"itemsExcluded,omitempty" azure:"ro"`
+	ItemsExcluded *int64
 
 	// READ-ONLY; Number of items that were attempted to transfer and failed.
-	ItemsFailed *int64 `json:"itemsFailed,omitempty" azure:"ro"`
+	ItemsFailed *int64
 
 	// READ-ONLY; Number of items that will not be transferred, as they are already found on target (e.g. mirror mode).
-	ItemsNoTransferNeeded *int64 `json:"itemsNoTransferNeeded,omitempty" azure:"ro"`
+	ItemsNoTransferNeeded *int64
 
 	// READ-ONLY; Number of items scanned so far in source.
-	ItemsScanned *int64 `json:"itemsScanned,omitempty" azure:"ro"`
+	ItemsScanned *int64
 
 	// READ-ONLY; Number of items successfully transferred to target.
-	ItemsTransferred *int64 `json:"itemsTransferred,omitempty" azure:"ro"`
+	ItemsTransferred *int64
 
 	// READ-ONLY; Number of items that will not be transferred, as they are unsupported on target.
-	ItemsUnsupported *int64 `json:"itemsUnsupported,omitempty" azure:"ro"`
+	ItemsUnsupported *int64
 
 	// READ-ONLY; Copy of parent Job Definition's properties at time of Job Run creation.
-	JobDefinitionProperties any `json:"jobDefinitionProperties,omitempty" azure:"ro"`
+	JobDefinitionProperties any
 
 	// READ-ONLY; The last updated time of the Job Run.
-	LastStatusUpdate *time.Time `json:"lastStatusUpdate,omitempty" azure:"ro"`
+	LastStatusUpdate *time.Time
 
 	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The status of Agent's scanning of source.
-	ScanStatus *JobRunScanStatus `json:"scanStatus,omitempty" azure:"ro"`
+	ScanStatus *JobRunScanStatus
 
 	// READ-ONLY; Name of source Endpoint resource. This resource may no longer exist.
-	SourceName *string `json:"sourceName,omitempty" azure:"ro"`
+	SourceName *string
 
 	// READ-ONLY; Copy of source Endpoint resource's properties at time of Job Run creation.
-	SourceProperties any `json:"sourceProperties,omitempty" azure:"ro"`
+	SourceProperties any
 
 	// READ-ONLY; Fully qualified resource id of source Endpoint. This id may no longer exist.
-	SourceResourceID *string `json:"sourceResourceId,omitempty" azure:"ro"`
+	SourceResourceID *string
 
 	// READ-ONLY; The state of the job execution.
-	Status *JobRunStatus `json:"status,omitempty" azure:"ro"`
+	Status *JobRunStatus
 
 	// READ-ONLY; Name of target Endpoint resource. This resource may no longer exist.
-	TargetName *string `json:"targetName,omitempty" azure:"ro"`
+	TargetName *string
 
 	// READ-ONLY; Copy of Endpoint resource's properties at time of Job Run creation.
-	TargetProperties any `json:"targetProperties,omitempty" azure:"ro"`
+	TargetProperties any
 
 	// READ-ONLY; Fully qualified resource id of of Endpoint. This id may no longer exist.
-	TargetResourceID *string `json:"targetResourceId,omitempty" azure:"ro"`
+	TargetResourceID *string
 }
 
 // JobRunResourceID - Response that identifies a Job Run.
 type JobRunResourceID struct {
 	// READ-ONLY; Fully qualified resource id of the Job Run.
-	JobRunResourceID *string `json:"jobRunResourceId,omitempty" azure:"ro"`
+	JobRunResourceID *string
 }
 
 // JobRunsClientGetOptions contains the optional parameters for the JobRunsClient.Get method.
@@ -512,30 +512,30 @@ type JobRunsClientListOptions struct {
 type List struct {
 	// READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers
 	// exceed maximum page size.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY
-	Value []*StorageMover `json:"value,omitempty" azure:"ro"`
+	Value []*StorageMover
 }
 
 type NfsMountEndpointProperties struct {
 	// REQUIRED; The Endpoint resource type.
-	EndpointType *EndpointType `json:"endpointType,omitempty"`
+	EndpointType *EndpointType
 
 	// REQUIRED; The directory being exported from the server.
-	Export *string `json:"export,omitempty"`
+	Export *string
 
 	// REQUIRED; The host name or IP address of the server exporting the file system.
-	Host *string `json:"host,omitempty"`
+	Host *string
 
 	// A description for the Endpoint.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The NFS protocol version.
-	NfsVersion *NfsVersion `json:"nfsVersion,omitempty"`
+	NfsVersion *NfsVersion
 
 	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // GetEndpointBaseProperties implements the EndpointBasePropertiesClassification interface for type NfsMountEndpointProperties.
@@ -550,50 +550,50 @@ func (n *NfsMountEndpointProperties) GetEndpointBaseProperties() *EndpointBasePr
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -604,50 +604,50 @@ type OperationsClientListOptions struct {
 // Project - The Project resource.
 type Project struct {
 	// Project properties.
-	Properties *ProjectProperties `json:"properties,omitempty"`
+	Properties *ProjectProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProjectList - List of Project resources.
 type ProjectList struct {
 	// READ-ONLY; Request URL that can be used to query next page of containers. Returned when total number of requested containers
 	// exceed maximum page size.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY
-	Value []*Project `json:"value,omitempty" azure:"ro"`
+	Value []*Project
 }
 
 // ProjectProperties - Project properties.
 type ProjectProperties struct {
 	// A description for the Project.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ProjectUpdateParameters - The Project resource.
 type ProjectUpdateParameters struct {
 	// Project properties.
-	Properties *ProjectUpdateProperties `json:"properties,omitempty"`
+	Properties *ProjectUpdateProperties
 }
 
 // ProjectUpdateProperties - Project properties.
 type ProjectUpdateProperties struct {
 	// A description for the Project.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // ProjectsClientBeginDeleteOptions contains the optional parameters for the ProjectsClient.BeginDelete method.
@@ -679,34 +679,34 @@ type ProjectsClientUpdateOptions struct {
 // Properties - The resource specific properties for the Storage Mover resource.
 type Properties struct {
 	// A description for the Storage Mover.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The provisioning state of this resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // StorageMover - The Storage Mover resource, which is a container for a group of Agents, Projects, and Endpoints.
 type StorageMover struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource specific properties for the Storage Mover resource.
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource system metadata.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // StorageMoversClientBeginDeleteOptions contains the optional parameters for the StorageMoversClient.BeginDelete method.
@@ -744,35 +744,35 @@ type StorageMoversClientUpdateOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // UpdateParameters - The Storage Mover resource.
 type UpdateParameters struct {
 	// The resource specific properties for the Storage Mover resource.
-	Properties *UpdateProperties `json:"properties,omitempty"`
+	Properties *UpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // UpdateProperties - The resource specific properties for the Storage Mover resource.
 type UpdateProperties struct {
 	// A description for the Storage Mover.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }

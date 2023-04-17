@@ -201,7 +201,6 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithMD5() {
 	}
 	appendResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
 	_require.Nil(err)
-	// _require.Equal(appendResp.RawResponse.StatusCode, 201)
 	_require.Equal(*appendResp.BlobAppendOffset, "0")
 	_require.Equal(*appendResp.BlobCommittedBlockCount, int32(1))
 	_require.NotNil(appendResp.ETag)
@@ -241,7 +240,7 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCRC64() {
 	_, err = abClient.Create(context.Background(), nil)
 	_require.Nil(err)
 
-	// test append block with valid MD5 value
+	// test append block with valid CRC64 value
 	readerToBody, body := testcommon.GetDataAndReader(testName, 1024)
 	crc64Value := crc64.Checksum(body, shared.CRC64Table)
 	crc := make([]byte, 8)
@@ -264,6 +263,34 @@ func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithCRC64() {
 	_require.NotNil(err)
 
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
+}
+
+func (s *AppendBlobRecordedTestsSuite) TestAppendBlockWithSDKGeneratedCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// set up abClient to test
+	abClient := containerClient.NewAppendBlobClient(testcommon.GenerateBlobName(testName))
+	_, err = abClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// test append block with SDK generated CRC64 value
+	readerToBody, body := testcommon.GetDataAndReader(testName, 1024)
+	crc64Value := crc64.Checksum(body, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+	appendBlockOptions := appendblob.AppendBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
+	}
+	appendResp, err := abClient.AppendBlock(context.Background(), streaming.NopCloser(readerToBody), &appendBlockOptions)
+	_require.Nil(err)
+	_require.EqualValues(appendResp.ContentCRC64, crc)
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURL() {
@@ -524,7 +551,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64() {
 		SourceContentValidation: blob.SourceContentValidationTypeCRC64(crc),
 	}
 	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
-	
+
 	// TODO: This does not fail when it should because wrong CRC64 is passed, verify if this is expected
 	_require.NotNil(err)
 	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)

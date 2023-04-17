@@ -184,7 +184,7 @@ type Properties struct {
 	// Additional properties for the specific resource provider.
 	Properties any
 
-	// Resource type name.
+	// The name of the resource type. Optional field.
 	ResourceType *string
 
 	// READ-ONLY; States if quota can be requested for this resource.
@@ -238,7 +238,7 @@ type RequestOneResourceProperties struct {
 	// Additional properties for the specific resource provider.
 	Properties any
 
-	// Resource type name.
+	// The name of the resource type. Optional field.
 	ResourceType *string
 
 	// The quota limit units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
@@ -331,7 +331,7 @@ type RequestStatusDetails struct {
 	// Additional properties for the specific resource provider.
 	Properties any
 
-	// Resource type name.
+	// The name of the resource type. Optional field.
 	ResourceType *string
 
 	// The quota limit units, such as Count and Bytes. When requesting quota, use the unit value returned in the GET response
@@ -472,7 +472,7 @@ type UsagesProperties struct {
 	// Additional properties for the specific resource provider.
 	Properties any
 
-	// The name of the resource type.
+	// The name of the resource type. Optional field.
 	ResourceType *string
 
 	// The quota limit properties for this resource.

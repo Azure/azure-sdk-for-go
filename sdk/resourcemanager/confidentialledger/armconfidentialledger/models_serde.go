@@ -586,7 +586,7 @@ func (m MemberIdentityCertificate) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "certificate", m.Certificate)
 	populate(objectMap, "encryptionkey", m.Encryptionkey)
-	populate(objectMap, "tags", &m.Tags)
+	populateAny(objectMap, "tags", m.Tags)
 	return json.Marshal(objectMap)
 }
 

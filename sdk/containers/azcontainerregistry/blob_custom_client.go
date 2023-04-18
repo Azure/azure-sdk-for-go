@@ -129,8 +129,5 @@ func (client *BlobClient) UploadChunk(ctx context.Context, location string, chun
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.CompleteUpload method.
 func (client *BlobClient) CompleteUpload(ctx context.Context, location string, blobDigestCalculator *BlobDigestCalculator, options *BlobClientCompleteUploadOptions) (BlobClientCompleteUploadResponse, error) {
-	if blobDigestCalculator == nil {
-		return BlobClientCompleteUploadResponse{}, errors.New("blobDigestCalculator is nil")
-	}
 	return client.completeUpload(ctx, fmt.Sprintf("sha256:%x", blobDigestCalculator.h.Sum(nil)), location, options)
 }

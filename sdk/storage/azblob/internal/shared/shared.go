@@ -130,9 +130,6 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 
 // SerializeBlobTags converts tags to generated.BlobTags
 func SerializeBlobTags(tagsMap map[string]string) *generated.BlobTags {
-	if tagsMap == nil {
-		return nil
-	}
 	if len(tagsMap) == 0 {
 		return nil
 	}
@@ -145,9 +142,6 @@ func SerializeBlobTags(tagsMap map[string]string) *generated.BlobTags {
 }
 
 func SerializeBlobTagsToStrPtr(tagsMap map[string]string) *string {
-	if tagsMap == nil {
-		return nil
-	}
 	if len(tagsMap) == 0 {
 		return nil
 	}

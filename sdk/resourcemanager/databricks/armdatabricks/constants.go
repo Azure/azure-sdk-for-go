@@ -11,7 +11,7 @@ package armdatabricks
 
 const (
 	moduleName    = "armdatabricks"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v0.7.1"
 )
 
 // CreatedByType - The type of identity that created the resource.

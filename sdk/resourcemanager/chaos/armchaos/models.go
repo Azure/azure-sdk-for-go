@@ -23,10 +23,10 @@ type ActionClassification interface {
 // Action - Model that represents the base action model.
 type Action struct {
 	// REQUIRED; String that represents a Capability URN.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Enum that discriminates between action models.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetAction implements the ActionClassification interface for type Action.
@@ -35,46 +35,46 @@ func (a *Action) GetAction() *Action { return a }
 // ActionStatus - Model that represents the an action and its status.
 type ActionStatus struct {
 	// READ-ONLY; The id of the action status.
-	ActionID *string `json:"actionId,omitempty" azure:"ro"`
+	ActionID *string
 
 	// READ-ONLY; The name of the action status.
-	ActionName *string `json:"actionName,omitempty" azure:"ro"`
+	ActionName *string
 
 	// READ-ONLY; String that represents the end time of the action.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; String that represents the start time of the action.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; The status of the action.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; The array of targets.
-	Targets []*ExperimentExecutionActionTargetDetailsProperties `json:"targets,omitempty" azure:"ro"`
+	Targets []*ExperimentExecutionActionTargetDetailsProperties
 }
 
 // Branch - Model that represents a branch in the step.
 type Branch struct {
 	// REQUIRED; List of actions.
-	Actions []ActionClassification `json:"actions,omitempty"`
+	Actions []ActionClassification
 
 	// REQUIRED; String of the branch name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // BranchStatus - Model that represents the a list of actions and action statuses.
 type BranchStatus struct {
 	// READ-ONLY; The array of actions.
-	Actions []*ActionStatus `json:"actions,omitempty" azure:"ro"`
+	Actions []*ActionStatus
 
 	// READ-ONLY; The id of the branch status.
-	BranchID *string `json:"branchId,omitempty" azure:"ro"`
+	BranchID *string
 
 	// READ-ONLY; The name of the branch status.
-	BranchName *string `json:"branchName,omitempty" azure:"ro"`
+	BranchName *string
 
 	// READ-ONLY; The status of the branch.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // CapabilitiesClientCreateOrUpdateOptions contains the optional parameters for the CapabilitiesClient.CreateOrUpdate method.
@@ -101,97 +101,97 @@ type CapabilitiesClientListOptions struct {
 // Capability - Model that represents a Capability resource.
 type Capability struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties of a capability resource.
-	Properties *CapabilityProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *CapabilityProperties
 
 	// READ-ONLY; The standard system metadata of a resource type.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CapabilityListResult - Model that represents a list of Capability resources and a link for pagination.
 type CapabilityListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Capability resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Capability resources.
-	Value []*Capability `json:"value,omitempty" azure:"ro"`
+	Value []*Capability
 }
 
 // CapabilityProperties - Model that represents the Capability properties model.
 type CapabilityProperties struct {
 	// READ-ONLY; Localized string of the description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; URL to retrieve JSON schema of the Capability parameters.
-	ParametersSchema *string `json:"parametersSchema,omitempty" azure:"ro"`
+	ParametersSchema *string
 
 	// READ-ONLY; String of the Publisher that this Capability extends.
-	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+	Publisher *string
 
 	// READ-ONLY; String of the Target Type that this Capability extends.
-	TargetType *string `json:"targetType,omitempty" azure:"ro"`
+	TargetType *string
 
 	// READ-ONLY; String of the URN for this Capability Type.
-	Urn *string `json:"urn,omitempty" azure:"ro"`
+	Urn *string
 }
 
 // CapabilityType - Model that represents a Capability Type resource.
 type CapabilityType struct {
 	// Location of the Capability Type resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties of the capability type resource.
-	Properties *CapabilityTypeProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *CapabilityTypeProperties
 
 	// READ-ONLY; The system metadata properties of the capability type resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CapabilityTypeListResult - Model that represents a list of Capability Type resources and a link for pagination.
 type CapabilityTypeListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Capability Type resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Capability Type resources.
-	Value []*CapabilityType `json:"value,omitempty" azure:"ro"`
+	Value []*CapabilityType
 }
 
 // CapabilityTypeProperties - Model that represents the Capability Type properties model.
 type CapabilityTypeProperties struct {
 	// READ-ONLY; Localized string of the description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Localized string of the display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; URL to retrieve JSON schema of the Capability Type parameters.
-	ParametersSchema *string `json:"parametersSchema,omitempty" azure:"ro"`
+	ParametersSchema *string
 
 	// READ-ONLY; String of the Publisher that this Capability Type extends.
-	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+	Publisher *string
 
 	// READ-ONLY; String of the Target Type that this Capability Type extends.
-	TargetType *string `json:"targetType,omitempty" azure:"ro"`
+	TargetType *string
 
 	// READ-ONLY; String of the URN for this Capability Type.
-	Urn *string `json:"urn,omitempty" azure:"ro"`
+	Urn *string
 }
 
 // CapabilityTypesClientGetOptions contains the optional parameters for the CapabilityTypesClient.Get method.
@@ -208,19 +208,19 @@ type CapabilityTypesClientListOptions struct {
 // ContinuousAction - Model that represents a continuous action.
 type ContinuousAction struct {
 	// REQUIRED; ISO8601 formatted string that represents a duration.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// REQUIRED; String that represents a Capability URN.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; List of key value pairs.
-	Parameters []*KeyValuePair `json:"parameters,omitempty"`
+	Parameters []*KeyValuePair
 
 	// REQUIRED; String that represents a selector.
-	SelectorID *string `json:"selectorId,omitempty"`
+	SelectorID *string
 
 	// REQUIRED; Enum that discriminates between action models.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetAction implements the ActionClassification interface for type ContinuousAction.
@@ -234,13 +234,13 @@ func (c *ContinuousAction) GetAction() *Action {
 // DelayAction - Model that represents a delay action.
 type DelayAction struct {
 	// REQUIRED; ISO8601 formatted string that represents a duration.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// REQUIRED; String that represents a Capability URN.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Enum that discriminates between action models.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetAction implements the ActionClassification interface for type DelayAction.
@@ -254,16 +254,16 @@ func (d *DelayAction) GetAction() *Action {
 // DiscreteAction - Model that represents a discrete action.
 type DiscreteAction struct {
 	// REQUIRED; String that represents a Capability URN.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; List of key value pairs.
-	Parameters []*KeyValuePair `json:"parameters,omitempty"`
+	Parameters []*KeyValuePair
 
 	// REQUIRED; String that represents a selector.
-	SelectorID *string `json:"selectorId,omitempty"`
+	SelectorID *string
 
 	// REQUIRED; Enum that discriminates between action models.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // GetAction implements the ActionClassification interface for type DiscreteAction.
@@ -277,222 +277,222 @@ func (d *DiscreteAction) GetAction() *Action {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Experiment - Model that represents a Experiment resource.
 type Experiment struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The properties of the experiment resource.
-	Properties *ExperimentProperties `json:"properties,omitempty"`
+	Properties *ExperimentProperties
 
 	// The identity of the experiment resource.
-	Identity *ResourceIdentity `json:"identity,omitempty"`
+	Identity *ResourceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata of the experiment resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExperimentCancelOperationResult - Model that represents the result of a cancel Experiment operation.
 type ExperimentCancelOperationResult struct {
 	// READ-ONLY; String of the Experiment name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; URL to retrieve the Experiment status.
-	StatusURL *string `json:"statusUrl,omitempty" azure:"ro"`
+	StatusURL *string
 }
 
 // ExperimentExecutionActionTargetDetailsError - Model that represents the Experiment action target details error model.
 type ExperimentExecutionActionTargetDetailsError struct {
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error message
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // ExperimentExecutionActionTargetDetailsProperties - Model that represents the Experiment action target details properties
 // model.
 type ExperimentExecutionActionTargetDetailsProperties struct {
 	// READ-ONLY; The error of the action.
-	Error *ExperimentExecutionActionTargetDetailsError `json:"error,omitempty" azure:"ro"`
+	Error *ExperimentExecutionActionTargetDetailsError
 
 	// READ-ONLY; The status of the execution.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; The target for the action.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 
 	// READ-ONLY; String that represents the completed date time.
-	TargetCompletedTime *time.Time `json:"targetCompletedTime,omitempty" azure:"ro"`
+	TargetCompletedTime *time.Time
 
 	// READ-ONLY; String that represents the failed date time.
-	TargetFailedTime *time.Time `json:"targetFailedTime,omitempty" azure:"ro"`
+	TargetFailedTime *time.Time
 }
 
 // ExperimentExecutionDetails - Model that represents the execution details of a Experiment.
 type ExperimentExecutionDetails struct {
 	// READ-ONLY; String of the fully qualified resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; String of the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties of the experiment execution details.
-	Properties *ExperimentExecutionDetailsProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ExperimentExecutionDetailsProperties
 
 	// READ-ONLY; String of the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExperimentExecutionDetailsListResult - Model that represents a list of Experiment execution details and a link for pagination.
 type ExperimentExecutionDetailsListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Experiment execution details.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Experiment execution details.
-	Value []*ExperimentExecutionDetails `json:"value,omitempty" azure:"ro"`
+	Value []*ExperimentExecutionDetails
 }
 
 // ExperimentExecutionDetailsProperties - Model that represents the Experiment execution details properties model.
 type ExperimentExecutionDetailsProperties struct {
 	// READ-ONLY; String that represents the created date time.
-	CreatedDateTime *time.Time `json:"createdDateTime,omitempty" azure:"ro"`
+	CreatedDateTime *time.Time
 
 	// READ-ONLY; The id of the experiment.
-	ExperimentID *string `json:"experimentId,omitempty" azure:"ro"`
+	ExperimentID *string
 
 	// READ-ONLY; The reason why the execution failed.
-	FailureReason *string `json:"failureReason,omitempty" azure:"ro"`
+	FailureReason *string
 
 	// READ-ONLY; String that represents the last action date time.
-	LastActionDateTime *time.Time `json:"lastActionDateTime,omitempty" azure:"ro"`
+	LastActionDateTime *time.Time
 
 	// READ-ONLY; The information of the experiment run.
-	RunInformation *ExperimentExecutionDetailsPropertiesRunInformation `json:"runInformation,omitempty" azure:"ro"`
+	RunInformation *ExperimentExecutionDetailsPropertiesRunInformation
 
 	// READ-ONLY; String that represents the start date time.
-	StartDateTime *time.Time `json:"startDateTime,omitempty" azure:"ro"`
+	StartDateTime *time.Time
 
 	// READ-ONLY; The value of the status of the experiment execution.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; String that represents the stop date time.
-	StopDateTime *time.Time `json:"stopDateTime,omitempty" azure:"ro"`
+	StopDateTime *time.Time
 }
 
 // ExperimentExecutionDetailsPropertiesRunInformation - The information of the experiment run.
 type ExperimentExecutionDetailsPropertiesRunInformation struct {
 	// READ-ONLY; The steps of the experiment run.
-	Steps []*StepStatus `json:"steps,omitempty" azure:"ro"`
+	Steps []*StepStatus
 }
 
 // ExperimentListResult - Model that represents a list of Experiment resources and a link for pagination.
 type ExperimentListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Experiment resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Experiment resources.
-	Value []*Experiment `json:"value,omitempty" azure:"ro"`
+	Value []*Experiment
 }
 
 // ExperimentProperties - Model that represents the Experiment properties model.
 type ExperimentProperties struct {
 	// REQUIRED; List of selectors.
-	Selectors []*Selector `json:"selectors,omitempty"`
+	Selectors []*Selector
 
 	// REQUIRED; List of steps.
-	Steps []*Step `json:"steps,omitempty"`
+	Steps []*Step
 
 	// A boolean value that indicates if experiment should be started on creation or not.
-	StartOnCreation *bool `json:"startOnCreation,omitempty"`
+	StartOnCreation *bool
 }
 
 // ExperimentStartOperationResult - Model that represents the result of a start Experiment operation.
 type ExperimentStartOperationResult struct {
 	// READ-ONLY; String of the Experiment name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; URL to retrieve the Experiment status.
-	StatusURL *string `json:"statusUrl,omitempty" azure:"ro"`
+	StatusURL *string
 }
 
 // ExperimentStatus - Model that represents the status of a Experiment.
 type ExperimentStatus struct {
 	// The properties of experiment execution status.
-	Properties *ExperimentStatusProperties `json:"properties,omitempty"`
+	Properties *ExperimentStatusProperties
 
 	// READ-ONLY; String of the fully qualified resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; String of the resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; String of the resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExperimentStatusListResult - Model that represents a list of Experiment statuses and a link for pagination.
 type ExperimentStatusListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Experiment statuses.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Experiment statuses.
-	Value []*ExperimentStatus `json:"value,omitempty" azure:"ro"`
+	Value []*ExperimentStatus
 }
 
 // ExperimentStatusProperties - Model that represents the Experiment status properties model.
 type ExperimentStatusProperties struct {
 	// READ-ONLY; String that represents the created date time of a Experiment.
-	CreatedDateUTC *time.Time `json:"createdDateUtc,omitempty" azure:"ro"`
+	CreatedDateUTC *time.Time
 
 	// READ-ONLY; String that represents the end date time of a Experiment.
-	EndDateUTC *time.Time `json:"endDateUtc,omitempty" azure:"ro"`
+	EndDateUTC *time.Time
 
 	// READ-ONLY; String that represents the status of a Experiment.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // ExperimentsClientBeginCancelOptions contains the optional parameters for the ExperimentsClient.BeginCancel method.
@@ -567,59 +567,59 @@ type ExperimentsClientStartOptions struct {
 // KeyValuePair - A map to describe the settings of an action.
 type KeyValuePair struct {
 	// REQUIRED; The name of the setting for the action.
-	Key *string `json:"key,omitempty"`
+	Key *string
 
 	// REQUIRED; The value of the setting for the action.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListAllOptions contains the optional parameters for the OperationsClient.NewListAllPager method.
@@ -630,167 +630,167 @@ type OperationsClientListAllOptions struct {
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceIdentity - The managed identity of a resource.
 type ResourceIdentity struct {
 	// REQUIRED; String of the resource identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// READ-ONLY; GUID that represents the principal ID of this resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; GUID that represents the tenant ID of this resource identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // Selector - Model that represents a selector in the Experiment resource.
 type Selector struct {
 	// REQUIRED; String of the selector ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// REQUIRED; List of Target references.
-	Targets []*TargetReference `json:"targets,omitempty"`
+	Targets []*TargetReference
 
 	// REQUIRED; Enum of the selector type.
-	Type *SelectorType `json:"type,omitempty"`
+	Type *SelectorType
 }
 
 // Step - Model that represents a step in the Experiment resource.
 type Step struct {
 	// REQUIRED; List of branches.
-	Branches []*Branch `json:"branches,omitempty"`
+	Branches []*Branch
 
 	// REQUIRED; String of the step name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // StepStatus - Model that represents the a list of branches and branch statuses.
 type StepStatus struct {
 	// READ-ONLY; The array of branches.
-	Branches []*BranchStatus `json:"branches,omitempty" azure:"ro"`
+	Branches []*BranchStatus
 
 	// READ-ONLY; The value of the status of the step.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; The id of the step.
-	StepID *string `json:"stepId,omitempty" azure:"ro"`
+	StepID *string
 
 	// READ-ONLY; The name of the step.
-	StepName *string `json:"stepName,omitempty" azure:"ro"`
+	StepName *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // Target - Model that represents a Target resource.
 type Target struct {
 	// REQUIRED; The properties of the target resource.
-	Properties map[string]any `json:"properties,omitempty"`
+	Properties map[string]any
 
 	// Location of the target resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata of the target resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TargetListResult - Model that represents a list of Target resources and a link for pagination.
 type TargetListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Target resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Target resources.
-	Value []*Target `json:"value,omitempty" azure:"ro"`
+	Value []*Target
 }
 
 // TargetReference - Model that represents a reference to a Target in the selector.
 type TargetReference struct {
 	// REQUIRED; String of the resource ID of a Target resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// CONSTANT; Enum of the Target reference type.
 	// Field has constant value "ChaosTarget", any specified value is ignored.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // TargetType - Model that represents a Target Type resource.
 type TargetType struct {
 	// REQUIRED; The properties of the target type resource.
-	Properties *TargetTypeProperties `json:"properties,omitempty"`
+	Properties *TargetTypeProperties
 
 	// Location of the Target Type resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata properties of the target type resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TargetTypeListResult - Model that represents a list of Target Type resources and a link for pagination.
 type TargetTypeListResult struct {
 	// READ-ONLY; URL to retrieve the next page of Target Type resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Target Type resources.
-	Value []*TargetType `json:"value,omitempty" azure:"ro"`
+	Value []*TargetType
 }
 
 // TargetTypeProperties - Model that represents the base Target Type properties model.
 type TargetTypeProperties struct {
 	// READ-ONLY; Localized string of the description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Localized string of the display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; URL to retrieve JSON schema of the Target Type properties.
-	PropertiesSchema *string `json:"propertiesSchema,omitempty" azure:"ro"`
+	PropertiesSchema *string
 
 	// READ-ONLY; List of resource types this Target Type can extend.
-	ResourceTypes []*string `json:"resourceTypes,omitempty" azure:"ro"`
+	ResourceTypes []*string
 }
 
 // TargetTypesClientGetOptions contains the optional parameters for the TargetTypesClient.Get method.
@@ -829,17 +829,17 @@ type TargetsClientListOptions struct {
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

@@ -393,8 +393,8 @@ func (a *AlertProcessingRulesList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type AlertProperties.
 func (a AlertProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "context", &a.Context)
-	populate(objectMap, "egressConfig", &a.EgressConfig)
+	populateAny(objectMap, "context", a.Context)
+	populateAny(objectMap, "egressConfig", a.EgressConfig)
 	populate(objectMap, "essentials", a.Essentials)
 	return json.Marshal(objectMap)
 }
@@ -1834,6 +1834,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -12,135 +12,135 @@ package armiotcentral
 // App - The IoT Central application.
 type App struct {
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; A valid instance SKU.
-	SKU *AppSKUInfo `json:"sku,omitempty"`
+	SKU *AppSKUInfo
 
 	// The managed identities for the IoT Central application.
-	Identity *SystemAssignedServiceIdentity `json:"identity,omitempty"`
+	Identity *SystemAssignedServiceIdentity
 
 	// The common properties of an IoT Central application.
-	Properties *AppProperties `json:"properties,omitempty"`
+	Properties *AppProperties
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The ARM resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The ARM resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AppAvailabilityInfo - The properties indicating whether a given IoT Central application name or subdomain is available.
 type AppAvailabilityInfo struct {
 	// READ-ONLY; The detailed reason message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The value which indicates whether the provided name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
+	NameAvailable *bool
 
 	// READ-ONLY; The reason for unavailability.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 }
 
 // AppListResult - A list of IoT Central Applications with a next link.
 type AppListResult struct {
 	// The link used to get the next page of IoT Central Applications.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// A list of IoT Central Applications.
-	Value []*App `json:"value,omitempty"`
+	Value []*App
 }
 
 // AppPatch - The description of the IoT Central application.
 type AppPatch struct {
 	// The managed identities for the IoT Central application.
-	Identity *SystemAssignedServiceIdentity `json:"identity,omitempty"`
+	Identity *SystemAssignedServiceIdentity
 
 	// The common properties of an IoT Central application.
-	Properties *AppProperties `json:"properties,omitempty"`
+	Properties *AppProperties
 
 	// A valid instance SKU.
-	SKU *AppSKUInfo `json:"sku,omitempty"`
+	SKU *AppSKUInfo
 
 	// Instance tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AppProperties - The properties of an IoT Central application.
 type AppProperties struct {
 	// The display name of the application.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The subdomain of the application.
-	Subdomain *string `json:"subdomain,omitempty"`
+	Subdomain *string
 
 	// The ID of the application template, which is a blueprint that defines the characteristics and behaviors of an application.
 	// Optional; if not specified, defaults to a blank blueprint and allows the
 	// application to be defined from scratch.
-	Template *string `json:"template,omitempty"`
+	Template *string
 
 	// READ-ONLY; The ID of the application.
-	ApplicationID *string `json:"applicationId,omitempty" azure:"ro"`
+	ApplicationID *string
 
 	// READ-ONLY; The current state of the application.
-	State *AppState `json:"state,omitempty" azure:"ro"`
+	State *AppState
 }
 
 // AppSKUInfo - Information about the SKU of the IoT Central application.
 type AppSKUInfo struct {
 	// REQUIRED; The name of the SKU.
-	Name *AppSKU `json:"name,omitempty"`
+	Name *AppSKU
 }
 
 // AppTemplate - IoT Central Application Template.
 type AppTemplate struct {
 	// READ-ONLY; The description of the template.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The industry of the template.
-	Industry *string `json:"industry,omitempty" azure:"ro"`
+	Industry *string
 
 	// READ-ONLY; A list of locations that support the template.
-	Locations []*AppTemplateLocations `json:"locations,omitempty" azure:"ro"`
+	Locations []*AppTemplateLocations
 
 	// READ-ONLY; The ID of the template.
-	ManifestID *string `json:"manifestId,omitempty" azure:"ro"`
+	ManifestID *string
 
 	// READ-ONLY; The version of the template.
-	ManifestVersion *string `json:"manifestVersion,omitempty" azure:"ro"`
+	ManifestVersion *string
 
 	// READ-ONLY; The name of the template.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The order of the template in the templates list.
-	Order *float32 `json:"order,omitempty" azure:"ro"`
+	Order *float32
 
 	// READ-ONLY; The title of the template.
-	Title *string `json:"title,omitempty" azure:"ro"`
+	Title *string
 }
 
 // AppTemplateLocations - IoT Central Application Template Locations.
 type AppTemplateLocations struct {
 	// READ-ONLY; The display name of the location.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The ID of the location.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // AppTemplatesResult - A list of IoT Central Application Templates with a next link.
 type AppTemplatesResult struct {
 	// The link used to get the next page of IoT Central application templates.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; A list of IoT Central Application Templates.
-	Value []*AppTemplate `json:"value,omitempty" azure:"ro"`
+	Value []*AppTemplate
 }
 
 // AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate method.
@@ -195,65 +195,65 @@ type AppsClientListTemplatesOptions struct {
 // CloudErrorBody - Details of error response.
 type CloudErrorBody struct {
 	// A list of additional details about the error.
-	Details []*CloudErrorBody `json:"details,omitempty"`
+	Details []*CloudErrorBody
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The target of the particular error.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // Operation - IoT Central REST API operation
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{read | write | action | delete}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation.
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 
 	// READ-ONLY; Additional descriptions for the operation.
-	Properties any `json:"properties,omitempty" azure:"ro"`
+	Properties any
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Friendly description for the operation,
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Name of the operation
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Service provider: Microsoft IoT Central
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource Type: IoT Central
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationInputs - Input values.
 type OperationInputs struct {
 	// REQUIRED; The name of the IoT Central application instance to check.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The type of the IoT Central resource to query.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // OperationListResult - A list of IoT Central operations. It contains a list of operations and a URL link to get the next
 // set of results.
 type OperationListResult struct {
 	// The link used to get the next page of IoT Central description objects.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; A list of operations supported by the Microsoft.IoTCentral resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -264,30 +264,30 @@ type OperationsClientListOptions struct {
 // Resource - The common properties of an ARM resource.
 type Resource struct {
 	// REQUIRED; The resource location.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The ARM resource identifier.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The ARM resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SystemAssignedServiceIdentity - Managed service identity (either system assigned, or none)
 type SystemAssignedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (either system assigned, or none).
-	Type *SystemAssignedServiceIdentityType `json:"type,omitempty"`
+	Type *SystemAssignedServiceIdentityType
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
 	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }

@@ -14,19 +14,19 @@ import "time"
 // AvailableOperations - Available operations of the service
 type AvailableOperations struct {
 	// URL client should use to fetch the next page (per server side paging). It's null for now, added for future use.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Collection of available operation details
-	Value []*OperationDetail `json:"value,omitempty"`
+	Value []*OperationDetail
 }
 
 // BotResponseList - The list of Azure Health Bot operation response.
 type BotResponseList struct {
 	// READ-ONLY; The link used to get the next page of bot service resources.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Gets the list of Azure Health Bot results and their properties.
-	Value []*HealthBot `json:"value,omitempty" azure:"ro"`
+	Value []*HealthBot
 }
 
 // BotsClientBeginCreateOptions contains the optional parameters for the BotsClient.BeginCreate method.
@@ -64,64 +64,64 @@ type BotsClientUpdateOptions struct {
 // Error - The resource management error response.
 type Error struct {
 	// The error object.
-	Error *ErrorError `json:"error,omitempty"`
+	Error *ErrorError
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorError - The error object.
 type ErrorError struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*Error `json:"details,omitempty" azure:"ro"`
+	Details []*Error
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // HealthBot - Azure Health Bot resource definition
 type HealthBot struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; SKU of the Azure Health Bot.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// The identity of the Azure Health Bot.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The set of properties specific to Azure Health Bot resource.
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Identity for the resource.
@@ -129,51 +129,51 @@ type Identity struct {
 	// The identity type. The type 'SystemAssigned, UserAssigned' includes both an implicitly created identity and a set of user
 	// assigned identities. The type 'None' will remove any identities from the Azure
 	// Health Bot
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
 	// ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The principal ID of resource identity. This property will only be provided for a system assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // OperationDetail - Operation detail payload
 type OperationDetail struct {
 	// Display of the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the operation
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Additional properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationDisplay - Operation display payload
 type OperationDisplay struct {
 	// Localized friendly description for the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Localized friendly name for the operation
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Resource provider of the operation
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource of the operation
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -186,99 +186,99 @@ type OperationsClientListOptions struct {
 // assistants and health bots, that help them improve processes and reduce costs.
 type Properties struct {
 	// READ-ONLY; The link.
-	BotManagementPortalLink *string `json:"botManagementPortalLink,omitempty" azure:"ro"`
+	BotManagementPortalLink *string
 
 	// READ-ONLY; The provisioning state of the Azure Health Bot resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // Resource - The resource model definition for a ARM tracked top level resource
 type Resource struct {
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKU - The resource model definition representing SKU
 type SKU struct {
 	// REQUIRED; The name of the Azure Health Bot SKU
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 }
 
 // SystemData - Read only system data
 type SystemData struct {
 	// The timestamp of resource creation (UTC)
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource
-	CreatedByType *IdentityType `json:"createdByType,omitempty"`
+	CreatedByType *IdentityType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource
-	LastModifiedByType *IdentityType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *IdentityType
 }
 
 // TrackedResource - The resource model definition for a ARM tracked top level resource
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource Id for the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UpdateParameters - Parameters for updating a Azure Health Bot.
 type UpdateParameters struct {
 	// The identity of the Azure Health Bot.
-	Identity *Identity `json:"identity,omitempty"`
-	Location *string   `json:"location,omitempty"`
+	Identity *Identity
+	Location *string
 
 	// SKU of the Azure Health Bot.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Tags for a Azure Health Bot.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // UserAssignedIdentity - The details of the user assigned managed identity used by the Video Analyzer resource.
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // ValidationResult - The response returned from validation process
 type ValidationResult struct {
 	// The status code of the response validation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }

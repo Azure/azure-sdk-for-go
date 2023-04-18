@@ -12,55 +12,55 @@ package armoperationsmanagement
 // ArmTemplateParameter - Parameter to pass to ARM template
 type ArmTemplateParameter struct {
 	// name of the parameter.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// value for the parameter. In Jtoken
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // CodeMessageError - The error body contract.
 type CodeMessageError struct {
 	// The error details for a failed request.
-	Error *CodeMessageErrorError `json:"error,omitempty"`
+	Error *CodeMessageErrorError
 }
 
 // CodeMessageErrorError - The error details for a failed request.
 type CodeMessageErrorError struct {
 	// The error type.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// The error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ManagementAssociation - The container for solution.
 type ManagementAssociation struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties for ManagementAssociation object supported by the OperationsManagement resource provider.
-	Properties *ManagementAssociationProperties `json:"properties,omitempty"`
+	Properties *ManagementAssociationProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagementAssociationProperties - ManagementAssociation properties supported by the OperationsManagement resource provider.
 type ManagementAssociationProperties struct {
 	// REQUIRED; The applicationId of the appliance for this association.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 }
 
 // ManagementAssociationPropertiesList - the list of ManagementAssociation response
 type ManagementAssociationPropertiesList struct {
 	// List of Management Association properties within the subscription.
-	Value []*ManagementAssociation `json:"value,omitempty"`
+	Value []*ManagementAssociation
 }
 
 // ManagementAssociationsClientCreateOrUpdateOptions contains the optional parameters for the ManagementAssociationsClient.CreateOrUpdate
@@ -89,43 +89,43 @@ type ManagementAssociationsClientListBySubscriptionOptions struct {
 // ManagementConfiguration - The container for solution.
 type ManagementConfiguration struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties for ManagementConfiguration object supported by the OperationsManagement resource provider.
-	Properties *ManagementConfigurationProperties `json:"properties,omitempty"`
+	Properties *ManagementConfigurationProperties
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ManagementConfigurationProperties - ManagementConfiguration properties supported by the OperationsManagement resource provider.
 type ManagementConfigurationProperties struct {
 	// REQUIRED; Parameters to run the ARM template
-	Parameters []*ArmTemplateParameter `json:"parameters,omitempty"`
+	Parameters []*ArmTemplateParameter
 
 	// REQUIRED; The type of the parent resource.
-	ParentResourceType *string `json:"parentResourceType,omitempty"`
+	ParentResourceType *string
 
 	// REQUIRED; The Json object containing the ARM template to deploy
-	Template any `json:"template,omitempty"`
+	Template any
 
 	// The applicationId of the appliance for this Management.
-	ApplicationID *string `json:"applicationId,omitempty"`
+	ApplicationID *string
 
 	// READ-ONLY; The provisioning state for the ManagementConfiguration.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // ManagementConfigurationPropertiesList - the list of ManagementConfiguration response
 type ManagementConfigurationPropertiesList struct {
 	// List of Management Configuration properties within the subscription.
-	Value []*ManagementConfiguration `json:"value,omitempty"`
+	Value []*ManagementConfiguration
 }
 
 // ManagementConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ManagementConfigurationsClient.CreateOrUpdate
@@ -154,28 +154,28 @@ type ManagementConfigurationsClientListBySubscriptionOptions struct {
 // Operation - Supported operation of OperationsManagement resource provider.
 type Operation struct {
 	// Display metadata associated with the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - Display metadata associated with the operation.
 type OperationDisplay struct {
 	// Type of operation: get, read, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft OperationsManagement.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list solution operations.
 type OperationListResult struct {
 	// List of solution operations supported by the OperationsManagement resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -186,31 +186,31 @@ type OperationsClientListOptions struct {
 // Solution - The container for solution.
 type Solution struct {
 	// Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Plan for solution object supported by the OperationsManagement resource provider.
-	Plan *SolutionPlan `json:"plan,omitempty"`
+	Plan *SolutionPlan
 
 	// Properties for solution object supported by the OperationsManagement resource provider.
-	Properties *SolutionProperties `json:"properties,omitempty"`
+	Properties *SolutionProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Resource name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Resource type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SolutionPatch - The properties of a Solution that can be patched.
 type SolutionPatch struct {
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // SolutionPlan - Plan for solution object supported by the OperationsManagement resource provider.
@@ -218,39 +218,39 @@ type SolutionPlan struct {
 	// name of the solution to be created. For Microsoft published solution it should be in the format of solutionType(workspaceName).
 	// SolutionType part is case sensitive. For third party solution, it can be
 	// anything.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// name of the solution to enabled/add. For Microsoft published gallery solution it should be in the format of OMSGallery/.
 	// This is case sensitive
-	Product *string `json:"product,omitempty"`
+	Product *string
 
 	// promotionCode, Not really used now, can you left as empty
-	PromotionCode *string `json:"promotionCode,omitempty"`
+	PromotionCode *string
 
 	// Publisher name. For gallery solution, it is Microsoft.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 }
 
 // SolutionProperties - Solution properties supported by the OperationsManagement resource provider.
 type SolutionProperties struct {
 	// REQUIRED; The azure resourceId for the workspace where the solution will be deployed/enabled.
-	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
+	WorkspaceResourceID *string
 
 	// The azure resources that will be contained within the solutions. They will be locked and gets deleted automatically when
 	// the solution is deleted.
-	ContainedResources []*string `json:"containedResources,omitempty"`
+	ContainedResources []*string
 
 	// The resources that will be referenced from this solution. Deleting any of those solution out of band will break the solution.
-	ReferencedResources []*string `json:"referencedResources,omitempty"`
+	ReferencedResources []*string
 
 	// READ-ONLY; The provisioning state for the solution.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // SolutionPropertiesList - the list of solution response
 type SolutionPropertiesList struct {
 	// List of solution properties within the subscription.
-	Value []*Solution `json:"value,omitempty"`
+	Value []*Solution
 }
 
 // SolutionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SolutionsClient.BeginCreateOrUpdate

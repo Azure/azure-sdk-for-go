@@ -62,6 +62,7 @@ func ExampleLogsClient_QueryWorkspace() {
 	// 1. If not already made, create a Log Analytics workspace (https://learn.microsoft.com/azure/azure-monitor/logs/quick-create-workspace).
 	// 2. Navigate to your workspace's page in the Azure portal.
 	// 3. From the **Overview** blade, copy the value of the ***Workspace ID*** property.
+
 	workspaceID := "g4d1e129-fb1e-4b0a-b234-250abc987ea65" // example Azure Log Analytics Workspace ID
 
 	res, err := logsClient.QueryWorkspace(
@@ -148,6 +149,40 @@ func ExampleLogsClient_QueryWorkspace_second() {
 	// Print out Visualization information
 	fmt.Printf("Visualization: %s", string(res.Visualization))
 
+}
+
+func ExampleLogsClient_QueryResource() {
+	// Instead of requiring a Log Analytics workspace,
+	// QueryResource allows users to query logs directly from an Azure resource through a resource ID.
+
+	// To find the resource ID:
+	// 1. Navigate to your resource's page in the Azure portal.
+	// 2. From the **Overview** blade, select the **JSON View** link.
+	// 3. In the resulting JSON, copy the value of the `id` property.
+
+	resourceID := "/subscriptions/fajfkx93-c1d8-40ad-9cce-e49c10ca8qe6/resourceGroups/testgroup/providers/Microsoft.Storage/storageAccounts/mystorageacount" // example resource ID
+
+	res, err := logsClient.QueryResource(
+		context.TODO(),
+		resourceID,
+		azquery.Body{
+			Query:    to.Ptr("StorageBlobLogs | where TimeGenerated > ago(3d)"), // example Kusto query
+			Timespan: to.Ptr(azquery.NewTimeInterval(time.Date(2022, 12, 25, 0, 0, 0, 0, time.UTC), time.Date(2022, 12, 25, 12, 0, 0, 0, time.UTC))),
+		},
+		nil)
+	if err != nil {
+		//TODO: handle error
+	}
+	if res.Error != nil {
+		//TODO: handle partial error
+	}
+
+	// Print Rows
+	for _, table := range res.Tables {
+		for _, row := range table.Rows {
+			fmt.Println(row)
+		}
+	}
 }
 
 func ExampleLogsClient_QueryBatch() {

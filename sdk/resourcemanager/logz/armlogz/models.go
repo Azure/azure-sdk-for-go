@@ -14,58 +14,58 @@ import "time"
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // FilteringTag - The definition of a filtering tag. Filtering tags are used for capturing resources and include/exclude them
 // from being monitored.
 type FilteringTag struct {
 	// Valid actions for a filtering tag. Exclusion takes priority over inclusion.
-	Action *TagAction `json:"action,omitempty"`
+	Action *TagAction
 
 	// The name (also known as the key) of the tag.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the tag.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 type IdentityProperties struct {
-	Type *ManagedIdentityTypes `json:"type,omitempty"`
+	Type *ManagedIdentityTypes
 
 	// READ-ONLY; The identity ID.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // LogRules - Set of rules for sending logs for the Monitor resource.
@@ -74,16 +74,16 @@ type LogRules struct {
 	// all resources will be captured. If only Exclude action is specified, the
 	// rules will apply to the list of all available resources. If Include actions are specified, the rules will only include
 	// resources with the associated tags.
-	FilteringTags []*FilteringTag `json:"filteringTags,omitempty"`
+	FilteringTags []*FilteringTag
 
 	// Flag specifying if AAD logs should be sent for the Monitor resource.
-	SendAADLogs *bool `json:"sendAadLogs,omitempty"`
+	SendAADLogs *bool
 
 	// Flag specifying if activity logs from Azure resources should be sent for the Monitor resource.
-	SendActivityLogs *bool `json:"sendActivityLogs,omitempty"`
+	SendActivityLogs *bool
 
 	// Flag specifying if subscription logs should be sent for the Monitor resource.
-	SendSubscriptionLogs *bool `json:"sendSubscriptionLogs,omitempty"`
+	SendSubscriptionLogs *bool
 }
 
 // MonitorClientListVMHostUpdateOptions contains the optional parameters for the MonitorClient.NewListVMHostUpdatePager method.
@@ -104,142 +104,142 @@ type MonitorClientVMHostPayloadOptions struct {
 
 // MonitorProperties - Properties specific to the monitor resource.
 type MonitorProperties struct {
-	LogzOrganizationProperties *OrganizationProperties `json:"logzOrganizationProperties,omitempty"`
+	LogzOrganizationProperties *OrganizationProperties
 
 	// Flag specifying the Marketplace Subscription Status of the resource. If payment is not made in time, the resource will
 	// go in Suspended state.
-	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus `json:"marketplaceSubscriptionStatus,omitempty"`
+	MarketplaceSubscriptionStatus *MarketplaceSubscriptionStatus
 
 	// Flag specifying if the resource monitoring is enabled or disabled.
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
-	PlanData         *PlanData         `json:"planData,omitempty"`
-	UserInfo         *UserInfo         `json:"userInfo,omitempty"`
+	MonitoringStatus *MonitoringStatus
+	PlanData         *PlanData
+	UserInfo         *UserInfo
 
 	// READ-ONLY
-	LiftrResourceCategory *LiftrResourceCategories `json:"liftrResourceCategory,omitempty" azure:"ro"`
+	LiftrResourceCategory *LiftrResourceCategories
 
 	// READ-ONLY; The priority of the resource.
-	LiftrResourcePreference *int32 `json:"liftrResourcePreference,omitempty" azure:"ro"`
+	LiftrResourcePreference *int32
 
 	// READ-ONLY; Flag specifying if the resource provisioning state as tracked by ARM.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 type MonitorResource struct {
 	// REQUIRED
-	Location *string             `json:"location,omitempty"`
-	Identity *IdentityProperties `json:"identity,omitempty"`
+	Location *string
+	Identity *IdentityProperties
 
 	// Properties specific to the monitor resource.
-	Properties *MonitorProperties `json:"properties,omitempty"`
+	Properties *MonitorProperties
 
 	// Dictionary of
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; ARM id of the monitor resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the monitor resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the monitor resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MonitorResourceListResponse - Response of a list operation.
 type MonitorResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitorResource `json:"value,omitempty"`
+	Value []*MonitorResource
 }
 
 // MonitorResourceUpdateParameters - The parameters for a PATCH request to a monitor resource.
 type MonitorResourceUpdateParameters struct {
 	// The set of properties that can be update in a PATCH request to a monitor resource.
-	Properties *MonitorUpdateProperties `json:"properties,omitempty"`
+	Properties *MonitorUpdateProperties
 
 	// The new tags of the monitor resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // MonitorUpdateProperties - The set of properties that can be update in a PATCH request to a monitor resource.
 type MonitorUpdateProperties struct {
 	// Flag specifying if the resource monitoring is enabled or disabled.
-	MonitoringStatus *MonitoringStatus `json:"monitoringStatus,omitempty"`
+	MonitoringStatus *MonitoringStatus
 }
 
 // MonitoredResource - The properties of a resource currently being monitored by the Logz monitor resource.
 type MonitoredResource struct {
 	// The ARM id of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Reason for why the resource is sending logs (or why it is not sending).
-	ReasonForLogsStatus *string `json:"reasonForLogsStatus,omitempty"`
+	ReasonForLogsStatus *string
 
 	// Reason for why the resource is sending metrics (or why it is not sending).
-	ReasonForMetricsStatus *string `json:"reasonForMetricsStatus,omitempty"`
+	ReasonForMetricsStatus *string
 
 	// Flag indicating if resource is sending logs to Logz.
-	SendingLogs *bool `json:"sendingLogs,omitempty"`
+	SendingLogs *bool
 
 	// Flag indicating if resource is sending metrics to Logz.
-	SendingMetrics *bool `json:"sendingMetrics,omitempty"`
+	SendingMetrics *bool
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 }
 
 // MonitoredResourceListResponse - Response of a list operation.
 type MonitoredResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitoredResource `json:"value,omitempty"`
+	Value []*MonitoredResource
 }
 
 // MonitoringTagRules - Capture logs and metrics of Azure resources based on ARM tags.
 type MonitoringTagRules struct {
 	// Definition of the properties for a TagRules resource.
-	Properties *MonitoringTagRulesProperties `json:"properties,omitempty"`
+	Properties *MonitoringTagRulesProperties
 
 	// READ-ONLY; The id of the rule set.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the rule set.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the rule set.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MonitoringTagRulesListResponse - Response of a list operation.
 type MonitoringTagRulesListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*MonitoringTagRules `json:"value,omitempty"`
+	Value []*MonitoringTagRules
 }
 
 // MonitoringTagRulesProperties - Definition of the properties for a TagRules resource.
 type MonitoringTagRulesProperties struct {
 	// Set of rules for sending logs for the Monitor resource.
-	LogRules *LogRules `json:"logRules,omitempty"`
+	LogRules *LogRules
 
 	// READ-ONLY; Flag specifying if the resource provisioning state as tracked by ARM.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 }
 
 // MonitorsClientBeginCreateOptions contains the optional parameters for the MonitorsClient.BeginCreate method.
@@ -291,40 +291,40 @@ type MonitorsClientUpdateOptions struct {
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation, e.g., 'Write monitors'.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type, e.g., read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider, i.e., Microsoft.Logz.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Type on which the operation is performed, e.g., 'monitors'.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of GET request to list the Microsoft.Logz operations.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of operations supported by the Microsoft.Logz provider.
-	Value []*OperationResult `json:"value,omitempty"`
+	Value []*OperationResult
 }
 
 // OperationResult - A Microsoft.Logz REST API operation.
 type OperationResult struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Operation name, i.e., {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -334,30 +334,30 @@ type OperationsClientListOptions struct {
 
 type OrganizationProperties struct {
 	// Name of the Logz organization.
-	CompanyName *string `json:"companyName,omitempty"`
+	CompanyName *string
 
 	// The Id of the Enterprise App used for Single sign on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+	EnterpriseAppID *string
 
 	// The login URL specific to this Logz Organization.
-	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty"`
+	SingleSignOnURL *string
 
 	// READ-ONLY; Id of the Logz organization.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 type PlanData struct {
 	// different billing cycles like MONTHLY/WEEKLY. this could be enum
-	BillingCycle *string `json:"billingCycle,omitempty"`
+	BillingCycle *string
 
 	// date when plan was applied
-	EffectiveDate *time.Time `json:"effectiveDate,omitempty"`
+	EffectiveDate *time.Time
 
 	// plan id as published by Logz
-	PlanDetails *string `json:"planDetails,omitempty"`
+	PlanDetails *string
 
 	// different usage type like PAYG/COMMITTED. this could be enum
-	UsageType *string `json:"usageType,omitempty"`
+	UsageType *string
 }
 
 // SingleSignOnClientBeginCreateOrUpdateOptions contains the optional parameters for the SingleSignOnClient.BeginCreateOrUpdate
@@ -380,41 +380,41 @@ type SingleSignOnClientListOptions struct {
 
 type SingleSignOnProperties struct {
 	// The Id of the Enterprise App used for Single sign-on.
-	EnterpriseAppID *string `json:"enterpriseAppId,omitempty"`
+	EnterpriseAppID *string
 
 	// Various states of the SSO resource
-	SingleSignOnState *SingleSignOnStates `json:"singleSignOnState,omitempty"`
+	SingleSignOnState *SingleSignOnStates
 
 	// The login URL specific to this Logz Organization.
-	SingleSignOnURL *string `json:"singleSignOnUrl,omitempty"`
+	SingleSignOnURL *string
 
 	// READ-ONLY; Flag specifying if the resource provisioning state as tracked by ARM.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 type SingleSignOnResource struct {
-	Properties *SingleSignOnProperties `json:"properties,omitempty"`
+	Properties *SingleSignOnProperties
 
 	// READ-ONLY; ARM id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the configuration.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SingleSignOnResourceListResponse - Response of a list operation.
 type SingleSignOnResourceListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Results of a list operation.
-	Value []*SingleSignOnResource `json:"value,omitempty"`
+	Value []*SingleSignOnResource
 }
 
 // SubAccountClientBeginCreateOptions contains the optional parameters for the SubAccountClient.BeginCreate method.
@@ -492,22 +492,22 @@ type SubAccountTagRulesClientListOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagRulesClientCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.CreateOrUpdate method.
@@ -532,71 +532,71 @@ type TagRulesClientListOptions struct {
 
 type UserInfo struct {
 	// Email of the user used by Logz for contacting them if needed
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 
 	// First Name of the user
-	FirstName *string `json:"firstName,omitempty"`
+	FirstName *string
 
 	// Last Name of the user
-	LastName *string `json:"lastName,omitempty"`
+	LastName *string
 
 	// Phone number of the user used by Logz for contacting them if needed
-	PhoneNumber *string `json:"phoneNumber,omitempty"`
+	PhoneNumber *string
 }
 
 // UserRoleListResponse - Response for list of user's role for Logz.io account.
 type UserRoleListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of user roles for Logz.io account.
-	Value []*UserRoleResponse `json:"value,omitempty"`
+	Value []*UserRoleResponse
 }
 
 // UserRoleRequest - Request for checking user's role for Logz.io account.
 type UserRoleRequest struct {
 	// Email of the user used by Logz for contacting them if needed
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 }
 
 // UserRoleResponse - Response for checking user's role for Logz.io account.
 type UserRoleResponse struct {
 	// User roles on configured in Logz.io account.
-	Role *UserRole `json:"role,omitempty"`
+	Role *UserRole
 }
 
 // VMExtensionPayload - Response of payload to be passed while installing VM agent.
 type VMExtensionPayload struct {
 	// API Key corresponding to the resource.
-	APIKey *string `json:"apiKey,omitempty"`
+	APIKey *string
 
 	// Logz.io region where the resource has been created.
-	Region *string `json:"region,omitempty"`
+	Region *string
 }
 
 // VMHostUpdateRequest - Request of a list VM Host Update Operation.
 type VMHostUpdateRequest struct {
 	// Specifies the state of the operation - install/ delete.
-	State *VMHostUpdateStates `json:"state,omitempty"`
+	State *VMHostUpdateStates
 
 	// Request of a list vm host update operation.
-	VMResourceIDs []*VMResources `json:"vmResourceIds,omitempty"`
+	VMResourceIDs []*VMResources
 }
 
 // VMResources - VM Resource Ids
 type VMResources struct {
 	// Version of the Logz agent installed on the VM.
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// Request of a list vm host update operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // VMResourcesListResponse - Response of a list VM Host Update Operation.
 type VMResourcesListResponse struct {
 	// Link to the next set of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Response of a list vm host update operation.
-	Value []*VMResources `json:"value,omitempty"`
+	Value []*VMResources
 }

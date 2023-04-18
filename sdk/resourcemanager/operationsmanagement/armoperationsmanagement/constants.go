@@ -11,5 +11,5 @@ package armoperationsmanagement
 
 const (
 	moduleName    = "armoperationsmanagement"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v0.7.1"
 )

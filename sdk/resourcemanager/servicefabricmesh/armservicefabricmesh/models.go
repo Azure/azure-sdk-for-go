@@ -15,16 +15,16 @@ import "time"
 // or container groups).
 type AddRemoveReplicaScalingMechanism struct {
 	// REQUIRED; The type of auto scaling mechanism.
-	Kind *AutoScalingMechanismKind `json:"kind,omitempty"`
+	Kind *AutoScalingMechanismKind
 
 	// REQUIRED; Maximum number of containers (scale up won't be performed above this number).
-	MaxCount *int32 `json:"maxCount,omitempty"`
+	MaxCount *int32
 
 	// REQUIRED; Minimum number of containers (scale down won't be performed below this number).
-	MinCount *int32 `json:"minCount,omitempty"`
+	MinCount *int32
 
 	// REQUIRED; Each time auto scaling is performed, this number of containers will be added or removed.
-	ScaleIncrement *int32 `json:"scaleIncrement,omitempty"`
+	ScaleIncrement *int32
 }
 
 // GetAutoScalingMechanism implements the AutoScalingMechanismClassification interface for type AddRemoveReplicaScalingMechanism.
@@ -64,115 +64,115 @@ type ApplicationClientListBySubscriptionOptions struct {
 // ApplicationProperties - Describes properties of a application resource.
 type ApplicationProperties struct {
 	// Internal - used by Visual Studio to setup the debugging session on the local development environment.
-	DebugParams *string `json:"debugParams,omitempty"`
+	DebugParams *string
 
 	// User readable description of the application.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Describes the diagnostics definition and usage for an application resource.
-	Diagnostics *DiagnosticsDescription `json:"diagnostics,omitempty"`
+	Diagnostics *DiagnosticsDescription
 
 	// Describes the services in the application. This property is used to create or modify services of the application. On get
 	// only the name of the service is returned. The service description can be
 	// obtained by querying for the service resource.
-	Services []*ServiceResourceDescription `json:"services,omitempty"`
+	Services []*ServiceResourceDescription
 
 	// READ-ONLY; Describes the health state of an application resource.
-	HealthState *HealthState `json:"healthState,omitempty" azure:"ro"`
+	HealthState *HealthState
 
 	// READ-ONLY; Names of the services in the application.
-	ServiceNames []*string `json:"serviceNames,omitempty" azure:"ro"`
+	ServiceNames []*string
 
 	// READ-ONLY; Status of the application.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the application.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 
 	// READ-ONLY; When the application's health state is not 'Ok', this additional details from service fabric Health Manager
 	// for the user to know why the application is marked unhealthy.
-	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty" azure:"ro"`
+	UnhealthyEvaluation *string
 }
 
 // ApplicationResourceDescription - This type describes an application resource.
 type ApplicationResourceDescription struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; This type describes properties of an application resource.
-	Properties *ApplicationResourceProperties `json:"properties,omitempty"`
+	Properties *ApplicationResourceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ApplicationResourceDescriptionList - A pageable list of application resources.
 type ApplicationResourceDescriptionList struct {
 	// URI to fetch the next page of the list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// One page of the list.
-	Value []*ApplicationResourceDescription `json:"value,omitempty"`
+	Value []*ApplicationResourceDescription
 }
 
 // ApplicationResourceProperties - This type describes properties of an application resource.
 type ApplicationResourceProperties struct {
 	// Internal - used by Visual Studio to setup the debugging session on the local development environment.
-	DebugParams *string `json:"debugParams,omitempty"`
+	DebugParams *string
 
 	// User readable description of the application.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Describes the diagnostics definition and usage for an application resource.
-	Diagnostics *DiagnosticsDescription `json:"diagnostics,omitempty"`
+	Diagnostics *DiagnosticsDescription
 
 	// Describes the services in the application. This property is used to create or modify services of the application. On get
 	// only the name of the service is returned. The service description can be
 	// obtained by querying for the service resource.
-	Services []*ServiceResourceDescription `json:"services,omitempty"`
+	Services []*ServiceResourceDescription
 
 	// READ-ONLY; Describes the health state of an application resource.
-	HealthState *HealthState `json:"healthState,omitempty" azure:"ro"`
+	HealthState *HealthState
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Names of the services in the application.
-	ServiceNames []*string `json:"serviceNames,omitempty" azure:"ro"`
+	ServiceNames []*string
 
 	// READ-ONLY; Status of the application.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the application.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 
 	// READ-ONLY; When the application's health state is not 'Ok', this additional details from service fabric Health Manager
 	// for the user to know why the application is marked unhealthy.
-	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty" azure:"ro"`
+	UnhealthyEvaluation *string
 }
 
 // ApplicationScopedVolume - Describes a volume whose lifetime is scoped to the application's lifetime.
 type ApplicationScopedVolume struct {
 	// REQUIRED; Describes parameters for creating application-scoped volumes.
-	CreationParameters ApplicationScopedVolumeCreationParametersClassification `json:"creationParameters,omitempty"`
+	CreationParameters ApplicationScopedVolumeCreationParametersClassification
 
 	// REQUIRED; The path within the container at which the volume should be mounted. Only valid path characters are allowed.
-	DestinationPath *string `json:"destinationPath,omitempty"`
+	DestinationPath *string
 
 	// REQUIRED; Name of the volume being referenced.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The flag indicating whether the volume is read only. Default is 'false'.
-	ReadOnly *bool `json:"readOnly,omitempty"`
+	ReadOnly *bool
 }
 
 // ApplicationScopedVolumeCreationParametersClassification provides polymorphic access to related types.
@@ -187,10 +187,10 @@ type ApplicationScopedVolumeCreationParametersClassification interface {
 // ApplicationScopedVolumeCreationParameters - Describes parameters for creating application-scoped volumes.
 type ApplicationScopedVolumeCreationParameters struct {
 	// REQUIRED; Specifies the application-scoped volume kind.
-	Kind *ApplicationScopedVolumeKind `json:"kind,omitempty"`
+	Kind *ApplicationScopedVolumeKind
 
 	// User readable description of the volume.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // GetApplicationScopedVolumeCreationParameters implements the ApplicationScopedVolumeCreationParametersClassification interface
@@ -203,13 +203,13 @@ func (a *ApplicationScopedVolumeCreationParameters) GetApplicationScopedVolumeCr
 // volumes provided by Service Fabric Volume Disks
 type ApplicationScopedVolumeCreationParametersServiceFabricVolumeDisk struct {
 	// REQUIRED; Specifies the application-scoped volume kind.
-	Kind *ApplicationScopedVolumeKind `json:"kind,omitempty"`
+	Kind *ApplicationScopedVolumeKind
 
 	// REQUIRED; Volume size
-	SizeDisk *SizeTypes `json:"sizeDisk,omitempty"`
+	SizeDisk *SizeTypes
 
 	// User readable description of the volume.
-	Description *string `json:"description,omitempty"`
+	Description *string
 }
 
 // GetApplicationScopedVolumeCreationParameters implements the ApplicationScopedVolumeCreationParametersClassification interface
@@ -234,7 +234,7 @@ type AutoScalingMechanismClassification interface {
 // actual mechanism.
 type AutoScalingMechanism struct {
 	// REQUIRED; The type of auto scaling mechanism.
-	Kind *AutoScalingMechanismKind `json:"kind,omitempty"`
+	Kind *AutoScalingMechanismKind
 }
 
 // GetAutoScalingMechanism implements the AutoScalingMechanismClassification interface for type AutoScalingMechanism.
@@ -253,7 +253,7 @@ type AutoScalingMetricClassification interface {
 // resources or metrics.
 type AutoScalingMetric struct {
 	// REQUIRED; The type of auto scaling metric
-	Kind *AutoScalingMetricKind `json:"kind,omitempty"`
+	Kind *AutoScalingMetricKind
 }
 
 // GetAutoScalingMetric implements the AutoScalingMetricClassification interface for type AutoScalingMetric.
@@ -262,22 +262,22 @@ func (a *AutoScalingMetric) GetAutoScalingMetric() *AutoScalingMetric { return a
 // AutoScalingPolicy - Describes the auto scaling policy
 type AutoScalingPolicy struct {
 	// REQUIRED; The mechanism that is used to scale when auto scaling operation is invoked.
-	Mechanism AutoScalingMechanismClassification `json:"mechanism,omitempty"`
+	Mechanism AutoScalingMechanismClassification
 
 	// REQUIRED; The name of the auto scaling policy.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Determines when auto scaling operation will be invoked.
-	Trigger AutoScalingTriggerClassification `json:"trigger,omitempty"`
+	Trigger AutoScalingTriggerClassification
 }
 
 // AutoScalingResourceMetric - Describes the resource that is used for triggering auto scaling.
 type AutoScalingResourceMetric struct {
 	// REQUIRED; The type of auto scaling metric
-	Kind *AutoScalingMetricKind `json:"kind,omitempty"`
+	Kind *AutoScalingMetricKind
 
 	// REQUIRED; Name of the resource.
-	Name *AutoScalingResourceMetricName `json:"name,omitempty"`
+	Name *AutoScalingResourceMetricName
 }
 
 // GetAutoScalingMetric implements the AutoScalingMetricClassification interface for type AutoScalingResourceMetric.
@@ -299,7 +299,7 @@ type AutoScalingTriggerClassification interface {
 // AutoScalingTrigger - Describes the trigger for performing auto scaling operation.
 type AutoScalingTrigger struct {
 	// REQUIRED; The type of auto scaling trigger
-	Kind *AutoScalingTriggerKind `json:"kind,omitempty"`
+	Kind *AutoScalingTriggerKind
 }
 
 // GetAutoScalingTrigger implements the AutoScalingTriggerClassification interface for type AutoScalingTrigger.
@@ -308,34 +308,34 @@ func (a *AutoScalingTrigger) GetAutoScalingTrigger() *AutoScalingTrigger { retur
 // AvailableOperationDisplay - An operation available at the listed Azure resource provider.
 type AvailableOperationDisplay struct {
 	// Description of the available operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the available operation.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the operation provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Name of the resource on which the operation is available.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // AverageLoadScalingTrigger - Describes the average load trigger used for auto scaling.
 type AverageLoadScalingTrigger struct {
 	// REQUIRED; The type of auto scaling trigger
-	Kind *AutoScalingTriggerKind `json:"kind,omitempty"`
+	Kind *AutoScalingTriggerKind
 
 	// REQUIRED; Lower load threshold (if average load is below this threshold, service will scale down).
-	LowerLoadThreshold *float64 `json:"lowerLoadThreshold,omitempty"`
+	LowerLoadThreshold *float64
 
 	// REQUIRED; Description of the metric that is used for scaling.
-	Metric AutoScalingMetricClassification `json:"metric,omitempty"`
+	Metric AutoScalingMetricClassification
 
 	// REQUIRED; Scale interval that indicates how often will this trigger be checked.
-	ScaleIntervalInSeconds *int32 `json:"scaleIntervalInSeconds,omitempty"`
+	ScaleIntervalInSeconds *int32
 
 	// REQUIRED; Upper load threshold (if average load is above this threshold, service will scale up).
-	UpperLoadThreshold *float64 `json:"upperLoadThreshold,omitempty"`
+	UpperLoadThreshold *float64
 }
 
 // GetAutoScalingTrigger implements the AutoScalingTriggerClassification interface for type AverageLoadScalingTrigger.
@@ -348,28 +348,28 @@ func (a *AverageLoadScalingTrigger) GetAutoScalingTrigger() *AutoScalingTrigger 
 // AzureInternalMonitoringPipelineSinkDescription - Diagnostics settings for Geneva.
 type AzureInternalMonitoringPipelineSinkDescription struct {
 	// REQUIRED; The kind of DiagnosticsSink.
-	Kind *DiagnosticsSinkKind `json:"kind,omitempty"`
+	Kind *DiagnosticsSinkKind
 
 	// Azure Internal monitoring pipeline account.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// Azure Internal monitoring pipeline autokey associated with the certificate.
-	AutoKeyConfigURL *string `json:"autoKeyConfigUrl,omitempty"`
+	AutoKeyConfigURL *string
 
 	// A description of the sink.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Azure Internal monitoring agent fluentd configuration.
-	FluentdConfigURL any `json:"fluentdConfigUrl,omitempty"`
+	FluentdConfigURL any
 
 	// Azure Internal monitoring agent configuration.
-	MaConfigURL *string `json:"maConfigUrl,omitempty"`
+	MaConfigURL *string
 
 	// Name of the sink. This value is referenced by DiagnosticsReferenceDescription
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Azure Internal monitoring pipeline account namespace.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 }
 
 // GetDiagnosticsSinkProperties implements the DiagnosticsSinkPropertiesClassification interface for type AzureInternalMonitoringPipelineSinkDescription.
@@ -390,142 +390,142 @@ type CodePackageClientGetContainerLogsOptions struct {
 // ContainerCodePackageProperties - Describes a container and its runtime properties.
 type ContainerCodePackageProperties struct {
 	// REQUIRED; The Container image to use.
-	Image *string `json:"image,omitempty"`
+	Image *string
 
 	// REQUIRED; The name of the code package.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The resources required by this container.
-	Resources *ResourceRequirements `json:"resources,omitempty"`
+	Resources *ResourceRequirements
 
 	// Command array to execute within the container in exec form.
-	Commands []*string `json:"commands,omitempty"`
+	Commands []*string
 
 	// Reference to sinks in DiagnosticsDescription.
-	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
+	Diagnostics *DiagnosticsRef
 
 	// The endpoints exposed by this container.
-	Endpoints []*EndpointProperties `json:"endpoints,omitempty"`
+	Endpoints []*EndpointProperties
 
 	// Override for the default entry point in the container.
-	Entrypoint *string `json:"entrypoint,omitempty"`
+	Entrypoint *string
 
 	// The environment variables to set in this container
-	EnvironmentVariables []*EnvironmentVariable `json:"environmentVariables,omitempty"`
+	EnvironmentVariables []*EnvironmentVariable
 
 	// Image registry credential.
-	ImageRegistryCredential *ImageRegistryCredential `json:"imageRegistryCredential,omitempty"`
+	ImageRegistryCredential *ImageRegistryCredential
 
 	// The labels to set in this container.
-	Labels []*ContainerLabel `json:"labels,omitempty"`
+	Labels []*ContainerLabel
 
 	// A list of ReliableCollection resources used by this particular code package. Please refer to ReliableCollectionsRef for
 	// more details.
-	ReliableCollectionsRefs []*ReliableCollectionsRef `json:"reliableCollectionsRefs,omitempty"`
+	ReliableCollectionsRefs []*ReliableCollectionsRef
 
 	// The settings to set in this container. The setting file path can be fetched from environment variable "Fabric_SettingPath".
 	// The path for Windows container is "C:\secrets". The path for Linux container
 	// is "/var/secrets".
-	Settings []*Setting `json:"settings,omitempty"`
+	Settings []*Setting
 
 	// Volumes to be attached to the container. The lifetime of these volumes is independent of the application's lifetime.
-	VolumeRefs []*VolumeReference `json:"volumeRefs,omitempty"`
+	VolumeRefs []*VolumeReference
 
 	// Volumes to be attached to the container. The lifetime of these volumes is scoped to the application's lifetime.
-	Volumes []*ApplicationScopedVolume `json:"volumes,omitempty"`
+	Volumes []*ApplicationScopedVolume
 
 	// READ-ONLY; Runtime information of a container instance.
-	InstanceView *ContainerInstanceView `json:"instanceView,omitempty" azure:"ro"`
+	InstanceView *ContainerInstanceView
 }
 
 // ContainerEvent - A container event.
 type ContainerEvent struct {
 	// The count of the event.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// Date/time of the first event.
-	FirstTimestamp *string `json:"firstTimestamp,omitempty"`
+	FirstTimestamp *string
 
 	// Date/time of the last event.
-	LastTimestamp *string `json:"lastTimestamp,omitempty"`
+	LastTimestamp *string
 
 	// The event message
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The name of the container event.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The event type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ContainerInstanceView - Runtime information of a container instance.
 type ContainerInstanceView struct {
 	// Current container instance state.
-	CurrentState *ContainerState `json:"currentState,omitempty"`
+	CurrentState *ContainerState
 
 	// The events of this container instance.
-	Events []*ContainerEvent `json:"events,omitempty"`
+	Events []*ContainerEvent
 
 	// Previous container instance state.
-	PreviousState *ContainerState `json:"previousState,omitempty"`
+	PreviousState *ContainerState
 
 	// The number of times the container has been restarted.
-	RestartCount *int32 `json:"restartCount,omitempty"`
+	RestartCount *int32
 }
 
 // ContainerLabel - Describes a container label.
 type ContainerLabel struct {
 	// REQUIRED; The name of the container label.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The value of the container label.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ContainerLogs - Container logs.
 type ContainerLogs struct {
 	// Container logs.
-	Content *string `json:"content,omitempty"`
+	Content *string
 }
 
 // ContainerState - The container state.
 type ContainerState struct {
 	// Human-readable status of this state.
-	DetailStatus *string `json:"detailStatus,omitempty"`
+	DetailStatus *string
 
 	// The container exit code.
-	ExitCode *string `json:"exitCode,omitempty"`
+	ExitCode *string
 
 	// Date/time when the container state finished.
-	FinishTime *time.Time `json:"finishTime,omitempty"`
+	FinishTime *time.Time
 
 	// Date/time when the container state started.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The state of this container
-	State *string `json:"state,omitempty"`
+	State *string
 }
 
 // DiagnosticsDescription - Describes the diagnostics options available
 type DiagnosticsDescription struct {
 	// The sinks to be used if diagnostics is enabled. Sink choices can be overridden at the service and code package level.
-	DefaultSinkRefs []*string `json:"defaultSinkRefs,omitempty"`
+	DefaultSinkRefs []*string
 
 	// Status of whether or not sinks are enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// List of supported sinks that can be referenced.
-	Sinks []DiagnosticsSinkPropertiesClassification `json:"sinks,omitempty"`
+	Sinks []DiagnosticsSinkPropertiesClassification
 }
 
 // DiagnosticsRef - Reference to sinks in DiagnosticsDescription.
 type DiagnosticsRef struct {
 	// Status of whether or not sinks are enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// List of sinks to be used if enabled. References the list of sinks in DiagnosticsDescription.
-	SinkRefs []*string `json:"sinkRefs,omitempty"`
+	SinkRefs []*string
 }
 
 // DiagnosticsSinkPropertiesClassification provides polymorphic access to related types.
@@ -540,13 +540,13 @@ type DiagnosticsSinkPropertiesClassification interface {
 // DiagnosticsSinkProperties - Properties of a DiagnosticsSink.
 type DiagnosticsSinkProperties struct {
 	// REQUIRED; The kind of DiagnosticsSink.
-	Kind *DiagnosticsSinkKind `json:"kind,omitempty"`
+	Kind *DiagnosticsSinkKind
 
 	// A description of the sink.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the sink. This value is referenced by DiagnosticsReferenceDescription
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // GetDiagnosticsSinkProperties implements the DiagnosticsSinkPropertiesClassification interface for type DiagnosticsSinkProperties.
@@ -557,53 +557,53 @@ func (d *DiagnosticsSinkProperties) GetDiagnosticsSinkProperties() *DiagnosticsS
 // EndpointProperties - Describes a container endpoint.
 type EndpointProperties struct {
 	// REQUIRED; The name of the endpoint.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Port used by the container.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // EndpointRef - Describes a reference to a service endpoint.
 type EndpointRef struct {
 	// Name of the endpoint.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // EnvironmentVariable - Describes an environment variable for the container.
 type EnvironmentVariable struct {
 	// The name of the environment variable.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the environment variable.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ErrorDetailsModel - Error model details information
 type ErrorDetailsModel struct {
 	// REQUIRED
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; Error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ErrorErrorModel - Error model information
 type ErrorErrorModel struct {
 	// REQUIRED
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// List of error message details.
-	Details    []*ErrorDetailsModel `json:"details,omitempty"`
-	InnerError *string              `json:"innerError,omitempty"`
+	Details    []*ErrorDetailsModel
+	InnerError *string
 
 	// Error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ErrorModel - The error details.
 type ErrorModel struct {
 	// REQUIRED; Error model information
-	Error *ErrorErrorModel `json:"error,omitempty"`
+	Error *ErrorErrorModel
 }
 
 // GatewayClientCreateOptions contains the optional parameters for the GatewayClient.Create method.
@@ -636,180 +636,180 @@ type GatewayClientListBySubscriptionOptions struct {
 // GatewayDestination - Describes destination endpoint for routing traffic.
 type GatewayDestination struct {
 	// REQUIRED; Name of the service fabric Mesh application.
-	ApplicationName *string `json:"applicationName,omitempty"`
+	ApplicationName *string
 
 	// REQUIRED; name of the endpoint in the service.
-	EndpointName *string `json:"endpointName,omitempty"`
+	EndpointName *string
 
 	// REQUIRED; service that contains the endpoint.
-	ServiceName *string `json:"serviceName,omitempty"`
+	ServiceName *string
 }
 
 // GatewayProperties - Describes properties of a gateway resource.
 type GatewayProperties struct {
 	// REQUIRED; Network that the Application is using.
-	DestinationNetwork *NetworkRef `json:"destinationNetwork,omitempty"`
+	DestinationNetwork *NetworkRef
 
 	// REQUIRED; Network the gateway should listen on for requests.
-	SourceNetwork *NetworkRef `json:"sourceNetwork,omitempty"`
+	SourceNetwork *NetworkRef
 
 	// User readable description of the gateway.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Configuration for http connectivity for this gateway.
-	HTTP []*HTTPConfig `json:"http,omitempty"`
+	HTTP []*HTTPConfig
 
 	// Configuration for tcp connectivity for this gateway.
-	TCP []*TCPConfig `json:"tcp,omitempty"`
+	TCP []*TCPConfig
 
 	// READ-ONLY; IP address of the gateway. This is populated in the response and is ignored for incoming requests.
-	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
+	IPAddress *string
 
 	// READ-ONLY; Status of the resource.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the gateway.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }
 
 // GatewayResourceDescription - This type describes a gateway resource.
 type GatewayResourceDescription struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; This type describes properties of a gateway resource.
-	Properties *GatewayResourceProperties `json:"properties,omitempty"`
+	Properties *GatewayResourceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GatewayResourceDescriptionList - A pageable list of gateway resources.
 type GatewayResourceDescriptionList struct {
 	// URI to fetch the next page of the list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// One page of the list.
-	Value []*GatewayResourceDescription `json:"value,omitempty"`
+	Value []*GatewayResourceDescription
 }
 
 // GatewayResourceProperties - This type describes properties of a gateway resource.
 type GatewayResourceProperties struct {
 	// REQUIRED; Network that the Application is using.
-	DestinationNetwork *NetworkRef `json:"destinationNetwork,omitempty"`
+	DestinationNetwork *NetworkRef
 
 	// REQUIRED; Network the gateway should listen on for requests.
-	SourceNetwork *NetworkRef `json:"sourceNetwork,omitempty"`
+	SourceNetwork *NetworkRef
 
 	// User readable description of the gateway.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Configuration for http connectivity for this gateway.
-	HTTP []*HTTPConfig `json:"http,omitempty"`
+	HTTP []*HTTPConfig
 
 	// Configuration for tcp connectivity for this gateway.
-	TCP []*TCPConfig `json:"tcp,omitempty"`
+	TCP []*TCPConfig
 
 	// READ-ONLY; IP address of the gateway. This is populated in the response and is ignored for incoming requests.
-	IPAddress *string `json:"ipAddress,omitempty" azure:"ro"`
+	IPAddress *string
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Status of the resource.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the gateway.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }
 
 // HTTPConfig - Describes the http configuration for external connectivity for this network.
 type HTTPConfig struct {
 	// REQUIRED; description for routing.
-	Hosts []*HTTPHostConfig `json:"hosts,omitempty"`
+	Hosts []*HTTPHostConfig
 
 	// REQUIRED; http gateway config name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Specifies the port at which the service endpoint below needs to be exposed.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // HTTPHostConfig - Describes the hostname properties for http routing.
 type HTTPHostConfig struct {
 	// REQUIRED; http hostname config name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Route information to use for routing. Routes are processed in the order they are specified. Specify routes that
 	// are more specific before routes that can handle general cases.
-	Routes []*HTTPRouteConfig `json:"routes,omitempty"`
+	Routes []*HTTPRouteConfig
 }
 
 // HTTPRouteConfig - Describes the hostname properties for http routing.
 type HTTPRouteConfig struct {
 	// REQUIRED; Describes destination endpoint for routing traffic.
-	Destination *GatewayDestination `json:"destination,omitempty"`
+	Destination *GatewayDestination
 
 	// REQUIRED; Describes a rule for http route matching.
-	Match *HTTPRouteMatchRule `json:"match,omitempty"`
+	Match *HTTPRouteMatchRule
 
 	// REQUIRED; http route name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // HTTPRouteMatchHeader - Describes header information for http route matching.
 type HTTPRouteMatchHeader struct {
 	// REQUIRED; Name of header to match in request.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// how to match header value
-	Type *HeaderMatchType `json:"type,omitempty"`
+	Type *HeaderMatchType
 
 	// Value of header to match in request.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // HTTPRouteMatchPath - Path to match for routing.
 type HTTPRouteMatchPath struct {
 	// REQUIRED; how to match value in the Uri
-	Type *PathMatchType `json:"type,omitempty"`
+	Type *PathMatchType
 
 	// REQUIRED; Uri path to match for request.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// replacement string for matched part of the Uri.
-	Rewrite *string `json:"rewrite,omitempty"`
+	Rewrite *string
 }
 
 // HTTPRouteMatchRule - Describes a rule for http route matching.
 type HTTPRouteMatchRule struct {
 	// REQUIRED; Path to match for routing.
-	Path *HTTPRouteMatchPath `json:"path,omitempty"`
+	Path *HTTPRouteMatchPath
 
 	// headers and their values to match in request.
-	Headers []*HTTPRouteMatchHeader `json:"headers,omitempty"`
+	Headers []*HTTPRouteMatchHeader
 }
 
 // ImageRegistryCredential - Image registry credential.
 type ImageRegistryCredential struct {
 	// REQUIRED; Docker image registry server, without protocol such as http and https.
-	Server *string `json:"server,omitempty"`
+	Server *string
 
 	// REQUIRED; The username for the private registry.
-	Username *string `json:"username,omitempty"`
+	Username *string
 
 	// The password for the private registry. The password is required for create or update operations, however it is not returned
 	// in the get or list operations.
-	Password *string `json:"password,omitempty"`
+	Password *string
 }
 
 // InlinedValueSecretResourceProperties - Describes the properties of a secret resource whose value is provided explicitly
@@ -817,23 +817,23 @@ type ImageRegistryCredential struct {
 // version is stored encrypted, and delivered as plaintext into the context of applications referencing it.
 type InlinedValueSecretResourceProperties struct {
 	// REQUIRED; Describes the kind of secret.
-	Kind *SecretKind `json:"kind,omitempty"`
+	Kind *SecretKind
 
 	// The type of the content stored in the secret value. The value of this property is opaque to Service Fabric. Once set, the
 	// value of this property cannot be changed.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// User readable description of the secret.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Status of the resource.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the secret.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }
 
 // GetSecretResourceProperties implements the SecretResourcePropertiesClassification interface for type InlinedValueSecretResourceProperties.
@@ -860,22 +860,22 @@ func (i *InlinedValueSecretResourceProperties) GetSecretResourcePropertiesBase()
 // cluster.
 type LocalNetworkResourceProperties struct {
 	// REQUIRED; The type of a Service Fabric container network.
-	Kind *NetworkKind `json:"kind,omitempty"`
+	Kind *NetworkKind
 
 	// User readable description of the network.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Address space for the local container network.
-	NetworkAddressPrefix *string `json:"networkAddressPrefix,omitempty"`
+	NetworkAddressPrefix *string
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Status of the network.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the network.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }
 
 // GetNetworkResourceProperties implements the NetworkResourcePropertiesClassification interface for type LocalNetworkResourceProperties.
@@ -902,13 +902,13 @@ func (l *LocalNetworkResourceProperties) GetNetworkResourcePropertiesBase() *Net
 // including it in the parent resource.
 type ManagedProxyResource struct {
 	// The name of the resource
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkClientCreateOptions contains the optional parameters for the NetworkClient.Create method.
@@ -941,40 +941,40 @@ type NetworkClientListBySubscriptionOptions struct {
 // NetworkRef - Describes a network reference in a service.
 type NetworkRef struct {
 	// A list of endpoints that are exposed on this network.
-	EndpointRefs []*EndpointRef `json:"endpointRefs,omitempty"`
+	EndpointRefs []*EndpointRef
 
 	// Name of the network
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // NetworkResourceDescription - This type describes a network resource.
 type NetworkResourceDescription struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Describes properties of a network resource.
-	Properties NetworkResourcePropertiesClassification `json:"properties,omitempty"`
+	Properties NetworkResourcePropertiesClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkResourceDescriptionList - A pageable list of network resources.
 type NetworkResourceDescriptionList struct {
 	// URI to fetch the next page of the list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// One page of the list.
-	Value []*NetworkResourceDescription `json:"value,omitempty"`
+	Value []*NetworkResourceDescription
 }
 
 // NetworkResourcePropertiesClassification provides polymorphic access to related types.
@@ -990,19 +990,19 @@ type NetworkResourcePropertiesClassification interface {
 // NetworkResourceProperties - Describes properties of a network resource.
 type NetworkResourceProperties struct {
 	// REQUIRED; The type of a Service Fabric container network.
-	Kind *NetworkKind `json:"kind,omitempty"`
+	Kind *NetworkKind
 
 	// User readable description of the network.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Status of the network.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the network.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }
 
 // GetNetworkResourceProperties implements the NetworkResourcePropertiesClassification interface for type NetworkResourceProperties.
@@ -1030,10 +1030,10 @@ type NetworkResourcePropertiesBaseClassification interface {
 // NetworkResourcePropertiesBase - This type describes the properties of a network resource, including its kind.
 type NetworkResourcePropertiesBase struct {
 	// REQUIRED; The type of a Service Fabric container network.
-	Kind *NetworkKind `json:"kind,omitempty"`
+	Kind *NetworkKind
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetNetworkResourcePropertiesBase implements the NetworkResourcePropertiesBaseClassification interface for type NetworkResourcePropertiesBase.
@@ -1044,25 +1044,25 @@ func (n *NetworkResourcePropertiesBase) GetNetworkResourcePropertiesBase() *Netw
 // OperationListResult - Describes the result of the request to list Service Fabric operations.
 type OperationListResult struct {
 	// List of Service Fabric operations supported by the Microsoft.ServiceFabric resource provider.
-	Value []*OperationResult `json:"value,omitempty"`
+	Value []*OperationResult
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // OperationResult - List of operations available at the listed Azure resource provider.
 type OperationResult struct {
 	// The object that represents the operation.
-	Display *AvailableOperationDisplay `json:"display,omitempty"`
+	Display *AvailableOperationDisplay
 
 	// The name of the operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Origin result
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -1073,53 +1073,53 @@ type OperationsClientListOptions struct {
 // ProvisionedResourceProperties - Describes common properties of a provisioned resource.
 type ProvisionedResourceProperties struct {
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // ProxyResource - The resource model definition for Azure Resource Manager proxy resource. It will have everything other
 // than required location and tags.
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReliableCollectionsRef - Specifying this parameter adds support for reliable collections
 type ReliableCollectionsRef struct {
 	// REQUIRED; Name of ReliableCollection resource. Right now it's not used and you can use any string.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// False (the default) if ReliableCollections state is persisted to disk as usual. True if you do not want to persist state,
 	// in which case replication is still enabled and you can use ReliableCollections
 	// as distributed cache.
-	DoNotPersistState *bool `json:"doNotPersistState,omitempty"`
+	DoNotPersistState *bool
 }
 
 // Resource - The resource model definition for Azure Resource Manager resource.
 type Resource struct {
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceLimits - This type describes the resource limits for a given container. It describes the most amount of resources
 // a container is allowed to use before being restarted.
 type ResourceLimits struct {
 	// CPU limits in cores. At present, only full cores are supported.
-	CPU *float64 `json:"cpu,omitempty"`
+	CPU *float64
 
 	// The memory limit in GB.
-	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
+	MemoryInGB *float64
 }
 
 // ResourceRequests - This type describes the requested resources for a given container. It describes the least amount of
@@ -1127,19 +1127,19 @@ type ResourceLimits struct {
 // the specified limits before being restarted. Currently, the requested resources are treated as limits.
 type ResourceRequests struct {
 	// REQUIRED; Requested number of CPU cores. At present, only full cores are supported.
-	CPU *float64 `json:"cpu,omitempty"`
+	CPU *float64
 
 	// REQUIRED; The memory request in GB for this container.
-	MemoryInGB *float64 `json:"memoryInGB,omitempty"`
+	MemoryInGB *float64
 }
 
 // ResourceRequirements - This type describes the resource requirements for a container or a service.
 type ResourceRequirements struct {
 	// REQUIRED; Describes the requested resources for a given container.
-	Requests *ResourceRequests `json:"requests,omitempty"`
+	Requests *ResourceRequests
 
 	// Describes the maximum limits on the resources for a given container.
-	Limits *ResourceLimits `json:"limits,omitempty"`
+	Limits *ResourceLimits
 }
 
 // SecretClientCreateOptions contains the optional parameters for the SecretClient.Create method.
@@ -1172,31 +1172,31 @@ type SecretClientListBySubscriptionOptions struct {
 // SecretResourceDescription - This type describes a secret resource.
 type SecretResourceDescription struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Describes the properties of a secret resource.
-	Properties SecretResourcePropertiesClassification `json:"properties,omitempty"`
+	Properties SecretResourcePropertiesClassification
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SecretResourceDescriptionList - A pageable list of secret resources.
 type SecretResourceDescriptionList struct {
 	// URI to fetch the next page of the list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// One page of the list.
-	Value []*SecretResourceDescription `json:"value,omitempty"`
+	Value []*SecretResourceDescription
 }
 
 // SecretResourcePropertiesClassification provides polymorphic access to related types.
@@ -1212,23 +1212,23 @@ type SecretResourcePropertiesClassification interface {
 // SecretResourceProperties - Describes the properties of a secret resource.
 type SecretResourceProperties struct {
 	// REQUIRED; Describes the kind of secret.
-	Kind *SecretKind `json:"kind,omitempty"`
+	Kind *SecretKind
 
 	// The type of the content stored in the secret value. The value of this property is opaque to Service Fabric. Once set, the
 	// value of this property cannot be changed.
-	ContentType *string `json:"contentType,omitempty"`
+	ContentType *string
 
 	// User readable description of the secret.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Status of the resource.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the secret.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }
 
 // GetSecretResourceProperties implements the SecretResourcePropertiesClassification interface for type SecretResourceProperties.
@@ -1254,10 +1254,10 @@ type SecretResourcePropertiesBaseClassification interface {
 // SecretResourcePropertiesBase - This type describes the properties of a secret resource, including its kind.
 type SecretResourcePropertiesBase struct {
 	// REQUIRED; Describes the kind of secret.
-	Kind *SecretKind `json:"kind,omitempty"`
+	Kind *SecretKind
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // GetSecretResourcePropertiesBase implements the SecretResourcePropertiesBaseClassification interface for type SecretResourcePropertiesBase.
@@ -1268,7 +1268,7 @@ func (s *SecretResourcePropertiesBase) GetSecretResourcePropertiesBase() *Secret
 // SecretValue - This type represents the unencrypted value of the secret.
 type SecretValue struct {
 	// The actual value of the secret.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // SecretValueClientCreateOptions contains the optional parameters for the SecretValueClient.Create method.
@@ -1299,48 +1299,48 @@ type SecretValueClientListValueOptions struct {
 // SecretValueProperties - This type describes properties of secret value resource.
 type SecretValueProperties struct {
 	// The actual value of the secret.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // SecretValueResourceDescription - This type describes a value of a secret resource. The name of this resource is the version
 // identifier corresponding to this secret value.
 type SecretValueResourceDescription struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; This type describes properties of a secret value resource.
-	Properties *SecretValueResourceProperties `json:"properties,omitempty"`
+	Properties *SecretValueResourceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SecretValueResourceDescriptionList - A pageable list of values of a secret resource. The information does not include only
 // the name of the value and not the actual unencrypted value.
 type SecretValueResourceDescriptionList struct {
 	// URI to fetch the next page of the list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// One page of the list.
-	Value []*SecretValueResourceDescription `json:"value,omitempty"`
+	Value []*SecretValueResourceDescription
 }
 
 // SecretValueResourceProperties - This type describes properties of a secret value resource.
 type SecretValueResourceProperties struct {
 	// The actual value of the secret.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
@@ -1356,26 +1356,26 @@ type ServiceClientListOptions struct {
 // ServiceProperties - Describes properties of a service resource.
 type ServiceProperties struct {
 	// Auto scaling policies
-	AutoScalingPolicies []*AutoScalingPolicy `json:"autoScalingPolicies,omitempty"`
+	AutoScalingPolicies []*AutoScalingPolicy
 
 	// User readable description of the service.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The number of replicas of the service to create. Defaults to 1 if not specified.
-	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+	ReplicaCount *int32
 
 	// READ-ONLY; Describes the health state of an application resource.
-	HealthState *HealthState `json:"healthState,omitempty" azure:"ro"`
+	HealthState *HealthState
 
 	// READ-ONLY; Status of the service.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the service.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 
 	// READ-ONLY; When the service's health state is not 'Ok', this additional details from service fabric Health Manager for
 	// the user to know why the service is marked unhealthy.
-	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty" azure:"ro"`
+	UnhealthyEvaluation *string
 }
 
 // ServiceReplicaClientGetOptions contains the optional parameters for the ServiceReplicaClient.Get method.
@@ -1393,28 +1393,28 @@ type ServiceReplicaDescription struct {
 	// REQUIRED; Describes the set of code packages that forms the service. A code package describes the container and the properties
 	// for running it. All the code packages are started together on the same host and
 	// share the same context (network, process etc.).
-	CodePackages []*ContainerCodePackageProperties `json:"codePackages,omitempty"`
+	CodePackages []*ContainerCodePackageProperties
 
 	// REQUIRED; The operation system required by the code in service.
-	OSType *OperatingSystemType `json:"osType,omitempty"`
+	OSType *OperatingSystemType
 
 	// REQUIRED; Name of the replica.
-	ReplicaName *string `json:"replicaName,omitempty"`
+	ReplicaName *string
 
 	// Reference to sinks in DiagnosticsDescription.
-	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
+	Diagnostics *DiagnosticsRef
 
 	// The names of the private networks that this service needs to be part of.
-	NetworkRefs []*NetworkRef `json:"networkRefs,omitempty"`
+	NetworkRefs []*NetworkRef
 }
 
 // ServiceReplicaDescriptionList - A pageable list of service replicas.
 type ServiceReplicaDescriptionList struct {
 	// URI to fetch the next page of the list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// One page of the list.
-	Value []*ServiceReplicaDescription `json:"value,omitempty"`
+	Value []*ServiceReplicaDescription
 }
 
 // ServiceReplicaProperties - Describes the properties of a service replica.
@@ -1422,40 +1422,40 @@ type ServiceReplicaProperties struct {
 	// REQUIRED; Describes the set of code packages that forms the service. A code package describes the container and the properties
 	// for running it. All the code packages are started together on the same host and
 	// share the same context (network, process etc.).
-	CodePackages []*ContainerCodePackageProperties `json:"codePackages,omitempty"`
+	CodePackages []*ContainerCodePackageProperties
 
 	// REQUIRED; The operation system required by the code in service.
-	OSType *OperatingSystemType `json:"osType,omitempty"`
+	OSType *OperatingSystemType
 
 	// Reference to sinks in DiagnosticsDescription.
-	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
+	Diagnostics *DiagnosticsRef
 
 	// The names of the private networks that this service needs to be part of.
-	NetworkRefs []*NetworkRef `json:"networkRefs,omitempty"`
+	NetworkRefs []*NetworkRef
 }
 
 // ServiceResourceDescription - This type describes a service resource.
 type ServiceResourceDescription struct {
 	// REQUIRED; This type describes properties of a service resource.
-	Properties *ServiceResourceProperties `json:"properties,omitempty"`
+	Properties *ServiceResourceProperties
 
 	// The name of the resource
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceResourceDescriptionList - A pageable list of service resources.
 type ServiceResourceDescriptionList struct {
 	// URI to fetch the next page of the list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// One page of the list.
-	Value []*ServiceResourceDescription `json:"value,omitempty"`
+	Value []*ServiceResourceDescription
 }
 
 // ServiceResourceProperties - This type describes properties of a service resource.
@@ -1463,41 +1463,41 @@ type ServiceResourceProperties struct {
 	// REQUIRED; Describes the set of code packages that forms the service. A code package describes the container and the properties
 	// for running it. All the code packages are started together on the same host and
 	// share the same context (network, process etc.).
-	CodePackages []*ContainerCodePackageProperties `json:"codePackages,omitempty"`
+	CodePackages []*ContainerCodePackageProperties
 
 	// REQUIRED; The operation system required by the code in service.
-	OSType *OperatingSystemType `json:"osType,omitempty"`
+	OSType *OperatingSystemType
 
 	// Auto scaling policies
-	AutoScalingPolicies []*AutoScalingPolicy `json:"autoScalingPolicies,omitempty"`
+	AutoScalingPolicies []*AutoScalingPolicy
 
 	// User readable description of the service.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Reference to sinks in DiagnosticsDescription.
-	Diagnostics *DiagnosticsRef `json:"diagnostics,omitempty"`
+	Diagnostics *DiagnosticsRef
 
 	// The names of the private networks that this service needs to be part of.
-	NetworkRefs []*NetworkRef `json:"networkRefs,omitempty"`
+	NetworkRefs []*NetworkRef
 
 	// The number of replicas of the service to create. Defaults to 1 if not specified.
-	ReplicaCount *int32 `json:"replicaCount,omitempty"`
+	ReplicaCount *int32
 
 	// READ-ONLY; Describes the health state of an application resource.
-	HealthState *HealthState `json:"healthState,omitempty" azure:"ro"`
+	HealthState *HealthState
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Status of the service.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the service.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 
 	// READ-ONLY; When the service's health state is not 'Ok', this additional details from service fabric Health Manager for
 	// the user to know why the service is marked unhealthy.
-	UnhealthyEvaluation *string `json:"unhealthyEvaluation,omitempty" azure:"ro"`
+	UnhealthyEvaluation *string
 }
 
 // Setting - Describes a setting for the container. The setting file path can be fetched from environment variable "Fabric_SettingPath".
@@ -1505,40 +1505,40 @@ type ServiceResourceProperties struct {
 // is "/var/secrets".
 type Setting struct {
 	// The name of the setting.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the setting.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // TCPConfig - Describes the tcp configuration for external connectivity for this network.
 type TCPConfig struct {
 	// REQUIRED; Describes destination endpoint for routing traffic.
-	Destination *GatewayDestination `json:"destination,omitempty"`
+	Destination *GatewayDestination
 
 	// REQUIRED; tcp gateway config name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Specifies the port at which the service endpoint below needs to be exposed.
-	Port *int32 `json:"port,omitempty"`
+	Port *int32
 }
 
 // TrackedResource - The resource model definition for Azure Resource Manager tracked top-level resource.
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VolumeClientCreateOptions contains the optional parameters for the VolumeClient.Create method.
@@ -1571,92 +1571,92 @@ type VolumeClientListBySubscriptionOptions struct {
 // VolumeProperties - Describes properties of a volume resource.
 type VolumeProperties struct {
 	// REQUIRED; Provider of the volume.
-	Provider *VolumeProvider `json:"provider,omitempty"`
+	Provider *VolumeProvider
 
 	// This type describes a volume provided by an Azure Files file share.
-	AzureFileParameters *VolumeProviderParametersAzureFile `json:"azureFileParameters,omitempty"`
+	AzureFileParameters *VolumeProviderParametersAzureFile
 
 	// User readable description of the volume.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; Status of the volume.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the volume.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }
 
 // VolumeProviderParametersAzureFile - This type describes a volume provided by an Azure Files file share.
 type VolumeProviderParametersAzureFile struct {
 	// REQUIRED; Name of the Azure storage account for the File Share.
-	AccountName *string `json:"accountName,omitempty"`
+	AccountName *string
 
 	// REQUIRED; Name of the Azure Files file share that provides storage for the volume.
-	ShareName *string `json:"shareName,omitempty"`
+	ShareName *string
 
 	// Access key of the Azure storage account for the File Share.
-	AccountKey *string `json:"accountKey,omitempty"`
+	AccountKey *string
 }
 
 // VolumeReference - Describes a reference to a volume resource.
 type VolumeReference struct {
 	// REQUIRED; The path within the container at which the volume should be mounted. Only valid path characters are allowed.
-	DestinationPath *string `json:"destinationPath,omitempty"`
+	DestinationPath *string
 
 	// REQUIRED; Name of the volume being referenced.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The flag indicating whether the volume is read only. Default is 'false'.
-	ReadOnly *bool `json:"readOnly,omitempty"`
+	ReadOnly *bool
 }
 
 // VolumeResourceDescription - This type describes a volume resource.
 type VolumeResourceDescription struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; This type describes properties of a volume resource.
-	Properties *VolumeResourceProperties `json:"properties,omitempty"`
+	Properties *VolumeResourceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VolumeResourceDescriptionList - A pageable list of volume resources.
 type VolumeResourceDescriptionList struct {
 	// URI to fetch the next page of the list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// One page of the list.
-	Value []*VolumeResourceDescription `json:"value,omitempty"`
+	Value []*VolumeResourceDescription
 }
 
 // VolumeResourceProperties - This type describes properties of a volume resource.
 type VolumeResourceProperties struct {
 	// REQUIRED; Provider of the volume.
-	Provider *VolumeProvider `json:"provider,omitempty"`
+	Provider *VolumeProvider
 
 	// This type describes a volume provided by an Azure Files file share.
-	AzureFileParameters *VolumeProviderParametersAzureFile `json:"azureFileParameters,omitempty"`
+	AzureFileParameters *VolumeProviderParametersAzureFile
 
 	// User readable description of the volume.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; State of the resource.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Status of the volume.
-	Status *ResourceStatus `json:"status,omitempty" azure:"ro"`
+	Status *ResourceStatus
 
 	// READ-ONLY; Gives additional information about the current status of the volume.
-	StatusDetails *string `json:"statusDetails,omitempty" azure:"ro"`
+	StatusDetails *string
 }

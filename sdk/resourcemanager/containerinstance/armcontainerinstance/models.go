@@ -247,7 +247,7 @@ type ContainerGroupPropertiesProperties struct {
 
 	// Time in seconds in which a container group deployment would timeout and fail. The allowed maximum value is 1800 seconds.
 	// If value is not provided, property is given maximum value by default.
-	ProvisioningTimeoutInSeconds *int32 `json:"provisioningTimeoutInSeconds,omitempty"`
+	ProvisioningTimeoutInSeconds *int32
 
 	// Restart policy for all containers within the container group.
 	// * Always Always restart
@@ -268,7 +268,7 @@ type ContainerGroupPropertiesProperties struct {
 	InstanceView *ContainerGroupPropertiesInstanceView
 
 	// READ-ONLY; Flag indicating whether a custom value was provided for the provisioningTimeoutInSeconds property
-	IsCustomProvisioningTimeout *IsCustomProvisioningTimeout `json:"isCustomProvisioningTimeout,omitempty" azure:"ro"`
+	IsCustomProvisioningTimeout *IsCustomProvisioningTimeout
 
 	// READ-ONLY; The provisioning state of the container group. This only appears in the response.
 	ProvisioningState *string

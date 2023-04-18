@@ -11,7 +11,7 @@ package armcontainerinstance
 
 const (
 	moduleName    = "armcontainerinstance"
-	moduleVersion = "v2.2.1"
+	moduleVersion = "v2.3.0-beta.1"
 )
 
 // ContainerGroupIPAddressType - Specifies if the IP is exposed to the public internet or private VNET.
@@ -158,6 +158,23 @@ func PossibleGpuSKUValues() []GpuSKU {
 		GpuSKUK80,
 		GpuSKUP100,
 		GpuSKUV100,
+	}
+}
+
+// IsCustomProvisioningTimeout - Flag indicating whether a custom value was provided for the provisioningTimeoutInSeconds
+// property
+type IsCustomProvisioningTimeout string
+
+const (
+	IsCustomProvisioningTimeoutFalse IsCustomProvisioningTimeout = "False"
+	IsCustomProvisioningTimeoutTrue  IsCustomProvisioningTimeout = "True"
+)
+
+// PossibleIsCustomProvisioningTimeoutValues returns the possible values for the IsCustomProvisioningTimeout const type.
+func PossibleIsCustomProvisioningTimeoutValues() []IsCustomProvisioningTimeout {
+	return []IsCustomProvisioningTimeout{
+		IsCustomProvisioningTimeoutFalse,
+		IsCustomProvisioningTimeoutTrue,
 	}
 }
 

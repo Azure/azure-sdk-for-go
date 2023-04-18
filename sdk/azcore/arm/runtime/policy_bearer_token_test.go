@@ -204,7 +204,6 @@ func TestAuxiliaryTenants(t *testing.T) {
 }
 
 func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
-	t.Skip("unskip this test after adding back CAE support")
 	for _, test := range []struct {
 		challenge, desc, expectedClaims string
 		err                             error
@@ -263,10 +262,9 @@ func TestBearerTokenPolicyChallengeParsing(t *testing.T) {
 			cred := mockCredential{
 				getTokenImpl: func(ctx context.Context, actual azpolicy.TokenRequestOptions) (azcore.AccessToken, error) {
 					calls += 1
-					// TODO: uncomment after restoring TokenRequestOptions.Claims
-					// if calls == 2 && test.expectedClaims != "" {
-					// require.Equal(t, test.expectedClaims, actual.Claims)
-					// }
+					if calls == 2 && test.expectedClaims != "" {
+						require.Equal(t, test.expectedClaims, actual.Claims)
+					}
 					return azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
 				},
 			}

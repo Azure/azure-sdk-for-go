@@ -94,3 +94,57 @@ func TestCParseConnectionStringAzurite(t *testing.T) {
 	require.Equal(t, "dummyaccountname", parsed.AccountName)
 	require.Equal(t, "secretkeykey", parsed.AccountKey)
 }
+
+func TestSerializeBlobTags(t *testing.T) {
+	var tags map[string]string
+
+	// Case 1
+	tags = nil
+	blobTags := SerializeBlobTags(tags)
+	require.Nil(t, blobTags)
+
+	// Case 2
+	tags = map[string]string{}
+	blobTags = SerializeBlobTags(tags)
+	require.Nil(t, blobTags)
+
+	// Case 3
+	tags = map[string]string{
+		"foo": "bar",
+		"az":  "sdk",
+		"sdk": "storage",
+	}
+	blobTags = SerializeBlobTags(tags)
+	require.NotNil(t, blobTags)
+	require.Equal(t, "foo", *(*(*blobTags).BlobTagSet[0]).Key)
+	require.Equal(t, "bar", *(*(*blobTags).BlobTagSet[0]).Value)
+	require.Equal(t, "az", *(*(*blobTags).BlobTagSet[1]).Key)
+	require.Equal(t, "sdk", *(*(*blobTags).BlobTagSet[1]).Value)
+	require.Equal(t, "sdk", *(*(*blobTags).BlobTagSet[2]).Key)
+	require.Equal(t, "storage", *(*(*blobTags).BlobTagSet[2]).Value)
+}
+
+func TestSerializeBlobTagsToStrPtr(t *testing.T) {
+	var tags map[string]string
+
+	// Case 1
+	tags = nil
+	tagsStr := SerializeBlobTagsToStrPtr(tags)
+	require.Nil(t, tagsStr)
+
+	// Case 2
+	tags = map[string]string{}
+	tagsStr = SerializeBlobTagsToStrPtr(tags)
+	require.Nil(t, tagsStr)
+
+	// Case 3
+	tags = map[string]string{
+		"foo": "bar",
+		"az":  "sdk",
+		"sdk": "storage",
+	}
+	tagsStr = SerializeBlobTagsToStrPtr(tags)
+	require.NotNil(t, tagsStr)
+	require.Equal(t, "foo=bar&az=sdk&sdk=storage", *tagsStr)
+
+}

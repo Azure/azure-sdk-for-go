@@ -6,6 +6,7 @@ package common
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Masterminds/semver"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -45,33 +46,33 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 		return nil, err
 	}
 	var tags []string
+	var versions []string
+	versionTag := make(map[string]string)
 	for _, tag := range result {
 		tagName := tag["ref"].(string)
-		if strings.Contains(tagName, "sdk/resourcemanager/"+rpName+"/"+namespaceName) {
-			tags = append(tags, tag["ref"].(string))
+		if strings.Contains(tagName, "sdk/resourcemanager/"+rpName+"/"+namespaceName+"/v") {
+			m := regexp.MustCompile(semver.SemVerRegex).FindString(tagName)
+			versions = append(versions, m)
+			versionTag[m] = tagName
 		}
 	}
-	sort.Sort(releaseTagsSort(tags))
+
+	vs := make([]*semver.Version, len(versions))
+	for i, r := range versions {
+		v, err := semver.NewVersion(r)
+		if err != nil {
+			return nil, err
+		}
+
+		vs[i] = v
+	}
+	sort.Sort(sort.Reverse(semver.Collection(vs)))
+
+	for _, v := range vs {
+		tags = append(tags, versionTag[fmt.Sprintf("v%s", v.String())])
+	}
 
 	return tags, nil
-}
-
-type releaseTagsSort []string
-
-func (t releaseTagsSort) Len() int {
-	return len(t)
-}
-
-func (t releaseTagsSort) Swap(i, j int) {
-	t[i], t[j] = t[j], t[i]
-}
-
-func (t releaseTagsSort) Less(i, j int) bool {
-	if t[i] > t[j] {
-		return !strings.Contains(t[i], t[j])
-	} else {
-		return strings.Contains(t[j], t[i])
-	}
 }
 
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {

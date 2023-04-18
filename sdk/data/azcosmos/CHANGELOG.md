@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed unmarshalling error when using projections in value queries
 
 ### Other Changes
 

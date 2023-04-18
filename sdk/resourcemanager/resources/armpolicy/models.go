@@ -14,128 +14,128 @@ import "time"
 // Alias - The alias type.
 type Alias struct {
 	// The default path for an alias.
-	DefaultPath *string `json:"defaultPath,omitempty"`
+	DefaultPath *string
 
 	// The default pattern for an alias.
-	DefaultPattern *AliasPattern `json:"defaultPattern,omitempty"`
+	DefaultPattern *AliasPattern
 
 	// The alias name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The paths for an alias.
-	Paths []*AliasPath `json:"paths,omitempty"`
+	Paths []*AliasPath
 
 	// The type of the alias.
-	Type *AliasType `json:"type,omitempty"`
+	Type *AliasType
 
 	// READ-ONLY; The default alias path metadata. Applies to the default path and to any alias path that doesn't have metadata
-	DefaultMetadata *AliasPathMetadata `json:"defaultMetadata,omitempty" azure:"ro"`
+	DefaultMetadata *AliasPathMetadata
 }
 
 // AliasPath - The type of the paths for alias.
 type AliasPath struct {
 	// The API versions.
-	APIVersions []*string `json:"apiVersions,omitempty"`
+	APIVersions []*string
 
 	// The path of an alias.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// The pattern for an alias path.
-	Pattern *AliasPattern `json:"pattern,omitempty"`
+	Pattern *AliasPattern
 
 	// READ-ONLY; The metadata of the alias path. If missing, fall back to the default metadata of the alias.
-	Metadata *AliasPathMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *AliasPathMetadata
 }
 
 type AliasPathMetadata struct {
 	// READ-ONLY; The attributes of the token that the alias path is referring to.
-	Attributes *AliasPathAttributes `json:"attributes,omitempty" azure:"ro"`
+	Attributes *AliasPathAttributes
 
 	// READ-ONLY; The type of the token that the alias path is referring to.
-	Type *AliasPathTokenType `json:"type,omitempty" azure:"ro"`
+	Type *AliasPathTokenType
 }
 
 // AliasPattern - The type of the pattern for an alias path.
 type AliasPattern struct {
 	// The alias pattern phrase.
-	Phrase *string `json:"phrase,omitempty"`
+	Phrase *string
 
 	// The type of alias pattern
-	Type *AliasPatternType `json:"type,omitempty"`
+	Type *AliasPatternType
 
 	// The alias pattern variable.
-	Variable *string `json:"variable,omitempty"`
+	Variable *string
 }
 
 // Assignment - The policy assignment.
 type Assignment struct {
 	// The managed identity associated with the policy assignment.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The location of the policy assignment. Only required when utilizing managed identity.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties for the policy assignment.
-	Properties *AssignmentProperties `json:"properties,omitempty"`
+	Properties *AssignmentProperties
 
 	// READ-ONLY; The ID of the policy assignment.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the policy assignment.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the policy assignment.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AssignmentListResult - List of policy assignments.
 type AssignmentListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// An array of policy assignments.
-	Value []*Assignment `json:"value,omitempty"`
+	Value []*Assignment
 }
 
 // AssignmentProperties - The policy assignment properties.
 type AssignmentProperties struct {
 	// This message will be part of response in case of policy violation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name of the policy assignment.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The policy assignment enforcement mode. Possible values are Default and DoNotEnforce.
-	EnforcementMode *EnforcementMode `json:"enforcementMode,omitempty"`
+	EnforcementMode *EnforcementMode
 
 	// The policy assignment metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The messages that describe why a resource is non-compliant with the policy.
-	NonComplianceMessages []*NonComplianceMessage `json:"nonComplianceMessages,omitempty"`
+	NonComplianceMessages []*NonComplianceMessage
 
 	// The policy's excluded scopes.
-	NotScopes []*string `json:"notScopes,omitempty"`
+	NotScopes []*string
 
 	// The parameter values for the assigned policy rule. The keys are the parameter names.
-	Parameters map[string]*ParameterValuesValue `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterValuesValue
 
 	// The ID of the policy definition or policy set definition being assigned.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	PolicyDefinitionID *string
 
 	// READ-ONLY; The scope for the policy assignment.
-	Scope *string `json:"scope,omitempty" azure:"ro"`
+	Scope *string
 }
 
 type AssignmentUpdate struct {
 	// The managed identity associated with the policy assignment.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The location of the policy assignment. Only required when utilizing managed identity.
-	Location *string `json:"location,omitempty"`
+	Location *string
 }
 
 // AssignmentsClientCreateByIDOptions contains the optional parameters for the AssignmentsClient.CreateByID method.
@@ -240,84 +240,84 @@ type AssignmentsClientUpdateOptions struct {
 // DataEffect - The data effect definition.
 type DataEffect struct {
 	// The data effect details schema.
-	DetailsSchema any `json:"detailsSchema,omitempty"`
+	DetailsSchema any
 
 	// The data effect name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // DataManifestCustomResourceFunctionDefinition - The custom resource function definition.
 type DataManifestCustomResourceFunctionDefinition struct {
 	// A value indicating whether the custom properties within the property bag are allowed. Needs api-version to be specified
 	// in the policy rule eg - vault('2019-06-01').
-	AllowCustomProperties *bool `json:"allowCustomProperties,omitempty"`
+	AllowCustomProperties *bool
 
 	// The top-level properties that can be selected on the function's output. eg - [ "name", "location" ] if vault().name and
 	// vault().location are supported
-	DefaultProperties []*string `json:"defaultProperties,omitempty"`
+	DefaultProperties []*string
 
 	// The fully qualified control plane resource type that this function represents. eg - 'Microsoft.KeyVault/vaults'.
-	FullyQualifiedResourceType *string `json:"fullyQualifiedResourceType,omitempty"`
+	FullyQualifiedResourceType *string
 
 	// The function name as it will appear in the policy rule. eg - 'vault'.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // DataManifestResourceFunctionsDefinition - The resource functions supported by a manifest
 type DataManifestResourceFunctionsDefinition struct {
 	// An array of data manifest custom resource definition.
-	Custom []*DataManifestCustomResourceFunctionDefinition `json:"custom,omitempty"`
+	Custom []*DataManifestCustomResourceFunctionDefinition
 
 	// The standard resource functions (subscription and/or resourceGroup).
-	Standard []*string `json:"standard,omitempty"`
+	Standard []*string
 }
 
 // DataPolicyManifest - The data policy manifest.
 type DataPolicyManifest struct {
 	// The data policy manifest properties.
-	Properties *DataPolicyManifestProperties `json:"properties,omitempty"`
+	Properties *DataPolicyManifestProperties
 
 	// READ-ONLY; The ID of the data policy manifest.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the data policy manifest (it's the same as the Policy Mode).
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource (Microsoft.Authorization/dataPolicyManifests).
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataPolicyManifestListResult - List of data policy manifests.
 type DataPolicyManifestListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// An array of data policy manifests.
-	Value []*DataPolicyManifest `json:"value,omitempty"`
+	Value []*DataPolicyManifest
 }
 
 // DataPolicyManifestProperties - The properties of the data policy manifest.
 type DataPolicyManifestProperties struct {
 	// The effect definition.
-	Effects []*DataEffect `json:"effects,omitempty"`
+	Effects []*DataEffect
 
 	// The non-alias field accessor values that can be used in the policy rule.
-	FieldValues []*string `json:"fieldValues,omitempty"`
+	FieldValues []*string
 
 	// A value indicating whether policy mode is allowed only in built-in definitions.
-	IsBuiltInOnly *bool `json:"isBuiltInOnly,omitempty"`
+	IsBuiltInOnly *bool
 
 	// The list of namespaces for the data policy manifest.
-	Namespaces []*string `json:"namespaces,omitempty"`
+	Namespaces []*string
 
 	// The policy mode of the data policy manifest.
-	PolicyMode *string `json:"policyMode,omitempty"`
+	PolicyMode *string
 
 	// The resource functions definition specified in the data manifest.
-	ResourceFunctions *DataManifestResourceFunctionsDefinition `json:"resourceFunctions,omitempty"`
+	ResourceFunctions *DataManifestResourceFunctionsDefinition
 
 	// An array of resource type aliases.
-	ResourceTypeAliases []*ResourceTypeAliases `json:"resourceTypeAliases,omitempty"`
+	ResourceTypeAliases []*ResourceTypeAliases
 }
 
 // DataPolicyManifestsClientGetByPolicyModeOptions contains the optional parameters for the DataPolicyManifestsClient.GetByPolicyMode
@@ -337,85 +337,85 @@ type DataPolicyManifestsClientListOptions struct {
 // Definition - The policy definition.
 type Definition struct {
 	// The policy definition properties.
-	Properties *DefinitionProperties `json:"properties,omitempty"`
+	Properties *DefinitionProperties
 
 	// READ-ONLY; The ID of the policy definition.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the policy definition.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource (Microsoft.Authorization/policyDefinitions).
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DefinitionGroup - The policy definition group.
 type DefinitionGroup struct {
 	// REQUIRED; The name of the group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// A resource ID of a resource that contains additional metadata about the group.
-	AdditionalMetadataID *string `json:"additionalMetadataId,omitempty"`
+	AdditionalMetadataID *string
 
 	// The group's category.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// The group's description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The group's display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 }
 
 // DefinitionListResult - List of policy definitions.
 type DefinitionListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// An array of policy definitions.
-	Value []*Definition `json:"value,omitempty"`
+	Value []*Definition
 }
 
 // DefinitionProperties - The policy definition properties.
 type DefinitionProperties struct {
 	// The policy definition description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name of the policy definition.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The policy definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
-	Mode *string `json:"mode,omitempty"`
+	Mode *string
 
 	// The parameter definitions for parameters used in the policy rule. The keys are the parameter names.
-	Parameters map[string]*ParameterDefinitionsValue `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterDefinitionsValue
 
 	// The policy rule.
-	PolicyRule any `json:"policyRule,omitempty"`
+	PolicyRule any
 
 	// The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
-	PolicyType *PolicyType `json:"policyType,omitempty"`
+	PolicyType *PolicyType
 }
 
 // DefinitionReference - The policy definition reference.
 type DefinitionReference struct {
 	// REQUIRED; The ID of the policy definition or policy set definition.
-	PolicyDefinitionID *string `json:"policyDefinitionId,omitempty"`
+	PolicyDefinitionID *string
 
 	// The name of the groups that this policy definition reference belongs to.
-	GroupNames []*string `json:"groupNames,omitempty"`
+	GroupNames []*string
 
 	// The parameter values for the referenced policy rule. The keys are the parameter names.
-	Parameters map[string]*ParameterValuesValue `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterValuesValue
 
 	// A unique id (within the policy set definition) for this policy definition reference.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	PolicyDefinitionReferenceID *string
 }
 
 // DefinitionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the DefinitionsClient.CreateOrUpdateAtManagementGroup
@@ -502,80 +502,80 @@ type DefinitionsClientListOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // Exemption - The policy exemption.
 type Exemption struct {
 	// REQUIRED; Properties for the policy exemption.
-	Properties *ExemptionProperties `json:"properties,omitempty"`
+	Properties *ExemptionProperties
 
 	// READ-ONLY; The ID of the policy exemption.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the policy exemption.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource (Microsoft.Authorization/policyExemptions).
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ExemptionListResult - List of policy exemptions.
 type ExemptionListResult struct {
 	// An array of policy exemptions.
-	Value []*Exemption `json:"value,omitempty"`
+	Value []*Exemption
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ExemptionProperties - The policy exemption properties.
 type ExemptionProperties struct {
 	// REQUIRED; The policy exemption category. Possible values are Waiver and Mitigated.
-	ExemptionCategory *ExemptionCategory `json:"exemptionCategory,omitempty"`
+	ExemptionCategory *ExemptionCategory
 
 	// REQUIRED; The ID of the policy assignment that is being exempted.
-	PolicyAssignmentID *string `json:"policyAssignmentId,omitempty"`
+	PolicyAssignmentID *string
 
 	// The description of the policy exemption.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name of the policy exemption.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption.
-	ExpiresOn *time.Time `json:"expiresOn,omitempty"`
+	ExpiresOn *time.Time
 
 	// The policy exemption metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.
-	PolicyDefinitionReferenceIDs []*string `json:"policyDefinitionReferenceIds,omitempty"`
+	PolicyDefinitionReferenceIDs []*string
 }
 
 // ExemptionsClientCreateOrUpdateOptions contains the optional parameters for the ExemptionsClient.CreateOrUpdate method.
@@ -664,18 +664,18 @@ type ExemptionsClientListOptions struct {
 // or a single user assigned identity.
 type Identity struct {
 	// The identity type. This is the only required field when adding a system or user assigned identity to a resource.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The user identity associated with the policy. The user identity dictionary key references will be ARM resource ids in the
 	// form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue
 
 	// READ-ONLY; The principal ID of the resource identity. This property will only be provided for a system assigned identity
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the resource identity. This property will only be provided for a system assigned identity
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // NonComplianceMessage - A message that describes why a resource is non-compliant with the policy. This is shown in 'deny'
@@ -683,27 +683,27 @@ type Identity struct {
 type NonComplianceMessage struct {
 	// REQUIRED; A message that describes why a resource is non-compliant with the policy. This is shown in 'deny' error messages
 	// and on resource's non-compliant compliance results.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The policy definition reference ID within a policy set definition the message is intended for. This is only applicable
 	// if the policy assignment assigns a policy set definition. If this is not provided
 	// the message applies to all policies assigned by this policy assignment.
-	PolicyDefinitionReferenceID *string `json:"policyDefinitionReferenceId,omitempty"`
+	PolicyDefinitionReferenceID *string
 }
 
 // ParameterDefinitionsValue - The definition of a parameter that can be provided to the policy.
 type ParameterDefinitionsValue struct {
 	// The allowed values for the parameter.
-	AllowedValues []any `json:"allowedValues,omitempty"`
+	AllowedValues []any
 
 	// The default value for the parameter if no value is provided.
-	DefaultValue any `json:"defaultValue,omitempty"`
+	DefaultValue any
 
 	// General metadata for the parameter.
-	Metadata *ParameterDefinitionsValueMetadata `json:"metadata,omitempty"`
+	Metadata *ParameterDefinitionsValueMetadata
 
 	// The data type of the parameter.
-	Type *ParameterType `json:"type,omitempty"`
+	Type *ParameterType
 }
 
 // ParameterDefinitionsValueMetadata - General metadata for the parameter.
@@ -714,83 +714,83 @@ type ParameterDefinitionsValueMetadata struct {
 	// Set to true to have Azure portal create role assignments on the resource ID or resource scope value of this parameter during
 	// policy assignment. This property is useful in case you wish to assign
 	// permissions outside the assignment scope.
-	AssignPermissions *bool `json:"assignPermissions,omitempty"`
+	AssignPermissions *bool
 
 	// The description of the parameter.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name for the parameter.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Used when assigning the policy definition through the portal. Provides a context aware list of values for the user to choose
 	// from.
-	StrongType *string `json:"strongType,omitempty"`
+	StrongType *string
 }
 
 // ParameterValuesValue - The value of a parameter.
 type ParameterValuesValue struct {
 	// The value of the parameter.
-	Value any `json:"value,omitempty"`
+	Value any
 }
 
 // ResourceTypeAliases - The resource type aliases definition.
 type ResourceTypeAliases struct {
 	// The aliases for property names.
-	Aliases []*Alias `json:"aliases,omitempty"`
+	Aliases []*Alias
 
 	// The resource type name.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 }
 
 // SetDefinition - The policy set definition.
 type SetDefinition struct {
 	// The policy definition properties.
-	Properties *SetDefinitionProperties `json:"properties,omitempty"`
+	Properties *SetDefinitionProperties
 
 	// READ-ONLY; The ID of the policy set definition.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the policy set definition.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource (Microsoft.Authorization/policySetDefinitions).
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SetDefinitionListResult - List of policy set definitions.
 type SetDefinitionListResult struct {
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// An array of policy set definitions.
-	Value []*SetDefinition `json:"value,omitempty"`
+	Value []*SetDefinition
 }
 
 // SetDefinitionProperties - The policy set definition properties.
 type SetDefinitionProperties struct {
 	// REQUIRED; An array of policy definition references.
-	PolicyDefinitions []*DefinitionReference `json:"policyDefinitions,omitempty"`
+	PolicyDefinitions []*DefinitionReference
 
 	// The policy set definition description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name of the policy set definition.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The policy set definition metadata. Metadata is an open ended object and is typically a collection of key value pairs.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The policy set definition parameters that can be used in policy definition references.
-	Parameters map[string]*ParameterDefinitionsValue `json:"parameters,omitempty"`
+	Parameters map[string]*ParameterDefinitionsValue
 
 	// The metadata describing groups of policy definition references within the policy set definition.
-	PolicyDefinitionGroups []*DefinitionGroup `json:"policyDefinitionGroups,omitempty"`
+	PolicyDefinitionGroups []*DefinitionGroup
 
 	// The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
-	PolicyType *PolicyType `json:"policyType,omitempty"`
+	PolicyType *PolicyType
 }
 
 // SetDefinitionsClientCreateOrUpdateAtManagementGroupOptions contains the optional parameters for the SetDefinitionsClient.CreateOrUpdateAtManagementGroup
@@ -879,28 +879,28 @@ type SetDefinitionsClientListOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 type UserAssignedIdentitiesValue struct {
 	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }

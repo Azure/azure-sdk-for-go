@@ -12,227 +12,227 @@ package armanalysisservices
 // CheckServerNameAvailabilityParameters - Details of server name request body.
 type CheckServerNameAvailabilityParameters struct {
 	// Name for checking availability.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource type of azure analysis services.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckServerNameAvailabilityResult - The checking result of server name availability.
 type CheckServerNameAvailabilityResult struct {
 	// The detailed message of the request unavailability.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicator of available of the server name.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason of unavailability.
-	Reason *string `json:"reason,omitempty"`
+	Reason *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The http status code
-	HTTPStatusCode *int32 `json:"httpStatusCode,omitempty" azure:"ro"`
+	HTTPStatusCode *int32
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error sub code
-	SubCode *int32 `json:"subCode,omitempty" azure:"ro"`
+	SubCode *int32
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 
 	// READ-ONLY; the timestamp for the error.
-	TimeStamp *string `json:"timeStamp,omitempty" azure:"ro"`
+	TimeStamp *string
 }
 
 // ErrorResponse - Describes the format of Error response.
 type ErrorResponse struct {
 	// The error object
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // GatewayDetails - The gateway details.
 type GatewayDetails struct {
 	// Gateway resource to be associated with the server.
-	GatewayResourceID *string `json:"gatewayResourceId,omitempty"`
+	GatewayResourceID *string
 
 	// READ-ONLY; Uri of the DMTS cluster.
-	DmtsClusterURI *string `json:"dmtsClusterUri,omitempty" azure:"ro"`
+	DmtsClusterURI *string
 
 	// READ-ONLY; Gateway object id from in the DMTS cluster for the gateway resource.
-	GatewayObjectID *string `json:"gatewayObjectId,omitempty" azure:"ro"`
+	GatewayObjectID *string
 }
 
 // GatewayListStatusError - Status of gateway is error.
 type GatewayListStatusError struct {
 	// Error of the list gateway status.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // GatewayListStatusLive - Status of gateway is live.
 type GatewayListStatusLive struct {
 	// Live message of list gateway. Status: 0 - Live
-	Status *int32 `json:"status,omitempty"`
+	Status *int32
 }
 
 // IPv4FirewallRule - The detail of firewall rule.
 type IPv4FirewallRule struct {
 	// The rule name.
-	FirewallRuleName *string `json:"firewallRuleName,omitempty"`
+	FirewallRuleName *string
 
 	// The end range of IPv4.
-	RangeEnd *string `json:"rangeEnd,omitempty"`
+	RangeEnd *string
 
 	// The start range of IPv4.
-	RangeStart *string `json:"rangeStart,omitempty"`
+	RangeStart *string
 }
 
 // IPv4FirewallSettings - An array of firewall rules.
 type IPv4FirewallSettings struct {
 	// The indicator of enabling PBI service.
-	EnablePowerBIService *bool `json:"enablePowerBIService,omitempty"`
+	EnablePowerBIService *bool
 
 	// An array of firewall rules.
-	FirewallRules []*IPv4FirewallRule `json:"firewallRules,omitempty"`
+	FirewallRules []*IPv4FirewallRule
 }
 
 // LogSpecifications - The log metric specification for exposing performance metrics to shoebox.
 type LogSpecifications struct {
 	// READ-ONLY; The blob duration for the log.
-	BlobDuration *string `json:"blobDuration,omitempty" azure:"ro"`
+	BlobDuration *string
 
 	// READ-ONLY; The displayed name of log.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The name of metric.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // MetricDimensions - Metric dimension.
 type MetricDimensions struct {
 	// READ-ONLY; Dimension display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Dimension name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // MetricSpecifications - Available operation metric specification for exposing performance metrics to shoebox.
 type MetricSpecifications struct {
 	// READ-ONLY; The aggregation type of metric.
-	AggregationType *string `json:"aggregationType,omitempty" azure:"ro"`
+	AggregationType *string
 
 	// READ-ONLY; The dimensions of metric.
-	Dimensions []*MetricDimensions `json:"dimensions,omitempty" azure:"ro"`
+	Dimensions []*MetricDimensions
 
 	// READ-ONLY; The displayed description of metric.
-	DisplayDescription *string `json:"displayDescription,omitempty" azure:"ro"`
+	DisplayDescription *string
 
 	// READ-ONLY; The displayed name of metric.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The name of metric.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The unit of the metric.
-	Unit *string `json:"unit,omitempty" azure:"ro"`
+	Unit *string
 }
 
 // Operation - A Consumption REST API operation.
 type Operation struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Additional properties to expose performance metrics to shoebox.
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The origin
-	Origin *string `json:"origin,omitempty" azure:"ro"`
+	Origin *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// READ-ONLY; Description of the operation object.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Service provider: Microsoft.Consumption.
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource on which the operation is performed: UsageDetail, etc.
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - Result of listing consumption operations. It contains a list of operations and a URL link to get
 // the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of analysis services operations supported by the Microsoft.AnalysisServices resource provider.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationProperties - Additional properties to expose performance metrics to shoebox.
 type OperationProperties struct {
 	// Performance metrics to shoebox.
-	ServiceSpecification *OperationPropertiesServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *OperationPropertiesServiceSpecification
 }
 
 // OperationPropertiesServiceSpecification - Performance metrics to shoebox.
 type OperationPropertiesServiceSpecification struct {
 	// READ-ONLY; The log specifications.
-	LogSpecifications []*LogSpecifications `json:"logSpecifications,omitempty" azure:"ro"`
+	LogSpecifications []*LogSpecifications
 
 	// READ-ONLY; The metric specifications.
-	MetricSpecifications []*MetricSpecifications `json:"metricSpecifications,omitempty" azure:"ro"`
+	MetricSpecifications []*MetricSpecifications
 }
 
 // OperationStatus - The status of operation.
 type OperationStatus struct {
 	// The end time of the operation.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// The error detail of the operation if any.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// The operation Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The start time of the operation.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 
 	// The status of the operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -243,172 +243,172 @@ type OperationsClientListOptions struct {
 // Resource - Represents an instance of an Analysis Services resource.
 type Resource struct {
 	// REQUIRED; Location of the Analysis Services resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The SKU of the Analysis Services resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	SKU *ResourceSKU
 
 	// Key-value pairs of additional resource provisioning properties.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; An identifier that represents the Analysis Services resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the Analysis Services resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the Analysis Services resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceSKU - Represents the SKU name and Azure pricing tier for Analysis Services resource.
 type ResourceSKU struct {
 	// REQUIRED; Name of the SKU level.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The number of instances in the read only query pool.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// The name of the Azure pricing tier to which the SKU applies.
-	Tier *SKUTier `json:"tier,omitempty"`
+	Tier *SKUTier
 }
 
 // SKUDetailsForExistingResource - An object that represents SKU details for existing resources.
 type SKUDetailsForExistingResource struct {
 	// The resource type.
-	ResourceType *string `json:"resourceType,omitempty"`
+	ResourceType *string
 
 	// The SKU in SKU details for existing resources.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	SKU *ResourceSKU
 }
 
 // SKUEnumerationForExistingResourceResult - An object that represents enumerating SKUs for existing resources.
 type SKUEnumerationForExistingResourceResult struct {
 	// The collection of available SKUs for existing resources.
-	Value []*SKUDetailsForExistingResource `json:"value,omitempty"`
+	Value []*SKUDetailsForExistingResource
 }
 
 // SKUEnumerationForNewResourceResult - An object that represents enumerating SKUs for new resources.
 type SKUEnumerationForNewResourceResult struct {
 	// The collection of available SKUs for new resources.
-	Value []*ResourceSKU `json:"value,omitempty"`
+	Value []*ResourceSKU
 }
 
 // Server - Represents an instance of an Analysis Services resource.
 type Server struct {
 	// REQUIRED; Location of the Analysis Services resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The SKU of the Analysis Services resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	SKU *ResourceSKU
 
 	// Properties of the provision operation request.
-	Properties *ServerProperties `json:"properties,omitempty"`
+	Properties *ServerProperties
 
 	// Key-value pairs of additional resource provisioning properties.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; An identifier that represents the Analysis Services resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the Analysis Services resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the Analysis Services resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServerAdministrators - An array of administrator user identities.
 type ServerAdministrators struct {
 	// An array of administrator user identities.
-	Members []*string `json:"members,omitempty"`
+	Members []*string
 }
 
 // ServerMutableProperties - An object that represents a set of mutable Analysis Services resource properties.
 type ServerMutableProperties struct {
 	// A collection of AS server administrators
-	AsAdministrators *ServerAdministrators `json:"asAdministrators,omitempty"`
+	AsAdministrators *ServerAdministrators
 
 	// The SAS container URI to the backup container.
-	BackupBlobContainerURI *string `json:"backupBlobContainerUri,omitempty"`
+	BackupBlobContainerURI *string
 
 	// The gateway details configured for the AS server.
-	GatewayDetails *GatewayDetails `json:"gatewayDetails,omitempty"`
+	GatewayDetails *GatewayDetails
 
 	// The firewall settings for the AS server.
-	IPV4FirewallSettings *IPv4FirewallSettings `json:"ipV4FirewallSettings,omitempty"`
+	IPV4FirewallSettings *IPv4FirewallSettings
 
 	// The managed mode of the server (0 = not managed, 1 = managed).
-	ManagedMode *ManagedMode `json:"managedMode,omitempty"`
+	ManagedMode *ManagedMode
 
 	// How the read-write server's participation in the query pool is controlled.
 	// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query
 	// operations
 	// * all - indicates that the read-write server can participate in query operations
 	// Specifying readOnly when capacity is 1 results in error.
-	QuerypoolConnectionMode *ConnectionMode `json:"querypoolConnectionMode,omitempty"`
+	QuerypoolConnectionMode *ConnectionMode
 
 	// The server monitor mode for AS server
-	ServerMonitorMode *ServerMonitorMode `json:"serverMonitorMode,omitempty"`
+	ServerMonitorMode *ServerMonitorMode
 }
 
 // ServerProperties - Properties of Analysis Services resource.
 type ServerProperties struct {
 	// A collection of AS server administrators
-	AsAdministrators *ServerAdministrators `json:"asAdministrators,omitempty"`
+	AsAdministrators *ServerAdministrators
 
 	// The SAS container URI to the backup container.
-	BackupBlobContainerURI *string `json:"backupBlobContainerUri,omitempty"`
+	BackupBlobContainerURI *string
 
 	// The gateway details configured for the AS server.
-	GatewayDetails *GatewayDetails `json:"gatewayDetails,omitempty"`
+	GatewayDetails *GatewayDetails
 
 	// The firewall settings for the AS server.
-	IPV4FirewallSettings *IPv4FirewallSettings `json:"ipV4FirewallSettings,omitempty"`
+	IPV4FirewallSettings *IPv4FirewallSettings
 
 	// The managed mode of the server (0 = not managed, 1 = managed).
-	ManagedMode *ManagedMode `json:"managedMode,omitempty"`
+	ManagedMode *ManagedMode
 
 	// How the read-write server's participation in the query pool is controlled.
 	// It can have the following values: * readOnly - indicates that the read-write server is intended not to participate in query
 	// operations
 	// * all - indicates that the read-write server can participate in query operations
 	// Specifying readOnly when capacity is 1 results in error.
-	QuerypoolConnectionMode *ConnectionMode `json:"querypoolConnectionMode,omitempty"`
+	QuerypoolConnectionMode *ConnectionMode
 
 	// The SKU of the Analysis Services resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	SKU *ResourceSKU
 
 	// The server monitor mode for AS server
-	ServerMonitorMode *ServerMonitorMode `json:"serverMonitorMode,omitempty"`
+	ServerMonitorMode *ServerMonitorMode
 
 	// READ-ONLY; The current deployment state of Analysis Services resource. The provisioningState is to indicate states for
 	// resource provisioning.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The full name of the Analysis Services resource.
-	ServerFullName *string `json:"serverFullName,omitempty" azure:"ro"`
+	ServerFullName *string
 
 	// READ-ONLY; The current state of Analysis Services resource. The state is to indicate more states outside of resource provisioning.
-	State *State `json:"state,omitempty" azure:"ro"`
+	State *State
 }
 
 // ServerUpdateParameters - Provision request specification
 type ServerUpdateParameters struct {
 	// Properties of the provision operation request.
-	Properties *ServerMutableProperties `json:"properties,omitempty"`
+	Properties *ServerMutableProperties
 
 	// The SKU of the Analysis Services resource.
-	SKU *ResourceSKU `json:"sku,omitempty"`
+	SKU *ResourceSKU
 
 	// Key-value pairs of additional provisioning properties.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // Servers - An array of Analysis Services resources.
 type Servers struct {
 	// REQUIRED; An array of Analysis Services resources.
-	Value []*Server `json:"value,omitempty"`
+	Value []*Server
 }
 
 // ServersClientBeginCreateOptions contains the optional parameters for the ServersClient.BeginCreate method.

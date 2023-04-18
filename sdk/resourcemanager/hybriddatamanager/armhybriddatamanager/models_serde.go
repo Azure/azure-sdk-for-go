@@ -22,7 +22,7 @@ func (a AvailableProviderOperation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "display", a.Display)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "origin", a.Origin)
-	populate(objectMap, "properties", &a.Properties)
+	populateAny(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
 
@@ -480,7 +480,7 @@ func (d DataStoreProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "customerSecrets", d.CustomerSecrets)
 	populate(objectMap, "dataStoreTypeId", d.DataStoreTypeID)
-	populate(objectMap, "extendedProperties", &d.ExtendedProperties)
+	populateAny(objectMap, "extendedProperties", d.ExtendedProperties)
 	populate(objectMap, "repositoryId", d.RepositoryID)
 	populate(objectMap, "state", d.State)
 	return json.Marshal(objectMap)
@@ -896,7 +896,7 @@ func (j *JobDefinitionList) UnmarshalJSON(data []byte) error {
 func (j JobDefinitionProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "customerSecrets", j.CustomerSecrets)
-	populate(objectMap, "dataServiceInput", &j.DataServiceInput)
+	populateAny(objectMap, "dataServiceInput", j.DataServiceInput)
 	populate(objectMap, "dataSinkId", j.DataSinkID)
 	populate(objectMap, "dataSourceId", j.DataSourceID)
 	populateTimeRFC3339(objectMap, "lastModifiedTime", j.LastModifiedTime)
@@ -1111,7 +1111,7 @@ func (j *JobProperties) UnmarshalJSON(data []byte) error {
 func (j JobStages) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "errorDetails", j.ErrorDetails)
-	populate(objectMap, "jobStageDetails", &j.JobStageDetails)
+	populateAny(objectMap, "jobStageDetails", j.JobStageDetails)
 	populate(objectMap, "stageName", j.StageName)
 	populate(objectMap, "stageStatus", j.StageStatus)
 	return json.Marshal(objectMap)
@@ -1333,7 +1333,7 @@ func (r *Resource) UnmarshalJSON(data []byte) error {
 func (r RunParameters) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "customerSecrets", r.CustomerSecrets)
-	populate(objectMap, "dataServiceInput", &r.DataServiceInput)
+	populateAny(objectMap, "dataServiceInput", r.DataServiceInput)
 	populate(objectMap, "userConfirmation", r.UserConfirmation)
 	return json.Marshal(objectMap)
 }
@@ -1432,6 +1432,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -14,16 +14,16 @@ import "time"
 // AzureResourceBase - Common properties for all Azure resources.
 type AzureResourceBase struct {
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClientCreateOrUpdateOptions contains the optional parameters for the Client.CreateOrUpdate method.
@@ -76,206 +76,206 @@ type ClientUpdateOptions struct {
 type Error struct {
 	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
 	// the OData error response format.)
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // LinkedTemplateArtifact - Represents a Template Spec artifact containing an embedded Azure Resource Manager template for
 // use as a linked template.
 type LinkedTemplateArtifact struct {
 	// REQUIRED; A filesystem safe relative path of the artifact.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// REQUIRED; The Azure Resource Manager template.
-	Template any `json:"template,omitempty"`
+	Template any
 }
 
 // ListResult - List of Template Specs.
 type ListResult struct {
 	// An array of Template Specs.
-	Value []*TemplateSpec `json:"value,omitempty"`
+	Value []*TemplateSpec
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TemplateSpec - Template Spec object.
 type TemplateSpec struct {
 	// REQUIRED; The location of the Template Spec. It cannot be changed after Template Spec creation. It must be one of the supported
 	// Azure locations.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Template Spec properties.
-	Properties *TemplateSpecProperties `json:"properties,omitempty"`
+	Properties *TemplateSpecProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TemplateSpecProperties - Template Spec properties.
 type TemplateSpecProperties struct {
 	// Template Spec description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Template Spec display name.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The Template Spec metadata. Metadata is an open-ended object and is typically a collection of key-value pairs.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// READ-ONLY; High-level information about the versions within this Template Spec. The keys are the version names. Only populated
 	// if the $expand query parameter is set to 'versions'.
-	Versions map[string]*TemplateSpecVersionInfo `json:"versions,omitempty" azure:"ro"`
+	Versions map[string]*TemplateSpecVersionInfo
 }
 
 // TemplateSpecUpdateModel - Template Spec properties to be updated (only tags are currently supported).
 type TemplateSpecUpdateModel struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TemplateSpecVersion - Template Spec Version object.
 type TemplateSpecVersion struct {
 	// REQUIRED; The location of the Template Spec Version. It must match the location of the parent Template Spec.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Template Spec Version properties.
-	Properties *TemplateSpecVersionProperties `json:"properties,omitempty"`
+	Properties *TemplateSpecVersionProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TemplateSpecVersionInfo - High-level information about a Template Spec version.
 type TemplateSpecVersionInfo struct {
 	// READ-ONLY; Template Spec version description.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The timestamp of when the version was created.
-	TimeCreated *time.Time `json:"timeCreated,omitempty" azure:"ro"`
+	TimeCreated *time.Time
 
 	// READ-ONLY; The timestamp of when the version was last modified.
-	TimeModified *time.Time `json:"timeModified,omitempty" azure:"ro"`
+	TimeModified *time.Time
 }
 
 // TemplateSpecVersionProperties - Template Spec Version properties.
 type TemplateSpecVersionProperties struct {
 	// Template Spec version description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// An array of linked template artifacts.
-	LinkedTemplates []*LinkedTemplateArtifact `json:"linkedTemplates,omitempty"`
+	LinkedTemplates []*LinkedTemplateArtifact
 
 	// The main Azure Resource Manager template content.
-	MainTemplate any `json:"mainTemplate,omitempty"`
+	MainTemplate any
 
 	// The version metadata. Metadata is an open-ended object and is typically a collection of key-value pairs.
-	Metadata any `json:"metadata,omitempty"`
+	Metadata any
 
 	// The Azure Resource Manager template UI definition content.
-	UIFormDefinition any `json:"uiFormDefinition,omitempty"`
+	UIFormDefinition any
 }
 
 // TemplateSpecVersionUpdateModel - Template Spec Version properties to be updated (only tags are currently supported).
 type TemplateSpecVersionUpdateModel struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TemplateSpecVersionsClientCreateOrUpdateOptions contains the optional parameters for the TemplateSpecVersionsClient.CreateOrUpdate
@@ -321,8 +321,8 @@ type TemplateSpecVersionsClientUpdateOptions struct {
 // TemplateSpecVersionsListResult - List of Template Specs versions
 type TemplateSpecVersionsListResult struct {
 	// An array of Template Spec versions.
-	Value []*TemplateSpecVersion `json:"value,omitempty"`
+	Value []*TemplateSpecVersion
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }

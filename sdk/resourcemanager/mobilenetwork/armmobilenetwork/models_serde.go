@@ -117,7 +117,7 @@ func (a AsyncOperationStatus) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "name", a.Name)
 	populate(objectMap, "percentComplete", a.PercentComplete)
-	populate(objectMap, "properties", &a.Properties)
+	populateAny(objectMap, "properties", a.Properties)
 	populate(objectMap, "resourceId", a.ResourceID)
 	populateTimeRFC3339(objectMap, "startTime", a.StartTime)
 	populate(objectMap, "status", a.Status)
@@ -846,7 +846,7 @@ func (e *EncryptedSimUploadList) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ErrorAdditionalInfo.
 func (e ErrorAdditionalInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &e.Info)
+	populateAny(objectMap, "info", e.Info)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
 }
@@ -1491,7 +1491,7 @@ func (p PacketCoreControlPlanePropertiesFormat) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "controlPlaneAccessInterface", p.ControlPlaneAccessInterface)
 	populate(objectMap, "coreNetworkTechnology", p.CoreNetworkTechnology)
 	populate(objectMap, "installation", p.Installation)
-	populate(objectMap, "interopSettings", &p.InteropSettings)
+	populateAny(objectMap, "interopSettings", p.InteropSettings)
 	populate(objectMap, "localDiagnosticsAccess", p.LocalDiagnosticsAccess)
 	populate(objectMap, "platform", p.Platform)
 	populate(objectMap, "provisioningState", p.ProvisioningState)
@@ -3626,6 +3626,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -14,130 +14,130 @@ import "time"
 // Ambr - Aggregate maximum bit rate.
 type Ambr struct {
 	// REQUIRED; Downlink bit rate.
-	Downlink *string `json:"downlink,omitempty"`
+	Downlink *string
 
 	// REQUIRED; Uplink bit rate.
-	Uplink *string `json:"uplink,omitempty"`
+	Uplink *string
 }
 
 // Arp - Allocation and Retention Priority (ARP) parameters.
 type Arp struct {
 	// REQUIRED; ARP preemption capability.
-	PreemptCap *PreemptionCapability `json:"preemptCap,omitempty"`
+	PreemptCap *PreemptionCapability
 
 	// REQUIRED; ARP preemption vulnerability
-	PreemptVuln *PreemptionVulnerability `json:"preemptVuln,omitempty"`
+	PreemptVuln *PreemptionVulnerability
 
 	// REQUIRED; ARP priority level.
-	PriorityLevel *int32 `json:"priorityLevel,omitempty"`
+	PriorityLevel *int32
 }
 
 // AsyncOperationID - Reference to an Azure Async Operation ID.
 type AsyncOperationID struct {
 	// REQUIRED; Azure Async Operation ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // AsyncOperationStatus - The current status of an async operation.
 type AsyncOperationStatus struct {
 	// REQUIRED; The operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The end time of the operation.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// If present, details of the operation error.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// Fully qualified ID for the async operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the async operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Percentage of the operation that is complete.
-	PercentComplete *float64 `json:"percentComplete,omitempty"`
+	PercentComplete *float64
 
 	// Properties returned by the resource provider on a successful operation
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// Fully qualified ID for the resource that this async operation status relates to.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The start time of the operation.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // AttachedDataNetwork - Attached data network resource. Must be created in the same location as its parent packet core data
 // plane.
 type AttachedDataNetwork struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Attached data network properties.
-	Properties *AttachedDataNetworkPropertiesFormat `json:"properties,omitempty"`
+	Properties *AttachedDataNetworkPropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AttachedDataNetworkListResult - Response for attached data network API service call.
 type AttachedDataNetworkListResult struct {
 	// A list of data networks in a resource group.
-	Value []*AttachedDataNetwork `json:"value,omitempty"`
+	Value []*AttachedDataNetwork
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AttachedDataNetworkPropertiesFormat - Data network properties.
 type AttachedDataNetworkPropertiesFormat struct {
 	// REQUIRED; The DNS servers to signal to UEs to use for this attached data network. This configuration is mandatory - if
 	// you don't want DNS servers, you must provide an empty array.
-	DNSAddresses []*string `json:"dnsAddresses,omitempty"`
+	DNSAddresses []*string
 
 	// REQUIRED; The user plane interface on the data network. For 5G networks, this is the N6 interface. For 4G networks, this
 	// is the SGi interface.
-	UserPlaneDataInterface *InterfaceProperties `json:"userPlaneDataInterface,omitempty"`
+	UserPlaneDataInterface *InterfaceProperties
 
 	// The network address and port translation (NAPT) configuration. If this is not specified, the attached data network will
 	// use a default NAPT configuration with NAPT enabled.
-	NaptConfiguration *NaptConfiguration `json:"naptConfiguration,omitempty"`
+	NaptConfiguration *NaptConfiguration
 
 	// The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will dynamically
 	// assign IP addresses to UEs. The packet core instance assigns an IP
 	// address to a UE when the UE sets up a PDU session. You must define at least one of userEquipmentAddressPoolPrefix and userEquipmentStaticAddressPoolPrefix.
 	// If you define both, they must be of the same
 	// size.
-	UserEquipmentAddressPoolPrefix []*string `json:"userEquipmentAddressPoolPrefix,omitempty"`
+	UserEquipmentAddressPoolPrefix []*string
 
 	// The user equipment (UE) address pool prefixes for the attached data network from which the packet core instance will assign
 	// static IP addresses to UEs. The packet core instance assigns an IP address
 	// to a UE when the UE sets up a PDU session. The static IP address for a specific UE is set in StaticIPConfiguration on the
 	// corresponding SIM resource. At least one of userEquipmentAddressPoolPrefix and
 	// userEquipmentStaticAddressPoolPrefix must be defined. If both are defined, they must be of the same size.
-	UserEquipmentStaticAddressPoolPrefix []*string `json:"userEquipmentStaticAddressPoolPrefix,omitempty"`
+	UserEquipmentStaticAddressPoolPrefix []*string
 
 	// READ-ONLY; The provisioning state of the attached data network resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // AttachedDataNetworkResourceID - Reference to an attached data network resource.
 type AttachedDataNetworkResourceID struct {
 	// REQUIRED; Attached data network resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // AttachedDataNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDataNetworksClient.BeginCreateOrUpdate
@@ -174,167 +174,167 @@ type AttachedDataNetworksClientUpdateTagsOptions struct {
 // AzureStackEdgeDeviceResourceID - Reference to an Azure Stack Edge device resource.
 type AzureStackEdgeDeviceResourceID struct {
 	// REQUIRED; Azure Stack Edge device resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // AzureStackHCIClusterResourceID - Reference to an Azure Stack HCI cluster resource.
 type AzureStackHCIClusterResourceID struct {
 	// REQUIRED; Azure Stack HCI cluster resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // CertificateProvisioning - Certificate provisioning state
 type CertificateProvisioning struct {
 	// READ-ONLY; Reason for certificate provisioning failure.
-	Reason *string `json:"reason,omitempty" azure:"ro"`
+	Reason *string
 
 	// READ-ONLY; The certificate's provisioning state
-	State *CertificateProvisioningState `json:"state,omitempty" azure:"ro"`
+	State *CertificateProvisioningState
 }
 
 // CommonSimPropertiesFormat - Common SIM properties.
 type CommonSimPropertiesFormat struct {
 	// REQUIRED; The international mobile subscriber identity (IMSI) for the SIM.
-	InternationalMobileSubscriberIdentity *string `json:"internationalMobileSubscriberIdentity,omitempty"`
+	InternationalMobileSubscriberIdentity *string
 
 	// An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video
 	// camera'. The Azure portal allows SIMs to be grouped and filtered based on
 	// this value.
-	DeviceType *string `json:"deviceType,omitempty"`
+	DeviceType *string
 
 	// The integrated circuit card ID (ICCID) for the SIM.
-	IntegratedCircuitCardIdentifier *string `json:"integratedCircuitCardIdentifier,omitempty"`
+	IntegratedCircuitCardIdentifier *string
 
 	// The SIM policy used by this SIM. The SIM policy must be in the same location as the SIM.
-	SimPolicy *SimPolicyResourceID `json:"simPolicy,omitempty"`
+	SimPolicy *SimPolicyResourceID
 
 	// A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached
 	// data network, slice}.
-	StaticIPConfiguration []*SimStaticIPProperties `json:"staticIpConfiguration,omitempty"`
+	StaticIPConfiguration []*SimStaticIPProperties
 
 	// READ-ONLY; The provisioning state of the SIM resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The state of the SIM resource.
-	SimState *SimState `json:"simState,omitempty" azure:"ro"`
+	SimState *SimState
 
 	// READ-ONLY; A dictionary of sites to the provisioning state of this SIM on that site.
-	SiteProvisioningState map[string]*SiteProvisioningState `json:"siteProvisioningState,omitempty" azure:"ro"`
+	SiteProvisioningState map[string]*SiteProvisioningState
 
 	// READ-ONLY; The public key fingerprint of the SIM vendor who provided this SIM, if any.
-	VendorKeyFingerprint *string `json:"vendorKeyFingerprint,omitempty" azure:"ro"`
+	VendorKeyFingerprint *string
 
 	// READ-ONLY; The name of the SIM vendor who provided this SIM, if any.
-	VendorName *string `json:"vendorName,omitempty" azure:"ro"`
+	VendorName *string
 }
 
 // ConnectedClusterResourceID - Reference to an Azure Arc custom location resource.
 type ConnectedClusterResourceID struct {
 	// REQUIRED; Azure Arc connected cluster resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // CustomLocationResourceID - Reference to an Azure Arc custom location resource.
 type CustomLocationResourceID struct {
 	// REQUIRED; Azure Arc custom location resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // DataNetwork - Data network resource. Must be created in the same location as its parent mobile network.
 type DataNetwork struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Data network properties.
-	Properties *DataNetworkPropertiesFormat `json:"properties,omitempty"`
+	Properties *DataNetworkPropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataNetworkConfiguration - Settings controlling data network use
 type DataNetworkConfiguration struct {
 	// REQUIRED; List of services that can be used as part of this SIM policy. The list must not contain duplicate items and must
 	// contain at least one item. The services must be in the same location as the SIM policy.
-	AllowedServices []*ServiceResourceID `json:"allowedServices,omitempty"`
+	AllowedServices []*ServiceResourceID
 
 	// REQUIRED; A reference to the data network that these settings apply to. The data network must be in the same location as
 	// the SIM policy.
-	DataNetwork *DataNetworkResourceID `json:"dataNetwork,omitempty"`
+	DataNetwork *DataNetworkResourceID
 
 	// REQUIRED; Aggregate maximum bit rate across all non-GBR QoS flows of a given PDU session. See 3GPP TS23.501 section 5.7.2.6
 	// for a full description of the Session-AMBR.
-	SessionAmbr *Ambr `json:"sessionAmbr,omitempty"`
+	SessionAmbr *Ambr
 
 	// Allowed session types in addition to the default session type. Must not duplicate the default session type.
-	AdditionalAllowedSessionTypes []*PduSessionType `json:"additionalAllowedSessionTypes,omitempty"`
+	AdditionalAllowedSessionTypes []*PduSessionType
 
 	// Default QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority,
 	// if the settings of preemptionCapability and preemptionVulnerability allow
 	// it. 1 is the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP
 	// TS23.501 section 5.7.2.2 for a full description of the ARP parameters.
-	AllocationAndRetentionPriorityLevel *int32 `json:"allocationAndRetentionPriorityLevel,omitempty"`
+	AllocationAndRetentionPriorityLevel *int32
 
 	// The default PDU session type, which is used if the UE does not request a specific session type.
-	DefaultSessionType *PduSessionType `json:"defaultSessionType,omitempty"`
+	DefaultSessionType *PduSessionType
 
 	// Default QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow.
 	// This must not be a standardized 5QI value corresponding to a GBR (guaranteed
 	// bit rate) QoS Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85.
 	// See 3GPP TS23.501 section 5.7.2.1 for a full description of the 5QI parameter,
 	// and table 5.7.4-1 for the definition of which are the GBR 5QI values.
-	FiveQi *int32 `json:"5qi,omitempty"`
+	FiveQi *int32
 
 	// The maximum number of downlink packets to buffer at the user plane for High Latency Communication - Extended Buffering.
 	// See 3GPP TS29.272 v15.10.0 section 7.3.188 for a full description. This maximum
 	// is not guaranteed because there is a internal limit on buffered packets across all PDU sessions.
-	MaximumNumberOfBufferedPackets *int32 `json:"maximumNumberOfBufferedPackets,omitempty"`
+	MaximumNumberOfBufferedPackets *int32
 
 	// Default QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another
 	// QoS Flow with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a
 	// full description of the ARP parameters.
-	PreemptionCapability *PreemptionCapability `json:"preemptionCapability,omitempty"`
+	PreemptionCapability *PreemptionCapability
 
 	// Default QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted
 	// by a QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2
 	// for a full description of the ARP parameters.
-	PreemptionVulnerability *PreemptionVulnerability `json:"preemptionVulnerability,omitempty"`
+	PreemptionVulnerability *PreemptionVulnerability
 }
 
 // DataNetworkListResult - Response for data network API service call.
 type DataNetworkListResult struct {
 	// A list of data networks.
-	Value []*DataNetwork `json:"value,omitempty"`
+	Value []*DataNetwork
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DataNetworkPropertiesFormat - Data network properties.
 type DataNetworkPropertiesFormat struct {
 	// An optional description for this data network.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The provisioning state of the data network resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // DataNetworkResourceID - Reference to a data network resource.
 type DataNetworkResourceID struct {
 	// REQUIRED; Data network resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // DataNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the DataNetworksClient.BeginCreateOrUpdate
@@ -369,198 +369,198 @@ type DataNetworksClientUpdateTagsOptions struct {
 // EncryptedSimPropertiesFormat - Encrypted SIM properties.
 type EncryptedSimPropertiesFormat struct {
 	// REQUIRED; The international mobile subscriber identity (IMSI) for the SIM.
-	InternationalMobileSubscriberIdentity *string `json:"internationalMobileSubscriberIdentity,omitempty"`
+	InternationalMobileSubscriberIdentity *string
 
 	// An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video
 	// camera'. The Azure portal allows SIMs to be grouped and filtered based on
 	// this value.
-	DeviceType *string `json:"deviceType,omitempty"`
+	DeviceType *string
 
 	// The encrypted SIM credentials.
-	EncryptedCredentials *string `json:"encryptedCredentials,omitempty"`
+	EncryptedCredentials *string
 
 	// The integrated circuit card ID (ICCID) for the SIM.
-	IntegratedCircuitCardIdentifier *string `json:"integratedCircuitCardIdentifier,omitempty"`
+	IntegratedCircuitCardIdentifier *string
 
 	// The SIM policy used by this SIM. The SIM policy must be in the same location as the SIM.
-	SimPolicy *SimPolicyResourceID `json:"simPolicy,omitempty"`
+	SimPolicy *SimPolicyResourceID
 
 	// A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached
 	// data network, slice}.
-	StaticIPConfiguration []*SimStaticIPProperties `json:"staticIpConfiguration,omitempty"`
+	StaticIPConfiguration []*SimStaticIPProperties
 
 	// READ-ONLY; The provisioning state of the SIM resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The state of the SIM resource.
-	SimState *SimState `json:"simState,omitempty" azure:"ro"`
+	SimState *SimState
 
 	// READ-ONLY; A dictionary of sites to the provisioning state of this SIM on that site.
-	SiteProvisioningState map[string]*SiteProvisioningState `json:"siteProvisioningState,omitempty" azure:"ro"`
+	SiteProvisioningState map[string]*SiteProvisioningState
 
 	// READ-ONLY; The public key fingerprint of the SIM vendor who provided this SIM, if any.
-	VendorKeyFingerprint *string `json:"vendorKeyFingerprint,omitempty" azure:"ro"`
+	VendorKeyFingerprint *string
 
 	// READ-ONLY; The name of the SIM vendor who provided this SIM, if any.
-	VendorName *string `json:"vendorName,omitempty" azure:"ro"`
+	VendorName *string
 }
 
 // EncryptedSimUploadList - The SIMs to upload. The SIM credentials must be encrypted.
 type EncryptedSimUploadList struct {
 	// REQUIRED; An identifier for the Azure SIM onboarding public key used for encrypted upload.
-	AzureKeyIdentifier *int32 `json:"azureKeyIdentifier,omitempty"`
+	AzureKeyIdentifier *int32
 
 	// REQUIRED; The transport key used for encrypting SIM credentials, encrypted using the SIM onboarding public key.
-	EncryptedTransportKey *string `json:"encryptedTransportKey,omitempty"`
+	EncryptedTransportKey *string
 
 	// REQUIRED; The encrypted transport key, signed using the SIM vendor private key.
-	SignedTransportKey *string `json:"signedTransportKey,omitempty"`
+	SignedTransportKey *string
 
 	// REQUIRED; A list of SIMs to upload, with encrypted properties.
-	Sims []*SimNameAndEncryptedProperties `json:"sims,omitempty"`
+	Sims []*SimNameAndEncryptedProperties
 
 	// REQUIRED; The fingerprint of the SIM vendor public key. The private counterpart is used for signing the encrypted transport
 	// key.
-	VendorKeyFingerprint *string `json:"vendorKeyFingerprint,omitempty"`
+	VendorKeyFingerprint *string
 
 	// REQUIRED; The upload file format version.
-	Version *int32 `json:"version,omitempty"`
+	Version *int32
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // HTTPSServerCertificate - HTTPS server certificate configuration.
 type HTTPSServerCertificate struct {
 	// REQUIRED; The certificate URL, unversioned. For example: https://contosovault.vault.azure.net/certificates/ingress.
-	CertificateURL *string `json:"certificateUrl,omitempty"`
+	CertificateURL *string
 
 	// READ-ONLY; The provisioning state of the certificate.
-	Provisioning *CertificateProvisioning `json:"provisioning,omitempty" azure:"ro"`
+	Provisioning *CertificateProvisioning
 }
 
 // Installation - The installation state of the packet core.
 type Installation struct {
 	// A reference to an in-progress installation operation
-	Operation *AsyncOperationID `json:"operation,omitempty"`
+	Operation *AsyncOperationID
 
 	// Installation state
-	State *InstallationState `json:"state,omitempty"`
+	State *InstallationState
 }
 
 // InterfaceProperties - Interface properties
 type InterfaceProperties struct {
 	// The IPv4 address.
-	IPv4Address *string `json:"ipv4Address,omitempty"`
+	IPv4Address *string
 
 	// The default IPv4 gateway (router).
-	IPv4Gateway *string `json:"ipv4Gateway,omitempty"`
+	IPv4Gateway *string
 
 	// The IPv4 subnet.
-	IPv4Subnet *string `json:"ipv4Subnet,omitempty"`
+	IPv4Subnet *string
 
 	// The logical name for this interface. This should match one of the interfaces configured on your Azure Stack Edge device.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // KeyVaultKey - An Azure key vault key.
 type KeyVaultKey struct {
 	// The key URL, unversioned. For example: https://contosovault.vault.azure.net/keys/azureKey.
-	KeyURL *string `json:"keyUrl,omitempty"`
+	KeyURL *string
 }
 
 // ListResult - Response for mobile networks API service call.
 type ListResult struct {
 	// A list of mobile networks in a resource group.
-	Value []*MobileNetwork `json:"value,omitempty"`
+	Value []*MobileNetwork
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // LocalDiagnosticsAccessConfiguration - The kubernetes ingress configuration to control access to packet core diagnostics
 // over local APIs.
 type LocalDiagnosticsAccessConfiguration struct {
 	// REQUIRED; How to authenticate users who access local diagnostics APIs.
-	AuthenticationType *AuthenticationType `json:"authenticationType,omitempty"`
+	AuthenticationType *AuthenticationType
 
 	// The HTTPS server TLS certificate used to secure local access to diagnostics.
-	HTTPSServerCertificate *HTTPSServerCertificate `json:"httpsServerCertificate,omitempty"`
+	HTTPSServerCertificate *HTTPSServerCertificate
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
 	// The dictionary values can be empty objects ({}) in
 	// requests.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
 	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // MobileNetwork - Mobile network resource.
 type MobileNetwork struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Mobile network properties.
-	Properties *PropertiesFormat `json:"properties,omitempty"`
+	Properties *PropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MobileNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the MobileNetworksClient.BeginCreateOrUpdate
@@ -601,59 +601,59 @@ type MobileNetworksClientUpdateTagsOptions struct {
 // NaptConfiguration - The network address and port translation settings to use for the attached data network.
 type NaptConfiguration struct {
 	// Whether NAPT is enabled for connections to this attached data network.
-	Enabled *NaptEnabled `json:"enabled,omitempty"`
+	Enabled *NaptEnabled
 
 	// Maximum number of UDP and TCP pinholes that can be open simultaneously on the core interface. For 5G networks, this is
 	// the N6 interface. For 4G networks, this is the SGi interface.
-	PinholeLimits *int32 `json:"pinholeLimits,omitempty"`
+	PinholeLimits *int32
 
 	// Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second.
-	PinholeTimeouts *PinholeTimeouts `json:"pinholeTimeouts,omitempty"`
+	PinholeTimeouts *PinholeTimeouts
 
 	// Range of port numbers to use as translated ports on each translated address. If not specified and NAPT is enabled, this
 	// range defaults to 1,024 - 49,999. (Ports under 1,024 should not be used because
 	// these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.)
-	PortRange *PortRange `json:"portRange,omitempty"`
+	PortRange *PortRange
 
 	// The minimum time (in seconds) that will pass before a port that was used by a closed pinhole can be recycled for use by
 	// another pinhole. All hold times must be at least 1 second.
-	PortReuseHoldTime *PortReuseHoldTimes `json:"portReuseHoldTime,omitempty"`
+	PortReuseHoldTime *PortReuseHoldTimes
 }
 
 // Operation - Object that describes a single Microsoft.MobileNetwork operation.
 type Operation struct {
 	// Indicates whether the operation applies to data-plane.
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// READ-ONLY; The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty" azure:"ro"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.MobileNetwork
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: Registration definition, registration assignment etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationList - List of the operations.
 type OperationList struct {
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of Microsoft.MobileNetwork operations.
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -664,122 +664,122 @@ type OperationsClientListOptions struct {
 // PacketCoreControlPlane - Packet core control plane resource.
 type PacketCoreControlPlane struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Packet core control plane Properties.
-	Properties *PacketCoreControlPlanePropertiesFormat `json:"properties,omitempty"`
+	Properties *PacketCoreControlPlanePropertiesFormat
 
 	// The identity used to retrieve the ingress certificate from Azure key vault.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PacketCoreControlPlaneCollectDiagnosticsPackage - Packet core control plane collect diagnostics package options
 type PacketCoreControlPlaneCollectDiagnosticsPackage struct {
 	// REQUIRED; The Storage Account Blob URL to upload the diagnostics package to.
-	StorageAccountBlobURL *string `json:"storageAccountBlobUrl,omitempty"`
+	StorageAccountBlobURL *string
 }
 
 // PacketCoreControlPlaneListResult - Response for packet core control planes API service call.
 type PacketCoreControlPlaneListResult struct {
 	// A list of packet core control planes in a resource group.
-	Value []*PacketCoreControlPlane `json:"value,omitempty"`
+	Value []*PacketCoreControlPlane
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PacketCoreControlPlanePropertiesFormat - Packet core control plane properties.
 type PacketCoreControlPlanePropertiesFormat struct {
 	// REQUIRED; The control plane interface on the access network. For 5G networks, this is the N2 interface. For 4G networks,
 	// this is the S1-MME interface.
-	ControlPlaneAccessInterface *InterfaceProperties `json:"controlPlaneAccessInterface,omitempty"`
+	ControlPlaneAccessInterface *InterfaceProperties
 
 	// REQUIRED; The kubernetes ingress configuration to control access to packet core diagnostics over local APIs.
-	LocalDiagnosticsAccess *LocalDiagnosticsAccessConfiguration `json:"localDiagnosticsAccess,omitempty"`
+	LocalDiagnosticsAccess *LocalDiagnosticsAccessConfiguration
 
 	// REQUIRED; The platform where the packet core is deployed.
-	Platform *PlatformConfiguration `json:"platform,omitempty"`
+	Platform *PlatformConfiguration
 
 	// REQUIRED; The SKU defining the throughput and SIM allowances for this packet core control plane deployment.
-	SKU *BillingSKU `json:"sku,omitempty"`
+	SKU *BillingSKU
 
 	// REQUIRED; Site(s) under which this packet core control plane should be deployed. The sites must be in the same location
 	// as the packet core control plane.
-	Sites []*SiteResourceID `json:"sites,omitempty"`
+	Sites []*SiteResourceID
 
 	// The core network technology generation (5G core or EPC / 4G core).
-	CoreNetworkTechnology *CoreNetworkType `json:"coreNetworkTechnology,omitempty"`
+	CoreNetworkTechnology *CoreNetworkType
 
 	// Settings to allow interoperability with third party components e.g. RANs and UEs.
-	InteropSettings any `json:"interopSettings,omitempty"`
+	InteropSettings any
 
 	// The MTU (in bytes) signaled to the UE. The same MTU is set on the user plane data links for all data networks. The MTU
 	// set on the user plane access link is calculated to be 60 bytes greater than this
 	// value to allow for GTP encapsulation.
-	UeMtu *int32 `json:"ueMtu,omitempty"`
+	UeMtu *int32
 
 	// The version of the packet core software that is deployed.
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; The installation state of the packet core control plane resource.
-	Installation *Installation `json:"installation,omitempty" azure:"ro"`
+	Installation *Installation
 
 	// READ-ONLY; The provisioning state of the packet core control plane resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The previous version of the packet core software that was deployed. Used when performing the rollback action.
-	RollbackVersion *string `json:"rollbackVersion,omitempty" azure:"ro"`
+	RollbackVersion *string
 }
 
 // PacketCoreControlPlaneVersion - Packet core control plane version resource.
 type PacketCoreControlPlaneVersion struct {
 	// REQUIRED; Packet core control plane version properties.
-	Properties *PacketCoreControlPlaneVersionPropertiesFormat `json:"properties,omitempty"`
+	Properties *PacketCoreControlPlaneVersionPropertiesFormat
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PacketCoreControlPlaneVersionListResult - Response for packet core control plane version API service call.
 type PacketCoreControlPlaneVersionListResult struct {
 	// A list of supported packet core control plane versions.
-	Value []*PacketCoreControlPlaneVersion `json:"value,omitempty"`
+	Value []*PacketCoreControlPlaneVersion
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PacketCoreControlPlaneVersionPropertiesFormat - Packet core control plane version properties.
 type PacketCoreControlPlaneVersionPropertiesFormat struct {
 	// Platform specific packet core control plane version properties.
-	Platforms []*Platform `json:"platforms,omitempty"`
+	Platforms []*Platform
 
 	// READ-ONLY; The provisioning state of the packet core control plane version resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // PacketCoreControlPlaneVersionsClientGetOptions contains the optional parameters for the PacketCoreControlPlaneVersionsClient.Get
@@ -856,44 +856,44 @@ type PacketCoreControlPlanesClientUpdateTagsOptions struct {
 // plane.
 type PacketCoreDataPlane struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Packet core data plane Properties.
-	Properties *PacketCoreDataPlanePropertiesFormat `json:"properties,omitempty"`
+	Properties *PacketCoreDataPlanePropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PacketCoreDataPlaneListResult - Response for packet core data planes API service call.
 type PacketCoreDataPlaneListResult struct {
 	// A list of packet core data planes in a resource group.
-	Value []*PacketCoreDataPlane `json:"value,omitempty"`
+	Value []*PacketCoreDataPlane
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PacketCoreDataPlanePropertiesFormat - Packet core data plane properties.
 type PacketCoreDataPlanePropertiesFormat struct {
 	// REQUIRED; The user plane interface on the access network. For 5G networks, this is the N3 interface. For 4G networks, this
 	// is the S1-U interface.
-	UserPlaneAccessInterface *InterfaceProperties `json:"userPlaneAccessInterface,omitempty"`
+	UserPlaneAccessInterface *InterfaceProperties
 
 	// READ-ONLY; The provisioning state of the packet core data plane resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // PacketCoreDataPlanesClientBeginCreateOrUpdateOptions contains the optional parameters for the PacketCoreDataPlanesClient.BeginCreateOrUpdate
@@ -931,121 +931,121 @@ type PacketCoreDataPlanesClientUpdateTagsOptions struct {
 type PccRuleConfiguration struct {
 	// REQUIRED; The name of the rule. This must be unique within the parent service. You must not use any of the following reserved
 	// strings - default, requested or service.
-	RuleName *string `json:"ruleName,omitempty"`
+	RuleName *string
 
 	// REQUIRED; A precedence value that is used to decide between data flow policy rules when identifying the QoS values to use
 	// for a particular SIM. A lower value means a higher priority. This value should be unique
 	// among all data flow policy rules configured in the mobile network.
-	RulePrecedence *int32 `json:"rulePrecedence,omitempty"`
+	RulePrecedence *int32
 
 	// REQUIRED; The set of data flow templates to use for this data flow policy rule.
-	ServiceDataFlowTemplates []*ServiceDataFlowTemplate `json:"serviceDataFlowTemplates,omitempty"`
+	ServiceDataFlowTemplates []*ServiceDataFlowTemplate
 
 	// The QoS policy to use for packets matching this rule. If this field is null then the parent service will define the QoS
 	// settings.
-	RuleQosPolicy *PccRuleQosPolicy `json:"ruleQosPolicy,omitempty"`
+	RuleQosPolicy *PccRuleQosPolicy
 
 	// Determines whether flows that match this data flow policy rule are permitted.
-	TrafficControl *TrafficControlPermission `json:"trafficControl,omitempty"`
+	TrafficControl *TrafficControlPermission
 }
 
 // PccRuleQosPolicy - Data flow policy rule QoS policy
 type PccRuleQosPolicy struct {
 	// REQUIRED; The maximum bit rate (MBR) for all service data flows that use this data flow policy rule or service.
-	MaximumBitRate *Ambr `json:"maximumBitRate,omitempty"`
+	MaximumBitRate *Ambr
 
 	// QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if
 	// the settings of preemptionCapability and preemptionVulnerability allow it. 1 is
 	// the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP TS23.501
 	// section 5.7.2.2 for a full description of the ARP parameters.
-	AllocationAndRetentionPriorityLevel *int32 `json:"allocationAndRetentionPriorityLevel,omitempty"`
+	AllocationAndRetentionPriorityLevel *int32
 
 	// QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. This
 	// must not be a standardized 5QI value corresponding to a GBR (guaranteed bit rate)
 	// QoS Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP
 	// TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table
 	// 5.7.4-1 for the definition of which are the GBR 5QI values.
-	FiveQi *int32 `json:"5qi,omitempty"`
+	FiveQi *int32
 
 	// The guaranteed bit rate (GBR) for all service data flows that use this data flow policy rule. This is an optional setting.
 	// If you do not provide a value, there will be no GBR set for the data flow
 	// policy rule that uses this QoS definition.
-	GuaranteedBitRate *Ambr `json:"guaranteedBitRate,omitempty"`
+	GuaranteedBitRate *Ambr
 
 	// QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow
 	// with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full
 	// description of the ARP parameters.
-	PreemptionCapability *PreemptionCapability `json:"preemptionCapability,omitempty"`
+	PreemptionCapability *PreemptionCapability
 
 	// QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a
 	// QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a
 	// full description of the ARP parameters.
-	PreemptionVulnerability *PreemptionVulnerability `json:"preemptionVulnerability,omitempty"`
+	PreemptionVulnerability *PreemptionVulnerability
 }
 
 // PinholeTimeouts - Expiry times of inactive NAPT pinholes, in seconds. All timers must be at least 1 second.
 type PinholeTimeouts struct {
 	// Pinhole timeout for ICMP pinholes in seconds. Default for ICMP Echo is 30 seconds.
-	Icmp *int32 `json:"icmp,omitempty"`
+	Icmp *int32
 
 	// Pinhole timeout for TCP pinholes in seconds. Default for TCP is 3 minutes.
-	TCP *int32 `json:"tcp,omitempty"`
+	TCP *int32
 
 	// Pinhole timeout for UDP pinholes in seconds. Default for UDP is 30 seconds.
-	UDP *int32 `json:"udp,omitempty"`
+	UDP *int32
 }
 
 // Platform specific packet core control plane version properties.
 type Platform struct {
 	// The maximum software version of the platform where this packet core version can be deployed.
-	MaximumPlatformSoftwareVersion *string `json:"maximumPlatformSoftwareVersion,omitempty"`
+	MaximumPlatformSoftwareVersion *string
 
 	// The minimum software version of the platform where this packet core version can be deployed.
-	MinimumPlatformSoftwareVersion *string `json:"minimumPlatformSoftwareVersion,omitempty"`
+	MinimumPlatformSoftwareVersion *string
 
 	// Indicates whether this version is obsoleted for this platform.
-	ObsoleteVersion *ObsoleteVersion `json:"obsoleteVersion,omitempty"`
+	ObsoleteVersion *ObsoleteVersion
 
 	// The platform type where this version can be deployed.
-	PlatformType *PlatformType `json:"platformType,omitempty"`
+	PlatformType *PlatformType
 
 	// Indicates whether this is the recommended version for this platform.
-	RecommendedVersion *RecommendedVersion `json:"recommendedVersion,omitempty"`
+	RecommendedVersion *RecommendedVersion
 
 	// The state of this packet core control plane version on this platform.
-	VersionState *VersionState `json:"versionState,omitempty"`
+	VersionState *VersionState
 }
 
 // PlatformConfiguration - The platform where the packet core is deployed.
 type PlatformConfiguration struct {
 	// REQUIRED; The platform type where packet core is deployed.
-	Type *PlatformType `json:"type,omitempty"`
+	Type *PlatformType
 
 	// The Azure Stack Edge device where the packet core is deployed. If the device is part of a fault tolerant pair, either device
 	// in the pair can be specified.
-	AzureStackEdgeDevice *AzureStackEdgeDeviceResourceID `json:"azureStackEdgeDevice,omitempty"`
+	AzureStackEdgeDevice *AzureStackEdgeDeviceResourceID
 
 	// The Azure Stack HCI cluster where the packet core is deployed.
-	AzureStackHciCluster *AzureStackHCIClusterResourceID `json:"azureStackHciCluster,omitempty"`
+	AzureStackHciCluster *AzureStackHCIClusterResourceID
 
 	// Azure Arc connected cluster where the packet core is deployed.
-	ConnectedCluster *ConnectedClusterResourceID `json:"connectedCluster,omitempty"`
+	ConnectedCluster *ConnectedClusterResourceID
 
 	// Azure Arc custom location where the packet core is deployed.
-	CustomLocation *CustomLocationResourceID `json:"customLocation,omitempty"`
+	CustomLocation *CustomLocationResourceID
 
 	// READ-ONLY; The Azure Stack Edge devices where the packet core is deployed. If the packet core is deployed across multiple
 	// devices, all devices will appear in this list.
-	AzureStackEdgeDevices []*AzureStackEdgeDeviceResourceID `json:"azureStackEdgeDevices,omitempty" azure:"ro"`
+	AzureStackEdgeDevices []*AzureStackEdgeDeviceResourceID
 }
 
 // PlmnID - Public land mobile network (PLMN) ID.
 type PlmnID struct {
 	// REQUIRED; Mobile country code (MCC).
-	Mcc *string `json:"mcc,omitempty"`
+	Mcc *string
 
 	// REQUIRED; Mobile network code (MNC).
-	Mnc *string `json:"mnc,omitempty"`
+	Mnc *string
 }
 
 // PortRange - Range of port numbers to use as translated ports on each translated address. If not specified and NAPT is enabled,
@@ -1053,10 +1053,10 @@ type PlmnID struct {
 // these are special purpose ports reserved by IANA. Ports 50,000 and above are reserved for non-NAPT use.)
 type PortRange struct {
 	// The maximum port number
-	MaxPort *int32 `json:"maxPort,omitempty"`
+	MaxPort *int32
 
 	// The minimum port number
-	MinPort *int32 `json:"minPort,omitempty"`
+	MinPort *int32
 }
 
 // PortReuseHoldTimes - The minimum time (in seconds) that will pass before a port that was used by a closed pinhole can be
@@ -1064,11 +1064,11 @@ type PortRange struct {
 type PortReuseHoldTimes struct {
 	// Minimum time in seconds that will pass before a TCP port that was used by a closed pinhole can be reused. Default for TCP
 	// is 2 minutes.
-	TCP *int32 `json:"tcp,omitempty"`
+	TCP *int32
 
 	// Minimum time in seconds that will pass before a UDP port that was used by a closed pinhole can be reused. Default for UDP
 	// is 1 minute.
-	UDP *int32 `json:"udp,omitempty"`
+	UDP *int32
 }
 
 // PropertiesFormat - Mobile network properties.
@@ -1076,166 +1076,166 @@ type PropertiesFormat struct {
 	// REQUIRED; The unique public land mobile network identifier for the network. This is made up of the mobile country code
 	// and mobile network code, as defined in https://www.itu.int/rec/T-REC-E.212. The values
 	// 001-01 and 001-001 can be used for testing and the values 999-99 and 999-999 can be used on internal private networks.
-	PublicLandMobileNetworkIdentifier *PlmnID `json:"publicLandMobileNetworkIdentifier,omitempty"`
+	PublicLandMobileNetworkIdentifier *PlmnID
 
 	// READ-ONLY; The provisioning state of the mobile network resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The mobile network resource identifier
-	ServiceKey *string `json:"serviceKey,omitempty" azure:"ro"`
+	ServiceKey *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // QosPolicy - QoS policy
 type QosPolicy struct {
 	// REQUIRED; The maximum bit rate (MBR) for all service data flows that use this data flow policy rule or service.
-	MaximumBitRate *Ambr `json:"maximumBitRate,omitempty"`
+	MaximumBitRate *Ambr
 
 	// QoS Flow allocation and retention priority (ARP) level. Flows with higher priority preempt flows with lower priority, if
 	// the settings of preemptionCapability and preemptionVulnerability allow it. 1 is
 	// the highest level of priority. If this field is not specified then 5qi is used to derive the ARP value. See 3GPP TS23.501
 	// section 5.7.2.2 for a full description of the ARP parameters.
-	AllocationAndRetentionPriorityLevel *int32 `json:"allocationAndRetentionPriorityLevel,omitempty"`
+	AllocationAndRetentionPriorityLevel *int32
 
 	// QoS Flow 5G QoS Indicator value. The 5QI identifies a specific QoS forwarding treatment to be provided to a flow. This
 	// must not be a standardized 5QI value corresponding to a GBR (guaranteed bit rate)
 	// QoS Flow. The illegal GBR 5QI values are: 1, 2, 3, 4, 65, 66, 67, 71, 72, 73, 74, 75, 76, 82, 83, 84, and 85. See 3GPP
 	// TS23.501 section 5.7.2.1 for a full description of the 5QI parameter, and table
 	// 5.7.4-1 for the definition of which are the GBR 5QI values.
-	FiveQi *int32 `json:"5qi,omitempty"`
+	FiveQi *int32
 
 	// QoS Flow preemption capability. The preemption capability of a QoS Flow controls whether it can preempt another QoS Flow
 	// with a lower priority level. See 3GPP TS23.501 section 5.7.2.2 for a full
 	// description of the ARP parameters.
-	PreemptionCapability *PreemptionCapability `json:"preemptionCapability,omitempty"`
+	PreemptionCapability *PreemptionCapability
 
 	// QoS Flow preemption vulnerability. The preemption vulnerability of a QoS Flow controls whether it can be preempted by a
 	// QoS Flow with a higher priority level. See 3GPP TS23.501 section 5.7.2.2 for a
 	// full description of the ARP parameters.
-	PreemptionVulnerability *PreemptionVulnerability `json:"preemptionVulnerability,omitempty"`
+	PreemptionVulnerability *PreemptionVulnerability
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceID - Reference to a mobile network resource.
 type ResourceID struct {
 	// REQUIRED; Mobile network resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // Service resource. Must be created in the same location as its parent mobile network.
 type Service struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Service Properties.
-	Properties *ServicePropertiesFormat `json:"properties,omitempty"`
+	Properties *ServicePropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceDataFlowTemplate - Data flow template
 type ServiceDataFlowTemplate struct {
 	// REQUIRED; The direction of this flow.
-	Direction *SdfDirection `json:"direction,omitempty"`
+	Direction *SdfDirection
 
 	// REQUIRED; A list of the allowed protocol(s) for this flow. If you want this flow to be able to use any protocol within
 	// the internet protocol suite, use the value ip. If you only want to allow a selection of
 	// protocols, you must use the corresponding IANA Assigned Internet Protocol Number for each protocol, as described in https://www.iana.org/assignments/protocol-numbers/protocol-numbers.xhtml.
 	// For
 	// example, for UDP, you must use 17. If you use the value ip then you must leave the field port unspecified.
-	Protocol []*string `json:"protocol,omitempty"`
+	Protocol []*string
 
 	// REQUIRED; The remote IP address(es) to which UEs will connect for this flow. If you want to allow connections on any IP
 	// address, use the value any. Otherwise, you must provide each of the remote IP addresses to
 	// which the packet core instance will connect for this flow. You must provide each IP address in CIDR notation, including
 	// the netmask (for example, 192.0.2.54/24).
-	RemoteIPList []*string `json:"remoteIpList,omitempty"`
+	RemoteIPList []*string
 
 	// REQUIRED; The name of the data flow template. This must be unique within the parent data flow policy rule. You must not
 	// use any of the following reserved strings - default, requested or service.
-	TemplateName *string `json:"templateName,omitempty"`
+	TemplateName *string
 
 	// The port(s) to which UEs will connect for this flow. You can specify zero or more ports or port ranges. If you specify
 	// one or more ports or port ranges then you must specify a value other than ip in
 	// the protocol field. This is an optional setting. If you do not specify it then connections will be allowed on all ports.
 	// Port ranges must be specified as -. For example: [8080, 8082-8085].
-	Ports []*string `json:"ports,omitempty"`
+	Ports []*string
 }
 
 // ServiceListResult - Response for services API service call.
 type ServiceListResult struct {
 	// A list of services.
-	Value []*Service `json:"value,omitempty"`
+	Value []*Service
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ServicePropertiesFormat - Service properties.
 type ServicePropertiesFormat struct {
 	// REQUIRED; The set of data flow policy rules that make up this service.
-	PccRules []*PccRuleConfiguration `json:"pccRules,omitempty"`
+	PccRules []*PccRuleConfiguration
 
 	// REQUIRED; A precedence value that is used to decide between services when identifying the QoS values to use for a particular
 	// SIM. A lower value means a higher priority. This value should be unique among all
 	// services configured in the mobile network.
-	ServicePrecedence *int32 `json:"servicePrecedence,omitempty"`
+	ServicePrecedence *int32
 
 	// The QoS policy to use for packets matching this service. This can be overridden for particular flows using the ruleQosPolicy
 	// field in a PccRuleConfiguration. If this field is null then the UE's SIM
 	// policy will define the QoS settings.
-	ServiceQosPolicy *QosPolicy `json:"serviceQosPolicy,omitempty"`
+	ServiceQosPolicy *QosPolicy
 
 	// READ-ONLY; The provisioning state of the service resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ServiceResourceID - Reference to a service resource.
 type ServiceResourceID struct {
 	// REQUIRED; Service resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // ServicesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServicesClient.BeginCreateOrUpdate method.
@@ -1269,79 +1269,79 @@ type ServicesClientUpdateTagsOptions struct {
 // Sim - SIM resource.
 type Sim struct {
 	// REQUIRED; SIM Properties.
-	Properties *SimPropertiesFormat `json:"properties,omitempty"`
+	Properties *SimPropertiesFormat
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SimDeleteList - The SIMs to delete.
 type SimDeleteList struct {
 	// REQUIRED; A list of SIM resource names to delete.
-	Sims []*string `json:"sims,omitempty"`
+	Sims []*string
 }
 
 // SimGroup - SIM group resource.
 type SimGroup struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; SIM group Properties.
-	Properties *SimGroupPropertiesFormat `json:"properties,omitempty"`
+	Properties *SimGroupPropertiesFormat
 
 	// The identity used to retrieve the encryption key from Azure key vault.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SimGroupListResult - Response for list SIM groups API service call.
 type SimGroupListResult struct {
 	// A list of SIM groups in a resource group.
-	Value []*SimGroup `json:"value,omitempty"`
+	Value []*SimGroup
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SimGroupPropertiesFormat - SIM group properties.
 type SimGroupPropertiesFormat struct {
 	// A key to encrypt the SIM data that belongs to this SIM group.
-	EncryptionKey *KeyVaultKey `json:"encryptionKey,omitempty"`
+	EncryptionKey *KeyVaultKey
 
 	// Mobile network that this SIM group belongs to. The mobile network must be in the same location as the SIM group.
-	MobileNetwork *ResourceID `json:"mobileNetwork,omitempty"`
+	MobileNetwork *ResourceID
 
 	// READ-ONLY; The provisioning state of the SIM group resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // SimGroupResourceID - Reference to a SIM group resource.
 type SimGroupResourceID struct {
 	// REQUIRED; SIM group resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SimGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the SimGroupsClient.BeginCreateOrUpdate
@@ -1382,28 +1382,28 @@ type SimGroupsClientUpdateTagsOptions struct {
 // SimListResult - Response for list SIMs API service call.
 type SimListResult struct {
 	// A list of SIMs in a resource group.
-	Value []*Sim `json:"value,omitempty"`
+	Value []*Sim
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SimNameAndEncryptedProperties - SIM name and encrypted properties.
 type SimNameAndEncryptedProperties struct {
 	// REQUIRED; The name of the SIM.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Encrypted SIM Properties.
-	Properties *EncryptedSimPropertiesFormat `json:"properties,omitempty"`
+	Properties *EncryptedSimPropertiesFormat
 }
 
 // SimNameAndProperties - SIM name and properties.
 type SimNameAndProperties struct {
 	// REQUIRED; The name of the SIM.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; SIM Properties.
-	Properties *SimPropertiesFormat `json:"properties,omitempty"`
+	Properties *SimPropertiesFormat
 }
 
 // SimPoliciesClientBeginCreateOrUpdateOptions contains the optional parameters for the SimPoliciesClient.BeginCreateOrUpdate
@@ -1438,109 +1438,109 @@ type SimPoliciesClientUpdateTagsOptions struct {
 // SimPolicy - SIM policy resource.
 type SimPolicy struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; SIM policy Properties.
-	Properties *SimPolicyPropertiesFormat `json:"properties,omitempty"`
+	Properties *SimPolicyPropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SimPolicyListResult - Response for SIM policies API service call.
 type SimPolicyListResult struct {
 	// A list of SIM policies.
-	Value []*SimPolicy `json:"value,omitempty"`
+	Value []*SimPolicy
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SimPolicyPropertiesFormat - SIM policy properties. Must be created in the same location as its parent mobile network.
 type SimPolicyPropertiesFormat struct {
 	// REQUIRED; The default slice to use if the UE does not explicitly specify it. This slice must exist in the sliceConfigurations
 	// map. The slice must be in the same location as the SIM policy.
-	DefaultSlice *SliceResourceID `json:"defaultSlice,omitempty"`
+	DefaultSlice *SliceResourceID
 
 	// REQUIRED; The allowed slices and the settings to use for them. The list must not contain duplicate items and must contain
 	// at least one item.
-	SliceConfigurations []*SliceConfiguration `json:"sliceConfigurations,omitempty"`
+	SliceConfigurations []*SliceConfiguration
 
 	// REQUIRED; Aggregate maximum bit rate across all non-GBR QoS flows of all PDU sessions of a given UE. See 3GPP TS23.501
 	// section 5.7.2.6 for a full description of the UE-AMBR.
-	UeAmbr *Ambr `json:"ueAmbr,omitempty"`
+	UeAmbr *Ambr
 
 	// Interval for the UE periodic registration update procedure, in seconds.
-	RegistrationTimer *int32 `json:"registrationTimer,omitempty"`
+	RegistrationTimer *int32
 
 	// RAT/Frequency Selection Priority Index, defined in 3GPP TS 36.413. This is an optional setting and by default is unspecified.
-	RfspIndex *int32 `json:"rfspIndex,omitempty"`
+	RfspIndex *int32
 
 	// READ-ONLY; The provisioning state of the SIM policy resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; A dictionary of sites to the provisioning state of this SIM policy on that site.
-	SiteProvisioningState map[string]*SiteProvisioningState `json:"siteProvisioningState,omitempty" azure:"ro"`
+	SiteProvisioningState map[string]*SiteProvisioningState
 }
 
 // SimPolicyResourceID - Reference to a SIM policy resource.
 type SimPolicyResourceID struct {
 	// REQUIRED; SIM policy resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SimPropertiesFormat - SIM properties.
 type SimPropertiesFormat struct {
 	// REQUIRED; The international mobile subscriber identity (IMSI) for the SIM.
-	InternationalMobileSubscriberIdentity *string `json:"internationalMobileSubscriberIdentity,omitempty"`
+	InternationalMobileSubscriberIdentity *string
 
 	// The Ki value for the SIM.
-	AuthenticationKey *string `json:"authenticationKey,omitempty"`
+	AuthenticationKey *string
 
 	// An optional free-form text field that can be used to record the device type this SIM is associated with, for example 'Video
 	// camera'. The Azure portal allows SIMs to be grouped and filtered based on
 	// this value.
-	DeviceType *string `json:"deviceType,omitempty"`
+	DeviceType *string
 
 	// The integrated circuit card ID (ICCID) for the SIM.
-	IntegratedCircuitCardIdentifier *string `json:"integratedCircuitCardIdentifier,omitempty"`
+	IntegratedCircuitCardIdentifier *string
 
 	// The Opc value for the SIM.
-	OperatorKeyCode *string `json:"operatorKeyCode,omitempty"`
+	OperatorKeyCode *string
 
 	// The SIM policy used by this SIM. The SIM policy must be in the same location as the SIM.
-	SimPolicy *SimPolicyResourceID `json:"simPolicy,omitempty"`
+	SimPolicy *SimPolicyResourceID
 
 	// A list of static IP addresses assigned to this SIM. Each address is assigned at a defined network scope, made up of {attached
 	// data network, slice}.
-	StaticIPConfiguration []*SimStaticIPProperties `json:"staticIpConfiguration,omitempty"`
+	StaticIPConfiguration []*SimStaticIPProperties
 
 	// READ-ONLY; The provisioning state of the SIM resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The state of the SIM resource.
-	SimState *SimState `json:"simState,omitempty" azure:"ro"`
+	SimState *SimState
 
 	// READ-ONLY; A dictionary of sites to the provisioning state of this SIM on that site.
-	SiteProvisioningState map[string]*SiteProvisioningState `json:"siteProvisioningState,omitempty" azure:"ro"`
+	SiteProvisioningState map[string]*SiteProvisioningState
 
 	// READ-ONLY; The public key fingerprint of the SIM vendor who provided this SIM, if any.
-	VendorKeyFingerprint *string `json:"vendorKeyFingerprint,omitempty" azure:"ro"`
+	VendorKeyFingerprint *string
 
 	// READ-ONLY; The name of the SIM vendor who provided this SIM, if any.
-	VendorName *string `json:"vendorName,omitempty" azure:"ro"`
+	VendorName *string
 }
 
 // SimStaticIPProperties - Static IP configuration for a SIM, scoped to a particular attached data network and slice.
@@ -1548,28 +1548,28 @@ type SimStaticIPProperties struct {
 	// The attached data network on which the static IP address will be used. The combination of attached data network and slice
 	// defines the network scope of the IP address. The attached data network must be
 	// in the same location as the SIM.
-	AttachedDataNetwork *AttachedDataNetworkResourceID `json:"attachedDataNetwork,omitempty"`
+	AttachedDataNetwork *AttachedDataNetworkResourceID
 
 	// The network slice on which the static IP address will be used. The combination of attached data network and slice defines
 	// the network scope of the IP address. The slice must be in the same location as
 	// the SIM.
-	Slice *SliceResourceID `json:"slice,omitempty"`
+	Slice *SliceResourceID
 
 	// The static IP configuration for the SIM to use at the defined network scope.
-	StaticIP *SimStaticIPPropertiesStaticIP `json:"staticIp,omitempty"`
+	StaticIP *SimStaticIPPropertiesStaticIP
 }
 
 // SimStaticIPPropertiesStaticIP - The static IP configuration for the SIM to use at the defined network scope.
 type SimStaticIPPropertiesStaticIP struct {
 	// The IPv4 address assigned to the SIM at this network scope. This address must be in the userEquipmentStaticAddressPoolPrefix
 	// defined in the attached data network.
-	IPv4Address *string `json:"ipv4Address,omitempty"`
+	IPv4Address *string
 }
 
 // SimUploadList - The SIMs to upload.
 type SimUploadList struct {
 	// REQUIRED; A list of SIMs to upload.
-	Sims []*SimNameAndProperties `json:"sims,omitempty"`
+	Sims []*SimNameAndProperties
 }
 
 // SimsClientBeginBulkDeleteOptions contains the optional parameters for the SimsClient.BeginBulkDelete method.
@@ -1616,50 +1616,50 @@ type SimsClientListByGroupOptions struct {
 // Site resource. Must be created in the same location as its parent mobile network.
 type Site struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Site properties.
-	Properties *SitePropertiesFormat `json:"properties,omitempty"`
+	Properties *SitePropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SiteListResult - Response for sites API service call.
 type SiteListResult struct {
 	// A list of sites in a mobile network.
-	Value []*Site `json:"value,omitempty"`
+	Value []*Site
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SitePropertiesFormat - Site properties.
 type SitePropertiesFormat struct {
 	// READ-ONLY; An array of IDs of the network functions deployed in the site. Deleting the site will delete any network functions
 	// that are deployed in the site.
-	NetworkFunctions []*SubResource `json:"networkFunctions,omitempty" azure:"ro"`
+	NetworkFunctions []*SubResource
 
 	// READ-ONLY; The provisioning state of the site resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // SiteResourceID - Reference to a site resource.
 type SiteResourceID struct {
 	// REQUIRED; Site resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SitesClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesClient.BeginCreateOrUpdate method.
@@ -1693,67 +1693,67 @@ type SitesClientUpdateTagsOptions struct {
 // Slice - Network slice resource. Must be created in the same location as its parent mobile network.
 type Slice struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Slice properties.
-	Properties *SlicePropertiesFormat `json:"properties,omitempty"`
+	Properties *SlicePropertiesFormat
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SliceConfiguration - Per-slice settings
 type SliceConfiguration struct {
 	// REQUIRED; The allowed data networks and the settings to use for them. The list must not contain duplicate items and must
 	// contain at least one item.
-	DataNetworkConfigurations []*DataNetworkConfiguration `json:"dataNetworkConfigurations,omitempty"`
+	DataNetworkConfigurations []*DataNetworkConfiguration
 
 	// REQUIRED; The default data network to use if the UE does not explicitly specify it. Configuration for this object must
 	// exist in the dataNetworkConfigurations map. The data network must be in the same location
 	// as the SIM policy.
-	DefaultDataNetwork *DataNetworkResourceID `json:"defaultDataNetwork,omitempty"`
+	DefaultDataNetwork *DataNetworkResourceID
 
 	// REQUIRED; A reference to the slice that these settings apply to. The slice must be in the same location as the SIM policy.
-	Slice *SliceResourceID `json:"slice,omitempty"`
+	Slice *SliceResourceID
 }
 
 // SliceListResult - Response for network slice API service call.
 type SliceListResult struct {
 	// A list of network slices in a mobile network.
-	Value []*Slice `json:"value,omitempty"`
+	Value []*Slice
 
 	// READ-ONLY; The URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // SlicePropertiesFormat - Network slice properties.
 type SlicePropertiesFormat struct {
 	// REQUIRED; Single-network slice selection assistance information (S-NSSAI). Unique at the scope of a mobile network.
-	Snssai *Snssai `json:"snssai,omitempty"`
+	Snssai *Snssai
 
 	// An optional description for this network slice.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; The provisioning state of the network slice resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // SliceResourceID - Reference to a slice resource.
 type SliceResourceID struct {
 	// REQUIRED; Slice resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SlicesClientBeginCreateOrUpdateOptions contains the optional parameters for the SlicesClient.BeginCreateOrUpdate method.
@@ -1787,72 +1787,72 @@ type SlicesClientUpdateTagsOptions struct {
 // Snssai - Single-network slice selection assistance information (S-NSSAI).
 type Snssai struct {
 	// REQUIRED; Slice/service type (SST).
-	Sst *int32 `json:"sst,omitempty"`
+	Sst *int32
 
 	// Slice differentiator (SD).
-	Sd *string `json:"sd,omitempty"`
+	Sd *string
 }
 
 // SubResource - Reference to another sub resource.
 type SubResource struct {
 	// REQUIRED; Resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagsObject - Tags object for patch operations.
 type TagsObject struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }

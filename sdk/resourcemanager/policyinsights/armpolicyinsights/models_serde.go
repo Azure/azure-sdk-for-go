@@ -130,7 +130,7 @@ func (a AttestationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "evidence", a.Evidence)
 	populateTimeRFC3339(objectMap, "expiresOn", a.ExpiresOn)
 	populateTimeRFC3339(objectMap, "lastComplianceStateChangeAt", a.LastComplianceStateChangeAt)
-	populate(objectMap, "metadata", &a.Metadata)
+	populateAny(objectMap, "metadata", a.Metadata)
 	populate(objectMap, "owner", a.Owner)
 	populate(objectMap, "policyAssignmentId", a.PolicyAssignmentID)
 	populate(objectMap, "policyDefinitionReferenceId", a.PolicyDefinitionReferenceID)
@@ -254,7 +254,7 @@ func (c *CheckRestrictionsRequest) UnmarshalJSON(data []byte) error {
 func (c CheckRestrictionsResourceDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "apiVersion", c.APIVersion)
-	populate(objectMap, "resourceContent", &c.ResourceContent)
+	populateAny(objectMap, "resourceContent", c.ResourceContent)
 	populate(objectMap, "scope", c.Scope)
 	return json.Marshal(objectMap)
 }
@@ -713,11 +713,11 @@ func (e ExpressionEvaluationDetails) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "expression", e.Expression)
 	populate(objectMap, "expressionKind", e.ExpressionKind)
-	populate(objectMap, "expressionValue", &e.ExpressionValue)
+	populateAny(objectMap, "expressionValue", e.ExpressionValue)
 	populate(objectMap, "operator", e.Operator)
 	populate(objectMap, "path", e.Path)
 	populate(objectMap, "result", e.Result)
-	populate(objectMap, "targetValue", &e.TargetValue)
+	populateAny(objectMap, "targetValue", e.TargetValue)
 	return json.Marshal(objectMap)
 }
 
@@ -1499,7 +1499,7 @@ func (p PolicyMetadataProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "additionalContentUrl", p.AdditionalContentURL)
 	populate(objectMap, "category", p.Category)
 	populate(objectMap, "description", p.Description)
-	populate(objectMap, "metadata", &p.Metadata)
+	populateAny(objectMap, "metadata", p.Metadata)
 	populate(objectMap, "metadataId", p.MetadataID)
 	populate(objectMap, "owner", p.Owner)
 	populate(objectMap, "requirements", p.Requirements)
@@ -1553,7 +1553,7 @@ func (p PolicyMetadataSlimProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "additionalContentUrl", p.AdditionalContentURL)
 	populate(objectMap, "category", p.Category)
-	populate(objectMap, "metadata", &p.Metadata)
+	populateAny(objectMap, "metadata", p.Metadata)
 	populate(objectMap, "metadataId", p.MetadataID)
 	populate(objectMap, "owner", p.Owner)
 	populate(objectMap, "title", p.Title)
@@ -2579,7 +2579,7 @@ func (t *TrackedResourceModificationDetails) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type TypedErrorInfo.
 func (t TypedErrorInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "info", &t.Info)
+	populateAny(objectMap, "info", t.Info)
 	populate(objectMap, "type", t.Type)
 	return json.Marshal(objectMap)
 }
@@ -2613,6 +2613,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

@@ -14,31 +14,31 @@ import "time"
 // AzureCliScript - Object model for the Azure CLI script.
 type AzureCliScript struct {
 	// REQUIRED; Type of the script.
-	Kind *ScriptType `json:"kind,omitempty"`
+	Kind *ScriptType
 
 	// REQUIRED; The location of the ACI and the storage account for the deployment script.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties of the Azure CLI script object.
-	Properties *AzureCliScriptProperties `json:"properties,omitempty"`
+	Properties *AzureCliScriptProperties
 
 	// Optional property. Managed identity to be used for this deployment script. Currently, only user-assigned MSI is supported.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata related to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDeploymentScript implements the DeploymentScriptClassification interface for type AzureCliScript.
@@ -58,82 +58,82 @@ func (a *AzureCliScript) GetDeploymentScript() *DeploymentScript {
 // AzureCliScriptProperties - Properties of the Azure CLI script object.
 type AzureCliScriptProperties struct {
 	// REQUIRED; Azure CLI module version to be used.
-	AzCliVersion *string `json:"azCliVersion,omitempty"`
+	AzCliVersion *string
 
 	// REQUIRED; Interval for which the service retains the script resource after it reaches a terminal state. Resource will be
 	// deleted when this duration expires. Duration is based on ISO 8601 pattern (for example
 	// P1D means one day).
-	RetentionInterval *string `json:"retentionInterval,omitempty"`
+	RetentionInterval *string
 
 	// Command line arguments to pass to the script. Arguments are separated by spaces. ex: -Name blue* -Location 'West US 2'
-	Arguments *string `json:"arguments,omitempty"`
+	Arguments *string
 
 	// The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'.
-	CleanupPreference *CleanupOptions `json:"cleanupPreference,omitempty"`
+	CleanupPreference *CleanupOptions
 
 	// Container settings.
-	ContainerSettings *ContainerConfiguration `json:"containerSettings,omitempty"`
+	ContainerSettings *ContainerConfiguration
 
 	// The environment variables to pass over to the script.
-	EnvironmentVariables []*EnvironmentVariable `json:"environmentVariables,omitempty"`
+	EnvironmentVariables []*EnvironmentVariable
 
 	// Gets or sets how the deployment script should be forced to execute even if the script resource has not changed. Can be
 	// current time stamp or a GUID.
-	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+	ForceUpdateTag *string
 
 	// Uri for the script. This is the entry point for the external script.
-	PrimaryScriptURI *string `json:"primaryScriptUri,omitempty"`
+	PrimaryScriptURI *string
 
 	// Script body.
-	ScriptContent *string `json:"scriptContent,omitempty"`
+	ScriptContent *string
 
 	// Storage Account settings.
-	StorageAccountSettings *StorageAccountConfiguration `json:"storageAccountSettings,omitempty"`
+	StorageAccountSettings *StorageAccountConfiguration
 
 	// Supporting files for the external script.
-	SupportingScriptUris []*string `json:"supportingScriptUris,omitempty"`
+	SupportingScriptUris []*string
 
 	// Maximum allowed script execution time specified in ISO 8601 format. Default value is P1D
-	Timeout *string `json:"timeout,omitempty"`
+	Timeout *string
 
 	// READ-ONLY; List of script outputs.
-	Outputs map[string]any `json:"outputs,omitempty" azure:"ro"`
+	Outputs map[string]any
 
 	// READ-ONLY; State of the script execution. This only appears in the response.
-	ProvisioningState *ScriptProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ScriptProvisioningState
 
 	// READ-ONLY; Contains the results of script execution.
-	Status *ScriptStatus `json:"status,omitempty" azure:"ro"`
+	Status *ScriptStatus
 }
 
 // AzurePowerShellScript - Object model for the Azure PowerShell script.
 type AzurePowerShellScript struct {
 	// REQUIRED; Type of the script.
-	Kind *ScriptType `json:"kind,omitempty"`
+	Kind *ScriptType
 
 	// REQUIRED; The location of the ACI and the storage account for the deployment script.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties of the Azure PowerShell script object.
-	Properties *AzurePowerShellScriptProperties `json:"properties,omitempty"`
+	Properties *AzurePowerShellScriptProperties
 
 	// Optional property. Managed identity to be used for this deployment script. Currently, only user-assigned MSI is supported.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata related to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDeploymentScript implements the DeploymentScriptClassification interface for type AzurePowerShellScript.
@@ -153,64 +153,64 @@ func (a *AzurePowerShellScript) GetDeploymentScript() *DeploymentScript {
 // AzurePowerShellScriptProperties - Properties of the Azure PowerShell script object.
 type AzurePowerShellScriptProperties struct {
 	// REQUIRED; Azure PowerShell module version to be used.
-	AzPowerShellVersion *string `json:"azPowerShellVersion,omitempty"`
+	AzPowerShellVersion *string
 
 	// REQUIRED; Interval for which the service retains the script resource after it reaches a terminal state. Resource will be
 	// deleted when this duration expires. Duration is based on ISO 8601 pattern (for example
 	// P1D means one day).
-	RetentionInterval *string `json:"retentionInterval,omitempty"`
+	RetentionInterval *string
 
 	// Command line arguments to pass to the script. Arguments are separated by spaces. ex: -Name blue* -Location 'West US 2'
-	Arguments *string `json:"arguments,omitempty"`
+	Arguments *string
 
 	// The clean up preference when the script execution gets in a terminal state. Default setting is 'Always'.
-	CleanupPreference *CleanupOptions `json:"cleanupPreference,omitempty"`
+	CleanupPreference *CleanupOptions
 
 	// Container settings.
-	ContainerSettings *ContainerConfiguration `json:"containerSettings,omitempty"`
+	ContainerSettings *ContainerConfiguration
 
 	// The environment variables to pass over to the script.
-	EnvironmentVariables []*EnvironmentVariable `json:"environmentVariables,omitempty"`
+	EnvironmentVariables []*EnvironmentVariable
 
 	// Gets or sets how the deployment script should be forced to execute even if the script resource has not changed. Can be
 	// current time stamp or a GUID.
-	ForceUpdateTag *string `json:"forceUpdateTag,omitempty"`
+	ForceUpdateTag *string
 
 	// Uri for the script. This is the entry point for the external script.
-	PrimaryScriptURI *string `json:"primaryScriptUri,omitempty"`
+	PrimaryScriptURI *string
 
 	// Script body.
-	ScriptContent *string `json:"scriptContent,omitempty"`
+	ScriptContent *string
 
 	// Storage Account settings.
-	StorageAccountSettings *StorageAccountConfiguration `json:"storageAccountSettings,omitempty"`
+	StorageAccountSettings *StorageAccountConfiguration
 
 	// Supporting files for the external script.
-	SupportingScriptUris []*string `json:"supportingScriptUris,omitempty"`
+	SupportingScriptUris []*string
 
 	// Maximum allowed script execution time specified in ISO 8601 format. Default value is P1D
-	Timeout *string `json:"timeout,omitempty"`
+	Timeout *string
 
 	// READ-ONLY; List of script outputs.
-	Outputs map[string]any `json:"outputs,omitempty" azure:"ro"`
+	Outputs map[string]any
 
 	// READ-ONLY; State of the script execution. This only appears in the response.
-	ProvisioningState *ScriptProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ScriptProvisioningState
 
 	// READ-ONLY; Contains the results of script execution.
-	Status *ScriptStatus `json:"status,omitempty" azure:"ro"`
+	Status *ScriptStatus
 }
 
 // AzureResourceBase - Common properties for all Azure resources.
 type AzureResourceBase struct {
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
@@ -269,7 +269,7 @@ type ContainerConfiguration struct {
 	// 'containerGroupName', add the following object to properties: { "containerSettings": { "containerGroupName": "contoso-container"
 	// } }. If you do not want to specify a 'containerGroupName' then do not
 	// add 'containerSettings' property.
-	ContainerGroupName *string `json:"containerGroupName,omitempty"`
+	ContainerGroupName *string
 }
 
 // DeploymentScriptClassification provides polymorphic access to related types.
@@ -284,28 +284,28 @@ type DeploymentScriptClassification interface {
 // DeploymentScript - Deployment script object.
 type DeploymentScript struct {
 	// REQUIRED; Type of the script.
-	Kind *ScriptType `json:"kind,omitempty"`
+	Kind *ScriptType
 
 	// REQUIRED; The location of the ACI and the storage account for the deployment script.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Optional property. Managed identity to be used for this deployment script. Currently, only user-assigned MSI is supported.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata related to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GetDeploymentScript implements the DeploymentScriptClassification interface for type DeploymentScript.
@@ -314,171 +314,171 @@ func (d *DeploymentScript) GetDeploymentScript() *DeploymentScript { return d }
 // DeploymentScriptListResult - List of deployment scripts.
 type DeploymentScriptListResult struct {
 	// An array of deployment scripts.
-	Value []DeploymentScriptClassification `json:"value,omitempty"`
+	Value []DeploymentScriptClassification
 
 	// READ-ONLY; The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // DeploymentScriptUpdateParameter - Deployment script parameters to be updated.
 type DeploymentScriptUpdateParameter struct {
 	// Resource tags to be updated.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EnvironmentVariable - The environment variable to pass to the script in the container instance.
 type EnvironmentVariable struct {
 	// REQUIRED; The name of the environment variable.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The value of the secure environment variable.
-	SecureValue *string `json:"secureValue,omitempty"`
+	SecureValue *string
 
 	// The value of the environment variable.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Error - Deployment scripts error response.
 type Error struct {
 	// Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also follows
 	// the OData error response format.)
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.)
 type ErrorResponse struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponse `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponse
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // LogProperties - Script log properties.
 type LogProperties struct {
 	// READ-ONLY; Script execution logs in text format.
-	Log *string `json:"log,omitempty" azure:"ro"`
+	Log *string
 }
 
 // ManagedServiceIdentity - Managed identity generic object.
 type ManagedServiceIdentity struct {
 	// Type of the managed identity.
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The list of user-assigned managed identities associated with the resource. Key is the Azure resource Id of the managed
 	// identity.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; ID of the Azure Active Directory.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // ScriptLog - Script execution log object.
 type ScriptLog struct {
 	// Script log properties.
-	Properties *LogProperties `json:"properties,omitempty"`
+	Properties *LogProperties
 
 	// READ-ONLY; String Id used to locate any resource on Azure.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of this resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Type of this resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScriptLogsList - Deployment script execution logs.
 type ScriptLogsList struct {
 	// Deployment scripts logs.
-	Value []*ScriptLog `json:"value,omitempty"`
+	Value []*ScriptLog
 }
 
 // ScriptStatus - Generic object modeling results of script execution.
 type ScriptStatus struct {
 	// Error that is relayed from the script execution.
-	Error *ErrorResponse `json:"error,omitempty"`
+	Error *ErrorResponse
 
 	// READ-ONLY; ACI resource Id.
-	ContainerInstanceID *string `json:"containerInstanceId,omitempty" azure:"ro"`
+	ContainerInstanceID *string
 
 	// READ-ONLY; End time of the script execution.
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Time the deployment script resource will expire.
-	ExpirationTime *time.Time `json:"expirationTime,omitempty" azure:"ro"`
+	ExpirationTime *time.Time
 
 	// READ-ONLY; Start time of the script execution.
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Storage account resource Id.
-	StorageAccountID *string `json:"storageAccountId,omitempty" azure:"ro"`
+	StorageAccountID *string
 }
 
 // StorageAccountConfiguration - Settings to use an existing storage account. Valid storage account kinds are: Storage, StorageV2
 // and FileStorage
 type StorageAccountConfiguration struct {
 	// The storage account access key.
-	StorageAccountKey *string `json:"storageAccountKey,omitempty"`
+	StorageAccountKey *string
 
 	// The storage account name.
-	StorageAccountName *string `json:"storageAccountName,omitempty"`
+	StorageAccountName *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // UserAssignedIdentity - User-assigned managed identity.
 type UserAssignedIdentity struct {
 	// READ-ONLY; Client App Id associated with this identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; Azure Active Directory principal ID associated with this identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }

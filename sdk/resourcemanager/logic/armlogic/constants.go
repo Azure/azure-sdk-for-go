@@ -11,7 +11,7 @@ package armlogic
 
 const (
 	moduleName    = "armlogic"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // APIDeploymentParameterVisibility - The Api deployment parameter visibility.

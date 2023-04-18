@@ -11,7 +11,7 @@ package armnotificationhubs
 
 const (
 	moduleName    = "armnotificationhubs"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 type AccessRights string

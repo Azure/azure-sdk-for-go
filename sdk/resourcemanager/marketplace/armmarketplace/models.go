@@ -14,319 +14,319 @@ import "time"
 // AcknowledgeOfferNotificationDetails - Notification update request payload details
 type AcknowledgeOfferNotificationDetails struct {
 	// Gets or sets a value indicating whether acknowledge action flag is enabled
-	Acknowledge *bool `json:"acknowledge,omitempty"`
+	Acknowledge *bool
 
 	// Gets or sets added plans
-	AddPlans []*string `json:"addPlans,omitempty"`
+	AddPlans []*string
 
 	// Gets or sets a value indicating whether dismiss action flag is enabled
-	Dismiss *bool `json:"dismiss,omitempty"`
+	Dismiss *bool
 
 	// Gets or sets a value indicating whether remove offer action flag is enabled
-	RemoveOffer *bool `json:"removeOffer,omitempty"`
+	RemoveOffer *bool
 
 	// Gets or sets remove plans
-	RemovePlans []*string `json:"removePlans,omitempty"`
+	RemovePlans []*string
 }
 
 // AcknowledgeOfferNotificationProperties - Notification update request payload
 type AcknowledgeOfferNotificationProperties struct {
 	// Notification update request payload details
-	Properties *AcknowledgeOfferNotificationDetails `json:"properties,omitempty"`
+	Properties *AcknowledgeOfferNotificationDetails
 }
 
 // AdminRequestApprovalProperties - Admin approval request resource properties
 type AdminRequestApprovalProperties struct {
 	// Gets or sets admin action
-	AdminAction *AdminAction `json:"adminAction,omitempty"`
+	AdminAction *AdminAction
 
 	// Gets or sets admin details
-	Administrator *string `json:"administrator,omitempty"`
+	Administrator *string
 
 	// Gets or sets Approved plans ids, empty in case of rejected
-	ApprovedPlans []*string `json:"approvedPlans,omitempty"`
+	ApprovedPlans []*string
 
 	// Gets or sets list of associated collection ids
-	CollectionIDs []*string `json:"collectionIds,omitempty"`
+	CollectionIDs []*string
 
 	// Gets or sets admin comment
-	Comment *string `json:"comment,omitempty"`
+	Comment *string
 
 	// Gets or sets offer Id
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// Gets or sets publisher Id
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 
 	// READ-ONLY; Gets display name
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Gets list of plans with requesters details
-	Plans []*PlanRequesterDetails `json:"plans,omitempty" azure:"ro"`
+	Plans []*PlanRequesterDetails
 }
 
 // AdminRequestApprovalsList - List of admin request approval resources
 type AdminRequestApprovalsList struct {
-	Value []*AdminRequestApprovalsResource `json:"value,omitempty"`
+	Value []*AdminRequestApprovalsResource
 
 	// READ-ONLY; URL to get the next set of notifications list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // AdminRequestApprovalsResource - Admin request approval resource.
 type AdminRequestApprovalsResource struct {
 	// The privateStore admin Approval request data structure.
-	Properties *AdminRequestApprovalProperties `json:"properties,omitempty"`
+	Properties *AdminRequestApprovalProperties
 
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BillingAccountsResponse - Billing accounts response object
 type BillingAccountsResponse struct {
 	// Billing accounts list
-	BillingAccounts []*string `json:"billingAccounts,omitempty"`
+	BillingAccounts []*string
 }
 
 // BulkCollectionsDetails - Bulk collection details
 type BulkCollectionsDetails struct {
 	// Action to perform (For example: EnableCollections, DisableCollections)
-	Action *string `json:"action,omitempty"`
+	Action *string
 
 	// collection ids list that the action is performed on
-	CollectionIDs []*string `json:"collectionIds,omitempty"`
+	CollectionIDs []*string
 }
 
 // BulkCollectionsPayload - Bulk collections action properties
 type BulkCollectionsPayload struct {
 	// bulk collections properties details
-	Properties *BulkCollectionsDetails `json:"properties,omitempty"`
+	Properties *BulkCollectionsDetails
 }
 
 // BulkCollectionsResponse - The bulk collections response. The response contains two lists that indicate for each collection
 // whether the operation succeeded or failed
 type BulkCollectionsResponse struct {
 	// Failed collections
-	Failed []*CollectionsDetails `json:"failed,omitempty"`
+	Failed []*CollectionsDetails
 
 	// Succeeded collections
-	Succeeded []*CollectionsDetails `json:"succeeded,omitempty"`
+	Succeeded []*CollectionsDetails
 }
 
 // Collection - The Collection data structure.
 type Collection struct {
 	// The collection data structure.
-	Properties *CollectionProperties `json:"properties,omitempty"`
+	Properties *CollectionProperties
 
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CollectionProperties - The collection details
 type CollectionProperties struct {
 	// Indicating whether all subscriptions are selected (=true) or not (=false).
-	AllSubscriptions *bool `json:"allSubscriptions,omitempty"`
+	AllSubscriptions *bool
 
 	// Gets or sets the association with Commercial's Billing Account.
-	Claim *string `json:"claim,omitempty"`
+	Claim *string
 
 	// Gets or sets collection name.
-	CollectionName *string `json:"collectionName,omitempty"`
+	CollectionName *string
 
 	// Indicating whether the collection is enabled or disabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Gets or sets subscription ids list. Empty list indicates all subscriptions are selected, null indicates no update is done,
 	// explicit list indicates the explicit selected subscriptions. On insert, null
 	// is considered as bad request
-	SubscriptionsList []*string `json:"subscriptionsList,omitempty"`
+	SubscriptionsList []*string
 
 	// READ-ONLY; Gets collection Id.
-	CollectionID *string `json:"collectionId,omitempty" azure:"ro"`
+	CollectionID *string
 
 	// READ-ONLY; Gets the number of offers associated with the collection.
-	NumberOfOffers *int64 `json:"numberOfOffers,omitempty" azure:"ro"`
+	NumberOfOffers *int64
 }
 
 // CollectionsDetails - Collection name and id.
 type CollectionsDetails struct {
 	// Collection id.
-	CollectionID *string `json:"collectionId,omitempty"`
+	CollectionID *string
 
 	// Collection name.
-	CollectionName *string `json:"collectionName,omitempty"`
+	CollectionName *string
 }
 
 type CollectionsList struct {
 	// URL to get the next set of offer list results if there are any.
-	NextLink *string       `json:"nextLink,omitempty"`
-	Value    []*Collection `json:"value,omitempty"`
+	NextLink *string
+	Value    []*Collection
 }
 
 // CollectionsSubscriptionsMappingDetails - Collection name and related subscriptions list
 type CollectionsSubscriptionsMappingDetails struct {
 	// Collection name
-	CollectionName *string `json:"collectionName,omitempty"`
+	CollectionName *string
 
 	// Subscriptions ids list
-	Subscriptions []*string `json:"subscriptions,omitempty"`
+	Subscriptions []*string
 }
 
 // CollectionsToSubscriptionsMappingPayload - The subscriptions list to get the related collections
 type CollectionsToSubscriptionsMappingPayload struct {
 	// Subscriptions ids list
-	Properties *CollectionsToSubscriptionsMappingProperties `json:"properties,omitempty"`
+	Properties *CollectionsToSubscriptionsMappingProperties
 }
 
 // CollectionsToSubscriptionsMappingProperties - The subscriptions list to get the related collections
 type CollectionsToSubscriptionsMappingProperties struct {
 	// Subscriptions ids list
-	SubscriptionIDs []*string `json:"subscriptionIds,omitempty"`
+	SubscriptionIDs []*string
 }
 
 // CollectionsToSubscriptionsMappingResponse - A map of collections subscriptions details
 type CollectionsToSubscriptionsMappingResponse struct {
 	// The map of collections subscriptions
-	Details map[string]*CollectionsSubscriptionsMappingDetails `json:"details,omitempty"`
+	Details map[string]*CollectionsSubscriptionsMappingDetails
 }
 
 // ErrorResponse - Error response indicates Microsoft.Marketplace service is not able to process the incoming request. The
 // reason is provided in the error message.
 type ErrorResponse struct {
 	// The details of the error.
-	Error *ErrorResponseError `json:"error,omitempty"`
+	Error *ErrorResponseError
 }
 
 // ErrorResponseError - The details of the error.
 type ErrorResponseError struct {
 	// READ-ONLY; Error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // NewNotifications - New plans notification details
 type NewNotifications struct {
 	// Gets offer display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Gets or sets the icon url
-	Icon *string `json:"icon,omitempty"`
+	Icon *string
 
 	// Gets a value indicating whether future plans is enabled.
-	IsFuturePlansEnabled *bool `json:"isFuturePlansEnabled,omitempty"`
+	IsFuturePlansEnabled *bool
 
 	// Gets or sets the notification message id
-	MessageCode *int64 `json:"messageCode,omitempty"`
+	MessageCode *int64
 
 	// Gets offer id
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// Gets or sets removed plans notifications
-	Plans []*PlanNotificationDetails `json:"plans,omitempty"`
+	Plans []*PlanNotificationDetails
 }
 
 // NewPlansNotificationsList - List of all new plans notifications for public offers
 type NewPlansNotificationsList struct {
-	NewPlansNotifications []*NewNotifications `json:"newPlansNotifications,omitempty"`
+	NewPlansNotifications []*NewNotifications
 }
 
 // NotificationsSettingsProperties - Describes the json payload for notifications settings
 type NotificationsSettingsProperties struct {
 	// Gets or sets list of notified recipients for new requests
-	Recipients []*Recipient `json:"recipients,omitempty"`
+	Recipients []*Recipient
 
 	// Gets or sets whether to send email to all marketplace admins for new requests
-	SendToAllMarketplaceAdmins *bool `json:"sendToAllMarketplaceAdmins,omitempty"`
+	SendToAllMarketplaceAdmins *bool
 }
 
 // Offer - The privateStore offer data structure.
 type Offer struct {
 	// The privateStore offer data structure.
-	Properties *OfferProperties `json:"properties,omitempty"`
+	Properties *OfferProperties
 
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type OfferListResponse struct {
 	// URL to get the next set of offer list results if there are any.
-	NextLink *string  `json:"nextLink,omitempty"`
-	Value    []*Offer `json:"value,omitempty"`
+	NextLink *string
+	Value    []*Offer
 }
 
 type OfferProperties struct {
 	// Identifier for purposes of race condition
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Icon File Uris
-	IconFileUris map[string]*string `json:"iconFileUris,omitempty"`
+	IconFileUris map[string]*string
 
 	// Offer plans
-	Plans []*Plan `json:"plans,omitempty"`
+	Plans []*Plan
 
 	// Plan ids limitation for this offer
-	SpecificPlanIDsLimitation []*string `json:"specificPlanIdsLimitation,omitempty"`
+	SpecificPlanIDsLimitation []*string
 
 	// Indicating whether the offer was not updated to db (true = not updated). If the allow list is identical to the existed
 	// one in db, the offer would not be updated.
-	UpdateSuppressedDueIdempotence *bool `json:"updateSuppressedDueIdempotence,omitempty"`
+	UpdateSuppressedDueIdempotence *bool
 
 	// READ-ONLY; Private store offer creation date
-	CreatedAt *string `json:"createdAt,omitempty" azure:"ro"`
+	CreatedAt *string
 
 	// READ-ONLY; Private store offer modification date
-	ModifiedAt *string `json:"modifiedAt,omitempty" azure:"ro"`
+	ModifiedAt *string
 
 	// READ-ONLY; It will be displayed prominently in the marketplace
-	OfferDisplayName *string `json:"offerDisplayName,omitempty" azure:"ro"`
+	OfferDisplayName *string
 
 	// READ-ONLY; Private store unique id
-	PrivateStoreID *string `json:"privateStoreId,omitempty" azure:"ro"`
+	PrivateStoreID *string
 
 	// READ-ONLY; Publisher name that will be displayed prominently in the marketplace
-	PublisherDisplayName *string `json:"publisherDisplayName,omitempty" azure:"ro"`
+	PublisherDisplayName *string
 
 	// READ-ONLY; Offers unique id
-	UniqueOfferID *string `json:"uniqueOfferId,omitempty" azure:"ro"`
+	UniqueOfferID *string
 }
 
 // OperationListResult - Result of the request to list Marketplace operations. It contains a list of operations and a URL
 // link to get the next set of results.
 type OperationListResult struct {
 	// List of Microsoft.Marketplace operations supported by the Microsoft.Marketplace resource provider.
-	Value []*SingleOperation `json:"value,omitempty"`
+	Value []*SingleOperation
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
@@ -336,82 +336,82 @@ type OperationsClientListOptions struct {
 
 type Plan struct {
 	// Plan accessibility
-	Accessibility *Accessibility `json:"accessibility,omitempty"`
+	Accessibility *Accessibility
 
 	// READ-ONLY; Alternative stack type
-	AltStackReference *string `json:"altStackReference,omitempty" azure:"ro"`
+	AltStackReference *string
 
 	// READ-ONLY; Friendly name for the plan for display in the marketplace
-	PlanDisplayName *string `json:"planDisplayName,omitempty" azure:"ro"`
+	PlanDisplayName *string
 
 	// READ-ONLY; Text identifier for this plan
-	PlanID *string `json:"planId,omitempty" azure:"ro"`
+	PlanID *string
 
 	// READ-ONLY; Identifier for this plan
-	SKUID *string `json:"skuId,omitempty" azure:"ro"`
+	SKUID *string
 
 	// READ-ONLY; Stack type (classic or arm)
-	StackType *string `json:"stackType,omitempty" azure:"ro"`
+	StackType *string
 }
 
 // PlanDetails - Return plan with request details
 type PlanDetails struct {
 	// Gets or sets user's justification for the plan's request
-	Justification *string `json:"justification,omitempty"`
+	Justification *string
 
 	// Gets or sets Plan Id
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 
 	// Gets or sets the subscription id that the user is requesting to add the plan to
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// Gets or sets the subscription name that the user is requesting to add the plan to
-	SubscriptionName *string `json:"subscriptionName,omitempty"`
+	SubscriptionName *string
 
 	// READ-ONLY; Gets request date
-	RequestDate any `json:"requestDate,omitempty" azure:"ro"`
+	RequestDate any
 
 	// READ-ONLY; Gets the plan status
-	Status *Status `json:"status,omitempty" azure:"ro"`
+	Status *Status
 }
 
 // PlanNotificationDetails - Plan notification details
 type PlanNotificationDetails struct {
 	// Gets or sets the plan display name
-	PlanDisplayName *string `json:"planDisplayName,omitempty"`
+	PlanDisplayName *string
 
 	// Gets or sets the plan id
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 }
 
 // PlanRequesterDetails - Plan with requesters details
 type PlanRequesterDetails struct {
 	// READ-ONLY; Gets the plan display name
-	PlanDisplayName *string `json:"planDisplayName,omitempty" azure:"ro"`
+	PlanDisplayName *string
 
 	// READ-ONLY; Gets the plan id
-	PlanID *string `json:"planId,omitempty" azure:"ro"`
+	PlanID *string
 
 	// READ-ONLY; Gets requesters details list
-	Requesters []*UserRequestDetails `json:"requesters,omitempty" azure:"ro"`
+	Requesters []*UserRequestDetails
 }
 
 // PrivateStore - The PrivateStore data structure.
 type PrivateStore struct {
 	// The PrivateStore data structure.
-	Properties *PrivateStoreProperties `json:"properties,omitempty"`
+	Properties *PrivateStoreProperties
 
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateStoreClientAcknowledgeOfferNotificationOptions contains the optional parameters for the PrivateStoreClient.AcknowledgeOfferNotification
@@ -613,419 +613,419 @@ type PrivateStoreCollectionOfferClientPostOptions struct {
 // PrivateStoreList - Describes the json payload for the list of available private stores (between zero and one, inclusive)
 type PrivateStoreList struct {
 	// URL to get the next set of PrivateStore list results if there are any.
-	NextLink *string         `json:"nextLink,omitempty"`
-	Value    []*PrivateStore `json:"value,omitempty"`
+	NextLink *string
+	Value    []*PrivateStore
 }
 
 // PrivateStoreNotificationsState - Get private store notifications state
 type PrivateStoreNotificationsState struct {
-	ApprovalRequests      []*RequestApprovalsDetails `json:"approvalRequests,omitempty"`
-	NewNotifications      []*NewNotifications        `json:"newNotifications,omitempty"`
-	StopSellNotifications []*StopSellNotifications   `json:"stopSellNotifications,omitempty"`
+	ApprovalRequests      []*RequestApprovalsDetails
+	NewNotifications      []*NewNotifications
+	StopSellNotifications []*StopSellNotifications
 }
 
 // PrivateStoreProperties - Describes the json payload on whether or not the private store is enabled for a given tenant
 type PrivateStoreProperties struct {
 	// Indicates private store availability
-	Availability *Availability `json:"availability,omitempty"`
+	Availability *Availability
 
 	// Gets or sets list of branding characteristics
-	Branding map[string]*string `json:"branding,omitempty"`
+	Branding map[string]*string
 
 	// Identifier for purposes of race condition
-	ETag *string `json:"eTag,omitempty"`
+	ETag *string
 
 	// Is government
-	IsGov *bool `json:"isGov,omitempty"`
+	IsGov *bool
 
 	// Gets or sets notifications settings
-	NotificationsSettings *NotificationsSettingsProperties `json:"notificationsSettings,omitempty"`
+	NotificationsSettings *NotificationsSettingsProperties
 
 	// Private Store Name
-	PrivateStoreName *string `json:"privateStoreName,omitempty"`
+	PrivateStoreName *string
 
 	// Tenant id
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// READ-ONLY; Gets list of associated collection ids
-	CollectionIDs []*string `json:"collectionIds,omitempty" azure:"ro"`
+	CollectionIDs []*string
 
 	// READ-ONLY; Private Store id
-	PrivateStoreID *string `json:"privateStoreId,omitempty" azure:"ro"`
+	PrivateStoreID *string
 }
 
 // QueryApprovedPlans - Query approved plans details
 type QueryApprovedPlans struct {
 	// Offer id
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// Offer plan ids
-	PlanIDs []*string `json:"planIds,omitempty"`
+	PlanIDs []*string
 }
 
 // QueryApprovedPlansDetails - Query approved plans response
 type QueryApprovedPlansDetails struct {
 	// Indicates whether all subscriptions are approved for this plan
-	AllSubscriptions *bool `json:"allSubscriptions,omitempty"`
+	AllSubscriptions *bool
 
 	// Plan id
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 
 	// Approved subscription ids list. In case all subscriptions are approved for a plan, allSubscriptions flag is true and list
 	// is empty ( else flag is set to false). In case both subscriptions list is
 	// empty and allSubscriptions flag is false, the plan is not approved for any subscription.
-	SubscriptionIDs []*string `json:"subscriptionIds,omitempty"`
+	SubscriptionIDs []*string
 }
 
 // QueryApprovedPlansPayload - Query approved plans payload
 type QueryApprovedPlansPayload struct {
 	// Query approved plans details
-	Properties *QueryApprovedPlans `json:"properties,omitempty"`
+	Properties *QueryApprovedPlans
 }
 
 // QueryApprovedPlansResponse - Query approved plans response
 type QueryApprovedPlansResponse struct {
 	// A list indicating for each plan which subscriptions are approved. Plan Id is unique
-	Details []*QueryApprovedPlansDetails `json:"details,omitempty"`
+	Details []*QueryApprovedPlansDetails
 }
 
 // QueryOffers - List of offers
 type QueryOffers struct {
 	// URL to get the next set of PrivateStore list results if there are any.
-	NextLink *string            `json:"nextLink,omitempty"`
-	Value    []*OfferProperties `json:"value,omitempty"`
+	NextLink *string
+	Value    []*OfferProperties
 }
 
 // QueryRequestApproval - Gets the request plans with indication on each plan whether is approved by the admin, has pending
 // request or not requested yet
 type QueryRequestApproval struct {
 	// Gets or sets e-tag field
-	Etag *string `json:"etag,omitempty"`
+	Etag *string
 
 	// Gets or sets the notification message id
-	MessageCode *int64 `json:"messageCode,omitempty"`
+	MessageCode *int64
 
 	// Gets or sets the plans details
-	PlansDetails map[string]*PlanDetails `json:"plansDetails,omitempty"`
+	PlansDetails map[string]*PlanDetails
 
 	// Gets or sets unique offer id.
-	UniqueOfferID *string `json:"uniqueOfferId,omitempty"`
+	UniqueOfferID *string
 }
 
 // QueryRequestApprovalProperties - The details to get the request plans statuses
 type QueryRequestApprovalProperties struct {
 	// The details to get the request plans statuses
-	Properties *RequestDetails `json:"properties,omitempty"`
+	Properties *RequestDetails
 }
 
 // Recipient - Describes the json payload for a notified recipient for new requests
 type Recipient struct {
 	// Principal ID
-	PrincipalID *string `json:"principalId,omitempty"`
+	PrincipalID *string
 
 	// READ-ONLY; Display Name
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Email Address
-	EmailAddress *string `json:"emailAddress,omitempty" azure:"ro"`
+	EmailAddress *string
 }
 
 // RequestApprovalProperties - Approval request resource properties
 type RequestApprovalProperties struct {
 	// Gets or sets the request approval message code
-	MessageCode *int64 `json:"messageCode,omitempty"`
+	MessageCode *int64
 
 	// Gets or sets unique offer id.
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// Gets or sets the plans details
-	PlansDetails []*PlanDetails `json:"plansDetails,omitempty"`
+	PlansDetails []*PlanDetails
 
 	// The offer's publisher id
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 
 	// READ-ONLY; Gets a value indicating whether the request is closed
-	IsClosed *bool `json:"isClosed,omitempty" azure:"ro"`
+	IsClosed *bool
 
 	// READ-ONLY; Gets offer display name
-	OfferDisplayName *string `json:"offerDisplayName,omitempty" azure:"ro"`
+	OfferDisplayName *string
 }
 
 // RequestApprovalResource - Request approval resource.
 type RequestApprovalResource struct {
 	// The privateStore approval request data structure.
-	Properties *RequestApprovalProperties `json:"properties,omitempty"`
+	Properties *RequestApprovalProperties
 
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RequestApprovalsDetails - Request approvals details
 type RequestApprovalsDetails struct {
 	// Gets offer display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Gets or sets the icon url
-	Icon *string `json:"icon,omitempty"`
+	Icon *string
 
 	// Gets or sets the notification message id
-	MessageCode *int64 `json:"messageCode,omitempty"`
+	MessageCode *int64
 
 	// Gets offer id
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// Gets or sets removed plans notifications
-	Plans []*PlanNotificationDetails `json:"plans,omitempty"`
+	Plans []*PlanNotificationDetails
 
 	// Gets or sets publisher id
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 }
 
 // RequestApprovalsList - List of admin request approval resources
 type RequestApprovalsList struct {
-	Value []*RequestApprovalResource `json:"value,omitempty"`
+	Value []*RequestApprovalResource
 
 	// READ-ONLY; URL to get the next set of notifications list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // RequestDetails - Request details needed to get the plans statuses
 type RequestDetails struct {
 	// Current plans list
-	PlanIDs []*string `json:"planIds,omitempty"`
+	PlanIDs []*string
 
 	// The offer's publisher id
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 
 	// Gets or sets the subscription id
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 }
 
 // Resource - An Azure resource.
 type Resource struct {
 	// READ-ONLY; The resource ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SingleOperation - Microsoft.Marketplace REST API operation
 type SingleOperation struct {
 	// The object that represents the operation.
-	Display *SingleOperationDisplay `json:"display,omitempty"`
+	Display *SingleOperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operation
-	Properties any `json:"properties,omitempty"`
+	Properties any
 }
 
 // SingleOperationDisplay - The object that represents the operation.
 type SingleOperationDisplay struct {
 	// READ-ONLY; Friendly description for the operation,
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; Operation type
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; Service provider: Microsoft.Marketplace
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; Resource on which the operation is performed
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // StopSellNotifications - Stop sell notification details
 type StopSellNotifications struct {
 	// Gets offer display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Gets or sets the icon url
-	Icon *string `json:"icon,omitempty"`
+	Icon *string
 
 	// Gets a value indicating whether entire offer is in stop sell or only few of its plans
-	IsEntire *bool `json:"isEntire,omitempty"`
+	IsEntire *bool
 
 	// Gets or sets the notification message id
-	MessageCode *int64 `json:"messageCode,omitempty"`
+	MessageCode *int64
 
 	// Gets offer id
-	OfferID *string `json:"offerId,omitempty"`
+	OfferID *string
 
 	// Gets or sets removed plans notifications
-	Plans []*PlanNotificationDetails `json:"plans,omitempty"`
+	Plans []*PlanNotificationDetails
 }
 
 // StopSellOffersPlansNotificationsList - List of stop sell offers and plans notifications.
 type StopSellOffersPlansNotificationsList struct {
-	StopSellNotifications []*StopSellOffersPlansNotificationsListProperties `json:"stopSellNotifications,omitempty"`
+	StopSellNotifications []*StopSellOffersPlansNotificationsListProperties
 }
 
 // StopSellOffersPlansNotificationsListProperties - List of stop sell offers and plans notifications.
 type StopSellOffersPlansNotificationsListProperties struct {
 	// READ-ONLY; The offer display name
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The icon url
-	Icon *string `json:"icon,omitempty" azure:"ro"`
+	Icon *string
 
 	// READ-ONLY; A value indicating whether entire offer is in stop sell or only few of its plans
-	IsEntire *bool `json:"isEntire,omitempty" azure:"ro"`
+	IsEntire *bool
 
 	// READ-ONLY; The notification message code
-	MessageCode *int64 `json:"messageCode,omitempty" azure:"ro"`
+	MessageCode *int64
 
 	// READ-ONLY; The offer id
-	OfferID *string `json:"offerId,omitempty" azure:"ro"`
+	OfferID *string
 
 	// READ-ONLY; The list of removed plans notifications
-	Plans []*PlanNotificationDetails `json:"plans,omitempty" azure:"ro"`
+	Plans []*PlanNotificationDetails
 
 	// READ-ONLY; True if the offer has public plans
-	PublicContext *bool `json:"publicContext,omitempty" azure:"ro"`
+	PublicContext *bool
 
 	// READ-ONLY; The subscriptions related to private plans
-	SubscriptionsIDs []*string `json:"subscriptionsIds,omitempty" azure:"ro"`
+	SubscriptionsIDs []*string
 }
 
 // StopSellSubscriptions - Private plans subscriptions
 type StopSellSubscriptions struct {
-	Subscriptions []*string `json:"subscriptions,omitempty"`
+	Subscriptions []*string
 }
 
 // Subscription information.
 type Subscription struct {
 	// READ-ONLY; The subscription display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; The fully qualified ID for the subscription. For example, /subscriptions/00000000-0000-0000-0000-000000000000.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted.
-	State *SubscriptionState `json:"state,omitempty" azure:"ro"`
+	State *SubscriptionState
 
 	// READ-ONLY; The subscription ID.
-	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+	SubscriptionID *string
 }
 
 // SubscriptionsContextList - List of subscription Ids in the private store
 type SubscriptionsContextList struct {
-	SubscriptionsIDs []*string `json:"subscriptionsIds,omitempty"`
+	SubscriptionsIDs []*string
 }
 
 // SubscriptionsResponse - Subscription list operation response.
 type SubscriptionsResponse struct {
 	// READ-ONLY; Number of subscriptions on the page
-	Count *int64 `json:"count,omitempty" azure:"ro"`
+	Count *int64
 
 	// READ-ONLY; The skip token to retrieve the next page.
-	SkipToken *string `json:"skipToken,omitempty" azure:"ro"`
+	SkipToken *string
 
 	// READ-ONLY; An array of subscriptions.
-	Value []*Subscription `json:"value,omitempty" azure:"ro"`
+	Value []*Subscription
 }
 
 // SystemData - Read only system data
 type SystemData struct {
 	// The timestamp of resource creation (UTC)
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource
-	CreatedByType *IdentityType `json:"createdByType,omitempty"`
+	CreatedByType *IdentityType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource
-	LastModifiedByType *IdentityType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *IdentityType
 }
 
 // TransferOffersDetails - Transfer offers response details
 type TransferOffersDetails struct {
 	// Offers ids list to transfer from source collection to target collection(s)
-	OfferIDsList []*string `json:"offerIdsList,omitempty"`
+	OfferIDsList []*string
 
 	// Operation to perform (For example: Copy or Move)
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Target collections ids
-	TargetCollections []*string `json:"targetCollections,omitempty"`
+	TargetCollections []*string
 }
 
 // TransferOffersProperties - Transfer offers properties
 type TransferOffersProperties struct {
 	// transfer offers properties details
-	Properties *TransferOffersDetails `json:"properties,omitempty"`
+	Properties *TransferOffersDetails
 }
 
 // TransferOffersResponse - The transfer items response. The response contains two lists that indicate for each collection
 // whether the operation succeeded or failed
 type TransferOffersResponse struct {
 	// Failed collections
-	Failed []*CollectionsDetails `json:"failed,omitempty"`
+	Failed []*CollectionsDetails
 
 	// Succeeded collections
-	Succeeded []*CollectionsDetails `json:"succeeded,omitempty"`
+	Succeeded []*CollectionsDetails
 }
 
 // UserRequestDetails - user request details
 type UserRequestDetails struct {
 	// Gets the subscription id that the user is requesting to add the plan to
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// Gets the subscription name that the user is requesting to add the plan to
-	SubscriptionName *string `json:"subscriptionName,omitempty"`
+	SubscriptionName *string
 
 	// READ-ONLY; Gets request date
-	Date *string `json:"date,omitempty" azure:"ro"`
+	Date *string
 
 	// READ-ONLY; Gets justification
-	Justification *string `json:"justification,omitempty" azure:"ro"`
+	Justification *string
 
 	// READ-ONLY; Gets user id
-	User *string `json:"user,omitempty" azure:"ro"`
+	User *string
 }
 
 // WithdrawDetails - Withdraw properties details
 type WithdrawDetails struct {
 	// Gets or sets Plan Id
-	PlanID *string `json:"planId,omitempty"`
+	PlanID *string
 
 	// The offer's publisher id
-	PublisherID *string `json:"publisherId,omitempty"`
+	PublisherID *string
 }
 
 // WithdrawProperties - Withdraw properties
 type WithdrawProperties struct {
 	// Withdraw properties details
-	Properties *WithdrawDetails `json:"properties,omitempty"`
+	Properties *WithdrawDetails
 }

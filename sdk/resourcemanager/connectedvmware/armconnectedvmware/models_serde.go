@@ -1450,10 +1450,10 @@ func (m MachineExtensionProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "enableAutomaticUpgrade", m.EnableAutomaticUpgrade)
 	populate(objectMap, "forceUpdateTag", m.ForceUpdateTag)
 	populate(objectMap, "instanceView", m.InstanceView)
-	populate(objectMap, "protectedSettings", &m.ProtectedSettings)
+	populateAny(objectMap, "protectedSettings", m.ProtectedSettings)
 	populate(objectMap, "provisioningState", m.ProvisioningState)
 	populate(objectMap, "publisher", m.Publisher)
-	populate(objectMap, "settings", &m.Settings)
+	populateAny(objectMap, "settings", m.Settings)
 	populate(objectMap, "type", m.Type)
 	populate(objectMap, "typeHandlerVersion", m.TypeHandlerVersion)
 	return json.Marshal(objectMap)
@@ -1582,9 +1582,9 @@ func (m MachineExtensionUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "autoUpgradeMinorVersion", m.AutoUpgradeMinorVersion)
 	populate(objectMap, "enableAutomaticUpgrade", m.EnableAutomaticUpgrade)
 	populate(objectMap, "forceUpdateTag", m.ForceUpdateTag)
-	populate(objectMap, "protectedSettings", &m.ProtectedSettings)
+	populateAny(objectMap, "protectedSettings", m.ProtectedSettings)
 	populate(objectMap, "publisher", m.Publisher)
-	populate(objectMap, "settings", &m.Settings)
+	populateAny(objectMap, "settings", m.Settings)
 	populate(objectMap, "type", m.Type)
 	populate(objectMap, "typeHandlerVersion", m.TypeHandlerVersion)
 	return json.Marshal(objectMap)
@@ -4174,6 +4174,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

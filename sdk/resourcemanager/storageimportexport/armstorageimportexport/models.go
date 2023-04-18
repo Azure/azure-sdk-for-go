@@ -19,241 +19,241 @@ type BitLockerKeysClientListOptions struct {
 // data center.
 type DeliveryPackageInformation struct {
 	// REQUIRED; The name of the carrier that is used to ship the import or export drives.
-	CarrierName *string `json:"carrierName,omitempty"`
+	CarrierName *string
 
 	// REQUIRED; The tracking number of the package.
-	TrackingNumber *string `json:"trackingNumber,omitempty"`
+	TrackingNumber *string
 
 	// The number of drives included in the package.
-	DriveCount *int64 `json:"driveCount,omitempty"`
+	DriveCount *int64
 
 	// The date when the package is shipped.
-	ShipDate *string `json:"shipDate,omitempty"`
+	ShipDate *string
 }
 
 // DriveBitLockerKey - BitLocker recovery key or password to the specified drive
 type DriveBitLockerKey struct {
 	// BitLocker recovery key or password
-	BitLockerKey *string `json:"bitLockerKey,omitempty"`
+	BitLockerKey *string
 
 	// Drive ID
-	DriveID *string `json:"driveId,omitempty"`
+	DriveID *string
 }
 
 // DriveStatus - Provides information about the drive's status
 type DriveStatus struct {
 	// The BitLocker key used to encrypt the drive.
-	BitLockerKey *string `json:"bitLockerKey,omitempty"`
+	BitLockerKey *string
 
 	// Bytes successfully transferred for the drive.
-	BytesSucceeded *int64 `json:"bytesSucceeded,omitempty"`
+	BytesSucceeded *int64
 
 	// Detailed status about the data transfer process. This field is not returned in the response until the drive is in the Transferring
 	// state.
-	CopyStatus *string `json:"copyStatus,omitempty"`
+	CopyStatus *string
 
 	// The drive header hash value.
-	DriveHeaderHash *string `json:"driveHeaderHash,omitempty"`
+	DriveHeaderHash *string
 
 	// The drive's hardware serial number, without spaces.
-	DriveID *string `json:"driveId,omitempty"`
+	DriveID *string
 
 	// A URI that points to the blob containing the error log for the data transfer operation.
-	ErrorLogURI *string `json:"errorLogUri,omitempty"`
+	ErrorLogURI *string
 
 	// The relative path of the manifest file on the drive.
-	ManifestFile *string `json:"manifestFile,omitempty"`
+	ManifestFile *string
 
 	// The Base16-encoded MD5 hash of the manifest file on the drive.
-	ManifestHash *string `json:"manifestHash,omitempty"`
+	ManifestHash *string
 
 	// A URI that points to the blob containing the drive manifest file.
-	ManifestURI *string `json:"manifestUri,omitempty"`
+	ManifestURI *string
 
 	// Percentage completed for the drive.
-	PercentComplete *int64 `json:"percentComplete,omitempty"`
+	PercentComplete *int64
 
 	// The drive's current state.
-	State *DriveState `json:"state,omitempty"`
+	State *DriveState
 
 	// A URI that points to the blob containing the verbose log for the data transfer operation.
-	VerboseLogURI *string `json:"verboseLogUri,omitempty"`
+	VerboseLogURI *string
 }
 
 // EncryptionKeyDetails - Specifies the encryption key properties
 type EncryptionKeyDetails struct {
 	// The type of kek encryption key
-	KekType *EncryptionKekType `json:"kekType,omitempty"`
+	KekType *EncryptionKekType
 
 	// Specifies the url for kek encryption key.
-	KekURL *string `json:"kekUrl,omitempty"`
+	KekURL *string
 
 	// Specifies the keyvault resource id for kek encryption key.
-	KekVaultResourceID *string `json:"kekVaultResourceID,omitempty"`
+	KekVaultResourceID *string
 }
 
 // ErrorResponse - Response when errors occurred
 type ErrorResponse struct {
 	// Describes the error information.
-	Error *ErrorResponseError `json:"error,omitempty"`
+	Error *ErrorResponseError
 }
 
 // ErrorResponseError - Describes the error information.
 type ErrorResponseError struct {
 	// Provides information about the error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Describes the error details if present.
-	Details []*ErrorResponseErrorDetailsItem `json:"details,omitempty"`
+	Details []*ErrorResponseErrorDetailsItem
 
 	// Inner error object if present.
-	Innererror any `json:"innererror,omitempty"`
+	Innererror any
 
 	// Provides information about the error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Provides information about the error target.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 type ErrorResponseErrorDetailsItem struct {
 	// Provides information about the error code.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Provides information about the error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Provides information about the error target.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // Export - A property containing information about the blobs to be exported for an export job. This property is required
 // for export jobs, but must not be specified for import jobs.
 type Export struct {
 	// A list of the blobs to be exported.
-	BlobList *ExportBlobList `json:"blobList,omitempty"`
+	BlobList *ExportBlobList
 
 	// The relative URI to the block blob that contains the list of blob paths or blob path prefixes as defined above, beginning
 	// with the container name. If the blob is in root container, the URI must begin
 	// with $root.
-	BlobListBlobPath *string `json:"blobListBlobPath,omitempty"`
+	BlobListBlobPath *string
 }
 
 // ExportBlobList - A list of the blobs to be exported.
 type ExportBlobList struct {
 	// A collection of blob-path strings.
-	BlobPath []*string `json:"blobPath,omitempty"`
+	BlobPath []*string
 
 	// A collection of blob-prefix strings.
-	BlobPathPrefix []*string `json:"blobPathPrefix,omitempty"`
+	BlobPathPrefix []*string
 }
 
 // GetBitLockerKeysResponse - GetBitLockerKeys response
 type GetBitLockerKeysResponse struct {
 	// drive status
-	Value []*DriveBitLockerKey `json:"value,omitempty"`
+	Value []*DriveBitLockerKey
 }
 
 // IdentityDetails - Specifies the identity properties.
 type IdentityDetails struct {
 	// The type of identity
-	Type *IdentityType `json:"type,omitempty"`
+	Type *IdentityType
 
 	// READ-ONLY; Specifies the principal id for the identity for the job.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; Specifies the tenant id for the identity for the job.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // JobDetails - Specifies the job properties
 type JobDetails struct {
 	// Default value is false. Indicates whether the manifest files on the drives should be copied to block blobs.
-	BackupDriveManifest *bool `json:"backupDriveManifest,omitempty"`
+	BackupDriveManifest *bool
 
 	// Indicates whether a request has been submitted to cancel the job.
-	CancelRequested *bool `json:"cancelRequested,omitempty"`
+	CancelRequested *bool
 
 	// Contains information about the package being shipped by the customer to the Microsoft data center.
-	DeliveryPackage *DeliveryPackageInformation `json:"deliveryPackage,omitempty"`
+	DeliveryPackage *DeliveryPackageInformation
 
 	// The virtual blob directory to which the copy logs and backups of drive manifest files (if enabled) will be stored.
-	DiagnosticsPath *string `json:"diagnosticsPath,omitempty"`
+	DiagnosticsPath *string
 
 	// List of up to ten drives that comprise the job. The drive list is a required element for an import job; it is not specified
 	// for export jobs.
-	DriveList []*DriveStatus `json:"driveList,omitempty"`
+	DriveList []*DriveStatus
 
 	// Contains information about the encryption key.
-	EncryptionKey *EncryptionKeyDetails `json:"encryptionKey,omitempty"`
+	EncryptionKey *EncryptionKeyDetails
 
 	// A property containing information about the blobs to be exported for an export job. This property is included for export
 	// jobs only.
-	Export *Export `json:"export,omitempty"`
+	Export *Export
 
 	// A blob path that points to a block blob containing a list of blob names that were not exported due to insufficient drive
 	// space. If all blobs were exported successfully, then this element is not
 	// included in the response.
-	IncompleteBlobListURI *string `json:"incompleteBlobListUri,omitempty"`
+	IncompleteBlobListURI *string
 
 	// The type of job
-	JobType *string `json:"jobType,omitempty"`
+	JobType *string
 
 	// Default value is Error. Indicates whether error logging or verbose logging will be enabled.
-	LogLevel *string `json:"logLevel,omitempty"`
+	LogLevel *string
 
 	// Overall percentage completed for the job.
-	PercentComplete *int64 `json:"percentComplete,omitempty"`
+	PercentComplete *int64
 
 	// Specifies the provisioning state of the job.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Specifies the return address information for the job.
-	ReturnAddress *ReturnAddress `json:"returnAddress,omitempty"`
+	ReturnAddress *ReturnAddress
 
 	// Contains information about the package being shipped from the Microsoft data center to the customer to return the drives.
 	// The format is the same as the deliveryPackage property above. This property is
 	// not included if the drives have not yet been returned.
-	ReturnPackage *PackageInformation `json:"returnPackage,omitempty"`
+	ReturnPackage *PackageInformation
 
 	// Specifies the return carrier and customer's account with the carrier.
-	ReturnShipping *ReturnShipping `json:"returnShipping,omitempty"`
+	ReturnShipping *ReturnShipping
 
 	// Contains information about the Microsoft datacenter to which the drives should be shipped.
-	ShippingInformation *ShippingInformation `json:"shippingInformation,omitempty"`
+	ShippingInformation *ShippingInformation
 
 	// Current state of the job.
-	State *string `json:"state,omitempty"`
+	State *string
 
 	// The resource identifier of the storage account where data will be imported to or exported from.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 }
 
 // JobResponse - Contains the job information.
 type JobResponse struct {
 	// Specifies the job identity details
-	Identity *IdentityDetails `json:"identity,omitempty"`
+	Identity *IdentityDetails
 
 	// Specifies the Azure location where the job is created.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Specifies the job properties
-	Properties *JobDetails `json:"properties,omitempty"`
+	Properties *JobDetails
 
 	// Specifies the tags that are assigned to the job.
-	Tags any `json:"tags,omitempty"`
+	Tags any
 
 	// READ-ONLY; Specifies the resource identifier of the job.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Specifies the name of the job.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; SystemData of ImportExport Jobs.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Specifies the type of the job resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // JobsClientCreateOptions contains the optional parameters for the JobsClient.Create method.
@@ -296,69 +296,69 @@ type JobsClientUpdateOptions struct {
 // ListJobsResponse - List jobs response
 type ListJobsResponse struct {
 	// link to next batch of jobs
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Job list
-	Value []*JobResponse `json:"value,omitempty"`
+	Value []*JobResponse
 }
 
 // ListOperationsResponse - List operations response
 type ListOperationsResponse struct {
 	// operations
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // Location - Provides information about an Azure data center location.
 type Location struct {
 	// Specifies the resource identifier of the location.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Specifies the name of the location. Use List Locations to get all supported locations.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// location properties
-	Properties *LocationProperties `json:"properties,omitempty"`
+	Properties *LocationProperties
 
 	// Specifies the type of the location.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // LocationProperties - location properties
 type LocationProperties struct {
 	// Additional shipping information for customer, specific to datacenter to which customer should send their disks.
-	AdditionalShippingInformation *string `json:"additionalShippingInformation,omitempty"`
+	AdditionalShippingInformation *string
 
 	// A list of location IDs that should be used to ship shipping drives to for jobs created against the current location. If
 	// the current location is active, it will be part of the list. If it is
 	// temporarily closed due to maintenance, this list may contain other locations.
-	AlternateLocations []*string `json:"alternateLocations,omitempty"`
+	AlternateLocations []*string
 
 	// The city name to use when shipping the drives to the Azure data center.
-	City *string `json:"city,omitempty"`
+	City *string
 
 	// The country or region to use when shipping the drives to the Azure data center.
-	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
+	CountryOrRegion *string
 
 	// The phone number for the Azure data center.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// The postal code to use when shipping the drives to the Azure data center.
-	PostalCode *string `json:"postalCode,omitempty"`
+	PostalCode *string
 
 	// The recipient name to use when shipping the drives to the Azure data center.
-	RecipientName *string `json:"recipientName,omitempty"`
+	RecipientName *string
 
 	// The state or province to use when shipping the drives to the Azure data center.
-	StateOrProvince *string `json:"stateOrProvince,omitempty"`
+	StateOrProvince *string
 
 	// The first line of the street address to use when shipping the drives to the Azure data center.
-	StreetAddress1 *string `json:"streetAddress1,omitempty"`
+	StreetAddress1 *string
 
 	// The second line of the street address to use when shipping the drives to the Azure data center.
-	StreetAddress2 *string `json:"streetAddress2,omitempty"`
+	StreetAddress2 *string
 
 	// A list of carriers that are supported at this location.
-	SupportedCarriers []*string `json:"supportedCarriers,omitempty"`
+	SupportedCarriers []*string
 }
 
 // LocationsClientGetOptions contains the optional parameters for the LocationsClient.Get method.
@@ -373,31 +373,31 @@ type LocationsClientListOptions struct {
 // LocationsResponse - Locations response
 type LocationsResponse struct {
 	// locations
-	Value []*Location `json:"value,omitempty"`
+	Value []*Location
 }
 
 // Operation - Describes a supported operation by the Storage Import/Export job API.
 type Operation struct {
 	// REQUIRED; operation display properties
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// REQUIRED; Name of the operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - operation display properties
 type OperationDisplay struct {
 	// Short description of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name of the operation.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The resource provider name to which the operation belongs.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// The name of the resource to which the operation belongs.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -407,154 +407,154 @@ type OperationsClientListOptions struct {
 // PackageInformation - Contains information about the package being shipped by the customer to the Microsoft data center.
 type PackageInformation struct {
 	// REQUIRED; The name of the carrier that is used to ship the import or export drives.
-	CarrierName *string `json:"carrierName,omitempty"`
+	CarrierName *string
 
 	// REQUIRED; The number of drives included in the package.
-	DriveCount *int64 `json:"driveCount,omitempty"`
+	DriveCount *int64
 
 	// REQUIRED; The date when the package is shipped.
-	ShipDate *string `json:"shipDate,omitempty"`
+	ShipDate *string
 
 	// REQUIRED; The tracking number of the package.
-	TrackingNumber *string `json:"trackingNumber,omitempty"`
+	TrackingNumber *string
 }
 
 // PutJobParameters - Put Job parameters
 type PutJobParameters struct {
 	// Specifies the supported Azure location where the job should be created
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Specifies the job properties
-	Properties *JobDetails `json:"properties,omitempty"`
+	Properties *JobDetails
 
 	// Specifies the tags that will be assigned to the job.
-	Tags any `json:"tags,omitempty"`
+	Tags any
 }
 
 // ReturnAddress - Specifies the return address information for the job.
 type ReturnAddress struct {
 	// REQUIRED; The city name to use when returning the drives.
-	City *string `json:"city,omitempty"`
+	City *string
 
 	// REQUIRED; The country or region to use when returning the drives.
-	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
+	CountryOrRegion *string
 
 	// REQUIRED; Email address of the recipient of the returned drives.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// REQUIRED; Phone number of the recipient of the returned drives.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// REQUIRED; The postal code to use when returning the drives.
-	PostalCode *string `json:"postalCode,omitempty"`
+	PostalCode *string
 
 	// REQUIRED; The name of the recipient who will receive the hard drives when they are returned.
-	RecipientName *string `json:"recipientName,omitempty"`
+	RecipientName *string
 
 	// REQUIRED; The first line of the street address to use when returning the drives.
-	StreetAddress1 *string `json:"streetAddress1,omitempty"`
+	StreetAddress1 *string
 
 	// The state or province to use when returning the drives.
-	StateOrProvince *string `json:"stateOrProvince,omitempty"`
+	StateOrProvince *string
 
 	// The second line of the street address to use when returning the drives.
-	StreetAddress2 *string `json:"streetAddress2,omitempty"`
+	StreetAddress2 *string
 }
 
 // ReturnShipping - Specifies the return carrier and customer's account with the carrier.
 type ReturnShipping struct {
 	// REQUIRED; The customer's account number with the carrier.
-	CarrierAccountNumber *string `json:"carrierAccountNumber,omitempty"`
+	CarrierAccountNumber *string
 
 	// REQUIRED; The carrier's name.
-	CarrierName *string `json:"carrierName,omitempty"`
+	CarrierName *string
 }
 
 // ShippingInformation - Contains information about the Microsoft datacenter to which the drives should be shipped.
 type ShippingInformation struct {
 	// The city name to use when returning the drives.
-	City *string `json:"city,omitempty"`
+	City *string
 
 	// The country or region to use when returning the drives.
-	CountryOrRegion *string `json:"countryOrRegion,omitempty"`
+	CountryOrRegion *string
 
 	// Phone number of the recipient of the returned drives.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// The postal code to use when returning the drives.
-	PostalCode *string `json:"postalCode,omitempty"`
+	PostalCode *string
 
 	// The name of the recipient who will receive the hard drives when they are returned.
-	RecipientName *string `json:"recipientName,omitempty"`
+	RecipientName *string
 
 	// The state or province to use when returning the drives.
-	StateOrProvince *string `json:"stateOrProvince,omitempty"`
+	StateOrProvince *string
 
 	// The first line of the street address to use when returning the drives.
-	StreetAddress1 *string `json:"streetAddress1,omitempty"`
+	StreetAddress1 *string
 
 	// The second line of the street address to use when returning the drives.
-	StreetAddress2 *string `json:"streetAddress2,omitempty"`
+	StreetAddress2 *string
 
 	// READ-ONLY; Additional shipping information for customer, specific to datacenter to which customer should send their disks.
-	AdditionalInformation *string `json:"additionalInformation,omitempty" azure:"ro"`
+	AdditionalInformation *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // UpdateJobParameters - Update Job parameters
 type UpdateJobParameters struct {
 	// Specifies the properties of a UpdateJob.
-	Properties *UpdateJobParametersProperties `json:"properties,omitempty"`
+	Properties *UpdateJobParametersProperties
 
 	// Specifies the tags that will be assigned to the job
-	Tags any `json:"tags,omitempty"`
+	Tags any
 }
 
 // UpdateJobParametersProperties - Specifies the properties of a UpdateJob.
 type UpdateJobParametersProperties struct {
 	// Indicates whether the manifest files on the drives should be copied to block blobs.
-	BackupDriveManifest *bool `json:"backupDriveManifest,omitempty"`
+	BackupDriveManifest *bool
 
 	// If specified, the value must be true. The service will attempt to cancel the job.
-	CancelRequested *bool `json:"cancelRequested,omitempty"`
+	CancelRequested *bool
 
 	// Contains information about the package being shipped by the customer to the Microsoft data center.
-	DeliveryPackage *DeliveryPackageInformation `json:"deliveryPackage,omitempty"`
+	DeliveryPackage *DeliveryPackageInformation
 
 	// List of drives that comprise the job.
-	DriveList []*DriveStatus `json:"driveList,omitempty"`
+	DriveList []*DriveStatus
 
 	// Indicates whether error logging or verbose logging is enabled.
-	LogLevel *string `json:"logLevel,omitempty"`
+	LogLevel *string
 
 	// Specifies the return address information for the job.
-	ReturnAddress *ReturnAddress `json:"returnAddress,omitempty"`
+	ReturnAddress *ReturnAddress
 
 	// Specifies the return carrier and customer's account with the carrier.
-	ReturnShipping *ReturnShipping `json:"returnShipping,omitempty"`
+	ReturnShipping *ReturnShipping
 
 	// If specified, the value must be Shipping, which tells the Import/Export service that the package for the job has been shipped.
 	// The ReturnAddress and DeliveryPackage properties must have been set
 	// either in this request or in a previous request, otherwise the request will fail.
-	State *string `json:"state,omitempty"`
+	State *string
 }

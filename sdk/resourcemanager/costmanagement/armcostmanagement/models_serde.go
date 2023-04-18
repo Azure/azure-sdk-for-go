@@ -181,7 +181,7 @@ func (a AlertPropertiesDetails) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "periodStartDate", a.PeriodStartDate)
 	populate(objectMap, "resourceFilter", a.ResourceFilter)
 	populate(objectMap, "resourceGroupFilter", a.ResourceGroupFilter)
-	populate(objectMap, "tagFilter", &a.TagFilter)
+	populateAny(objectMap, "tagFilter", a.TagFilter)
 	populate(objectMap, "threshold", a.Threshold)
 	populate(objectMap, "timeGrainType", a.TimeGrainType)
 	populate(objectMap, "triggeredBy", a.TriggeredBy)
@@ -2607,6 +2607,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

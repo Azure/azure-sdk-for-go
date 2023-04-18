@@ -11,7 +11,7 @@ package armbotservice
 
 const (
 	moduleName    = "armbotservice"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 type ChannelName string

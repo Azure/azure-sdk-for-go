@@ -109,10 +109,10 @@ type BlobClientUploadChunkOptions struct {
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeeker, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
-	err := blobDigestCalculator.saveState()
-	if err != nil {
-		return BlobClientUploadChunkResponse{}, fmt.Errorf("could not save state of blog digest calculator with error %s", err)
+	if blobDigestCalculator == nil {
+		return BlobClientUploadChunkResponse{}, errors.New("blobDigestCalculator is nil")
 	}
+	blobDigestCalculator.saveState()
 	wrappedChunkData := &wrappedReadSeeker{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData}
 	var requestOptions *blobClientUploadChunkOptions
 	if options != nil && options.RangeStart != nil && options.RangeEnd != nil {
@@ -120,10 +120,7 @@ func (client *BlobClient) UploadChunk(ctx context.Context, location string, chun
 	}
 	resp, err := client.uploadChunk(ctx, location, streaming.NopCloser(wrappedChunkData), requestOptions)
 	if err != nil {
-		restoreErr := blobDigestCalculator.restoreState()
-		if restoreErr != nil {
-			err = fmt.Errorf("could not restore state of blog digest calculator with error %s: %w", restoreErr, err)
-		}
+		blobDigestCalculator.restoreState()
 	}
 	return resp, err
 }
@@ -135,5 +132,8 @@ func (client *BlobClient) UploadChunk(ctx context.Context, location string, chun
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientCompleteUploadOptions contains the optional parameters for the BlobClient.CompleteUpload method.
 func (client *BlobClient) CompleteUpload(ctx context.Context, location string, blobDigestCalculator *BlobDigestCalculator, options *BlobClientCompleteUploadOptions) (BlobClientCompleteUploadResponse, error) {
+	if blobDigestCalculator == nil {
+		return BlobClientCompleteUploadResponse{}, errors.New("blobDigestCalculator is nil")
+	}
 	return client.completeUpload(ctx, fmt.Sprintf("sha256:%x", blobDigestCalculator.h.Sum(nil)), location, options)
 }

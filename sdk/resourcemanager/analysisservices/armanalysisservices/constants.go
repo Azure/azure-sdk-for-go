@@ -11,7 +11,7 @@ package armanalysisservices
 
 const (
 	moduleName    = "armanalysisservices"
-	moduleVersion = "v1.1.0"
+	moduleVersion = "v1.1.1"
 )
 
 // ConnectionMode - How the read-write server's participation in the query pool is controlled.

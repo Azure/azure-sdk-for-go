@@ -360,7 +360,7 @@ func (a *AssignmentReportProperties) UnmarshalJSON(data []byte) error {
 func (a AssignmentReportResource) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "complianceStatus", a.ComplianceStatus)
-	populate(objectMap, "properties", &a.Properties)
+	populateAny(objectMap, "properties", a.Properties)
 	populate(objectMap, "reasons", a.Reasons)
 	populate(objectMap, "resourceId", a.ResourceID)
 	return json.Marshal(objectMap)
@@ -1052,6 +1052,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

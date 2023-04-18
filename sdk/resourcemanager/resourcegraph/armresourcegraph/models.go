@@ -24,10 +24,10 @@ type ClientResourcesOptions struct {
 // Column - Query result column descriptor.
 type Column struct {
 	// REQUIRED; Column name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Column data type.
-	Type *ColumnDataType `json:"type,omitempty"`
+	Type *ColumnDataType
 }
 
 // DateTimeInterval - An interval in time specifying the date and time for the inclusive start and exclusive end, i.e. [start,
@@ -35,32 +35,32 @@ type Column struct {
 type DateTimeInterval struct {
 	// REQUIRED; A datetime indicating the exclusive/open end of the time interval, i.e. [start,end). Specifying an end that occurs
 	// chronologically before start will result in an error.
-	End *time.Time `json:"end,omitempty"`
+	End *time.Time
 
 	// REQUIRED; A datetime indicating the inclusive/closed start of the time interval, i.e. [start, end). Specifying a start
 	// that occurs chronologically after end will result in an error.
-	Start *time.Time `json:"start,omitempty"`
+	Start *time.Time
 }
 
 // Error details.
 type Error struct {
 	// REQUIRED; Error code identifying the specific error.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Error details
-	Details []*ErrorDetails `json:"details,omitempty"`
+	Details []*ErrorDetails
 }
 
 // ErrorDetails - Error details.
 type ErrorDetails struct {
 	// REQUIRED; Error code identifying the specific error.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// REQUIRED; A human readable error message.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
 	AdditionalProperties map[string]any
@@ -69,7 +69,7 @@ type ErrorDetails struct {
 // ErrorResponse - An error response from the API.
 type ErrorResponse struct {
 	// REQUIRED; Error information.
-	Error *Error `json:"error,omitempty"`
+	Error *Error
 }
 
 // FacetClassification provides polymorphic access to related types.
@@ -84,10 +84,10 @@ type FacetClassification interface {
 // Facet - A facet containing additional statistics on the response of a query. Can be either FacetResult or FacetError.
 type Facet struct {
 	// REQUIRED; Facet expression, same as in the corresponding facet request.
-	Expression *string `json:"expression,omitempty"`
+	Expression *string
 
 	// REQUIRED; Result type
-	ResultType *string `json:"resultType,omitempty"`
+	ResultType *string
 }
 
 // GetFacet implements the FacetClassification interface for type Facet.
@@ -96,13 +96,13 @@ func (f *Facet) GetFacet() *Facet { return f }
 // FacetError - A facet whose execution resulted in an error.
 type FacetError struct {
 	// REQUIRED; An array containing detected facet errors with details.
-	Errors []*ErrorDetails `json:"errors,omitempty"`
+	Errors []*ErrorDetails
 
 	// REQUIRED; Facet expression, same as in the corresponding facet request.
-	Expression *string `json:"expression,omitempty"`
+	Expression *string
 
 	// REQUIRED; Result type
-	ResultType *string `json:"resultType,omitempty"`
+	ResultType *string
 }
 
 // GetFacet implements the FacetClassification interface for type FacetError.
@@ -116,44 +116,44 @@ func (f *FacetError) GetFacet() *Facet {
 // FacetRequest - A request to compute additional statistics (facets) over the query results.
 type FacetRequest struct {
 	// REQUIRED; The column or list of columns to summarize by
-	Expression *string `json:"expression,omitempty"`
+	Expression *string
 
 	// The options for facet evaluation
-	Options *FacetRequestOptions `json:"options,omitempty"`
+	Options *FacetRequestOptions
 }
 
 // FacetRequestOptions - The options for facet evaluation
 type FacetRequestOptions struct {
 	// Specifies the filter condition for the 'where' clause which will be run on main query's result, just before the actual
 	// faceting.
-	Filter *string `json:"filter,omitempty"`
+	Filter *string
 
 	// The column name or query expression to sort on. Defaults to count if not present.
-	SortBy *string `json:"sortBy,omitempty"`
+	SortBy *string
 
 	// The sorting order by the selected column (count by default).
-	SortOrder *FacetSortOrder `json:"sortOrder,omitempty"`
+	SortOrder *FacetSortOrder
 
 	// The maximum number of facet rows that should be returned.
-	Top *int32 `json:"$top,omitempty"`
+	Top *int32
 }
 
 // FacetResult - Successfully executed facet containing additional statistics on the response of a query.
 type FacetResult struct {
 	// REQUIRED; Number of records returned in the facet response.
-	Count *int32 `json:"count,omitempty"`
+	Count *int32
 
 	// REQUIRED; A JObject array or Table containing the desired facets. Only present if the facet is valid.
-	Data any `json:"data,omitempty"`
+	Data any
 
 	// REQUIRED; Facet expression, same as in the corresponding facet request.
-	Expression *string `json:"expression,omitempty"`
+	Expression *string
 
 	// REQUIRED; Result type
-	ResultType *string `json:"resultType,omitempty"`
+	ResultType *string
 
 	// REQUIRED; Number of total records in the facet results.
-	TotalRecords *int64 `json:"totalRecords,omitempty"`
+	TotalRecords *int64
 }
 
 // GetFacet implements the FacetClassification interface for type FacetResult.
@@ -167,35 +167,35 @@ func (f *FacetResult) GetFacet() *Facet {
 // Operation - Resource Graph REST API operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The origin of operations.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // OperationDisplay - Display metadata associated with the operation.
 type OperationDisplay struct {
 	// Description for the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Type of operation: get, read, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft Resource Graph.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Resource Graph operations. It contains a list of operations and a URL
 // link to get the next set of results.
 type OperationListResult struct {
 	// List of Resource Graph operations supported by the Resource Graph resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -206,107 +206,107 @@ type OperationsClientListOptions struct {
 // QueryRequest - Describes a query to be executed.
 type QueryRequest struct {
 	// REQUIRED; The resources query.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// An array of facet requests to be computed against the query result.
-	Facets []*FacetRequest `json:"facets,omitempty"`
+	Facets []*FacetRequest
 
 	// Azure management groups against which to execute the query. Example: [ 'mg1', 'mg2' ]
-	ManagementGroups []*string `json:"managementGroups,omitempty"`
+	ManagementGroups []*string
 
 	// The query evaluation options
-	Options *QueryRequestOptions `json:"options,omitempty"`
+	Options *QueryRequestOptions
 
 	// Azure subscriptions against which to execute the query.
-	Subscriptions []*string `json:"subscriptions,omitempty"`
+	Subscriptions []*string
 }
 
 // QueryRequestOptions - The options for query evaluation
 type QueryRequestOptions struct {
 	// Only applicable for tenant and management group level queries to decide whether to allow partial scopes for result in case
 	// the number of subscriptions exceed allowed limits.
-	AllowPartialScopes *bool `json:"allowPartialScopes,omitempty"`
+	AllowPartialScopes *bool
 
 	// Defines what level of authorization resources should be returned based on the which subscriptions and management groups
 	// are passed as scopes.
-	AuthorizationScopeFilter *AuthorizationScopeFilter `json:"authorizationScopeFilter,omitempty"`
+	AuthorizationScopeFilter *AuthorizationScopeFilter
 
 	// Defines in which format query result returned.
-	ResultFormat *ResultFormat `json:"resultFormat,omitempty"`
+	ResultFormat *ResultFormat
 
 	// The number of rows to skip from the beginning of the results. Overrides the next page offset when $skipToken property is
 	// present.
-	Skip *int32 `json:"$skip,omitempty"`
+	Skip *int32
 
 	// Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
-	SkipToken *string `json:"$skipToken,omitempty"`
+	SkipToken *string
 
 	// The maximum number of rows that the query should return. Overrides the page size when $skipToken property is present.
-	Top *int32 `json:"$top,omitempty"`
+	Top *int32
 }
 
 // QueryResponse - Query result.
 type QueryResponse struct {
 	// REQUIRED; Number of records returned in the current response. In the case of paging, this is the number of records in the
 	// current page.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// REQUIRED; Query output in JObject array or Table format.
-	Data any `json:"data,omitempty"`
+	Data any
 
 	// REQUIRED; Indicates whether the query results are truncated.
-	ResultTruncated *ResultTruncated `json:"resultTruncated,omitempty"`
+	ResultTruncated *ResultTruncated
 
 	// REQUIRED; Number of total records matching the query.
-	TotalRecords *int64 `json:"totalRecords,omitempty"`
+	TotalRecords *int64
 
 	// Query facets.
-	Facets []FacetClassification `json:"facets,omitempty"`
+	Facets []FacetClassification
 
 	// When present, the value can be passed to a subsequent query call (together with the same query and scopes used in the current
 	// request) to retrieve the next page of data.
-	SkipToken *string `json:"$skipToken,omitempty"`
+	SkipToken *string
 }
 
 // ResourcesHistoryRequest - Describes a history request to be executed.
 type ResourcesHistoryRequest struct {
 	// Azure management groups against which to execute the query. Example: [ 'mg1', 'mg2' ]
-	ManagementGroups []*string `json:"managementGroups,omitempty"`
+	ManagementGroups []*string
 
 	// The history request evaluation options
-	Options *ResourcesHistoryRequestOptions `json:"options,omitempty"`
+	Options *ResourcesHistoryRequestOptions
 
 	// The resources query.
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// Azure subscriptions against which to execute the query.
-	Subscriptions []*string `json:"subscriptions,omitempty"`
+	Subscriptions []*string
 }
 
 // ResourcesHistoryRequestOptions - The options for history request evaluation
 type ResourcesHistoryRequestOptions struct {
 	// The time interval used to fetch history.
-	Interval *DateTimeInterval `json:"interval,omitempty"`
+	Interval *DateTimeInterval
 
 	// Defines in which format query result returned.
-	ResultFormat *ResultFormat `json:"resultFormat,omitempty"`
+	ResultFormat *ResultFormat
 
 	// The number of rows to skip from the beginning of the results. Overrides the next page offset when $skipToken property is
 	// present.
-	Skip *int32 `json:"$skip,omitempty"`
+	Skip *int32
 
 	// Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
-	SkipToken *string `json:"$skipToken,omitempty"`
+	SkipToken *string
 
 	// The maximum number of rows that the query should return. Overrides the page size when $skipToken property is present.
-	Top *int32 `json:"$top,omitempty"`
+	Top *int32
 }
 
 // Table - Query output in tabular format.
 type Table struct {
 	// REQUIRED; Query result column descriptors.
-	Columns []*Column `json:"columns,omitempty"`
+	Columns []*Column
 
 	// REQUIRED; Query result rows.
-	Rows [][]any `json:"rows,omitempty"`
+	Rows [][]any
 }

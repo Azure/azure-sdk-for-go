@@ -11,75 +11,75 @@ package armpowerbiembedded
 
 type AzureSKU struct {
 	// REQUIRED; SKU name
-	Name *AzureSKUName `json:"name,omitempty"`
+	Name *AzureSKUName
 
 	// REQUIRED; SKU tier
-	Tier *AzureSKUTier `json:"tier,omitempty"`
+	Tier *AzureSKUTier
 }
 
 type CheckNameRequest struct {
 	// Workspace collection name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Resource type
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 type CheckNameResponse struct {
 	// Message indicating an unavailable name due to a conflict, or a description of the naming rules that are violated.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Specifies a Boolean value that indicates whether the specified Power BI Workspace Collection name is available to use.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// Reason why the workspace collection name cannot be used.
-	Reason *CheckNameReason `json:"reason,omitempty"`
+	Reason *CheckNameReason
 }
 
 type CreateWorkspaceCollectionRequest struct {
 	// Azure location
-	Location *string   `json:"location,omitempty"`
-	SKU      *AzureSKU `json:"sku,omitempty"`
+	Location *string
+	SKU      *AzureSKU
 
 	// Dictionary of
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 type Display struct {
 	// The localized friendly description for the operation as shown to the user. This description should be thorough, yet concise.
 	// It will be used in tool-tips and detailed views.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The localized friendly name for the operation as shown to the user. This name should be concise (to fit in drop downs),
 	// but clear (self-documenting). Use Title Casing and include the entity/resource
 	// to which it applies.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// The intended executor of the operation; governs the display of the operation in the RBAC UX and the audit logs UX. Default
 	// value is 'user,system'
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// The localized friendly form of the resource provider name. This form is also expected to include the publisher/company
 	// responsible. Use Title Casing. Begin with "Microsoft" for 1st party services.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// The localized friendly form of the resource type related to this action/operation. This form should match the public documentation
 	// for the resource provider. Use Title Casing. For examples, refer to
 	// the "name" section.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 type Error struct {
-	Code    *string        `json:"code,omitempty"`
-	Details []*ErrorDetail `json:"details,omitempty"`
-	Message *string        `json:"message,omitempty"`
-	Target  *string        `json:"target,omitempty"`
+	Code    *string
+	Details []*ErrorDetail
+	Message *string
+	Target  *string
 }
 
 type ErrorDetail struct {
-	Code    *string `json:"code,omitempty"`
-	Message *string `json:"message,omitempty"`
-	Target  *string `json:"target,omitempty"`
+	Code    *string
+	Message *string
+	Target  *string
 }
 
 // ManagementClientGetAvailableOperationsOptions contains the optional parameters for the ManagementClient.GetAvailableOperations
@@ -89,81 +89,81 @@ type ManagementClientGetAvailableOperationsOptions struct {
 }
 
 type MigrateWorkspaceCollectionRequest struct {
-	Resources []*string `json:"resources,omitempty"`
+	Resources []*string
 
 	// Name of the resource group the Power BI workspace collections will be migrated to.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+	TargetResourceGroup *string
 }
 
 type Operation struct {
-	Display *Display `json:"display,omitempty"`
+	Display *Display
 
 	// The name of the operation being performed on this particular object. This name should match the action name that appears
 	// in RBAC / the event service.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 type OperationList struct {
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 type UpdateWorkspaceCollectionRequest struct {
-	SKU *AzureSKU `json:"sku,omitempty"`
+	SKU *AzureSKU
 
 	// Dictionary of
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 type Workspace struct {
 	// Workspace id
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Workspace name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Property bag
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// Resource type
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 type WorkspaceCollection struct {
 	// Resource id
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Azure location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Workspace collection name
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties
-	Properties any       `json:"properties,omitempty"`
-	SKU        *AzureSKU `json:"sku,omitempty"`
+	Properties any
+	SKU        *AzureSKU
 
 	// Dictionary of
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// Resource type
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 type WorkspaceCollectionAccessKey struct {
 	// Key name
-	KeyName *AccessKeyName `json:"keyName,omitempty"`
+	KeyName *AccessKeyName
 }
 
 type WorkspaceCollectionAccessKeys struct {
 	// Access key 1
-	Key1 *string `json:"key1,omitempty"`
+	Key1 *string
 
 	// Access key 2
-	Key2 *string `json:"key2,omitempty"`
+	Key2 *string
 }
 
 type WorkspaceCollectionList struct {
-	Value []*WorkspaceCollection `json:"value,omitempty"`
+	Value []*WorkspaceCollection
 }
 
 // WorkspaceCollectionsClientBeginDeleteOptions contains the optional parameters for the WorkspaceCollectionsClient.BeginDelete
@@ -225,7 +225,7 @@ type WorkspaceCollectionsClientUpdateOptions struct {
 }
 
 type WorkspaceList struct {
-	Value []*Workspace `json:"value,omitempty"`
+	Value []*Workspace
 }
 
 // WorkspacesClientListOptions contains the optional parameters for the WorkspacesClient.NewListPager method.

@@ -14,135 +14,135 @@ import "time"
 // AsyncOperationDetail
 type AsyncOperationDetail struct {
 	// The operation end time.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// The error.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// The operation id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operation start time.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 
 	// The operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // ConnectionState information.
 type ConnectionState struct {
 	// Actions required (if any).
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// Description of the connection state.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Status of the connection.
-	Status *PersistedConnectionStatus `json:"status,omitempty"`
+	Status *PersistedConnectionStatus
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info any `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // GroupConnectivityInformation
 type GroupConnectivityInformation struct {
 	// Specifies the customer visible FQDNs of the group connectivity information.
-	CustomerVisibleFqdns []*string `json:"customerVisibleFqdns,omitempty"`
+	CustomerVisibleFqdns []*string
 
 	// Specifies the group id of the group connectivity information.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// Specifies the internal FQDN of the group connectivity information.
-	InternalFqdn *string `json:"internalFqdn,omitempty"`
+	InternalFqdn *string
 
 	// Specifies the member name of the group connectivity information.
-	MemberName *string `json:"memberName,omitempty"`
+	MemberName *string
 
 	// Specifies the ARM region of the group connectivity information.
-	PrivateLinkServiceArmRegion *string `json:"privateLinkServiceArmRegion,omitempty"`
+	PrivateLinkServiceArmRegion *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
@@ -176,46 +176,46 @@ type PowerBIResourcesClientUpdateOptions struct {
 // PrivateEndpoint
 type PrivateEndpoint struct {
 	// Specifies the id of private endpoint.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // PrivateEndpointConnection
 type PrivateEndpointConnection struct {
 	// Specifies the properties of the private endpoint connection.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Specifies the id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Specifies the name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system meta data relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Specifies the type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connections.
 type PrivateEndpointConnectionListResult struct {
 	// Specifies the name of the private endpoint connection.
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateEndpointConnectionProperties
 type PrivateEndpointConnectionProperties struct {
 	// Specifies the private endpoint.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// Specifies the connection state.
-	PrivateLinkServiceConnectionState *ConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *ConnectionState
 
 	// Provisioning state of the Private Endpoint Connection.
-	ProvisioningState *ResourceProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ResourceProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
@@ -246,46 +246,46 @@ type PrivateEndpointConnectionsClientListByResourceOptions struct {
 // PrivateLinkConnectionDetail
 type PrivateLinkConnectionDetail struct {
 	// Specifies the group id of the connection detail.
-	GroupID *string `json:"groupId,omitempty"`
+	GroupID *string
 
 	// Specifies the type of the connection detail.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Specifies the link id of the connection detail.
-	LinkIdentifier *string `json:"linkIdentifier,omitempty"`
+	LinkIdentifier *string
 
 	// Specifies the member name of the connection detail.
-	MemberName *string `json:"memberName,omitempty"`
+	MemberName *string
 
 	// Specifies the private ip address of the connection detail.
-	PrivateIPAddress *string `json:"privateIpAddress,omitempty"`
+	PrivateIPAddress *string
 }
 
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Fully qualified identifier of the resource.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the resource.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// Type of the resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -302,37 +302,37 @@ type PrivateLinkResourcesClientListByResourceOptions struct {
 // PrivateLinkResourcesListResult - Specifies list of the private link resource.
 type PrivateLinkResourcesListResult struct {
 	// A collection of private endpoint connection resources.
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PrivateLinkServiceConnection
 type PrivateLinkServiceConnection struct {
 	// Specifies the group ids of the private link service connection.
-	GroupIDs []*string `json:"groupIds,omitempty"`
+	GroupIDs []*string
 
 	// Specifies the name of the private link service connection.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Specifies the request message of the private link service connection.
-	RequestMessage *string `json:"requestMessage,omitempty"`
+	RequestMessage *string
 }
 
 // PrivateLinkServiceProxy
 type PrivateLinkServiceProxy struct {
 	// Specifies the group connectivity information of the private link service proxy.
-	GroupConnectivityInformation []*GroupConnectivityInformation `json:"groupConnectivityInformation,omitempty"`
+	GroupConnectivityInformation []*GroupConnectivityInformation
 
 	// Specifies the id of the private link service proxy.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Specifies the private endpoint connection of the private link service proxy.
-	RemotePrivateEndpointConnection *RemotePrivateEndpointConnection `json:"remotePrivateEndpointConnection,omitempty"`
+	RemotePrivateEndpointConnection *RemotePrivateEndpointConnection
 
 	// Specifies the connection state of the private link service proxy.
-	RemotePrivateLinkServiceConnectionState *ConnectionState `json:"remotePrivateLinkServiceConnectionState,omitempty"`
+	RemotePrivateLinkServiceConnectionState *ConnectionState
 }
 
 // PrivateLinkServiceResourceOperationResultsClientBeginGetOptions contains the optional parameters for the PrivateLinkServiceResourceOperationResultsClient.BeginGet
@@ -357,59 +357,59 @@ type PrivateLinkServicesForPowerBIClientListBySubscriptionIDOptions struct {
 // RemotePrivateEndpointConnection
 type RemotePrivateEndpointConnection struct {
 	// Specifies the id of private endpoint connection.
-	ID *string `json:"id,omitempty"`
+	ID *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TenantProperties
 type TenantProperties struct {
 	// Specifies the private endpoint connections of the resource.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// Specifies the tenant id of the resource.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 }
 
 // TenantResource
 type TenantResource struct {
 	// Specifies the location of the resource.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Specifies the properties of the resource.
-	Properties *TenantProperties `json:"properties,omitempty"`
+	Properties *TenantProperties
 
 	// Specifies the tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Specifies the resource identifier of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Specifies the name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata relating to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Specifies the type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }

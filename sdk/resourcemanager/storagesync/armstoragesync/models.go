@@ -14,214 +14,214 @@ import "time"
 // APIError - Error type
 type APIError struct {
 	// Error code of the given entry.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error details of the given entry.
-	Details *ErrorDetails `json:"details,omitempty"`
+	Details *ErrorDetails
 
 	// Inner error details of the given entry.
-	Innererror *InnerErrorDetails `json:"innererror,omitempty"`
+	Innererror *InnerErrorDetails
 
 	// Error message of the given entry.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Target of the given error entry.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // BackupRequest - Backup request
 type BackupRequest struct {
 	// Azure File Share.
-	AzureFileShare *string `json:"azureFileShare,omitempty"`
+	AzureFileShare *string
 }
 
 // CheckNameAvailabilityParameters - Parameters for a check name availability request.
 type CheckNameAvailabilityParameters struct {
 	// REQUIRED; The name to check for availability
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// CONSTANT; The resource type. Must be set to Microsoft.StorageSync/storageSyncServices
 	// Field has constant value "Microsoft.StorageSync/storageSyncServices", any specified value is ignored.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResult - The CheckNameAvailability operation response.
 type CheckNameAvailabilityResult struct {
 	// READ-ONLY; Gets an error message explaining the Reason value in more detail.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; Gets a boolean value that indicates whether the name is available for you to use. If true, the name is available.
 	// If false, the name has already been taken or invalid and cannot be used.
-	NameAvailable *bool `json:"nameAvailable,omitempty" azure:"ro"`
+	NameAvailable *bool
 
 	// READ-ONLY; Gets the reason that a Storage Sync Service name could not be used. The Reason element is only returned if NameAvailable
 	// is false.
-	Reason *NameAvailabilityReason `json:"reason,omitempty" azure:"ro"`
+	Reason *NameAvailabilityReason
 }
 
 // CloudEndpoint - Cloud Endpoint object.
 type CloudEndpoint struct {
 	// Cloud Endpoint properties.
-	Properties *CloudEndpointProperties `json:"properties,omitempty"`
+	Properties *CloudEndpointProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CloudEndpointArray - Array of CloudEndpoint
 type CloudEndpointArray struct {
 	// Collection of CloudEndpoint.
-	Value []*CloudEndpoint `json:"value,omitempty"`
+	Value []*CloudEndpoint
 }
 
 // CloudEndpointChangeEnumerationActivity - Cloud endpoint change enumeration activity object
 type CloudEndpointChangeEnumerationActivity struct {
 	// READ-ONLY; Progress percentage for processing deletes. This is done separately from the rest of the enumeration run
-	DeletesProgressPercent *int32 `json:"deletesProgressPercent,omitempty" azure:"ro"`
+	DeletesProgressPercent *int32
 
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 
 	// READ-ONLY; Estimate of time remaining for the enumeration run
-	MinutesRemaining *int32 `json:"minutesRemaining,omitempty" azure:"ro"`
+	MinutesRemaining *int32
 
 	// READ-ONLY; Change enumeration operation state
-	OperationState *CloudEndpointChangeEnumerationActivityState `json:"operationState,omitempty" azure:"ro"`
+	OperationState *CloudEndpointChangeEnumerationActivityState
 
 	// READ-ONLY; Count of directories processed
-	ProcessedDirectoriesCount *int64 `json:"processedDirectoriesCount,omitempty" azure:"ro"`
+	ProcessedDirectoriesCount *int64
 
 	// READ-ONLY; Count of files processed
-	ProcessedFilesCount *int64 `json:"processedFilesCount,omitempty" azure:"ro"`
+	ProcessedFilesCount *int64
 
 	// READ-ONLY; Progress percentage for change enumeration run, excluding processing of deletes
-	ProgressPercent *int32 `json:"progressPercent,omitempty" azure:"ro"`
+	ProgressPercent *int32
 
 	// READ-ONLY; Timestamp when change enumeration started
-	StartedTimestamp *time.Time `json:"startedTimestamp,omitempty" azure:"ro"`
+	StartedTimestamp *time.Time
 
 	// READ-ONLY; When non-zero, indicates an issue that is delaying change enumeration
-	StatusCode *int32 `json:"statusCode,omitempty" azure:"ro"`
+	StatusCode *int32
 
 	// READ-ONLY; Change enumeration total counts state
-	TotalCountsState *CloudEndpointChangeEnumerationTotalCountsState `json:"totalCountsState,omitempty" azure:"ro"`
+	TotalCountsState *CloudEndpointChangeEnumerationTotalCountsState
 
 	// READ-ONLY; Total count of directories enumerated
-	TotalDirectoriesCount *int64 `json:"totalDirectoriesCount,omitempty" azure:"ro"`
+	TotalDirectoriesCount *int64
 
 	// READ-ONLY; Total count of files enumerated
-	TotalFilesCount *int64 `json:"totalFilesCount,omitempty" azure:"ro"`
+	TotalFilesCount *int64
 
 	// READ-ONLY; Total enumerated size in bytes
-	TotalSizeBytes *int64 `json:"totalSizeBytes,omitempty" azure:"ro"`
+	TotalSizeBytes *int64
 }
 
 // CloudEndpointChangeEnumerationStatus - Cloud endpoint change enumeration status object
 type CloudEndpointChangeEnumerationStatus struct {
 	// READ-ONLY; Change enumeration activity
-	Activity *CloudEndpointChangeEnumerationActivity `json:"activity,omitempty" azure:"ro"`
+	Activity *CloudEndpointChangeEnumerationActivity
 
 	// READ-ONLY; Status of last completed change enumeration
-	LastEnumerationStatus *CloudEndpointLastChangeEnumerationStatus `json:"lastEnumerationStatus,omitempty" azure:"ro"`
+	LastEnumerationStatus *CloudEndpointLastChangeEnumerationStatus
 
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 }
 
 // CloudEndpointCreateParameters - The parameters used when creating a cloud endpoint.
 type CloudEndpointCreateParameters struct {
 	// The parameters used to create the cloud endpoint.
-	Properties *CloudEndpointCreateParametersProperties `json:"properties,omitempty"`
+	Properties *CloudEndpointCreateParametersProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CloudEndpointCreateParametersProperties - CloudEndpoint Properties object.
 type CloudEndpointCreateParametersProperties struct {
 	// Azure file share name
-	AzureFileShareName *string `json:"azureFileShareName,omitempty"`
+	AzureFileShareName *string
 
 	// Friendly Name
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Storage Account Resource Id
-	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
+	StorageAccountResourceID *string
 
 	// Storage Account Tenant Id
-	StorageAccountTenantID *string `json:"storageAccountTenantId,omitempty"`
+	StorageAccountTenantID *string
 }
 
 // CloudEndpointLastChangeEnumerationStatus - Cloud endpoint change enumeration status object
 type CloudEndpointLastChangeEnumerationStatus struct {
 	// READ-ONLY; Timestamp when change enumeration completed
-	CompletedTimestamp *time.Time `json:"completedTimestamp,omitempty" azure:"ro"`
+	CompletedTimestamp *time.Time
 
 	// READ-ONLY; Count of directories in the namespace
-	NamespaceDirectoriesCount *int64 `json:"namespaceDirectoriesCount,omitempty" azure:"ro"`
+	NamespaceDirectoriesCount *int64
 
 	// READ-ONLY; Count of files in the namespace
-	NamespaceFilesCount *int64 `json:"namespaceFilesCount,omitempty" azure:"ro"`
+	NamespaceFilesCount *int64
 
 	// READ-ONLY; Namespace size in bytes
-	NamespaceSizeBytes *int64 `json:"namespaceSizeBytes,omitempty" azure:"ro"`
+	NamespaceSizeBytes *int64
 
 	// READ-ONLY; Timestamp of when change enumeration is expected to run again
-	NextRunTimestamp *time.Time `json:"nextRunTimestamp,omitempty" azure:"ro"`
+	NextRunTimestamp *time.Time
 
 	// READ-ONLY; Timestamp when change enumeration started
-	StartedTimestamp *time.Time `json:"startedTimestamp,omitempty" azure:"ro"`
+	StartedTimestamp *time.Time
 }
 
 // CloudEndpointProperties - CloudEndpoint Properties object.
 type CloudEndpointProperties struct {
 	// Azure file share name
-	AzureFileShareName *string `json:"azureFileShareName,omitempty"`
+	AzureFileShareName *string
 
 	// Friendly Name
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Resource Last Operation Name
-	LastOperationName *string `json:"lastOperationName,omitempty"`
+	LastOperationName *string
 
 	// CloudEndpoint lastWorkflowId
-	LastWorkflowID *string `json:"lastWorkflowId,omitempty"`
+	LastWorkflowID *string
 
 	// Partnership Id
-	PartnershipID *string `json:"partnershipId,omitempty"`
+	PartnershipID *string
 
 	// CloudEndpoint Provisioning State
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Storage Account Resource Id
-	StorageAccountResourceID *string `json:"storageAccountResourceId,omitempty"`
+	StorageAccountResourceID *string
 
 	// Storage Account Tenant Id
-	StorageAccountTenantID *string `json:"storageAccountTenantId,omitempty"`
+	StorageAccountTenantID *string
 
 	// READ-ONLY; Backup Enabled
-	BackupEnabled *string `json:"backupEnabled,omitempty" azure:"ro"`
+	BackupEnabled *string
 
 	// READ-ONLY; Cloud endpoint change enumeration status
-	ChangeEnumerationStatus *CloudEndpointChangeEnumerationStatus `json:"changeEnumerationStatus,omitempty" azure:"ro"`
+	ChangeEnumerationStatus *CloudEndpointChangeEnumerationStatus
 }
 
 // CloudEndpointsClientBeginCreateOptions contains the optional parameters for the CloudEndpointsClient.BeginCreate method.
@@ -291,154 +291,154 @@ type CloudEndpointsClientRestoreheartbeatOptions struct {
 // CloudTieringCachePerformance - Server endpoint cloud tiering status object.
 type CloudTieringCachePerformance struct {
 	// READ-ONLY; Count of bytes that were served from the local server
-	CacheHitBytes *int64 `json:"cacheHitBytes,omitempty" azure:"ro"`
+	CacheHitBytes *int64
 
 	// READ-ONLY; Percentage of total bytes (hit + miss) that were served from the local server
-	CacheHitBytesPercent *int32 `json:"cacheHitBytesPercent,omitempty" azure:"ro"`
+	CacheHitBytesPercent *int32
 
 	// READ-ONLY; Count of bytes that were served from the cloud
-	CacheMissBytes *int64 `json:"cacheMissBytes,omitempty" azure:"ro"`
+	CacheMissBytes *int64
 
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 }
 
 // CloudTieringDatePolicyStatus - Status of the date policy
 type CloudTieringDatePolicyStatus struct {
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 
 	// READ-ONLY; Most recent access time of tiered files
-	TieredFilesMostRecentAccessTimestamp *time.Time `json:"tieredFilesMostRecentAccessTimestamp,omitempty" azure:"ro"`
+	TieredFilesMostRecentAccessTimestamp *time.Time
 }
 
 // CloudTieringFilesNotTiering - Server endpoint cloud tiering status object.
 type CloudTieringFilesNotTiering struct {
 	// READ-ONLY; Array of tiering errors
-	Errors []*FilesNotTieringError `json:"errors,omitempty" azure:"ro"`
+	Errors []*FilesNotTieringError
 
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 
 	// READ-ONLY; Last cloud tiering result (HResult)
-	TotalFileCount *int64 `json:"totalFileCount,omitempty" azure:"ro"`
+	TotalFileCount *int64
 }
 
 // CloudTieringSpaceSavings - Server endpoint cloud tiering status object.
 type CloudTieringSpaceSavings struct {
 	// READ-ONLY; Cached content size on the server
-	CachedSizeBytes *int64 `json:"cachedSizeBytes,omitempty" azure:"ro"`
+	CachedSizeBytes *int64
 
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 
 	// READ-ONLY; Count of bytes saved on the server
-	SpaceSavingsBytes *int64 `json:"spaceSavingsBytes,omitempty" azure:"ro"`
+	SpaceSavingsBytes *int64
 
 	// READ-ONLY; Percentage of cached size over total size
-	SpaceSavingsPercent *int32 `json:"spaceSavingsPercent,omitempty" azure:"ro"`
+	SpaceSavingsPercent *int32
 
 	// READ-ONLY; Total size of content in the azure file share
-	TotalSizeCloudBytes *int64 `json:"totalSizeCloudBytes,omitempty" azure:"ro"`
+	TotalSizeCloudBytes *int64
 
 	// READ-ONLY; Volume size
-	VolumeSizeBytes *int64 `json:"volumeSizeBytes,omitempty" azure:"ro"`
+	VolumeSizeBytes *int64
 }
 
 // CloudTieringVolumeFreeSpacePolicyStatus - Status of the volume free space policy
 type CloudTieringVolumeFreeSpacePolicyStatus struct {
 	// READ-ONLY; Current volume free space percentage.
-	CurrentVolumeFreeSpacePercent *int32 `json:"currentVolumeFreeSpacePercent,omitempty" azure:"ro"`
+	CurrentVolumeFreeSpacePercent *int32
 
 	// READ-ONLY; In the case where multiple server endpoints are present in a volume, an effective free space policy is applied.
-	EffectiveVolumeFreeSpacePolicy *int32 `json:"effectiveVolumeFreeSpacePolicy,omitempty" azure:"ro"`
+	EffectiveVolumeFreeSpacePolicy *int32
 
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 }
 
 // Error type
 type Error struct {
 	// Error details of the given entry.
-	Error *APIError `json:"error,omitempty"`
+	Error *APIError
 
 	// Error details of the given entry.
-	Innererror *APIError `json:"innererror,omitempty"`
+	Innererror *APIError
 }
 
 // ErrorDetails - Error Details object.
 type ErrorDetails struct {
 	// Error code of the given entry.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Exception type of the given entry.
-	ExceptionType *string `json:"exceptionType,omitempty"`
+	ExceptionType *string
 
 	// HTTP error code of the given entry.
-	HTTPErrorCode *string `json:"httpErrorCode,omitempty"`
+	HTTPErrorCode *string
 
 	// HTTP method of the given entry.
-	HTTPMethod *string `json:"httpMethod,omitempty"`
+	HTTPMethod *string
 
 	// Hashed message of the given entry.
-	HashedMessage *string `json:"hashedMessage,omitempty"`
+	HashedMessage *string
 
 	// Error message of the given entry.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Request URI of the given entry.
-	RequestURI *string `json:"requestUri,omitempty"`
+	RequestURI *string
 
 	// Target of the given entry.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // FilesNotTieringError - Files not tiering error object
 type FilesNotTieringError struct {
 	// READ-ONLY; Error code (HResult)
-	ErrorCode *int32 `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *int32
 
 	// READ-ONLY; Count of files with this error
-	FileCount *int64 `json:"fileCount,omitempty" azure:"ro"`
+	FileCount *int64
 }
 
 // InnerErrorDetails - Error Details object.
 type InnerErrorDetails struct {
 	// Call stack of the error.
-	CallStack *string `json:"callStack,omitempty"`
+	CallStack *string
 
 	// Exception of the inner error.
-	InnerException *string `json:"innerException,omitempty"`
+	InnerException *string
 
 	// Call stack of the inner error.
-	InnerExceptionCallStack *string `json:"innerExceptionCallStack,omitempty"`
+	InnerExceptionCallStack *string
 
 	// Error message of the error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // LocationOperationStatus - Operation status object
 type LocationOperationStatus struct {
 	// READ-ONLY; End time of the operation
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Error details.
-	Error *APIError `json:"error,omitempty" azure:"ro"`
+	Error *APIError
 
 	// READ-ONLY; Operation resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Operation Id
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Percent complete.
-	PercentComplete *int32 `json:"percentComplete,omitempty" azure:"ro"`
+	PercentComplete *int32
 
 	// READ-ONLY; Start time of the operation
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Operation status
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // MicrosoftStorageSyncClientLocationOperationStatusOptions contains the optional parameters for the MicrosoftStorageSyncClient.LocationOperationStatus
@@ -450,124 +450,124 @@ type MicrosoftStorageSyncClientLocationOperationStatusOptions struct {
 // OperationDisplayInfo - The operation supported by storage sync.
 type OperationDisplayInfo struct {
 	// The description of the operation.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The action that users can perform, based on their permission level.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft StorageSync.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationDisplayResource - Operation Display Resource object.
 type OperationDisplayResource struct {
 	// Operation Display Resource Description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation Display Resource Operation.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Operation Display Resource Provider.
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Operation Display Resource.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationEntity - The operation supported by storage sync.
 type OperationEntity struct {
 	// The operation supported by storage sync.
-	Display *OperationDisplayInfo `json:"display,omitempty"`
+	Display *OperationDisplayInfo
 
 	// Operation name: {provider}/{resource}/{operation}.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The origin.
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operations resource.
-	Properties *OperationProperties `json:"properties,omitempty"`
+	Properties *OperationProperties
 }
 
 // OperationEntityListResult - The list of storage sync operations.
 type OperationEntityListResult struct {
 	// The link used to get the next page of operations.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of operations.
-	Value []*OperationEntity `json:"value,omitempty"`
+	Value []*OperationEntity
 }
 
 // OperationProperties - Properties of the operations resource.
 type OperationProperties struct {
 	// Service specification for the operations resource.
-	ServiceSpecification *OperationResourceServiceSpecification `json:"serviceSpecification,omitempty"`
+	ServiceSpecification *OperationResourceServiceSpecification
 }
 
 // OperationResourceMetricSpecification - Operation Display Resource object.
 type OperationResourceMetricSpecification struct {
 	// Aggregation type for the metric.
-	AggregationType *string `json:"aggregationType,omitempty"`
+	AggregationType *string
 
 	// Dimensions for the metric specification.
-	Dimensions []*OperationResourceMetricSpecificationDimension `json:"dimensions,omitempty"`
+	Dimensions []*OperationResourceMetricSpecificationDimension
 
 	// Display description for the metric.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// Display name for the metric.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Fill gaps in the metric with zero.
-	FillGapWithZero *bool `json:"fillGapWithZero,omitempty"`
+	FillGapWithZero *bool
 
 	// Name of the metric.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Supported aggregation types for the metric.
-	SupportedAggregationTypes []*string `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*string
 
 	// Unit for the metric.
-	Unit *string `json:"unit,omitempty"`
+	Unit *string
 }
 
 // OperationResourceMetricSpecificationDimension object.
 type OperationResourceMetricSpecificationDimension struct {
 	// Display name of the dimensions.
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Name of the dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Indicates metric should be exported for Shoebox.
-	ToBeExportedForShoebox *bool `json:"toBeExportedForShoebox,omitempty"`
+	ToBeExportedForShoebox *bool
 }
 
 // OperationResourceServiceSpecification - Service specification.
 type OperationResourceServiceSpecification struct {
 	// List of metric specifications.
-	MetricSpecifications []*OperationResourceMetricSpecification `json:"metricSpecifications,omitempty"`
+	MetricSpecifications []*OperationResourceMetricSpecification
 }
 
 // OperationStatus - Operation status object
 type OperationStatus struct {
 	// READ-ONLY; End time of the operation
-	EndTime *time.Time `json:"endTime,omitempty" azure:"ro"`
+	EndTime *time.Time
 
 	// READ-ONLY; Error details.
-	Error *APIError `json:"error,omitempty" azure:"ro"`
+	Error *APIError
 
 	// READ-ONLY; Operation Id
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Start time of the operation
-	StartTime *time.Time `json:"startTime,omitempty" azure:"ro"`
+	StartTime *time.Time
 
 	// READ-ONLY; Operation status
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 }
 
 // OperationStatusClientGetOptions contains the optional parameters for the OperationStatusClient.Get method.
@@ -583,112 +583,112 @@ type OperationsClientListOptions struct {
 // PostBackupResponse - Post Backup Response
 type PostBackupResponse struct {
 	// Post Backup Response Properties
-	BackupMetadata *PostBackupResponseProperties `json:"backupMetadata,omitempty"`
+	BackupMetadata *PostBackupResponseProperties
 }
 
 // PostBackupResponseProperties - Post Backup Response Properties object.
 type PostBackupResponseProperties struct {
 	// READ-ONLY; cloud endpoint Name.
-	CloudEndpointName *string `json:"cloudEndpointName,omitempty" azure:"ro"`
+	CloudEndpointName *string
 }
 
 // PostRestoreRequest - Post Restore Request
 type PostRestoreRequest struct {
 	// Post Restore Azure file share uri.
-	AzureFileShareURI *string `json:"azureFileShareUri,omitempty"`
+	AzureFileShareURI *string
 
 	// Post Restore Azure failed file list.
-	FailedFileList *string `json:"failedFileList,omitempty"`
+	FailedFileList *string
 
 	// Post Restore partition.
-	Partition *string `json:"partition,omitempty"`
+	Partition *string
 
 	// Post Restore replica group.
-	ReplicaGroup *string `json:"replicaGroup,omitempty"`
+	ReplicaGroup *string
 
 	// Post Restore request id.
-	RequestID *string `json:"requestId,omitempty"`
+	RequestID *string
 
 	// Post Restore restore file spec array.
-	RestoreFileSpec []*RestoreFileSpec `json:"restoreFileSpec,omitempty"`
+	RestoreFileSpec []*RestoreFileSpec
 
 	// Post Restore Azure source azure file share uri.
-	SourceAzureFileShareURI *string `json:"sourceAzureFileShareUri,omitempty"`
+	SourceAzureFileShareURI *string
 
 	// Post Restore Azure status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // PreRestoreRequest - Pre Restore request object.
 type PreRestoreRequest struct {
 	// Pre Restore Azure file share uri.
-	AzureFileShareURI *string `json:"azureFileShareUri,omitempty"`
+	AzureFileShareURI *string
 
 	// Pre Restore backup metadata property bag.
-	BackupMetadataPropertyBag *string `json:"backupMetadataPropertyBag,omitempty"`
+	BackupMetadataPropertyBag *string
 
 	// Pre Restore partition.
-	Partition *string `json:"partition,omitempty"`
+	Partition *string
 
 	// Pre Restore pause wait for sync drain time period in seconds.
-	PauseWaitForSyncDrainTimePeriodInSeconds *int32 `json:"pauseWaitForSyncDrainTimePeriodInSeconds,omitempty"`
+	PauseWaitForSyncDrainTimePeriodInSeconds *int32
 
 	// Pre Restore replica group.
-	ReplicaGroup *string `json:"replicaGroup,omitempty"`
+	ReplicaGroup *string
 
 	// Pre Restore request id.
-	RequestID *string `json:"requestId,omitempty"`
+	RequestID *string
 
 	// Pre Restore restore file spec array.
-	RestoreFileSpec []*RestoreFileSpec `json:"restoreFileSpec,omitempty"`
+	RestoreFileSpec []*RestoreFileSpec
 
 	// Pre Restore Azure source azure file share uri.
-	SourceAzureFileShareURI *string `json:"sourceAzureFileShareUri,omitempty"`
+	SourceAzureFileShareURI *string
 
 	// Pre Restore Azure status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreate
@@ -720,37 +720,37 @@ type PrivateEndpointConnectionsClientListByStorageSyncServiceOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientListByStorageSyncServiceOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByStorageSyncService
@@ -763,182 +763,182 @@ type PrivateLinkResourcesClientListByStorageSyncServiceOptions struct {
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecallActionParameters - The parameters used when calling recall action on server endpoint.
 type RecallActionParameters struct {
 	// Pattern of the files.
-	Pattern *string `json:"pattern,omitempty"`
+	Pattern *string
 
 	// Recall path.
-	RecallPath *string `json:"recallPath,omitempty"`
+	RecallPath *string
 }
 
 // RegisteredServer - Registered Server resource.
 type RegisteredServer struct {
 	// RegisteredServer properties.
-	Properties *RegisteredServerProperties `json:"properties,omitempty"`
+	Properties *RegisteredServerProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RegisteredServerArray - Array of RegisteredServer
 type RegisteredServerArray struct {
 	// Collection of Registered Server.
-	Value []*RegisteredServer `json:"value,omitempty"`
+	Value []*RegisteredServer
 }
 
 // RegisteredServerCreateParameters - The parameters used when creating a registered server.
 type RegisteredServerCreateParameters struct {
 	// The parameters used to create the registered server.
-	Properties *RegisteredServerCreateParametersProperties `json:"properties,omitempty"`
+	Properties *RegisteredServerCreateParametersProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RegisteredServerCreateParametersProperties - RegisteredServer Create Properties object.
 type RegisteredServerCreateParametersProperties struct {
 	// Registered Server Agent Version
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// Registered Server clusterId
-	ClusterID *string `json:"clusterId,omitempty"`
+	ClusterID *string
 
 	// Registered Server clusterName
-	ClusterName *string `json:"clusterName,omitempty"`
+	ClusterName *string
 
 	// Friendly Name
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Registered Server last heart beat
-	LastHeartBeat *string `json:"lastHeartBeat,omitempty"`
+	LastHeartBeat *string
 
 	// Registered Server Certificate
-	ServerCertificate *string `json:"serverCertificate,omitempty"`
+	ServerCertificate *string
 
 	// Registered Server serverId
-	ServerID *string `json:"serverId,omitempty"`
+	ServerID *string
 
 	// Registered Server OS Version
-	ServerOSVersion *string `json:"serverOSVersion,omitempty"`
+	ServerOSVersion *string
 
 	// Registered Server serverRole
-	ServerRole *string `json:"serverRole,omitempty"`
+	ServerRole *string
 }
 
 // RegisteredServerProperties - RegisteredServer Properties object.
 type RegisteredServerProperties struct {
 	// Registered Server Agent Version
-	AgentVersion *string `json:"agentVersion,omitempty"`
+	AgentVersion *string
 
 	// Registered Server clusterId
-	ClusterID *string `json:"clusterId,omitempty"`
+	ClusterID *string
 
 	// Registered Server clusterName
-	ClusterName *string `json:"clusterName,omitempty"`
+	ClusterName *string
 
 	// Resource discoveryEndpointUri
-	DiscoveryEndpointURI *string `json:"discoveryEndpointUri,omitempty"`
+	DiscoveryEndpointURI *string
 
 	// Friendly Name
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Registered Server last heart beat
-	LastHeartBeat *string `json:"lastHeartBeat,omitempty"`
+	LastHeartBeat *string
 
 	// Resource Last Operation Name
-	LastOperationName *string `json:"lastOperationName,omitempty"`
+	LastOperationName *string
 
 	// Registered Server lastWorkflowId
-	LastWorkflowID *string `json:"lastWorkflowId,omitempty"`
+	LastWorkflowID *string
 
 	// Management Endpoint Uri
-	ManagementEndpointURI *string `json:"managementEndpointUri,omitempty"`
+	ManagementEndpointURI *string
 
 	// Monitoring Configuration
-	MonitoringConfiguration *string `json:"monitoringConfiguration,omitempty"`
+	MonitoringConfiguration *string
 
 	// Telemetry Endpoint Uri
-	MonitoringEndpointURI *string `json:"monitoringEndpointUri,omitempty"`
+	MonitoringEndpointURI *string
 
 	// Registered Server Provisioning State
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// Resource Location
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	ResourceLocation *string
 
 	// Registered Server Certificate
-	ServerCertificate *string `json:"serverCertificate,omitempty"`
+	ServerCertificate *string
 
 	// Registered Server serverId
-	ServerID *string `json:"serverId,omitempty"`
+	ServerID *string
 
 	// Registered Server Management Error Code
-	ServerManagementErrorCode *int32 `json:"serverManagementErrorCode,omitempty"`
+	ServerManagementErrorCode *int32
 
 	// Registered Server OS Version
-	ServerOSVersion *string `json:"serverOSVersion,omitempty"`
+	ServerOSVersion *string
 
 	// Registered Server serverRole
-	ServerRole *string `json:"serverRole,omitempty"`
+	ServerRole *string
 
 	// Service Location
-	ServiceLocation *string `json:"serviceLocation,omitempty"`
+	ServiceLocation *string
 
 	// Registered Server storageSyncServiceUid
-	StorageSyncServiceUID *string `json:"storageSyncServiceUid,omitempty"`
+	StorageSyncServiceUID *string
 
 	// READ-ONLY; Registered Server Agent Version Expiration Date
-	AgentVersionExpirationDate *time.Time `json:"agentVersionExpirationDate,omitempty" azure:"ro"`
+	AgentVersionExpirationDate *time.Time
 
 	// READ-ONLY; Registered Server Agent Version Status
-	AgentVersionStatus *RegisteredServerAgentVersionStatus `json:"agentVersionStatus,omitempty" azure:"ro"`
+	AgentVersionStatus *RegisteredServerAgentVersionStatus
 
 	// READ-ONLY; Server name
-	ServerName *string `json:"serverName,omitempty" azure:"ro"`
+	ServerName *string
 }
 
 // RegisteredServersClientBeginCreateOptions contains the optional parameters for the RegisteredServersClient.BeginCreate
@@ -976,376 +976,376 @@ type RegisteredServersClientListByStorageSyncServiceOptions struct {
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourcesMoveInfo - Resource Move Info.
 type ResourcesMoveInfo struct {
 	// Collection of Resources.
-	Resources []*string `json:"resources,omitempty"`
+	Resources []*string
 
 	// Target resource group.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+	TargetResourceGroup *string
 }
 
 // RestoreFileSpec - Restore file spec.
 type RestoreFileSpec struct {
 	// Restore file spec isdir
-	Isdir *bool `json:"isdir,omitempty"`
+	Isdir *bool
 
 	// Restore file spec path
-	Path *string `json:"path,omitempty"`
+	Path *string
 }
 
 // ServerEndpoint - Server Endpoint object.
 type ServerEndpoint struct {
 	// Server Endpoint properties.
-	Properties *ServerEndpointProperties `json:"properties,omitempty"`
+	Properties *ServerEndpointProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServerEndpointArray - Array of ServerEndpoint
 type ServerEndpointArray struct {
 	// Collection of ServerEndpoint.
-	Value []*ServerEndpoint `json:"value,omitempty"`
+	Value []*ServerEndpoint
 }
 
 // ServerEndpointBackgroundDataDownloadActivity - Background data download activity object
 type ServerEndpointBackgroundDataDownloadActivity struct {
 	// READ-ONLY; Running count of bytes downloaded
-	DownloadedBytes *int64 `json:"downloadedBytes,omitempty" azure:"ro"`
+	DownloadedBytes *int64
 
 	// READ-ONLY; Progress percentage
-	PercentProgress *int32 `json:"percentProgress,omitempty" azure:"ro"`
+	PercentProgress *int32
 
 	// READ-ONLY; Timestamp when the operation started
-	StartedTimestamp *time.Time `json:"startedTimestamp,omitempty" azure:"ro"`
+	StartedTimestamp *time.Time
 
 	// READ-ONLY; Timestamp when properties were updated
-	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
+	Timestamp *time.Time
 }
 
 // ServerEndpointCloudTieringStatus - Server endpoint cloud tiering status object.
 type ServerEndpointCloudTieringStatus struct {
 	// READ-ONLY; Information regarding how well the local cache on the server is performing.
-	CachePerformance *CloudTieringCachePerformance `json:"cachePerformance,omitempty" azure:"ro"`
+	CachePerformance *CloudTieringCachePerformance
 
 	// READ-ONLY; Status of the date policy
-	DatePolicyStatus *CloudTieringDatePolicyStatus `json:"datePolicyStatus,omitempty" azure:"ro"`
+	DatePolicyStatus *CloudTieringDatePolicyStatus
 
 	// READ-ONLY; Information regarding files that failed to be tiered
-	FilesNotTiering *CloudTieringFilesNotTiering `json:"filesNotTiering,omitempty" azure:"ro"`
+	FilesNotTiering *CloudTieringFilesNotTiering
 
 	// READ-ONLY; Cloud tiering health state.
-	Health *ServerEndpointHealthState `json:"health,omitempty" azure:"ro"`
+	Health *ServerEndpointHealthState
 
 	// READ-ONLY; The last updated timestamp of health state
-	HealthLastUpdatedTimestamp *time.Time `json:"healthLastUpdatedTimestamp,omitempty" azure:"ro"`
+	HealthLastUpdatedTimestamp *time.Time
 
 	// READ-ONLY; Last cloud tiering result (HResult)
-	LastCloudTieringResult *int32 `json:"lastCloudTieringResult,omitempty" azure:"ro"`
+	LastCloudTieringResult *int32
 
 	// READ-ONLY; Last cloud tiering success timestamp
-	LastSuccessTimestamp *time.Time `json:"lastSuccessTimestamp,omitempty" azure:"ro"`
+	LastSuccessTimestamp *time.Time
 
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 
 	// READ-ONLY; Information regarding how much local space cloud tiering is saving.
-	SpaceSavings *CloudTieringSpaceSavings `json:"spaceSavings,omitempty" azure:"ro"`
+	SpaceSavings *CloudTieringSpaceSavings
 
 	// READ-ONLY; Status of the volume free space policy
-	VolumeFreeSpacePolicyStatus *CloudTieringVolumeFreeSpacePolicyStatus `json:"volumeFreeSpacePolicyStatus,omitempty" azure:"ro"`
+	VolumeFreeSpacePolicyStatus *CloudTieringVolumeFreeSpacePolicyStatus
 }
 
 // ServerEndpointCreateParameters - The parameters used when creating a server endpoint.
 type ServerEndpointCreateParameters struct {
 	// The parameters used to create the server endpoint.
-	Properties *ServerEndpointCreateParametersProperties `json:"properties,omitempty"`
+	Properties *ServerEndpointCreateParametersProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServerEndpointCreateParametersProperties - ServerEndpoint Properties object.
 type ServerEndpointCreateParametersProperties struct {
 	// Cloud Tiering.
-	CloudTiering *FeatureStatus `json:"cloudTiering,omitempty"`
+	CloudTiering *FeatureStatus
 
 	// Friendly Name
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Policy for how namespace and files are recalled during FastDr.
-	InitialDownloadPolicy *InitialDownloadPolicy `json:"initialDownloadPolicy,omitempty"`
+	InitialDownloadPolicy *InitialDownloadPolicy
 
 	// Policy for how the initial upload sync session is performed.
-	InitialUploadPolicy *InitialUploadPolicy `json:"initialUploadPolicy,omitempty"`
+	InitialUploadPolicy *InitialUploadPolicy
 
 	// Policy for enabling follow-the-sun business models: link local cache to cloud behavior to pre-populate before local access.
-	LocalCacheMode *LocalCacheMode `json:"localCacheMode,omitempty"`
+	LocalCacheMode *LocalCacheMode
 
 	// Offline data transfer
-	OfflineDataTransfer *FeatureStatus `json:"offlineDataTransfer,omitempty"`
+	OfflineDataTransfer *FeatureStatus
 
 	// Offline data transfer share name
-	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
+	OfflineDataTransferShareName *string
 
 	// Server Local path.
-	ServerLocalPath *string `json:"serverLocalPath,omitempty"`
+	ServerLocalPath *string
 
 	// Server Resource Id.
-	ServerResourceID *string `json:"serverResourceId,omitempty"`
+	ServerResourceID *string
 
 	// Tier files older than days.
-	TierFilesOlderThanDays *int32 `json:"tierFilesOlderThanDays,omitempty"`
+	TierFilesOlderThanDays *int32
 
 	// Level of free space to be maintained by Cloud Tiering if it is enabled.
-	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
+	VolumeFreeSpacePercent *int32
 }
 
 // ServerEndpointFilesNotSyncingError - Files not syncing error object
 type ServerEndpointFilesNotSyncingError struct {
 	// READ-ONLY; Error code (HResult)
-	ErrorCode *int32 `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *int32
 
 	// READ-ONLY; Count of persistent files not syncing with the specified error code
-	PersistentCount *int64 `json:"persistentCount,omitempty" azure:"ro"`
+	PersistentCount *int64
 
 	// READ-ONLY; Count of transient files not syncing with the specified error code
-	TransientCount *int64 `json:"transientCount,omitempty" azure:"ro"`
+	TransientCount *int64
 }
 
 // ServerEndpointProperties - ServerEndpoint Properties object.
 type ServerEndpointProperties struct {
 	// Cloud Tiering.
-	CloudTiering *FeatureStatus `json:"cloudTiering,omitempty"`
+	CloudTiering *FeatureStatus
 
 	// Friendly Name
-	FriendlyName *string `json:"friendlyName,omitempty"`
+	FriendlyName *string
 
 	// Policy for how namespace and files are recalled during FastDr.
-	InitialDownloadPolicy *InitialDownloadPolicy `json:"initialDownloadPolicy,omitempty"`
+	InitialDownloadPolicy *InitialDownloadPolicy
 
 	// Policy for how the initial upload sync session is performed.
-	InitialUploadPolicy *InitialUploadPolicy `json:"initialUploadPolicy,omitempty"`
+	InitialUploadPolicy *InitialUploadPolicy
 
 	// Policy for enabling follow-the-sun business models: link local cache to cloud behavior to pre-populate before local access.
-	LocalCacheMode *LocalCacheMode `json:"localCacheMode,omitempty"`
+	LocalCacheMode *LocalCacheMode
 
 	// Offline data transfer
-	OfflineDataTransfer *FeatureStatus `json:"offlineDataTransfer,omitempty"`
+	OfflineDataTransfer *FeatureStatus
 
 	// Offline data transfer share name
-	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
+	OfflineDataTransferShareName *string
 
 	// Server Local path.
-	ServerLocalPath *string `json:"serverLocalPath,omitempty"`
+	ServerLocalPath *string
 
 	// Server Resource Id.
-	ServerResourceID *string `json:"serverResourceId,omitempty"`
+	ServerResourceID *string
 
 	// Tier files older than days.
-	TierFilesOlderThanDays *int32 `json:"tierFilesOlderThanDays,omitempty"`
+	TierFilesOlderThanDays *int32
 
 	// Level of free space to be maintained by Cloud Tiering if it is enabled.
-	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
+	VolumeFreeSpacePercent *int32
 
 	// READ-ONLY; Cloud tiering status. Only populated if cloud tiering is enabled.
-	CloudTieringStatus *ServerEndpointCloudTieringStatus `json:"cloudTieringStatus,omitempty" azure:"ro"`
+	CloudTieringStatus *ServerEndpointCloudTieringStatus
 
 	// READ-ONLY; Resource Last Operation Name
-	LastOperationName *string `json:"lastOperationName,omitempty" azure:"ro"`
+	LastOperationName *string
 
 	// READ-ONLY; ServerEndpoint lastWorkflowId
-	LastWorkflowID *string `json:"lastWorkflowId,omitempty" azure:"ro"`
+	LastWorkflowID *string
 
 	// READ-ONLY; Offline data transfer storage account resource ID
-	OfflineDataTransferStorageAccountResourceID *string `json:"offlineDataTransferStorageAccountResourceId,omitempty" azure:"ro"`
+	OfflineDataTransferStorageAccountResourceID *string
 
 	// READ-ONLY; Offline data transfer storage account tenant ID
-	OfflineDataTransferStorageAccountTenantID *string `json:"offlineDataTransferStorageAccountTenantId,omitempty" azure:"ro"`
+	OfflineDataTransferStorageAccountTenantID *string
 
 	// READ-ONLY; ServerEndpoint Provisioning State
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Recall status. Only populated if cloud tiering is enabled.
-	RecallStatus *ServerEndpointRecallStatus `json:"recallStatus,omitempty" azure:"ro"`
+	RecallStatus *ServerEndpointRecallStatus
 
 	// READ-ONLY; Server name
-	ServerName *string `json:"serverName,omitempty" azure:"ro"`
+	ServerName *string
 
 	// READ-ONLY; Server Endpoint sync status
-	SyncStatus *ServerEndpointSyncStatus `json:"syncStatus,omitempty" azure:"ro"`
+	SyncStatus *ServerEndpointSyncStatus
 }
 
 // ServerEndpointRecallError - Server endpoint recall error object
 type ServerEndpointRecallError struct {
 	// READ-ONLY; Count of occurences of the error
-	Count *int64 `json:"count,omitempty" azure:"ro"`
+	Count *int64
 
 	// READ-ONLY; Error code (HResult)
-	ErrorCode *int32 `json:"errorCode,omitempty" azure:"ro"`
+	ErrorCode *int32
 }
 
 // ServerEndpointRecallStatus - Server endpoint recall status object.
 type ServerEndpointRecallStatus struct {
 	// READ-ONLY; Last updated timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 
 	// READ-ONLY; Array of recall errors
-	RecallErrors []*ServerEndpointRecallError `json:"recallErrors,omitempty" azure:"ro"`
+	RecallErrors []*ServerEndpointRecallError
 
 	// READ-ONLY; Total count of recall errors.
-	TotalRecallErrorsCount *int64 `json:"totalRecallErrorsCount,omitempty" azure:"ro"`
+	TotalRecallErrorsCount *int64
 }
 
 // ServerEndpointSyncActivityStatus - Sync Session status object.
 type ServerEndpointSyncActivityStatus struct {
 	// READ-ONLY; Applied bytes
-	AppliedBytes *int64 `json:"appliedBytes,omitempty" azure:"ro"`
+	AppliedBytes *int64
 
 	// READ-ONLY; Applied item count.
-	AppliedItemCount *int64 `json:"appliedItemCount,omitempty" azure:"ro"`
+	AppliedItemCount *int64
 
 	// READ-ONLY; Per item error count
-	PerItemErrorCount *int64 `json:"perItemErrorCount,omitempty" azure:"ro"`
+	PerItemErrorCount *int64
 
 	// READ-ONLY; Session minutes remaining (if available)
-	SessionMinutesRemaining *int32 `json:"sessionMinutesRemaining,omitempty" azure:"ro"`
+	SessionMinutesRemaining *int32
 
 	// READ-ONLY; Sync mode
-	SyncMode *ServerEndpointSyncMode `json:"syncMode,omitempty" azure:"ro"`
+	SyncMode *ServerEndpointSyncMode
 
 	// READ-ONLY; Timestamp when properties were updated
-	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
+	Timestamp *time.Time
 
 	// READ-ONLY; Total bytes (if available)
-	TotalBytes *int64 `json:"totalBytes,omitempty" azure:"ro"`
+	TotalBytes *int64
 
 	// READ-ONLY; Total item count (if available)
-	TotalItemCount *int64 `json:"totalItemCount,omitempty" azure:"ro"`
+	TotalItemCount *int64
 }
 
 // ServerEndpointSyncSessionStatus - Sync Session status object.
 type ServerEndpointSyncSessionStatus struct {
 	// READ-ONLY; Array of per-item errors coming from the last sync session.
-	FilesNotSyncingErrors []*ServerEndpointFilesNotSyncingError `json:"filesNotSyncingErrors,omitempty" azure:"ro"`
+	FilesNotSyncingErrors []*ServerEndpointFilesNotSyncingError
 
 	// READ-ONLY; Sync mode
-	LastSyncMode *ServerEndpointSyncMode `json:"lastSyncMode,omitempty" azure:"ro"`
+	LastSyncMode *ServerEndpointSyncMode
 
 	// READ-ONLY; Last sync per item error count.
-	LastSyncPerItemErrorCount *int64 `json:"lastSyncPerItemErrorCount,omitempty" azure:"ro"`
+	LastSyncPerItemErrorCount *int64
 
 	// READ-ONLY; Last sync result (HResult)
-	LastSyncResult *int32 `json:"lastSyncResult,omitempty" azure:"ro"`
+	LastSyncResult *int32
 
 	// READ-ONLY; Last sync success timestamp
-	LastSyncSuccessTimestamp *time.Time `json:"lastSyncSuccessTimestamp,omitempty" azure:"ro"`
+	LastSyncSuccessTimestamp *time.Time
 
 	// READ-ONLY; Last sync timestamp
-	LastSyncTimestamp *time.Time `json:"lastSyncTimestamp,omitempty" azure:"ro"`
+	LastSyncTimestamp *time.Time
 
 	// READ-ONLY; Count of persistent files not syncing.
-	PersistentFilesNotSyncingCount *int64 `json:"persistentFilesNotSyncingCount,omitempty" azure:"ro"`
+	PersistentFilesNotSyncingCount *int64
 
 	// READ-ONLY; Count of transient files not syncing.
-	TransientFilesNotSyncingCount *int64 `json:"transientFilesNotSyncingCount,omitempty" azure:"ro"`
+	TransientFilesNotSyncingCount *int64
 }
 
 // ServerEndpointSyncStatus - Server Endpoint sync status
 type ServerEndpointSyncStatus struct {
 	// READ-ONLY; Background data download activity
-	BackgroundDataDownloadActivity *ServerEndpointBackgroundDataDownloadActivity `json:"backgroundDataDownloadActivity,omitempty" azure:"ro"`
+	BackgroundDataDownloadActivity *ServerEndpointBackgroundDataDownloadActivity
 
 	// READ-ONLY; Combined Health Status.
-	CombinedHealth *ServerEndpointHealthState `json:"combinedHealth,omitempty" azure:"ro"`
+	CombinedHealth *ServerEndpointHealthState
 
 	// READ-ONLY; Download sync activity
-	DownloadActivity *ServerEndpointSyncActivityStatus `json:"downloadActivity,omitempty" azure:"ro"`
+	DownloadActivity *ServerEndpointSyncActivityStatus
 
 	// READ-ONLY; Download Health Status.
-	DownloadHealth *ServerEndpointHealthState `json:"downloadHealth,omitempty" azure:"ro"`
+	DownloadHealth *ServerEndpointHealthState
 
 	// READ-ONLY; Download Status
-	DownloadStatus *ServerEndpointSyncSessionStatus `json:"downloadStatus,omitempty" azure:"ro"`
+	DownloadStatus *ServerEndpointSyncSessionStatus
 
 	// READ-ONLY; Last Updated Timestamp
-	LastUpdatedTimestamp *time.Time `json:"lastUpdatedTimestamp,omitempty" azure:"ro"`
+	LastUpdatedTimestamp *time.Time
 
 	// READ-ONLY; Offline Data Transfer State
-	OfflineDataTransferStatus *ServerEndpointOfflineDataTransferState `json:"offlineDataTransferStatus,omitempty" azure:"ro"`
+	OfflineDataTransferStatus *ServerEndpointOfflineDataTransferState
 
 	// READ-ONLY; Sync activity
-	SyncActivity *ServerEndpointSyncActivityState `json:"syncActivity,omitempty" azure:"ro"`
+	SyncActivity *ServerEndpointSyncActivityState
 
 	// READ-ONLY; Total count of persistent files not syncing (combined upload + download).
-	TotalPersistentFilesNotSyncingCount *int64 `json:"totalPersistentFilesNotSyncingCount,omitempty" azure:"ro"`
+	TotalPersistentFilesNotSyncingCount *int64
 
 	// READ-ONLY; Upload sync activity
-	UploadActivity *ServerEndpointSyncActivityStatus `json:"uploadActivity,omitempty" azure:"ro"`
+	UploadActivity *ServerEndpointSyncActivityStatus
 
 	// READ-ONLY; Upload Health Status.
-	UploadHealth *ServerEndpointHealthState `json:"uploadHealth,omitempty" azure:"ro"`
+	UploadHealth *ServerEndpointHealthState
 
 	// READ-ONLY; Upload Status
-	UploadStatus *ServerEndpointSyncSessionStatus `json:"uploadStatus,omitempty" azure:"ro"`
+	UploadStatus *ServerEndpointSyncSessionStatus
 }
 
 // ServerEndpointUpdateParameters - Parameters for updating an Server Endpoint.
 type ServerEndpointUpdateParameters struct {
 	// The properties of the server endpoint.
-	Properties *ServerEndpointUpdateProperties `json:"properties,omitempty"`
+	Properties *ServerEndpointUpdateProperties
 }
 
 // ServerEndpointUpdateProperties - ServerEndpoint Update Properties object.
 type ServerEndpointUpdateProperties struct {
 	// Cloud Tiering.
-	CloudTiering *FeatureStatus `json:"cloudTiering,omitempty"`
+	CloudTiering *FeatureStatus
 
 	// Policy for enabling follow-the-sun business models: link local cache to cloud behavior to pre-populate before local access.
-	LocalCacheMode *LocalCacheMode `json:"localCacheMode,omitempty"`
+	LocalCacheMode *LocalCacheMode
 
 	// Offline data transfer
-	OfflineDataTransfer *FeatureStatus `json:"offlineDataTransfer,omitempty"`
+	OfflineDataTransfer *FeatureStatus
 
 	// Offline data transfer share name
-	OfflineDataTransferShareName *string `json:"offlineDataTransferShareName,omitempty"`
+	OfflineDataTransferShareName *string
 
 	// Tier files older than days.
-	TierFilesOlderThanDays *int32 `json:"tierFilesOlderThanDays,omitempty"`
+	TierFilesOlderThanDays *int32
 
 	// Level of free space to be maintained by Cloud Tiering if it is enabled.
-	VolumeFreeSpacePercent *int32 `json:"volumeFreeSpacePercent,omitempty"`
+	VolumeFreeSpacePercent *int32
 }
 
 // ServerEndpointsClientBeginCreateOptions contains the optional parameters for the ServerEndpointsClient.BeginCreate method.
@@ -1389,31 +1389,31 @@ type ServerEndpointsClientListBySyncGroupOptions struct {
 // Service - Storage Sync Service object.
 type Service struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Storage Sync Service properties.
-	Properties *ServiceProperties `json:"properties,omitempty"`
+	Properties *ServiceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServiceArray - Array of StorageSyncServices
 type ServiceArray struct {
 	// Collection of StorageSyncServices.
-	Value []*Service `json:"value,omitempty"`
+	Value []*Service
 }
 
 // ServiceCreateParameters - The parameters used when creating a storage sync service.
@@ -1421,61 +1421,61 @@ type ServiceCreateParameters struct {
 	// REQUIRED; Required. Gets or sets the location of the resource. This will be one of the supported and registered Azure Geo
 	// Regions (e.g. West US, East US, Southeast Asia, etc.). The geo region of a resource
 	// cannot be changed once it is created, but if an identical geo region is specified on update, the request will succeed.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The parameters used to create the storage sync service.
-	Properties *ServiceCreateParametersProperties `json:"properties,omitempty"`
+	Properties *ServiceCreateParametersProperties
 
 	// Gets or sets a list of key value pairs that describe the resource. These tags can be used for viewing and grouping this
 	// resource (across resource groups). A maximum of 15 tags can be provided for a
 	// resource. Each tag must have a key with a length no greater than 128 characters and a value with a length no greater than
 	// 256 characters.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ServiceCreateParametersProperties - StorageSyncService Properties object.
 type ServiceCreateParametersProperties struct {
 	// Incoming Traffic Policy
-	IncomingTrafficPolicy *IncomingTrafficPolicy `json:"incomingTrafficPolicy,omitempty"`
+	IncomingTrafficPolicy *IncomingTrafficPolicy
 }
 
 // ServiceProperties - Storage Sync Service Properties object.
 type ServiceProperties struct {
 	// Incoming Traffic Policy
-	IncomingTrafficPolicy *IncomingTrafficPolicy `json:"incomingTrafficPolicy,omitempty"`
+	IncomingTrafficPolicy *IncomingTrafficPolicy
 
 	// READ-ONLY; Resource Last Operation Name
-	LastOperationName *string `json:"lastOperationName,omitempty" azure:"ro"`
+	LastOperationName *string
 
 	// READ-ONLY; StorageSyncService lastWorkflowId
-	LastWorkflowID *string `json:"lastWorkflowId,omitempty" azure:"ro"`
+	LastWorkflowID *string
 
 	// READ-ONLY; List of private endpoint connection associated with the specified storage sync service
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; StorageSyncService Provisioning State
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 
 	// READ-ONLY; Storage Sync service status.
-	StorageSyncServiceStatus *int32 `json:"storageSyncServiceStatus,omitempty" azure:"ro"`
+	StorageSyncServiceStatus *int32
 
 	// READ-ONLY; Storage Sync service Uid
-	StorageSyncServiceUID *string `json:"storageSyncServiceUid,omitempty" azure:"ro"`
+	StorageSyncServiceUID *string
 }
 
 // ServiceUpdateParameters - Parameters for updating an Storage sync service.
 type ServiceUpdateParameters struct {
 	// The properties of the server endpoint.
-	Properties *ServiceUpdateProperties `json:"properties,omitempty"`
+	Properties *ServiceUpdateProperties
 
 	// The user-specified tags associated with the storage sync service.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ServiceUpdateProperties - StorageSyncService Properties object.
 type ServiceUpdateProperties struct {
 	// Incoming Traffic Policy
-	IncomingTrafficPolicy *IncomingTrafficPolicy `json:"incomingTrafficPolicy,omitempty"`
+	IncomingTrafficPolicy *IncomingTrafficPolicy
 }
 
 // ServicesClientBeginCreateOptions contains the optional parameters for the ServicesClient.BeginCreate method.
@@ -1524,64 +1524,64 @@ type ServicesClientListBySubscriptionOptions struct {
 // SubscriptionState - Subscription State object.
 type SubscriptionState struct {
 	// Subscription state properties.
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// State of Azure Subscription
-	State *Reason `json:"state,omitempty"`
+	State *Reason
 
 	// READ-ONLY; Is Transitioning
-	Istransitioning *bool `json:"istransitioning,omitempty" azure:"ro"`
+	Istransitioning *bool
 }
 
 // SyncGroup - Sync Group object.
 type SyncGroup struct {
 	// SyncGroup properties.
-	Properties *SyncGroupProperties `json:"properties,omitempty"`
+	Properties *SyncGroupProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SyncGroupArray - Array of SyncGroup
 type SyncGroupArray struct {
 	// Collection of SyncGroup.
-	Value []*SyncGroup `json:"value,omitempty"`
+	Value []*SyncGroup
 }
 
 // SyncGroupCreateParameters - The parameters used when creating a sync group.
 type SyncGroupCreateParameters struct {
 	// The parameters used to create the sync group
-	Properties any `json:"properties,omitempty"`
+	Properties any
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SyncGroupProperties - SyncGroup Properties object.
 type SyncGroupProperties struct {
 	// READ-ONLY; Sync group status
-	SyncGroupStatus *string `json:"syncGroupStatus,omitempty" azure:"ro"`
+	SyncGroupStatus *string
 
 	// READ-ONLY; Unique Id
-	UniqueID *string `json:"uniqueId,omitempty" azure:"ro"`
+	UniqueID *string
 }
 
 // SyncGroupsClientCreateOptions contains the optional parameters for the SyncGroupsClient.Create method.
@@ -1608,113 +1608,113 @@ type SyncGroupsClientListByStorageSyncServiceOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TriggerChangeDetectionParameters - The parameters used when calling trigger change detection action on cloud endpoint.
 type TriggerChangeDetectionParameters struct {
 	// Change Detection Mode. Applies to a directory specified in directoryPath parameter.
-	ChangeDetectionMode *ChangeDetectionMode `json:"changeDetectionMode,omitempty"`
+	ChangeDetectionMode *ChangeDetectionMode
 
 	// Relative path to a directory Azure File share for which change detection is to be performed.
-	DirectoryPath *string `json:"directoryPath,omitempty"`
+	DirectoryPath *string
 
 	// Array of relative paths on the Azure File share to be included in the change detection. Can be files and directories.
-	Paths []*string `json:"paths,omitempty"`
+	Paths []*string
 }
 
 // TriggerRolloverRequest - Trigger Rollover Request.
 type TriggerRolloverRequest struct {
 	// Certificate Data
-	ServerCertificate *string `json:"serverCertificate,omitempty"`
+	ServerCertificate *string
 }
 
 // Workflow resource.
 type Workflow struct {
 	// Workflow properties.
-	Properties *WorkflowProperties `json:"properties,omitempty"`
+	Properties *WorkflowProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // WorkflowArray - Array of Workflow
 type WorkflowArray struct {
 	// Collection of workflow items.
-	Value []*Workflow `json:"value,omitempty"`
+	Value []*Workflow
 }
 
 // WorkflowProperties - Workflow Properties object.
 type WorkflowProperties struct {
 	// workflow last operation identifier.
-	LastOperationID *string `json:"lastOperationId,omitempty"`
+	LastOperationID *string
 
 	// last step name
-	LastStepName *string `json:"lastStepName,omitempty"`
+	LastStepName *string
 
 	// operation direction.
-	Operation *OperationDirection `json:"operation,omitempty"`
+	Operation *OperationDirection
 
 	// workflow status.
-	Status *WorkflowStatus `json:"status,omitempty"`
+	Status *WorkflowStatus
 
 	// workflow steps
-	Steps *string `json:"steps,omitempty"`
+	Steps *string
 
 	// READ-ONLY; workflow command name.
-	CommandName *string `json:"commandName,omitempty" azure:"ro"`
+	CommandName *string
 
 	// READ-ONLY; workflow created timestamp.
-	CreatedTimestamp *time.Time `json:"createdTimestamp,omitempty" azure:"ro"`
+	CreatedTimestamp *time.Time
 
 	// READ-ONLY; workflow last status timestamp.
-	LastStatusTimestamp *time.Time `json:"lastStatusTimestamp,omitempty" azure:"ro"`
+	LastStatusTimestamp *time.Time
 }
 
 // WorkflowsClientAbortOptions contains the optional parameters for the WorkflowsClient.Abort method.

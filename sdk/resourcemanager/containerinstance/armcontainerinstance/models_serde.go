@@ -1072,8 +1072,8 @@ func (d *DeploymentExtensionSpec) UnmarshalJSON(data []byte) error {
 func (d DeploymentExtensionSpecProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "extensionType", d.ExtensionType)
-	populate(objectMap, "protectedSettings", &d.ProtectedSettings)
-	populate(objectMap, "settings", &d.Settings)
+	populateAny(objectMap, "protectedSettings", d.ProtectedSettings)
+	populateAny(objectMap, "settings", d.Settings)
 	populate(objectMap, "version", d.Version)
 	return json.Marshal(objectMap)
 }
@@ -1604,7 +1604,7 @@ func (o Operation) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "display", o.Display)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "origin", o.Origin)
-	populate(objectMap, "properties", &o.Properties)
+	populateAny(objectMap, "properties", o.Properties)
 	return json.Marshal(objectMap)
 }
 
@@ -2022,7 +2022,7 @@ func (u *UserAssignedIdentities) UnmarshalJSON(data []byte) error {
 func (v Volume) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "azureFile", v.AzureFile)
-	populate(objectMap, "emptyDir", &v.EmptyDir)
+	populateAny(objectMap, "emptyDir", v.EmptyDir)
 	populate(objectMap, "gitRepo", v.GitRepo)
 	populate(objectMap, "name", v.Name)
 	populate(objectMap, "secret", v.Secret)
@@ -2102,6 +2102,16 @@ func populate(m map[string]any, k string, v any) {
 	} else if azcore.IsNullValue(v) {
 		m[k] = nil
 	} else if !reflect.ValueOf(v).IsNil() {
+		m[k] = v
+	}
+}
+
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
 		m[k] = v
 	}
 }

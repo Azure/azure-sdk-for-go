@@ -52,6 +52,61 @@ type AADSolutionProperties struct {
 	Workspace *ConnectedWorkspace
 }
 
+// APICollectionClientGetOptions contains the optional parameters for the APICollectionClient.Get method.
+type APICollectionClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APICollectionClientListOptions contains the optional parameters for the APICollectionClient.NewListPager method.
+type APICollectionClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APICollectionOffboardingClientDeleteOptions contains the optional parameters for the APICollectionOffboardingClient.Delete
+// method.
+type APICollectionOffboardingClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APICollectionOnboardingClientCreateOptions contains the optional parameters for the APICollectionOnboardingClient.Create
+// method.
+type APICollectionOnboardingClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APICollectionProperties - Describes the properties of an API collection.
+type APICollectionProperties struct {
+	// Additional data regarding the API collection.
+	AdditionalData map[string]*string
+
+	// The display name of the Azure API Management API.
+	DisplayName *string
+}
+
+// APICollectionResponse - An API collection as represented by Defender for APIs.
+type APICollectionResponse struct {
+	// Describes the properties of an API collection.
+	Properties *APICollectionProperties
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// APICollectionResponseList - Page of a list of API collections as represented by Defender for APIs.
+type APICollectionResponseList struct {
+	// READ-ONLY; The URI to fetch the next page.
+	NextLink *string
+
+	// READ-ONLY; API collections in this page.
+	Value []*APICollectionResponse
+}
+
 // AccountConnectorsClientCreateOrUpdateOptions contains the optional parameters for the AccountConnectorsClient.CreateOrUpdate
 // method.
 type AccountConnectorsClientCreateOrUpdateOptions struct {
@@ -423,8 +478,9 @@ type AlertProperties struct {
 	// READ-ONLY; The name of Azure Security Center pricing tier which powering this alert. Learn more: https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
 	ProductComponentName *string
 
-	// READ-ONLY; The name of the product which published this alert (Azure Security Center, Azure ATP, Microsoft Defender ATP,
-	// O365 ATP, MCAS, and so on).
+	// READ-ONLY; The name of the product which published this alert (Microsoft Sentinel, Microsoft Defender for Identity, Microsoft
+	// Defender for Endpoint, Microsoft Defender for Office, Microsoft Defender for Cloud
+	// Apps, and so on).
 	ProductName *string
 
 	// READ-ONLY; Manual action items to take to remediate the alert.
@@ -1834,13 +1890,19 @@ func (a *AwsCredsAuthenticationDetailsProperties) GetAuthenticationDetailsProper
 	}
 }
 
-// AwsEnvironmentData - The aws connector environment data
+// AwsEnvironmentData - The AWS connector environment data
 type AwsEnvironmentData struct {
 	// REQUIRED; The type of the environment data.
 	EnvironmentType *EnvironmentType
 
 	// The AWS account's organizational data
 	OrganizationalData AwsOrganizationalDataClassification
+
+	// list of regions to scan
+	Regions []*string
+
+	// READ-ONLY; The AWS account name
+	AccountName *string
 }
 
 // GetEnvironmentData implements the EnvironmentDataClassification interface for type AwsEnvironmentData.
@@ -1859,7 +1921,7 @@ type AwsOrganizationalDataClassification interface {
 	GetAwsOrganizationalData() *AwsOrganizationalData
 }
 
-// AwsOrganizationalData - The awsOrganization data
+// AwsOrganizationalData - The AWS organization data
 type AwsOrganizationalData struct {
 	// REQUIRED; The multi cloud account's membership type in the organization
 	OrganizationMembershipType *OrganizationMembershipType
@@ -1868,7 +1930,7 @@ type AwsOrganizationalData struct {
 // GetAwsOrganizationalData implements the AwsOrganizationalDataClassification interface for type AwsOrganizationalData.
 func (a *AwsOrganizationalData) GetAwsOrganizationalData() *AwsOrganizationalData { return a }
 
-// AwsOrganizationalDataMaster - The awsOrganization data for the master account
+// AwsOrganizationalDataMaster - The AWS organization data for the master account
 type AwsOrganizationalDataMaster struct {
 	// REQUIRED; The multi cloud account's membership type in the organization
 	OrganizationMembershipType *OrganizationMembershipType
@@ -1887,7 +1949,7 @@ func (a *AwsOrganizationalDataMaster) GetAwsOrganizationalData() *AwsOrganizatio
 	}
 }
 
-// AwsOrganizationalDataMember - The awsOrganization data for the member account
+// AwsOrganizationalDataMember - The AWS organization data for the member account
 type AwsOrganizationalDataMember struct {
 	// REQUIRED; The multi cloud account's membership type in the organization
 	OrganizationMembershipType *OrganizationMembershipType
@@ -2046,10 +2108,10 @@ type CefSolutionProperties struct {
 // CloudOfferingClassification provides polymorphic access to related types.
 // Call the interface's GetCloudOffering() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *CloudOffering, *CspmMonitorAwsOffering, *CspmMonitorAzureDevOpsOffering, *CspmMonitorGcpOffering, *CspmMonitorGithubOffering,
-// - *DefenderCspmAwsOffering, *DefenderCspmGcpOffering, *DefenderFoDatabasesAwsOffering, *DefenderForContainersAwsOffering,
-// - *DefenderForContainersGcpOffering, *DefenderForDatabasesGcpOffering, *DefenderForDevOpsAzureDevOpsOffering, *DefenderForDevOpsGithubOffering,
-// - *DefenderForServersAwsOffering, *DefenderForServersGcpOffering, *InformationProtectionAwsOffering
+// - *CloudOffering, *CspmMonitorAwsOffering, *CspmMonitorAzureDevOpsOffering, *CspmMonitorGcpOffering, *CspmMonitorGitLabOffering,
+// - *CspmMonitorGithubOffering, *DefenderCspmAwsOffering, *DefenderCspmGcpOffering, *DefenderFoDatabasesAwsOffering, *DefenderForContainersAwsOffering,
+// - *DefenderForContainersGcpOffering, *DefenderForDatabasesGcpOffering, *DefenderForDevOpsAzureDevOpsOffering, *DefenderForDevOpsGitLabOffering,
+// - *DefenderForDevOpsGithubOffering, *DefenderForServersAwsOffering, *DefenderForServersGcpOffering, *InformationProtectionAwsOffering
 type CloudOfferingClassification interface {
 	// GetCloudOffering returns the CloudOffering content of the underlying type.
 	GetCloudOffering() *CloudOffering
@@ -2375,36 +2437,6 @@ type ConnectorApplicationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConnectorGovernanceRuleClientListOptions contains the optional parameters for the ConnectorGovernanceRuleClient.NewListPager
-// method.
-type ConnectorGovernanceRuleClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectorGovernanceRulesClientCreateOrUpdateOptions contains the optional parameters for the ConnectorGovernanceRulesClient.CreateOrUpdate
-// method.
-type ConnectorGovernanceRulesClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectorGovernanceRulesClientDeleteOptions contains the optional parameters for the ConnectorGovernanceRulesClient.Delete
-// method.
-type ConnectorGovernanceRulesClientDeleteOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectorGovernanceRulesClientGetOptions contains the optional parameters for the ConnectorGovernanceRulesClient.Get method.
-type ConnectorGovernanceRulesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectorGovernanceRulesExecuteStatusClientBeginGetOptions contains the optional parameters for the ConnectorGovernanceRulesExecuteStatusClient.BeginGet
-// method.
-type ConnectorGovernanceRulesExecuteStatusClientBeginGetOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
 // ConnectorProperties - A set of properties that defines the security connector configuration.
 type ConnectorProperties struct {
 	// The security connector environment data.
@@ -2687,6 +2719,23 @@ type CspmMonitorGcpOfferingNativeCloudConnection struct {
 	WorkloadIdentityProviderID *string
 }
 
+// CspmMonitorGitLabOffering - The CSPM (Cloud security posture management) monitoring for gitlab offering
+type CspmMonitorGitLabOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType
+
+	// READ-ONLY; The offering description.
+	Description *string
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type CspmMonitorGitLabOffering.
+func (c *CspmMonitorGitLabOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		OfferingType: c.OfferingType,
+		Description:  c.Description,
+	}
+}
+
 // CspmMonitorGithubOffering - The CSPM monitoring for github offering
 type CspmMonitorGithubOffering struct {
 	// REQUIRED; The type of the security offering.
@@ -2966,10 +3015,16 @@ func (d *DataExportSettings) GetSetting() *Setting {
 	}
 }
 
-// DefenderCspmAwsOffering - The CSPM P1 for Aws offering
+// DefenderCspmAwsOffering - The CSPM P1 for AWS offering
 type DefenderCspmAwsOffering struct {
 	// REQUIRED; The type of the security offering.
 	OfferingType *OfferingType
+
+	// The Microsoft Defender Data Sensitivity discovery configuration
+	DataSensitivityDiscovery *DefenderCspmAwsOfferingDataSensitivityDiscovery
+
+	// The databases DSPM configuration
+	DatabasesDspm *DefenderCspmAwsOfferingDatabasesDspm
 
 	// The Microsoft Defender for Server VM scanning configuration
 	VMScanners *DefenderCspmAwsOfferingVMScanners
@@ -2984,6 +3039,24 @@ func (d *DefenderCspmAwsOffering) GetCloudOffering() *CloudOffering {
 		OfferingType: d.OfferingType,
 		Description:  d.Description,
 	}
+}
+
+// DefenderCspmAwsOfferingDataSensitivityDiscovery - The Microsoft Defender Data Sensitivity discovery configuration
+type DefenderCspmAwsOfferingDataSensitivityDiscovery struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Is Microsoft Defender Data Sensitivity discovery enabled
+	Enabled *bool
+}
+
+// DefenderCspmAwsOfferingDatabasesDspm - The databases DSPM configuration
+type DefenderCspmAwsOfferingDatabasesDspm struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Is databases DSPM protection enabled
+	Enabled *bool
 }
 
 // DefenderCspmAwsOfferingVMScanners - The Microsoft Defender for Server VM scanning configuration
@@ -3003,7 +3076,7 @@ type DefenderCspmAwsOfferingVMScannersConfiguration struct {
 	// VM tags that indicates that VM should not be scanned
 	ExclusionTags map[string]*string
 
-	// The scanning mode for the vm scan.
+	// The scanning mode for the VM scan.
 	ScanningMode *ScanningMode
 }
 
@@ -3032,6 +3105,9 @@ type DefenderFoDatabasesAwsOffering struct {
 	// The ARC autoprovisioning configuration
 	ArcAutoProvisioning *DefenderFoDatabasesAwsOfferingArcAutoProvisioning
 
+	// The databases data security posture management (DSPM) configuration
+	DatabasesDspm *DefenderFoDatabasesAwsOfferingDatabasesDspm
+
 	// The RDS configuration
 	Rds *DefenderFoDatabasesAwsOfferingRds
 
@@ -3052,7 +3128,28 @@ type DefenderFoDatabasesAwsOfferingArcAutoProvisioning struct {
 	// The cloud role ARN in AWS for this feature
 	CloudRoleArn *string
 
+	// Configuration for servers Arc auto provisioning
+	Configuration *DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration
+
 	// Is arc auto provisioning enabled
+	Enabled *bool
+}
+
+// DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning
+type DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration struct {
+	// Optional Arc private link scope resource id to link the Arc agent
+	PrivateLinkScope *string
+
+	// Optional http proxy endpoint to use for the Arc agent
+	Proxy *string
+}
+
+// DefenderFoDatabasesAwsOfferingDatabasesDspm - The databases data security posture management (DSPM) configuration
+type DefenderFoDatabasesAwsOfferingDatabasesDspm struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
+
+	// Is databases data security posture management (DSPM) protection enabled
 	Enabled *bool
 }
 
@@ -3223,8 +3320,20 @@ func (d *DefenderForDatabasesGcpOffering) GetCloudOffering() *CloudOffering {
 
 // DefenderForDatabasesGcpOfferingArcAutoProvisioning - The ARC autoprovisioning configuration
 type DefenderForDatabasesGcpOfferingArcAutoProvisioning struct {
+	// Configuration for servers Arc auto provisioning
+	Configuration *DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration
+
 	// Is arc auto provisioning enabled
 	Enabled *bool
+}
+
+// DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning
+type DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration struct {
+	// Optional Arc private link scope resource id to link the Arc agent
+	PrivateLinkScope *string
+
+	// Optional http proxy endpoint to use for the Arc agent
+	Proxy *string
 }
 
 // DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning - The native cloud connection configuration
@@ -3247,6 +3356,23 @@ type DefenderForDevOpsAzureDevOpsOffering struct {
 
 // GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForDevOpsAzureDevOpsOffering.
 func (d *DefenderForDevOpsAzureDevOpsOffering) GetCloudOffering() *CloudOffering {
+	return &CloudOffering{
+		OfferingType: d.OfferingType,
+		Description:  d.Description,
+	}
+}
+
+// DefenderForDevOpsGitLabOffering - The Defender for DevOps for Gitlab offering
+type DefenderForDevOpsGitLabOffering struct {
+	// REQUIRED; The type of the security offering.
+	OfferingType *OfferingType
+
+	// READ-ONLY; The offering description.
+	Description *string
+}
+
+// GetCloudOffering implements the CloudOfferingClassification interface for type DefenderForDevOpsGitLabOffering.
+func (d *DefenderForDevOpsGitLabOffering) GetCloudOffering() *CloudOffering {
 	return &CloudOffering{
 		OfferingType: d.OfferingType,
 		Description:  d.Description,
@@ -3310,8 +3436,20 @@ type DefenderForServersAwsOfferingArcAutoProvisioning struct {
 	// The cloud role ARN in AWS for this feature
 	CloudRoleArn *string
 
+	// Configuration for servers Arc auto provisioning
+	Configuration *DefenderForServersAwsOfferingArcAutoProvisioningConfiguration
+
 	// Is arc auto provisioning enabled
 	Enabled *bool
+}
+
+// DefenderForServersAwsOfferingArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning
+type DefenderForServersAwsOfferingArcAutoProvisioningConfiguration struct {
+	// Optional Arc private link scope resource id to link the Arc agent
+	PrivateLinkScope *string
+
+	// Optional HTTP proxy endpoint to use for the Arc agent
+	Proxy *string
 }
 
 // DefenderForServersAwsOfferingDefenderForServers - The Defender for servers connection configuration
@@ -3352,7 +3490,7 @@ type DefenderForServersAwsOfferingVMScannersConfiguration struct {
 	// VM tags that indicates that VM should not be scanned
 	ExclusionTags map[string]*string
 
-	// The scanning mode for the vm scan.
+	// The scanning mode for the VM scan.
 	ScanningMode *ScanningMode
 }
 
@@ -3388,6 +3526,9 @@ type DefenderForServersGcpOffering struct {
 	// configuration for the servers offering subPlan
 	SubPlan *DefenderForServersGcpOfferingSubPlan
 
+	// The Microsoft Defender for Server VM scanning configuration
+	VMScanners *DefenderForServersGcpOfferingVMScanners
+
 	// The Vulnerability Assessment autoprovisioning configuration
 	VaAutoProvisioning *DefenderForServersGcpOfferingVaAutoProvisioning
 
@@ -3405,8 +3546,20 @@ func (d *DefenderForServersGcpOffering) GetCloudOffering() *CloudOffering {
 
 // DefenderForServersGcpOfferingArcAutoProvisioning - The ARC autoprovisioning configuration
 type DefenderForServersGcpOfferingArcAutoProvisioning struct {
+	// Configuration for servers Arc auto provisioning
+	Configuration *DefenderForServersGcpOfferingArcAutoProvisioningConfiguration
+
 	// Is arc auto provisioning enabled
 	Enabled *bool
+}
+
+// DefenderForServersGcpOfferingArcAutoProvisioningConfiguration - Configuration for servers Arc auto provisioning
+type DefenderForServersGcpOfferingArcAutoProvisioningConfiguration struct {
+	// Optional Arc private link scope resource id to link the Arc agent
+	PrivateLinkScope *string
+
+	// Optional HTTP proxy endpoint to use for the Arc agent
+	Proxy *string
 }
 
 // DefenderForServersGcpOfferingDefenderForServers - The Defender for servers connection configuration
@@ -3431,6 +3584,24 @@ type DefenderForServersGcpOfferingMdeAutoProvisioning struct {
 type DefenderForServersGcpOfferingSubPlan struct {
 	// The available sub plans
 	Type *SubPlan
+}
+
+// DefenderForServersGcpOfferingVMScanners - The Microsoft Defender for Server VM scanning configuration
+type DefenderForServersGcpOfferingVMScanners struct {
+	// configuration for Microsoft Defender for Server VM scanning
+	Configuration *DefenderForServersGcpOfferingVMScannersConfiguration
+
+	// Is Microsoft Defender for Server VM scanning enabled
+	Enabled *bool
+}
+
+// DefenderForServersGcpOfferingVMScannersConfiguration - configuration for Microsoft Defender for Server VM scanning
+type DefenderForServersGcpOfferingVMScannersConfiguration struct {
+	// VM tags that indicate that VM should not be scanned
+	ExclusionTags map[string]*string
+
+	// The scanning mode for the VM scan.
+	ScanningMode *ScanningMode
 }
 
 // DefenderForServersGcpOfferingVaAutoProvisioning - The Vulnerability Assessment autoprovisioning configuration
@@ -3684,7 +3855,8 @@ type EffectiveNetworkSecurityGroups struct {
 // EnvironmentDataClassification provides polymorphic access to related types.
 // Call the interface's GetEnvironmentData() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AwsEnvironmentData, *AzureDevOpsScopeEnvironmentData, *EnvironmentData, *GcpProjectEnvironmentData, *GithubScopeEnvironmentData
+// - *AwsEnvironmentData, *AzureDevOpsScopeEnvironmentData, *EnvironmentData, *GcpProjectEnvironmentData, *GithubScopeEnvironmentData,
+// - *GitlabScopeEnvironmentData
 type EnvironmentDataClassification interface {
 	// GetEnvironmentData returns the EnvironmentData content of the underlying type.
 	GetEnvironmentData() *EnvironmentData
@@ -3699,6 +3871,25 @@ type EnvironmentData struct {
 // GetEnvironmentData implements the EnvironmentDataClassification interface for type EnvironmentData.
 func (e *EnvironmentData) GetEnvironmentData() *EnvironmentData { return e }
 
+// EnvironmentDetails - The environment details of the resource
+type EnvironmentDetails struct {
+	// The hierarchy id of the connector (in case of Azure - the subscription Id, in case of MC - the hierarchyId id)
+	EnvironmentHierarchyID *string
+
+	// The native resource id of the resource (in case of Azure - the resource Id, in case of MC - the native resource id)
+	NativeResourceID *string
+
+	// The organizational hierarchy id of the connector (in case of Azure - the subscription Id, in case of MC - the organizational
+	// hierarchyId id)
+	OrganizationalHierarchyID *string
+
+	// The subscription Id
+	SubscriptionID *string
+
+	// The tenant Id
+	TenantID *string
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -3708,16 +3899,87 @@ type ErrorAdditionalInfo struct {
 	Type *string
 }
 
+// ErrorDetail - The error detail.
+type ErrorDetail struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetail
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorDetailAutoGenerated - The error detail.
+type ErrorDetailAutoGenerated struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetailAutoGenerated
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
+}
+
+// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.).
+type ErrorResponse struct {
+	// The error object.
+	Error *ErrorDetail
+}
+
+// ErrorResponseAutoGenerated - Common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
+type ErrorResponseAutoGenerated struct {
+	// The error object.
+	Error *ErrorDetailAutoGenerated
+}
+
 // ExecuteGovernanceRuleParams - Governance rule execution parameters
 type ExecuteGovernanceRuleParams struct {
 	// Describe if governance rule should be override
 	Override *bool
 }
 
-// ExecuteRuleStatus - Execute status of Security GovernanceRule over a given scope
-type ExecuteRuleStatus struct {
-	// READ-ONLY; Unique key for the execution of GovernanceRule
-	OperationID *string
+// Extension - A plan's extension properties
+type Extension struct {
+	// REQUIRED; Indicates whether the extension is enabled.
+	IsEnabled *IsEnabled
+
+	// REQUIRED; The extension name. Supported values are:
+	// AgentlessDiscoveryForKubernetes - API-based discovery of information about Kubernetes cluster architecture, workload objects,
+	// and setup. Required for Kubernetes inventory, identity and network
+	// exposure detection, attack path analysis and risk hunting as part of the cloud security explorer. Available for CloudPosture
+	// plan.
+	// OnUploadMalwareScanning - Limits the GB to be scanned per month for each storage account within the subscription. Once
+	// this limit reached on a given storage account, Blobs won't be scanned during
+	// current calendar month. Available for StorageAccounts plan.
+	// SensitiveDataDiscovery - Sensitive data discovery identifies Blob storage container with sensitive data such as credentials,
+	// credit cards, and more, to help prioritize and investigate security events.
+	// Available for StorageAccounts and CloudPosture plans.
+	// ContainerRegistriesVulnerabilityAssessments - Provides vulnerability management for images stored in your container registries.
+	// Available for CloudPosture and Containers plans.
+	Name *string
+
+	// Property values associated with the extension.
+	AdditionalExtensionProperties map[string]any
+
+	// READ-ONLY; Optional. A status describing the success/failure of the extension's enablement/disablement operation.
+	OperationStatus *OperationStatus
 }
 
 // ExternalSecuritySolution - Represents a security solution external to Microsoft Defender for Cloud which sends information
@@ -4005,6 +4267,9 @@ type GcpOrganizationalDataOrganization struct {
 
 	// The GCP workload identity provider id which represents the permissions required to auto provision security connectors
 	WorkloadIdentityProviderID *string
+
+	// READ-ONLY; GCP organization name
+	OrganizationName *string
 }
 
 // GetGcpOrganizationalData implements the GcpOrganizationalDataClassification interface for type GcpOrganizationalDataOrganization.
@@ -4021,6 +4286,9 @@ type GcpProjectDetails struct {
 
 	// The unique GCP Project number
 	ProjectNumber *string
+
+	// READ-ONLY; GCP project name
+	ProjectName *string
 
 	// READ-ONLY; The GCP workload identity federation pool id
 	WorkloadIdentityPoolID *string
@@ -4058,9 +4326,22 @@ func (g *GithubScopeEnvironmentData) GetEnvironmentData() *EnvironmentData {
 	}
 }
 
-// GovernanceAssignment - Security GovernanceAssignment over a given scope
+// GitlabScopeEnvironmentData - The GitLab scope connector's environment data
+type GitlabScopeEnvironmentData struct {
+	// REQUIRED; The type of the environment data.
+	EnvironmentType *EnvironmentType
+}
+
+// GetEnvironmentData implements the EnvironmentDataClassification interface for type GitlabScopeEnvironmentData.
+func (g *GitlabScopeEnvironmentData) GetEnvironmentData() *EnvironmentData {
+	return &EnvironmentData{
+		EnvironmentType: g.EnvironmentType,
+	}
+}
+
+// GovernanceAssignment - Governance assignment over a given scope
 type GovernanceAssignment struct {
-	// Properties of a security governanceAssignment
+	// The properties of a governance assignment
 	Properties *GovernanceAssignmentProperties
 
 	// READ-ONLY; Resource Id
@@ -4073,15 +4354,15 @@ type GovernanceAssignment struct {
 	Type *string
 }
 
-// GovernanceAssignmentAdditionalData - Describe the additional data of GovernanceAssignment - optional
+// GovernanceAssignmentAdditionalData - Describe the additional data of governance assignment - optional
 type GovernanceAssignmentAdditionalData struct {
-	// Ticket link associated with this GovernanceAssignment - for example: https://snow.com
+	// Ticket link associated with this governance assignment - for example: https://snow.com
 	TicketLink *string
 
-	// Ticket number associated with this GovernanceAssignment
+	// Ticket number associated with this governance assignment
 	TicketNumber *int32
 
-	// The ticket status associated with this GovernanceAssignment - for example: Active
+	// The ticket status associated with this governance assignment - for example: Active
 	TicketStatus *string
 }
 
@@ -4128,7 +4409,7 @@ type GovernanceAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GovernanceAssignmentsList - Page of a security governance assignments list
+// GovernanceAssignmentsList - Page of a governance assignments list
 type GovernanceAssignmentsList struct {
 	// READ-ONLY; The URI to fetch the next page
 	NextLink *string
@@ -4146,9 +4427,9 @@ type GovernanceEmailNotification struct {
 	DisableOwnerEmailNotification *bool
 }
 
-// GovernanceRule - Security GovernanceRule over a given scope
+// GovernanceRule - Governance rule over a given scope
 type GovernanceRule struct {
-	// Properties of a security governanceRule
+	// Properties of a governance rule
 	Properties *GovernanceRuleProperties
 
 	// READ-ONLY; Resource Id
@@ -4161,27 +4442,37 @@ type GovernanceRule struct {
 	Type *string
 }
 
-// GovernanceRuleClientListOptions contains the optional parameters for the GovernanceRuleClient.NewListPager method.
-type GovernanceRuleClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// GovernanceRuleEmailNotification - The governance email weekly notification configuration.
+// GovernanceRuleEmailNotification - The governance email weekly notification configuration
 type GovernanceRuleEmailNotification struct {
-	// Defines whether manager email notifications are disabled.
+	// Defines whether manager email notifications are disabled
 	DisableManagerEmailNotification *bool
 
-	// Defines whether owner email notifications are disabled.
+	// Defines whether owner email notifications are disabled
 	DisableOwnerEmailNotification *bool
 }
 
-// GovernanceRuleList - Page of a security governanceRules list
+// GovernanceRuleList - Page of a governance rules list
 type GovernanceRuleList struct {
 	// READ-ONLY; The URI to fetch the next page
 	NextLink *string
 
-	// READ-ONLY; Collection of governanceRules in this page
+	// READ-ONLY; Collection of governance rules in this page
 	Value []*GovernanceRule
+}
+
+// GovernanceRuleMetadata - The governance rule metadata
+type GovernanceRuleMetadata struct {
+	// READ-ONLY; Governance rule Created by object id (GUID)
+	CreatedBy *string
+
+	// READ-ONLY; Governance rule creation date
+	CreatedOn *time.Time
+
+	// READ-ONLY; Governance rule last updated by object id (GUID)
+	UpdatedBy *string
+
+	// READ-ONLY; Governance rule last update date
+	UpdatedOn *time.Time
 }
 
 // GovernanceRuleOwnerSource - Describe the owner source of governance rule
@@ -4193,19 +4484,19 @@ type GovernanceRuleOwnerSource struct {
 	Value *string
 }
 
-// GovernanceRuleProperties - Describes properties of an governanceRule
+// GovernanceRuleProperties - Describes properties of an governance rule
 type GovernanceRuleProperties struct {
 	// REQUIRED; The governance rule conditionSets - see examples
 	ConditionSets []any
 
-	// REQUIRED; display name of the governanceRule
+	// REQUIRED; Display name of the governance rule
 	DisplayName *string
 
-	// REQUIRED; The Owner source for the governance rule - e.g. Manually by user@contoso.com - see example
+	// REQUIRED; The owner source for the governance rule - e.g. Manually by user@contoso.com - see example
 	OwnerSource *GovernanceRuleOwnerSource
 
-	// REQUIRED; The governance rule priority, priority to the lower number. Rules with the same priority on the same subscription
-	// will not be allowed
+	// REQUIRED; The governance rule priority, priority to the lower number. Rules with the same priority on the same scope will
+	// not be allowed
 	RulePriority *int32
 
 	// REQUIRED; The rule type of the governance rule, defines the source of the rule e.g. Integrated
@@ -4214,11 +4505,17 @@ type GovernanceRuleProperties struct {
 	// REQUIRED; The governance rule source, what the rule affects, e.g. Assessments
 	SourceResourceType *GovernanceRuleSourceResourceType
 
-	// description of the governanceRule
+	// Description of the governance rule
 	Description *string
+
+	// Excluded scopes, filter out the descendants of the scope (on management scopes)
+	ExcludedScopes []*string
 
 	// The email notifications settings for the governance rule, states whether to disable notifications for mangers and owners
 	GovernanceEmailNotification *GovernanceRuleEmailNotification
+
+	// Defines whether the rule is management scope rule (master connector as a single scope or management scope)
+	IncludeMemberScopes *bool
 
 	// Defines whether the rule is active/inactive
 	IsDisabled *bool
@@ -4226,24 +4523,26 @@ type GovernanceRuleProperties struct {
 	// Defines whether there is a grace period on the governance rule
 	IsGracePeriod *bool
 
+	// The governance rule metadata
+	Metadata *GovernanceRuleMetadata
+
 	// Governance rule remediation timeframe - this is the time that will affect on the grace-period duration e.g. 7.00:00:00
 	// - means 7 days
 	RemediationTimeframe *string
+
+	// READ-ONLY; The tenantId (GUID)
+	TenantID *string
 }
 
-// GovernanceRulesClientBeginRuleIDExecuteSingleSecurityConnectorOptions contains the optional parameters for the GovernanceRulesClient.BeginRuleIDExecuteSingleSecurityConnector
-// method.
-type GovernanceRulesClientBeginRuleIDExecuteSingleSecurityConnectorOptions struct {
-	// GovernanceRule over a subscription scope
-	ExecuteGovernanceRuleParams *ExecuteGovernanceRuleParams
+// GovernanceRulesClientBeginDeleteOptions contains the optional parameters for the GovernanceRulesClient.BeginDelete method.
+type GovernanceRulesClientBeginDeleteOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
 
-// GovernanceRulesClientBeginRuleIDExecuteSingleSubscriptionOptions contains the optional parameters for the GovernanceRulesClient.BeginRuleIDExecuteSingleSubscription
-// method.
-type GovernanceRulesClientBeginRuleIDExecuteSingleSubscriptionOptions struct {
-	// GovernanceRule over a subscription scope
+// GovernanceRulesClientBeginExecuteOptions contains the optional parameters for the GovernanceRulesClient.BeginExecute method.
+type GovernanceRulesClientBeginExecuteOptions struct {
+	// Execute governance rule over a given scope
 	ExecuteGovernanceRuleParams *ExecuteGovernanceRuleParams
 	// Resumes the LRO from the provided token.
 	ResumeToken string
@@ -4255,13 +4554,19 @@ type GovernanceRulesClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GovernanceRulesClientDeleteOptions contains the optional parameters for the GovernanceRulesClient.Delete method.
-type GovernanceRulesClientDeleteOptions struct {
+// GovernanceRulesClientGetOptions contains the optional parameters for the GovernanceRulesClient.Get method.
+type GovernanceRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GovernanceRulesClientGetOptions contains the optional parameters for the GovernanceRulesClient.Get method.
-type GovernanceRulesClientGetOptions struct {
+// GovernanceRulesClientListOptions contains the optional parameters for the GovernanceRulesClient.NewListPager method.
+type GovernanceRulesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// GovernanceRulesClientOperationResultsOptions contains the optional parameters for the GovernanceRulesClient.OperationResults
+// method.
+type GovernanceRulesClientOperationResultsOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -4443,6 +4748,73 @@ func (h *HTTPD2CMessagesNotInAllowedRange) GetTimeWindowCustomAlertRule() *TimeW
 	}
 }
 
+// HealthDataClassification - The classification of the health report
+type HealthDataClassification struct {
+	// The component describes the name of the agent/service that scans the issue
+	Component *string
+
+	// The scenario describes the health scenario issue of the component
+	Scenario *string
+
+	// The resource scope of the health report
+	Scope *ScopeName
+}
+
+// HealthReport - The health report resource
+type HealthReport struct {
+	// Properties of a health report
+	Properties *HealthReportProperties
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// HealthReportClientGetOptions contains the optional parameters for the HealthReportClient.Get method.
+type HealthReportClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HealthReportProperties - Describes properties of the health report
+type HealthReportProperties struct {
+	// The affected defenders plans by unhealthy report
+	AffectedDefendersPlans []*string
+
+	// The environment details of the resource
+	EnvironmentDetails *EnvironmentDetails
+
+	// The classification of the health report
+	HealthDataClassification *HealthDataClassification
+
+	// A collection of the issues in the report
+	Issues []*Issue
+
+	// The resource details of the health report
+	ResourceDetails *ResourceDetailsAutoGenerated
+
+	// The status of the health report
+	Status *StatusAutoGenerated
+}
+
+// HealthReportsClientListOptions contains the optional parameters for the HealthReportsClient.NewListPager method.
+type HealthReportsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HealthReportsList - Page of health reports list
+type HealthReportsList struct {
+	// READ-ONLY; The URI to fetch the next page
+	NextLink *string
+
+	// READ-ONLY; Collection of health reports in this page
+	Value []*HealthReport
+}
+
 // HybridComputeSettingsProperties - Settings for hybrid compute management
 type HybridComputeSettingsProperties struct {
 	// REQUIRED; Whether or not to automatically install Azure Arc (hybrid compute) agents on machines
@@ -4463,6 +4835,18 @@ type HybridComputeSettingsProperties struct {
 
 	// READ-ONLY; State of the service principal and its secret
 	HybridComputeProvisioningState *HybridComputeProvisioningState
+}
+
+// Identity for the resource.
+type Identity struct {
+	// The identity type.
+	Type *string
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string
 }
 
 // InformationProtectionAwsOffering - The information protection for AWS offering
@@ -5042,6 +5426,31 @@ type IotSecuritySolutionsAnalyticsRecommendationClientGetOptions struct {
 type IotSecuritySolutionsAnalyticsRecommendationClientListOptions struct {
 	// Number of results to retrieve.
 	Top *int32
+}
+
+// Issue - The issue that caused the resource to by unhealthy
+type Issue struct {
+	// REQUIRED; The unique issue key
+	IssueKey *string
+
+	// Additional data for the given issue. The additional data depends on the issue type
+	IssueAdditionalData map[string]*string
+
+	// The issue description
+	IssueDescription *string
+
+	// The issue name
+	IssueName *string
+
+	// The remediation script to solve this issue
+	RemediationScript *string
+
+	// Human readable description of what you should do to mitigate this health issue
+	RemediationSteps *string
+
+	// The affected security values that MDC offers that will be affected by the issue, for example: recommendations, alerts,
+	// etc
+	SecurityValues []*string
 }
 
 // JitNetworkAccessPoliciesClientCreateOrUpdateOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.CreateOrUpdate
@@ -5708,8 +6117,64 @@ type OperationList struct {
 	NextLink *string
 }
 
+// OperationResultAutoGenerated - Long run operation status of governance rule over a given scope
+type OperationResultAutoGenerated struct {
+	// READ-ONLY; The status of the long run operation result of governance rule
+	Status *OperationResult
+}
+
+// OperationStatus - A status describing the success/failure of the extension's enablement/disablement operation.
+type OperationStatus struct {
+	// The operation status code.
+	Code *Code
+
+	// Additional information regarding the success/failure of the operation.
+	Message *string
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// Operator - Security operator under a given subscription and pricing
+type Operator struct {
+	// Identity for the resource.
+	Identity *Identity
+
+	// READ-ONLY; Resource Id
+	ID *string
+
+	// READ-ONLY; Resource name
+	Name *string
+
+	// READ-ONLY; Resource type
+	Type *string
+}
+
+// OperatorList - List of SecurityOperator response.
+type OperatorList struct {
+	// REQUIRED; List of SecurityOperator configurations
+	Value []*Operator
+}
+
+// OperatorsClientCreateOrUpdateOptions contains the optional parameters for the OperatorsClient.CreateOrUpdate method.
+type OperatorsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperatorsClientDeleteOptions contains the optional parameters for the OperatorsClient.Delete method.
+type OperatorsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperatorsClientGetOptions contains the optional parameters for the OperatorsClient.Get method.
+type OperatorsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperatorsClientListOptions contains the optional parameters for the OperatorsClient.List method.
+type OperatorsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -5739,9 +6204,8 @@ type PathRecommendation struct {
 	Usernames []*UserRecommendation
 }
 
-// Pricing - Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with the standard tier available
-// with a trial period. The standard tier offers advanced security capabilities, while
-// the free tier offers basic security features.
+// Pricing - Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The standard tier offers advanced
+// security capabilities, while the free tier offers basic security features.
 type Pricing struct {
 	// Pricing data
 	Properties *PricingProperties
@@ -5764,10 +6228,13 @@ type PricingList struct {
 
 // PricingProperties - Pricing properties for the relevant scope
 type PricingProperties struct {
-	// REQUIRED; The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard, with
-	// the standard tier available with a trial period. The standard tier offers advanced
-	// security capabilities, while the free tier offers basic security features.
+	// REQUIRED; The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard. The
+	// standard tier offers advanced security capabilities, while the free tier offers basic
+	// security features.
 	PricingTier *PricingTier
+
+	// Optional. List of extensions offered under a plan.
+	Extensions []*Extension
 
 	// The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each sub-plan enables
 	// a set of security features. When not specified, full plan is applied.
@@ -5775,6 +6242,10 @@ type PricingProperties struct {
 
 	// READ-ONLY; Optional. True if the plan is deprecated. If there are replacing plans they will appear in replacedBy property
 	Deprecated *bool
+
+	// READ-ONLY; Optional. If pricingTier is Standard then this property holds the date of the last time the pricingTier was
+	// set to Standard, when available (e.g 2023-03-01T12:42:42.1921106Z).
+	EnablementTime *time.Time
 
 	// READ-ONLY; The duration left for the subscriptions free trial period - in ISO 8601 format (e.g. P3Y6M4DT12H30M5S).
 	FreeTrialRemainingTime *string
@@ -6205,6 +6676,18 @@ type ResourceDetails struct {
 // GetResourceDetails implements the ResourceDetailsClassification interface for type ResourceDetails.
 func (r *ResourceDetails) GetResourceDetails() *ResourceDetails { return r }
 
+// ResourceDetailsAutoGenerated - The resource details of the health report
+type ResourceDetailsAutoGenerated struct {
+	// The status of the health report
+	Source *Source
+
+	// READ-ONLY; The id of the connector
+	ConnectorID *string
+
+	// READ-ONLY; The azure id of the resource
+	ID *string
+}
+
 // ResourceIdentifierClassification provides polymorphic access to related types.
 // Call the interface's GetResourceIdentifier() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
@@ -6391,6 +6874,9 @@ type ScanProperties struct {
 
 	// Baseline created for this database, and has one or more rules.
 	IsBaselineApplied *bool
+
+	// Last scan time.
+	LastScanTime *time.Time
 
 	// The number of failed rules with low severity.
 	LowSeverityFailedRulesCount *int32
@@ -7012,6 +7498,18 @@ type SolutionsReferenceDataProperties struct {
 	Template *string
 }
 
+// StatusAutoGenerated - The status of the health report
+type StatusAutoGenerated struct {
+	// The status of the health report
+	Code *StatusName
+
+	// READ-ONLY; The date of when the resource of the health report was scanned in the first time
+	FirstEvaluationDate *time.Time
+
+	// READ-ONLY; The date of when the status of the health report was changed in the last time
+	StatusChangeDate *time.Time
+}
+
 // SubAssessment - Security sub-assessment on a resource
 type SubAssessment struct {
 	// Describes properties of an sub-assessment.
@@ -7097,13 +7595,6 @@ type SubAssessmentsClientListAllOptions struct {
 // SubAssessmentsClientListOptions contains the optional parameters for the SubAssessmentsClient.NewListPager method.
 type SubAssessmentsClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// SubscriptionGovernanceRulesExecuteStatusClientBeginGetOptions contains the optional parameters for the SubscriptionGovernanceRulesExecuteStatusClient.BeginGet
-// method.
-type SubscriptionGovernanceRulesExecuteStatusClientBeginGetOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
 }
 
 type SuppressionAlertsScope struct {

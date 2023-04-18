@@ -6,7 +6,6 @@ package common
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Masterminds/semver"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -19,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"

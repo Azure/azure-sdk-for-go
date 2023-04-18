@@ -109,9 +109,6 @@ type BlobClientUploadChunkOptions struct {
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeeker, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
-	if blobDigestCalculator == nil {
-		return BlobClientUploadChunkResponse{}, errors.New("blobDigestCalculator is nil")
-	}
 	_ = blobDigestCalculator.saveState()
 	wrappedChunkData := &wrappedReadSeeker{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData}
 	var requestOptions *blobClientUploadChunkOptions

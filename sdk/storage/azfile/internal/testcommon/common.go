@@ -8,12 +8,16 @@
 package testcommon
 
 import (
+	"bytes"
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/stretchr/testify/require"
+	"io"
 	"os"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -22,6 +26,7 @@ const (
 	SharePrefix     = "gos"
 	DirectoryPrefix = "godir"
 	FilePrefix      = "gotestfile"
+	FileDefaultData = "GoFileDefaultData"
 )
 
 func GenerateShareName(testName string) string {
@@ -38,6 +43,34 @@ func GenerateDirectoryName(testName string) string {
 
 func GenerateFileName(testName string) string {
 	return FilePrefix + GenerateEntityName(testName)
+}
+
+const random64BString string = "2SDgZj6RkKYzJpu04sweQek4uWHO8ndPnYlZ0tnFS61hjnFZ5IkvIGGY44eKABov"
+
+func GenerateData(sizeInBytes int) (io.ReadSeekCloser, []byte) {
+	data := make([]byte, sizeInBytes)
+	_len := len(random64BString)
+	if sizeInBytes > _len {
+		count := sizeInBytes / _len
+		if sizeInBytes%_len != 0 {
+			count = count + 1
+		}
+		copy(data[:], strings.Repeat(random64BString, count))
+	} else {
+		copy(data[:], random64BString)
+	}
+	return streaming.NopCloser(bytes.NewReader(data)), data
+}
+
+func ValidateHTTPErrorCode(_require *require.Assertions, err error, code int) {
+	_require.Error(err)
+	var responseErr *azcore.ResponseError
+	errors.As(err, &responseErr)
+	if responseErr != nil {
+		_require.Equal(responseErr.StatusCode, code)
+	} else {
+		_require.Equal(strings.Contains(err.Error(), strconv.Itoa(code)), true)
+	}
 }
 
 func ValidateFileErrorCode(_require *require.Assertions, err error, code fileerror.Code) {

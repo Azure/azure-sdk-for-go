@@ -112,7 +112,7 @@ func (client *BlobClient) UploadChunk(ctx context.Context, location string, chun
 	if blobDigestCalculator == nil {
 		return BlobClientUploadChunkResponse{}, errors.New("blobDigestCalculator is nil")
 	}
-	blobDigestCalculator.saveState()
+	_ = blobDigestCalculator.saveState()
 	wrappedChunkData := &wrappedReadSeeker{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData}
 	var requestOptions *blobClientUploadChunkOptions
 	if options != nil && options.RangeStart != nil && options.RangeEnd != nil {
@@ -120,7 +120,7 @@ func (client *BlobClient) UploadChunk(ctx context.Context, location string, chun
 	}
 	resp, err := client.uploadChunk(ctx, location, streaming.NopCloser(wrappedChunkData), requestOptions)
 	if err != nil {
-		blobDigestCalculator.restoreState()
+		_ = blobDigestCalculator.restoreState()
 	}
 	return resp, err
 }

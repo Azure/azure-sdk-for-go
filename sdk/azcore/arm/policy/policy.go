@@ -14,6 +14,12 @@ import (
 
 // BearerTokenOptions configures the bearer token policy's behavior.
 type BearerTokenOptions struct {
+	// AuxiliaryTenants are additional tenant IDs for authenticating cross-tenant requests.
+	// The policy will add a token from each of these tenants to every request. The
+	// authenticating user or service principal must be a guest in these tenants, and the
+	// policy's credential must support multitenant authentication.
+	AuxiliaryTenants []string
+
 	// Scopes contains the list of permission scopes required for the token.
 	Scopes []string
 }

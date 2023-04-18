@@ -101,7 +101,7 @@ func (c *DeviceCodeCredential) GetToken(ctx context.Context, opts policy.TokenRe
 }
 
 func (c *DeviceCodeCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes)
+	dc, err := c.client.AcquireTokenByDeviceCode(ctx, opts.Scopes, public.WithTenantID(opts.TenantID))
 	if err != nil {
 		return azcore.AccessToken{}, err
 	}
@@ -124,6 +124,7 @@ func (c *DeviceCodeCredential) requestToken(ctx context.Context, opts policy.Tok
 func (c *DeviceCodeCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
 		public.WithSilentAccount(c.account),
+		public.WithTenantID(opts.TenantID),
 	)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }

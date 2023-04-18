@@ -61,7 +61,7 @@ func (c *UsernamePasswordCredential) GetToken(ctx context.Context, opts policy.T
 }
 
 func (c *UsernamePasswordCredential) requestToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
-	ar, err := c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password)
+	ar, err := c.client.AcquireTokenByUsernamePassword(ctx, opts.Scopes, c.username, c.password, public.WithTenantID(opts.TenantID))
 	if err == nil {
 		c.account = ar.Account
 	}
@@ -71,6 +71,7 @@ func (c *UsernamePasswordCredential) requestToken(ctx context.Context, opts poli
 func (c *UsernamePasswordCredential) silentAuth(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
 	ar, err := c.client.AcquireTokenSilent(ctx, opts.Scopes,
 		public.WithSilentAccount(c.account),
+		public.WithTenantID(opts.TenantID),
 	)
 	return azcore.AccessToken{Token: ar.AccessToken, ExpiresOn: ar.ExpiresOn.UTC()}, err
 }

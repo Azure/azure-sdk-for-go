@@ -281,7 +281,7 @@ func (s *PageBlobUnrecordedTestsSuite) TestUploadPagesFromURLWithMD5() {
 	_require.EqualValues(destData, sourceData)
 
 	// Upload page from URL with bad MD5
-	r, badMD5 := testcommon.GetDataAndReader(testName+"bad-md5", contentSize)
+	_, badMD5 := testcommon.GetDataAndReader(testName+"bad-md5", contentSize)
 	badContentMD5 := badMD5[:]
 	uploadPagesFromURLOptions = pageblob.UploadPagesFromURLOptions{
 		SourceContentValidation: blob.SourceContentValidationTypeMD5(badContentMD5),

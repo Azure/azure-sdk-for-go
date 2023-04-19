@@ -78,8 +78,8 @@ func TestRemovedConstAndTypeAlias(t *testing.T) {
 
 	actual := getRemovedContent(&removedConst)
 	expected := []string{
-		"Const `ConstA`, `ConstB`, `ConstC` from type alias `Const` has been removed",
-		"Type alias `RemovedTypeAlias` has been removed",
+		"`ConstA`, `ConstB`, `ConstC` from enum `Const` has been removed",
+		"Enum `RemovedTypeAlias` has been removed",
 	}
 	assert.Equal(t, expected, actual)
 }

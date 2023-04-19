@@ -7,6 +7,7 @@
 package shared
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -116,12 +117,12 @@ func TestSerializeBlobTags(t *testing.T) {
 	}
 	blobTags = SerializeBlobTags(tags)
 	require.NotNil(t, blobTags)
-	require.Equal(t, "foo", *(*(*blobTags).BlobTagSet[0]).Key)
-	require.Equal(t, "bar", *(*(*blobTags).BlobTagSet[0]).Value)
-	require.Equal(t, "az", *(*(*blobTags).BlobTagSet[1]).Key)
-	require.Equal(t, "sdk", *(*(*blobTags).BlobTagSet[1]).Value)
-	require.Equal(t, "sdk", *(*(*blobTags).BlobTagSet[2]).Key)
-	require.Equal(t, "storage", *(*(*blobTags).BlobTagSet[2]).Value)
+	for _, tagPtr := range (*blobTags).BlobTagSet {
+		require.Contains(t, tags, *tagPtr.Key)
+		require.Equal(t, tags[*tagPtr.Key], *tagPtr.Value)
+		delete(tags, *tagPtr.Key)
+	}
+	require.Len(t, tags, 0)
 }
 
 func TestSerializeBlobTagsToStrPtr(t *testing.T) {
@@ -145,6 +146,13 @@ func TestSerializeBlobTagsToStrPtr(t *testing.T) {
 	}
 	tagsStr = SerializeBlobTagsToStrPtr(tags)
 	require.NotNil(t, tagsStr)
-	require.Equal(t, "foo=bar&az=sdk&sdk=storage", *tagsStr)
-
+	// split string on &
+	kvPairs := strings.Split(*tagsStr, "&")
+	for _, kv := range kvPairs {
+		pair := strings.Split(kv, "=")
+		require.Contains(t, tags, pair[0])
+		require.Equal(t, tags[pair[0]], pair[1])
+		delete(tags, pair[0])
+	}
+	require.Len(t, tags, 0)
 }

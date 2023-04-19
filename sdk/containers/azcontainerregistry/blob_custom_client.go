@@ -81,17 +81,15 @@ func NewBlobDigestCalculator() *BlobDigestCalculator {
 	}
 }
 
-func (b *BlobDigestCalculator) saveState() error {
-	var err error
-	b.hashState, err = b.h.(encoding.BinaryMarshaler).MarshalBinary()
-	return err
+func (b *BlobDigestCalculator) saveState() {
+	b.hashState, _ = b.h.(encoding.BinaryMarshaler).MarshalBinary()
 }
 
-func (b *BlobDigestCalculator) restoreState() error {
+func (b *BlobDigestCalculator) restoreState() {
 	if b.hashState == nil {
-		return nil
+		return
 	}
-	return b.h.(encoding.BinaryUnmarshaler).UnmarshalBinary(b.hashState)
+	_ = b.h.(encoding.BinaryUnmarshaler).UnmarshalBinary(b.hashState)
 }
 
 // BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
@@ -109,7 +107,7 @@ type BlobClientUploadChunkOptions struct {
 //   - blobDigestCalculator - Calculator that help to calculate blob digest
 //   - options - BlobClientUploadChunkOptions contains the optional parameters for the BlobClient.UploadChunk method.
 func (client *BlobClient) UploadChunk(ctx context.Context, location string, chunkData io.ReadSeeker, blobDigestCalculator *BlobDigestCalculator, options *BlobClientUploadChunkOptions) (BlobClientUploadChunkResponse, error) {
-	_ = blobDigestCalculator.saveState()
+	blobDigestCalculator.saveState()
 	wrappedChunkData := &wrappedReadSeeker{Reader: io.TeeReader(chunkData, blobDigestCalculator.h), Seeker: chunkData}
 	var requestOptions *blobClientUploadChunkOptions
 	if options != nil && options.RangeStart != nil && options.RangeEnd != nil {
@@ -117,7 +115,7 @@ func (client *BlobClient) UploadChunk(ctx context.Context, location string, chun
 	}
 	resp, err := client.uploadChunk(ctx, location, streaming.NopCloser(wrappedChunkData), requestOptions)
 	if err != nil {
-		_ = blobDigestCalculator.restoreState()
+		blobDigestCalculator.restoreState()
 	}
 	return resp, err
 }

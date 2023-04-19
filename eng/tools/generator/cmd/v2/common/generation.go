@@ -260,7 +260,7 @@ func (ctx *GenerateContext) GenerateForSingleRPNamespace(generateParam *Generate
 			if err = ReplaceVersion(packagePath, version.String()); err != nil {
 				return nil, err
 			}
-			prl = FirstStableLabel
+			prl = FirstGALabel
 		}
 
 		return &GenerateResult{

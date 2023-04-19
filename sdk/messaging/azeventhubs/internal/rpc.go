@@ -37,10 +37,12 @@ type (
 
 		responseMu              sync.Mutex
 		startResponseRouterOnce *sync.Once
-		responseMap             map[string]chan rpcResponse
-		rpcLinkCtx              context.Context
-		rpcLinkCtxCancel        context.CancelFunc
-		broadcastErr            error // the error that caused the responseMap to be nil'd
+		responseRouterClosed    chan struct{}
+
+		responseMap      map[string]chan rpcResponse
+		rpcLinkCtx       context.Context
+		rpcLinkCtxCancel context.CancelFunc
+		broadcastErr     error // the error that caused the responseMap to be nil'd
 
 		logEvent azlog.Event
 
@@ -104,6 +106,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 		uuidNewV4:               uuid.New,
 		responseMap:             map[string]chan rpcResponse{},
 		startResponseRouterOnce: &sync.Once{},
+		responseRouterClosed:    make(chan struct{}),
 		logEvent:                args.LogEvent,
 	}
 
@@ -152,6 +155,7 @@ const responseRouterShutdownMessage = "Response router has shut down"
 // original `RPC` call.
 func (l *rpcLink) startResponseRouter() {
 	defer azlog.Writef(l.logEvent, responseRouterShutdownMessage)
+	defer close(l.responseRouterClosed)
 
 	for {
 		res, err := l.receiver.Receive(l.rpcLinkCtx, nil)
@@ -305,6 +309,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 // Close the link receiver, sender and session
 func (l *rpcLink) Close(ctx context.Context) error {
 	l.rpcLinkCtxCancel()
+	<-l.responseRouterClosed
 
 	if l.session != nil {
 		return l.session.Close(ctx)

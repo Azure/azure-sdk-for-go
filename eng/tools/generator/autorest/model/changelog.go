@@ -309,14 +309,14 @@ func getRemovedContent(removed *delta.Content) []string {
 			for _, cs := range removedConst[k] {
 				consts = fmt.Sprintf("%s`%s`, ", consts, cs)
 			}
-			line := fmt.Sprintf("Const %s from type alias `%s` has been removed", strings.TrimRight(strings.TrimSpace(consts), ","), k)
+			line := fmt.Sprintf("%s from enum `%s` has been removed", strings.TrimRight(strings.TrimSpace(consts), ","), k)
 			items = append(items, line)
 		}
 	}
 	// write type alias
 	if len(removed.TypeAliases) > 0 {
 		for _, k := range sortChangeItem(removed.TypeAliases) {
-			line := fmt.Sprintf("Type alias `%s` has been removed", k)
+			line := fmt.Sprintf("Enum `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}

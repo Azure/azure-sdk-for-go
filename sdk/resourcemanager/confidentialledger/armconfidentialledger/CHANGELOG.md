@@ -1,9 +1,6 @@
 # Release History
 
-## 2.0.0-beta.1 (2023-04-28)
-### Breaking Changes
-
-- Struct `ResourceLocation` has been removed
+## 1.2.0-beta.1 (2023-04-28)
 
 ### Features Added
 
@@ -24,7 +21,7 @@
 - New struct `ManagedCCFProperties`
 - New struct `MemberIdentityCertificate`
 - New struct `TrackedResource`
-- New field `RunningState` in struct `ConfidentialLedger`
+- New field `RunningState` in struct `LedgerProperties`
 
 
 ## 1.1.1 (2023-04-14)

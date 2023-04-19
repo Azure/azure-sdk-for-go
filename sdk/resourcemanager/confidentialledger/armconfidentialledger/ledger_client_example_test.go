@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/confidentialledger/armconfidentialledger"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e295a19c5382a4df2f8101e545fed34186d83bf/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Get.json
 func ExampleLedgerClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,12 +65,12 @@ func ExampleLedgerClient_Get() {
 	// 		LedgerType: to.Ptr(armconfidentialledger.LedgerTypePublic),
 	// 		LedgerURI: to.Ptr("https://dummy.accledger.domain.com/DummyLedgerName"),
 	// 		ProvisioningState: to.Ptr(armconfidentialledger.ProvisioningStateSucceeded),
+	// 		RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 	// 	},
-	// 	RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e295a19c5382a4df2f8101e545fed34186d83bf/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Delete.json
 func ExampleLedgerClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +91,7 @@ func ExampleLedgerClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e295a19c5382a4df2f8101e545fed34186d83bf/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Create.json
 func ExampleLedgerClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -166,12 +166,12 @@ func ExampleLedgerClient_BeginCreate() {
 	// 		LedgerType: to.Ptr(armconfidentialledger.LedgerTypePublic),
 	// 		LedgerURI: to.Ptr("https://dummy.accledger.domain.com/DummyLedgerName"),
 	// 		ProvisioningState: to.Ptr(armconfidentialledger.ProvisioningStateSucceeded),
+	// 		RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 	// 	},
-	// 	RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e295a19c5382a4df2f8101e545fed34186d83bf/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Update.json
 func ExampleLedgerClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -248,12 +248,12 @@ func ExampleLedgerClient_BeginUpdate() {
 	// 		LedgerType: to.Ptr(armconfidentialledger.LedgerTypePublic),
 	// 		LedgerURI: to.Ptr("https://dummyledgername.confidential-ledger.azure.com"),
 	// 		ProvisioningState: to.Ptr(armconfidentialledger.ProvisioningStateSucceeded),
+	// 		RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 	// 	},
-	// 	RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e295a19c5382a4df2f8101e545fed34186d83bf/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_List.json
 func ExampleLedgerClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,14 +306,14 @@ func ExampleLedgerClient_NewListByResourceGroupPager() {
 		// 				LedgerType: to.Ptr(armconfidentialledger.LedgerTypePublic),
 		// 				LedgerURI: to.Ptr("https://dummy.accledger.domain.com/DummyLedgerName"),
 		// 				ProvisioningState: to.Ptr(armconfidentialledger.ProvisioningStateSucceeded),
+		// 				RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 		// 			},
-		// 			RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_ListBySub.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7e295a19c5382a4df2f8101e545fed34186d83bf/specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_ListBySub.json
 func ExampleLedgerClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -365,8 +365,8 @@ func ExampleLedgerClient_NewListBySubscriptionPager() {
 		// 				LedgerType: to.Ptr(armconfidentialledger.LedgerTypePublic),
 		// 				LedgerURI: to.Ptr("https://dummy.accledger.domain.com/DummyLedgerName"),
 		// 				ProvisioningState: to.Ptr(armconfidentialledger.ProvisioningStateSucceeded),
+		// 				RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 		// 			},
-		// 			RunningState: to.Ptr(armconfidentialledger.RunningStateActive),
 		// 	}},
 		// }
 	}

@@ -182,7 +182,6 @@ func (c ConfidentialLedger) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "location", c.Location)
 	populate(objectMap, "name", c.Name)
 	populate(objectMap, "properties", c.Properties)
-	populate(objectMap, "runningState", c.RunningState)
 	populate(objectMap, "systemData", c.SystemData)
 	populate(objectMap, "tags", c.Tags)
 	populate(objectMap, "type", c.Type)
@@ -209,9 +208,6 @@ func (c *ConfidentialLedger) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "properties":
 			err = unpopulate(val, "Properties", &c.Properties)
-			delete(rawMsg, key)
-		case "runningState":
-			err = unpopulate(val, "RunningState", &c.RunningState)
 			delete(rawMsg, key)
 		case "systemData":
 			err = unpopulate(val, "SystemData", &c.SystemData)
@@ -373,6 +369,7 @@ func (l LedgerProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "ledgerType", l.LedgerType)
 	populate(objectMap, "ledgerUri", l.LedgerURI)
 	populate(objectMap, "provisioningState", l.ProvisioningState)
+	populate(objectMap, "runningState", l.RunningState)
 	return json.Marshal(objectMap)
 }
 
@@ -408,6 +405,9 @@ func (l *LedgerProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &l.ProvisioningState)
+			delete(rawMsg, key)
+		case "runningState":
+			err = unpopulate(val, "RunningState", &l.RunningState)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -802,33 +802,6 @@ func (s *SystemData) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type Tags.
-func (t Tags) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "tags", t.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type Tags.
-func (t *Tags) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %v", t, err)
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "tags":
-			err = unpopulate(val, "Tags", &t.Tags)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %v", t, err)
 		}
 	}
 	return nil

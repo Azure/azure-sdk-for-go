@@ -72,9 +72,6 @@ type ConfidentialLedger struct {
 	// Properties of Confidential Ledger Resource.
 	Properties *LedgerProperties
 
-	// Object representing RunningState for Ledger.
-	RunningState *RunningState
-
 	// Resource tags.
 	Tags map[string]*string
 
@@ -181,6 +178,9 @@ type LedgerProperties struct {
 
 	// Type of Confidential Ledger
 	LedgerType *LedgerType
+
+	// Object representing RunningState for Ledger.
+	RunningState *RunningState
 
 	// READ-ONLY; Endpoint for accessing network identity.
 	IdentityServiceURI *string
@@ -388,12 +388,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
-}
-
-// Tags for Confidential Ledger Resource
-type Tags struct {
-	// Additional tags for Confidential Ledger
-	Tags map[string]*string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'

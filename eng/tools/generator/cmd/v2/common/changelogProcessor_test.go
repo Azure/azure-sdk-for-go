@@ -31,7 +31,7 @@ func TestEnumFilter(t *testing.T) {
 
 	common.FilterChangelog(changelog, common.EnumFilter)
 
-	excepted := fmt.Sprint("### Breaking Changes\n\n- Type alias `EnumRemove` has been removed\n\n### Features Added\n\n- New value `EnumExistB` added to enum type `EnumExist`\n- New enum type `EnumAdd` with values `EnumAddA`, `EnumAddB`\n")
+	excepted := fmt.Sprint("### Breaking Changes\n\n- Enum `EnumRemove` has been removed\n\n### Features Added\n\n- New value `EnumExistB` added to enum type `EnumExist`\n- New enum type `EnumAdd` with values `EnumAddA`, `EnumAddB`\n")
 	assert.Equal(t, excepted, changelog.ToCompactMarkdown())
 }
 

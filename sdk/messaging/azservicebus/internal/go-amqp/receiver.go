@@ -254,12 +254,10 @@ func (r *Receiver) sendDisposition(ctx context.Context, first uint32, last *uint
 
 	sent := make(chan error, 1)
 	select {
-	case <-r.l.done:
-		return r.l.doneErr
-	case <-ctx.Done():
-		return ctx.Err()
 	case r.txDisposition <- frameBodyEnvelope{Ctx: ctx, FrameBody: fr, Sent: sent}:
 		debug.Log(2, "TX (Receiver %p): mux txDisposition %s", r, fr)
+	case <-r.l.done:
+		return r.l.doneErr
 	}
 
 	select {
@@ -318,6 +316,7 @@ func (r *Receiver) messageDisposition(ctx context.Context, msg *Message, state e
 
 	case <-ctx.Done():
 		// didn't receive the ack in the time allotted, leave message as unsettled
+		// TODO: if the ack arrives later, we need to remove the message from the unsettled map and reclaim the credit
 		return ctx.Err()
 	}
 }

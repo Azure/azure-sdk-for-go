@@ -172,7 +172,7 @@ func (s *Sender) send(ctx context.Context, msg *Message, opts *SendOptions) (cha
 		case <-s.l.done:
 			return nil, s.l.doneErr
 		case <-ctx.Done():
-			return nil, ctx.Err()
+			return nil, &Error{Condition: ErrCondTransferLimitExceeded, Description: fmt.Sprintf("credit limit exceeded for sending link %s", s.l.key.name)}
 		}
 
 		select {
@@ -456,8 +456,6 @@ func (s *Sender) muxHandleFrame(fr frames.FrameBody) error {
 			Last:    fr.Last,
 			Settled: true,
 		}
-
-		// TODO: the context used here should be the one associated with the original Send()
 
 		select {
 		case s.l.session.tx <- frameBodyEnvelope{Ctx: context.Background(), FrameBody: dr}:

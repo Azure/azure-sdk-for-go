@@ -48,8 +48,11 @@ func SASLTypePlain(username, password string) SASLType {
 				Body: init,
 			}
 			debug.Log(1, "TX (ConnSASLPlain %p): %s", c, fr)
-			err := c.writeFrame(c.getWriteTimeout(ctx), fr)
+			timeout, err := c.getWriteTimeout(ctx)
 			if err != nil {
+				return nil, err
+			}
+			if err = c.writeFrame(timeout, fr); err != nil {
 				return nil, err
 			}
 
@@ -79,8 +82,11 @@ func SASLTypeAnonymous() SASLType {
 				Body: init,
 			}
 			debug.Log(1, "TX (ConnSASLAnonymous %p): %s", c, fr)
-			err := c.writeFrame(c.getWriteTimeout(ctx), fr)
+			timeout, err := c.getWriteTimeout(ctx)
 			if err != nil {
+				return nil, err
+			}
+			if err = c.writeFrame(timeout, fr); err != nil {
 				return nil, err
 			}
 
@@ -112,8 +118,11 @@ func SASLTypeExternal(resp string) SASLType {
 				Body: init,
 			}
 			debug.Log(1, "TX (ConnSASLExternal %p): %s", c, fr)
-			err := c.writeFrame(c.getWriteTimeout(ctx), fr)
+			timeout, err := c.getWriteTimeout(ctx)
 			if err != nil {
+				return nil, err
+			}
+			if err = c.writeFrame(timeout, fr); err != nil {
 				return nil, err
 			}
 
@@ -169,7 +178,11 @@ func (s saslXOAUTH2Handler) init(ctx context.Context) (stateFunc, error) {
 	if s.maxFrameSizeOverride > s.conn.peerMaxFrameSize {
 		s.conn.peerMaxFrameSize = s.maxFrameSizeOverride
 	}
-	err := s.conn.writeFrame(s.conn.getWriteTimeout(ctx), frames.Frame{
+	timeout, err := s.conn.getWriteTimeout(ctx)
+	if err != nil {
+		return nil, err
+	}
+	err = s.conn.writeFrame(timeout, frames.Frame{
 		Type: frames.TypeSASL,
 		Body: &frames.SASLInit{
 			Mechanism:       saslMechanismXOAUTH2,
@@ -206,8 +219,13 @@ func (s saslXOAUTH2Handler) step(ctx context.Context) (stateFunc, error) {
 		if s.errorResponse == nil {
 			s.errorResponse = v.Challenge
 
+			timeout, err := s.conn.getWriteTimeout(ctx)
+			if err != nil {
+				return nil, err
+			}
+
 			// The SASL protocol requires clients to send an empty response to this challenge.
-			err := s.conn.writeFrame(s.conn.getWriteTimeout(ctx), frames.Frame{
+			err = s.conn.writeFrame(timeout, frames.Frame{
 				Type: frames.TypeSASL,
 				Body: &frames.SASLResponse{
 					Response: []byte{},

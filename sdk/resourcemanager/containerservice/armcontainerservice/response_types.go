@@ -49,61 +49,6 @@ type AgentPoolsClientUpgradeNodeImageVersionResponse struct {
 	AgentPool
 }
 
-// FleetMembersClientCreateOrUpdateResponse contains the response from method FleetMembersClient.BeginCreateOrUpdate.
-type FleetMembersClientCreateOrUpdateResponse struct {
-	FleetMember
-}
-
-// FleetMembersClientDeleteResponse contains the response from method FleetMembersClient.BeginDelete.
-type FleetMembersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// FleetMembersClientGetResponse contains the response from method FleetMembersClient.Get.
-type FleetMembersClientGetResponse struct {
-	FleetMember
-}
-
-// FleetMembersClientListByFleetResponse contains the response from method FleetMembersClient.NewListByFleetPager.
-type FleetMembersClientListByFleetResponse struct {
-	FleetMembersListResult
-}
-
-// FleetsClientCreateOrUpdateResponse contains the response from method FleetsClient.BeginCreateOrUpdate.
-type FleetsClientCreateOrUpdateResponse struct {
-	Fleet
-}
-
-// FleetsClientDeleteResponse contains the response from method FleetsClient.BeginDelete.
-type FleetsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// FleetsClientGetResponse contains the response from method FleetsClient.Get.
-type FleetsClientGetResponse struct {
-	Fleet
-}
-
-// FleetsClientListByResourceGroupResponse contains the response from method FleetsClient.NewListByResourceGroupPager.
-type FleetsClientListByResourceGroupResponse struct {
-	FleetListResult
-}
-
-// FleetsClientListCredentialsResponse contains the response from method FleetsClient.ListCredentials.
-type FleetsClientListCredentialsResponse struct {
-	FleetCredentialResults
-}
-
-// FleetsClientListResponse contains the response from method FleetsClient.NewListPager.
-type FleetsClientListResponse struct {
-	FleetListResult
-}
-
-// FleetsClientUpdateResponse contains the response from method FleetsClient.Update.
-type FleetsClientUpdateResponse struct {
-	Fleet
-}
-
 // MaintenanceConfigurationsClientCreateOrUpdateResponse contains the response from method MaintenanceConfigurationsClient.CreateOrUpdate.
 type MaintenanceConfigurationsClientCreateOrUpdateResponse struct {
 	MaintenanceConfiguration
@@ -122,36 +67,6 @@ type MaintenanceConfigurationsClientGetResponse struct {
 // MaintenanceConfigurationsClientListByManagedClusterResponse contains the response from method MaintenanceConfigurationsClient.NewListByManagedClusterPager.
 type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
 	MaintenanceConfigurationListResult
-}
-
-// ManagedClusterSnapshotsClientCreateOrUpdateResponse contains the response from method ManagedClusterSnapshotsClient.CreateOrUpdate.
-type ManagedClusterSnapshotsClientCreateOrUpdateResponse struct {
-	ManagedClusterSnapshot
-}
-
-// ManagedClusterSnapshotsClientDeleteResponse contains the response from method ManagedClusterSnapshotsClient.Delete.
-type ManagedClusterSnapshotsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ManagedClusterSnapshotsClientGetResponse contains the response from method ManagedClusterSnapshotsClient.Get.
-type ManagedClusterSnapshotsClientGetResponse struct {
-	ManagedClusterSnapshot
-}
-
-// ManagedClusterSnapshotsClientListByResourceGroupResponse contains the response from method ManagedClusterSnapshotsClient.NewListByResourceGroupPager.
-type ManagedClusterSnapshotsClientListByResourceGroupResponse struct {
-	ManagedClusterSnapshotListResult
-}
-
-// ManagedClusterSnapshotsClientListResponse contains the response from method ManagedClusterSnapshotsClient.NewListPager.
-type ManagedClusterSnapshotsClientListResponse struct {
-	ManagedClusterSnapshotListResult
-}
-
-// ManagedClusterSnapshotsClientUpdateTagsResponse contains the response from method ManagedClusterSnapshotsClient.UpdateTags.
-type ManagedClusterSnapshotsClientUpdateTagsResponse struct {
-	ManagedClusterSnapshot
 }
 
 // ManagedClustersClientAbortLatestOperationResponse contains the response from method ManagedClustersClient.BeginAbortLatestOperation.
@@ -214,6 +129,11 @@ type ManagedClustersClientListClusterMonitoringUserCredentialsResponse struct {
 // ManagedClustersClientListClusterUserCredentialsResponse contains the response from method ManagedClustersClient.ListClusterUserCredentials.
 type ManagedClustersClientListClusterUserCredentialsResponse struct {
 	CredentialResults
+}
+
+// ManagedClustersClientListKubernetesVersionsResponse contains the response from method ManagedClustersClient.ListKubernetesVersions.
+type ManagedClustersClientListKubernetesVersionsResponse struct {
+	KubernetesVersionListResult
 }
 
 // ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager.
@@ -329,29 +249,4 @@ type SnapshotsClientListResponse struct {
 // SnapshotsClientUpdateTagsResponse contains the response from method SnapshotsClient.UpdateTags.
 type SnapshotsClientUpdateTagsResponse struct {
 	Snapshot
-}
-
-// TrustedAccessRoleBindingsClientCreateOrUpdateResponse contains the response from method TrustedAccessRoleBindingsClient.CreateOrUpdate.
-type TrustedAccessRoleBindingsClientCreateOrUpdateResponse struct {
-	TrustedAccessRoleBinding
-}
-
-// TrustedAccessRoleBindingsClientDeleteResponse contains the response from method TrustedAccessRoleBindingsClient.Delete.
-type TrustedAccessRoleBindingsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// TrustedAccessRoleBindingsClientGetResponse contains the response from method TrustedAccessRoleBindingsClient.Get.
-type TrustedAccessRoleBindingsClientGetResponse struct {
-	TrustedAccessRoleBinding
-}
-
-// TrustedAccessRoleBindingsClientListResponse contains the response from method TrustedAccessRoleBindingsClient.NewListPager.
-type TrustedAccessRoleBindingsClientListResponse struct {
-	TrustedAccessRoleBindingListResult
-}
-
-// TrustedAccessRolesClientListResponse contains the response from method TrustedAccessRolesClient.NewListPager.
-type TrustedAccessRolesClientListResponse struct {
-	TrustedAccessRoleListResult
 }

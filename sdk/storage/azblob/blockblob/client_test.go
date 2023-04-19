@@ -421,7 +421,7 @@ type BlockBlobUnrecordedTestsSuite struct {
 //	}
 
 // nolint
-func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	_require := require.New(s.T())
 	testName := s.T().Name()
 	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
@@ -434,7 +434,7 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := containerClient.NewBlockBlobClient(blobName)
 
-	// test put block with valid CRC64 value
+	// test stage block with valid CRC64 value
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
@@ -446,17 +446,43 @@ func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockWithGeneratedCRC64() {
 		TransactionalValidation: blob.TransferValidationTypeComputeCRC64(),
 	})
 	_require.Nil(err)
-	// _require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.NotNil(putResp.ContentCRC64)
 	_require.EqualValues(binary.LittleEndian.Uint64(putResp.ContentCRC64), contentCrc64)
 	_require.NotNil(putResp.RequestID)
 	_require.NotNil(putResp.Version)
 	_require.NotNil(putResp.Date)
 	_require.Equal((*putResp.Date).IsZero(), false)
+}
+
+func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	blobName := testcommon.GenerateBlobName(testName)
+	bbClient := containerClient.NewBlockBlobClient(blobName)
+
+	// test stage block with valid CRC64 value
+	contentSize := 8 * 1024 // 8 KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	contentCrc64 := crc64.Checksum(content, shared.CRC64Table)
+	rsc := streaming.NopCloser(body)
+
+	blockID1 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 0)))
+	putResp, err := bbClient.StageBlock(context.Background(), blockID1, rsc, &blockblob.StageBlockOptions{
+		TransactionalValidation: blob.TransferValidationTypeCRC64(contentCrc64),
+	})
+	_require.Nil(err)
+	_require.EqualValues(binary.LittleEndian.Uint64(putResp.ContentCRC64), contentCrc64)
 
 	// test put block with bad CRC64 value
 	badContentCrc64 := rand.Uint64()
-
 	_, _ = rsc.Seek(0, io.SeekStart)
 	blockID2 := base64.StdEncoding.EncodeToString([]byte(fmt.Sprintf("%6d", 1)))
 	_, err = bbClient.StageBlock(context.Background(), blockID2, rsc, &blockblob.StageBlockOptions{
@@ -480,7 +506,7 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 	blobName := testcommon.GenerateBlobName(testName)
 	bbClient := containerClient.NewBlockBlobClient(blobName)
 
-	// test put block with valid MD5 value
+	// test stage block with valid MD5 value
 	contentSize := 8 * 1024 // 8 KB
 	content := make([]byte, contentSize)
 	body := bytes.NewReader(content)
@@ -493,14 +519,13 @@ func (s *BlockBlobRecordedTestsSuite) TestStageBlockWithMD5() {
 		TransactionalValidation: blob.TransferValidationTypeMD5(contentMD5),
 	})
 	_require.Nil(err)
-	// _require.Equal(putResp.RawResponse.StatusCode, 201)
 	_require.EqualValues(putResp.ContentMD5, contentMD5)
 	_require.NotNil(putResp.RequestID)
 	_require.NotNil(putResp.Version)
 	_require.NotNil(putResp.Date)
 	_require.Equal((*putResp.Date).IsZero(), false)
 
-	// test put block with bad MD5 value
+	// test stage block with bad MD5 value
 	_, badContent := testcommon.GetDataAndReader(testName, contentSize)
 	badMD5Value := md5.Sum(badContent)
 	badContentMD5 := badMD5Value[:]

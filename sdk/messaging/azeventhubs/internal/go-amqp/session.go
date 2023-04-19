@@ -79,7 +79,7 @@ func newSession(c *Conn, channel uint16, opts *SessionOptions) *Session {
 		txTransfer:     make(chan transferEnvelope),
 		incomingWindow: defaultWindow,
 		outgoingWindow: defaultWindow,
-		handleMax:      math.MaxUint32,
+		handleMax:      math.MaxUint32 - 1,
 		linksMu:        sync.RWMutex{},
 		linksByKey:     make(map[linkKey]*link),
 		close:          make(chan struct{}),
@@ -236,6 +236,8 @@ func (s *Session) txFrameAndWait(ctx context.Context, fr frames.FrameBody) error
 		return err
 	case <-s.conn.done:
 		return s.conn.doneErr
+	case <-s.done:
+		return s.doneErr
 	}
 }
 
@@ -740,6 +742,8 @@ func (s *Session) freeAbandonedLinks(ctx context.Context) error {
 	s.abandonedLinksMu.Lock()
 	defer s.abandonedLinksMu.Unlock()
 
+	debug.Log(3, "TX (Session %p): cleaning up %d abandoned links", s, len(s.abandonedLinks))
+
 	for _, l := range s.abandonedLinks {
 		dr := &frames.PerformDetach{
 			Handle: l.handle,
@@ -765,15 +769,22 @@ func (s *Session) muxFrameToLink(l *link, fr frames.FrameBody) {
 type transferEnvelope struct {
 	Ctx   context.Context
 	Frame frames.PerformTransfer
-	Sent  chan error
+
+	// Sent is *never* nil as we use this for confirmation of sending
+	// NOTE: use a buffered channel of size 1 when populating
+	Sent chan error
 }
 
 // frameBodyEnvelope is used by senders and receivers to send frames.
-// these frames come from the mux which is why there's no Sent channel.
 type frameBodyEnvelope struct {
 	Ctx       context.Context
 	FrameBody frames.FrameBody
-	Sent      chan error
+
+	// Sent *can* be nil depending on what frame is being sent.
+	// e.g. sending a disposition frame frame a receiver's settlement
+	// APIs will have a non-nil channel vs sending a flow frame
+	// NOTE: use a buffered channel of size 1 when populating
+	Sent chan error
 }
 
 // the address of this var is a sentinel value indicating

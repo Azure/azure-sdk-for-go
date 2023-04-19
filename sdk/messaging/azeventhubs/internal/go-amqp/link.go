@@ -116,7 +116,10 @@ func (l *link) waitForFrame(ctx context.Context) (frames.FrameBody, error) {
 func (l *link) attach(ctx context.Context, beforeAttach func(*frames.PerformAttach), afterAttach func(*frames.PerformAttach)) error {
 	if err := l.session.freeAbandonedLinks(ctx); err != nil {
 		return err
-	} else if err := l.session.allocateHandle(ctx, l); err != nil {
+	}
+
+	// once the abandoned links have been cleaned up we can create our link
+	if err := l.session.allocateHandle(ctx, l); err != nil {
 		return err
 	}
 

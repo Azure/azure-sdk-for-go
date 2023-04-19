@@ -100,18 +100,14 @@ func TestNewBlobClient(t *testing.T) {
 
 func TestBlobDigestCalculator_saveAndRestoreState(t *testing.T) {
 	calculator := NewBlobDigestCalculator()
-	err := calculator.saveState()
-	require.NoError(t, err)
-	err = calculator.restoreState()
-	require.NoError(t, err)
+	calculator.saveState()
+	calculator.restoreState()
 	calculator.h.Write([]byte("test1"))
 	sum := calculator.h.Sum(nil)
-	err = calculator.saveState()
-	require.NoError(t, err)
+	calculator.saveState()
 	calculator.h.Write([]byte("test2"))
 	require.NotEqual(t, sum, calculator.h.Sum(nil))
-	err = calculator.restoreState()
-	require.NoError(t, err)
+	calculator.restoreState()
 	require.Equal(t, sum, calculator.h.Sum(nil))
 }
 

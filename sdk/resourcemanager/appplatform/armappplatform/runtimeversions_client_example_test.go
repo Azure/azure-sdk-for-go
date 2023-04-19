@@ -14,10 +14,10 @@ import (
 	"log"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/RuntimeVersions_ListRuntimeVersions.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/fdf43f2fdacf17bd78c0621df44a5c024b61db82/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/RuntimeVersions_ListRuntimeVersions.json
 func ExampleRuntimeVersionsClient_ListRuntimeVersions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

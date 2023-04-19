@@ -21,58 +21,59 @@ import (
 	"strings"
 )
 
-// ServiceRegistriesClient contains the methods for the ServiceRegistries group.
-// Don't use this type directly, use NewServiceRegistriesClient() instead.
-type ServiceRegistriesClient struct {
+// DevToolPortalsClient contains the methods for the DevToolPortals group.
+// Don't use this type directly, use NewDevToolPortalsClient() instead.
+type DevToolPortalsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewServiceRegistriesClient creates a new instance of ServiceRegistriesClient with the specified values.
+// NewDevToolPortalsClient creates a new instance of DevToolPortalsClient with the specified values.
 //   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
 //     part of the URI for every service call.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewServiceRegistriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceRegistriesClient, error) {
-	cl, err := arm.NewClient(moduleName+".ServiceRegistriesClient", moduleVersion, credential, options)
+func NewDevToolPortalsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevToolPortalsClient, error) {
+	cl, err := arm.NewClient(moduleName+".DevToolPortalsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
-	client := &ServiceRegistriesClient{
+	client := &DevToolPortalsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create the default Service Registry or update the existing Service Registry.
+// BeginCreateOrUpdate - Create the default Dev Tool Portal or update the existing Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - serviceRegistryName - The name of Service Registry.
-//   - options - ServiceRegistriesClientBeginCreateOrUpdateOptions contains the optional parameters for the ServiceRegistriesClient.BeginCreateOrUpdate
+//   - devToolPortalName - The name of Dev Tool Portal.
+//   - devToolPortalResource - Parameters for the create or update operation
+//   - options - DevToolPortalsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevToolPortalsClient.BeginCreateOrUpdate
 //     method.
-func (client *ServiceRegistriesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ServiceRegistriesClientCreateOrUpdateResponse], error) {
+func (client *DevToolPortalsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, devToolPortalResource DevToolPortalResource, options *DevToolPortalsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DevToolPortalsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, devToolPortalName, devToolPortalResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ServiceRegistriesClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller[DevToolPortalsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceRegistriesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[DevToolPortalsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// CreateOrUpdate - Create the default Service Registry or update the existing Service Registry.
+// CreateOrUpdate - Create the default Dev Tool Portal or update the existing Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
-func (client *ServiceRegistriesClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
+func (client *DevToolPortalsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, devToolPortalResource DevToolPortalResource, options *DevToolPortalsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, devToolPortalName, devToolPortalResource, options)
 	if err != nil {
 		return nil, err
 	}
@@ -87,8 +88,8 @@ func (client *ServiceRegistriesClient) createOrUpdate(ctx context.Context, resou
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ServiceRegistriesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}"
+func (client *DevToolPortalsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, devToolPortalResource DevToolPortalResource, options *DevToolPortalsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/DevToolPortals/{devToolPortalName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -101,10 +102,10 @@ func (client *ServiceRegistriesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if serviceRegistryName == "" {
-		return nil, errors.New("parameter serviceRegistryName cannot be empty")
+	if devToolPortalName == "" {
+		return nil, errors.New("parameter devToolPortalName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceRegistryName}", url.PathEscape(serviceRegistryName))
+	urlPath = strings.ReplaceAll(urlPath, "{devToolPortalName}", url.PathEscape(devToolPortalName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -113,37 +114,37 @@ func (client *ServiceRegistriesClient) createOrUpdateCreateRequest(ctx context.C
 	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
+	return req, runtime.MarshalAsJSON(req, devToolPortalResource)
 }
 
-// BeginDelete - Disable the default Service Registry.
+// BeginDelete - Disable the default Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - serviceRegistryName - The name of Service Registry.
-//   - options - ServiceRegistriesClientBeginDeleteOptions contains the optional parameters for the ServiceRegistriesClient.BeginDelete
+//   - devToolPortalName - The name of Dev Tool Portal.
+//   - options - DevToolPortalsClientBeginDeleteOptions contains the optional parameters for the DevToolPortalsClient.BeginDelete
 //     method.
-func (client *ServiceRegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (*runtime.Poller[ServiceRegistriesClientDeleteResponse], error) {
+func (client *DevToolPortalsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientBeginDeleteOptions) (*runtime.Poller[DevToolPortalsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, devToolPortalName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ServiceRegistriesClientDeleteResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller[DevToolPortalsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceRegistriesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
+		return runtime.NewPollerFromResumeToken[DevToolPortalsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
-// Delete - Disable the default Service Registry.
+// Delete - Disable the default Dev Tool Portal.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
-func (client *ServiceRegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (*http.Response, error) {
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
+func (client *DevToolPortalsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientBeginDeleteOptions) (*http.Response, error) {
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, devToolPortalName, options)
 	if err != nil {
 		return nil, err
 	}
@@ -158,8 +159,8 @@ func (client *ServiceRegistriesClient) deleteOperation(ctx context.Context, reso
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *ServiceRegistriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}"
+func (client *DevToolPortalsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/DevToolPortals/{devToolPortalName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -172,10 +173,10 @@ func (client *ServiceRegistriesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if serviceRegistryName == "" {
-		return nil, errors.New("parameter serviceRegistryName cannot be empty")
+	if devToolPortalName == "" {
+		return nil, errors.New("parameter devToolPortalName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceRegistryName}", url.PathEscape(serviceRegistryName))
+	urlPath = strings.ReplaceAll(urlPath, "{devToolPortalName}", url.PathEscape(devToolPortalName))
 	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -187,33 +188,33 @@ func (client *ServiceRegistriesClient) deleteCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// Get - Get the Service Registry and its properties.
+// Get - Get the Application Live and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - serviceRegistryName - The name of Service Registry.
-//   - options - ServiceRegistriesClientGetOptions contains the optional parameters for the ServiceRegistriesClient.Get method.
-func (client *ServiceRegistriesClient) Get(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientGetOptions) (ServiceRegistriesClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, serviceRegistryName, options)
+//   - devToolPortalName - The name of Dev Tool Portal.
+//   - options - DevToolPortalsClientGetOptions contains the optional parameters for the DevToolPortalsClient.Get method.
+func (client *DevToolPortalsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientGetOptions) (DevToolPortalsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, devToolPortalName, options)
 	if err != nil {
-		return ServiceRegistriesClientGetResponse{}, err
+		return DevToolPortalsClientGetResponse{}, err
 	}
 	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ServiceRegistriesClientGetResponse{}, err
+		return DevToolPortalsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(resp, http.StatusOK) {
-		return ServiceRegistriesClientGetResponse{}, runtime.NewResponseError(resp)
+		return DevToolPortalsClientGetResponse{}, runtime.NewResponseError(resp)
 	}
 	return client.getHandleResponse(resp)
 }
 
 // getCreateRequest creates the Get request.
-func (client *ServiceRegistriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, serviceRegistryName string, options *ServiceRegistriesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries/{serviceRegistryName}"
+func (client *DevToolPortalsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, devToolPortalName string, options *DevToolPortalsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/DevToolPortals/{devToolPortalName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -226,10 +227,10 @@ func (client *ServiceRegistriesClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	if serviceRegistryName == "" {
-		return nil, errors.New("parameter serviceRegistryName cannot be empty")
+	if devToolPortalName == "" {
+		return nil, errors.New("parameter devToolPortalName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceRegistryName}", url.PathEscape(serviceRegistryName))
+	urlPath = strings.ReplaceAll(urlPath, "{devToolPortalName}", url.PathEscape(devToolPortalName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -242,10 +243,10 @@ func (client *ServiceRegistriesClient) getCreateRequest(ctx context.Context, res
 }
 
 // getHandleResponse handles the Get response.
-func (client *ServiceRegistriesClient) getHandleResponse(resp *http.Response) (ServiceRegistriesClientGetResponse, error) {
-	result := ServiceRegistriesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceRegistryResource); err != nil {
-		return ServiceRegistriesClientGetResponse{}, err
+func (client *DevToolPortalsClient) getHandleResponse(resp *http.Response) (DevToolPortalsClientGetResponse, error) {
+	result := DevToolPortalsClientGetResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DevToolPortalResource); err != nil {
+		return DevToolPortalsClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -256,14 +257,13 @@ func (client *ServiceRegistriesClient) getHandleResponse(resp *http.Response) (S
 //   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
 //     Resource Manager API or the portal.
 //   - serviceName - The name of the Service resource.
-//   - options - ServiceRegistriesClientListOptions contains the optional parameters for the ServiceRegistriesClient.NewListPager
-//     method.
-func (client *ServiceRegistriesClient) NewListPager(resourceGroupName string, serviceName string, options *ServiceRegistriesClientListOptions) *runtime.Pager[ServiceRegistriesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ServiceRegistriesClientListResponse]{
-		More: func(page ServiceRegistriesClientListResponse) bool {
+//   - options - DevToolPortalsClientListOptions contains the optional parameters for the DevToolPortalsClient.NewListPager method.
+func (client *DevToolPortalsClient) NewListPager(resourceGroupName string, serviceName string, options *DevToolPortalsClientListOptions) *runtime.Pager[DevToolPortalsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DevToolPortalsClientListResponse]{
+		More: func(page DevToolPortalsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ServiceRegistriesClientListResponse) (ServiceRegistriesClientListResponse, error) {
+		Fetcher: func(ctx context.Context, page *DevToolPortalsClientListResponse) (DevToolPortalsClientListResponse, error) {
 			var req *policy.Request
 			var err error
 			if page == nil {
@@ -272,14 +272,14 @@ func (client *ServiceRegistriesClient) NewListPager(resourceGroupName string, se
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
-				return ServiceRegistriesClientListResponse{}, err
+				return DevToolPortalsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ServiceRegistriesClientListResponse{}, err
+				return DevToolPortalsClientListResponse{}, err
 			}
 			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceRegistriesClientListResponse{}, runtime.NewResponseError(resp)
+				return DevToolPortalsClientListResponse{}, runtime.NewResponseError(resp)
 			}
 			return client.listHandleResponse(resp)
 		},
@@ -287,8 +287,8 @@ func (client *ServiceRegistriesClient) NewListPager(resourceGroupName string, se
 }
 
 // listCreateRequest creates the List request.
-func (client *ServiceRegistriesClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *ServiceRegistriesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/serviceRegistries"
+func (client *DevToolPortalsClient) listCreateRequest(ctx context.Context, resourceGroupName string, serviceName string, options *DevToolPortalsClientListOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/DevToolPortals"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -313,10 +313,10 @@ func (client *ServiceRegistriesClient) listCreateRequest(ctx context.Context, re
 }
 
 // listHandleResponse handles the List response.
-func (client *ServiceRegistriesClient) listHandleResponse(resp *http.Response) (ServiceRegistriesClientListResponse, error) {
-	result := ServiceRegistriesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServiceRegistryResourceCollection); err != nil {
-		return ServiceRegistriesClientListResponse{}, err
+func (client *DevToolPortalsClient) listHandleResponse(resp *http.Response) (DevToolPortalsClientListResponse, error) {
+	result := DevToolPortalsClientListResponse{}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DevToolPortalResourceCollection); err != nil {
+		return DevToolPortalsClientListResponse{}, err
 	}
 	return result, nil
 }

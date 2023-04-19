@@ -31,13 +31,13 @@ const (
 type PullRequestLabel string
 
 const (
-	StableLabel                    PullRequestLabel = "stable"
-	BetaLabel                      PullRequestLabel = "beta"
-	FirstStableLabel               PullRequestLabel = "first stable"
-	FirstStableBreakingChangeLabel PullRequestLabel = "first stable,breaking-change"
-	FirstBetaLabel                 PullRequestLabel = "first beta"
-	StableBreakingChangeLabel      PullRequestLabel = "stable,breaking-change"
-	BetaBreakingChangeLabel        PullRequestLabel = "beta,breaking-change"
+	StableLabel                PullRequestLabel = "Stable"
+	BetaLabel                  PullRequestLabel = "Beta"
+	FirstGALabel               PullRequestLabel = "FirstGA"
+	FirstGABreakingChangeLabel PullRequestLabel = "FirstGA,BreakingChange"
+	FirstBetaLabel             PullRequestLabel = "FirstBeta"
+	StableBreakingChangeLabel  PullRequestLabel = "Stable,BreakingChange"
+	BetaBreakingChangeLabel    PullRequestLabel = "Beta,BreakingChange"
 )
 
 var (
@@ -277,9 +277,9 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 			}
 			newVersion = *tempVersion
 			if changelog.HasBreakingChanges() {
-				prl = FirstStableBreakingChangeLabel
+				prl = FirstGABreakingChangeLabel
 			} else {
-				prl = FirstStableLabel
+				prl = FirstGALabel
 			}
 		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()

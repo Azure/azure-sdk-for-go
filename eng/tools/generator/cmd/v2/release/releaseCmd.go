@@ -275,7 +275,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			}
 
 			log.Printf("Add Labels...\n")
-			err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready"})
+			err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready", issue.pullRequestLabel})
 			if err != nil {
 				return err
 			}

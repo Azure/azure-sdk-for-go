@@ -15,6 +15,7 @@
 ### Bugs Fixed
 
 * Fixed time formatting for the conditional request headers. Fixes [#20475](https://github.com/Azure/azure-sdk-for-go/issues/20475).
+* Fixed an issue where passing a blob tags map of length 0 would result in the x-ms-tags header to be sent to the service with an empty string as value.
 
 ### Other Changes
 

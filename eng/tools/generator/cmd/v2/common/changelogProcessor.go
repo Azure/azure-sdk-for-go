@@ -69,7 +69,7 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 	sort.Sort(sort.Reverse(semver.Collection(vs)))
 
 	for _, v := range vs {
-		tags = append(tags, versionTag[fmt.Sprintf("v%s", v.String())])
+		tags = append(tags, versionTag[v.Original()])
 	}
 
 	return tags, nil

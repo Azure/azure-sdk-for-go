@@ -181,8 +181,13 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.md", repoURL, commitID, specRPName)
-			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.go.md", repoURL, commitID, specRPName)
+			indexResourceManager := strings.Index(line, "resource-manager")
+			indexReadme := strings.Index(line, autorest_md_file_suffix)
+			resourceManagerPath := []byte(line)
+			resourceManagerPath = resourceManagerPath[indexResourceManager : indexReadme-1]
+
+			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/%s/readme.md", repoURL, commitID, specRPName, resourceManagerPath)
+			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/%s/readme.go.md", repoURL, commitID, specRPName, resourceManagerPath)
 			break
 		}
 	}

@@ -1347,6 +1347,7 @@ func (f *FileUnrecordedTestsSuite) TestFileStartCopyUsingSASSrc() {
 	fClient := testcommon.CreateNewFileFromShareWithData(context.Background(), _require, "src"+fileName, shareClient)
 
 	fileURLWithSAS, err := fClient.GetSASURL(sas.FilePermissions{Read: true, Write: true, Create: true, Delete: true}, time.Now().Add(5*time.Minute).UTC(), nil)
+	_require.NoError(err)
 
 	// Create a new share for the destination
 	copyShareClient := testcommon.CreateNewShare(context.Background(), _require, "dest"+shareName, svcClient)

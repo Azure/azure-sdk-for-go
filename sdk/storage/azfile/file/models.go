@@ -488,7 +488,7 @@ func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (strin
 		leaseAccessConditions = o.LeaseAccessConditions
 	}
 	if o != nil && o.TransactionalValidation != nil {
-		body, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
+		_, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
 		if err != nil {
 			return "", 0, nil, nil, err
 		}

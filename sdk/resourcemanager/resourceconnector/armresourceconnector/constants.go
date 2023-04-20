@@ -11,7 +11,7 @@ package armresourceconnector
 
 const (
 	moduleName    = "armresourceconnector"
-	moduleVersion = "v1.0.0"
+	moduleVersion = "v0.4.0"
 )
 
 // AccessProfileType - Name which contains the role of the kubeconfig.

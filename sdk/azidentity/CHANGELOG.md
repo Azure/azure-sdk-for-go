@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Upgraded to MSAL v1.0.0
 
 ## 1.3.0-beta.5 (2023-04-11)
 

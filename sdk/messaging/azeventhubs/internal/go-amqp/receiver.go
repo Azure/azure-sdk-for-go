@@ -280,7 +280,7 @@ func (r *Receiver) messageDisposition(ctx context.Context, msg *Message, state e
 	var wait chan error
 	if r.l.receiverSettleMode != nil && *r.l.receiverSettleMode == ReceiverSettleModeSecond {
 		debug.Log(3, "TX (Receiver %p): delivery ID %d is in flight", r, msg.deliveryID)
-		wait = r.inFlight.add(msg.deliveryID)
+		wait = r.inFlight.add(msg)
 	}
 
 	if err := r.sendDisposition(ctx, msg.deliveryID, nil, state); err != nil {
@@ -305,9 +305,6 @@ func (r *Receiver) messageDisposition(ctx context.Context, msg *Message, state e
 		if amqpErr := (&Error{}); err == nil || errors.As(err, &amqpErr) {
 			debug.Log(3, "RX (Receiver %p): delivery ID %d has been settled", r, msg.deliveryID)
 			// we've received confirmation of disposition
-			r.deleteUnsettled(msg)
-			r.onSettlement(1)
-			msg.settled = true
 			return err
 		}
 
@@ -703,7 +700,11 @@ func (r *Receiver) muxHandleFrame(fr frames.FrameBody) error {
 			}
 		}
 		// removal from the in-flight map will also remove the message from the unsettled map
-		r.inFlight.remove(fr.First, fr.Last, dispositionError)
+		count := r.inFlight.remove(fr.First, fr.Last, dispositionError, func(msg *Message) {
+			r.deleteUnsettled(msg)
+			msg.settled = true
+		})
+		r.onSettlement(count)
 
 	default:
 		return r.l.muxHandleFrame(fr)
@@ -830,29 +831,34 @@ func (r *Receiver) muxReceive(fr frames.PerformTransfer) {
 // settlement mode is configured.
 type inFlight struct {
 	mu sync.RWMutex
-	m  map[uint32]chan error
+	m  map[uint32]inFlightInfo
 }
 
-func (f *inFlight) add(id uint32) chan error {
+type inFlightInfo struct {
+	wait chan error
+	msg  *Message
+}
+
+func (f *inFlight) add(msg *Message) chan error {
 	wait := make(chan error, 1)
 
 	f.mu.Lock()
 	if f.m == nil {
-		f.m = map[uint32]chan error{id: wait}
-	} else {
-		f.m[id] = wait
+		f.m = make(map[uint32]inFlightInfo)
 	}
+
+	f.m[msg.deliveryID] = inFlightInfo{wait: wait, msg: msg}
 	f.mu.Unlock()
 
 	return wait
 }
 
-func (f *inFlight) remove(first uint32, last *uint32, err error) {
+func (f *inFlight) remove(first uint32, last *uint32, err error, handler func(*Message)) uint32 {
 	f.mu.Lock()
 
 	if f.m == nil {
 		f.mu.Unlock()
-		return
+		return 0
 	}
 
 	ll := first
@@ -860,21 +866,25 @@ func (f *inFlight) remove(first uint32, last *uint32, err error) {
 		ll = *last
 	}
 
+	count := uint32(0)
 	for i := first; i <= ll; i++ {
-		wait, ok := f.m[i]
+		info, ok := f.m[i]
 		if ok {
-			wait <- err
+			handler(info.msg)
+			info.wait <- err
 			delete(f.m, i)
+			count++
 		}
 	}
 
 	f.mu.Unlock()
+	return count
 }
 
 func (f *inFlight) clear(err error) {
 	f.mu.Lock()
-	for id, wait := range f.m {
-		wait <- err
+	for id, info := range f.m {
+		info.wait <- err
 		delete(f.m, id)
 	}
 	f.mu.Unlock()

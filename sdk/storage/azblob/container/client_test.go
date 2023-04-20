@@ -2258,7 +2258,7 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClientTags() {
 		Write:  true,
 		Create: true,
 		Delete: true,
-		Tags:   true,
+		Tag:    true,
 	}
 	expiry := time.Now().Add(time.Hour)
 

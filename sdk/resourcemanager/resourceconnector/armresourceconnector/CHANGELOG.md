@@ -3,24 +3,21 @@
 ## 0.4.0 (2023-04-28)
 ### Breaking Changes
 
+- Type alias `SSHKeyType` has been removed
 - Function `*AppliancesClient.ListClusterCustomerUserCredential` has been removed
 - Struct `ApplianceListClusterCustomerUserCredentialResults` has been removed
 
 ### Features Added
 
-- New value `SSHKeyTypeLogsKey`, `SSHKeyTypeManagementCAKey`, `SSHKeyTypeScopedAccessKey` added to enum type `SSHKeyType`
 - New value `StatusImageDeprovisioning`, `StatusImageDownloaded`, `StatusImageDownloading`, `StatusImagePending`, `StatusImageProvisioned`, `StatusImageProvisioning`, `StatusImageUnknown`, `StatusUpgradingKVAIO`, `StatusWaitingForKVAIO` added to enum type `Status`
-- New enum type `ArtifactType` with values `ArtifactTypeLogsArtifactType`
 - New function `*AppliancesClient.GetTelemetryConfig(context.Context, *AppliancesClientGetTelemetryConfigOptions) (AppliancesClientGetTelemetryConfigResponse, error)`
 - New function `*AppliancesClient.ListKeys(context.Context, string, string, *AppliancesClientListKeysOptions) (AppliancesClientListKeysResponse, error)`
 - New struct `ApplianceGetTelemetryConfigResult`
 - New struct `ApplianceListKeysResults`
 - New struct `ArtifactProfile`
-- New field `SystemData` in struct `Resource`
 - New field `Certificate` in struct `SSHKey`
 - New field `CreationTimeStamp` in struct `SSHKey`
 - New field `ExpirationTimeStamp` in struct `SSHKey`
-- New field `SystemData` in struct `TrackedResource`
 
 
 ## 0.3.1 (2023-04-14)

@@ -218,40 +218,6 @@ type ArtifactProfile struct {
 	Endpoint *string
 }
 
-// ErrorAdditionalInfo - The resource management error additional info.
-type ErrorAdditionalInfo struct {
-	// READ-ONLY; The additional info.
-	Info any
-
-	// READ-ONLY; The additional info type.
-	Type *string
-}
-
-// ErrorDetail - The error detail.
-type ErrorDetail struct {
-	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo
-
-	// READ-ONLY; The error code.
-	Code *string
-
-	// READ-ONLY; The error details.
-	Details []*ErrorDetail
-
-	// READ-ONLY; The error message.
-	Message *string
-
-	// READ-ONLY; The error target.
-	Target *string
-}
-
-// ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-// (This also follows the OData error response format.).
-type ErrorResponse struct {
-	// The error object.
-	Error *ErrorDetail
-}
-
 // HybridConnectionConfig - Contains the REP (rendezvous endpoint) and “Listener” access token from notification service (NS).
 type HybridConnectionConfig struct {
 	// READ-ONLY; Timestamp when this token will be expired.
@@ -283,21 +249,6 @@ type Identity struct {
 type PatchableAppliance struct {
 	// Resource tags
 	Tags map[string]*string
-}
-
-// Resource - Common fields that are returned in the response for all Azure Resource Manager resources
-type Resource struct {
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // SSHKey - Appliance SSHKey definition.
@@ -379,28 +330,6 @@ type SystemData struct {
 
 	// The type of identity that last modified the resource.
 	LastModifiedByType *CreatedByType
-}
-
-// TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
-// and a 'location'
-type TrackedResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
 }
 
 // UpgradeGraph - The Upgrade Graph for appliance.

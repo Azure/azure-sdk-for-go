@@ -977,6 +977,26 @@ func PossibleMinimalSeverityValues() []MinimalSeverity {
 	}
 }
 
+// MipIntegrationStatus - Microsoft information protection integration status
+type MipIntegrationStatus string
+
+const (
+	MipIntegrationStatusNoAutoLabelingRules MipIntegrationStatus = "noAutoLabelingRules"
+	MipIntegrationStatusNoConsent           MipIntegrationStatus = "noConsent"
+	MipIntegrationStatusNoMipLabels         MipIntegrationStatus = "noMipLabels"
+	MipIntegrationStatusOk                  MipIntegrationStatus = "Ok"
+)
+
+// PossibleMipIntegrationStatusValues returns the possible values for the MipIntegrationStatus const type.
+func PossibleMipIntegrationStatusValues() []MipIntegrationStatus {
+	return []MipIntegrationStatus{
+		MipIntegrationStatusNoAutoLabelingRules,
+		MipIntegrationStatusNoConsent,
+		MipIntegrationStatusNoMipLabels,
+		MipIntegrationStatusOk,
+	}
+}
+
 // OfferingType - The type of the security offering.
 type OfferingType string
 

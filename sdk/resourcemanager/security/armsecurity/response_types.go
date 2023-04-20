@@ -319,6 +319,16 @@ type AutomationsClientValidateResponse struct {
 	AutomationValidationStatus
 }
 
+// CenterClientGetSensitivitySettingsResponse contains the response from method CenterClient.GetSensitivitySettings.
+type CenterClientGetSensitivitySettingsResponse struct {
+	GetSensitivitySettingsResponse
+}
+
+// CenterClientUpdateSensitivitySettingsResponse contains the response from method CenterClient.UpdateSensitivitySettings.
+type CenterClientUpdateSensitivitySettingsResponse struct {
+	GetSensitivitySettingsResponse
+}
+
 // ComplianceResultsClientGetResponse contains the response from method ComplianceResultsClient.Get.
 type ComplianceResultsClientGetResponse struct {
 	ComplianceResult
@@ -748,7 +758,7 @@ type OperationsClientListResponse struct {
 
 // OperatorsClientCreateOrUpdateResponse contains the response from method OperatorsClient.CreateOrUpdate.
 type OperatorsClientCreateOrUpdateResponse struct {
-	Operator
+	OperatorResource
 }
 
 // OperatorsClientDeleteResponse contains the response from method OperatorsClient.Delete.
@@ -758,7 +768,7 @@ type OperatorsClientDeleteResponse struct {
 
 // OperatorsClientGetResponse contains the response from method OperatorsClient.Get.
 type OperatorsClientGetResponse struct {
-	Operator
+	OperatorResource
 }
 
 // OperatorsClientListResponse contains the response from method OperatorsClient.List.
@@ -884,6 +894,11 @@ type SecureScoresClientGetResponse struct {
 // SecureScoresClientListResponse contains the response from method SecureScoresClient.NewListPager.
 type SecureScoresClientListResponse struct {
 	SecureScoresList
+}
+
+// SensitivitySettingsClientListResponse contains the response from method SensitivitySettingsClient.List.
+type SensitivitySettingsClientListResponse struct {
+	GetSensitivitySettingsListResponse
 }
 
 // ServerVulnerabilityAssessmentClientCreateOrUpdateResponse contains the response from method ServerVulnerabilityAssessmentClient.CreateOrUpdate.

@@ -96,7 +96,7 @@ func (client *OperatorsClient) createOrUpdateCreateRequest(ctx context.Context, 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
 func (client *OperatorsClient) createOrUpdateHandleResponse(resp *http.Response) (OperatorsClientCreateOrUpdateResponse, error) {
 	result := OperatorsClientCreateOrUpdateResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Operator); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperatorResource); err != nil {
 		return OperatorsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
@@ -201,7 +201,7 @@ func (client *OperatorsClient) getCreateRequest(ctx context.Context, pricingName
 // getHandleResponse handles the Get response.
 func (client *OperatorsClient) getHandleResponse(resp *http.Response) (OperatorsClientGetResponse, error) {
 	result := OperatorsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Operator); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperatorResource); err != nil {
 		return OperatorsClientGetResponse{}, err
 	}
 	return result, nil

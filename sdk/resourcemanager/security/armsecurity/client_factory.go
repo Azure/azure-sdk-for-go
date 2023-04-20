@@ -243,6 +243,16 @@ func (c *ClientFactory) NewAccountConnectorsClient() *AccountConnectorsClient {
 	return subClient
 }
 
+func (c *ClientFactory) NewCenterClient() *CenterClient {
+	subClient, _ := NewCenterClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewSensitivitySettingsClient() *SensitivitySettingsClient {
+	subClient, _ := NewSensitivitySettingsClient(c.credential, c.options)
+	return subClient
+}
+
 func (c *ClientFactory) NewAlertsClient() *AlertsClient {
 	subClient, _ := NewAlertsClient(c.subscriptionID, c.credential, c.options)
 	return subClient

@@ -14,13 +14,11 @@
 - New function `*ManagedCCFClient.NewListByResourceGroupPager(string, *ManagedCCFClientListByResourceGroupOptions) *runtime.Pager[ManagedCCFClientListByResourceGroupResponse]`
 - New function `*ManagedCCFClient.NewListBySubscriptionPager(*ManagedCCFClientListBySubscriptionOptions) *runtime.Pager[ManagedCCFClientListBySubscriptionResponse]`
 - New function `*ManagedCCFClient.BeginUpdate(context.Context, string, string, ManagedCCF, *ManagedCCFClientBeginUpdateOptions) (*runtime.Poller[ManagedCCFClientUpdateResponse], error)`
-- New struct `CertificateTags`
 - New struct `DeploymentType`
 - New struct `ManagedCCF`
 - New struct `ManagedCCFList`
 - New struct `ManagedCCFProperties`
 - New struct `MemberIdentityCertificate`
-- New struct `TrackedResource`
 - New field `RunningState` in struct `LedgerProperties`
 
 

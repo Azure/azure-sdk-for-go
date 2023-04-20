@@ -6,6 +6,11 @@
 - Function `NewGovernanceRulesClient` parameter(s) have been changed from `(string, azcore.TokenCredential, *arm.ClientOptions)` to `(azcore.TokenCredential, *arm.ClientOptions)`
 - Function `*GovernanceRulesClient.CreateOrUpdate` parameter(s) have been changed from `(context.Context, string, GovernanceRule, *GovernanceRulesClientCreateOrUpdateOptions)` to `(context.Context, string, string, GovernanceRule, *GovernanceRulesClientCreateOrUpdateOptions)`
 - Function `*GovernanceRulesClient.Get` parameter(s) have been changed from `(context.Context, string, *GovernanceRulesClientGetOptions)` to `(context.Context, string, string, *GovernanceRulesClientGetOptions)`
+- Function `*ClientFactory.NewConnectorGovernanceRuleClient` has been removed
+- Function `*ClientFactory.NewConnectorGovernanceRulesClient` has been removed
+- Function `*ClientFactory.NewConnectorGovernanceRulesExecuteStatusClient` has been removed
+- Function `*ClientFactory.NewGovernanceRuleClient` has been removed
+- Function `*ClientFactory.NewSubscriptionGovernanceRulesExecuteStatusClient` has been removed
 - Function `NewConnectorGovernanceRuleClient` has been removed
 - Function `*ConnectorGovernanceRuleClient.NewListPager` has been removed
 - Function `NewConnectorGovernanceRulesClient` has been removed
@@ -21,12 +26,7 @@
 - Function `NewSubscriptionGovernanceRulesExecuteStatusClient` has been removed
 - Function `*SubscriptionGovernanceRulesExecuteStatusClient.BeginGet` has been removed
 - Operation `*GovernanceRulesClient.Delete` has been changed to LRO, use `*GovernanceRulesClient.BeginDelete` instead.
-- Struct `ConnectorGovernanceRuleClient` has been removed
-- Struct `ConnectorGovernanceRulesClient` has been removed
-- Struct `ConnectorGovernanceRulesExecuteStatusClient` has been removed
 - Struct `ExecuteRuleStatus` has been removed
-- Struct `GovernanceRuleClient` has been removed
-- Struct `SubscriptionGovernanceRulesExecuteStatusClient` has been removed
 
 ### Features Added
 
@@ -45,68 +45,12 @@
 - New function `*APICollectionOffboardingClient.Delete(context.Context, string, string, string, *APICollectionOffboardingClientDeleteOptions) (APICollectionOffboardingClientDeleteResponse, error)`
 - New function `NewAPICollectionOnboardingClient(string, azcore.TokenCredential, *arm.ClientOptions) (*APICollectionOnboardingClient, error)`
 - New function `*APICollectionOnboardingClient.Create(context.Context, string, string, string, *APICollectionOnboardingClientCreateOptions) (APICollectionOnboardingClientCreateResponse, error)`
-- New function `NewClientFactory(string, azcore.TokenCredential, *arm.ClientOptions) (*ClientFactory, error)`
 - New function `*ClientFactory.NewAPICollectionClient() *APICollectionClient`
 - New function `*ClientFactory.NewAPICollectionOffboardingClient() *APICollectionOffboardingClient`
 - New function `*ClientFactory.NewAPICollectionOnboardingClient() *APICollectionOnboardingClient`
-- New function `*ClientFactory.NewAccountConnectorsClient() *AccountConnectorsClient`
-- New function `*ClientFactory.NewAdaptiveApplicationControlsClient() *AdaptiveApplicationControlsClient`
-- New function `*ClientFactory.NewAdaptiveNetworkHardeningsClient() *AdaptiveNetworkHardeningsClient`
-- New function `*ClientFactory.NewAdvancedThreatProtectionClient() *AdvancedThreatProtectionClient`
-- New function `*ClientFactory.NewAlertsClient() *AlertsClient`
-- New function `*ClientFactory.NewAlertsSuppressionRulesClient() *AlertsSuppressionRulesClient`
-- New function `*ClientFactory.NewAllowedConnectionsClient() *AllowedConnectionsClient`
-- New function `*ClientFactory.NewApplicationClient() *ApplicationClient`
-- New function `*ClientFactory.NewApplicationsClient() *ApplicationsClient`
-- New function `*ClientFactory.NewAssessmentsClient() *AssessmentsClient`
-- New function `*ClientFactory.NewAssessmentsMetadataClient() *AssessmentsMetadataClient`
-- New function `*ClientFactory.NewAutoProvisioningSettingsClient() *AutoProvisioningSettingsClient`
-- New function `*ClientFactory.NewAutomationsClient() *AutomationsClient`
-- New function `*ClientFactory.NewComplianceResultsClient() *ComplianceResultsClient`
-- New function `*ClientFactory.NewCompliancesClient() *CompliancesClient`
-- New function `*ClientFactory.NewConnectorApplicationClient() *ConnectorApplicationClient`
-- New function `*ClientFactory.NewConnectorApplicationsClient() *ConnectorApplicationsClient`
-- New function `*ClientFactory.NewConnectorsClient() *ConnectorsClient`
-- New function `*ClientFactory.NewContactsClient() *ContactsClient`
-- New function `*ClientFactory.NewCustomAssessmentAutomationsClient() *CustomAssessmentAutomationsClient`
-- New function `*ClientFactory.NewCustomEntityStoreAssignmentsClient() *CustomEntityStoreAssignmentsClient`
-- New function `*ClientFactory.NewDeviceSecurityGroupsClient() *DeviceSecurityGroupsClient`
-- New function `*ClientFactory.NewDiscoveredSecuritySolutionsClient() *DiscoveredSecuritySolutionsClient`
-- New function `*ClientFactory.NewExternalSecuritySolutionsClient() *ExternalSecuritySolutionsClient`
-- New function `*ClientFactory.NewGovernanceAssignmentsClient() *GovernanceAssignmentsClient`
-- New function `*ClientFactory.NewGovernanceRulesClient() *GovernanceRulesClient`
 - New function `*ClientFactory.NewHealthReportClient() *HealthReportClient`
 - New function `*ClientFactory.NewHealthReportsClient() *HealthReportsClient`
-- New function `*ClientFactory.NewInformationProtectionPoliciesClient() *InformationProtectionPoliciesClient`
-- New function `*ClientFactory.NewIngestionSettingsClient() *IngestionSettingsClient`
-- New function `*ClientFactory.NewIotSecuritySolutionAnalyticsClient() *IotSecuritySolutionAnalyticsClient`
-- New function `*ClientFactory.NewIotSecuritySolutionClient() *IotSecuritySolutionClient`
-- New function `*ClientFactory.NewIotSecuritySolutionsAnalyticsAggregatedAlertClient() *IotSecuritySolutionsAnalyticsAggregatedAlertClient`
-- New function `*ClientFactory.NewIotSecuritySolutionsAnalyticsRecommendationClient() *IotSecuritySolutionsAnalyticsRecommendationClient`
-- New function `*ClientFactory.NewJitNetworkAccessPoliciesClient() *JitNetworkAccessPoliciesClient`
-- New function `*ClientFactory.NewLocationsClient() *LocationsClient`
-- New function `*ClientFactory.NewMdeOnboardingsClient() *MdeOnboardingsClient`
-- New function `*ClientFactory.NewOperationsClient() *OperationsClient`
 - New function `*ClientFactory.NewOperatorsClient() *OperatorsClient`
-- New function `*ClientFactory.NewPricingsClient() *PricingsClient`
-- New function `*ClientFactory.NewRegulatoryComplianceAssessmentsClient() *RegulatoryComplianceAssessmentsClient`
-- New function `*ClientFactory.NewRegulatoryComplianceControlsClient() *RegulatoryComplianceControlsClient`
-- New function `*ClientFactory.NewRegulatoryComplianceStandardsClient() *RegulatoryComplianceStandardsClient`
-- New function `*ClientFactory.NewSQLVulnerabilityAssessmentBaselineRulesClient() *SQLVulnerabilityAssessmentBaselineRulesClient`
-- New function `*ClientFactory.NewSQLVulnerabilityAssessmentScanResultsClient() *SQLVulnerabilityAssessmentScanResultsClient`
-- New function `*ClientFactory.NewSQLVulnerabilityAssessmentScansClient() *SQLVulnerabilityAssessmentScansClient`
-- New function `*ClientFactory.NewSecureScoreControlDefinitionsClient() *SecureScoreControlDefinitionsClient`
-- New function `*ClientFactory.NewSecureScoreControlsClient() *SecureScoreControlsClient`
-- New function `*ClientFactory.NewSecureScoresClient() *SecureScoresClient`
-- New function `*ClientFactory.NewServerVulnerabilityAssessmentClient() *ServerVulnerabilityAssessmentClient`
-- New function `*ClientFactory.NewSettingsClient() *SettingsClient`
-- New function `*ClientFactory.NewSoftwareInventoriesClient() *SoftwareInventoriesClient`
-- New function `*ClientFactory.NewSolutionsClient() *SolutionsClient`
-- New function `*ClientFactory.NewSolutionsReferenceDataClient() *SolutionsReferenceDataClient`
-- New function `*ClientFactory.NewSubAssessmentsClient() *SubAssessmentsClient`
-- New function `*ClientFactory.NewTasksClient() *TasksClient`
-- New function `*ClientFactory.NewTopologyClient() *TopologyClient`
-- New function `*ClientFactory.NewWorkspaceSettingsClient() *WorkspaceSettingsClient`
 - New function `*CspmMonitorGitLabOffering.GetCloudOffering() *CloudOffering`
 - New function `*DefenderForDevOpsGitLabOffering.GetCloudOffering() *CloudOffering`
 - New function `*GitlabScopeEnvironmentData.GetEnvironmentData() *EnvironmentData`
@@ -125,7 +69,6 @@
 - New struct `APICollectionProperties`
 - New struct `APICollectionResponse`
 - New struct `APICollectionResponseList`
-- New struct `ClientFactory`
 - New struct `CspmMonitorGitLabOffering`
 - New struct `DefenderCspmAwsOfferingDataSensitivityDiscovery`
 - New struct `DefenderCspmAwsOfferingDatabasesDspm`

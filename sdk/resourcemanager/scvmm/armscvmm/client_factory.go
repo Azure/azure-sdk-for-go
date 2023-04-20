@@ -77,3 +77,18 @@ func (c *ClientFactory) NewInventoryItemsClient() *InventoryItemsClient {
 	subClient, _ := NewInventoryItemsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
+
+func (c *ClientFactory) NewHybridIdentityMetadatasClient() *HybridIdentityMetadatasClient {
+	subClient, _ := NewHybridIdentityMetadatasClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewMachineExtensionsClient() *MachineExtensionsClient {
+	subClient, _ := NewMachineExtensionsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewGuestAgentsClient() *GuestAgentsClient {
+	subClient, _ := NewGuestAgentsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

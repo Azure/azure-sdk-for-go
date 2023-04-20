@@ -69,6 +69,46 @@ type CloudsClientUpdateResponse struct {
 	Cloud
 }
 
+// GuestAgentsClientCreateResponse contains the response from method GuestAgentsClient.BeginCreate.
+type GuestAgentsClientCreateResponse struct {
+	GuestAgent
+}
+
+// GuestAgentsClientDeleteResponse contains the response from method GuestAgentsClient.BeginDelete.
+type GuestAgentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GuestAgentsClientGetResponse contains the response from method GuestAgentsClient.Get.
+type GuestAgentsClientGetResponse struct {
+	GuestAgent
+}
+
+// GuestAgentsClientListByVMResponse contains the response from method GuestAgentsClient.NewListByVMPager.
+type GuestAgentsClientListByVMResponse struct {
+	GuestAgentList
+}
+
+// HybridIdentityMetadatasClientCreateResponse contains the response from method HybridIdentityMetadatasClient.Create.
+type HybridIdentityMetadatasClientCreateResponse struct {
+	HybridIdentityMetadata
+}
+
+// HybridIdentityMetadatasClientDeleteResponse contains the response from method HybridIdentityMetadatasClient.Delete.
+type HybridIdentityMetadatasClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// HybridIdentityMetadatasClientGetResponse contains the response from method HybridIdentityMetadatasClient.Get.
+type HybridIdentityMetadatasClientGetResponse struct {
+	HybridIdentityMetadata
+}
+
+// HybridIdentityMetadatasClientListByVMResponse contains the response from method HybridIdentityMetadatasClient.NewListByVMPager.
+type HybridIdentityMetadatasClientListByVMResponse struct {
+	HybridIdentityMetadataList
+}
+
 // InventoryItemsClientCreateResponse contains the response from method InventoryItemsClient.Create.
 type InventoryItemsClientCreateResponse struct {
 	InventoryItem
@@ -87,6 +127,31 @@ type InventoryItemsClientGetResponse struct {
 // InventoryItemsClientListByVMMServerResponse contains the response from method InventoryItemsClient.NewListByVMMServerPager.
 type InventoryItemsClientListByVMMServerResponse struct {
 	InventoryItemsList
+}
+
+// MachineExtensionsClientCreateOrUpdateResponse contains the response from method MachineExtensionsClient.BeginCreateOrUpdate.
+type MachineExtensionsClientCreateOrUpdateResponse struct {
+	MachineExtension
+}
+
+// MachineExtensionsClientDeleteResponse contains the response from method MachineExtensionsClient.BeginDelete.
+type MachineExtensionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MachineExtensionsClientGetResponse contains the response from method MachineExtensionsClient.Get.
+type MachineExtensionsClientGetResponse struct {
+	MachineExtension
+}
+
+// MachineExtensionsClientListResponse contains the response from method MachineExtensionsClient.NewListPager.
+type MachineExtensionsClientListResponse struct {
+	MachineExtensionsListResult
+}
+
+// MachineExtensionsClientUpdateResponse contains the response from method MachineExtensionsClient.BeginUpdate.
+type MachineExtensionsClientUpdateResponse struct {
+	MachineExtension
 }
 
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.

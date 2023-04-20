@@ -48,7 +48,7 @@ func NewAvailabilitySetsClient(subscriptionID string, credential azcore.TokenCre
 // BeginCreateOrUpdate - Onboards the ScVmm availability set as an Azure resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - Name of the AvailabilitySet.
 //   - body - Request payload.
@@ -71,7 +71,7 @@ func (client *AvailabilitySetsClient) BeginCreateOrUpdate(ctx context.Context, r
 // CreateOrUpdate - Onboards the ScVmm availability set as an Azure resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 func (client *AvailabilitySetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, availabilitySetName string, body AvailabilitySet, options *AvailabilitySetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, availabilitySetName, body, options)
 	if err != nil {
@@ -107,7 +107,7 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2022-05-21-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)
@@ -116,7 +116,7 @@ func (client *AvailabilitySetsClient) createOrUpdateCreateRequest(ctx context.Co
 // BeginDelete - Deregisters the ScVmm availability set from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - Name of the AvailabilitySet.
 //   - options - AvailabilitySetsClientBeginDeleteOptions contains the optional parameters for the AvailabilitySetsClient.BeginDelete
@@ -136,7 +136,7 @@ func (client *AvailabilitySetsClient) BeginDelete(ctx context.Context, resourceG
 // Delete - Deregisters the ScVmm availability set from Azure.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 func (client *AvailabilitySetsClient) deleteOperation(ctx context.Context, resourceGroupName string, availabilitySetName string, options *AvailabilitySetsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, availabilitySetName, options)
 	if err != nil {
@@ -172,7 +172,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2022-05-21-preview")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -184,7 +184,7 @@ func (client *AvailabilitySetsClient) deleteCreateRequest(ctx context.Context, r
 // Get - Implements AvailabilitySet GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - Name of the AvailabilitySet.
 //   - options - AvailabilitySetsClientGetOptions contains the optional parameters for the AvailabilitySetsClient.Get method.
@@ -223,7 +223,7 @@ func (client *AvailabilitySetsClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2022-05-21-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -240,7 +240,7 @@ func (client *AvailabilitySetsClient) getHandleResponse(resp *http.Response) (Av
 
 // NewListByResourceGroupPager - List of AvailabilitySets in a resource group.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 //   - resourceGroupName - The name of the resource group.
 //   - options - AvailabilitySetsClientListByResourceGroupOptions contains the optional parameters for the AvailabilitySetsClient.NewListByResourceGroupPager
 //     method.
@@ -288,7 +288,7 @@ func (client *AvailabilitySetsClient) listByResourceGroupCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2022-05-21-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -305,7 +305,7 @@ func (client *AvailabilitySetsClient) listByResourceGroupHandleResponse(resp *ht
 
 // NewListBySubscriptionPager - List of AvailabilitySets in a subscription.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 //   - options - AvailabilitySetsClientListBySubscriptionOptions contains the optional parameters for the AvailabilitySetsClient.NewListBySubscriptionPager
 //     method.
 func (client *AvailabilitySetsClient) NewListBySubscriptionPager(options *AvailabilitySetsClientListBySubscriptionOptions) *runtime.Pager[AvailabilitySetsClientListBySubscriptionResponse] {
@@ -348,7 +348,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2022-05-21-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -366,7 +366,7 @@ func (client *AvailabilitySetsClient) listBySubscriptionHandleResponse(resp *htt
 // BeginUpdate - Updates the AvailabilitySets resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 //   - resourceGroupName - The name of the resource group.
 //   - availabilitySetName - Name of the AvailabilitySet.
 //   - body - AvailabilitySets patch payload.
@@ -389,7 +389,7 @@ func (client *AvailabilitySetsClient) BeginUpdate(ctx context.Context, resourceG
 // Update - Updates the AvailabilitySets resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2020-06-05-preview
+// Generated from API version 2022-05-21-preview
 func (client *AvailabilitySetsClient) update(ctx context.Context, resourceGroupName string, availabilitySetName string, body ResourcePatch, options *AvailabilitySetsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, availabilitySetName, body, options)
 	if err != nil {
@@ -425,7 +425,7 @@ func (client *AvailabilitySetsClient) updateCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2020-06-05-preview")
+	reqQP.Set("api-version", "2022-05-21-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, body)

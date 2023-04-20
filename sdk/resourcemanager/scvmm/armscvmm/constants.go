@@ -11,7 +11,7 @@ package armscvmm
 
 const (
 	moduleName    = "armscvmm"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )
 
 // AllocationMethod - Allocation method.
@@ -79,6 +79,22 @@ func PossibleDynamicMemoryEnabledValues() []DynamicMemoryEnabled {
 	return []DynamicMemoryEnabled{
 		DynamicMemoryEnabledFalse,
 		DynamicMemoryEnabledTrue,
+	}
+}
+
+// IdentityType - The type of managed service identity.
+type IdentityType string
+
+const (
+	IdentityTypeNone           IdentityType = "None"
+	IdentityTypeSystemAssigned IdentityType = "SystemAssigned"
+)
+
+// PossibleIdentityTypeValues returns the possible values for the IdentityType const type.
+func PossibleIdentityTypeValues() []IdentityType {
+	return []IdentityType{
+		IdentityTypeNone,
+		IdentityTypeSystemAssigned,
 	}
 }
 
@@ -150,5 +166,59 @@ func PossibleOsTypeValues() []OsType {
 		OsTypeLinux,
 		OsTypeOther,
 		OsTypeWindows,
+	}
+}
+
+// ProvisioningAction - Defines the different types of operations for guest agent.
+type ProvisioningAction string
+
+const (
+	ProvisioningActionInstall   ProvisioningAction = "install"
+	ProvisioningActionRepair    ProvisioningAction = "repair"
+	ProvisioningActionUninstall ProvisioningAction = "uninstall"
+)
+
+// PossibleProvisioningActionValues returns the possible values for the ProvisioningAction const type.
+func PossibleProvisioningActionValues() []ProvisioningAction {
+	return []ProvisioningAction{
+		ProvisioningActionInstall,
+		ProvisioningActionRepair,
+		ProvisioningActionUninstall,
+	}
+}
+
+// StatusLevelTypes - The level code.
+type StatusLevelTypes string
+
+const (
+	StatusLevelTypesError   StatusLevelTypes = "Error"
+	StatusLevelTypesInfo    StatusLevelTypes = "Info"
+	StatusLevelTypesWarning StatusLevelTypes = "Warning"
+)
+
+// PossibleStatusLevelTypesValues returns the possible values for the StatusLevelTypes const type.
+func PossibleStatusLevelTypesValues() []StatusLevelTypes {
+	return []StatusLevelTypes{
+		StatusLevelTypesError,
+		StatusLevelTypesInfo,
+		StatusLevelTypesWarning,
+	}
+}
+
+// StatusTypes - The status of the hybrid machine agent.
+type StatusTypes string
+
+const (
+	StatusTypesConnected    StatusTypes = "Connected"
+	StatusTypesDisconnected StatusTypes = "Disconnected"
+	StatusTypesError        StatusTypes = "Error"
+)
+
+// PossibleStatusTypesValues returns the possible values for the StatusTypes const type.
+func PossibleStatusTypesValues() []StatusTypes {
+	return []StatusTypes{
+		StatusTypesConnected,
+		StatusTypesDisconnected,
+		StatusTypesError,
 	}
 }

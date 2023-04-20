@@ -312,6 +312,21 @@ func TestRPCLinkClosingClean_CreationFailsButSessionCloseFailsToo(t *testing.T) 
 	require.Nil(t, rpcLink)
 }
 
+func TestRPCLinkClosingQuickly(t *testing.T) {
+	tester := &rpcTester{t: t, ResponsesCh: make(chan *rpcTestResp, 1000), Accepted: make(chan *amqp.Message, 1)}
+
+	link, err := NewRPCLink(context.Background(), RPCLinkArgs{
+		Client: &rpcTesterClient{
+			session: tester,
+		},
+		Address:  "some-address",
+		LogEvent: "rpctesting",
+	})
+	require.NoError(t, err)
+	require.NotNil(t, link)
+	require.NoError(t, link.Close(context.Background()))
+}
+
 // rpcTester has all the functions needed (for our RPC tests) to be:
 // - an AMQPSession
 // - an AMQPReceiverCloser
@@ -373,8 +388,12 @@ func (tester *rpcTester) AcceptMessage(ctx context.Context, msg *amqp.Message) e
 }
 
 func (tester *rpcTester) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
-	resp := <-tester.ResponsesCh
-	return resp.M, resp.E
+	select {
+	case resp := <-tester.ResponsesCh:
+		return resp.M, resp.E
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	}
 }
 
 // sender functions

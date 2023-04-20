@@ -35,9 +35,8 @@ type (
 		sessionID     *string
 		id            string
 
-		responseMu              sync.Mutex
-		startResponseRouterOnce *sync.Once
-		responseRouterClosed    chan struct{}
+		responseMu           sync.Mutex
+		responseRouterClosed chan struct{}
 
 		responseMap      map[string]chan rpcResponse
 		rpcLinkCtx       context.Context
@@ -103,11 +102,10 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 		clientAddress: strings.Replace("$", "", args.Address, -1) + replyPostfix + id,
 		id:            id,
 
-		uuidNewV4:               uuid.New,
-		responseMap:             map[string]chan rpcResponse{},
-		startResponseRouterOnce: &sync.Once{},
-		responseRouterClosed:    make(chan struct{}),
-		logEvent:                args.LogEvent,
+		uuidNewV4:            uuid.New,
+		responseMap:          map[string]chan rpcResponse{},
+		responseRouterClosed: make(chan struct{}),
+		logEvent:             args.LogEvent,
 	}
 
 	sender, err := session.NewSender(
@@ -145,15 +143,17 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 	link.receiver = receiver
 	link.rpcLinkCtx, link.rpcLinkCtxCancel = context.WithCancel(context.Background())
 
+	go link.responseRouter()
+
 	return link, nil
 }
 
 const responseRouterShutdownMessage = "Response router has shut down"
 
-// startResponseRouter is responsible for taking any messages received on the 'response'
+// responseRouter is responsible for taking any messages received on the 'response'
 // link and forwarding it to the proper channel. The channel is being select'd by the
 // original `RPC` call.
-func (l *rpcLink) startResponseRouter() {
+func (l *rpcLink) responseRouter() {
 	defer azlog.Writef(l.logEvent, responseRouterShutdownMessage)
 	defer close(l.responseRouterClosed)
 
@@ -203,10 +203,6 @@ func (l *rpcLink) startResponseRouter() {
 
 // RPC sends a request and waits on a response for that request
 func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
-	l.startResponseRouterOnce.Do(func() {
-		go l.startResponseRouter()
-	})
-
 	copiedMessage, messageID, err := addMessageID(msg, l.uuidNewV4)
 
 	if err != nil {
@@ -310,10 +306,10 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 func (l *rpcLink) Close(ctx context.Context) error {
 	l.rpcLinkCtxCancel()
 
-	// select {
-	// case <-l.responseRouterClosed:
-	// case <-ctx.Done():
-	// }
+	select {
+	case <-l.responseRouterClosed:
+	case <-ctx.Done():
+	}
 
 	if l.session != nil {
 		return l.session.Close(ctx)

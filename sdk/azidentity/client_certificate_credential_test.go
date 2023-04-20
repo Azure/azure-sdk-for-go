@@ -239,7 +239,7 @@ func TestClientCertificateCredential_Live(t *testing.T) {
 		}
 		o, stop := initRecording(t)
 		defer stop()
-		opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
+		opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableAuthorityValidationAndInstanceDiscovery: true}
 		cred, err := NewClientCertificateCredential(liveSP.tenantID, liveSP.clientID, certs, key, opts)
 		if err != nil {
 			t.Fatalf("failed to construct credential: %v", err)
@@ -265,7 +265,7 @@ func TestClientCertificateCredentialADFS_Live(t *testing.T) {
 	o, stop := initRecording(t)
 	defer stop()
 	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
-	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableInstanceDiscovery: true}
+	opts := &ClientCertificateCredentialOptions{ClientOptions: o, DisableAuthorityValidationAndInstanceDiscovery: true}
 	cred, err := NewClientCertificateCredential("adfs", adfsLiveSP.clientID, certs, key, opts)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)

@@ -5,6 +5,8 @@
 ### Features Added
 
 ### Breaking Changes
+> These changes affect only code written against a beta version such as v1.3.0-beta.5
+* Renamed `DisableInstanceDiscovery` to `DisableAuthorityValidationAndInstanceDiscovery`
 
 ### Bugs Fixed
 

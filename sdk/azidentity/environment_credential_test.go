@@ -247,7 +247,10 @@ func TestEnvironmentCredential_ClientSecretLive(t *testing.T) {
 			setEnvironmentVariables(t, vars)
 			opts, stop := initRecording(t)
 			defer stop()
-			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID})
+			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
+				ClientOptions: opts,
+				DisableAuthorityValidationAndInstanceDiscovery: disabledID,
+			})
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)
 			}
@@ -271,7 +274,10 @@ func TestEnvironmentCredentialADFS_ClientSecretLive(t *testing.T) {
 	setEnvironmentVariables(t, vars)
 	opts, stop := initRecording(t)
 	defer stop()
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true})
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
+		ClientOptions: opts,
+		DisableAuthorityValidationAndInstanceDiscovery: true,
+	})
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}
@@ -323,7 +329,10 @@ func TestEnvironmentCredential_UserPasswordLive(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			opts, stop := initRecording(t)
 			defer stop()
-			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID})
+			cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
+				ClientOptions: opts,
+				DisableAuthorityValidationAndInstanceDiscovery: disabledID,
+			})
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)
 			}
@@ -348,7 +357,10 @@ func TestEnvironmentCredentialADFS_UserPasswordLive(t *testing.T) {
 	setEnvironmentVariables(t, vars)
 	opts, stop := initRecording(t)
 	defer stop()
-	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true})
+	cred, err := NewEnvironmentCredential(&EnvironmentCredentialOptions{
+		ClientOptions: opts,
+		DisableAuthorityValidationAndInstanceDiscovery: true,
+	})
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)
 	}

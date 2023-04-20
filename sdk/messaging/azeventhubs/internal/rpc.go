@@ -309,7 +309,11 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 // Close the link receiver, sender and session
 func (l *rpcLink) Close(ctx context.Context) error {
 	l.rpcLinkCtxCancel()
-	<-l.responseRouterClosed
+
+	// select {
+	// case <-l.responseRouterClosed:
+	// case <-ctx.Done():
+	// }
 
 	if l.session != nil {
 		return l.session.Close(ctx)

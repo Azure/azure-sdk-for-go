@@ -1552,7 +1552,7 @@ func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
 
-func (f *FileUnrecordedTestsSuite) TestFileUploadClearListRange() {
+func (f *FileRecordedTestsSuite) TestFileUploadClearListRange() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
@@ -1562,7 +1562,7 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadClearListRange() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	var fileSize int64 = 1024 * 1024 * 10
+	var fileSize int64 = 1024 * 10
 	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
 	_, err = fClient.Create(context.Background(), fileSize, nil)
 	_require.NoError(err)
@@ -1571,14 +1571,12 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadClearListRange() {
 	_require.NoError(err)
 	_require.Equal(*gResp.ContentLength, fileSize)
 
-	contentSize := 1024 * 8 // 8KB
-	content := make([]byte, contentSize)
-	body := bytes.NewReader(content)
-	rsc := streaming.NopCloser(body)
-	md5Value := md5.Sum(content)
+	contentSize := 1024 * 2 // 2KB
+	contentR, contentD := testcommon.GenerateData(contentSize)
+	md5Value := md5.Sum(contentD)
 	contentMD5 := md5Value[:]
 
-	uResp, err := fClient.UploadRange(context.Background(), 0, rsc, &file.UploadRangeOptions{
+	uResp, err := fClient.UploadRange(context.Background(), 0, contentR, &file.UploadRangeOptions{
 		TransactionalValidation: file.TransferValidationTypeMD5(contentMD5),
 	})
 	_require.NoError(err)
@@ -1587,7 +1585,8 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadClearListRange() {
 
 	rangeList, err := fClient.GetRangeList(context.Background(), nil)
 	_require.NoError(err)
-	_require.NotNil(rangeList.RequestID)
+	_require.Len(rangeList.Ranges, 1)
+	_require.EqualValues(*rangeList.Ranges[0], file.ShareFileRange{Start: to.Ptr(int64(0)), End: to.Ptr(int64(contentSize - 1))})
 
 	cResp, err := fClient.ClearRange(context.Background(), file.HTTPRange{Offset: 0, Count: int64(contentSize)}, nil)
 	_require.NoError(err)
@@ -1595,7 +1594,7 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadClearListRange() {
 
 	rangeList2, err := fClient.GetRangeList(context.Background(), nil)
 	_require.NoError(err)
-	_require.NotNil(rangeList2.RequestID)
+	_require.Len(rangeList2.Ranges, 0)
 }
 
 func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURL() {

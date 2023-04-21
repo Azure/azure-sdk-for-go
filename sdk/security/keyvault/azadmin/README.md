@@ -99,7 +99,7 @@ if err != nil {
 
 ### Logging
 
-This module upknd response events, and printing them to stdout:
+This module uses the logging implementation in `azcore`. To turn on logging for all Azure SDK modules, set `AZURE_SDK_GO_LOGGING` to `all`. By default the logger writes to stderr. Use the `azcore/log` package to control log output. For example, logging only HTTP request and response events, and printing them to stdout:
 
 ```go
 import azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"

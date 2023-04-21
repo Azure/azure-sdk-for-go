@@ -24,9 +24,12 @@ type UsernamePasswordCredentialOptions struct {
 	// Add the wildcard value "*" to allow the credential to acquire tokens for any tenant in which the
 	// application is registered.
 	AdditionallyAllowedTenants []string
-	// DisableInstanceDiscovery should be true for applications authenticating in disconnected or private clouds.
-	// This skips a metadata request that will fail for such applications.
-	DisableInstanceDiscovery bool
+	// DisableAuthorityValidationAndInstanceDiscovery should be set true only by applications authenticating
+	// in disconnected clouds, or private clouds such as Azure Stack. It determines whether the credential
+	// requests Azure AD instance metadata from https://login.microsoft.com before authenticating. Setting
+	// this to true will skip this request, making the application responsible for ensuring the configured
+	// authority is valid and trustworthy.
+	DisableAuthorityValidationAndInstanceDiscovery bool
 }
 
 // UsernamePasswordCredential authenticates a user with a password. Microsoft doesn't recommend this kind of authentication,
@@ -46,7 +49,7 @@ func NewUsernamePasswordCredential(tenantID string, clientID string, username st
 	if options == nil {
 		options = &UsernamePasswordCredentialOptions{}
 	}
-	c, err := getPublicClient(clientID, tenantID, &options.ClientOptions, public.WithInstanceDiscovery(!options.DisableInstanceDiscovery))
+	c, err := getPublicClient(clientID, tenantID, &options.ClientOptions, public.WithInstanceDiscovery(!options.DisableAuthorityValidationAndInstanceDiscovery))
 	if err != nil {
 		return nil, err
 	}

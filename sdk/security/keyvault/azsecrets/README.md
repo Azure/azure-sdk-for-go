@@ -2,7 +2,7 @@
 
 Azure Key Vault helps solve the following problems:
 * Secrets management (this module) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
-* Vault administration ([azadmin](https://aka.ms/azsdk/go/keyvault-admin/docs)) - role-based access control (RBAC), settings, and vault-level backup and restore options
+* Managed HSM administration ([azadmin](https://aka.ms/azsdk/go/keyvault-admin/docs)) - role-based access control (RBAC), settings, and vault-level backup and restore options
 * Certificate management ([azcertificates](https://aka.ms/azsdk/go/keyvault-certificates/docs)) - create, manage, and deploy public and private SSL/TLS certificates
 * Cryptographic key management ([azkeys](https://azsdk/go/keyvault-keys/docs)) - create, store, and control access to the keys used to encrypt your data
 

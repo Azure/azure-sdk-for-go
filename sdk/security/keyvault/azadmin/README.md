@@ -2,7 +2,7 @@
 
 >**Note:** The Administration module only works with [Managed HSM][managed_hsm] – functions targeting a Key Vault will fail.
 
-* Vault administration (this module) - role-based access control (RBAC), settings, and vault-level backup and restore options
+* Managed HSM administration (this module) - role-based access control (RBAC), settings, and vault-level backup and restore options
 * Certificate management ([azcertificates](https://aka.ms/azsdk/go/keyvault-certificates/docs)) - create, manage, and deploy public and private SSL/TLS certificates
 * Cryptographic key management ([azkeys](https://aka.ms/azsdk/go/keyvault-keys/docs)) - create, store, and control access to the keys used to encrypt your data
 * Secrets management ([azsecrets](https://aka.ms/azsdk/go/keyvault-secrets/docs)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets

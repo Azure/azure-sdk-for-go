@@ -5,3 +5,6 @@ variables:
   # https://docs.opensource.microsoft.com/tools/cg/index.html
   # https://github.com/microsoft/component-detection/blob/main/src/Microsoft.ComponentDetection.Detectors/go/GoComponentDetector.cs
   EnableGoCliScan: true
+  
+  # Disable CodeQL injections except for where we specifically enable it
+  Codeql.SkipTaskAutoInjection: true

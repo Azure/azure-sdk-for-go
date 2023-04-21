@@ -80,6 +80,9 @@ stages:
       displayName: Build and Test on
       variables:
         - template: /eng/pipelines/templates/variables/globals.yml
+          Codeql.Enabled: true
+          Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
+          Codeql.SkipTaskAutoInjection: false
       strategy:
         matrix:
           Linux_Go118:

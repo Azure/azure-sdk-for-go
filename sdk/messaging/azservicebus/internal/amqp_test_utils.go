@@ -225,6 +225,10 @@ func (l *FakeAMQPLinks) ClosedPermanently() bool {
 	return l.permanently
 }
 
+func (s *FakeAMQPSender) LinkName() string {
+	return "sender-link-name"
+}
+
 func (s *FakeAMQPSender) Close(ctx context.Context) error {
 	s.Closed++
 	return nil

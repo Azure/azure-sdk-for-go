@@ -44,9 +44,6 @@ func NegotiateClaim(ctx context.Context, audience string, conn amqpwrap.AMQPClie
 	}
 
 	closeLink := func(ctx context.Context, origErr error) error {
-		ctx, cancel := contextWithTimeoutFn(ctx, defaultCloseTimeout)
-		defer cancel()
-
 		if err := link.Close(ctx); err != nil {
 			azlog.Writef(exported.EventAuth, "Failed closing claim link: %s", err.Error())
 			return err

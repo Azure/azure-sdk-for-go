@@ -606,6 +606,20 @@ func (mr *MockAMQPClientMockRecorder) Close() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockAMQPClient)(nil).Close))
 }
 
+// Name mocks base method.
+func (m *MockAMQPClient) Name() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Name")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// Name indicates an expected call of Name.
+func (mr *MockAMQPClientMockRecorder) Name() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Name", reflect.TypeOf((*MockAMQPClient)(nil).Name))
+}
+
 // NewSession mocks base method.
 func (m *MockAMQPClient) NewSession(ctx context.Context, opts *go_amqp.SessionOptions) (AMQPSession, error) {
 	m.ctrl.T.Helper()

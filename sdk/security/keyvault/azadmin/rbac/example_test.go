@@ -15,7 +15,7 @@ import (
 
 var client rbac.Client
 
-func ExampleClient() {
+func ExampleNewClient() {
 	vaultURL := "https://<TODO: your vault name>.managedhsm.azure.net/"
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,11 +34,11 @@ func ExampleClient_CreateOrUpdateRoleDefinition() {
 	scope := rbac.RoleScopeGlobal
 	name := uuid.New().String()
 	roleType := rbac.RoleTypeCustomRole
-	roleName := "ExampleRoleName"
+	roleName := "<role name>"
 	parameters := rbac.RoleDefinitionCreateParameters{
 		Properties: &rbac.RoleDefinitionProperties{
 			AssignableScopes: []*rbac.RoleScope{to.Ptr(scope)},
-			Description:      to.Ptr("Example description"),
+			Description:      to.Ptr("<description>"),
 			Permissions:      []*rbac.Permission{{DataActions: []*rbac.DataAction{to.Ptr(rbac.DataActionBackupHsmKeys), to.Ptr(rbac.DataActionCreateHsmKey)}}},
 			RoleName:         to.Ptr(roleName),
 			RoleType:         to.Ptr(roleType),
@@ -69,4 +69,70 @@ func ExampleClient_CreateRoleAssignment() {
 	}
 
 	fmt.Printf("Role Assignment Name: %s", *roleAssignment.Name)
+}
+
+func ExampleClient_DeleteRoleAssignment() {
+	deletedRoleAssignment, err := client.DeleteRoleAssignment(context.Background(), rbac.RoleScopeGlobal, "<role assignment name>", nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	fmt.Printf("Deleted Role Assignment Name: %s", *deletedRoleAssignment.Name)
+}
+
+func ExampleClient_DeleteRoleDefinition() {
+	deletedRoleDefinition, err := client.DeleteRoleDefinition(context.Background(), rbac.RoleScopeGlobal, "<role definition name>", nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	fmt.Printf("Deleted Role Definition Name: %s", *deletedRoleDefinition.Name)
+}
+
+func ExampleClient_GetRoleAssignment() {
+	roleAssignment, err := client.GetRoleAssignment(context.Background(), rbac.RoleScopeGlobal, "<role assignment name>", nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	fmt.Printf("Role Assignment Name: %s", *roleAssignment.Name)
+}
+
+func ExampleClient_GetRoleDefinition() {
+	roleDefinition, err := client.GetRoleDefinition(context.Background(), rbac.RoleScopeGlobal, "<role definition name>", nil)
+	if err != nil {
+		// TODO: handle error
+	}
+
+	fmt.Printf("Role Definition Name: %s", *roleDefinition.Name)
+}
+
+func ExampleClient_NewListRoleAssignmentsPager() {
+	pager := client.NewListRoleAssignmentsPager(rbac.RoleScopeGlobal, nil)
+
+	for pager.More() {
+		nextResult, err := pager.NextPage(context.TODO())
+		if err != nil {
+			//TODO: handle error
+		}
+		fmt.Println("Role Assignment Name List")
+		for index, roleAssignment := range nextResult.Value {
+			fmt.Printf("%d) %s\n", index, *roleAssignment.Name)
+		}
+	}
+}
+
+func ExampleClient_NewListRoleDefinitionsPager() {
+	pager := client.NewListRoleAssignmentsPager(rbac.RoleScopeGlobal, nil)
+
+	for pager.More() {
+		nextResult, err := pager.NextPage(context.TODO())
+		if err != nil {
+			//TODO: handle error
+		}
+		fmt.Println("Role Definition Name List")
+		for index, roleDefinition := range nextResult.Value {
+			fmt.Printf("%d) %s\n", index, *roleDefinition.Name)
+		}
+	}
 }

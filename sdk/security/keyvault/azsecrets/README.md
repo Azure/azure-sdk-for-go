@@ -138,7 +138,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [managed_identity]: https://docs.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-secrets/docs
 [client_docs]: https://aka.ms/azsdk/go/keyvault-secrets/docs#Client
-[module_source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/secrets/keyvault/azsecrets
+[module_source]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/security/keyvault/azsecrets
 [secrets_samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azsecrets#pkg-examples
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-go%2Fsdk%2Fsecurity%2Fkeyvault%2Fazsecrets%2FREADME.png)

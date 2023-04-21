@@ -1,8 +1,9 @@
 # Azure Key Vault Keys client module for Go
 
 * Cryptographic key management (this module) - create, store, and control access to the keys used to encrypt your data
-* Secrets management ([azsecrets](https://aka.ms/azsdk/go/keyvault-secrets/docs)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
+* Managed HSM administration ([azadmin](https://aka.ms/azsdk/go/keyvault-admin/docs)) - role-based access control (RBAC), settings, and vault-level backup and restore options
 * Certificate management ([azcertificates](https://aka.ms/azsdk/go/keyvault-certificates/docs)) - create, manage, and deploy public and private SSL/TLS certificates
+* Secrets management ([azsecrets](https://aka.ms/azsdk/go/keyvault-secrets/docs)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
 
 [Source code][key_client_src] | [Package (pkg.go.dev)][goget_azkeys] | [Product documentation][keyvault_docs] | [Samples][keys_samples]
 

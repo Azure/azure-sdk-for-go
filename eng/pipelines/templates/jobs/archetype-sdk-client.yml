@@ -72,14 +72,14 @@ parameters:
     type: boolean
     default: false
 
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
 
 stages:
   - stage: Build
     jobs:
     - job: Test
       displayName: Build and Test on
-      variables:
-        - template: /eng/pipelines/templates/variables/globals.yml
 
       strategy:
         matrix:
@@ -141,7 +141,6 @@ stages:
     - job: Analyze
       displayName: Analyze
       variables:
-        - template: /eng/pipelines/templates/variables/globals.yml
           Codeql.Enabled: true
           Codeql.BuildIdentifier: ${{ parameters.ServiceDirectory }}
           Codeql.SkipTaskAutoInjection: false

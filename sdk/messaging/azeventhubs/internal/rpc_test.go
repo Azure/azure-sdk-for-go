@@ -183,6 +183,7 @@ func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {
 	acceptedMessage := <-tester.Accepted
 	require.Equal(t, "response from service", acceptedMessage.Value, "successfully received message is accepted")
 
+	require.NoError(t, link.Close(context.Background()))
 	logMessages := cleanupLogs()
 	require.Contains(t, logMessages, "[rpctesting] RPCLink had no response channel for correlation ID you've-never-seen-this", "exampleUncorrelatedMessage causes warning for uncorrelated message")
 	require.Contains(t, logMessages, "[rpctesting] Non-fatal error in RPCLink, starting to receive again: *Error{Condition: com.microsoft:server-busy, Description: , Info: map[]}")

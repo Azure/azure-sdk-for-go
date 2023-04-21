@@ -72,11 +72,11 @@ parameters:
     type: boolean
     default: false
 
-variables:
-  - template: /eng/pipelines/templates/variables/globals.yml
 
 stages:
   - stage: Build
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
     jobs:
     - job: Test
       displayName: Build and Test on
@@ -171,6 +171,8 @@ stages:
       - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
         - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
           - stage: ${{ cloud.key }}
+            variables:
+            - template: /eng/pipelines/templates/variables/globals.yml
             displayName: Live Test ${{ cloud.key }}
             dependsOn: []
             jobs:

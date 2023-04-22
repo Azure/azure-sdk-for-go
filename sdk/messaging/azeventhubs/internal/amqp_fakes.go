@@ -111,9 +111,10 @@ func (r *FakeAMQPReceiver) Receive(ctx context.Context, o *amqp.ReceiveOptions) 
 		m := r.Messages[0]
 		r.Messages = r.Messages[1:]
 		return m, nil
+	} else {
+		<-ctx.Done()
+		return nil, ctx.Err()
 	}
-
-	return nil, nil
 }
 
 func (r *FakeAMQPReceiver) Close(ctx context.Context) error {

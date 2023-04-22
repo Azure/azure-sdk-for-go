@@ -96,7 +96,7 @@ func TestLinksRecoverLinkWithConnectionFailure(t *testing.T) {
 	requireNewLinkNewConn(t, oldLWID, newLWID)
 
 	err = newLWID.Link.Send(context.Background(), &amqp.Message{
-		Data: [][]byte{[]byte("hello world")},
+		Data: [][]byte{[]byte("TestLinksRecoverLinkWithConnectionFailure")},
 	}, nil)
 	require.NoError(t, err)
 }
@@ -148,7 +148,7 @@ func TestLinksRecoverLinkWithConnectionFailureAndExpiredContext(t *testing.T) {
 	require.NoError(t, err)
 }
 
-func TestLinkFailureUpgradedToConnectionError(t *testing.T) {
+func TestLinkFailureWhenConnectionIsDead(t *testing.T) {
 	ns, links := newLinksForTest(t)
 	defer test.RequireClose(t, links)
 	defer test.RequireNSClose(t, ns)
@@ -167,14 +167,14 @@ func TestLinkFailureUpgradedToConnectionError(t *testing.T) {
 	require.Error(t, err)
 	require.Equal(t, RecoveryKindConn, GetRecoveryKind(err))
 
-	getLogsFn := test.CaptureLogsForTest()
-
-	// NOTE: this is the key diff between the connection level test and ours - we induce a failure at the connection level _but_ we pretend to recover a link level error.
 	err = links.RecoverIfNeeded(context.Background(), "0", oldLWID, &amqp.LinkError{})
-	require.NoError(t, err)
+	var connErr *amqp.ConnError
+	require.ErrorAs(t, err, &connErr)
+	require.Nil(t, connErr.RemoteErr, "is the forwarded error from the closed connection")
+	require.Equal(t, RecoveryKindConn, GetRecoveryKind(connErr), "next recovery would force a connection level recovery")
 
-	logs := getLogsFn()
-	require.Contains(t, logs, "[azeh.Conn] Upgrading to connection reset for recovery instead of link")
+	err = links.RecoverIfNeeded(context.Background(), "0", oldLWID, connErr)
+	require.NoError(t, err)
 
 	newLWID, err := links.GetLink(context.Background(), "0")
 	require.NoError(t, err)
@@ -182,7 +182,7 @@ func TestLinkFailureUpgradedToConnectionError(t *testing.T) {
 	requireNewLinkNewConn(t, oldLWID, newLWID)
 
 	err = newLWID.Link.Send(context.Background(), &amqp.Message{
-		Data: [][]byte{[]byte("hello world")},
+		Data: [][]byte{[]byte("TestLinkFailureWhenConnectionIsDead")},
 	}, nil)
 	require.NoError(t, err)
 }
@@ -233,8 +233,8 @@ func newLinksForTest(t *testing.T) (*Namespace, *Links[amqpwrap.AMQPSenderCloser
 	ns, err := NewNamespace(NamespaceWithConnectionString(testParams.ConnectionString))
 	require.NoError(t, err)
 
-	links := NewLinks(ns, fmt.Sprintf("%s/$management", testParams.EventHubName), func(partitionID string) string {
-		return fmt.Sprintf("%s/Partitions/%s", testParams.EventHubName, partitionID)
+	links := NewLinks(ns, fmt.Sprintf("%s/$management", testParams.EventHubLinksOnlyName), func(partitionID string) string {
+		return fmt.Sprintf("%s/Partitions/%s", testParams.EventHubLinksOnlyName, partitionID)
 	}, func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (AMQPSenderCloser, error) {
 		select {
 		case <-ctx.Done():

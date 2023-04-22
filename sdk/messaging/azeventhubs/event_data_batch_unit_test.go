@@ -11,6 +11,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
+	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/mock"
+	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 )
 
@@ -111,7 +113,9 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, mb.NumEvents())
 		require.EqualValues(t, 172, mb.NumBytes())
 
-		actualBytes, err := mb.toAMQPMessage().MarshalBinary()
+		msg, err := mb.toAMQPMessage()
+		require.NoError(t, err)
+		actualBytes, err := msg.MarshalBinary()
 		require.NoError(t, err)
 
 		require.Equal(t, 172, len(actualBytes))
@@ -135,7 +139,10 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 		require.EqualValues(t, 1, mb.NumEvents())
 		require.EqualValues(t, 4357, mb.NumBytes())
 
-		actualBytes, err := mb.toAMQPMessage().MarshalBinary()
+		msg, err := mb.toAMQPMessage()
+		require.NoError(t, err)
+
+		actualBytes, err := msg.MarshalBinary()
 		require.NoError(t, err)
 
 		require.Equal(t, 4357, len(actualBytes))
@@ -201,6 +208,70 @@ func TestUnitEventDataBatchUnitTests(t *testing.T) {
 
 		wg.Wait()
 		require.EqualValues(t, 100, mb.NumEvents())
+	})
+}
+
+func TestUnitEventDataBatchDontReuseOptions(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	sender := mock.NewMockAMQPSenderCloser(ctrl)
+	sender.EXPECT().MaxMessageSize().Return(uint64(200)).AnyTimes()
+
+	t.Run("partitionID", func(t *testing.T) {
+		pid := "6"
+		batchForPartition, err := newEventDataBatch(sender, &EventDataBatchOptions{
+			PartitionID: &pid,
+		})
+		require.NoError(t, err)
+
+		require.Equal(t, "6", *batchForPartition.partitionID)
+		pid = "7"
+		require.Equal(t, "6", *batchForPartition.partitionID)
+	})
+
+	t.Run("partitionKey", func(t *testing.T) {
+		pkey := "hello"
+
+		batchForPartitionKey, err := newEventDataBatch(sender, &EventDataBatchOptions{
+			PartitionKey: &pkey,
+		})
+		require.NoError(t, err)
+
+		require.Equal(t, "hello", *batchForPartitionKey.partitionKey)
+		pkey = "world"
+		require.Equal(t, "hello", *batchForPartitionKey.partitionKey)
+	})
+}
+
+func TestUnitEventDataBatchAlwaysHasProperties(t *testing.T) {
+	ctrl := gomock.NewController(t)
+	sender := mock.NewMockAMQPSenderCloser(ctrl)
+	sender.EXPECT().MaxMessageSize().Return(uint64(200)).AnyTimes()
+
+	batch, err := newEventDataBatch(sender, nil)
+	require.NoError(t, err)
+
+	t.Run("empty", func(t *testing.T) {
+		amqpMsg, err := batch.toAMQPMessage()
+		require.Nil(t, amqpMsg)
+		require.EqualError(t, err, "batch is nil or empty")
+	})
+
+	t.Run("annotated message, empty", func(t *testing.T) {
+		err = batch.AddAMQPAnnotatedMessage(&AMQPAnnotatedMessage{}, nil)
+		require.NoError(t, err)
+
+		msg, err := batch.toAMQPMessage()
+		require.NoError(t, err)
+		require.NotEmpty(t, msg, msg.Properties.MessageID)
+	})
+
+	t.Run("regular event, empty", func(t *testing.T) {
+		err = batch.AddEventData(&EventData{}, nil)
+		require.NoError(t, err)
+
+		msg, err := batch.toAMQPMessage()
+		require.NoError(t, err)
+		require.NotEmpty(t, msg, msg.Properties.MessageID)
 	})
 }
 

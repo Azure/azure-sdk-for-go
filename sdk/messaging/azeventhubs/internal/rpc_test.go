@@ -39,8 +39,11 @@ func TestRPCLink(t *testing.T) {
 			Address:  "fake-address",
 			LogEvent: log.Event("testing"),
 		})
+
 		require.NoError(t, err)
 		require.NotNil(t, rpcLink)
+
+		defer test.RequireClose(t, rpcLink)
 
 		require.Zero(t, fakeClient.session.CloseCalled)
 		require.Zero(t, fakeClient.session.NS.Receiver.CloseCalled)

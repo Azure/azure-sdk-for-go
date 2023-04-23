@@ -40,7 +40,7 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.serverName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "serverna", 14,true)
+	testsuite.serverName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "serverna", 14, true)
 	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")
@@ -233,7 +233,7 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) TestPrivateEndpointConnect
 	testsuite.Require().NoError(err)
 	privateEndpointConnectionsClientNewListByServerPager := privateEndpointConnectionsClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
 	for privateEndpointConnectionsClientNewListByServerPager.More() {
-		result,err := privateEndpointConnectionsClientNewListByServerPager.NextPage(testsuite.ctx)
+		result, err := privateEndpointConnectionsClientNewListByServerPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
 		privateEndpointConnectionName = *result.Value[0].Name
 		break
@@ -244,7 +244,6 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) TestPrivateEndpointConnect
 	_, err = privateEndpointConnectionsClient.Get(testsuite.ctx, testsuite.resourceGroupName, testsuite.serverName, privateEndpointConnectionName, nil)
 	testsuite.Require().NoError(err)
 
-
 	var privateLinkResourceName string
 	// from step PrivateLinkResources_ListByServer
 	fmt.Println("Call operation: PrivateLinkResources_ListByServer")
@@ -252,7 +251,7 @@ func (testsuite *PrivateEndpointConnectionsTestSuite) TestPrivateEndpointConnect
 	testsuite.Require().NoError(err)
 	privateLinkResourcesClientNewListByServerPager := privateLinkResourcesClient.NewListByServerPager(testsuite.resourceGroupName, testsuite.serverName, nil)
 	for privateLinkResourcesClientNewListByServerPager.More() {
-		result,err := privateLinkResourcesClientNewListByServerPager.NextPage(testsuite.ctx)
+		result, err := privateLinkResourcesClientNewListByServerPager.NextPage(testsuite.ctx)
 		testsuite.Require().NoError(err)
 		privateLinkResourceName = *result.Value[0].Name
 		break

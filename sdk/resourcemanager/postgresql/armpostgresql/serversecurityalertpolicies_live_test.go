@@ -38,7 +38,7 @@ func (testsuite *ServerSecurityAlertPoliciesTestSuite) SetupSuite() {
 
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.serverName,_ = recording.GenerateAlphaNumericID(testsuite.T(), "serverna", 14,true)
+	testsuite.serverName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "serverna", 14, true)
 	testsuite.adminPassword = testutil.GetEnv("ADMIN_PASSWORD", "")
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")

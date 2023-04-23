@@ -2,5 +2,5 @@
   "AssetsRepo": "Azure/azure-sdk-assets",
   "AssetsRepoPrefixPath": "go",
   "TagPrefix": "go/resourcemanager/postgresql/armpostgresql",
-  "Tag": "go/resourcemanager/postgresql/armpostgresql_389820b127"
+  "Tag": "go/resourcemanager/postgresql/armpostgresql_2a306718c0"
 }

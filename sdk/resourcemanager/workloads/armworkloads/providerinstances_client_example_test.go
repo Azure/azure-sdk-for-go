@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/ProviderInstances_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/ProviderInstances_List.json
 func ExampleProviderInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("myResourceGroup", "mySapMonitor", nil)
+	pager := clientFactory.NewProviderInstancesClient().NewListPager("myResourceGroup", "mySapMonitor", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -44,8 +44,8 @@ func ExampleProviderInstancesClient_NewListPager() {
 		// 	Value: []*armworkloads.ProviderInstance{
 		// 		{
 		// 			Name: to.Ptr("myProviderInstance1"),
-		// 			Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance1"),
+		// 			Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance1"),
 		// 			Properties: &armworkloads.ProviderInstanceProperties{
 		// 				ProviderSettings: &armworkloads.HanaDbProviderInstanceProperties{
 		// 					ProviderType: to.Ptr("SapHana"),
@@ -65,8 +65,8 @@ func ExampleProviderInstancesClient_NewListPager() {
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("myProviderInstance2"),
-		// 			Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance1"),
+		// 			Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+		// 			ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance1"),
 		// 			Properties: &armworkloads.ProviderInstanceProperties{
 		// 				ProviderSettings: &armworkloads.SapNetWeaverProviderInstanceProperties{
 		// 					ProviderType: to.Ptr("SapNetWeaver"),
@@ -87,8 +87,8 @@ func ExampleProviderInstancesClient_NewListPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myProviderInstance4"),
-		// 				Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance1"),
+		// 				Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance1"),
 		// 				Properties: &armworkloads.ProviderInstanceProperties{
 		// 					ProviderSettings: &armworkloads.MsSQLServerProviderInstanceProperties{
 		// 						ProviderType: to.Ptr("MsSqlServer"),
@@ -104,8 +104,8 @@ func ExampleProviderInstancesClient_NewListPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myProviderInstance3"),
-		// 				Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance1"),
+		// 				Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance1"),
 		// 				Properties: &armworkloads.ProviderInstanceProperties{
 		// 					ProviderSettings: &armworkloads.PrometheusOSProviderInstanceProperties{
 		// 						ProviderType: to.Ptr("PrometheusOS"),
@@ -119,8 +119,8 @@ func ExampleProviderInstancesClient_NewListPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myProviderInstance3"),
-		// 				Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance1"),
+		// 				Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance1"),
 		// 				Properties: &armworkloads.ProviderInstanceProperties{
 		// 					ProviderSettings: &armworkloads.PrometheusHaClusterProviderInstanceProperties{
 		// 						ProviderType: to.Ptr("PrometheusHaCluster"),
@@ -136,8 +136,8 @@ func ExampleProviderInstancesClient_NewListPager() {
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("myProviderInstance3"),
-		// 				Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance1"),
+		// 				Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance1"),
 		// 				Properties: &armworkloads.ProviderInstanceProperties{
 		// 					ProviderSettings: &armworkloads.DB2ProviderInstanceProperties{
 		// 						ProviderType: to.Ptr("Db2"),
@@ -157,18 +157,18 @@ func ExampleProviderInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/Db2ProviderInstances_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/Db2ProviderInstances_Get.json
 func ExampleProviderInstancesClient_Get_getPropertiesOfADb2Provider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -177,8 +177,8 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfADb2Provider() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -204,18 +204,18 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfADb2Provider() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/MsSqlServerProviderInstance_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/MsSqlServerProviderInstance_Get.json
 func ExampleProviderInstancesClient_Get_getPropertiesOfAMsSqlServerProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -224,8 +224,8 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAMsSqlServerProvider() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -250,18 +250,18 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAMsSqlServerProvider() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/PrometheusOSProviderInstances_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/PrometheusOSProviderInstances_Get.json
 func ExampleProviderInstancesClient_Get_getPropertiesOfAOsProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -270,8 +270,8 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAOsProvider() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -293,18 +293,18 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAOsProvider() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/PrometheusHaClusterProviderInstances_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/PrometheusHaClusterProviderInstances_Get.json
 func ExampleProviderInstancesClient_Get_getPropertiesOfAPrometheusHaClusterProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -313,8 +313,8 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAPrometheusHaClusterProvi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -338,18 +338,18 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfAPrometheusHaClusterProvi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/ProviderInstances_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/ProviderInstances_Get.json
 func ExampleProviderInstancesClient_Get_getPropertiesOfASapMonitorHanaProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -358,8 +358,8 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfASapMonitorHanaProvider()
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -387,18 +387,18 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfASapMonitorHanaProvider()
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/NetWeaverProviderInstances_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/NetWeaverProviderInstances_Get.json
 func ExampleProviderInstancesClient_Get_getPropertiesOfASapMonitorNetWeaverProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	res, err := clientFactory.NewProviderInstancesClient().Get(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -407,8 +407,8 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfASapMonitorNetWeaverProvi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -437,18 +437,18 @@ func ExampleProviderInstancesClient_Get_getPropertiesOfASapMonitorNetWeaverProvi
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/Db2ProviderInstances_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/Db2ProviderInstances_Create.json
 func ExampleProviderInstancesClient_BeginCreate_createADb2Provider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.DB2ProviderInstanceProperties{
 				ProviderType:      to.Ptr("Db2"),
@@ -476,8 +476,8 @@ func ExampleProviderInstancesClient_BeginCreate_createADb2Provider() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -503,18 +503,18 @@ func ExampleProviderInstancesClient_BeginCreate_createADb2Provider() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/Db2ProviderInstances_Create_Root_Certificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/Db2ProviderInstances_Create_Root_Certificate.json
 func ExampleProviderInstancesClient_BeginCreate_createADb2ProviderWithRootCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.DB2ProviderInstanceProperties{
 				ProviderType:  to.Ptr("Db2"),
@@ -541,8 +541,8 @@ func ExampleProviderInstancesClient_BeginCreate_createADb2ProviderWithRootCertif
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -567,18 +567,18 @@ func ExampleProviderInstancesClient_BeginCreate_createADb2ProviderWithRootCertif
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/MsSqlServerProviderInstance_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/MsSqlServerProviderInstance_Create.json
 func ExampleProviderInstancesClient_BeginCreate_createAMsSqlServerProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.MsSQLServerProviderInstanceProperties{
 				ProviderType:      to.Ptr("MsSqlServer"),
@@ -605,8 +605,8 @@ func ExampleProviderInstancesClient_BeginCreate_createAMsSqlServerProvider() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -630,18 +630,18 @@ func ExampleProviderInstancesClient_BeginCreate_createAMsSqlServerProvider() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/MsSqlServerProviderInstance_Create_Root_Certificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/MsSqlServerProviderInstance_Create_Root_Certificate.json
 func ExampleProviderInstancesClient_BeginCreate_createAMsSqlServerProviderWithRootCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.MsSQLServerProviderInstanceProperties{
 				ProviderType:  to.Ptr("MsSqlServer"),
@@ -667,8 +667,8 @@ func ExampleProviderInstancesClient_BeginCreate_createAMsSqlServerProviderWithRo
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -691,18 +691,18 @@ func ExampleProviderInstancesClient_BeginCreate_createAMsSqlServerProviderWithRo
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/PrometheusOSProviderInstances_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/PrometheusOSProviderInstances_Create.json
 func ExampleProviderInstancesClient_BeginCreate_createAOsProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.PrometheusOSProviderInstanceProperties{
 				ProviderType:      to.Ptr("PrometheusOS"),
@@ -725,8 +725,8 @@ func ExampleProviderInstancesClient_BeginCreate_createAOsProvider() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -748,18 +748,18 @@ func ExampleProviderInstancesClient_BeginCreate_createAOsProvider() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/PrometheusOSProviderInstances_Create_Root_Certificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/PrometheusOSProviderInstances_Create_Root_Certificate.json
 func ExampleProviderInstancesClient_BeginCreate_createAOsProviderWithRootCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.PrometheusOSProviderInstanceProperties{
 				ProviderType:  to.Ptr("PrometheusOS"),
@@ -781,8 +781,8 @@ func ExampleProviderInstancesClient_BeginCreate_createAOsProviderWithRootCertifi
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -803,18 +803,18 @@ func ExampleProviderInstancesClient_BeginCreate_createAOsProviderWithRootCertifi
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/PrometheusHaClusterProviderInstances_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/PrometheusHaClusterProviderInstances_Create.json
 func ExampleProviderInstancesClient_BeginCreate_createAPrometheusHaClusterProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.PrometheusHaClusterProviderInstanceProperties{
 				ProviderType:      to.Ptr("PrometheusHaCluster"),
@@ -839,8 +839,8 @@ func ExampleProviderInstancesClient_BeginCreate_createAPrometheusHaClusterProvid
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -864,18 +864,18 @@ func ExampleProviderInstancesClient_BeginCreate_createAPrometheusHaClusterProvid
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/PrometheusHaClusterProviderInstances_Create_Root_Certificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/PrometheusHaClusterProviderInstances_Create_Root_Certificate.json
 func ExampleProviderInstancesClient_BeginCreate_createAPrometheusHaClusterProviderWithRootCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.PrometheusHaClusterProviderInstanceProperties{
 				ProviderType:  to.Ptr("PrometheusHaCluster"),
@@ -899,8 +899,8 @@ func ExampleProviderInstancesClient_BeginCreate_createAPrometheusHaClusterProvid
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -923,18 +923,18 @@ func ExampleProviderInstancesClient_BeginCreate_createAPrometheusHaClusterProvid
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/ProviderInstances_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/ProviderInstances_Create.json
 func ExampleProviderInstancesClient_BeginCreate_createASapMonitorHanaProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.HanaDbProviderInstanceProperties{
 				ProviderType:             to.Ptr("SapHana"),
@@ -964,8 +964,8 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorHanaProvider() 
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -993,18 +993,18 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorHanaProvider() 
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/ProviderInstances_Create_Root_Certificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/ProviderInstances_Create_Root_Certificate.json
 func ExampleProviderInstancesClient_BeginCreate_createASapMonitorHanaProviderWithRootCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.HanaDbProviderInstanceProperties{
 				ProviderType:             to.Ptr("SapHana"),
@@ -1033,8 +1033,8 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorHanaProviderWit
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -1061,18 +1061,18 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorHanaProviderWit
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/NetWeaverProviderInstances_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/NetWeaverProviderInstances_Create.json
 func ExampleProviderInstancesClient_BeginCreate_createASapMonitorNetWeaverProvider() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.SapNetWeaverProviderInstanceProperties{
 				ProviderType: to.Ptr("SapNetWeaver"),
@@ -1103,8 +1103,8 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorNetWeaverProvid
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -1133,18 +1133,18 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorNetWeaverProvid
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/NetWeaverProviderInstances_Create_Root_Certificate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/NetWeaverProviderInstances_Create_Root_Certificate.json
 func ExampleProviderInstancesClient_BeginCreate_createASapMonitorNetWeaverProviderWithRootCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
+	poller, err := clientFactory.NewProviderInstancesClient().BeginCreate(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", armworkloads.ProviderInstance{
 		Properties: &armworkloads.ProviderInstanceProperties{
 			ProviderSettings: &armworkloads.SapNetWeaverProviderInstanceProperties{
 				ProviderType: to.Ptr("SapNetWeaver"),
@@ -1174,8 +1174,8 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorNetWeaverProvid
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.ProviderInstance = armworkloads.ProviderInstance{
 	// 	Name: to.Ptr("myProviderInstance"),
-	// 	Type: to.Ptr("Microsoft.Workloads/workloads/providerInstances"),
-	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/workloads/mySapMonitor/providerInstances/myProviderInstance"),
+	// 	Type: to.Ptr("Microsoft.Workloads/monitors/providerInstances"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Workloads/monitors/mySapMonitor/providerInstances/myProviderInstance"),
 	// 	SystemData: &armworkloads.SystemData{
 	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-19T15:10:46.196Z"); return t}()),
 	// 		CreatedBy: to.Ptr("user@xyz.com"),
@@ -1203,18 +1203,18 @@ func ExampleProviderInstancesClient_BeginCreate_createASapMonitorNetWeaverProvid
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/ProviderInstances_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/ProviderInstances_Delete.json
 func ExampleProviderInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewProviderInstancesClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
+	poller, err := clientFactory.NewProviderInstancesClient().BeginDelete(ctx, "myResourceGroup", "mySapMonitor", "myProviderInstance", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

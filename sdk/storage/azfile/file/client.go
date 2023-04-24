@@ -255,13 +255,13 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 	}
 
 	qps, err := sas.SignatureValues{
-		Version:             sas.Version,
-		Protocol:            sas.ProtocolHTTPS,
-		ShareName:           urlParts.ShareName,
-		DirectoryOrFilePath: urlParts.DirectoryOrFilePath,
-		Permissions:         permissions.String(),
-		StartTime:           st,
-		ExpiryTime:          expiry.UTC(),
+		Version:     sas.Version,
+		Protocol:    sas.ProtocolHTTPS,
+		ShareName:   urlParts.ShareName,
+		FilePath:    urlParts.DirectoryOrFilePath,
+		Permissions: permissions.String(),
+		StartTime:   st,
+		ExpiryTime:  expiry.UTC(),
 	}.SignWithSharedKey(f.sharedKey())
 	if err != nil {
 		return "", err

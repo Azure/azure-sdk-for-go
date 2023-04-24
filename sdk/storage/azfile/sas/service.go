@@ -20,21 +20,21 @@ import (
 // For more information on creating service sas, see https://docs.microsoft.com/rest/api/storageservices/constructing-a-service-sas
 // User Delegation SAS not supported for files service
 type SignatureValues struct {
-	Version             string    `param:"sv"`  // If not specified, this defaults to Version
-	Protocol            Protocol  `param:"spr"` // See the Protocol* constants
-	StartTime           time.Time `param:"st"`  // Not specified if IsZero
-	ExpiryTime          time.Time `param:"se"`  // Not specified if IsZero
-	SnapshotTime        time.Time
-	Permissions         string  `param:"sp"` // Create by initializing SharePermissions or FilePermissions and then call String()
-	IPRange             IPRange `param:"sip"`
-	Identifier          string  `param:"si"`
-	ShareName           string
-	DirectoryOrFilePath string // Ex: "directory/FileName". Use "" to create a Share SAS, directory path for Directory SAS and file path for File SAS.
-	CacheControl        string // rscc
-	ContentDisposition  string // rscd
-	ContentEncoding     string // rsce
-	ContentLanguage     string // rscl
-	ContentType         string // rsct
+	Version            string    `param:"sv"`  // If not specified, this defaults to Version
+	Protocol           Protocol  `param:"spr"` // See the Protocol* constants
+	StartTime          time.Time `param:"st"`  // Not specified if IsZero
+	ExpiryTime         time.Time `param:"se"`  // Not specified if IsZero
+	SnapshotTime       time.Time
+	Permissions        string  `param:"sp"` // Create by initializing SharePermissions or FilePermissions and then call String()
+	IPRange            IPRange `param:"sip"`
+	Identifier         string  `param:"si"`
+	ShareName          string
+	FilePath           string // Ex: "directory/FileName". Use "" to create a Share SAS and file path for File SAS.
+	CacheControl       string // rscc
+	ContentDisposition string // rscd
+	ContentEncoding    string // rsce
+	ContentLanguage    string // rscl
+	ContentType        string // rsct
 }
 
 // SignWithSharedKey uses an account's SharedKeyCredential to sign this signature values to produce the proper SAS query parameters.
@@ -44,7 +44,7 @@ func (v SignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredent
 	}
 
 	resource := "s"
-	if v.DirectoryOrFilePath == "" {
+	if v.FilePath == "" {
 		//Make sure the permission characters are in the correct order
 		perms, err := parseSharePermissions(v.Permissions)
 		if err != nil {
@@ -71,7 +71,7 @@ func (v SignatureValues) SignWithSharedKey(sharedKeyCredential *SharedKeyCredent
 		v.Permissions,
 		startTime,
 		expiryTime,
-		getCanonicalName(sharedKeyCredential.AccountName(), v.ShareName, v.DirectoryOrFilePath),
+		getCanonicalName(sharedKeyCredential.AccountName(), v.ShareName, v.FilePath),
 		v.Identifier,
 		v.IPRange.String(),
 		string(v.Protocol),

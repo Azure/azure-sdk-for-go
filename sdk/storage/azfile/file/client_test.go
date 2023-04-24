@@ -1694,11 +1694,11 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURL() {
 
 	perms := sas.FilePermissions{Read: true, Write: true}
 	sasQueryParams, err := sas.SignatureValues{
-		Protocol:            sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
-		ExpiryTime:          time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
-		ShareName:           shareName,
-		DirectoryOrFilePath: srcFileName,
-		Permissions:         perms.String(),
+		Protocol:    sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
 	}.SignWithSharedKey(cred)
 	_require.NoError(err)
 

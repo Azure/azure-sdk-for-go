@@ -8,15 +8,12 @@ package directory_test
 
 import (
 	"context"
-	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
 	"testing"
@@ -217,63 +214,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateNegativeMultiLevel() {
 	_require.Error(err)
 	_require.Nil(resp.RequestID)
 	testcommon.ValidateFileErrorCode(_require, err, fileerror.ParentNotFound)
-}
-
-func (d *DirectoryUnrecordedTestsSuite) TestDirectoryClientUsingSAS() {
-	_require := require.New(d.T())
-	testName := d.T().Name()
-
-	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
-	_require.NoError(err)
-
-	shareName := testcommon.GenerateShareName(testName)
-	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
-	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
-
-	dirClient := testcommon.CreateNewDirectory(context.Background(), _require, testcommon.GenerateDirectoryName(testName), shareClient)
-
-	permissions := sas.FilePermissions{
-		Read:   true,
-		Write:  true,
-		Delete: true,
-		Create: true,
-	}
-	expiry := time.Now().Add(time.Hour)
-
-	dirSASURL, err := dirClient.GetSASURL(permissions, expiry, nil)
-	_require.NoError(err)
-
-	dirSASClient, err := directory.NewClientWithNoCredential(dirSASURL, nil)
-	_require.NoError(err)
-
-	_, err = dirSASClient.GetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
-
-	subDirSASClient := dirSASClient.NewSubdirectoryClient("subdir")
-	_, err = subDirSASClient.Create(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
-
-	// TODO: directory SAS client unable to do create and get properties on directories.
-	// Also unable to do create or get properties on files. Validate this behaviour.
-	fileSASClient := dirSASClient.NewFileClient(testcommon.GenerateFileName(testName))
-	_, err = fileSASClient.Create(context.Background(), 1024, nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
-
-	_, err = fileSASClient.GetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
-
-	// create file using shared key client
-	_, err = dirClient.NewFileClient(testcommon.GenerateFileName(testName)).Create(context.Background(), 1024, nil)
-	_require.NoError(err)
-
-	// get properties using SAS client
-	_, err = fileSASClient.GetProperties(context.Background(), nil)
-	_require.Error(err)
-	testcommon.ValidateFileErrorCode(_require, err, fileerror.AuthenticationFailed)
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirCreateDeleteDefault() {
@@ -737,56 +677,6 @@ func (d *DirectoryRecordedTestsSuite) TestDirGetSetMetadataMergeAndReplace() {
 	_require.NotNil(gResp.Version)
 	_require.NotNil(gResp.IsServerEncrypted)
 	_require.EqualValues(gResp.Metadata, md2)
-}
-
-func (d *DirectoryRecordedTestsSuite) TestSASDirectoryClientNoKey() {
-	_require := require.New(d.T())
-	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
-	_require.Greater(len(accountName), 0)
-
-	testName := d.T().Name()
-	shareName := testcommon.GenerateShareName(testName)
-	dirName := testcommon.GenerateDirectoryName(testName)
-	dirClient, err := directory.NewClientWithNoCredential(fmt.Sprintf("https://%s.file.core.windows.net/%v/%v", accountName, shareName, dirName), nil)
-	_require.NoError(err)
-
-	permissions := sas.FilePermissions{
-		Read:   true,
-		Write:  true,
-		Delete: true,
-		Create: true,
-	}
-	expiry := time.Now().Add(time.Hour)
-
-	_, err = dirClient.GetSASURL(permissions, expiry, nil)
-	_require.Equal(err, fileerror.MissingSharedKeyCredential)
-}
-
-func (d *DirectoryRecordedTestsSuite) TestSASDirectoryClientSignNegative() {
-	_require := require.New(d.T())
-	accountName, accountKey := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
-	_require.Greater(len(accountName), 0)
-	_require.Greater(len(accountKey), 0)
-
-	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
-	_require.NoError(err)
-
-	testName := d.T().Name()
-	shareName := testcommon.GenerateShareName(testName)
-	dirName := testcommon.GenerateDirectoryName(testName)
-	dirClient, err := directory.NewClientWithSharedKeyCredential(fmt.Sprintf("https://%s.file.core.windows.net/%v%v", accountName, shareName, dirName), cred, nil)
-	_require.NoError(err)
-
-	permissions := sas.FilePermissions{
-		Read:   true,
-		Write:  true,
-		Delete: true,
-		Create: true,
-	}
-	expiry := time.Time{}
-
-	_, err = dirClient.GetSASURL(permissions, expiry, nil)
-	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
 
 // TODO: add tests for listing files and directories after file client is completed

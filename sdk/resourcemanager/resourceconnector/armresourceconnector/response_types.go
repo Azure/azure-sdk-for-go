@@ -24,6 +24,11 @@ type AppliancesClientGetResponse struct {
 	Appliance
 }
 
+// AppliancesClientGetTelemetryConfigResponse contains the response from method AppliancesClient.GetTelemetryConfig.
+type AppliancesClientGetTelemetryConfigResponse struct {
+	ApplianceGetTelemetryConfigResult
+}
+
 // AppliancesClientGetUpgradeGraphResponse contains the response from method AppliancesClient.GetUpgradeGraph.
 type AppliancesClientGetUpgradeGraphResponse struct {
 	UpgradeGraph
@@ -39,14 +44,14 @@ type AppliancesClientListBySubscriptionResponse struct {
 	ApplianceListResult
 }
 
-// AppliancesClientListClusterCustomerUserCredentialResponse contains the response from method AppliancesClient.ListClusterCustomerUserCredential.
-type AppliancesClientListClusterCustomerUserCredentialResponse struct {
-	ApplianceListClusterCustomerUserCredentialResults
-}
-
 // AppliancesClientListClusterUserCredentialResponse contains the response from method AppliancesClient.ListClusterUserCredential.
 type AppliancesClientListClusterUserCredentialResponse struct {
 	ApplianceListCredentialResults
+}
+
+// AppliancesClientListKeysResponse contains the response from method AppliancesClient.ListKeys.
+type AppliancesClientListKeysResponse struct {
+	ApplianceListKeysResults
 }
 
 // AppliancesClientListOperationsResponse contains the response from method AppliancesClient.NewListOperationsPager.

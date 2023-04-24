@@ -442,6 +442,58 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.NotNil(getResp.IsServerEncrypted)
 }
 
+func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesDefault() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), 0, shareClient)
+
+	setResp, err := fClient.SetHTTPHeaders(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotEqual(*setResp.ETag, "")
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.NotEqual(setResp.RequestID, "")
+	_require.NotEqual(setResp.Version, "")
+	_require.Equal(setResp.Date.IsZero(), false)
+	_require.NotNil(setResp.IsServerEncrypted)
+
+	metadata := map[string]*string{
+		"Foo": to.Ptr("Foovalue"),
+		"Bar": to.Ptr("Barvalue"),
+	}
+	_, err = fClient.SetMetadata(context.Background(), &file.SetMetadataOptions{
+		Metadata: metadata,
+	})
+	_require.NoError(err)
+
+	// get properties on the share snapshot
+	getResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(setResp.LastModified.IsZero(), false)
+	_require.Equal(*getResp.FileType, "File")
+
+	_require.Nil(getResp.ContentType)
+	_require.Nil(getResp.ContentEncoding)
+	_require.Nil(getResp.ContentLanguage)
+	_require.Nil(getResp.ContentMD5)
+	_require.Nil(getResp.CacheControl)
+	_require.Nil(getResp.ContentDisposition)
+	_require.Equal(*getResp.ContentLength, int64(0))
+
+	_require.NotNil(getResp.ETag)
+	_require.NotNil(getResp.RequestID)
+	_require.NotNil(getResp.Version)
+	_require.Equal(getResp.Date.IsZero(), false)
+	_require.NotNil(getResp.IsServerEncrypted)
+	_require.EqualValues(getResp.Metadata, metadata)
+}
+
 func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
@@ -1549,7 +1601,7 @@ func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {
 	}
 	expiry := time.Time{}
 
-	_, err = fileClient.GetSASURL(permissions, expiry, nil)
+	_, err = fileClient.GetSASURL(permissions, expiry, &file.GetSASURLOptions{StartTime: to.Ptr(time.Now())})
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
 
@@ -1667,6 +1719,68 @@ func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURL() {
 	rangeList2, err := destFClient.GetRangeList(context.Background(), nil)
 	_require.NoError(err)
 	_require.Len(rangeList2.Ranges, 0)
+}
+
+func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLNegative() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, srcFileName, fileSize, shareClient)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	contentSize := 1024 * 8 // 8KB
+	rsc, content := testcommon.GenerateData(contentSize)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	destFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "dest"+testcommon.GenerateFileName(testName), fileSize, shareClient)
+
+	_, err = destFClient.UploadRangeFromURL(context.Background(), srcFClient.URL(), 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentCRC64: contentCRC64,
+	})
+	_require.Error(err)
+}
+
+func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLOffsetNegative() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, srcFileName, fileSize, shareClient)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	contentSize := 1024 * 8 // 8KB
+	destFClient := testcommon.CreateNewFileFromShare(context.Background(), _require, "dest"+testcommon.GenerateFileName(testName), fileSize, shareClient)
+
+	// error is returned when source offset is negative
+	_, err = destFClient.UploadRangeFromURL(context.Background(), srcFClient.URL(), -1, 0, int64(contentSize), nil)
+	_require.Error(err)
+	_require.Equal(err.Error(), "invalid argument: source and destination offsets must be >= 0")
 }
 
 // TODO: check why this is failing

@@ -41,7 +41,7 @@ func TestInteractiveBrowserCredential_GetTokenSuccess(t *testing.T) {
 			ExpiresOn:   time.Now().Add(1 * time.Hour),
 		},
 	}
-	tk, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
+	tk, err := cred.GetToken(context.Background(), testTRO)
 	if err != nil {
 		t.Fatalf("Expected an empty error but received: %v", err)
 	}

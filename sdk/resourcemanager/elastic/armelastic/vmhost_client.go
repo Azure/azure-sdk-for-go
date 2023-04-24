@@ -54,7 +54,7 @@ func NewVMHostClient(subscriptionID string, credential azcore.TokenCredential, o
 
 // NewListPager - List the vm resources currently being monitored by the Elastic monitor resource.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-02-01-preview
 //   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 //   - monitorName - Monitor resource name
 //   - options - VMHostClientListOptions contains the optional parameters for the VMHostClient.NewListPager method.
@@ -106,7 +106,7 @@ func (client *VMHostClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

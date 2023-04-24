@@ -699,6 +699,7 @@ func (o *uploadFromReaderOptions) getUploadRangeOptions() *UploadRangeOptions {
 // UploadStreamOptions provides set of configurations for Client.UploadStream operation.
 type UploadStreamOptions struct {
 	// ChunkSize defines the size of the buffer used during upload. The default and minimum value is 1 MiB.
+	// Maximum size of a chunk is MaxUpdateRangeBytes.
 	ChunkSize int64
 
 	// Concurrency defines the max number of concurrent uploads to be performed to upload the file.

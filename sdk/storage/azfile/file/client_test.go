@@ -1601,7 +1601,16 @@ func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {
 	}
 	expiry := time.Time{}
 
+	// zero expiry time
 	_, err = fileClient.GetSASURL(permissions, expiry, &file.GetSASURLOptions{StartTime: to.Ptr(time.Now())})
+	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
+
+	// zero start and expiry time
+	_, err = fileClient.GetSASURL(permissions, expiry, &file.GetSASURLOptions{})
+	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
+
+	// empty permissions
+	_, err = fileClient.GetSASURL(sas.FilePermissions{}, expiry, nil)
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
 
@@ -2994,6 +3003,109 @@ func (f *FileRecordedTestsSuite) TestFileUploadDownloadSmallStream() {
 	_require.Len(rangeList.Ranges, 1)
 	_require.Equal(*rangeList.Ranges[0].Start, int64(0))
 	_require.Equal(*rangeList.Ranges[0].End, fileSize-1)
+}
+
+func (f *FileRecordedTestsSuite) TestFileUploadDownloadWithProgress() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 10 * 1024
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	_, content := testcommon.GenerateData(int(fileSize))
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	bytesUploaded := int64(0)
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   2 * 1024,
+		Progress: func(bytesTransferred int64) {
+			_require.GreaterOrEqual(bytesTransferred, bytesUploaded)
+			bytesUploaded = bytesTransferred
+		},
+	})
+	_require.NoError(err)
+	_require.Equal(bytesUploaded, fileSize)
+
+	destBuffer := make([]byte, fileSize)
+	bytesDownloaded := int64(0)
+	cnt, err := fClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		ChunkSize:   2 * 1024,
+		Concurrency: 5,
+		Progress: func(bytesTransferred int64) {
+			_require.GreaterOrEqual(bytesTransferred, bytesDownloaded)
+			bytesDownloaded = bytesTransferred
+		},
+	})
+	_require.NoError(err)
+	_require.Equal(cnt, fileSize)
+	_require.Equal(bytesDownloaded, fileSize)
+
+	downloadedMD5Value := md5.Sum(destBuffer)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	rangeList, err := fClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(rangeList.Ranges, 1)
+	_require.Equal(*rangeList.Ranges[0].Start, int64(0))
+	_require.Equal(*rangeList.Ranges[0].End, fileSize-1)
+}
+
+func (f *FileRecordedTestsSuite) TestFileListHandlesDefault() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), 2048, shareClient)
+
+	resp, err := fClient.ListHandles(context.Background(), nil)
+	_require.NoError(err)
+	_require.Len(resp.Handles, 0)
+	_require.NotNil(resp.NextMarker)
+	_require.Equal(*resp.NextMarker, "")
+}
+
+func (f *FileRecordedTestsSuite) TestFileForceCloseHandlesDefault() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	fClient := testcommon.CreateNewFileFromShare(context.Background(), _require, testcommon.GenerateFileName(testName), 2048, shareClient)
+
+	resp, err := fClient.ForceCloseHandles(context.Background(), "*", nil)
+	_require.NoError(err)
+	_require.EqualValues(*resp.NumberOfHandlesClosed, 0)
+	_require.EqualValues(*resp.NumberOfHandlesFailedToClose, 0)
+	_require.Nil(resp.Marker)
 }
 
 // TODO: Add tests for GetRangeList, ListHandles and ForceCloseHandles

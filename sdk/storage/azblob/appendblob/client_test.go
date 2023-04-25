@@ -536,7 +536,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64() {
 	_require.Equal(destBuffer, sourceData)
 
 	// Test append block from URL with bad CRC64 value
-	r, sourceData = testcommon.GetDataAndReader(testName, 16)
+	_, sourceData = testcommon.GetDataAndReader(testName, 16)
 	crc64Value = crc64.Checksum(sourceData, shared.CRC64Table)
 	badCRC := make([]byte, 8)
 	binary.LittleEndian.PutUint64(badCRC, crc64Value)
@@ -602,7 +602,7 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64Negative
 	count := int64(contentSize)
 
 	// Test append block from URL with bad CRC64 value
-	r, sourceData = testcommon.GetDataAndReader(testName, 16)
+	_, sourceData = testcommon.GetDataAndReader(testName, 16)
 	crc64Value = crc64.Checksum(sourceData, shared.CRC64Table)
 	badCRC := make([]byte, 8)
 	binary.LittleEndian.PutUint64(badCRC, crc64Value)

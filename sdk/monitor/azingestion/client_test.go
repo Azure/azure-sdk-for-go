@@ -8,30 +8,44 @@ package azingestion_test
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/monitor/azingestion"
 )
 
 func TestUpload(t *testing.T) {
-	endpoint := os.Getenv("LOGS_INGESTION_ENDPOINT")
-	ruleID := os.Getenv("DATA_COLLECTION_RULE_ID")
-	var streamName = "<STREAM_NAME>"
+	azlog.SetListener(func(cls azlog.Event, msg string) {
+		fmt.Println(msg)
+	})
+	endpoint := os.Getenv("MONITOR_INGESTION_DATA_COLLECTION_ENDPOINT")
+	ruleID := os.Getenv("INGESTION_DATA_COLLECTION_RULE_IMMUTABLE_ID")
+	streamName := os.Getenv("INGESTION_STREAM_NAME")
+	clientID := os.Getenv("AZINGESTION_CLIENT_ID")
+	clientSecret := os.Getenv("AZINGESTION_CLIENT_SECRET")
+	tenantID := os.Getenv("AZINGESTION_TENANT_ID")
 
-	credential, err := azidentity.NewDefaultAzureCredential(nil)
+	credential, err := azidentity.NewClientSecretCredential(tenantID, clientID, clientSecret, nil)
 	if err != nil {
 		panic(err)
 	}
-	client, err := azingestion.NewClient(endpoint, credential, nil)
+	client, err := azingestion.NewClient(endpoint, credential, &azingestion.ClientOptions{azcore.ClientOptions{Logging: policy.LogOptions{IncludeBody: true}}})
 	if err != nil {
 		panic(err)
 	}
-	letters := []any{"a", "b", "c", "d"}
-	_, err = client.Upload(context.Background(), ruleID, streamName, letters, nil)
+
+	data := "[{\"Time\":\"2023-04-24T13:17:33.8008175\",\"Computer\":\"Computer1\",\"AdditionalContext\":2},{\"Time\":\"2023-04-24T13:17:33.8008175\",\"Computer\":\"Computer2\",\"AdditionalContext\":3}]}"
+
+	res, err := client.Upload(context.Background(), ruleID, streamName, data, &azingestion.ClientUploadOptions{ContentEncoding: to.Ptr("gzip"), XMSClientRequestID: to.Ptr("123test")})
 	if err != nil {
 		panic(err)
 	}
+	_ = res
 
 }

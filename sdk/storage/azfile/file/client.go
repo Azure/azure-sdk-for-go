@@ -306,7 +306,7 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 			var body io.ReadSeeker = io.NewSectionReader(reader, offset, chunkSize)
 			if o.Progress != nil {
 				chunkProgress := int64(0)
-				body = streaming.NewRequestProgress(shared.NopCloser(body),
+				body = streaming.NewRequestProgress(streaming.NopCloser(body),
 					func(bytesTransferred int64) {
 						diff := bytesTransferred - chunkProgress
 						chunkProgress = bytesTransferred
@@ -318,7 +318,7 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 			}
 
 			uploadRangeOptions := o.getUploadRangeOptions()
-			_, err := f.UploadRange(ctx, offset, shared.NopCloser(body), uploadRangeOptions)
+			_, err := f.UploadRange(ctx, offset, streaming.NopCloser(body), uploadRangeOptions)
 			return err
 		},
 	})

@@ -37,7 +37,7 @@ func TestReceiverCancel(t *testing.T) {
 }
 
 func TestReceiverSendFiveReceiveFive(t *testing.T) {
-	getLogsFn := test.CaptureLogsForTest()
+	getLogsFn := test.CaptureLogsForTest(false)
 
 	serviceBusClient, cleanup, queueName := setupLiveTest(t, nil)
 	defer cleanup()
@@ -555,7 +555,7 @@ func TestReceiver_RenewMessageLock(t *testing.T) {
 		messages[0].LockToken[i] = 0
 	}
 
-	endCaptureFn := test.CaptureLogsForTest()
+	endCaptureFn := test.CaptureLogsForTest(false)
 	defer endCaptureFn()
 	expectedLockBadError := receiver.RenewMessageLock(context.Background(), messages[0], nil)
 

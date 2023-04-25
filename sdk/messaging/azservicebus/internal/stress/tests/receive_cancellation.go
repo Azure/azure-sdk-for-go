@@ -14,7 +14,7 @@ import (
 )
 
 func ReceiveCancellation(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("FinitePeeks")
+	sc := shared.MustCreateStressContext("FinitePeeks", nil)
 	defer sc.Done()
 
 	queueName := fmt.Sprintf("finite-peeks-%s", sc.Nano)

@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/iothub/armiothub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_get.json
 func ExampleResourceClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,106 +54,111 @@ func ExampleResourceClient_Get() {
 	// 			},
 	// 			MaxDeliveryCount: to.Ptr[int32](10),
 	// 		},
-	// 		EnableFileUploadNotifications: to.Ptr(false),
-	// 		EventHubEndpoints: map[string]*armiothub.EventHubProperties{
-	// 			"events": &armiothub.EventHubProperties{
-	// 				Path: to.Ptr("iot-dps-cit-hub-1"),
-	// 				Endpoint: to.Ptr("sb://iothub-ns-iot-dps-ci-245306-76aca8e13b.servicebus.windows.net/"),
-	// 				PartitionCount: to.Ptr[int32](2),
-	// 				PartitionIDs: []*string{
-	// 					to.Ptr("0"),
-	// 					to.Ptr("1")},
-	// 					RetentionTimeInDays: to.Ptr[int64](1),
-	// 				},
+	// 		DeviceStreams: &armiothub.PropertiesDeviceStreams{
+	// 			StreamingEndpoints: []*string{
+	// 				to.Ptr("https://streams.azure-devices-int.net:9443")},
 	// 			},
-	// 			Features: to.Ptr(armiothub.CapabilitiesNone),
-	// 			HostName: to.Ptr("iot-dps-cit-hub-1.azure-devices.net"),
-	// 			IPFilterRules: []*armiothub.IPFilterRule{
-	// 				{
-	// 					Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
-	// 					FilterName: to.Ptr("rule1"),
-	// 					IPMask: to.Ptr("131.117.159.53"),
+	// 			EnableFileUploadNotifications: to.Ptr(false),
+	// 			EventHubEndpoints: map[string]*armiothub.EventHubProperties{
+	// 				"events": &armiothub.EventHubProperties{
+	// 					Path: to.Ptr("iot-dps-cit-hub-1"),
+	// 					Endpoint: to.Ptr("sb://iothub-ns-iot-dps-ci-245306-76aca8e13b.servicebus.windows.net/"),
+	// 					PartitionCount: to.Ptr[int32](2),
+	// 					PartitionIDs: []*string{
+	// 						to.Ptr("0"),
+	// 						to.Ptr("1")},
+	// 						RetentionTimeInDays: to.Ptr[int64](1),
+	// 					},
 	// 				},
-	// 				{
-	// 					Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
-	// 					FilterName: to.Ptr("rule2"),
-	// 					IPMask: to.Ptr("157.55.59.128/25"),
-	// 			}},
-	// 			Locations: []*armiothub.LocationDescription{
-	// 				{
-	// 					Location: to.Ptr("West US"),
-	// 					Role: to.Ptr(armiothub.IotHubReplicaRoleTypePrimary),
-	// 				},
-	// 				{
-	// 					Location: to.Ptr("East US"),
-	// 					Role: to.Ptr(armiothub.IotHubReplicaRoleTypeSecondary),
-	// 			}},
-	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
-	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
-	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
-	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsIso8601: to.Ptr("PT1H"),
-	// 				},
-	// 			},
-	// 			MinTLSVersion: to.Ptr("1.2"),
-	// 			NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
-	// 				ApplyToBuiltInEventHubEndpoint: to.Ptr(true),
-	// 				DefaultAction: to.Ptr(armiothub.DefaultActionDeny),
-	// 				IPRules: []*armiothub.NetworkRuleSetIPRule{
+	// 				Features: to.Ptr(armiothub.CapabilitiesNone),
+	// 				HostName: to.Ptr("iot-dps-cit-hub-1.azure-devices.net"),
+	// 				IPFilterRules: []*armiothub.IPFilterRule{
 	// 					{
-	// 						Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
+	// 						Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
 	// 						FilterName: to.Ptr("rule1"),
 	// 						IPMask: to.Ptr("131.117.159.53"),
 	// 					},
 	// 					{
-	// 						Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
+	// 						Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
 	// 						FilterName: to.Ptr("rule2"),
 	// 						IPMask: to.Ptr("157.55.59.128/25"),
 	// 				}},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Routing: &armiothub.RoutingProperties{
-	// 				Endpoints: &armiothub.RoutingEndpoints{
-	// 					EventHubs: []*armiothub.RoutingEventHubProperties{
+	// 				IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
+	// 				Locations: []*armiothub.LocationDescription{
+	// 					{
+	// 						Location: to.Ptr("West US"),
+	// 						Role: to.Ptr(armiothub.IotHubReplicaRoleTypePrimary),
 	// 					},
-	// 					ServiceBusQueues: []*armiothub.RoutingServiceBusQueueEndpointProperties{
-	// 					},
-	// 					ServiceBusTopics: []*armiothub.RoutingServiceBusTopicEndpointProperties{
-	// 					},
-	// 					StorageContainers: []*armiothub.RoutingStorageContainerProperties{
-	// 					},
-	// 				},
-	// 				FallbackRoute: &armiothub.FallbackRouteProperties{
-	// 					Condition: to.Ptr("true"),
-	// 					EndpointNames: []*string{
-	// 						to.Ptr("events")},
-	// 						IsEnabled: to.Ptr(true),
-	// 						Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
-	// 					},
-	// 					Routes: []*armiothub.RouteProperties{
+	// 					{
+	// 						Location: to.Ptr("East US"),
+	// 						Role: to.Ptr(armiothub.IotHubReplicaRoleTypeSecondary),
+	// 				}},
+	// 				MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
+	// 					"fileNotifications": &armiothub.MessagingEndpointProperties{
+	// 						LockDurationAsIso8601: to.Ptr("PT1M"),
+	// 						MaxDeliveryCount: to.Ptr[int32](10),
+	// 						TTLAsIso8601: to.Ptr("PT1H"),
 	// 					},
 	// 				},
-	// 				State: to.Ptr("Active"),
-	// 				StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
-	// 					"$default": &armiothub.StorageEndpointProperties{
-	// 						ConnectionString: to.Ptr(""),
-	// 						ContainerName: to.Ptr(""),
-	// 						SasTTLAsIso8601: to.Ptr("PT1H"),
+	// 				MinTLSVersion: to.Ptr("1.2"),
+	// 				NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
+	// 					ApplyToBuiltInEventHubEndpoint: to.Ptr(true),
+	// 					DefaultAction: to.Ptr(armiothub.DefaultActionDeny),
+	// 					IPRules: []*armiothub.NetworkRuleSetIPRule{
+	// 						{
+	// 							Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
+	// 							FilterName: to.Ptr("rule1"),
+	// 							IPMask: to.Ptr("131.117.159.53"),
+	// 						},
+	// 						{
+	// 							Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
+	// 							FilterName: to.Ptr("rule2"),
+	// 							IPMask: to.Ptr("157.55.59.128/25"),
+	// 					}},
+	// 				},
+	// 				ProvisioningState: to.Ptr("Succeeded"),
+	// 				Routing: &armiothub.RoutingProperties{
+	// 					Endpoints: &armiothub.RoutingEndpoints{
+	// 						EventHubs: []*armiothub.RoutingEventHubProperties{
+	// 						},
+	// 						ServiceBusQueues: []*armiothub.RoutingServiceBusQueueEndpointProperties{
+	// 						},
+	// 						ServiceBusTopics: []*armiothub.RoutingServiceBusTopicEndpointProperties{
+	// 						},
+	// 						StorageContainers: []*armiothub.RoutingStorageContainerProperties{
+	// 						},
+	// 					},
+	// 					FallbackRoute: &armiothub.FallbackRouteProperties{
+	// 						Condition: to.Ptr("true"),
+	// 						EndpointNames: []*string{
+	// 							to.Ptr("events")},
+	// 							IsEnabled: to.Ptr(true),
+	// 							Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 						},
+	// 						Routes: []*armiothub.RouteProperties{
+	// 						},
+	// 					},
+	// 					State: to.Ptr("Active"),
+	// 					StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
+	// 						"$default": &armiothub.StorageEndpointProperties{
+	// 							ConnectionString: to.Ptr(""),
+	// 							ContainerName: to.Ptr(""),
+	// 							SasTTLAsIso8601: to.Ptr("PT1H"),
+	// 						},
 	// 					},
 	// 				},
-	// 			},
-	// 			SKU: &armiothub.SKUInfo{
-	// 				Name: to.Ptr(armiothub.IotHubSKUS1),
-	// 				Capacity: to.Ptr[int64](1),
-	// 				Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
-	// 			},
-	// 			SystemData: &armiothub.SystemData{
-	// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
-	// 			},
-	// 		}
+	// 				SKU: &armiothub.SKUInfo{
+	// 					Name: to.Ptr(armiothub.IotHubSKUS1),
+	// 					Capacity: to.Ptr[int64](1),
+	// 					Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
+	// 				},
+	// 				SystemData: &armiothub.SystemData{
+	// 					CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-01-30T00:28:38.963Z"); return t}()),
+	// 				},
+	// 			}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_createOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_createOrUpdate.json
 func ExampleResourceClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,6 +193,7 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 			},
 			Features:      to.Ptr(armiothub.CapabilitiesNone),
 			IPFilterRules: []*armiothub.IPFilterRule{},
+			IPVersion:     to.Ptr(armiothub.IPVersionIPv4IPv6),
 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 				"fileNotifications": {
 					LockDurationAsIso8601: to.Ptr("PT1M"),
@@ -210,6 +216,9 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 						FilterName: to.Ptr("rule2"),
 						IPMask:     to.Ptr("157.55.59.128/25"),
 					}},
+			},
+			RootCertificate: &armiothub.RootCertificateProperties{
+				EnableRootCertificateV2: to.Ptr(true),
 			},
 			Routing: &armiothub.RoutingProperties{
 				Endpoints: &armiothub.RoutingEndpoints{
@@ -295,6 +304,7 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 	// 					FilterName: to.Ptr("rule2"),
 	// 					IPMask: to.Ptr("157.55.59.128/25"),
 	// 			}},
+	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
 	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
@@ -319,6 +329,10 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 	// 				}},
 	// 			},
 	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			RootCertificate: &armiothub.RootCertificateProperties{
+	// 				EnableRootCertificateV2: to.Ptr(true),
+	// 				LastUpdatedTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-04-08T11:16:49.0748958-07:00"); return t}()),
+	// 			},
 	// 			Routing: &armiothub.RoutingProperties{
 	// 				Endpoints: &armiothub.RoutingEndpoints{
 	// 					EventHubs: []*armiothub.RoutingEventHubProperties{
@@ -361,7 +375,7 @@ func ExampleResourceClient_BeginCreateOrUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_patch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_patch.json
 func ExampleResourceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -496,7 +510,7 @@ func ExampleResourceClient_BeginUpdate() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_delete.json
 func ExampleResourceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -625,7 +639,7 @@ func ExampleResourceClient_BeginDelete() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listbysubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_listbysubscription.json
 func ExampleResourceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -759,7 +773,7 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listbyrg.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_listbyrg.json
 func ExampleResourceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -893,7 +907,7 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_stats.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_stats.json
 func ExampleResourceClient_GetStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -918,7 +932,7 @@ func ExampleResourceClient_GetStats() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_getskus.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_getskus.json
 func ExampleResourceClient_NewGetValidSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -983,7 +997,7 @@ func ExampleResourceClient_NewGetValidSKUsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listehgroups.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_listehgroups.json
 func ExampleResourceClient_NewListEventHubConsumerGroupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1020,7 +1034,7 @@ func ExampleResourceClient_NewListEventHubConsumerGroupsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_getconsumergroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_getconsumergroup.json
 func ExampleResourceClient_GetEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1049,7 +1063,7 @@ func ExampleResourceClient_GetEventHubConsumerGroup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_createconsumergroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_createconsumergroup.json
 func ExampleResourceClient_CreateEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1082,7 +1096,7 @@ func ExampleResourceClient_CreateEventHubConsumerGroup() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_deleteconsumergroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_deleteconsumergroup.json
 func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1099,7 +1113,7 @@ func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listjobs.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_listjobs.json
 func ExampleResourceClient_NewListJobsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1134,7 +1148,7 @@ func ExampleResourceClient_NewListJobsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_getjob.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_getjob.json
 func ExampleResourceClient_GetJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1161,7 +1175,7 @@ func ExampleResourceClient_GetJob() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_quotametrics.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_quotametrics.json
 func ExampleResourceClient_NewGetQuotaMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1199,7 +1213,7 @@ func ExampleResourceClient_NewGetQuotaMetricsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_routingendpointhealth.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_routingendpointhealth.json
 func ExampleResourceClient_NewGetEndpointHealthPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1226,8 +1240,8 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 		// 		{
 		// 			EndpointID: to.Ptr("id1"),
 		// 			HealthStatus: to.Ptr(armiothub.EndpointHealthStatusHealthy),
-		// 			LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2020-03-26T21:24:57Z"); return t}()),
-		// 			LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2020-03-26T21:20:57Z"); return t}()),
+		// 			LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2017 18:04:32 GMT"); return t}()),
+		// 			LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2017 18:04:32 GMT"); return t}()),
 		// 		},
 		// 		{
 		// 			EndpointID: to.Ptr("id2"),
@@ -1237,15 +1251,15 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 		// 			EndpointID: to.Ptr("id3"),
 		// 			HealthStatus: to.Ptr(armiothub.EndpointHealthStatusUnhealthy),
 		// 			LastKnownError: to.Ptr("NotFound"),
-		// 			LastKnownErrorTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2020-03-26T21:24:57Z"); return t}()),
-		// 			LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2020-03-26T21:24:57Z"); return t}()),
-		// 			LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "2020-03-26T21:20:57Z"); return t}()),
+		// 			LastKnownErrorTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2017 18:04:32 GMT"); return t}()),
+		// 			LastSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2017 18:04:32 GMT"); return t}()),
+		// 			LastSuccessfulSendAttemptTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC1123, "Wed, 13 Sep 2017 18:04:32 GMT"); return t}()),
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/checkNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/checkNameAvailability.json
 func ExampleResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1272,7 +1286,7 @@ func ExampleResourceClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_testallroutes.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_testallroutes.json
 func ExampleResourceClient_TestAllRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1315,7 +1329,7 @@ func ExampleResourceClient_TestAllRoutes() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_testnewroute.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_testnewroute.json
 func ExampleResourceClient_TestRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1372,7 +1386,7 @@ func ExampleResourceClient_TestRoute() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_listkeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_listkeys.json
 func ExampleResourceClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1430,7 +1444,7 @@ func ExampleResourceClient_NewListKeysPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_getkey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_getkey.json
 func ExampleResourceClient_GetKeysForKeyName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1456,7 +1470,7 @@ func ExampleResourceClient_GetKeysForKeyName() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_exportdevices.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_exportdevices.json
 func ExampleResourceClient_ExportDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1468,8 +1482,12 @@ func ExampleResourceClient_ExportDevices() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewResourceClient().ExportDevices(ctx, "myResourceGroup", "testHub", armiothub.ExportDevicesRequest{
+		AuthenticationType:     to.Ptr(armiothub.AuthenticationTypeIdentityBased),
 		ExcludeKeys:            to.Ptr(true),
 		ExportBlobContainerURI: to.Ptr("testBlob"),
+		Identity: &armiothub.ManagedIdentity{
+			UserAssignedIdentity: to.Ptr("/subscriptions/91d12660-3dec-467a-be2a-213b5544ddc0/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"),
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -1486,7 +1504,7 @@ func ExampleResourceClient_ExportDevices() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/iothub/resource-manager/Microsoft.Devices/stable/2021-07-02/examples/iothub_importdevices.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/iothub/resource-manager/Microsoft.Devices/preview/2022-11-15-preview/examples/iothub_importdevices.json
 func ExampleResourceClient_ImportDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

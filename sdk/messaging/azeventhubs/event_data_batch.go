@@ -89,9 +89,13 @@ func (b *EventDataBatch) NumEvents() int32 {
 
 // toAMQPMessage converts this batch into a sendable *amqp.Message
 // NOTE: not idempotent!
-func (b *EventDataBatch) toAMQPMessage() *amqp.Message {
+func (b *EventDataBatch) toAMQPMessage() (*amqp.Message, error) {
 	b.mu.Lock()
 	defer b.mu.Unlock()
+
+	if len(b.marshaledMessages) == 0 {
+		return nil, internal.NewErrNonRetriable("batch is nil or empty")
+	}
 
 	b.batchEnvelope.Data = make([][]byte, len(b.marshaledMessages))
 	b.batchEnvelope.Format = batchMessageFormat
@@ -105,7 +109,7 @@ func (b *EventDataBatch) toAMQPMessage() *amqp.Message {
 	}
 
 	copy(b.batchEnvelope.Data, b.marshaledMessages)
-	return b.batchEnvelope
+	return b.batchEnvelope, nil
 }
 
 func (b *EventDataBatch) addAMQPMessage(msg *amqp.Message) error {
@@ -211,9 +215,11 @@ func newEventDataBatch(sender amqpwrap.AMQPSenderCloser, options *EventDataBatch
 	if options.PartitionID != nil {
 		// they want to send to a particular partition. The batch size should be the same for any
 		// link but we might as well use the one they're going to send to.
-		batch.partitionID = options.PartitionID
+		pid := *options.PartitionID
+		batch.partitionID = &pid
 	} else if options.PartitionKey != nil {
-		batch.partitionKey = options.PartitionKey
+		partKey := *options.PartitionKey
+		batch.partitionKey = &partKey
 	}
 
 	if options.MaxBytes == 0 {

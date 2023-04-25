@@ -11,7 +11,7 @@ package armconfidentialledger
 
 const (
 	moduleName    = "armconfidentialledger"
-	moduleVersion = "v1.1.1"
+	moduleVersion = "v1.2.0-beta.1"
 )
 
 // CheckNameAvailabilityReason - The reason why the given name is not available.
@@ -47,6 +47,22 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+// LanguageRuntime - Object representing LanguageRuntime for Manged CCF.
+type LanguageRuntime string
+
+const (
+	LanguageRuntimeCPP LanguageRuntime = "CPP"
+	LanguageRuntimeJS  LanguageRuntime = "JS"
+)
+
+// PossibleLanguageRuntimeValues returns the possible values for the LanguageRuntime const type.
+func PossibleLanguageRuntimeValues() []LanguageRuntime {
+	return []LanguageRuntime{
+		LanguageRuntimeCPP,
+		LanguageRuntimeJS,
 	}
 }
 
@@ -109,5 +125,27 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateSucceeded,
 		ProvisioningStateUnknown,
 		ProvisioningStateUpdating,
+	}
+}
+
+// RunningState - Object representing RunningState for Confidential Ledger.
+type RunningState string
+
+const (
+	RunningStateActive   RunningState = "Active"
+	RunningStatePaused   RunningState = "Paused"
+	RunningStatePausing  RunningState = "Pausing"
+	RunningStateResuming RunningState = "Resuming"
+	RunningStateUnknown  RunningState = "Unknown"
+)
+
+// PossibleRunningStateValues returns the possible values for the RunningState const type.
+func PossibleRunningStateValues() []RunningState {
+	return []RunningState{
+		RunningStateActive,
+		RunningStatePaused,
+		RunningStatePausing,
+		RunningStateResuming,
+		RunningStateUnknown,
 	}
 }

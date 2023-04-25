@@ -67,7 +67,7 @@ func TestNamespaceNegotiateClaim(t *testing.T) {
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 		cbsNegotiateClaimCalled++
 		return nil
 	}
@@ -111,7 +111,7 @@ func TestNamespaceNegotiateClaimRenewal(t *testing.T) {
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 		cbsNegotiateClaimCalled++
 		return nil
 	}
@@ -160,7 +160,7 @@ func TestNamespaceNegotiateClaimFailsToGetClient(t *testing.T) {
 	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"entity path",
-		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
+		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 			return errors.New("NegotiateClaim amqp.Client failed")
 		}, func(expirationTime, currentTime time.Time) time.Duration {
 			// refresh immediately since we're in a unit test.
@@ -182,7 +182,7 @@ func TestNamespaceNegotiateClaimNonRenewableToken(t *testing.T) {
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 		cbsNegotiateClaimCalled++
 		return nil
 	}
@@ -222,7 +222,7 @@ func TestNamespaceNegotiateClaimFails(t *testing.T) {
 	cancel, _, err := ns.startNegotiateClaimRenewer(
 		context.Background(),
 		"entity path",
-		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
+		func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 			return errors.New("NegotiateClaim amqp.Client failed")
 		}, func(expirationTime, currentTime time.Time) time.Duration {
 			// not even used.
@@ -240,7 +240,7 @@ func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
 
 	cbsNegotiateClaimCalled := 0
 
-	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider, contextWithTimeoutFn contextWithTimeoutFn) error {
+	cbsNegotiateClaim := func(ctx context.Context, audience string, conn amqpwrap.AMQPClient, provider auth.TokenProvider) error {
 		cbsNegotiateClaimCalled++
 
 		// work the first time, fail on renewals.

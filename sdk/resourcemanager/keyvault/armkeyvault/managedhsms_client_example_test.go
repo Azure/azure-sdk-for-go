@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/keyvault/armkeyvault"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_CreateOrUpdate.json
 func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 			"Environment": to.Ptr("dogfood"),
 		},
 		Properties: &armkeyvault.ManagedHsmProperties{
-			EnablePurgeProtection: to.Ptr(true),
+			EnablePurgeProtection: to.Ptr(false),
 			EnableSoftDelete:      to.Ptr(true),
 			InitialAdminObjectIDs: []*string{
 				to.Ptr("00000000-0000-0000-0000-000000000000")},
@@ -72,7 +72,7 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	// 		"Environment": to.Ptr("dogfood"),
 	// 	},
 	// 	Properties: &armkeyvault.ManagedHsmProperties{
-	// 		EnablePurgeProtection: to.Ptr(true),
+	// 		EnablePurgeProtection: to.Ptr(false),
 	// 		EnableSoftDelete: to.Ptr(true),
 	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
 	// 		InitialAdminObjectIDs: []*string{
@@ -85,7 +85,7 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_Update.json
 func ExampleManagedHsmsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleManagedHsmsClient_BeginUpdate() {
 	// 		"Slice": to.Ptr("A"),
 	// 	},
 	// 	Properties: &armkeyvault.ManagedHsmProperties{
-	// 		EnablePurgeProtection: to.Ptr(true),
+	// 		EnablePurgeProtection: to.Ptr(false),
 	// 		EnableSoftDelete: to.Ptr(true),
 	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
 	// 		InitialAdminObjectIDs: []*string{
@@ -141,7 +141,7 @@ func ExampleManagedHsmsClient_BeginUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_Delete.json
 func ExampleManagedHsmsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleManagedHsmsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_Get.json
 func ExampleManagedHsmsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -194,7 +194,7 @@ func ExampleManagedHsmsClient_Get() {
 	// 		"Environment": to.Ptr("dogfood"),
 	// 	},
 	// 	Properties: &armkeyvault.ManagedHsmProperties{
-	// 		EnablePurgeProtection: to.Ptr(true),
+	// 		EnablePurgeProtection: to.Ptr(false),
 	// 		EnableSoftDelete: to.Ptr(true),
 	// 		HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
 	// 		InitialAdminObjectIDs: []*string{
@@ -207,7 +207,7 @@ func ExampleManagedHsmsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_ListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_ListByResourceGroup.json
 func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 		// 				"Environment": to.Ptr("dogfood"),
 		// 			},
 		// 			Properties: &armkeyvault.ManagedHsmProperties{
-		// 				EnablePurgeProtection: to.Ptr(true),
+		// 				EnablePurgeProtection: to.Ptr(false),
 		// 				EnableSoftDelete: to.Ptr(true),
 		// 				HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
 		// 				InitialAdminObjectIDs: []*string{
@@ -270,7 +270,7 @@ func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 		// 					"Environment": to.Ptr("production"),
 		// 				},
 		// 				Properties: &armkeyvault.ManagedHsmProperties{
-		// 					EnablePurgeProtection: to.Ptr(true),
+		// 					EnablePurgeProtection: to.Ptr(false),
 		// 					EnableSoftDelete: to.Ptr(true),
 		// 					HsmURI: to.Ptr("https://westus.hsm2.managedhsm.azure.net"),
 		// 					InitialAdminObjectIDs: []*string{
@@ -285,7 +285,7 @@ func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/ManagedHsm_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_ListBySubscription.json
 func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -323,7 +323,7 @@ func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 		// 				"Environment": to.Ptr("dogfood"),
 		// 			},
 		// 			Properties: &armkeyvault.ManagedHsmProperties{
-		// 				EnablePurgeProtection: to.Ptr(true),
+		// 				EnablePurgeProtection: to.Ptr(false),
 		// 				EnableSoftDelete: to.Ptr(true),
 		// 				HsmURI: to.Ptr("https://westus.hsm1.managedhsm.azure.net"),
 		// 				InitialAdminObjectIDs: []*string{
@@ -348,7 +348,7 @@ func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 		// 					"Environment": to.Ptr("production"),
 		// 				},
 		// 				Properties: &armkeyvault.ManagedHsmProperties{
-		// 					EnablePurgeProtection: to.Ptr(true),
+		// 					EnablePurgeProtection: to.Ptr(false),
 		// 					EnableSoftDelete: to.Ptr(true),
 		// 					HsmURI: to.Ptr("https://westus.hsm2.managedhsm.azure.net"),
 		// 					InitialAdminObjectIDs: []*string{
@@ -363,7 +363,7 @@ func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/DeletedManagedHsm_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/DeletedManagedHsm_List.json
 func ExampleManagedHsmsClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -423,7 +423,7 @@ func ExampleManagedHsmsClient_NewListDeletedPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/DeletedManagedHsm_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/DeletedManagedHsm_Get.json
 func ExampleManagedHsmsClient_GetDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,7 +459,7 @@ func ExampleManagedHsmsClient_GetDeleted() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/DeletedManagedHsm_Purge.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/DeletedManagedHsm_Purge.json
 func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -478,4 +478,29 @@ func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	if err != nil {
 		log.Fatalf("failed to pull the result: %v", err)
 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/ManagedHsm_checkMhsmNameAvailability.json
+func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewManagedHsmsClient().CheckMhsmNameAvailability(ctx, armkeyvault.CheckMhsmNameAvailabilityParameters{
+		Name: to.Ptr("sample-mhsm"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.CheckMhsmNameAvailabilityResult = armkeyvault.CheckMhsmNameAvailabilityResult{
+	// 	NameAvailable: to.Ptr(true),
+	// }
 }

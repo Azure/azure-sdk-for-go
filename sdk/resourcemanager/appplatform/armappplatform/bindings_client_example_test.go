@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Bindings_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Bindings_Get.json
 func ExampleBindingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -49,9 +49,9 @@ func ExampleBindingsClient_Get() {
 	// 		LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
 	// 	},
 	// 	Properties: &armappplatform.BindingResourceProperties{
-	// 		BindingParameters: map[string]any{
-	// 			"apiType": "SQL",
-	// 			"databaseName": "db1",
+	// 		BindingParameters: map[string]*string{
+	// 			"apiType": to.Ptr("SQL"),
+	// 			"databaseName": to.Ptr("db1"),
 	// 		},
 	// 		CreatedAt: to.Ptr("2019-01-01T12:34:56.000Z"),
 	// 		GeneratedProperties: to.Ptr("<connection-string>"),
@@ -63,7 +63,7 @@ func ExampleBindingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Bindings_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Bindings_CreateOrUpdate.json
 func ExampleBindingsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,9 +76,9 @@ func ExampleBindingsClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewBindingsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myservice", "myapp", "mybinding", armappplatform.BindingResource{
 		Properties: &armappplatform.BindingResourceProperties{
-			BindingParameters: map[string]any{
-				"apiType":      "SQL",
-				"databaseName": "db1",
+			BindingParameters: map[string]*string{
+				"apiType":      to.Ptr("SQL"),
+				"databaseName": to.Ptr("db1"),
 			},
 			Key:        to.Ptr("xxxx"),
 			ResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/my-cosmosdb-1"),
@@ -107,9 +107,9 @@ func ExampleBindingsClient_BeginCreateOrUpdate() {
 	// 		LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
 	// 	},
 	// 	Properties: &armappplatform.BindingResourceProperties{
-	// 		BindingParameters: map[string]any{
-	// 			"apiType": "SQL",
-	// 			"databaseName": "db1",
+	// 		BindingParameters: map[string]*string{
+	// 			"apiType": to.Ptr("SQL"),
+	// 			"databaseName": to.Ptr("db1"),
 	// 		},
 	// 		CreatedAt: to.Ptr("2019-01-01T12:34:56.000Z"),
 	// 		GeneratedProperties: to.Ptr("<connection-string>"),
@@ -121,7 +121,7 @@ func ExampleBindingsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Bindings_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Bindings_Delete.json
 func ExampleBindingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleBindingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Bindings_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Bindings_Update.json
 func ExampleBindingsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -155,9 +155,9 @@ func ExampleBindingsClient_BeginUpdate() {
 	}
 	poller, err := clientFactory.NewBindingsClient().BeginUpdate(ctx, "myResourceGroup", "myservice", "myapp", "mybinding", armappplatform.BindingResource{
 		Properties: &armappplatform.BindingResourceProperties{
-			BindingParameters: map[string]any{
-				"apiType":      "SQL",
-				"databaseName": "db1",
+			BindingParameters: map[string]*string{
+				"apiType":      to.Ptr("SQL"),
+				"databaseName": to.Ptr("db1"),
 			},
 			Key: to.Ptr("xxxx"),
 		},
@@ -185,9 +185,9 @@ func ExampleBindingsClient_BeginUpdate() {
 	// 		LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
 	// 	},
 	// 	Properties: &armappplatform.BindingResourceProperties{
-	// 		BindingParameters: map[string]any{
-	// 			"apiType": "SQL",
-	// 			"databaseName": "db1",
+	// 		BindingParameters: map[string]*string{
+	// 			"apiType": to.Ptr("SQL"),
+	// 			"databaseName": to.Ptr("db1"),
 	// 		},
 	// 		CreatedAt: to.Ptr("2019-01-01T12:34:56.000Z"),
 	// 		GeneratedProperties: to.Ptr("<connection-string>"),
@@ -199,7 +199,7 @@ func ExampleBindingsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Bindings_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Bindings_List.json
 func ExampleBindingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,9 +236,9 @@ func ExampleBindingsClient_NewListPager() {
 		// 				LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
 		// 			},
 		// 			Properties: &armappplatform.BindingResourceProperties{
-		// 				BindingParameters: map[string]any{
-		// 					"apiType": "SQL",
-		// 					"databaseName": "db1",
+		// 				BindingParameters: map[string]*string{
+		// 					"apiType": to.Ptr("SQL"),
+		// 					"databaseName": to.Ptr("db1"),
 		// 				},
 		// 				CreatedAt: to.Ptr("2019-01-01T12:34:56.000Z"),
 		// 				GeneratedProperties: to.Ptr("<connection-string>"),

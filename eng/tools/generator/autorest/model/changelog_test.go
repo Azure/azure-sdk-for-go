@@ -8,6 +8,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/report"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -77,8 +78,44 @@ func TestRemovedConstAndTypeAlias(t *testing.T) {
 
 	actual := getRemovedContent(&removedConst)
 	expected := []string{
-		"Const `ConstA`, `ConstB`, `ConstC` from type alias `Const` has been removed",
-		"Type alias `RemovedTypeAlias` has been removed",
+		"`ConstA`, `ConstB`, `ConstC` from enum `Const` has been removed",
+		"Enum `RemovedTypeAlias` has been removed",
 	}
+	assert.Equal(t, expected, actual)
+}
+
+func TestCombineSimilarItem(t *testing.T) {
+	r := &report.Package{
+		AdditiveChanges: &delta.Content{
+			Content: exports.Content{
+				Structs: map[string]exports.Struct{
+					"Struct": {
+						AnonymousFields: []string{"AnonymousA", "AnonymousB"},
+						Fields: map[string]string{
+							"FieldB": "",
+							"FieldA": "",
+						},
+					},
+				},
+			},
+		},
+		BreakingChanges: &report.BreakingChanges{
+			Removed: &delta.Content{
+				Content: exports.Content{
+					Structs: map[string]exports.Struct{
+						"RemovedStruct": {
+							AnonymousFields: []string{"RemovedAnonymousA", "RemovedAnonymousB"},
+							Fields: map[string]string{
+								"RemovedFieldB": "",
+								"RemovedFieldA": "",
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	actual := writeChangelogForPackage(r)
+	expected := "### Breaking Changes\n\n- Field `RemovedAnonymousA`, `RemovedAnonymousB` of struct `RemovedStruct` has been removed\n- Field `RemovedFieldA`, `RemovedFieldB` of struct `RemovedStruct` has been removed\n\n### Features Added\n\n- New anonymous field `AnonymousA`, `AnonymousB` in struct `Struct`\n- New field `FieldA`, `FieldB` in struct `Struct`\n"
 	assert.Equal(t, expected, actual)
 }

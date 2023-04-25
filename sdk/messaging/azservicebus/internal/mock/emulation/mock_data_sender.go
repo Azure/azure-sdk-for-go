@@ -6,6 +6,7 @@ package emulation
 import (
 	"context"
 	"fmt"
+	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -69,8 +70,13 @@ func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.Sen
 		return q.Send(ctx, msg, sender.LinkEvent(), sender.Status)
 	}).AnyTimes()
 
+	var closed int64
+
 	sender.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
-		md.Events.CloseLink(sender.LinkEvent())
+		if atomic.CompareAndSwapInt64(&closed, 0, 1) {
+			md.Events.CloseLink(sender.LinkEvent())
+			return nil
+		}
 
 		select {
 		case <-ctx.Done():

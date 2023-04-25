@@ -9,6 +9,7 @@
 * Added support for GetAccountInfo to container and blob level clients. 
 * Added [UploadBlobFromURL API](https://learn.microsoft.com/rest/api/storageservices/put-blob-from-url).
 * Added support for CopySourceAuthorization to appendblob.AppendBlockFromURL
+* Added support for tag permission in Container SAS. 
 
 ### Breaking Changes
 

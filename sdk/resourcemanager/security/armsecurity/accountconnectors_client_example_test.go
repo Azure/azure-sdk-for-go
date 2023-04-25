@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetListConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetListConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleAccountConnectorsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/GetConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleAccountConnectorsClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsAssumeRoleConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsAssumeRoleConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_CreateOrUpdate_awsAssumeRoleCreateACloudAccountConnectorForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,7 +261,7 @@ func ExampleAccountConnectorsClient_CreateOrUpdate_awsAssumeRoleCreateACloudAcco
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsCredConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateAwsCredConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_CreateOrUpdate_awsCredCreateACloudAccountConnectorForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -333,7 +333,7 @@ func ExampleAccountConnectorsClient_CreateOrUpdate_awsCredCreateACloudAccountCon
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateGcpCredentialsConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/CreateUpdateGcpCredentialsConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_CreateOrUpdate_gcpCredentialsCreateACloudAccountConnectorForASubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,7 +355,7 @@ func ExampleAccountConnectorsClient_CreateOrUpdate_gcpCredentialsCreateACloudAcc
 				ClientID:                to.Ptr("105889053725632919854"),
 				ClientX509CertURL:       to.Ptr("https://www.googleapis.com/robot/v1/metadata/x509/asc-135%40asc-project-1234.iam.gserviceaccount.com"),
 				OrganizationID:          to.Ptr("AscDemoOrg"),
-				PrivateKey:              to.Ptr("-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCpxYHcLzcDZ6/Q\nAeQZnQXM5GTb3p09Xsbjo2T2F61b6I7FZiQXBrbw3Zf0CUCkkqTTpD5xifl82yQ6\n89V7SAe8hxI7esAcVDhm/aJMqzVjHLISAU2L3li1sn0jjY2oYtndwN6bRivP8O6t\n9F+W6E0zMlbCxtpZEHLbb6WxlJJrwEQ0MPH2yOCwZUQi6NHksAtEzX2nNKJNyUC7\nQyBVHHMm34H2bmZwsuQp3y2otpcJ9tJnVmYfC3k/w4x2L+DIK7JnQP/C1wQqu2du\nc0w6sydF6RhLoHButrVdYRJTdfK4k03SsSTyMqZ+f7LNnKw3xenzw1VmEpk8mvoQ\nt08tCBOrAgMBAAECggEAByzz6iyMtLYjNjV+QJ7kad6VbL2iA8AHxANZ9xTVHPdd\nYXaJu/dqsA+NpqDlfI8+LDva782XH/HbPCqmMUnAGfXTjXQIvqnIoIHD5F2wKfpC\nhIRNlMXXFgbvRxtqi11yO+80+XcjzuwuCmgzyhsTeEB+bkkdXXpWgHPdmv3emnM6\nMQM9Zgrug0UndPmiUwKOcJSU4PlmlTpHEV4vA6JfA4bvphy9m1jxO5qWeah5yym2\n6FP5BRIDF98kFrDnSXJjajwgLCQ+MypFQXyax6XkxDxuKXbng1bv7eZDjqazIChk\nm0y14X0s0jnWc+AX8vfeSf7d+EsGdVinEwR1aAawEQKBgQDqDB0qxcIQ1oI1Kww8\n9vXefTiuWsf47F+fJ/DIOEbiRfE8IdCgmOABvcqJIoxW/DFMBEdLCcx73Km7pOmd\nKg1ddScnaO8cOj2v/Ub+fAqVrA4ki4ViYP0A7/Nogga3Jr/x3ey5bitrIfFImteS\nCgBHBzZvoQpvO4lB2tKVgo2P9wKBgQC5sgTEq4sasRGSAY6lIoJno0I8w28a/16D\nes60XQeY1ger8uTGwlT02v/u/arDUmRLPClpujXq6gK29KvtRCHy7JkpGbqW2bZs\nPFKKWR7Tk3XPKYyjv94AIi5/xoFeDhS4lpAvy3Z5tQhYS6wqWKvT6yZQ3kM+Hfxs\npHgvu3mU7QKBgQC9/E1k3hj1cBtMK4CIsHPPQljTd4+iacYJPPPAo6YuoVX8WPqw\nksgrwbN59Fh1d8xQh5yTtgWOegYx8uFMGcm1lpbM7+pBQKm4hWGuzGQPMRZd5f/F\nZzOZIi61I+9tlv/yxxIVR+/ozCm/pSneO04UWi9/F/uPZYW6tnWAtfRR6wKBgGsZ\n8MQaCK4JaI/klAhMghgSQnbXZXKVzUZaA3Rln6cX8u7KtgapOOTMlwaZie8Dy1LV\nTTFstAJcm9o3/h1nyYjZy3C4JTUyNpPwqs6enjf7edxVI4eidwFutZD+xcigqHTa\naikW2atSrZB3fMIjyF7+5meH+hKOqvNiXOty3qn1AoGAZuVxYQy5FVq3YZxzr3Aa\nAm0ShoXTF6QYIbsaUiUGoa/NlHcw9V/lj4AqBRbxbaYMD+hz2J/od9cb268eJKY8\n3b6MvaUqdNhNnWodJXLhgtmGEHDKmTppz2JSTx/tVzCfhFdcOC79StZvcKLhtoFQ\n+/3lEw6NCIXzm5E4+dtJG4k=\n-----END PRIVATE KEY-----\n"),
+				PrivateKey:              to.Ptr("******"),
 				PrivateKeyID:            to.Ptr("6efg587hra2568as34d22326b044cc20dc2af"),
 				ProjectID:               to.Ptr("asc-project-1234"),
 				TokenURI:                to.Ptr("https://oauth2.googleapis.com/token"),
@@ -403,7 +403,7 @@ func ExampleAccountConnectorsClient_CreateOrUpdate_gcpCredentialsCreateACloudAcc
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/DeleteConnectorSubscription_example.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/preview/2020-01-01-preview/examples/Connectors/DeleteConnectorSubscription_example.json
 func ExampleAccountConnectorsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

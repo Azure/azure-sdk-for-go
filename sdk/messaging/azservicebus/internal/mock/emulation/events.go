@@ -80,11 +80,16 @@ type Events struct {
 	mu  sync.Mutex
 	all []Event
 	ch  chan Event
+
+	openedMu *sync.Mutex
+	opened   map[string]bool
 }
 
 func NewEvents() *Events {
 	return &Events{
-		ch: make(chan Event, 10000),
+		ch:       make(chan Event, 10000),
+		openedMu: &sync.Mutex{},
+		opened:   map[string]bool{},
 	}
 }
 
@@ -122,6 +127,10 @@ func (e *Events) Custom(name string, data any) {
 }
 
 func (e *Events) OpenLink(args LinkEvent) {
+	e.openedMu.Lock()
+	e.opened[args.Name] = true
+	e.openedMu.Unlock()
+
 	e.addEvent(Event{
 		Type: EventTypeLinkOpen,
 		Data: args,
@@ -129,6 +138,23 @@ func (e *Events) OpenLink(args LinkEvent) {
 }
 
 func (e *Events) CloseLink(args LinkEvent) {
+	e.openedMu.Lock()
+	n := args.Name
+	isOpen, exists := e.opened[n]
+
+	if !exists {
+		e.openedMu.Unlock()
+		panic(fmt.Sprintf("We closed a link that was never open: %s", n))
+	}
+
+	if !isOpen {
+		e.openedMu.Unlock()
+		panic(fmt.Sprintf("We closed this link more than once: %s", n))
+	}
+
+	e.opened[n] = false
+	e.openedMu.Unlock()
+
 	e.addEvent(Event{
 		Type: EventTypeLinkClose,
 		Data: args,
@@ -178,31 +204,15 @@ func (e *Events) CloseConnection(name string) {
 }
 
 func (e *Events) GetOpenLinks() []string {
-	opened := map[string]bool{}
-
-	for _, evt := range e.all {
-		switch evt.Type {
-		case EventTypeLinkOpen:
-			opened[evt.Data.(LinkEvent).Name] = true
-		case EventTypeLinkClose:
-			n := evt.Data.(LinkEvent).Name
-
-			if !opened[n] {
-				panic(fmt.Sprintf("We closed a link that was never open: %s", n))
-			}
-
-			opened[n] = false
-		}
-	}
-
 	var leaks []string
 
-	for k := range opened {
-		if opened[k] {
+	e.openedMu.Lock()
+	for k := range e.opened {
+		if e.opened[k] {
 			leaks = append(leaks, k)
 		}
 	}
-
+	e.openedMu.Unlock()
 	return leaks
 }
 

@@ -19,7 +19,7 @@ import (
 )
 
 func SendAndReceiveDrain(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("SendAndReceiveDrainTest")
+	sc := shared.MustCreateStressContext("SendAndReceiveDrainTest", nil)
 
 	sc.TrackEvent("Start")
 	defer sc.End()

@@ -12,7 +12,17 @@ spec:
     - name: main
       # az acr list -g rg-stress-cluster-pg --subscription "Azure SDK Developer Playground" --query "[0].loginServer"
       image:  {{ .Stress.imageTag }}
-      command: ['/app/stress']
+      command: ['sh', '-c']
+      # these 'testTarget' names come from the scenarios-matrix.yaml.
+      #
+      # NOTE: -verbose activates _all_ the Azure internal logging, which can get quite large.
+      # so it's not enabled for every target in here. We also have an issue filed to whittle it
+      # down (https://github.com/Azure/azure-sdk-for-go/issues/19459)
+      args: 
+        - >
+          set -ex;
+          mkdir -p "$DEBUG_SHARE";
+          /app/stress "{{.Stress.testTarget}}" "-rounds" "{{.Stress.rounds}}" "-prefetch" "{{.Stress.prefetch}}" "{{.Stress.verbose}}" "-sleepAfter" "{{.Stress.sleepAfter}}" | tee "${DEBUG_SHARE}/{{ .Stress.Scenario }}.log";
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always
@@ -25,20 +35,6 @@ spec:
         limits:
           memory: "1.5Gi"
           cpu: "1"
-      args: 
-      # these 'testTarget' names come from the scenarios-matrix.yaml.
-      #
-      # NOTE: -verbose activates _all_ the Azure internal logging, which can get quite large.
-      # so it's not enabled for every target in here. We also have an issue filed to whittle it
-      # down (https://github.com/Azure/azure-sdk-for-go/issues/19459)
-      - "{{.Stress.testTarget}}"
-      - "-rounds"
-      - "{{.Stress.rounds}}"
-      - "-prefetch"
-      - "{{.Stress.prefetch}}"
-      - "{{.Stress.verbose}}"
-      - "-sleepAfter"
-      - "{{.Stress.sleepAfter}}"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
 

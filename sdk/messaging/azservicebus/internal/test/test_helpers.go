@@ -132,11 +132,11 @@ func addSwappableLogger() {
 //
 //	messages := endCapture()
 //	/* do inspection of log messages */
-func CaptureLogsForTest() func() []string {
-	return CaptureLogsForTestWithChannel(nil)
+func CaptureLogsForTest(echo bool) func() []string {
+	return CaptureLogsForTestWithChannel(nil, echo)
 }
 
-func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
+func CaptureLogsForTestWithChannel(messagesCh chan string, echo bool) func() []string {
 	if messagesCh == nil {
 		messagesCh = make(chan string, 10000)
 	}
@@ -155,6 +155,9 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 		for {
 			select {
 			case msg := <-messagesCh:
+				if echo {
+					log.Printf("%s", msg)
+				}
 				messages = append(messages, msg)
 			default:
 				break Loop
@@ -168,7 +171,7 @@ func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 // EnableStdoutLogging turns on logging to stdout for diagnostics.
 func EnableStdoutLogging(t *testing.T) {
 	ch := make(chan string, 10000)
-	cleanupLogs := CaptureLogsForTestWithChannel(ch)
+	cleanupLogs := CaptureLogsForTestWithChannel(ch, true)
 	ctx, cancel := context.WithCancel(context.Background())
 
 	t.Cleanup(func() {
@@ -176,16 +179,8 @@ func EnableStdoutLogging(t *testing.T) {
 	})
 
 	go func() {
-	Loop:
-		for {
-			select {
-			case <-ctx.Done():
-				_ = cleanupLogs()
-				break Loop
-			case msg := <-ch:
-				log.Printf("%s", msg)
-			}
-		}
+		<-ctx.Done()
+		_ = cleanupLogs()
 	}()
 }
 

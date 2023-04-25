@@ -53,7 +53,7 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 	require.NoError(t, err)
 
 	err = batch.AddEventData(&azeventhubs.EventData{
-		Body: []byte("hello world"),
+		Body: []byte("using websockets hello world"),
 	}, nil)
 	require.NoError(t, err)
 
@@ -76,7 +76,7 @@ func TestConsumerClient_UsingWebSockets(t *testing.T) {
 
 	events, err := partClient.ReceiveEvents(context.Background(), 1, nil)
 	require.NoError(t, err)
-	require.Equal(t, []string{"hello world"}, getSortedBodies(events))
+	require.Equal(t, []string{"using websockets hello world"}, getSortedBodies(events))
 }
 
 func TestConsumerClient_DefaultAzureCredential(t *testing.T) {
@@ -242,7 +242,7 @@ func TestConsumerClient_Concurrent_NoEpoch(t *testing.T) {
 	testParams := test.GetConnectionParamsForTest(t)
 
 	partitions := mustSendEventsToAllPartitions(t, []*azeventhubs.EventData{
-		{Body: []byte("hello world")},
+		{Body: []byte("TestConsumerClient_Concurrent_NoEpoch")},
 	})
 
 	const simultaneousClients = 5 // max you can have with a single consumer group for a single partition
@@ -505,32 +505,32 @@ func TestConsumerClient_Detaches(t *testing.T) {
 
 	defer producerClient.Close(context.Background())
 
+	sendEvent := func(msg string) error {
+		batch, err := producerClient.NewEventDataBatch(context.Background(), nil)
+		require.NoError(t, err)
+
+		err = batch.AddEventData(&azeventhubs.EventData{
+			Body: []byte(msg),
+		}, nil)
+		require.NoError(t, err)
+
+		return producerClient.SendEventDataBatch(context.Background(), batch, nil)
+	}
+
 	enableOrDisableEventHub(t, testParams, dac, true)
 	t.Logf("Sending events, connection should be fine")
-	err = sendEvent(t, producerClient)
+	err = sendEvent("TestConsumerClient_Detaches: connection should be fine")
 	require.NoError(t, err)
 
 	enableOrDisableEventHub(t, testParams, dac, false)
 	t.Logf("Sending events, expected to fail since entity is disabled")
-	err = sendEvent(t, producerClient)
+	err = sendEvent("TestConsumerClient_Detaches: expected to fail since entity is disabled")
 	require.Error(t, err, "fails, entity has become disabled")
 
 	enableOrDisableEventHub(t, testParams, dac, true)
 	t.Logf("Sending events, should reconnect")
-	err = sendEvent(t, producerClient)
+	err = sendEvent("TestConsumerClient_Detaches: should reconnect")
 	require.NoError(t, err, "reattach happens")
-}
-
-func sendEvent(t *testing.T, producerClient *azeventhubs.ProducerClient) error {
-	batch, err := producerClient.NewEventDataBatch(context.Background(), nil)
-	require.NoError(t, err)
-
-	err = batch.AddEventData(&azeventhubs.EventData{
-		Body: []byte("hello world"),
-	}, nil)
-	require.NoError(t, err)
-
-	return producerClient.SendEventDataBatch(context.Background(), batch, nil)
 }
 
 // enableOrDisableEventHub sets an eventhub to active if active is true, or disables it if active is false.

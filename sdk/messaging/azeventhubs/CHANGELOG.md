@@ -1,21 +1,18 @@
 # Release History
 
-## 1.0.0 (Unreleased)
+## 1.0.0 (2023-04-11)
 
 ### Features Added
 
 - First stable release of the azeventhubs package.
 - Authentication errors are indicated with an `azeventhubs.Error`, with a `Code` of `azeventhubs.ErrorCodeUnauthorizedAccess`. (PR#20450)
 
-### Breaking Changes
-
 ### Bugs Fixed
 
 - Authentication errors could cause unnecessary retries, making calls taking longer to fail. (PR#20450)
 - Recovery now includes internal timeouts and also handles restarting a connection if AMQP primitives aren't closed cleanly.
+- Potential leaks for $cbs and $management when there was a partial failure. (PR#20564)
 - Latest go-amqp changes have been merged in with fixes for robustness.
-
-### Other Changes
 
 ## 0.6.0 (2023-03-07)
 

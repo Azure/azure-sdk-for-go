@@ -18,7 +18,184 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubListByNameSpace.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleListAll.json
+func ExampleEventHubsClient_NewListAuthorizationRulesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewEventHubsClient().NewListAuthorizationRulesPager("ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page.AuthorizationRuleListResult = armeventhub.AuthorizationRuleListResult{
+		// 	Value: []*armeventhub.AuthorizationRule{
+		// 		{
+		// 			Name: to.Ptr("sdk-Authrules-2513"),
+		// 			Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules"),
+		// 			ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-960/eventhubs/sdk-EventHub-532/authorizationRules/sdk-Authrules-2513"),
+		// 			Properties: &armeventhub.AuthorizationRuleProperties{
+		// 				Rights: []*armeventhub.AccessRights{
+		// 					to.Ptr(armeventhub.AccessRightsListen),
+		// 					to.Ptr(armeventhub.AccessRightsSend)},
+		// 				},
+		// 		}},
+		// 	}
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleCreate.json
+func ExampleEventHubsClient_CreateOrUpdateAuthorizationRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEventHubsClient().CreateOrUpdateAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", "sdk-Authrules-2513", armeventhub.AuthorizationRule{
+		Properties: &armeventhub.AuthorizationRuleProperties{
+			Rights: []*armeventhub.AccessRights{
+				to.Ptr(armeventhub.AccessRightsListen),
+				to.Ptr(armeventhub.AccessRightsSend)},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AuthorizationRule = armeventhub.AuthorizationRule{
+	// 	Name: to.Ptr("sdk-Authrules-2513"),
+	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules"),
+	// 	ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-960/eventhubs/sdk-EventHub-532/authorizationRules/sdk-Authrules-2513"),
+	// 	Properties: &armeventhub.AuthorizationRuleProperties{
+	// 		Rights: []*armeventhub.AccessRights{
+	// 			to.Ptr(armeventhub.AccessRightsListen),
+	// 			to.Ptr(armeventhub.AccessRightsSend)},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleGet.json
+func ExampleEventHubsClient_GetAuthorizationRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEventHubsClient().GetAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", "sdk-Authrules-2513", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AuthorizationRule = armeventhub.AuthorizationRule{
+	// 	Name: to.Ptr("sdk-Authrules-2513"),
+	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules"),
+	// 	ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-960/eventhubs/sdk-EventHub-532/authorizationRules/sdk-Authrules-2513"),
+	// 	Properties: &armeventhub.AuthorizationRuleProperties{
+	// 		Rights: []*armeventhub.AccessRights{
+	// 			to.Ptr(armeventhub.AccessRightsListen),
+	// 			to.Ptr(armeventhub.AccessRightsSend)},
+	// 		},
+	// 	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleDelete.json
+func ExampleEventHubsClient_DeleteAuthorizationRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewEventHubsClient().DeleteAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", "sdk-Authrules-2513", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleListKey.json
+func ExampleEventHubsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEventHubsClient().ListKeys(ctx, "ArunMonocle", "sdk-namespace-960", "sdk-EventHub-532", "sdk-Authrules-2513", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AccessKeys = armeventhub.AccessKeys{
+	// 	KeyName: to.Ptr("sdk-Authrules-2513"),
+	// 	PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-960.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-2513;SharedAccessKey=############################################;EntityPath=sdk-EventHub-532"),
+	// 	PrimaryKey: to.Ptr("############################################"),
+	// 	SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-960.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-2513;SharedAccessKey=############################################;EntityPath=sdk-EventHub-532"),
+	// 	SecondaryKey: to.Ptr("############################################"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubAuthorizationRuleRegenerateKey.json
+func ExampleEventHubsClient_RegenerateKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEventHubsClient().RegenerateKeys(ctx, "ArunMonocle", "sdk-namespace-960", "sdk-EventHub-532", "sdk-Authrules-1534", armeventhub.RegenerateAccessKeyParameters{
+		KeyType: to.Ptr(armeventhub.KeyTypePrimaryKey),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.AccessKeys = armeventhub.AccessKeys{
+	// 	KeyName: to.Ptr("sdk-Authrules-1534"),
+	// 	PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-9027.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-1534;SharedAccessKey=#############################################;EntityPath=sdk-EventHub-1647"),
+	// 	PrimaryKey: to.Ptr("#############################################"),
+	// 	SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-9027.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-1534;SharedAccessKey=#############################################;EntityPath=sdk-EventHub-1647"),
+	// 	SecondaryKey: to.Ptr("#############################################"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubListByNameSpace.json
 func ExampleEventHubsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,6 +248,11 @@ func ExampleEventHubsClient_NewListByNamespacePager() {
 		// 					to.Ptr("1"),
 		// 					to.Ptr("2"),
 		// 					to.Ptr("3")},
+		// 					RetentionDescription: &armeventhub.RetentionDescription{
+		// 						CleanupPolicy: to.Ptr(armeventhub.CleanupPolicyRetentionDescriptionDelete),
+		// 						RetentionTimeInHours: to.Ptr[int64](96),
+		// 						TombstoneRetentionTimeInHours: to.Ptr[int32](1),
+		// 					},
 		// 					Status: to.Ptr(armeventhub.EntityStatusActive),
 		// 					UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-28T02:46:05.877Z"); return t}()),
 		// 				},
@@ -79,7 +261,7 @@ func ExampleEventHubsClient_NewListByNamespacePager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubCreate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubCreate.json
 func ExampleEventHubsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +290,12 @@ func ExampleEventHubsClient_CreateOrUpdate() {
 			},
 			MessageRetentionInDays: to.Ptr[int64](4),
 			PartitionCount:         to.Ptr[int64](4),
-			Status:                 to.Ptr(armeventhub.EntityStatusActive),
+			RetentionDescription: &armeventhub.RetentionDescription{
+				CleanupPolicy:                 to.Ptr(armeventhub.CleanupPolicyRetentionDescriptionCompaction),
+				RetentionTimeInHours:          to.Ptr[int64](96),
+				TombstoneRetentionTimeInHours: to.Ptr[int32](1),
+			},
+			Status: to.Ptr(armeventhub.EntityStatusActive),
 		},
 	}, nil)
 	if err != nil {
@@ -144,13 +331,18 @@ func ExampleEventHubsClient_CreateOrUpdate() {
 	// 			to.Ptr("1"),
 	// 			to.Ptr("2"),
 	// 			to.Ptr("3")},
+	// 			RetentionDescription: &armeventhub.RetentionDescription{
+	// 				CleanupPolicy: to.Ptr(armeventhub.CleanupPolicyRetentionDescriptionCompaction),
+	// 				RetentionTimeInHours: to.Ptr[int64](96),
+	// 				TombstoneRetentionTimeInHours: to.Ptr[int32](1),
+	// 			},
 	// 			Status: to.Ptr(armeventhub.EntityStatusActive),
 	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-28T02:46:05.877Z"); return t}()),
 	// 		},
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubDelete.json
 func ExampleEventHubsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +359,7 @@ func ExampleEventHubsClient_Delete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/eventhub/resource-manager/Microsoft.EventHub/preview/2022-10-01-preview/examples/EventHubs/EHEventHubGet.json
 func ExampleEventHubsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -212,185 +404,13 @@ func ExampleEventHubsClient_Get() {
 	// 			to.Ptr("1"),
 	// 			to.Ptr("2"),
 	// 			to.Ptr("3")},
+	// 			RetentionDescription: &armeventhub.RetentionDescription{
+	// 				CleanupPolicy: to.Ptr(armeventhub.CleanupPolicyRetentionDescriptionCompaction),
+	// 				RetentionTimeInHours: to.Ptr[int64](96),
+	// 				TombstoneRetentionTimeInHours: to.Ptr[int32](1),
+	// 			},
 	// 			Status: to.Ptr(armeventhub.EntityStatusActive),
 	// 			UpdatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2017-06-28T02:46:05.877Z"); return t}()),
 	// 		},
 	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleListAll.json
-func ExampleEventHubsClient_NewListAuthorizationRulesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewEventHubsClient().NewListAuthorizationRulesPager("ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page.AuthorizationRuleListResult = armeventhub.AuthorizationRuleListResult{
-		// 	Value: []*armeventhub.AuthorizationRule{
-		// 		{
-		// 			Name: to.Ptr("sdk-Authrules-2513"),
-		// 			Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules"),
-		// 			ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-960/eventhubs/sdk-EventHub-532/authorizationRules/sdk-Authrules-2513"),
-		// 			Properties: &armeventhub.AuthorizationRuleProperties{
-		// 				Rights: []*armeventhub.AccessRights{
-		// 					to.Ptr(armeventhub.AccessRightsListen),
-		// 					to.Ptr(armeventhub.AccessRightsSend)},
-		// 				},
-		// 		}},
-		// 	}
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleCreate.json
-func ExampleEventHubsClient_CreateOrUpdateAuthorizationRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEventHubsClient().CreateOrUpdateAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", "sdk-Authrules-2513", armeventhub.AuthorizationRule{
-		Properties: &armeventhub.AuthorizationRuleProperties{
-			Rights: []*armeventhub.AccessRights{
-				to.Ptr(armeventhub.AccessRightsListen),
-				to.Ptr(armeventhub.AccessRightsSend)},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AuthorizationRule = armeventhub.AuthorizationRule{
-	// 	Name: to.Ptr("sdk-Authrules-2513"),
-	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules"),
-	// 	ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-960/eventhubs/sdk-EventHub-532/authorizationRules/sdk-Authrules-2513"),
-	// 	Properties: &armeventhub.AuthorizationRuleProperties{
-	// 		Rights: []*armeventhub.AccessRights{
-	// 			to.Ptr(armeventhub.AccessRightsListen),
-	// 			to.Ptr(armeventhub.AccessRightsSend)},
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleGet.json
-func ExampleEventHubsClient_GetAuthorizationRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEventHubsClient().GetAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", "sdk-Authrules-2513", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AuthorizationRule = armeventhub.AuthorizationRule{
-	// 	Name: to.Ptr("sdk-Authrules-2513"),
-	// 	Type: to.Ptr("Microsoft.EventHub/Namespaces/EventHubs/AuthorizationRules"),
-	// 	ID: to.Ptr("/subscriptions/5f750a97-50d9-4e36-8081-c9ee4c0210d4/resourceGroups/ArunMonocle/providers/Microsoft.EventHub/namespaces/sdk-Namespace-960/eventhubs/sdk-EventHub-532/authorizationRules/sdk-Authrules-2513"),
-	// 	Properties: &armeventhub.AuthorizationRuleProperties{
-	// 		Rights: []*armeventhub.AccessRights{
-	// 			to.Ptr(armeventhub.AccessRightsListen),
-	// 			to.Ptr(armeventhub.AccessRightsSend)},
-	// 		},
-	// 	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleDelete.json
-func ExampleEventHubsClient_DeleteAuthorizationRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewEventHubsClient().DeleteAuthorizationRule(ctx, "ArunMonocle", "sdk-Namespace-960", "sdk-EventHub-532", "sdk-Authrules-2513", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleListKey.json
-func ExampleEventHubsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEventHubsClient().ListKeys(ctx, "ArunMonocle", "sdk-namespace-960", "sdk-EventHub-532", "sdk-Authrules-2513", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AccessKeys = armeventhub.AccessKeys{
-	// 	KeyName: to.Ptr("sdk-Authrules-2513"),
-	// 	PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-960.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-2513;SharedAccessKey=############################################;EntityPath=sdk-EventHub-532"),
-	// 	PrimaryKey: to.Ptr("############################################"),
-	// 	SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-960.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-2513;SharedAccessKey=############################################;EntityPath=sdk-EventHub-532"),
-	// 	SecondaryKey: to.Ptr("############################################"),
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/0cc5e2efd6ffccf30e80d1e150b488dd87198b94/specification/eventhub/resource-manager/Microsoft.EventHub/stable/2021-11-01/examples/EventHubs/EHEventHubAuthorizationRuleRegenerateKey.json
-func ExampleEventHubsClient_RegenerateKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEventHubsClient().RegenerateKeys(ctx, "ArunMonocle", "sdk-namespace-960", "sdk-EventHub-532", "sdk-Authrules-1534", armeventhub.RegenerateAccessKeyParameters{
-		KeyType: to.Ptr(armeventhub.KeyTypePrimaryKey),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.AccessKeys = armeventhub.AccessKeys{
-	// 	KeyName: to.Ptr("sdk-Authrules-1534"),
-	// 	PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-9027.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-1534;SharedAccessKey=#############################################;EntityPath=sdk-EventHub-1647"),
-	// 	PrimaryKey: to.Ptr("#############################################"),
-	// 	SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-9027.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-1534;SharedAccessKey=#############################################;EntityPath=sdk-EventHub-1647"),
-	// 	SecondaryKey: to.Ptr("#############################################"),
-	// }
 }

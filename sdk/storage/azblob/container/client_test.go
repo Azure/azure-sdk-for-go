@@ -2240,6 +2240,46 @@ func (s *ContainerUnrecordedTestsSuite) TestSASContainerClient() {
 	_require.Nil(err)
 }
 
+func (s *ContainerUnrecordedTestsSuite) TestSASContainerClientTags() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	// Creating container client
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	// Adding SAS and options
+	permissions := sas.ContainerPermissions{
+		Read:   true,
+		Add:    true,
+		Write:  true,
+		Create: true,
+		Delete: true,
+		Tag:    true,
+	}
+	expiry := time.Now().Add(time.Hour)
+
+	// ContainerSASURL is created with GetSASURL
+	sasUrl, err := containerClient.GetSASURL(permissions, expiry, nil)
+	_require.Nil(err)
+
+	// Create container client with sasUrl
+	containerSasClient, err := container.NewClientWithNoCredential(sasUrl, nil)
+	_require.Nil(err)
+
+	// Get Blob Client
+	blobSasClient := containerSasClient.NewAppendBlobClient(testName)
+	_, err = blobSasClient.Create(context.Background(), nil)
+	_require.Nil(err)
+
+	// Try getting tags with container SAS
+	_, err = blobSasClient.GetTags(context.Background(), nil)
+	_require.Nil(err)
+}
+
 func (s *ContainerUnrecordedTestsSuite) TestContainerBlobBatchDeleteSuccessUsingSharedKey() {
 	_require := require.New(s.T())
 	testName := s.T().Name()

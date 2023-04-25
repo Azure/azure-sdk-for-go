@@ -1446,6 +1446,15 @@ func (s *ShareRecordedTestsSuite) TestSASShareClientSignNegative() {
 	}
 	expiry := time.Time{}
 
-	_, err = shareClient.GetSASURL(permissions, expiry, nil)
+	// zero expiry time
+	_, err = shareClient.GetSASURL(permissions, expiry, &share.GetSASURLOptions{StartTime: to.Ptr(time.Now())})
+	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
+
+	// zero start and expiry time
+	_, err = shareClient.GetSASURL(permissions, expiry, &share.GetSASURLOptions{})
+	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
+
+	// empty permissions
+	_, err = shareClient.GetSASURL(sas.SharePermissions{}, expiry, nil)
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }

@@ -253,6 +253,42 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateDeleteDefault() {
 	_require.Equal(gResp.FileChangeTime.IsZero(), false)
 }
 
+func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesDefault() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirClient := testcommon.GetDirectoryClient(dirName, shareClient)
+
+	cResp, err := dirClient.Create(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(cResp.FilePermissionKey)
+
+	// Set the custom permissions
+	sResp, err := dirClient.SetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(sResp.FileCreationTime)
+	_require.NotNil(sResp.FileLastWriteTime)
+	_require.NotNil(sResp.FilePermissionKey)
+	_require.Equal(*sResp.FilePermissionKey, *cResp.FilePermissionKey)
+
+	gResp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(gResp.FileCreationTime)
+	_require.NotNil(gResp.FileLastWriteTime)
+	_require.NotNil(gResp.FilePermissionKey)
+	_require.Equal(*gResp.FilePermissionKey, *sResp.FilePermissionKey)
+	_require.Equal(*gResp.FileCreationTime, *sResp.FileCreationTime)
+	_require.Equal(*gResp.FileLastWriteTime, *sResp.FileLastWriteTime)
+	_require.Equal(*gResp.FileAttributes, *sResp.FileAttributes)
+}
+
 func (d *DirectoryRecordedTestsSuite) TestDirSetPropertiesNonDefault() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
@@ -826,7 +862,8 @@ func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsMaxResultsAndMarker
 	_require.Equal(dirCtr+fileCtr, 2)
 
 	pager = shareClient.NewRootDirectoryClient().NewListFilesAndDirectoriesPager(&directory.ListFilesAndDirectoriesOptions{
-		Marker: resp.NextMarker,
+		Marker:     resp.NextMarker,
+		MaxResults: to.Ptr(int32(5)),
 	})
 	for pager.More() {
 		resp, err := pager.NextPage(context.Background())

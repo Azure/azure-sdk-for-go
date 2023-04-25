@@ -6,7 +6,20 @@
 
 package file
 
-import "github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+import (
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
+)
+
+const (
+	_1MiB = 1024 * 1024
+
+	// MaxUpdateRangeBytes indicates the maximum number of bytes that can be updated in a call to Client.UploadRange.
+	MaxUpdateRangeBytes = 4 * 1024 * 1024 // 4MiB
+
+	// MaxFileSize indicates the maximum size of the file allowed.
+	MaxFileSize = 4 * 1024 * 1024 * 1024 * 1024 // 4 TiB
+)
 
 // CopyStatusType defines the states of the copy operation.
 type CopyStatusType = generated.CopyStatusType
@@ -53,3 +66,9 @@ const (
 func PossibleRangeWriteTypeValues() []RangeWriteType {
 	return generated.PossibleFileRangeWriteTypeValues()
 }
+
+// TransferValidationType abstracts the various mechanisms used to verify a transfer.
+type TransferValidationType = exported.TransferValidationType
+
+// TransferValidationTypeMD5 is a TransferValidationType used to provide a precomputed MD5.
+type TransferValidationTypeMD5 = exported.TransferValidationTypeMD5

@@ -7,18 +7,28 @@
 package file_test
 
 import (
+	"bytes"
 	"context"
+	"crypto/md5"
+	"crypto/rand"
+	"encoding/binary"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/testcommon"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
 	"github.com/stretchr/testify/suite"
+	"hash/crc64"
+	"io"
+	"io/ioutil"
+	"os"
 	"strings"
 	"testing"
 	"time"
@@ -375,8 +385,7 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.NoError(err)
 
 	md5Str := "MDAwMDAwMDA="
-	var testMd5 []byte
-	copy(testMd5[:], md5Str)
+	testMd5 := []byte(md5Str)
 
 	creationTime := time.Now().Add(-time.Hour)
 	lastWriteTime := time.Now().Add(-time.Minute * 15)
@@ -460,8 +469,7 @@ func (f *FileRecordedTestsSuite) TestFilePreservePermissions() {
 	attribs := getResp.FileAttributes
 
 	md5Str := "MDAwMDAwMDA="
-	var testMd5 []byte
-	copy(testMd5[:], md5Str)
+	testMd5 := []byte(md5Str)
 
 	properties := file.SetHTTPHeadersOptions{
 		HTTPHeaders: &file.HTTPHeaders{
@@ -529,8 +537,7 @@ func (f *FileRecordedTestsSuite) TestFileGetSetPropertiesSnapshot() {
 	_require.NoError(err)
 
 	md5Str := "MDAwMDAwMDA="
-	var testMd5 []byte
-	copy(testMd5[:], md5Str)
+	testMd5 := []byte(md5Str)
 
 	fileSetHTTPHeadersOptions := file.SetHTTPHeadersOptions{
 		HTTPHeaders: &file.HTTPHeaders{
@@ -734,7 +741,6 @@ func (f *FileRecordedTestsSuite) TestFileStartCopyMetadata() {
 		"Foo": to.Ptr("Foovalue"),
 		"Bar": to.Ptr("Barvalue"),
 	}
-
 	_, err = copyFClient.StartCopyFromURL(context.Background(), fClient.URL(), &file.StartCopyFromURLOptions{Metadata: basicMetadata})
 	_require.NoError(err)
 
@@ -1412,7 +1418,357 @@ func (f *FileRecordedTestsSuite) TestSASFileClientSignNegative() {
 	_require.Equal(err.Error(), "service SAS is missing at least one of these: ExpiryTime or Permissions")
 }
 
-// TODO: Add tests for different options of StartCopyFromURL()
+func (f *FileUnrecordedTestsSuite) TestFileUploadClearListRange() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 1024 * 10
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	uResp, err := fClient.UploadRange(context.Background(), 0, rsc, &file.UploadRangeOptions{
+		TransactionalValidation: file.TransferValidationTypeMD5(contentMD5),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.ContentMD5)
+	_require.EqualValues(uResp.ContentMD5, contentMD5)
+
+	rangeList, err := fClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList.RequestID)
+
+	cResp, err := fClient.ClearRange(context.Background(), file.HTTPRange{Offset: 0, Count: int64(contentSize)}, nil)
+	_require.NoError(err)
+	_require.Nil(cResp.ContentMD5)
+
+	rangeList2, err := fClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList2.RequestID)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURL() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	cred, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.NoError(err)
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:            sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:          time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:           shareName,
+		DirectoryOrFilePath: srcFileName,
+		Permissions:         perms.String(),
+	}.SignWithSharedKey(cred)
+	_require.NoError(err)
+
+	srcFileSAS := srcFClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFClient := shareClient.NewRootDirectoryClient().NewFileClient("dest" + testcommon.GenerateFileName(testName))
+	_, err = destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentCRC64: contentCRC64,
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+
+	rangeList, err := destFClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList.RequestID)
+
+	cResp, err := destFClient.ClearRange(context.Background(), file.HTTPRange{Offset: 0, Count: int64(contentSize)}, nil)
+	_require.NoError(err)
+	_require.Nil(cResp.ContentMD5)
+
+	rangeList2, err := destFClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList2.RequestID)
+}
+
+// TODO: check why this is failing
+/*func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuth() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 1024 * 20
+	srcFileName := "src" + testcommon.GenerateFileName(testName)
+	srcFClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := srcFClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
+
+	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	_require.NoError(err)
+
+	destFClient := shareClient.NewRootDirectoryClient().NewFileClient("dest" + testcommon.GenerateFileName(testName))
+	_, err = destFClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	_require.NoError(err)
+
+	// Getting token
+	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
+	_require.NoError(err)
+
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFClient.URL(), 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+		SourceContentCRC64:      contentCRC64,
+		CopySourceAuthorization: to.Ptr("Bearer " + token.Token),
+	})
+	_require.NoError(err)
+	_require.NotNil(uResp.XMSContentCRC64)
+	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
+
+	rangeList, err := destFClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList.RequestID)
+
+	cResp, err := destFClient.ClearRange(context.Background(), file.HTTPRange{Offset: 0, Count: int64(contentSize)}, nil)
+	_require.NoError(err)
+	_require.Nil(cResp.ContentMD5)
+
+	rangeList2, err := destFClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList2.RequestID)
+}*/
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadBuffer() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 100 * 1024 * 1024
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	err = fClient.UploadBuffer(context.Background(), content, &file.UploadBufferOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	rangeList, err := fClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList.RequestID)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadFile() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 200 * 1024 * 1024
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	// create local file
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	err = ioutil.WriteFile("testFile", content, 0644)
+	_require.NoError(err)
+
+	defer func() {
+		err = os.Remove("testFile")
+		_require.NoError(err)
+	}()
+
+	fh, err := os.Open("testFile")
+	_require.NoError(err)
+
+	defer func(fh *os.File) {
+		err := fh.Close()
+		_require.NoError(err)
+	}(fh)
+
+	hash := md5.New()
+	_, err = io.Copy(hash, fh)
+	_require.NoError(err)
+	contentMD5 := hash.Sum(nil)
+
+	err = fClient.UploadFile(context.Background(), fh, &file.UploadFileOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	rangeList, err := fClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList.RequestID)
+}
+
+func (f *FileUnrecordedTestsSuite) TestFileUploadStream() {
+	_require := require.New(f.T())
+	testName := f.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	var fileSize int64 = 100 * 1024 * 1024
+	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
+	_, err = fClient.Create(context.Background(), fileSize, nil)
+	_require.NoError(err)
+
+	gResp, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp.ContentLength, fileSize)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	_require.NoError(err)
+	md5Value := md5.Sum(content)
+	contentMD5 := md5Value[:]
+
+	err = fClient.UploadStream(context.Background(), streaming.NopCloser(bytes.NewReader(content)), &file.UploadStreamOptions{
+		Concurrency: 5,
+		ChunkSize:   4 * 1024 * 1024,
+	})
+	_require.NoError(err)
+
+	dResp, err := fClient.DownloadStream(context.Background(), nil)
+	_require.NoError(err)
+
+	data, err := io.ReadAll(dResp.Body)
+	_require.NoError(err)
+
+	downloadedMD5Value := md5.Sum(data)
+	downloadedContentMD5 := downloadedMD5Value[:]
+
+	_require.EqualValues(downloadedContentMD5, contentMD5)
+
+	gResp2, err := fClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*gResp2.ContentLength, fileSize)
+
+	rangeList, err := fClient.GetRangeList(context.Background(), nil)
+	_require.NoError(err)
+	_require.NotNil(rangeList.RequestID)
+}
+
+// TODO: Content validation in StartCopyFromURL() after adding upload and download methods.
 
 // TODO: Add tests for upload and download methods
 

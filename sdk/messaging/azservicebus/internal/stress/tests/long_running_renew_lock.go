@@ -15,7 +15,7 @@ import (
 )
 
 func LongRunningRenewLockTest(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("LongRunningRenewLockTest")
+	sc := shared.MustCreateStressContext("LongRunningRenewLockTest", nil)
 
 	queueName := fmt.Sprintf("renew-lock-test-%s", sc.Nano)
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)

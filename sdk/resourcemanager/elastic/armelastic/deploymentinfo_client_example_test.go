@@ -25,7 +25,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/elastic/armelastic"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/232b858812a4f946a82bc11a81241826f5554fbd/specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/DeploymentInfo_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/DeploymentInfo_List.json
 func ExampleDeploymentInfoClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,15 @@ func ExampleDeploymentInfoClient_List() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res.DeploymentInfoResponse = armelastic.DeploymentInfoResponse{
+	// 	DeploymentURL: to.Ptr("https://endpoint.eastus.kb.azure.elastic-cloud.com:9243"),
 	// 	DiskCapacity: to.Ptr("245760"),
+	// 	MarketplaceSaasInfo: &armelastic.MarketplaceSaaSInfo{
+	// 		MarketplaceName: to.Ptr("MP_RESOURCE"),
+	// 		MarketplaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.SaaS/resources/AzElastic_b1190c8f"),
+	// 		MarketplaceSubscription: &armelastic.MarketplaceSaaSInfoMarketplaceSubscription{
+	// 			ID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 		},
+	// 	},
 	// 	MemoryCapacity: to.Ptr("1024"),
 	// 	Status: to.Ptr(armelastic.ElasticDeploymentStatusHealthy),
 	// 	Version: to.Ptr("7.9.3"),

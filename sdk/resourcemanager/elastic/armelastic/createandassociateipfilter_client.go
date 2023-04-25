@@ -55,7 +55,7 @@ func NewCreateAndAssociateIPFilterClient(subscriptionID string, credential azcor
 // BeginCreate - Create and Associate IP traffic filter for the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-02-01-preview
 //   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 //   - monitorName - Monitor resource name
 //   - options - CreateAndAssociateIPFilterClientBeginCreateOptions contains the optional parameters for the CreateAndAssociateIPFilterClient.BeginCreate
@@ -66,7 +66,9 @@ func (client *CreateAndAssociateIPFilterClient) BeginCreate(ctx context.Context,
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[CreateAndAssociateIPFilterClientCreateResponse](resp, client.internal.Pipeline(), nil)
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CreateAndAssociateIPFilterClientCreateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+		})
 	} else {
 		return runtime.NewPollerFromResumeToken[CreateAndAssociateIPFilterClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
@@ -75,7 +77,7 @@ func (client *CreateAndAssociateIPFilterClient) BeginCreate(ctx context.Context,
 // Create - Create and Associate IP traffic filter for the given deployment.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-02-01-preview
 func (client *CreateAndAssociateIPFilterClient) create(ctx context.Context, resourceGroupName string, monitorName string, options *CreateAndAssociateIPFilterClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
@@ -85,7 +87,7 @@ func (client *CreateAndAssociateIPFilterClient) create(ctx context.Context, reso
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(resp, http.StatusCreated) {
+	if !runtime.HasStatusCode(resp, http.StatusOK, http.StatusAccepted) {
 		return nil, runtime.NewResponseError(resp)
 	}
 	return resp, nil
@@ -111,7 +113,7 @@ func (client *CreateAndAssociateIPFilterClient) createCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-02-01-preview")
 	if options != nil && options.IPs != nil {
 		reqQP.Set("ips", *options.IPs)
 	}

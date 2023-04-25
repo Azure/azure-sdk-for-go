@@ -246,7 +246,7 @@ func TestNamespaceNegotiateClaimFatalErrors(t *testing.T) {
 		return nil
 	}
 
-	endCapture := test.CaptureLogsForTest()
+	endCapture := test.CaptureLogsForTest(false)
 	defer endCapture()
 
 	ns.newClientFn = func(ctx context.Context) (amqpwrap.AMQPClient, error) {

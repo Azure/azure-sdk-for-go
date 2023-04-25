@@ -11,7 +11,7 @@ package armcosmos
 
 const (
 	moduleName    = "armcosmos"
-	moduleVersion = "v2.3.0"
+	moduleVersion = "v2.4.0"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -61,6 +61,7 @@ type AuthenticationMethod string
 
 const (
 	AuthenticationMethodCassandra AuthenticationMethod = "Cassandra"
+	AuthenticationMethodLdap      AuthenticationMethod = "Ldap"
 	AuthenticationMethodNone      AuthenticationMethod = "None"
 )
 
@@ -68,6 +69,7 @@ const (
 func PossibleAuthenticationMethodValues() []AuthenticationMethod {
 	return []AuthenticationMethod{
 		AuthenticationMethodCassandra,
+		AuthenticationMethodLdap,
 		AuthenticationMethodNone,
 	}
 }
@@ -349,6 +351,26 @@ func PossibleKeyKindValues() []KeyKind {
 		KeyKindPrimaryReadonly,
 		KeyKindSecondary,
 		KeyKindSecondaryReadonly,
+	}
+}
+
+// Kind - Kind of the connection string key
+type Kind string
+
+const (
+	KindPrimary           Kind = "Primary"
+	KindPrimaryReadonly   Kind = "PrimaryReadonly"
+	KindSecondary         Kind = "Secondary"
+	KindSecondaryReadonly Kind = "SecondaryReadonly"
+)
+
+// PossibleKindValues returns the possible values for the Kind const type.
+func PossibleKindValues() []Kind {
+	return []Kind{
+		KindPrimary,
+		KindPrimaryReadonly,
+		KindSecondary,
+		KindSecondaryReadonly,
 	}
 }
 
@@ -727,6 +749,28 @@ func PossibleSpatialTypeValues() []SpatialType {
 	}
 }
 
+// Status - Enum to indicate current buildout status of the region.
+type Status string
+
+const (
+	StatusDeleting        Status = "Deleting"
+	StatusInitializing    Status = "Initializing"
+	StatusInternallyReady Status = "InternallyReady"
+	StatusOnline          Status = "Online"
+	StatusUninitialized   Status = "Uninitialized"
+)
+
+// PossibleStatusValues returns the possible values for the Status const type.
+func PossibleStatusValues() []Status {
+	return []Status{
+		StatusDeleting,
+		StatusInitializing,
+		StatusInternallyReady,
+		StatusOnline,
+		StatusUninitialized,
+	}
+}
+
 // TriggerOperation - The operation the trigger is associated with
 type TriggerOperation string
 
@@ -762,6 +806,36 @@ func PossibleTriggerTypeValues() []TriggerType {
 	return []TriggerType{
 		TriggerTypePost,
 		TriggerTypePre,
+	}
+}
+
+// Type - Type of the connection string
+type Type string
+
+const (
+	TypeCassandra                  Type = "Cassandra"
+	TypeCassandraConnectorMetadata Type = "CassandraConnectorMetadata"
+	TypeGremlin                    Type = "Gremlin"
+	TypeGremlinV2                  Type = "GremlinV2"
+	TypeMongoDB                    Type = "MongoDB"
+	TypeSQL                        Type = "Sql"
+	TypeSQLDedicatedGateway        Type = "SqlDedicatedGateway"
+	TypeTable                      Type = "Table"
+	TypeUndefined                  Type = "Undefined"
+)
+
+// PossibleTypeValues returns the possible values for the Type const type.
+func PossibleTypeValues() []Type {
+	return []Type{
+		TypeCassandra,
+		TypeCassandraConnectorMetadata,
+		TypeGremlin,
+		TypeGremlinV2,
+		TypeMongoDB,
+		TypeSQL,
+		TypeSQLDedicatedGateway,
+		TypeTable,
+		TypeUndefined,
 	}
 }
 

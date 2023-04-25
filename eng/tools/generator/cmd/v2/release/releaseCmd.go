@@ -214,7 +214,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			c.rpName = arm
 			c.namespaceName = info.Name
 			c.flags.SpecRPName = info.SpecName
-			c.flags.PackageConfig = info.Config
+			c.flags.PackageConfig = info.Tag
 			if info.ReleaseDate != nil {
 				c.flags.ReleaseDate = info.ReleaseDate.Format("2006-01-02")
 			}
@@ -275,7 +275,7 @@ func (c *commandContext) generateFromRequest(sdkRepo repo.SDKRepository, specRep
 			}
 
 			log.Printf("Add Labels...\n")
-			err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready"})
+			err = common.ExecuteAddIssueLabels(sdkRepo.Root(), link.SpecOwner, link.ReleaseIssueRepo, issueNumber[len(issueNumber)-1], c.flags.Token, []string{"PRready", issue.pullRequestLabel})
 			if err != nil {
 				return err
 			}

@@ -625,7 +625,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello world")}, nil)
 	require.NoError(t, err)
 
-	logsFn := test.CaptureLogsForTest()
+	logsFn := test.CaptureLogsForTest(false)
 
 	// no issue credit needed - we've still got the 5000 from last time since we didn't
 	// receive any messages.
@@ -637,7 +637,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
 
-	logsFn = test.CaptureLogsForTest()
+	logsFn = test.CaptureLogsForTest(false)
 
 	// we ate a credit last time since we received a single message, so this time we'll still
 	// need to issue some more to backfill.

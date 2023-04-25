@@ -12,6 +12,7 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
@@ -161,8 +162,17 @@ type SendEventDataBatchOptions struct {
 
 // SendEventDataBatch sends an event data batch to Event Hubs.
 func (pc *ProducerClient) SendEventDataBatch(ctx context.Context, batch *EventDataBatch, options *SendEventDataBatchOptions) error {
-	err := pc.links.Retry(ctx, exported.EventProducer, "SendEventDataBatch", getPartitionID(batch.partitionID), pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
-		return lwid.Link.Send(ctx, batch.toAMQPMessage(), nil)
+	amqpMessage, err := batch.toAMQPMessage()
+
+	if err != nil {
+		return err
+	}
+
+	partID := getPartitionID(batch.partitionID)
+
+	err = pc.links.Retry(ctx, exported.EventProducer, "SendEventDataBatch", partID, pc.retryOptions, func(ctx context.Context, lwid internal.LinkWithID[amqpwrap.AMQPSenderCloser]) error {
+		log.Writef(EventProducer, "[%s] Sending message with ID %v to partition %q", lwid.String(), amqpMessage.Properties.MessageID, partID)
+		return lwid.Link.Send(ctx, amqpMessage, nil)
 	})
 	return internal.TransformError(err)
 }

@@ -15,97 +15,98 @@ import (
 )
 
 func TestAMQPReceiverWrapper(t *testing.T) {
-	for _, e := range []error{context.Canceled, context.DeadlineExceeded} {
-		t.Run(e.Error(), func(t *testing.T) {
+	for _, expectedErr := range []error{context.Canceled, context.DeadlineExceeded} {
+		t.Run(expectedErr.Error(), func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			r := NewMockgoamqpReceiver(ctrl)
 
-			r.EXPECT().Close(gomock.Any()).Return(e)
+			r.EXPECT().Close(gomock.Any()).Return(expectedErr)
 
-			rw := &AMQPReceiverWrapper{inner: r}
+			rw := &AMQPReceiverWrapper{Inner: r, ContextWithTimeoutFn: context.WithTimeout}
 
 			ctx, cancel := context.WithCancel(context.Background())
 			cancel()
-			require.ErrorIs(t, ErrConnResetNeeded, rw.Close(ctx))
+			err := rw.Close(ctx)
+			require.ErrorIs(t, err, expectedErr)
 		})
 	}
 }
 
 func TestAMQPSenderWrapper(t *testing.T) {
-	for _, e := range []error{context.Canceled, context.DeadlineExceeded} {
-		t.Run(e.Error(), func(t *testing.T) {
+	for _, expectedErr := range []error{context.Canceled, context.DeadlineExceeded} {
+		t.Run(expectedErr.Error(), func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			s := NewMockAMQPSenderCloser(ctrl)
 
-			s.EXPECT().Close(gomock.Any()).Return(e)
+			s.EXPECT().Close(gomock.Any()).Return(expectedErr)
 
-			rw := &AMQPSenderWrapper{inner: s}
+			rw := &AMQPSenderWrapper{Inner: s, ContextWithTimeoutFn: context.WithTimeout}
 
 			ctx, cancel := context.WithCancel(context.Background())
 			cancel()
-			require.ErrorIs(t, ErrConnResetNeeded, rw.Close(ctx))
+			require.ErrorIs(t, rw.Close(ctx), expectedErr)
 		})
 	}
 }
 
 func TestAMQPSessionWrapper(t *testing.T) {
-	for _, e := range []error{context.Canceled, context.DeadlineExceeded} {
-		t.Run(fmt.Sprintf("Close() == %s", e.Error()), func(t *testing.T) {
+	for _, expectedErr := range []error{context.Canceled, context.DeadlineExceeded} {
+		t.Run(fmt.Sprintf("Close() == %s", expectedErr.Error()), func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			s := NewMockgoamqpSession(ctrl)
 
-			s.EXPECT().Close(gomock.Any()).Return(e)
+			s.EXPECT().Close(gomock.Any()).Return(expectedErr)
 
-			rw := &AMQPSessionWrapper{Inner: s}
+			rw := &AMQPSessionWrapper{Inner: s, ContextWithTimeoutFn: context.WithTimeout}
 
 			ctx, cancel := context.WithCancel(context.Background())
 			cancel()
-			require.ErrorIs(t, ErrConnResetNeeded, rw.Close(ctx))
+			require.ErrorIs(t, rw.Close(ctx), expectedErr)
 		})
 	}
 
-	for _, e := range []error{context.Canceled, context.DeadlineExceeded} {
-		t.Run(fmt.Sprintf("NewReceiver() == %s", e.Error()), func(t *testing.T) {
+	for _, expectedErr := range []error{context.Canceled, context.DeadlineExceeded} {
+		t.Run(fmt.Sprintf("NewReceiver() == %s", expectedErr.Error()), func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			inner := NewMockgoamqpSession(ctrl)
 
-			inner.EXPECT().NewReceiver(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil, e)
+			inner.EXPECT().NewReceiver(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil, expectedErr)
 
-			rw := &AMQPSessionWrapper{Inner: inner}
+			rw := &AMQPSessionWrapper{Inner: inner, ContextWithTimeoutFn: context.WithTimeout}
 
 			ctx, cancel := context.WithCancel(context.Background())
 			cancel()
 			receiver, err := rw.NewReceiver(ctx, "source", nil)
-			require.ErrorIs(t, err, ErrConnResetNeeded)
+			require.ErrorIs(t, err, expectedErr)
 			require.Nil(t, receiver)
 		})
 	}
 
-	for _, e := range []error{context.Canceled, context.DeadlineExceeded} {
-		t.Run(fmt.Sprintf("NewSender() == %s", e.Error()), func(t *testing.T) {
+	for _, expectedErr := range []error{context.Canceled, context.DeadlineExceeded} {
+		t.Run(fmt.Sprintf("NewSender() == %s", expectedErr.Error()), func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			inner := NewMockgoamqpSession(ctrl)
 
-			inner.EXPECT().NewSender(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil, e)
+			inner.EXPECT().NewSender(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil, expectedErr)
 
 			rw := &AMQPSessionWrapper{Inner: inner}
 
 			ctx, cancel := context.WithCancel(context.Background())
 			cancel()
 			sender, err := rw.NewSender(ctx, "target", nil)
-			require.ErrorIs(t, err, ErrConnResetNeeded)
+			require.ErrorIs(t, err, expectedErr)
 			require.Nil(t, sender)
 		})
 	}
 }
 
 func TestAMQPConnWrapper(t *testing.T) {
-	for _, e := range []error{context.Canceled, context.DeadlineExceeded} {
-		t.Run(e.Error(), func(t *testing.T) {
+	for _, expectedErr := range []error{context.Canceled, context.DeadlineExceeded} {
+		t.Run(expectedErr.Error(), func(t *testing.T) {
 			ctrl := gomock.NewController(t)
 			inner := NewMockgoamqpConn(ctrl)
 
-			inner.EXPECT().NewSession(gomock.Any(), gomock.Any()).Return(nil, e)
+			inner.EXPECT().NewSession(gomock.Any(), gomock.Any()).Return(nil, expectedErr)
 
 			conn := &AMQPClientWrapper{Inner: inner}
 
@@ -113,7 +114,7 @@ func TestAMQPConnWrapper(t *testing.T) {
 			cancel()
 
 			sess, err := conn.NewSession(ctx, nil)
-			require.ErrorIs(t, err, ErrConnResetNeeded)
+			require.ErrorIs(t, err, expectedErr)
 			require.Nil(t, sess)
 		})
 	}

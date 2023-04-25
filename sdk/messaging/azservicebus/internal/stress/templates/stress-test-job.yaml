@@ -12,7 +12,12 @@ spec:
     - name: main
       # az acr list -g rg-stress-cluster-test --subscription "Azure SDK Developer Playground" --query "[0].loginServer"
       image:  {{ .Stress.imageTag }}
-      command: ['/app/stress']
+      command: ['sh', '-c']
+      args: 
+        - >
+          set -ex;
+          mkdir -p "$DEBUG_SHARE";
+          /app/stress tests "{{ .Stress.testTarget }}" | tee "${DEBUG_SHARE}/{{ .Stress.Scenario }}.log";
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always
@@ -25,10 +30,6 @@ spec:
         limits:
           memory: {{.Stress.memory }}
           cpu: "1"
-      args: 
-      - "tests"
-      # (this is injected automatically. The full list of scenarios is in `../values.yaml`)
-      - {{ .Stress.testTarget }}
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
 

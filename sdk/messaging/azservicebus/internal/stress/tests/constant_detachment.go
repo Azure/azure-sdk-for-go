@@ -17,7 +17,7 @@ import (
 )
 
 func ConstantDetachment(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("ConstantDetachment")
+	sc := shared.MustCreateStressContext("ConstantDetachment", nil)
 	defer sc.End()
 
 	queueName := fmt.Sprintf("detach-tester-%s", sc.Nano)

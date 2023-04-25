@@ -60,6 +60,9 @@ func TestConsumerClient_Recovery(t *testing.T) {
 
 			partProps, err := producerClient.GetPartitionProperties(context.Background(), pid, nil)
 			require.NoError(t, err)
+			require.Equal(t, pid, partProps.PartitionID)
+
+			t.Logf("[%s] Starting props %#v", pid, partProps)
 
 			batch, err := producerClient.NewEventDataBatch(context.Background(), &EventDataBatchOptions{
 				PartitionID: &pid,
@@ -76,6 +79,14 @@ func TestConsumerClient_Recovery(t *testing.T) {
 
 			err = producerClient.SendEventDataBatch(context.Background(), batch, nil)
 			require.NoError(t, err)
+
+			afterPartProps, err := producerClient.GetPartitionProperties(context.Background(), pid, nil)
+			require.NoError(t, err)
+			require.Equal(t, pid, afterPartProps.PartitionID)
+
+			t.Logf("[%s] After props %#v", pid, afterPartProps)
+
+			require.Equalf(t, int64(2), afterPartProps.LastEnqueuedSequenceNumber-partProps.LastEnqueuedSequenceNumber, "Expected only 2 messages in partition %s", pid)
 
 			sendResults[i] = sendResult{PartitionID: pid, OffsetBefore: partProps.LastEnqueuedOffset}
 		}(i, pid)
@@ -114,6 +125,9 @@ func TestConsumerClient_Recovery(t *testing.T) {
 			events, err := partClient.ReceiveEvents(ctx, 1, nil)
 			require.NoError(t, err)
 			require.EqualValues(t, 1, len(events))
+
+			t.Logf("[%s] Received seq:%d, offset:%d", sr.PartitionID, events[0].SequenceNumber, *events[0].Offset)
+
 			require.Equal(t, fmt.Sprintf("event 1 for partition %s", sr.PartitionID), string(events[0].Body))
 		}(i, sr)
 	}

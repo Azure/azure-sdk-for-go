@@ -169,7 +169,7 @@ func TestReceiver_releaserFunc(t *testing.T) {
 		},
 	}
 
-	logsFn := test.CaptureLogsForTest()
+	logsFn := test.CaptureLogsForTest(false)
 
 	releaserFn := receiver.newReleaserFunc(&amqpReceiver)
 	releaserFn()
@@ -212,7 +212,7 @@ func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 		}
 	}
 
-	logsFn := test.CaptureLogsForTest()
+	logsFn := test.CaptureLogsForTest(false)
 
 	releaserFn := receiver.newReleaserFunc(&amqpReceiver)
 	releaserFn()

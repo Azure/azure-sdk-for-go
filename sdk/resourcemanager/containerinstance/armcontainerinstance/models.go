@@ -245,6 +245,10 @@ type ContainerGroupPropertiesProperties struct {
 	// The init containers for a container group.
 	InitContainers []*InitContainerDefinition
 
+	// Time in seconds in which a container group deployment would timeout and fail. The allowed maximum value is 1800 seconds.
+	// If value is not provided, property is given maximum value by default.
+	ProvisioningTimeoutInSeconds *int32
+
 	// Restart policy for all containers within the container group.
 	// * Always Always restart
 	// * OnFailure Restart on failure
@@ -262,6 +266,9 @@ type ContainerGroupPropertiesProperties struct {
 
 	// READ-ONLY; The instance view of the container group. Only valid in response.
 	InstanceView *ContainerGroupPropertiesInstanceView
+
+	// READ-ONLY; Flag indicating whether a custom value was provided for the provisioningTimeoutInSeconds property
+	IsCustomProvisioningTimeout *IsCustomProvisioningTimeout
 
 	// READ-ONLY; The provisioning state of the container group. This only appears in the response.
 	ProvisioningState *string

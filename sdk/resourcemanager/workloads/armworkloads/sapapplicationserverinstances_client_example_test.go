@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPApplicationServerInstances_Get.json
 func ExampleSAPApplicationServerInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "test-rg", "X00", "app01", nil)
+	res, err := clientFactory.NewSAPApplicationServerInstancesClient().Get(ctx, "test-rg", "X00", "app01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -72,18 +72,18 @@ func ExampleSAPApplicationServerInstancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_Create_HA_AvSet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPApplicationServerInstances_Create_HA_AvSet.json
 func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplicationServerInstancesForHaSystemWithAvailabilitySet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "test-rg", "X00", "app01", armworkloads.SAPApplicationServerInstance{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "app01", armworkloads.SAPApplicationServerInstance{
 		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloads.SAPApplicationServerProperties{},
@@ -149,18 +149,18 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_createSapApplication
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPApplicationServerInstances_Create.json
 func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServerInstancesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginCreate(ctx, "test-rg", "X00", "app01", armworkloads.SAPApplicationServerInstance{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginCreate(ctx, "test-rg", "X00", "app01", armworkloads.SAPApplicationServerInstance{
 		Location:   to.Ptr("westcentralus"),
 		Tags:       map[string]*string{},
 		Properties: &armworkloads.SAPApplicationServerProperties{},
@@ -211,18 +211,18 @@ func ExampleSAPApplicationServerInstancesClient_BeginCreate_sapApplicationServer
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPApplicationServerInstances_Update.json
 func ExampleSAPApplicationServerInstancesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginUpdate(ctx, "test-rg", "X00", "app01", armworkloads.UpdateSAPApplicationInstanceRequest{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginUpdate(ctx, "test-rg", "X00", "app01", armworkloads.UpdateSAPApplicationInstanceRequest{
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
 		},
@@ -273,18 +273,18 @@ func ExampleSAPApplicationServerInstancesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPApplicationServerInstances_Delete.json
 func ExampleSAPApplicationServerInstancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginDelete(ctx, "test-rg", "X00", "app01", nil)
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginDelete(ctx, "test-rg", "X00", "app01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -304,18 +304,18 @@ func ExampleSAPApplicationServerInstancesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPApplicationServerInstances_List.json
 func ExampleSAPApplicationServerInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPApplicationServerInstancesClient("6d875e77-e412-4d7d-9af4-8895278b4443", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := client.NewListPager("test-rg", "X00", nil)
+	pager := clientFactory.NewSAPApplicationServerInstancesClient().NewListPager("test-rg", "X00", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -400,18 +400,18 @@ func ExampleSAPApplicationServerInstancesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_StartInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPApplicationServerInstances_StartInstance.json
 func ExampleSAPApplicationServerInstancesClient_BeginStartInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPApplicationServerInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStartInstance(ctx, "test-rg", "X00", "app01", nil)
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStartInstance(ctx, "test-rg", "X00", "app01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -431,18 +431,18 @@ func ExampleSAPApplicationServerInstancesClient_BeginStartInstance() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/sapvirtualinstances/SAPApplicationServerInstances_StopInstance.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/SAPApplicationServerInstances_StopInstance.json
 func ExampleSAPApplicationServerInstancesClient_BeginStopInstance() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSAPApplicationServerInstancesClient("8e17e36c-42e9-4cd5-a078-7b44883414e0", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := client.BeginStopInstance(ctx, "test-rg", "X00", "app01", &armworkloads.SAPApplicationServerInstancesClientBeginStopInstanceOptions{Body: &armworkloads.StopRequest{
+	poller, err := clientFactory.NewSAPApplicationServerInstancesClient().BeginStopInstance(ctx, "test-rg", "X00", "app01", &armworkloads.SAPApplicationServerInstancesClientBeginStopInstanceOptions{Body: &armworkloads.StopRequest{
 		SoftStopTimeoutSeconds: to.Ptr[int64](0),
 	},
 	})

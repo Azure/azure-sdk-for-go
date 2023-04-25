@@ -23,6 +23,7 @@ func TestContainerPermissions_String(t *testing.T) {
 		{input: ContainerPermissions{Delete: true}, expected: "d"},
 		{input: ContainerPermissions{DeletePreviousVersion: true}, expected: "x"},
 		{input: ContainerPermissions{List: true}, expected: "l"},
+		{input: ContainerPermissions{Tag: true}, expected: "t"},
 		{input: ContainerPermissions{FilterByTags: true}, expected: "f"},
 		{input: ContainerPermissions{Move: true}, expected: "m"},
 		{input: ContainerPermissions{Execute: true}, expected: "e"},
@@ -37,13 +38,14 @@ func TestContainerPermissions_String(t *testing.T) {
 			Delete:                true,
 			DeletePreviousVersion: true,
 			List:                  true,
+			Tag:                   true,
 			FilterByTags:          true,
 			Move:                  true,
 			Execute:               true,
 			ModifyOwnership:       true,
 			ModifyPermissions:     true,
 			SetImmutabilityPolicy: true,
-		}, expected: "racwdxlfmeopi"},
+		}, expected: "racwdxltfmeopi"},
 	}
 	for _, c := range testdata {
 		require.Equal(t, c.expected, c.input.String())
@@ -62,6 +64,7 @@ func TestContainerPermissions_Parse(t *testing.T) {
 		{expected: ContainerPermissions{Delete: true}, input: "d"},
 		{expected: ContainerPermissions{DeletePreviousVersion: true}, input: "x"},
 		{expected: ContainerPermissions{List: true}, input: "l"},
+		{expected: ContainerPermissions{Tag: true}, input: "t"},
 		{expected: ContainerPermissions{FilterByTags: true}, input: "f"},
 		{expected: ContainerPermissions{Move: true}, input: "m"},
 		{expected: ContainerPermissions{Execute: true}, input: "e"},
@@ -76,13 +79,14 @@ func TestContainerPermissions_Parse(t *testing.T) {
 			Delete:                true,
 			DeletePreviousVersion: true,
 			List:                  true,
+			Tag:                   true,
 			FilterByTags:          true,
 			Move:                  true,
 			Execute:               true,
 			ModifyOwnership:       true,
 			ModifyPermissions:     true,
 			SetImmutabilityPolicy: true,
-		}, input: "racwdxlfmeopi"},
+		}, input: "racwdxltfmeopi"},
 		{expected: ContainerPermissions{
 			Read:                  true,
 			Add:                   true,
@@ -91,13 +95,14 @@ func TestContainerPermissions_Parse(t *testing.T) {
 			Delete:                true,
 			DeletePreviousVersion: true,
 			List:                  true,
+			Tag:                   true,
 			FilterByTags:          true,
 			Move:                  true,
 			Execute:               true,
 			ModifyOwnership:       true,
 			ModifyPermissions:     true,
 			SetImmutabilityPolicy: true,
-		}, input: "cpwxfmreodail"}, // Wrong order parses correctly
+		}, input: "ctpwxfmreodail"}, // Wrong order parses correctly
 	}
 	for _, c := range testdata {
 		permissions, err := parseContainerPermissions(c.input)
@@ -107,9 +112,9 @@ func TestContainerPermissions_Parse(t *testing.T) {
 }
 
 func TestContainerPermissions_ParseNegative(t *testing.T) {
-	_, err := parseContainerPermissions("cpwxtfmreodail") // Here 't' is invalid
+	_, err := parseContainerPermissions("cpwxtfmreodailz") // Here 'z' is invalid
 	require.NotNil(t, err)
-	require.Contains(t, err.Error(), "116")
+	require.Contains(t, err.Error(), "122")
 }
 
 func TestBlobPermissions_String(t *testing.T) {

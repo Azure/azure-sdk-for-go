@@ -17,7 +17,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cosmos/armcosmos/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBLocationList.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-01-preview/examples/CosmosDBLocationList.json
 func ExampleLocationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,9 +50,7 @@ func ExampleLocationsClient_NewListPager() {
 		// 					to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 		// 					to.Ptr(armcosmos.BackupStorageRedundancyGeo)},
 		// 					IsResidencyRestricted: to.Ptr(false),
-		// 					IsSubscriptionRegionAccessAllowedForAz: to.Ptr(false),
-		// 					IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(true),
-		// 					Status: to.Ptr(armcosmos.StatusOnline),
+		// 					Status: to.Ptr("ProductionSLA"),
 		// 					SupportsAvailabilityZone: to.Ptr(false),
 		// 				},
 		// 			},
@@ -65,9 +63,7 @@ func ExampleLocationsClient_NewListPager() {
 		// 						to.Ptr(armcosmos.BackupStorageRedundancyZone),
 		// 						to.Ptr(armcosmos.BackupStorageRedundancyGeo)},
 		// 						IsResidencyRestricted: to.Ptr(false),
-		// 						IsSubscriptionRegionAccessAllowedForAz: to.Ptr(true),
-		// 						IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(false),
-		// 						Status: to.Ptr(armcosmos.StatusOnline),
+		// 						Status: to.Ptr("ProductionSLA"),
 		// 						SupportsAvailabilityZone: to.Ptr(true),
 		// 					},
 		// 			}},
@@ -75,7 +71,7 @@ func ExampleLocationsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/b065afacb99e7ec65787383550ee233e0e02a6e6/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBLocationGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2023-03-01-preview/examples/CosmosDBLocationGet.json
 func ExampleLocationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,9 +98,7 @@ func ExampleLocationsClient_Get() {
 	// 			to.Ptr(armcosmos.BackupStorageRedundancyLocal),
 	// 			to.Ptr(armcosmos.BackupStorageRedundancyGeo)},
 	// 			IsResidencyRestricted: to.Ptr(true),
-	// 			IsSubscriptionRegionAccessAllowedForAz: to.Ptr(true),
-	// 			IsSubscriptionRegionAccessAllowedForRegular: to.Ptr(true),
-	// 			Status: to.Ptr(armcosmos.StatusOnline),
+	// 			Status: to.Ptr("ProductionSLA"),
 	// 			SupportsAvailabilityZone: to.Ptr(true),
 	// 		},
 	// 	}

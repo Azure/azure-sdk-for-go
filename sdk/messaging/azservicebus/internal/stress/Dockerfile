@@ -15,4 +15,4 @@ RUN go build -o stress .
 FROM mcr.microsoft.com/cbl-mariner/base/core:1.0
 WORKDIR /app
 COPY --from=build /src/internal/stress/stress /app/stress
-ENTRYPOINT ["./stress"]
+ENTRYPOINT ["/bin/bash"]

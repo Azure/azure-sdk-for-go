@@ -56,7 +56,7 @@ func NewExternalUserClient(subscriptionID string, credential azcore.TokenCredent
 // deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2022-07-01-preview
+// Generated from API version 2023-02-01-preview
 //   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
 //   - monitorName - Monitor resource name
 //   - options - ExternalUserClientCreateOrUpdateOptions contains the optional parameters for the ExternalUserClient.CreateOrUpdate
@@ -96,7 +96,7 @@ func (client *ExternalUserClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-02-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Body != nil {

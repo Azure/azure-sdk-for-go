@@ -55,15 +55,37 @@ func (md *MockData) newSession(ctx context.Context, opts *amqp.SessionOptions, c
 		return nil, err
 	}
 
+	var createdEntities []interface {
+		Close(ctx context.Context) error
+	}
+
 	sess.EXPECT().NewReceiver(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, source string, opts *amqp.ReceiverOptions) (amqpwrap.AMQPReceiverCloser, error) {
-		return md.NewReceiver(ctx, source, opts, sess)
+		receiver, err := md.NewReceiver(ctx, source, opts, sess)
+
+		if err == nil {
+			createdEntities = append(createdEntities, receiver)
+		}
+
+		return receiver, err
 	}).AnyTimes()
 
 	sess.EXPECT().NewSender(gomock.Any(), gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, target string, opts *amqp.SenderOptions) (amqpwrap.AMQPSenderCloser, error) {
-		return md.NewSender(ctx, target, opts, sess)
+		sender, err := md.NewSender(ctx, target, opts, sess)
+
+		if err == nil {
+			createdEntities = append(createdEntities, sender)
+		}
+
+		return sender, err
 	}).AnyTimes()
 
 	sess.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
+		// if the receiver or sender are still open close them as well - this mimics the expected state
+		// after ending a session.
+		for _, e := range createdEntities {
+			_ = e.Close(context.Background())
+		}
+
 		select {
 		case <-conn.Status.Done():
 			return conn.Status.Err()

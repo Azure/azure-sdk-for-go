@@ -140,3 +140,8 @@ func (c *ClientFactory) NewTrafficFiltersClient() *TrafficFiltersClient {
 	subClient, _ := NewTrafficFiltersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
+
+func (c *ClientFactory) NewOrganizationsClient() *OrganizationsClient {
+	subClient, _ := NewOrganizationsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}

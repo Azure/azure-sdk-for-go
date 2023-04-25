@@ -38,7 +38,7 @@ func EmptySessions(remainingArgs []string) {
 	topicName := strings.ToLower(fmt.Sprintf("topic-%X", time.Now().UnixNano()))
 	log.Printf("Creating topic %s", topicName)
 
-	sc := shared.MustCreateStressContext("emptysessions")
+	sc := shared.MustCreateStressContext("emptysessions", nil)
 	defer sc.End()
 
 	cleanup := shared.MustCreateSubscriptions(sc, topicName, []string{"sub1"}, &shared.MustCreateSubscriptionsOptions{

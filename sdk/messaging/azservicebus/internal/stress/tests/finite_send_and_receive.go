@@ -18,7 +18,7 @@ import (
 )
 
 func FiniteSendAndReceiveTest(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("FiniteSendAndReceiveTest")
+	sc := shared.MustCreateStressContext("FiniteSendAndReceiveTest", nil)
 
 	sc.TrackEvent("Start")
 	defer sc.End()

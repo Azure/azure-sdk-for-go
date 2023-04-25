@@ -8,6 +8,7 @@ package amqpwrap
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
 )
@@ -63,6 +64,7 @@ type AMQPSession interface {
 type AMQPClient interface {
 	Close() error
 	NewSession(ctx context.Context, opts *amqp.SessionOptions) (AMQPSession, error)
+	Name() string
 }
 
 type goamqpConn interface {
@@ -112,49 +114,50 @@ func (w *AMQPClientWrapper) NewSession(ctx context.Context, opts *amqp.SessionOp
 	sess, err := w.Inner.NewSession(ctx, opts)
 
 	if err != nil {
-		return nil, HandleNewOrCloseError(err)
+		return nil, err
 	}
 
 	return &AMQPSessionWrapper{
-		Inner: sess,
+		Inner:                sess,
+		ContextWithTimeoutFn: context.WithTimeout,
 	}, nil
 }
 
 type AMQPSessionWrapper struct {
-	Inner goamqpSession
+	Inner                goamqpSession
+	ContextWithTimeoutFn ContextWithTimeoutFn
 }
 
 func (w *AMQPSessionWrapper) Close(ctx context.Context) error {
-	if err := w.Inner.Close(ctx); err != nil {
-		return HandleNewOrCloseError(err)
-	}
-
-	return nil
+	ctx, cancel := w.ContextWithTimeoutFn(ctx, defaultCloseTimeout)
+	defer cancel()
+	return w.Inner.Close(ctx)
 }
 
 func (w *AMQPSessionWrapper) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (AMQPReceiverCloser, error) {
 	receiver, err := w.Inner.NewReceiver(ctx, source, opts)
 
 	if err != nil {
-		return nil, HandleNewOrCloseError(err)
+		return nil, err
 	}
 
-	return &AMQPReceiverWrapper{inner: receiver}, nil
+	return &AMQPReceiverWrapper{Inner: receiver, ContextWithTimeoutFn: context.WithTimeout}, nil
 }
 
 func (w *AMQPSessionWrapper) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (AMQPSenderCloser, error) {
 	sender, err := w.Inner.NewSender(ctx, target, opts)
 
 	if err != nil {
-		return nil, HandleNewOrCloseError(err)
+		return nil, err
 	}
 
-	return sender, nil
+	return &AMQPSenderWrapper{Inner: sender, ContextWithTimeoutFn: context.WithTimeout}, nil
 }
 
 type AMQPReceiverWrapper struct {
-	inner   goamqpReceiver
-	credits uint32
+	Inner                goamqpReceiver
+	credits              uint32
+	ContextWithTimeoutFn ContextWithTimeoutFn
 }
 
 func (rw *AMQPReceiverWrapper) Credits() uint32 {
@@ -162,7 +165,7 @@ func (rw *AMQPReceiverWrapper) Credits() uint32 {
 }
 
 func (rw *AMQPReceiverWrapper) IssueCredit(credit uint32) error {
-	err := rw.inner.IssueCredit(credit)
+	err := rw.Inner.IssueCredit(credit)
 
 	if err == nil {
 		rw.credits += credit
@@ -172,7 +175,7 @@ func (rw *AMQPReceiverWrapper) IssueCredit(credit uint32) error {
 }
 
 func (rw *AMQPReceiverWrapper) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
-	message, err := rw.inner.Receive(ctx, o)
+	message, err := rw.Inner.Receive(ctx, o)
 
 	if err != nil {
 		return nil, err
@@ -183,7 +186,7 @@ func (rw *AMQPReceiverWrapper) Receive(ctx context.Context, o *amqp.ReceiveOptio
 }
 
 func (rw *AMQPReceiverWrapper) Prefetched() *amqp.Message {
-	msg := rw.inner.Prefetched()
+	msg := rw.Inner.Prefetched()
 
 	if msg == nil {
 		return nil
@@ -195,69 +198,62 @@ func (rw *AMQPReceiverWrapper) Prefetched() *amqp.Message {
 
 // settlement functions
 func (rw *AMQPReceiverWrapper) AcceptMessage(ctx context.Context, msg *amqp.Message) error {
-	return rw.inner.AcceptMessage(ctx, msg)
+	return rw.Inner.AcceptMessage(ctx, msg)
 }
 
 func (rw *AMQPReceiverWrapper) RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error {
-	return rw.inner.RejectMessage(ctx, msg, e)
+	return rw.Inner.RejectMessage(ctx, msg, e)
 }
 
 func (rw *AMQPReceiverWrapper) ReleaseMessage(ctx context.Context, msg *amqp.Message) error {
-	return rw.inner.ReleaseMessage(ctx, msg)
+	return rw.Inner.ReleaseMessage(ctx, msg)
 }
 
 func (rw *AMQPReceiverWrapper) ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error {
-	return rw.inner.ModifyMessage(ctx, msg, options)
+	return rw.Inner.ModifyMessage(ctx, msg, options)
 }
 
 func (rw *AMQPReceiverWrapper) LinkName() string {
-	return rw.inner.LinkName()
+	return rw.Inner.LinkName()
 }
 
 func (rw *AMQPReceiverWrapper) LinkSourceFilterValue(name string) any {
-	return rw.inner.LinkSourceFilterValue(name)
+	return rw.Inner.LinkSourceFilterValue(name)
 }
 
 func (rw *AMQPReceiverWrapper) Close(ctx context.Context) error {
-	if err := rw.inner.Close(ctx); err != nil {
-		return HandleNewOrCloseError(err)
-	}
-
-	return nil
+	ctx, cancel := rw.ContextWithTimeoutFn(ctx, defaultCloseTimeout)
+	defer cancel()
+	return rw.Inner.Close(ctx)
 }
 
 type AMQPSenderWrapper struct {
-	inner AMQPSenderCloser
+	Inner                AMQPSenderCloser
+	ContextWithTimeoutFn ContextWithTimeoutFn
 }
 
 func (sw *AMQPSenderWrapper) Send(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
-	return sw.inner.Send(ctx, msg, o)
+	return sw.Inner.Send(ctx, msg, o)
 }
 
 func (sw *AMQPSenderWrapper) MaxMessageSize() uint64 {
-	return sw.inner.MaxMessageSize()
+	return sw.Inner.MaxMessageSize()
 }
 
 func (sw *AMQPSenderWrapper) LinkName() string {
-	return sw.inner.LinkName()
+	return sw.Inner.LinkName()
 }
 
 func (sw *AMQPSenderWrapper) Close(ctx context.Context) error {
-	if err := sw.inner.Close(ctx); err != nil {
-		return HandleNewOrCloseError(err)
-	}
-
-	return nil
-}
-
-func HandleNewOrCloseError(err error) error {
-	if errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
-		// we treat this a bit differently when creating or closing entities. The big concern here is
-		// that failing to cleanup stray
-		return ErrConnResetNeeded
-	}
-
-	return err
+	ctx, cancel := sw.ContextWithTimeoutFn(ctx, defaultCloseTimeout)
+	defer cancel()
+	return sw.Inner.Close(ctx)
 }
 
 var ErrConnResetNeeded = errors.New("connection must be reset, link/connection state may be inconsistent")
+
+const defaultCloseTimeout = time.Minute
+
+// ContextWithTimeoutFn matches the signature for `context.WithTimeout` and is used when we want to
+// stub things out for tests.
+type ContextWithTimeoutFn func(parent context.Context, timeout time.Duration) (context.Context, context.CancelFunc)

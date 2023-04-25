@@ -16,7 +16,7 @@ import (
 
 // MostlyIdleReceiver tests that if there are long idle periods that our connection continues to work and receive messages.
 func MostlyIdleReceiver(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("MostlyIdleReceiver")
+	sc := shared.MustCreateStressContext("MostlyIdleReceiver", nil)
 	defer sc.End()
 
 	// we'll try several levels of "idleness", with different connections to make sure they don't

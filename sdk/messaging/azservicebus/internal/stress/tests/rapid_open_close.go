@@ -14,7 +14,7 @@ import (
 )
 
 func RapidOpenCloseTest(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("RapidOpenCloseTest")
+	sc := shared.MustCreateStressContext("RapidOpenCloseTest", nil)
 	queueName := fmt.Sprintf("rapid_open_close-%X", time.Now().UnixNano())
 
 	shared.MustCreateAutoDeletingQueue(sc, queueName, nil)

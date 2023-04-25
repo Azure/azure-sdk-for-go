@@ -18,7 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resourceconnector/armresourceconnector"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListOperations.json
 func ExampleAppliancesClient_NewListOperationsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleAppliancesClient_NewListOperationsPager() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListBySubscription.json
 func ExampleAppliancesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,6 +162,14 @@ func ExampleAppliancesClient_NewListBySubscriptionPager() {
 		// 			Name: to.Ptr("appliance01"),
 		// 			Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
 		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ResourceConnector/appliances/appliance01"),
+		// 			SystemData: &armresourceconnector.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+		// 				CreatedBy: to.Ptr("string"),
+		// 				CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("string"),
+		// 				LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("West US"),
 		// 			Properties: &armresourceconnector.ApplianceProperties{
 		// 				Distro: to.Ptr(armresourceconnector.DistroAKSEdge),
@@ -171,20 +179,20 @@ func ExampleAppliancesClient_NewListBySubscriptionPager() {
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				Status: to.Ptr(armresourceconnector.StatusConnected),
 		// 				Version: to.Ptr("1.0.1"),
-		// 			},
-		// 			SystemData: &armresourceconnector.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("appliance02"),
 		// 			Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
 		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ResourceConnector/appliances/appliance02"),
+		// 			SystemData: &armresourceconnector.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+		// 				CreatedBy: to.Ptr("string"),
+		// 				CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("string"),
+		// 				LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("West US"),
 		// 			Properties: &armresourceconnector.ApplianceProperties{
 		// 				Distro: to.Ptr(armresourceconnector.DistroAKSEdge),
@@ -195,20 +203,35 @@ func ExampleAppliancesClient_NewListBySubscriptionPager() {
 		// 				Status: to.Ptr(armresourceconnector.StatusConnected),
 		// 				Version: to.Ptr("1.0.1"),
 		// 			},
-		// 			SystemData: &armresourceconnector.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListByResourceGroup.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/TelemetryConfig.json
+func ExampleAppliancesClient_GetTelemetryConfig() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresourceconnector.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAppliancesClient().GetTelemetryConfig(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ApplianceGetTelemetryConfigResult = armresourceconnector.ApplianceGetTelemetryConfigResult{
+	// 	TelemetryInstrumentationKey: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListByResourceGroup.json
 func ExampleAppliancesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,6 +259,14 @@ func ExampleAppliancesClient_NewListByResourceGroupPager() {
 		// 			Name: to.Ptr("appliance01"),
 		// 			Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
 		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ResourceConnector/appliances/appliance01"),
+		// 			SystemData: &armresourceconnector.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+		// 				CreatedBy: to.Ptr("string"),
+		// 				CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("string"),
+		// 				LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("West US"),
 		// 			Properties: &armresourceconnector.ApplianceProperties{
 		// 				Distro: to.Ptr(armresourceconnector.DistroAKSEdge),
@@ -245,20 +276,20 @@ func ExampleAppliancesClient_NewListByResourceGroupPager() {
 		// 				ProvisioningState: to.Ptr("Succeeded"),
 		// 				Status: to.Ptr(armresourceconnector.StatusConnected),
 		// 				Version: to.Ptr("1.0.1"),
-		// 			},
-		// 			SystemData: &armresourceconnector.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
 		// 			},
 		// 		},
 		// 		{
 		// 			Name: to.Ptr("appliance02"),
 		// 			Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
 		// 			ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ResourceConnector/appliances/appliance02"),
+		// 			SystemData: &armresourceconnector.SystemData{
+		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+		// 				CreatedBy: to.Ptr("string"),
+		// 				CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+		// 				LastModifiedBy: to.Ptr("string"),
+		// 				LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+		// 			},
 		// 			Location: to.Ptr("West US"),
 		// 			Properties: &armresourceconnector.ApplianceProperties{
 		// 				Distro: to.Ptr(armresourceconnector.DistroAKSEdge),
@@ -269,20 +300,12 @@ func ExampleAppliancesClient_NewListByResourceGroupPager() {
 		// 				Status: to.Ptr(armresourceconnector.StatusConnected),
 		// 				Version: to.Ptr("1.0.1"),
 		// 			},
-		// 			SystemData: &armresourceconnector.SystemData{
-		// 				CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-		// 				CreatedBy: to.Ptr("string"),
-		// 				CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 				LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-		// 				LastModifiedBy: to.Ptr("string"),
-		// 				LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-		// 			},
 		// 	}},
 		// }
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesGet.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesGet.json
 func ExampleAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,6 +327,14 @@ func ExampleAppliancesClient_Get() {
 	// 	Name: to.Ptr("appliance01"),
 	// 	Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
 	// 	ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testresourcegroup/providers/Microsoft.ResourceConnector/appliances/appliance01"),
+	// 	SystemData: &armresourceconnector.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+	// 	},
 	// 	Location: to.Ptr("West US"),
 	// 	Identity: &armresourceconnector.Identity{
 	// 		Type: to.Ptr(armresourceconnector.ResourceIdentityTypeSystemAssigned),
@@ -319,18 +350,10 @@ func ExampleAppliancesClient_Get() {
 	// 		Status: to.Ptr(armresourceconnector.StatusConnected),
 	// 		Version: to.Ptr("1.0.1"),
 	// 	},
-	// 	SystemData: &armresourceconnector.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesCreate_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesCreate_Update.json
 func ExampleAppliancesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -364,6 +387,14 @@ func ExampleAppliancesClient_BeginCreateOrUpdate() {
 	// 	Name: to.Ptr("appliance01"),
 	// 	Type: to.Ptr("Microsoft.ResourceConnector/appliances"),
 	// 	ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/testrg/providers/Microsoft.ResourceConnector/appliances/appliance01"),
+	// 	SystemData: &armresourceconnector.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+	// 		CreatedBy: to.Ptr("string"),
+	// 		CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("string"),
+	// 		LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
+	// 	},
 	// 	Location: to.Ptr("West US"),
 	// 	Identity: &armresourceconnector.Identity{
 	// 		Type: to.Ptr(armresourceconnector.ResourceIdentityTypeSystemAssigned),
@@ -379,18 +410,10 @@ func ExampleAppliancesClient_BeginCreateOrUpdate() {
 	// 		Status: to.Ptr(armresourceconnector.StatusConnected),
 	// 		Version: to.Ptr("1.0.1"),
 	// 	},
-	// 	SystemData: &armresourceconnector.SystemData{
-	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-	// 		CreatedBy: to.Ptr("string"),
-	// 		CreatedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-04-24T18:53:29.0928001Z"); return t}()),
-	// 		LastModifiedBy: to.Ptr("string"),
-	// 		LastModifiedByType: to.Ptr(armresourceconnector.CreatedByTypeApplication),
-	// 	},
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesDelete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesDelete.json
 func ExampleAppliancesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -411,7 +434,7 @@ func ExampleAppliancesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesPatch.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesPatch.json
 func ExampleAppliancesClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -458,40 +481,7 @@ func ExampleAppliancesClient_Update() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListClusterCustomerUserCredential.json
-func ExampleAppliancesClient_ListClusterCustomerUserCredential() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresourceconnector.NewClientFactory("<subscription-id>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAppliancesClient().ListClusterCustomerUserCredential(ctx, "testresourcegroup", "appliance01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ApplianceListClusterCustomerUserCredentialResults = armresourceconnector.ApplianceListClusterCustomerUserCredentialResults{
-	// 	Kubeconfigs: []*armresourceconnector.ApplianceCredentialKubeconfig{
-	// 		{
-	// 			Name: to.Ptr(armresourceconnector.AccessProfileType("kubeconfigName1")),
-	// 			Value: to.Ptr("xxxxxxxxxxxxx"),
-	// 	}},
-	// 	SSHKeys: map[string]*armresourceconnector.SSHKey{
-	// 		"SSHCustomerUser": &armresourceconnector.SSHKey{
-	// 			PrivateKey: to.Ptr("xxxxxxxx"),
-	// 			PublicKey: to.Ptr("xxxxxxxx"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesListClusterUserCredential.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListClusterUserCredential.json
 func ExampleAppliancesClient_ListClusterUserCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -524,7 +514,60 @@ func ExampleAppliancesClient_ListClusterUserCredential() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/a7de71ef99f5ea2aefe38bbd3c55db09c64547e8/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/UpgradeGraph.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesListKeys.json
+func ExampleAppliancesClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresourceconnector.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAppliancesClient().ListKeys(ctx, "testresourcegroup", "appliance01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ApplianceListKeysResults = armresourceconnector.ApplianceListKeysResults{
+	// 	ArtifactProfiles: map[string]*armresourceconnector.ArtifactProfile{
+	// 		"LogsArtifactType": &armresourceconnector.ArtifactProfile{
+	// 			Endpoint: to.Ptr("https://<storage-account-name>.blob.core.windows.net/<container-name>?<SAS-token>"),
+	// 		},
+	// 	},
+	// 	Kubeconfigs: []*armresourceconnector.ApplianceCredentialKubeconfig{
+	// 		{
+	// 			Name: to.Ptr(armresourceconnector.AccessProfileType("kubeconfigName1")),
+	// 			Value: to.Ptr("xxxxxxxxxxxxx"),
+	// 	}},
+	// 	SSHKeys: map[string]*armresourceconnector.SSHKey{
+	// 		"LogsKey": &armresourceconnector.SSHKey{
+	// 			Certificate: to.Ptr("<Generated Certificate>"),
+	// 			CreationTimeStamp: to.Ptr[int64](1660946559),
+	// 			ExpirationTimeStamp: to.Ptr[int64](1724119358),
+	// 			PrivateKey: to.Ptr("<Generated Private Key>"),
+	// 		},
+	// 		"ManagementCAKey": &armresourceconnector.SSHKey{
+	// 			PublicKey: to.Ptr("<Generated Public Key>"),
+	// 		},
+	// 		"SSHCustomerUser": &armresourceconnector.SSHKey{
+	// 			PrivateKey: to.Ptr("xxxxxxxx"),
+	// 			PublicKey: to.Ptr("xxxxxxxx"),
+	// 		},
+	// 		"ScopedAccessKey": &armresourceconnector.SSHKey{
+	// 			Certificate: to.Ptr("<Generated Certificate>"),
+	// 			CreationTimeStamp: to.Ptr[int64](1660946559),
+	// 			ExpirationTimeStamp: to.Ptr[int64](1724119358),
+	// 			PrivateKey: to.Ptr("<Generated Private Key>"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/UpgradeGraph.json
 func ExampleAppliancesClient_GetUpgradeGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

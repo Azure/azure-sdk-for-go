@@ -31,8 +31,6 @@ type RetryWithLinksFn func(ctx context.Context, lwid *LinksWithID, args *utils.R
 // stub things out for tests.
 type contextWithTimeoutFn func(parent context.Context, timeout time.Duration) (context.Context, context.CancelFunc)
 
-const defaultCloseTimeout = time.Minute
-
 type AMQPLinks interface {
 	EntityPath() string
 	ManagementPath() string
@@ -109,7 +107,7 @@ type AMQPLinksImpl struct {
 
 	ns NamespaceForAMQPLinks
 
-	contextWithTimeoutFn contextWithTimeoutFn
+	name string
 }
 
 // CreateLinkFunc creates the links, using the given session. Typically you'll only create either an
@@ -127,14 +125,13 @@ type NewAMQPLinksArgs struct {
 // management link for a specific entity path.
 func NewAMQPLinks(args NewAMQPLinksArgs) AMQPLinks {
 	l := &AMQPLinksImpl{
-		entityPath:           args.EntityPath,
-		managementPath:       fmt.Sprintf("%s/$management", args.EntityPath),
-		audience:             args.NS.GetEntityAudience(args.EntityPath),
-		createLink:           args.CreateLinkFunc,
-		closedPermanently:    false,
-		getRecoveryKindFunc:  args.GetRecoveryKindFunc,
-		ns:                   args.NS,
-		contextWithTimeoutFn: context.WithTimeout,
+		entityPath:          args.EntityPath,
+		managementPath:      fmt.Sprintf("%s/$management", args.EntityPath),
+		audience:            args.NS.GetEntityAudience(args.EntityPath),
+		createLink:          args.CreateLinkFunc,
+		closedPermanently:   false,
+		getRecoveryKindFunc: args.GetRecoveryKindFunc,
+		ns:                  args.NS,
 	}
 
 	return l
@@ -176,12 +173,7 @@ func (links *AMQPLinksImpl) recoverLink(ctx context.Context, theirLinkRevision L
 	}
 
 	// best effort close, the connection these were built on is gone.
-	if err := links.closeWithoutLocking(ctx, false); err != nil {
-		if GetRecoveryKind(err) == RecoveryKindConn {
-			return err
-		}
-	}
-
+	_ = links.closeWithoutLocking(ctx, false)
 	err := links.initWithoutLocking(ctx)
 
 	if err != nil {
@@ -198,43 +190,29 @@ func (links *AMQPLinksImpl) RecoverIfNeeded(ctx context.Context, theirID LinkID,
 		return nil
 	}
 
-	log.Writef(exported.EventConn, "Recovering link for error %s", origErr.Error())
+	log.Writef(exported.EventConn, "[%s] Recovering link for error %s", links.name, origErr.Error())
 
 	rk := links.getRecoveryKindFunc(origErr)
 
 	if rk == RecoveryKindLink {
-		ctx, cancel := links.contextWithTimeoutFn(ctx, defaultCloseTimeout)
-		defer cancel()
-
 		if err := links.recoverLink(ctx, theirID); err != nil {
-			azlog.Writef(exported.EventConn, "Error when recovering link for recovery: %s", err)
-
-			if GetRecoveryKind(err) == RecoveryKindConn {
-				log.Writef(exported.EventConn, "Upgrading to connection reset for recovery instead of link")
-
-				if err := links.recoverConnection(ctx, theirID); err != nil {
-					log.Writef(exported.EventConn, "failed to recover connection: %s", err.Error())
-					return err
-				}
-			} else {
-				log.Writef(exported.EventConn, "failed to recreate link: %s", err.Error())
-				return err
-			}
-		}
-
-		log.Writef(exported.EventConn, "Recovered links")
-		return nil
-	} else if rk == RecoveryKindConn {
-		if err := links.recoverConnection(ctx, theirID); err != nil {
-			log.Writef(exported.EventConn, "failed to recreate connection: %s", err.Error())
+			azlog.Writef(exported.EventConn, "[%s] Error when recovering link for recovery: %s", links.name, err)
 			return err
 		}
 
-		log.Writef(exported.EventConn, "Recovered connection and links")
+		log.Writef(exported.EventConn, "[%s] Recovered links", links.name)
+		return nil
+	} else if rk == RecoveryKindConn {
+		if err := links.recoverConnection(ctx, theirID); err != nil {
+			log.Writef(exported.EventConn, "[%s] failed to recreate connection: %s", links.name, err.Error())
+			return err
+		}
+
+		log.Writef(exported.EventConn, "[%s] Recovered connection and links", links.name)
 		return nil
 	}
 
-	log.Writef(exported.EventConn, "Recovered, no action needed")
+	log.Writef(exported.EventConn, "[%s] Recovered, no action needed", links.name)
 	return nil
 }
 
@@ -414,7 +392,7 @@ func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKi
 	defer l.mu.Unlock()
 
 	if IsCancelError(err) {
-		log.Writef(exported.EventConn, "No close needed for cancellation")
+		log.Writef(exported.EventConn, "[%s] No close needed for cancellation", l.name)
 		return RecoveryKindNone
 	}
 
@@ -422,40 +400,14 @@ func (l *AMQPLinksImpl) CloseIfNeeded(ctx context.Context, err error) RecoveryKi
 
 	switch rk {
 	case RecoveryKindLink:
-		log.Writef(exported.EventConn, "Closing links for error %s", err.Error())
-
-		ctx, cancel := l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
-		defer cancel()
-
-		if err := l.closeWithoutLocking(ctx, false); err != nil {
-			// Two cases:
-			//
-			// 1. Context is cancelled by the user. This interrupted some recovery logic so our best bet is just to close
-			//    the connection, which will cause it to get recovered on the next call, or the user will need to recover
-			//    it. The important bit is that cancelling does the best job it can of leaving things in a clean state.
-			//
-			// 2. We time out - now that we have an internal timeout here we can ensure that we don't just hang forever
-			//    internally and force or notify that a reset is needed. This will get passed into the next recovery call
-			//    and we'll do the normal recovery logic from there.
-
-			if GetRecoveryKind(err) == RecoveryKindConn {
-				log.Writef(exported.EventConn, "Connection closed instead. Link closing has timed out.")
-
-				// if closing leaves us in an indeterminate state we'll go ahead
-				// and close the old connection, forcing recovery.
-				_ = l.ns.Close(false)
-
-				// upgrade to connection level closing instead.
-				rk = RecoveryKindConn
-			}
-		}
-
+		log.Writef(exported.EventConn, "[%s] Closing links for error %s", l.name, err.Error())
+		_ = l.closeWithoutLocking(ctx, false)
 		return rk
 	case RecoveryKindFatal:
-		log.Writef(exported.EventConn, "Fatal error cleanup")
+		log.Writef(exported.EventConn, "[%s] Fatal error cleanup", l.name)
 		fallthrough
 	case RecoveryKindConn:
-		log.Writef(exported.EventConn, "Closing connection AND links for error %s", err.Error())
+		log.Writef(exported.EventConn, "[%s] Closing connection AND links for error %s", l.name, err.Error())
 		_ = l.closeWithoutLocking(ctx, false)
 		_ = l.ns.Close(false)
 		return rk
@@ -511,6 +463,10 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 		return err
 	}
 
+	if tmpReceiver == nil && tmpSender == nil {
+		panic("Both tmpReceiver and tmpSender are nil")
+	}
+
 	l.Sender, l.Receiver = tmpSender, tmpReceiver
 
 	tmpRPCLink, err := l.ns.NewRPCLink(ctx, l.ManagementPath())
@@ -524,6 +480,15 @@ func (l *AMQPLinksImpl) initWithoutLocking(ctx context.Context) error {
 
 	l.RPCLink = tmpRPCLink
 	l.id.Link++
+
+	if l.Sender != nil {
+		linkName := l.Sender.LinkName()
+		l.name = fmt.Sprintf("c:%d, l:%d, s:name:%s", l.id.Conn, l.id.Link, linkName)
+	} else if l.Receiver != nil {
+		l.name = fmt.Sprintf("c:%d, l:%d, r:name:%s", l.id.Conn, l.id.Link, l.Receiver.LinkName())
+	}
+
+	log.Writef(exported.EventConn, "[%s] Links created", l.name)
 	return nil
 }
 
@@ -541,6 +506,8 @@ func (l *AMQPLinksImpl) closeWithoutLocking(ctx context.Context, permanent bool)
 	if l.closedPermanently {
 		return nil
 	}
+
+	log.Writef(exported.EventConn, "[%s] Links closing (permanent: %v)", l.name, permanent)
 
 	defer func() {
 		if permanent {
@@ -574,9 +541,6 @@ func (l *AMQPLinksImpl) closeWithoutLocking(ctx context.Context, permanent bool)
 
 	// only allow a max of defaultCloseTimeout - it's possible for Close() to hang
 	// indefinitely if there's some sync issue between the service and us.
-	ctx, cancel := l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
-	defer cancel()
-
 	for _, c := range closeables {
 		if c.instance == nil {
 			continue
@@ -594,7 +558,7 @@ func (l *AMQPLinksImpl) closeWithoutLocking(ctx context.Context, permanent bool)
 	l.Sender, l.Receiver, l.session, l.RPCLink = nil, nil, nil, nil
 
 	if wasCancelled {
-		return amqpwrap.ErrConnResetNeeded
+		return ctx.Err()
 	}
 
 	if len(messages) > 0 {

@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/workloads/armworkloads"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/SapLandscapeMonitor_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/SapLandscapeMonitor_Get.json
 func ExampleSapLandscapeMonitorClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Get(ctx, "myResourceGroup", "mySapMonitor", nil)
+	res, err := clientFactory.NewSapLandscapeMonitorClient().Get(ctx, "myResourceGroup", "mySapMonitor", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,18 +76,18 @@ func ExampleSapLandscapeMonitorClient_Get() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/SapLandscapeMonitor_Create.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/SapLandscapeMonitor_Create.json
 func ExampleSapLandscapeMonitorClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Create(ctx, "myResourceGroup", "mySapMonitor", armworkloads.SapLandscapeMonitor{
+	res, err := clientFactory.NewSapLandscapeMonitorClient().Create(ctx, "myResourceGroup", "mySapMonitor", armworkloads.SapLandscapeMonitor{
 		Properties: &armworkloads.SapLandscapeMonitorProperties{
 			Grouping: &armworkloads.SapLandscapeMonitorPropertiesGrouping{
 				Landscape: []*armworkloads.SapLandscapeMonitorSidMapping{
@@ -160,35 +160,35 @@ func ExampleSapLandscapeMonitorClient_Create() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/SapLandscapeMonitor_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/SapLandscapeMonitor_Delete.json
 func ExampleSapLandscapeMonitorClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = client.Delete(ctx, "myResourceGroup", "mySapMonitor", nil)
+	_, err = clientFactory.NewSapLandscapeMonitorClient().Delete(ctx, "myResourceGroup", "mySapMonitor", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/SapLandscapeMonitor_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/SapLandscapeMonitor_Update.json
 func ExampleSapLandscapeMonitorClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.Update(ctx, "myResourceGroup", "mySapMonitor", armworkloads.SapLandscapeMonitor{
+	res, err := clientFactory.NewSapLandscapeMonitorClient().Update(ctx, "myResourceGroup", "mySapMonitor", armworkloads.SapLandscapeMonitor{
 		Properties: &armworkloads.SapLandscapeMonitorProperties{
 			Grouping: &armworkloads.SapLandscapeMonitorPropertiesGrouping{
 				Landscape: []*armworkloads.SapLandscapeMonitorSidMapping{
@@ -261,18 +261,18 @@ func ExampleSapLandscapeMonitorClient_Update() {
 	// 		}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/630ec444f8dd7c09b9cdd5fa99951f8a0d1ad41f/specification/workloads/resource-manager/Microsoft.Workloads/preview/2022-11-01-preview/examples/workloadmonitor/SapLandscapeMonitor_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/SapLandscapeMonitor_List.json
 func ExampleSapLandscapeMonitorClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	client, err := armworkloads.NewSapLandscapeMonitorClient("00000000-0000-0000-0000-000000000000", cred, nil)
+	clientFactory, err := armworkloads.NewClientFactory("<subscription-id>", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := client.List(ctx, "myResourceGroup", "mySapMonitor", nil)
+	res, err := clientFactory.NewSapLandscapeMonitorClient().List(ctx, "myResourceGroup", "mySapMonitor", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

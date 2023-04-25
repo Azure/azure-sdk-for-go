@@ -365,6 +365,90 @@ func (s *ServiceRecordedTestsSuite) TestSASServiceClientSignNegative() {
 		Create: true,
 	}
 	expiry := time.Time{}
-	_, err = serviceClient.GetSASURL(resources, permissions, expiry, nil)
+
+	// zero expiry time
+	_, err = serviceClient.GetSASURL(resources, permissions, expiry, &service.GetSASURLOptions{StartTime: to.Ptr(time.Now())})
 	_require.Equal(err.Error(), "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
+
+	// zero start and expiry time
+	_, err = serviceClient.GetSASURL(resources, permissions, expiry, &service.GetSASURLOptions{})
+	_require.Equal(err.Error(), "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
+
+	// empty permissions
+	_, err = serviceClient.GetSASURL(sas.AccountResourceTypes{}, sas.AccountPermissions{}, expiry, nil)
+	_require.Equal(err.Error(), "account SAS is missing at least one of these: ExpiryTime, Permissions, Service, or ResourceType")
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceSetPropertiesDefault() {
+	_require := require.New(s.T())
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	_, err = svcClient.SetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (s *ServiceRecordedTestsSuite) TestServiceCreateDeleteRestoreShare() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	shareName := testcommon.GenerateShareName(testName)
+
+	_, err = svcClient.CreateShare(context.Background(), shareName, nil)
+	_require.NoError(err)
+
+	defer func() {
+		_, err := svcClient.DeleteShare(context.Background(), shareName, nil)
+		_require.NoError(err)
+	}()
+
+	_, err = svcClient.DeleteShare(context.Background(), shareName, nil)
+	_require.NoError(err)
+
+	// wait for share deletion
+	time.Sleep(60 * time.Second)
+
+	sharesCnt := 0
+	shareVersion := ""
+
+	pager := svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Include: service.ListSharesInclude{Deleted: true},
+		Prefix:  &shareName,
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, s := range resp.Shares {
+			if s.Deleted != nil && *s.Deleted {
+				_require.NotNil(s.Version)
+				shareVersion = *s.Version
+			} else {
+				sharesCnt++
+			}
+		}
+	}
+
+	_require.Equal(sharesCnt, 0)
+	_require.NotEmpty(shareVersion)
+
+	restoreResp, err := svcClient.RestoreShare(context.Background(), shareName, shareVersion, nil)
+	_require.NoError(err)
+	_require.NotNil(restoreResp.RequestID)
+
+	sharesCnt = 0
+	pager = svcClient.NewListSharesPager(&service.ListSharesOptions{
+		Prefix: &shareName,
+	})
+
+	for pager.More() {
+		resp, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		sharesCnt += len(resp.Shares)
+	}
+	_require.Equal(sharesCnt, 1)
 }

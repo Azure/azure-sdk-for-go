@@ -7,10 +7,13 @@
 package file
 
 import (
+	"encoding/binary"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
+	"io"
 	"time"
 )
 
@@ -324,18 +327,24 @@ type DownloadStreamOptions struct {
 	LeaseAccessConditions *LeaseAccessConditions
 }
 
+func (o *DownloadStreamOptions) format() (*generated.FileClientDownloadOptions, *LeaseAccessConditions) {
+	if o == nil {
+		return nil, nil
+	}
+	return &generated.FileClientDownloadOptions{
+		Range:              exported.FormatHTTPRange(o.Range),
+		RangeGetContentMD5: o.RangeGetContentMD5,
+	}, o.LeaseAccessConditions
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
-// DownloadBufferOptions contains the optional parameters for the Client.DownloadBuffer method.
-type DownloadBufferOptions struct {
+// downloadOptions contains common options used by the Client.DownloadBuffer and Client.DownloadFile methods.
+type downloadOptions struct {
 	// Range specifies a range of bytes. The default value is all bytes.
 	Range HTTPRange
 
-	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
-	// range, as long as the range is less than or equal to 4 MB in size.
-	RangeGetContentMD5 *bool
-
-	// ChunkSize specifies the block size to use for each parallel download; the default size is 4MB.
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
 	ChunkSize int64
 
 	// Progress is a function that is invoked periodically as bytes are received.
@@ -344,11 +353,51 @@ type DownloadBufferOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
 	Concurrency uint16
 
-	// RetryReaderOptionsPerBlock is used when downloading each block.
-	RetryReaderOptionsPerBlock RetryReaderOptions
+	// RetryReaderOptionsPerChunk is used when downloading each chunk.
+	RetryReaderOptionsPerChunk RetryReaderOptions
+}
+
+func (o *downloadOptions) getFilePropertiesOptions() *GetPropertiesOptions {
+	if o == nil {
+		return nil
+	}
+	return &GetPropertiesOptions{
+		LeaseAccessConditions: o.LeaseAccessConditions,
+	}
+}
+
+func (o *downloadOptions) getDownloadFileOptions(rng HTTPRange) *DownloadStreamOptions {
+	downloadFileOptions := &DownloadStreamOptions{
+		Range: rng,
+	}
+	if o != nil {
+		downloadFileOptions.LeaseAccessConditions = o.LeaseAccessConditions
+	}
+	return downloadFileOptions
+}
+
+// DownloadBufferOptions contains the optional parameters for the Client.DownloadBuffer method.
+type DownloadBufferOptions struct {
+	// Range specifies a range of bytes. The default value is all bytes.
+	Range HTTPRange
+
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
+	ChunkSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+
+	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
+	Concurrency uint16
+
+	// RetryReaderOptionsPerChunk is used when downloading each chunk.
+	RetryReaderOptionsPerChunk RetryReaderOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -358,11 +407,7 @@ type DownloadFileOptions struct {
 	// Range specifies a range of bytes. The default value is all bytes.
 	Range HTTPRange
 
-	// When this header is set to true and specified together with the Range header, the service returns the MD5 hash for the
-	// range, as long as the range is less than or equal to 4 MB in size.
-	RangeGetContentMD5 *bool
-
-	// ChunkSize specifies the block size to use for each parallel download; the default size is 4MB.
+	// ChunkSize specifies the chunk size to use for each parallel download; the default size is 4MB.
 	ChunkSize int64
 
 	// Progress is a function that is invoked periodically as bytes are received.
@@ -371,11 +416,11 @@ type DownloadFileOptions struct {
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
 
-	// Concurrency indicates the maximum number of blocks to download in parallel (0=default).
+	// Concurrency indicates the maximum number of chunks to download in parallel (0=default).
 	Concurrency uint16
 
-	// RetryReaderOptionsPerBlock is used when downloading each block.
-	RetryReaderOptionsPerBlock RetryReaderOptions
+	// RetryReaderOptionsPerChunk is used when downloading each chunk.
+	RetryReaderOptionsPerChunk RetryReaderOptions
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -406,24 +451,71 @@ func (o *ResizeOptions) format(contentLength int64) (fileAttributes string, file
 
 // UploadRangeOptions contains the optional parameters for the Client.UploadRange method.
 type UploadRangeOptions struct {
-	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
-	// header is specified, the File service compares the hash of the content that has
-	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400 (Bad Request).
-	ContentMD5 []byte
+	// TransactionalValidation specifies the transfer validation type to use.
+	// The default is nil (no transfer validation).
+	TransactionalValidation TransferValidationType
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *UploadRangeOptions) format(offset int64, body io.ReadSeekCloser) (string, int64, *generated.FileClientUploadRangeOptions, *generated.LeaseAccessConditions, error) {
+	if offset < 0 || body == nil {
+		return "", 0, nil, nil, errors.New("invalid argument: offset must be >= 0 and body must not be nil")
+	}
+
+	count, err := shared.ValidateSeekableStreamAt0AndGetCount(body)
+	if err != nil {
+		return "", 0, nil, nil, err
+	}
+
+	if count == 0 {
+		return "", 0, nil, nil, errors.New("invalid argument: body must contain readable data whose size is > 0")
+	}
+
+	httpRange := exported.FormatHTTPRange(HTTPRange{
+		Offset: offset,
+		Count:  count,
+	})
+	rangeParam := ""
+	if httpRange != nil {
+		rangeParam = *httpRange
+	}
+
+	var leaseAccessConditions *LeaseAccessConditions
+	uploadRangeOptions := &generated.FileClientUploadRangeOptions{}
+
+	if o != nil {
+		leaseAccessConditions = o.LeaseAccessConditions
+	}
+	if o != nil && o.TransactionalValidation != nil {
+		_, err = o.TransactionalValidation.Apply(body, uploadRangeOptions)
+		if err != nil {
+			return "", 0, nil, nil, err
+		}
+	}
+
+	return rangeParam, count, uploadRangeOptions, leaseAccessConditions, nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
 
 // ClearRangeOptions contains the optional parameters for the Client.ClearRange method.
 type ClearRangeOptions struct {
-	// An MD5 hash of the content. This hash is used to verify the integrity of the data during transport. When the Content-MD5
-	// header is specified, the File service compares the hash of the content that has
-	// arrived with the header value that was sent. If the two hashes do not match, the operation will fail with error code 400 (Bad Request).
-	ContentMD5 []byte
 	// LeaseAccessConditions contains optional parameters to access leased entity.
 	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (o *ClearRangeOptions) format(contentRange HTTPRange) (string, *generated.LeaseAccessConditions, error) {
+	httpRange := exported.FormatHTTPRange(contentRange)
+	if httpRange == nil || contentRange.Offset < 0 || contentRange.Count <= 0 {
+		return "", nil, errors.New("invalid argument: either offset is < 0 or count <= 0")
+	}
+
+	if o == nil {
+		return *httpRange, nil, nil
+	}
+
+	return *httpRange, o.LeaseAccessConditions, nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -433,9 +525,41 @@ type UploadRangeFromURLOptions struct {
 	// Only Bearer type is supported. Credentials should be a valid OAuth access token to copy source.
 	CopySourceAuthorization *string
 	// Specify the crc64 calculated for the range of bytes that must be read from the copy source.
-	SourceContentCRC64             []byte
+	SourceContentCRC64             uint64
 	SourceModifiedAccessConditions *SourceModifiedAccessConditions
 	LeaseAccessConditions          *LeaseAccessConditions
+}
+
+func (o *UploadRangeFromURLOptions) format(sourceOffset int64, destinationOffset int64, count int64) (string, *generated.FileClientUploadRangeFromURLOptions, *generated.SourceModifiedAccessConditions, *generated.LeaseAccessConditions, error) {
+	if sourceOffset < 0 || destinationOffset < 0 {
+		return "", nil, nil, nil, errors.New("invalid argument: source and destination offsets must be >= 0")
+	}
+
+	httpRangeSrc := exported.FormatHTTPRange(HTTPRange{Offset: sourceOffset, Count: count})
+	httpRangeDest := exported.FormatHTTPRange(HTTPRange{Offset: destinationOffset, Count: count})
+	destRange := ""
+	if httpRangeDest != nil {
+		destRange = *httpRangeDest
+	}
+
+	opts := &generated.FileClientUploadRangeFromURLOptions{
+		SourceRange: httpRangeSrc,
+	}
+
+	var sourceModifiedAccessConditions *SourceModifiedAccessConditions
+	var leaseAccessConditions *LeaseAccessConditions
+
+	if o != nil {
+		opts.CopySourceAuthorization = o.CopySourceAuthorization
+		sourceModifiedAccessConditions = o.SourceModifiedAccessConditions
+		leaseAccessConditions = o.LeaseAccessConditions
+
+		buf := make([]byte, 8)
+		binary.LittleEndian.PutUint64(buf, o.SourceContentCRC64)
+		opts.SourceContentCRC64 = buf
+	}
+
+	return destRange, opts, sourceModifiedAccessConditions, leaseAccessConditions, nil
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -539,3 +663,65 @@ func (o *ListHandlesOptions) format() *generated.FileClientListHandlesOptions {
 
 // Handle - A listed Azure Storage handle item.
 type Handle = generated.Handle
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// uploadFromReaderOptions identifies options used by the UploadBuffer and UploadFile functions.
+type uploadFromReaderOptions struct {
+	// ChunkSize specifies the chunk size to use in bytes; the default (and maximum size) is MaxUpdateRangeBytes.
+	ChunkSize int64
+
+	// Progress is a function that is invoked periodically as bytes are sent to the FileClient.
+	// Note that the progress reporting is not always increasing; it can go down when retrying a request.
+	Progress func(bytesTransferred int64)
+
+	// Concurrency indicates the maximum number of chunks to upload in parallel (default is 5)
+	Concurrency uint16
+
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+// UploadBufferOptions provides set of configurations for Client.UploadBuffer operation.
+type UploadBufferOptions = uploadFromReaderOptions
+
+// UploadFileOptions provides set of configurations for Client.UploadFile operation.
+type UploadFileOptions = uploadFromReaderOptions
+
+func (o *uploadFromReaderOptions) getUploadRangeOptions() *UploadRangeOptions {
+	return &UploadRangeOptions{
+		LeaseAccessConditions: o.LeaseAccessConditions,
+	}
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+// UploadStreamOptions provides set of configurations for Client.UploadStream operation.
+type UploadStreamOptions struct {
+	// ChunkSize defines the size of the buffer used during upload. The default and minimum value is 1 MiB.
+	// Maximum size of a chunk is MaxUpdateRangeBytes.
+	ChunkSize int64
+
+	// Concurrency defines the max number of concurrent uploads to be performed to upload the file.
+	// Each concurrent upload will create a buffer of size ChunkSize.  The default value is one.
+	Concurrency int
+
+	// LeaseAccessConditions contains optional parameters to access leased entity.
+	LeaseAccessConditions *LeaseAccessConditions
+}
+
+func (u *UploadStreamOptions) setDefaults() {
+	if u.Concurrency == 0 {
+		u.Concurrency = 1
+	}
+
+	if u.ChunkSize < _1MiB {
+		u.ChunkSize = _1MiB
+	}
+}
+
+func (u *UploadStreamOptions) getUploadRangeOptions() *UploadRangeOptions {
+	return &UploadRangeOptions{
+		LeaseAccessConditions: u.LeaseAccessConditions,
+	}
+}

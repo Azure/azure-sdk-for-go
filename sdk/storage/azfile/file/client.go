@@ -7,9 +7,12 @@
 package file
 
 import (
+	"bytes"
 	"context"
+	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
@@ -19,6 +22,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"sync"
 	"time"
 )
 
@@ -158,23 +162,6 @@ func (f *Client) AbortCopy(ctx context.Context, copyID string, options *AbortCop
 	return resp, err
 }
 
-// DownloadStream operation reads or downloads a file from the system, including its metadata and properties.
-// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
-func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
-	return DownloadStreamResponse{}, nil
-}
-
-// DownloadBuffer downloads an Azure file to a buffer with parallel.
-func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
-	return 0, nil
-}
-
-// DownloadFile downloads an Azure file to a local file.
-// The file would be truncated if the size doesn't match.
-func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
-	return 0, nil
-}
-
 // Resize operation resizes the file to the specified size.
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/set-file-properties.
 func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions) (ResizeResponse, error) {
@@ -184,12 +171,18 @@ func (f *Client) Resize(ctx context.Context, size int64, options *ResizeOptions)
 }
 
 // UploadRange operation uploads a range of bytes to a file.
-//   - contentRange: Specifies the range of bytes to be written.
+//   - offset: Specifies the start byte at which the range of bytes is to be written.
 //   - body: Specifies the data to be uploaded.
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
-func (f *Client) UploadRange(ctx context.Context, contentRange HTTPRange, body io.ReadSeekCloser, options *UploadRangeOptions) (UploadRangeResponse, error) {
-	return UploadRangeResponse{}, nil
+func (f *Client) UploadRange(ctx context.Context, offset int64, body io.ReadSeekCloser, options *UploadRangeOptions) (UploadRangeResponse, error) {
+	rangeParam, contentLength, uploadRangeOptions, leaseAccessConditions, err := options.format(offset, body)
+	if err != nil {
+		return UploadRangeResponse{}, err
+	}
+
+	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeUpdate, contentLength, body, uploadRangeOptions, leaseAccessConditions)
+	return resp, err
 }
 
 // ClearRange operation clears the specified range and releases the space used in storage for that range.
@@ -197,7 +190,13 @@ func (f *Client) UploadRange(ctx context.Context, contentRange HTTPRange, body i
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range.
 func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options *ClearRangeOptions) (ClearRangeResponse, error) {
-	return ClearRangeResponse{}, nil
+	rangeParam, leaseAccessConditions, err := options.format(contentRange)
+	if err != nil {
+		return ClearRangeResponse{}, err
+	}
+
+	resp, err := f.generated().UploadRange(ctx, rangeParam, RangeWriteTypeClear, 0, nil, nil, leaseAccessConditions)
+	return resp, err
 }
 
 // UploadRangeFromURL operation uploads a range of bytes to a file where the contents are read from a URL.
@@ -206,8 +205,14 @@ func (f *Client) ClearRange(ctx context.Context, contentRange HTTPRange, options
 //   - sourceRange: Bytes of source data in the specified range.
 //
 // For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/put-range-from-url.
-func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, destinationRange HTTPRange, sourceRange HTTPRange, options *UploadRangeFromURLOptions) (UploadRangeFromURLResponse, error) {
-	return UploadRangeFromURLResponse{}, nil
+func (f *Client) UploadRangeFromURL(ctx context.Context, copySource string, sourceOffset int64, destinationOffset int64, count int64, options *UploadRangeFromURLOptions) (UploadRangeFromURLResponse, error) {
+	destRange, opts, sourceModifiedAccessConditions, leaseAccessConditions, err := options.format(sourceOffset, destinationOffset, count)
+	if err != nil {
+		return UploadRangeFromURLResponse{}, err
+	}
+
+	resp, err := f.generated().UploadRangeFromURL(ctx, destRange, copySource, 0, opts, sourceModifiedAccessConditions, leaseAccessConditions)
+	return resp, err
 }
 
 // GetRangeList operation returns the list of valid ranges for a file.
@@ -250,13 +255,13 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 	}
 
 	qps, err := sas.SignatureValues{
-		Version:             sas.Version,
-		Protocol:            sas.ProtocolHTTPS,
-		ShareName:           urlParts.ShareName,
-		DirectoryOrFilePath: urlParts.DirectoryOrFilePath,
-		Permissions:         permissions.String(),
-		StartTime:           st,
-		ExpiryTime:          expiry.UTC(),
+		Version:     sas.Version,
+		Protocol:    sas.ProtocolHTTPS,
+		ShareName:   urlParts.ShareName,
+		FilePath:    urlParts.DirectoryOrFilePath,
+		Permissions: permissions.String(),
+		StartTime:   st,
+		ExpiryTime:  expiry.UTC(),
 	}.SignWithSharedKey(f.sharedKey())
 	if err != nil {
 		return "", err
@@ -265,4 +270,232 @@ func (f *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o 
 	endpoint := f.URL() + "?" + qps.Encode()
 
 	return endpoint, nil
+}
+
+// Concurrent Upload Functions -----------------------------------------------------------------------------------------
+
+// uploadFromReader uploads a buffer in chunks to an Azure file.
+func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) error {
+	if actualSize > MaxFileSize {
+		return errors.New("buffer is too large to upload to a file")
+	}
+	if o.ChunkSize == 0 {
+		o.ChunkSize = MaxUpdateRangeBytes
+	}
+
+	// TODO: Add logs
+
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
+
+	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
+		OperationName: "uploadFromReader",
+		TransferSize:  actualSize,
+		ChunkSize:     o.ChunkSize,
+		Concurrency:   o.Concurrency,
+		Operation: func(ctx context.Context, offset int64, chunkSize int64) error {
+			// This function is called once per file range.
+			// It is passed this file's offset within the buffer and its count of bytes
+			// Prepare to read the proper range/section of the buffer
+			if chunkSize < o.ChunkSize {
+				// this is the last file range.  Its actual size might be less
+				// than the calculated size due to rounding up of the payload
+				// size to fit in a whole number of chunks.
+				chunkSize = actualSize - offset
+			}
+			var body io.ReadSeeker = io.NewSectionReader(reader, offset, chunkSize)
+			if o.Progress != nil {
+				chunkProgress := int64(0)
+				body = streaming.NewRequestProgress(streaming.NopCloser(body),
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - chunkProgress
+						chunkProgress = bytesTransferred
+						progressLock.Lock() // 1 goroutine at a time gets progress report
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
+
+			uploadRangeOptions := o.getUploadRangeOptions()
+			_, err := f.UploadRange(ctx, offset, streaming.NopCloser(body), uploadRangeOptions)
+			return err
+		},
+	})
+	return err
+}
+
+// UploadBuffer uploads a buffer in chunks to an Azure file.
+func (f *Client) UploadBuffer(ctx context.Context, buffer []byte, options *UploadBufferOptions) error {
+	uploadOptions := uploadFromReaderOptions{}
+	if options != nil {
+		uploadOptions = *options
+	}
+	return f.uploadFromReader(ctx, bytes.NewReader(buffer), int64(len(buffer)), &uploadOptions)
+}
+
+// UploadFile uploads a file in chunks to an Azure file.
+func (f *Client) UploadFile(ctx context.Context, file *os.File, options *UploadFileOptions) error {
+	stat, err := file.Stat()
+	if err != nil {
+		return err
+	}
+	uploadOptions := uploadFromReaderOptions{}
+	if options != nil {
+		uploadOptions = *options
+	}
+	return f.uploadFromReader(ctx, file, stat.Size(), &uploadOptions)
+}
+
+// UploadStream copies the file held in io.Reader to the file at fileClient.
+// A Context deadline or cancellation will cause this to error.
+func (f *Client) UploadStream(ctx context.Context, body io.Reader, options *UploadStreamOptions) error {
+	if options == nil {
+		options = &UploadStreamOptions{}
+	}
+
+	err := copyFromReader(ctx, body, f, *options, newMMBPool)
+	return err
+}
+
+// Concurrent Download Functions -----------------------------------------------------------------------------------------
+
+// download method downloads an Azure file to a WriterAt in parallel.
+func (f *Client) download(ctx context.Context, writer io.WriterAt, o downloadOptions) (int64, error) {
+	if o.ChunkSize == 0 {
+		o.ChunkSize = DefaultDownloadChunkSize
+	}
+
+	count := o.Range.Count
+	if count == CountToEnd { // If size not specified, calculate it
+		// If we don't have the length at all, get it
+		getFilePropertiesOptions := o.getFilePropertiesOptions()
+		gr, err := f.GetProperties(ctx, getFilePropertiesOptions)
+		if err != nil {
+			return 0, err
+		}
+		count = *gr.ContentLength - o.Range.Offset
+	}
+
+	if count <= 0 {
+		// The file is empty, there is nothing to download.
+		return 0, nil
+	}
+
+	// Prepare and do parallel download.
+	progress := int64(0)
+	progressLock := &sync.Mutex{}
+
+	err := shared.DoBatchTransfer(ctx, &shared.BatchTransferOptions{
+		OperationName: "downloadFileToWriterAt",
+		TransferSize:  count,
+		ChunkSize:     o.ChunkSize,
+		Concurrency:   o.Concurrency,
+		Operation: func(ctx context.Context, chunkStart int64, count int64) error {
+			downloadFileOptions := o.getDownloadFileOptions(HTTPRange{
+				Offset: chunkStart + o.Range.Offset,
+				Count:  count,
+			})
+			dr, err := f.DownloadStream(ctx, downloadFileOptions)
+			if err != nil {
+				return err
+			}
+			var body io.ReadCloser = dr.NewRetryReader(ctx, &o.RetryReaderOptionsPerChunk)
+			if o.Progress != nil {
+				rangeProgress := int64(0)
+				body = streaming.NewResponseProgress(
+					body,
+					func(bytesTransferred int64) {
+						diff := bytesTransferred - rangeProgress
+						rangeProgress = bytesTransferred
+						progressLock.Lock()
+						progress += diff
+						o.Progress(progress)
+						progressLock.Unlock()
+					})
+			}
+			_, err = io.Copy(shared.NewSectionWriter(writer, chunkStart, count), body)
+			if err != nil {
+				return err
+			}
+			err = body.Close()
+			return err
+		},
+	})
+	if err != nil {
+		return 0, err
+	}
+	return count, nil
+}
+
+// DownloadStream operation reads or downloads a file from the system, including its metadata and properties.
+// For more information, see https://learn.microsoft.com/en-us/rest/api/storageservices/get-file.
+func (f *Client) DownloadStream(ctx context.Context, options *DownloadStreamOptions) (DownloadStreamResponse, error) {
+	opts, leaseAccessConditions := options.format()
+	if options == nil {
+		options = &DownloadStreamOptions{}
+	}
+
+	resp, err := f.generated().Download(ctx, opts, leaseAccessConditions)
+	if err != nil {
+		return DownloadStreamResponse{}, err
+	}
+
+	return DownloadStreamResponse{
+		DownloadResponse:      resp,
+		client:                f,
+		getInfo:               httpGetterInfo{Range: options.Range},
+		leaseAccessConditions: options.LeaseAccessConditions,
+	}, err
+}
+
+// DownloadBuffer downloads an Azure file to a buffer with parallel.
+func (f *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *DownloadBufferOptions) (int64, error) {
+	if o == nil {
+		o = &DownloadBufferOptions{}
+	}
+
+	return f.download(ctx, shared.NewBytesWriter(buffer), (downloadOptions)(*o))
+}
+
+// DownloadFile downloads an Azure file to a local file.
+// The file would be truncated if the size doesn't match.
+func (f *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFileOptions) (int64, error) {
+	if o == nil {
+		o = &DownloadFileOptions{}
+	}
+	do := (*downloadOptions)(o)
+
+	// 1. Calculate the size of the destination file
+	var size int64
+
+	count := do.Range.Count
+	if count == CountToEnd {
+		// Try to get Azure file's size
+		getFilePropertiesOptions := do.getFilePropertiesOptions()
+		props, err := f.GetProperties(ctx, getFilePropertiesOptions)
+		if err != nil {
+			return 0, err
+		}
+		size = *props.ContentLength - do.Range.Offset
+	} else {
+		size = count
+	}
+
+	// 2. Compare and try to resize local file's size if it doesn't match Azure file's size.
+	stat, err := file.Stat()
+	if err != nil {
+		return 0, err
+	}
+	if stat.Size() != size {
+		if err = file.Truncate(size); err != nil {
+			return 0, err
+		}
+	}
+
+	if size > 0 {
+		return f.download(ctx, file, *do)
+	} else { // if the file's size is 0, there is no need in downloading it
+		return 0, nil
+	}
 }

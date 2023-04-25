@@ -103,11 +103,6 @@ func (c *ClientFactory) NewPartitionKeyRangeIDRegionClient() *PartitionKeyRangeI
 	return subClient
 }
 
-func (c *ClientFactory) NewGraphResourcesClient() *GraphResourcesClient {
-	subClient, _ := NewGraphResourcesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewSQLResourcesClient() *SQLResourcesClient {
 	subClient, _ := NewSQLResourcesClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -138,11 +133,6 @@ func (c *ClientFactory) NewLocationsClient() *LocationsClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewDataTransferJobsClient() *DataTransferJobsClient {
-	subClient, _ := NewDataTransferJobsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewCassandraClustersClient() *CassandraClustersClient {
 	subClient, _ := NewCassandraClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
@@ -150,11 +140,6 @@ func (c *ClientFactory) NewCassandraClustersClient() *CassandraClustersClient {
 
 func (c *ClientFactory) NewCassandraDataCentersClient() *CassandraDataCentersClient {
 	subClient, _ := NewCassandraDataCentersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewMongoClustersClient() *MongoClustersClient {
-	subClient, _ := NewMongoClustersClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
 

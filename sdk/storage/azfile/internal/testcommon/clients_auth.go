@@ -12,12 +12,15 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"github.com/stretchr/testify/require"
+	"strings"
 	"testing"
 )
 
@@ -165,5 +168,35 @@ func CreateNewDirectory(ctx context.Context, _require *require.Assertions, dirNa
 
 func DeleteDirectory(ctx context.Context, _require *require.Assertions, dirClient *directory.Client) {
 	_, err := dirClient.Delete(ctx, nil)
+	_require.NoError(err)
+}
+
+func GetFileClientFromShare(fileName string, shareClient *share.Client) *file.Client {
+	return shareClient.NewRootDirectoryClient().NewFileClient(fileName)
+}
+
+func CreateNewFileFromShare(ctx context.Context, _require *require.Assertions, fileName string, fileSize int64, shareClient *share.Client) *file.Client {
+	fClient := GetFileClientFromShare(fileName, shareClient)
+
+	_, err := fClient.Create(ctx, fileSize, nil)
+	_require.NoError(err)
+
+	return fClient
+}
+
+func CreateNewFileFromShareWithData(ctx context.Context, _require *require.Assertions, fileName string, shareClient *share.Client) *file.Client {
+	fClient := GetFileClientFromShare(fileName, shareClient)
+
+	_, err := fClient.Create(ctx, int64(len(FileDefaultData)), nil)
+	_require.NoError(err)
+
+	_, err = fClient.UploadRange(ctx, 0, streaming.NopCloser(strings.NewReader(FileDefaultData)), nil)
+	_require.NoError(err)
+
+	return fClient
+}
+
+func DeleteFile(ctx context.Context, _require *require.Assertions, fileClient *file.Client) {
+	_, err := fileClient.Delete(ctx, nil)
 	_require.NoError(err)
 }

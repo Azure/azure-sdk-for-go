@@ -12,16 +12,13 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"net/http"
 	"net/url"
 	"strings"
-	"time"
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
@@ -208,35 +205,4 @@ func (d *Client) NewListFilesAndDirectoriesPager(options *ListFilesAndDirectorie
 			return d.generated().ListFilesAndDirectoriesSegmentHandleResponse(resp)
 		},
 	})
-}
-
-// GetSASURL is a convenience method for generating a SAS token for the currently pointed at directory.
-// It can only be used if the credential supplied during creation was a SharedKeyCredential.
-func (d *Client) GetSASURL(permissions sas.FilePermissions, expiry time.Time, o *GetSASURLOptions) (string, error) {
-	if d.sharedKey() == nil {
-		return "", fileerror.MissingSharedKeyCredential
-	}
-	st := o.format()
-
-	urlParts, err := sas.ParseURL(d.URL())
-	if err != nil {
-		return "", err
-	}
-
-	qps, err := sas.SignatureValues{
-		Version:             sas.Version,
-		Protocol:            sas.ProtocolHTTPS,
-		ShareName:           urlParts.ShareName,
-		DirectoryOrFilePath: urlParts.DirectoryOrFilePath,
-		Permissions:         permissions.String(),
-		StartTime:           st,
-		ExpiryTime:          expiry.UTC(),
-	}.SignWithSharedKey(d.sharedKey())
-	if err != nil {
-		return "", err
-	}
-
-	endpoint := d.URL() + "?" + qps.Encode()
-
-	return endpoint, nil
 }

@@ -1,11 +1,16 @@
 # Release History
 
-## 2.3.0-beta.1 (2023-04-28)
+## 2.3.0 (2023-04-28)
 ### Features Added
 
-- New enum type `IsCustomProvisioningTimeout` with values `IsCustomProvisioningTimeoutFalse`, `IsCustomProvisioningTimeoutTrue`
-- New field `IsCustomProvisioningTimeout` in struct `ContainerGroupPropertiesProperties`
-- New field `ProvisioningTimeoutInSeconds` in struct `ContainerGroupPropertiesProperties`
+- New value `ContainerGroupSKUConfidential` added to enum type `ContainerGroupSKU`
+- New enum type `ContainerGroupPriority` with values `ContainerGroupPriorityRegular`, `ContainerGroupPrioritySpot`
+- New struct `ConfidentialComputeProperties`
+- New struct `SecurityContextCapabilitiesDefinition`
+- New struct `SecurityContextDefinition`
+- New field `ConfidentialComputeProperties`, `Priority` in struct `ContainerGroupPropertiesProperties`
+- New field `SecurityContext` in struct `ContainerProperties`
+- New field `SecurityContext` in struct `InitContainerPropertiesDefinition`
 
 
 ## 2.2.1 (2023-04-18)

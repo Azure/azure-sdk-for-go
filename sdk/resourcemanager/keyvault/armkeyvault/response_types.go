@@ -64,6 +64,41 @@ type MHSMPrivateLinkResourcesClientListByMHSMResourceResponse struct {
 	MHSMPrivateLinkResourceListResult
 }
 
+// MHSMRegionsClientListByResourceResponse contains the response from method MHSMRegionsClient.NewListByResourcePager.
+type MHSMRegionsClientListByResourceResponse struct {
+	MHSMRegionsListResult
+}
+
+// ManagedHsmKeysClientCreateIfNotExistResponse contains the response from method ManagedHsmKeysClient.CreateIfNotExist.
+type ManagedHsmKeysClientCreateIfNotExistResponse struct {
+	ManagedHsmKey
+}
+
+// ManagedHsmKeysClientGetResponse contains the response from method ManagedHsmKeysClient.Get.
+type ManagedHsmKeysClientGetResponse struct {
+	ManagedHsmKey
+}
+
+// ManagedHsmKeysClientGetVersionResponse contains the response from method ManagedHsmKeysClient.GetVersion.
+type ManagedHsmKeysClientGetVersionResponse struct {
+	ManagedHsmKey
+}
+
+// ManagedHsmKeysClientListResponse contains the response from method ManagedHsmKeysClient.NewListPager.
+type ManagedHsmKeysClientListResponse struct {
+	ManagedHsmKeyListResult
+}
+
+// ManagedHsmKeysClientListVersionsResponse contains the response from method ManagedHsmKeysClient.NewListVersionsPager.
+type ManagedHsmKeysClientListVersionsResponse struct {
+	ManagedHsmKeyListResult
+}
+
+// ManagedHsmsClientCheckMhsmNameAvailabilityResponse contains the response from method ManagedHsmsClient.CheckMhsmNameAvailability.
+type ManagedHsmsClientCheckMhsmNameAvailabilityResponse struct {
+	CheckMhsmNameAvailabilityResult
+}
+
 // ManagedHsmsClientCreateOrUpdateResponse contains the response from method ManagedHsmsClient.BeginCreateOrUpdate.
 type ManagedHsmsClientCreateOrUpdateResponse struct {
 	ManagedHsm

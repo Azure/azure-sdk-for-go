@@ -32,9 +32,9 @@ type Client struct {
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	var clientOptions *service.ClientOptions
+	var clientOptions *ClientOptions
 	if options != nil {
-		clientOptions = &service.ClientOptions{ClientOptions: options.ClientOptions}
+		clientOptions = &ClientOptions{ClientOptions: options.ClientOptions}
 	}
 	svcClient, err := service.NewClient(serviceURL, cred, clientOptions)
 	if err != nil {
@@ -51,9 +51,9 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 //   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/?<sas token>
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
-	var clientOptions *service.ClientOptions
+	var clientOptions *ClientOptions
 	if options != nil {
-		clientOptions = &service.ClientOptions{ClientOptions: options.ClientOptions}
+		clientOptions = &ClientOptions{ClientOptions: options.ClientOptions}
 	}
 	svcClient, err := service.NewClientWithNoCredential(serviceURL, clientOptions)
 	if err != nil {
@@ -70,7 +70,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, (*service.ClientOptions)(options))
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, (*ClientOptions)(options))
 	if err != nil {
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func NewClientFromConnectionString(connectionString string, options *ClientOptio
 	if options == nil {
 		options = &ClientOptions{}
 	}
-	containerClient, err := service.NewClientFromConnectionString(connectionString, (*service.ClientOptions)(options))
+	containerClient, err := service.NewClientFromConnectionString(connectionString, (*ClientOptions)(options))
 	if err != nil {
 		return nil, err
 	}

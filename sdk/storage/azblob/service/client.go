@@ -20,6 +20,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/base"
@@ -29,11 +30,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
 )
 
-// ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions struct {
-	azcore.ClientOptions //nolint:unused
-}
-
 // Client represents a URL to the Azure Blob Storage service allowing you to manipulate blob containers.
 type Client base.Client[generated.ServiceClient]
 
@@ -41,7 +37,7 @@ type Client base.Client[generated.ServiceClient]
 //   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
-func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
+func NewClient(serviceURL string, cred azcore.TokenCredential, options *azblob.ClientOptions) (*Client, error) {
 	authPolicy := shared.NewStorageChallengePolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -54,7 +50,7 @@ func NewClient(serviceURL string, cred azcore.TokenCredential, options *ClientOp
 // This is used to anonymously access a storage account or with a shared access signature (SAS) token.
 //   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/?<sas token>
 //   - options - client options; pass nil to accept the default values
-func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Client, error) {
+func NewClientWithNoCredential(serviceURL string, options *azblob.ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
 	pl := runtime.NewPipeline(exported.ModuleName, exported.ModuleVersion, runtime.PipelineOptions{}, &conOptions.ClientOptions)
 
@@ -65,7 +61,7 @@ func NewClientWithNoCredential(serviceURL string, options *ClientOptions) (*Clie
 //   - serviceURL - the URL of the storage account e.g. https://<account>.blob.core.windows.net/
 //   - cred - a SharedKeyCredential created with the matching storage account and access key
 //   - options - client options; pass nil to accept the default values
-func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
+func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredential, options *azblob.ClientOptions) (*Client, error) {
 	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
 	conOptions.PerRetryPolicies = append(conOptions.PerRetryPolicies, authPolicy)
@@ -77,7 +73,7 @@ func NewClientWithSharedKeyCredential(serviceURL string, cred *SharedKeyCredenti
 // NewClientFromConnectionString creates an instance of Client with the specified values.
 //   - connectionString - a connection string for the desired storage account
 //   - options - client options; pass nil to accept the default values
-func NewClientFromConnectionString(connectionString string, options *ClientOptions) (*Client, error) {
+func NewClientFromConnectionString(connectionString string, options *azblob.ClientOptions) (*Client, error) {
 	parsed, err := shared.ParseConnectionString(connectionString)
 	if err != nil {
 		return nil, err

@@ -24,11 +24,6 @@ type CassandraClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// CassandraClustersClientGetBackupResponse contains the response from method CassandraClustersClient.GetBackup.
-type CassandraClustersClientGetBackupResponse struct {
-	BackupResource
-}
-
 // CassandraClustersClientGetResponse contains the response from method CassandraClustersClient.Get.
 type CassandraClustersClientGetResponse struct {
 	ClusterResource
@@ -37,11 +32,6 @@ type CassandraClustersClientGetResponse struct {
 // CassandraClustersClientInvokeCommandResponse contains the response from method CassandraClustersClient.BeginInvokeCommand.
 type CassandraClustersClientInvokeCommandResponse struct {
 	CommandOutput
-}
-
-// CassandraClustersClientListBackupsResponse contains the response from method CassandraClustersClient.NewListBackupsPager.
-type CassandraClustersClientListBackupsResponse struct {
-	ListBackups
 }
 
 // CassandraClustersClientListByResourceGroupResponse contains the response from method CassandraClustersClient.NewListByResourceGroupPager.
@@ -104,11 +94,6 @@ type CassandraResourcesClientCreateUpdateCassandraTableResponse struct {
 	CassandraTableGetResults
 }
 
-// CassandraResourcesClientCreateUpdateCassandraViewResponse contains the response from method CassandraResourcesClient.BeginCreateUpdateCassandraView.
-type CassandraResourcesClientCreateUpdateCassandraViewResponse struct {
-	CassandraViewGetResults
-}
-
 // CassandraResourcesClientDeleteCassandraKeyspaceResponse contains the response from method CassandraResourcesClient.BeginDeleteCassandraKeyspace.
 type CassandraResourcesClientDeleteCassandraKeyspaceResponse struct {
 	// placeholder for future response values
@@ -116,11 +101,6 @@ type CassandraResourcesClientDeleteCassandraKeyspaceResponse struct {
 
 // CassandraResourcesClientDeleteCassandraTableResponse contains the response from method CassandraResourcesClient.BeginDeleteCassandraTable.
 type CassandraResourcesClientDeleteCassandraTableResponse struct {
-	// placeholder for future response values
-}
-
-// CassandraResourcesClientDeleteCassandraViewResponse contains the response from method CassandraResourcesClient.BeginDeleteCassandraView.
-type CassandraResourcesClientDeleteCassandraViewResponse struct {
 	// placeholder for future response values
 }
 
@@ -144,16 +124,6 @@ type CassandraResourcesClientGetCassandraTableThroughputResponse struct {
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesClientGetCassandraViewResponse contains the response from method CassandraResourcesClient.GetCassandraView.
-type CassandraResourcesClientGetCassandraViewResponse struct {
-	CassandraViewGetResults
-}
-
-// CassandraResourcesClientGetCassandraViewThroughputResponse contains the response from method CassandraResourcesClient.GetCassandraViewThroughput.
-type CassandraResourcesClientGetCassandraViewThroughputResponse struct {
-	ThroughputSettingsGetResults
-}
-
 // CassandraResourcesClientListCassandraKeyspacesResponse contains the response from method CassandraResourcesClient.NewListCassandraKeyspacesPager.
 type CassandraResourcesClientListCassandraKeyspacesResponse struct {
 	CassandraKeyspaceListResult
@@ -162,11 +132,6 @@ type CassandraResourcesClientListCassandraKeyspacesResponse struct {
 // CassandraResourcesClientListCassandraTablesResponse contains the response from method CassandraResourcesClient.NewListCassandraTablesPager.
 type CassandraResourcesClientListCassandraTablesResponse struct {
 	CassandraTableListResult
-}
-
-// CassandraResourcesClientListCassandraViewsResponse contains the response from method CassandraResourcesClient.NewListCassandraViewsPager.
-type CassandraResourcesClientListCassandraViewsResponse struct {
-	CassandraViewListResult
 }
 
 // CassandraResourcesClientMigrateCassandraKeyspaceToAutoscaleResponse contains the response from method CassandraResourcesClient.BeginMigrateCassandraKeyspaceToAutoscale.
@@ -189,16 +154,6 @@ type CassandraResourcesClientMigrateCassandraTableToManualThroughputResponse str
 	ThroughputSettingsGetResults
 }
 
-// CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse contains the response from method CassandraResourcesClient.BeginMigrateCassandraViewToAutoscale.
-type CassandraResourcesClientMigrateCassandraViewToAutoscaleResponse struct {
-	ThroughputSettingsGetResults
-}
-
-// CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse contains the response from method CassandraResourcesClient.BeginMigrateCassandraViewToManualThroughput.
-type CassandraResourcesClientMigrateCassandraViewToManualThroughputResponse struct {
-	ThroughputSettingsGetResults
-}
-
 // CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse contains the response from method CassandraResourcesClient.BeginUpdateCassandraKeyspaceThroughput.
 type CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse struct {
 	ThroughputSettingsGetResults
@@ -206,11 +161,6 @@ type CassandraResourcesClientUpdateCassandraKeyspaceThroughputResponse struct {
 
 // CassandraResourcesClientUpdateCassandraTableThroughputResponse contains the response from method CassandraResourcesClient.BeginUpdateCassandraTableThroughput.
 type CassandraResourcesClientUpdateCassandraTableThroughputResponse struct {
-	ThroughputSettingsGetResults
-}
-
-// CassandraResourcesClientUpdateCassandraViewThroughputResponse contains the response from method CassandraResourcesClient.BeginUpdateCassandraViewThroughput.
-type CassandraResourcesClientUpdateCassandraViewThroughputResponse struct {
 	ThroughputSettingsGetResults
 }
 
@@ -247,36 +197,6 @@ type CollectionPartitionRegionClientListMetricsResponse struct {
 // CollectionRegionClientListMetricsResponse contains the response from method CollectionRegionClient.NewListMetricsPager.
 type CollectionRegionClientListMetricsResponse struct {
 	MetricListResult
-}
-
-// DataTransferJobsClientCancelResponse contains the response from method DataTransferJobsClient.Cancel.
-type DataTransferJobsClientCancelResponse struct {
-	DataTransferJobGetResults
-}
-
-// DataTransferJobsClientCreateResponse contains the response from method DataTransferJobsClient.Create.
-type DataTransferJobsClientCreateResponse struct {
-	DataTransferJobGetResults
-}
-
-// DataTransferJobsClientGetResponse contains the response from method DataTransferJobsClient.Get.
-type DataTransferJobsClientGetResponse struct {
-	DataTransferJobGetResults
-}
-
-// DataTransferJobsClientListByDatabaseAccountResponse contains the response from method DataTransferJobsClient.NewListByDatabaseAccountPager.
-type DataTransferJobsClientListByDatabaseAccountResponse struct {
-	DataTransferJobFeedResults
-}
-
-// DataTransferJobsClientPauseResponse contains the response from method DataTransferJobsClient.Pause.
-type DataTransferJobsClientPauseResponse struct {
-	DataTransferJobGetResults
-}
-
-// DataTransferJobsClientResumeResponse contains the response from method DataTransferJobsClient.Resume.
-type DataTransferJobsClientResumeResponse struct {
-	DataTransferJobGetResults
 }
 
 // DatabaseAccountRegionClientListMetricsResponse contains the response from method DatabaseAccountRegionClient.NewListMetricsPager.
@@ -390,26 +310,6 @@ type DatabaseClientListUsagesResponse struct {
 	UsagesResult
 }
 
-// GraphResourcesClientCreateUpdateGraphResponse contains the response from method GraphResourcesClient.BeginCreateUpdateGraph.
-type GraphResourcesClientCreateUpdateGraphResponse struct {
-	GraphResourceGetResults
-}
-
-// GraphResourcesClientDeleteGraphResourceResponse contains the response from method GraphResourcesClient.BeginDeleteGraphResource.
-type GraphResourcesClientDeleteGraphResourceResponse struct {
-	// placeholder for future response values
-}
-
-// GraphResourcesClientGetGraphResponse contains the response from method GraphResourcesClient.GetGraph.
-type GraphResourcesClientGetGraphResponse struct {
-	GraphResourceGetResults
-}
-
-// GraphResourcesClientListGraphsResponse contains the response from method GraphResourcesClient.NewListGraphsPager.
-type GraphResourcesClientListGraphsResponse struct {
-	GraphResourcesListResult
-}
-
 // GremlinResourcesClientCreateUpdateGremlinDatabaseResponse contains the response from method GremlinResourcesClient.BeginCreateUpdateGremlinDatabase.
 type GremlinResourcesClientCreateUpdateGremlinDatabaseResponse struct {
 	GremlinDatabaseGetResults
@@ -505,66 +405,6 @@ type LocationsClientListResponse struct {
 	LocationListResult
 }
 
-// MongoClustersClientCheckNameAvailabilityResponse contains the response from method MongoClustersClient.CheckNameAvailability.
-type MongoClustersClientCheckNameAvailabilityResponse struct {
-	CheckNameAvailabilityResponse
-}
-
-// MongoClustersClientCreateOrUpdateFirewallRuleResponse contains the response from method MongoClustersClient.BeginCreateOrUpdateFirewallRule.
-type MongoClustersClientCreateOrUpdateFirewallRuleResponse struct {
-	FirewallRule
-}
-
-// MongoClustersClientCreateOrUpdateResponse contains the response from method MongoClustersClient.BeginCreateOrUpdate.
-type MongoClustersClientCreateOrUpdateResponse struct {
-	MongoCluster
-}
-
-// MongoClustersClientDeleteFirewallRuleResponse contains the response from method MongoClustersClient.BeginDeleteFirewallRule.
-type MongoClustersClientDeleteFirewallRuleResponse struct {
-	// placeholder for future response values
-}
-
-// MongoClustersClientDeleteResponse contains the response from method MongoClustersClient.BeginDelete.
-type MongoClustersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// MongoClustersClientGetFirewallRuleResponse contains the response from method MongoClustersClient.GetFirewallRule.
-type MongoClustersClientGetFirewallRuleResponse struct {
-	FirewallRule
-}
-
-// MongoClustersClientGetResponse contains the response from method MongoClustersClient.Get.
-type MongoClustersClientGetResponse struct {
-	MongoCluster
-}
-
-// MongoClustersClientListByResourceGroupResponse contains the response from method MongoClustersClient.NewListByResourceGroupPager.
-type MongoClustersClientListByResourceGroupResponse struct {
-	MongoClusterListResult
-}
-
-// MongoClustersClientListConnectionStringsResponse contains the response from method MongoClustersClient.ListConnectionStrings.
-type MongoClustersClientListConnectionStringsResponse struct {
-	ListConnectionStringsResult
-}
-
-// MongoClustersClientListFirewallRulesResponse contains the response from method MongoClustersClient.NewListFirewallRulesPager.
-type MongoClustersClientListFirewallRulesResponse struct {
-	FirewallRuleListResult
-}
-
-// MongoClustersClientListResponse contains the response from method MongoClustersClient.NewListPager.
-type MongoClustersClientListResponse struct {
-	MongoClusterListResult
-}
-
-// MongoClustersClientUpdateResponse contains the response from method MongoClustersClient.BeginUpdate.
-type MongoClustersClientUpdateResponse struct {
-	MongoCluster
-}
-
 // MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse contains the response from method MongoDBResourcesClient.BeginCreateUpdateMongoDBCollection.
 type MongoDBResourcesClientCreateUpdateMongoDBCollectionResponse struct {
 	MongoDBCollectionGetResults
@@ -635,11 +475,6 @@ type MongoDBResourcesClientGetMongoUserDefinitionResponse struct {
 	MongoUserDefinitionGetResults
 }
 
-// MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse contains the response from method MongoDBResourcesClient.BeginListMongoDBCollectionPartitionMerge.
-type MongoDBResourcesClientListMongoDBCollectionPartitionMergeResponse struct {
-	PhysicalPartitionStorageInfoCollection
-}
-
 // MongoDBResourcesClientListMongoDBCollectionsResponse contains the response from method MongoDBResourcesClient.NewListMongoDBCollectionsPager.
 type MongoDBResourcesClientListMongoDBCollectionsResponse struct {
 	MongoDBCollectionListResult
@@ -678,26 +513,6 @@ type MongoDBResourcesClientMigrateMongoDBDatabaseToAutoscaleResponse struct {
 // MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse contains the response from method MongoDBResourcesClient.BeginMigrateMongoDBDatabaseToManualThroughput.
 type MongoDBResourcesClientMigrateMongoDBDatabaseToManualThroughputResponse struct {
 	ThroughputSettingsGetResults
-}
-
-// MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse contains the response from method MongoDBResourcesClient.BeginMongoDBContainerRedistributeThroughput.
-type MongoDBResourcesClientMongoDBContainerRedistributeThroughputResponse struct {
-	PhysicalPartitionThroughputInfoResult
-}
-
-// MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse contains the response from method MongoDBResourcesClient.BeginMongoDBContainerRetrieveThroughputDistribution.
-type MongoDBResourcesClientMongoDBContainerRetrieveThroughputDistributionResponse struct {
-	PhysicalPartitionThroughputInfoResult
-}
-
-// MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse contains the response from method MongoDBResourcesClient.BeginMongoDBDatabaseRedistributeThroughput.
-type MongoDBResourcesClientMongoDBDatabaseRedistributeThroughputResponse struct {
-	PhysicalPartitionThroughputInfoResult
-}
-
-// MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse contains the response from method MongoDBResourcesClient.BeginMongoDBDatabaseRetrieveThroughputDistribution.
-type MongoDBResourcesClientMongoDBDatabaseRetrieveThroughputDistributionResponse struct {
-	PhysicalPartitionThroughputInfoResult
 }
 
 // MongoDBResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method MongoDBResourcesClient.BeginRetrieveContinuousBackupInformation.
@@ -1010,11 +825,6 @@ type SQLResourcesClientListClientEncryptionKeysResponse struct {
 	ClientEncryptionKeysListResult
 }
 
-// SQLResourcesClientListSQLContainerPartitionMergeResponse contains the response from method SQLResourcesClient.BeginListSQLContainerPartitionMerge.
-type SQLResourcesClientListSQLContainerPartitionMergeResponse struct {
-	PhysicalPartitionStorageInfoCollection
-}
-
 // SQLResourcesClientListSQLContainersResponse contains the response from method SQLResourcesClient.NewListSQLContainersPager.
 type SQLResourcesClientListSQLContainersResponse struct {
 	SQLContainerListResult
@@ -1073,26 +883,6 @@ type SQLResourcesClientMigrateSQLDatabaseToManualThroughputResponse struct {
 // SQLResourcesClientRetrieveContinuousBackupInformationResponse contains the response from method SQLResourcesClient.BeginRetrieveContinuousBackupInformation.
 type SQLResourcesClientRetrieveContinuousBackupInformationResponse struct {
 	BackupInformation
-}
-
-// SQLResourcesClientSQLContainerRedistributeThroughputResponse contains the response from method SQLResourcesClient.BeginSQLContainerRedistributeThroughput.
-type SQLResourcesClientSQLContainerRedistributeThroughputResponse struct {
-	PhysicalPartitionThroughputInfoResult
-}
-
-// SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse contains the response from method SQLResourcesClient.BeginSQLContainerRetrieveThroughputDistribution.
-type SQLResourcesClientSQLContainerRetrieveThroughputDistributionResponse struct {
-	PhysicalPartitionThroughputInfoResult
-}
-
-// SQLResourcesClientSQLDatabaseRedistributeThroughputResponse contains the response from method SQLResourcesClient.BeginSQLDatabaseRedistributeThroughput.
-type SQLResourcesClientSQLDatabaseRedistributeThroughputResponse struct {
-	PhysicalPartitionThroughputInfoResult
-}
-
-// SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse contains the response from method SQLResourcesClient.BeginSQLDatabaseRetrieveThroughputDistribution.
-type SQLResourcesClientSQLDatabaseRetrieveThroughputDistributionResponse struct {
-	PhysicalPartitionThroughputInfoResult
 }
 
 // SQLResourcesClientUpdateSQLContainerThroughputResponse contains the response from method SQLResourcesClient.BeginUpdateSQLContainerThroughput.

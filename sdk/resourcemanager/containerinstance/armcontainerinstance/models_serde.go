@@ -638,8 +638,10 @@ func (c ContainerGroupPropertiesProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "imageRegistryCredentials", c.ImageRegistryCredentials)
 	populate(objectMap, "initContainers", c.InitContainers)
 	populate(objectMap, "instanceView", c.InstanceView)
+	populate(objectMap, "isCustomProvisioningTimeout", c.IsCustomProvisioningTimeout)
 	populate(objectMap, "osType", c.OSType)
 	populate(objectMap, "provisioningState", c.ProvisioningState)
+	populate(objectMap, "provisioningTimeoutInSeconds", c.ProvisioningTimeoutInSeconds)
 	populate(objectMap, "restartPolicy", c.RestartPolicy)
 	populate(objectMap, "sku", c.SKU)
 	populate(objectMap, "subnetIds", c.SubnetIDs)
@@ -683,11 +685,17 @@ func (c *ContainerGroupPropertiesProperties) UnmarshalJSON(data []byte) error {
 		case "instanceView":
 			err = unpopulate(val, "InstanceView", &c.InstanceView)
 			delete(rawMsg, key)
+		case "isCustomProvisioningTimeout":
+			err = unpopulate(val, "IsCustomProvisioningTimeout", &c.IsCustomProvisioningTimeout)
+			delete(rawMsg, key)
 		case "osType":
 			err = unpopulate(val, "OSType", &c.OSType)
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &c.ProvisioningState)
+			delete(rawMsg, key)
+		case "provisioningTimeoutInSeconds":
+			err = unpopulate(val, "ProvisioningTimeoutInSeconds", &c.ProvisioningTimeoutInSeconds)
 			delete(rawMsg, key)
 		case "restartPolicy":
 			err = unpopulate(val, "RestartPolicy", &c.RestartPolicy)

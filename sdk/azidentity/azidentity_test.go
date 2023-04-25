@@ -373,7 +373,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 						AdditionallyAllowedTenants: test.allowed,
 						ClientOptions:              co,
 					}
-					return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
+					return NewOnBehalfOfCredentialWithSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
 				},
 			},
 			{
@@ -596,7 +596,7 @@ func TestClaims(t *testing.T) {
 			name: credNameOBO,
 			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
 				o := OnBehalfOfCredentialOptions{ClientOptions: co}
-				return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
+				return NewOnBehalfOfCredentialWithSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
 			},
 		},
 		{

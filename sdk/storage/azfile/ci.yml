@@ -26,3 +26,8 @@ stages:
     parameters:
       ServiceDirectory: 'storage/azfile'
       RunLiveTests: true
+      EnvVars:
+        AZURE_CLIENT_ID: $(AZFILE_CLIENT_ID)
+        AZURE_TENANT_ID: $(AZFILE_TENANT_ID)
+        AZURE_CLIENT_SECRET: $(AZFILE_CLIENT_SECRET)
+        AZURE_SUBSCRIPTION_ID: $(AZFILE_SUBSCRIPTION_ID)

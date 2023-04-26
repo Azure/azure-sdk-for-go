@@ -70,7 +70,7 @@ func (l *LeaseRecordedTestsSuite) TestShareAcquireLease() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -98,11 +98,11 @@ func (l *LeaseRecordedTestsSuite) TestNegativeShareAcquireMultipleLease() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient0, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient0, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
-	shareLeaseClient1, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient1, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[1],
 	})
 
@@ -131,7 +131,7 @@ func (l *LeaseRecordedTestsSuite) TestShareDeleteShareWithoutLeaseId() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -162,7 +162,7 @@ func (l *LeaseRecordedTestsSuite) TestShareReleaseLease() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -193,7 +193,7 @@ func (l *LeaseRecordedTestsSuite) TestShareRenewLease() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -221,7 +221,7 @@ func (l *LeaseRecordedTestsSuite) TestShareBreakLeaseDefault() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -253,7 +253,7 @@ func (l *LeaseRecordedTestsSuite) TestShareBreakLeaseNonDefault() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -290,7 +290,7 @@ func (l *LeaseRecordedTestsSuite) TestNegativeShareBreakRenewLease() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -325,7 +325,7 @@ func (l *LeaseRecordedTestsSuite) TestShareChangeLease() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	shareLeaseClient, _ := lease.NewShareClient(shareClient, &lease.ShareClientOptions{
+	shareLeaseClient, _ := lease.ShareLeaseClient(shareClient, &lease.ShareClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 
@@ -373,7 +373,7 @@ func (l *LeaseRecordedTestsSuite) TestFileAcquireLease() {
 	_, err = fileClient.Create(ctx, 0, nil)
 	_require.NoError(err)
 
-	fileLeaseClient, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+	fileLeaseClient, err := lease.FileLeaseClient(fileClient, &lease.FileClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.NoError(err)
@@ -407,12 +407,12 @@ func (l *LeaseRecordedTestsSuite) TestNegativeFileAcquireMultipleLease() {
 	_, err = fileClient.Create(ctx, 0, nil)
 	_require.NoError(err)
 
-	fileLeaseClient0, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+	fileLeaseClient0, err := lease.FileLeaseClient(fileClient, &lease.FileClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.NoError(err)
 
-	fileLeaseClient1, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+	fileLeaseClient1, err := lease.FileLeaseClient(fileClient, &lease.FileClientOptions{
 		LeaseID: proposedLeaseIDs[1],
 	})
 	_require.NoError(err)
@@ -450,7 +450,7 @@ func (l *LeaseRecordedTestsSuite) TestDeleteFileWithoutLeaseId() {
 	_, err = fileClient.Create(ctx, 0, nil)
 	_require.NoError(err)
 
-	fileLeaseClient, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+	fileLeaseClient, err := lease.FileLeaseClient(fileClient, &lease.FileClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.NoError(err)
@@ -489,7 +489,7 @@ func (l *LeaseRecordedTestsSuite) TestFileReleaseLease() {
 	_, err = fileClient.Create(ctx, 0, nil)
 	_require.NoError(err)
 
-	fileLeaseClient, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+	fileLeaseClient, err := lease.FileLeaseClient(fileClient, &lease.FileClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.NoError(err)
@@ -526,7 +526,7 @@ func (l *LeaseRecordedTestsSuite) TestFileChangeLease() {
 	_, err = fileClient.Create(ctx, 0, nil)
 	_require.NoError(err)
 
-	fileLeaseClient, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+	fileLeaseClient, err := lease.FileLeaseClient(fileClient, &lease.FileClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.NoError(err)
@@ -570,7 +570,7 @@ func (l *LeaseRecordedTestsSuite) TestNegativeFileDeleteAfterReleaseLease() {
 	_, err = fileClient.Create(ctx, 0, nil)
 	_require.NoError(err)
 
-	fileLeaseClient, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+	fileLeaseClient, err := lease.FileLeaseClient(fileClient, &lease.FileClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.NoError(err)
@@ -612,7 +612,7 @@ func (l *LeaseRecordedTestsSuite) TestFileBreakLease() {
 	_, err = fileClient.Create(ctx, 0, nil)
 	_require.NoError(err)
 
-	fileLeaseClient, err := lease.NewFileClient(fileClient, &lease.FileClientOptions{
+	fileLeaseClient, err := lease.FileLeaseClient(fileClient, &lease.FileClientOptions{
 		LeaseID: proposedLeaseIDs[0],
 	})
 	_require.NoError(err)

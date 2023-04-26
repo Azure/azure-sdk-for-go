@@ -27,10 +27,10 @@ type ShareClientOptions struct {
 	LeaseID *string
 }
 
-// NewShareClient creates a share lease client for the provided share client.
+// ShareLeaseClient creates a share lease client for the provided share client.
 //   - client - an instance of a share client
 //   - options - client options; pass nil to accept the default values
-func NewShareClient(client *share.Client, options *ShareClientOptions) (*ShareClient, error) {
+func ShareLeaseClient(client *share.Client, options *ShareClientOptions) (*ShareClient, error) {
 	var leaseID *string
 	if options != nil {
 		leaseID = options.LeaseID

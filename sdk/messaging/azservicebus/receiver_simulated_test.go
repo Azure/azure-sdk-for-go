@@ -632,7 +632,8 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 5000, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
-	require.Contains(t, logsFn(), "[azsb.Receiver] No additional credits needed, still have 5000 credits active")
+	logs := logsFn()
+	require.Contains(t, logs, "[azsb.Receiver] [c:1, l:1, r:name:c:001|] No additional credits needed, still have 5000 credits active")
 
 	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
@@ -644,7 +645,7 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	messages, err = receiver.ReceiveMessages(ctx, 5000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
-	require.Contains(t, logsFn(), "[azsb.Receiver] Only need to issue 1 additional credits")
+	require.Contains(t, logsFn(), "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Only need to issue 1 additional credits")
 
 	require.Equal(t, 1, len(md.Events.GetOpenConns()))
 	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")

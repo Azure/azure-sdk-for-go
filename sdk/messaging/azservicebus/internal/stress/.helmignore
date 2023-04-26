@@ -3,3 +3,4 @@ stress.exe
 .env
 Dockerfile
 *.go
+*.log

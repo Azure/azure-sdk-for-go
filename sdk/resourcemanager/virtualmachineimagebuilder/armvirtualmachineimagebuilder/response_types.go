@@ -14,6 +14,26 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// TriggersClientCreateOrUpdateResponse contains the response from method TriggersClient.BeginCreateOrUpdate.
+type TriggersClientCreateOrUpdateResponse struct {
+	Trigger
+}
+
+// TriggersClientDeleteResponse contains the response from method TriggersClient.BeginDelete.
+type TriggersClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TriggersClientGetResponse contains the response from method TriggersClient.Get.
+type TriggersClientGetResponse struct {
+	Trigger
+}
+
+// TriggersClientListByImageTemplateResponse contains the response from method TriggersClient.NewListByImageTemplatePager.
+type TriggersClientListByImageTemplateResponse struct {
+	TriggerCollection
+}
+
 // VirtualMachineImageTemplatesClientCancelResponse contains the response from method VirtualMachineImageTemplatesClient.BeginCancel.
 type VirtualMachineImageTemplatesClientCancelResponse struct {
 	// placeholder for future response values

@@ -432,8 +432,8 @@ func (f *FileUnrecordedTestsSuite) TestFileGetSetPropertiesNonDefault() {
 	_require.NotEqual(getResp.FilePermissionKey, "")
 	_require.Equal(*getResp.FileAttributes, options.SMBProperties.Attributes.String())
 
-	_require.EqualValues(*getResp.FileCreationTime, creationTime.UTC())
-	_require.EqualValues(*getResp.FileLastWriteTime, lastWriteTime.UTC())
+	_require.EqualValues((*getResp.FileCreationTime).Format(testcommon.ISO8601), creationTime.UTC().Format(testcommon.ISO8601))
+	_require.EqualValues((*getResp.FileLastWriteTime).Format(testcommon.ISO8601), lastWriteTime.UTC().Format(testcommon.ISO8601))
 
 	_require.NotNil(getResp.ETag)
 	_require.NotNil(getResp.RequestID)

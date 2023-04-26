@@ -46,6 +46,10 @@ const (
 	FakeStorageURL     = "https://fakestorage.file.core.windows.net"
 )
 
+const (
+	ISO8601 = "2006-01-02T15:04:05.0000000Z07:00"
+)
+
 var (
 	SampleSDDL = `O:S-1-5-32-548G:S-1-5-21-397955417-626881126-188441444-512D:(A;;RPWPCCDCLCSWRCWDWOGA;;;S-1-0-0)`
 )

@@ -532,21 +532,6 @@ func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64() {
 	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
 	_require.Nil(err)
 	_require.Equal(destBuffer, sourceData)
-
-	// Test append block from URL with bad CRC64 value
-	_, sourceData = testcommon.GetDataAndReader(testName, 16)
-	crc64Value = crc64.Checksum(sourceData, shared.CRC64Table)
-	badCRC := make([]byte, 8)
-	binary.LittleEndian.PutUint64(badCRC, crc64Value)
-	appendBlockURLOptions = appendblob.AppendBlockFromURLOptions{
-		Range:                   blob.HTTPRange{Offset: 0, Count: count},
-		SourceContentValidation: blob.SourceContentValidationTypeCRC64(crc),
-	}
-	_, err = destBlob.AppendBlockFromURL(context.Background(), srcBlobURLWithSAS, &appendBlockURLOptions)
-
-	// TODO: This does not fail when it should because wrong CRC64 is passed, verify if this is expected
-	_require.NotNil(err)
-	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
 }
 
 func (s *AppendBlobUnrecordedTestsSuite) TestAppendBlockFromURLWithCRC64Negative() {

@@ -22,7 +22,7 @@ spec:
         - >
           set -ex;
           mkdir -p "$DEBUG_SHARE";
-          /app/stress "{{.Stress.testTarget}}" "-rounds" "{{.Stress.rounds}}" "-prefetch" "{{.Stress.prefetch}}" "{{.Stress.verbose}}" "-sleepAfter" "{{.Stress.sleepAfter}}" | tee "${DEBUG_SHARE}/{{ .Stress.Scenario }}.log";
+          /app/stress "{{.Stress.testTarget}}" "-rounds" "{{.Stress.rounds}}" "-prefetch" "{{.Stress.prefetch}}" "{{.Stress.verbose}}" "-sleepAfter" "{{.Stress.sleepAfter}}" | tee -a "${DEBUG_SHARE}/{{ .Stress.Scenario }}-`date +%s`.log";
       # Pulls the image on pod start, always. We tend to push to the same image and tag over and over again
       # when iterating, so this is a must.
       imagePullPolicy: Always
@@ -33,8 +33,8 @@ spec:
       # just uses 'limits' for both.
       resources:
         limits:
-          memory: "1.5Gi"
-          cpu: "1"
+          memory: "0.5Gi"
+          cpu: "0.5"
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
 {{- end -}}
 

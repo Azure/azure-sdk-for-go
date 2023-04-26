@@ -32,9 +32,7 @@ import (
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions struct {
-	azcore.ClientOptions
-}
+type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure Storage container allowing you to manipulate its blobs.
 type Client base.Client[generated.ContainerClient]

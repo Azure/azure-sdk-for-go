@@ -25,9 +25,7 @@ import (
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions struct {
-	azcore.ClientOptions
-}
+type ClientOptions base.ClientOptions
 
 // Client represents a URL to an Azure Storage blob; the blob may be a block blob, append blob, or page blob.
 type Client base.Client[generated.BlobClient]

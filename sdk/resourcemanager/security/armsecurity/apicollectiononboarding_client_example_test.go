@@ -17,8 +17,8 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/af3f7994582c0cbd61a48b636907ad2ac95d332c/specification/security/resource-manager/Microsoft.Security/preview/2022-01-01-preview/examples/GovernanceRules/GetSecurityConnectorGovernanceRuleExecuteStatus_example.json
-func ExampleConnectorGovernanceRulesExecuteStatusClient_BeginGet() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/e716082ac474f182e2220e4f38f1d6191e7636cf/specification/security/resource-manager/Microsoft.Security/preview/2022-11-20-preview/examples/ApiCollections/APICollectionOnboarding_Create_example.json
+func ExampleAPICollectionOnboardingClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -28,18 +28,22 @@ func ExampleConnectorGovernanceRulesExecuteStatusClient_BeginGet() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewConnectorGovernanceRulesExecuteStatusClient().BeginGet(ctx, "gcpResourceGroup", "gcpconnector", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", "58b33f4f-c8c7-4b01-99cc-d437db4d40dd", nil)
+	res, err := clientFactory.NewAPICollectionOnboardingClient().Create(ctx, "rg1", "apimService1", "echo-api", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res.ExecuteRuleStatus = armsecurity.ExecuteRuleStatus{
-	// 	OperationID: to.Ptr("58b33f4f-c8c7-4b01-99cc-d437db4d40dd"),
+	// res.APICollectionResponse = armsecurity.APICollectionResponse{
+	// 	Name: to.Ptr("echo-api"),
+	// 	Type: to.Ptr("Microsoft.Security/apiCollections"),
+	// 	ID: to.Ptr("/subscriptions/3fa85f64-5717-4562-b3fc-2c963f66afa6/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/providers/Microsoft.Security/apiCollections/echo-api"),
+	// 	Properties: &armsecurity.APICollectionProperties{
+	// 		AdditionalData: map[string]*string{
+	// 			"apiManagementApiId": to.Ptr("/subscriptions/3fa85f64-5717-4562-b3fc-2c963f66afa6/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api"),
+	// 		},
+	// 		DisplayName: to.Ptr("echo-api"),
+	// 	},
 	// }
 }

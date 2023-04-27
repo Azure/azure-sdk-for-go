@@ -1,15 +1,9 @@
 # Release History
 
-## 0.3.5 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 0.3.5 (2023-05-09)
 
 ### Bugs Fixed
 * Fixed unmarshalling error when using projections in value queries
-
-### Other Changes
 
 ## 0.3.4 (2023-04-11)
 

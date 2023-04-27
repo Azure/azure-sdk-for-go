@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	armpolicy "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/policy"
@@ -26,6 +27,19 @@ type acquiringResourceState struct {
 	tenant string
 }
 
+// acquire acquires or updates the resource; only one
+// thread/goroutine at a time ever calls this function
+func acquire(state acquiringResourceState) (newResource azcore.AccessToken, newExpiration time.Time, err error) {
+	tk, err := state.p.cred.GetToken(state.ctx, azpolicy.TokenRequestOptions{
+		Scopes:   state.p.scopes,
+		TenantID: state.tenant,
+	})
+	if err != nil {
+		return azcore.AccessToken{}, time.Time{}, err
+	}
+	return tk, tk.ExpiresOn, nil
+}
+
 // BearerTokenPolicy authorizes requests with bearer tokens acquired from a TokenCredential.
 type BearerTokenPolicy struct {
 	auxResources map[string]*temporal.Resource[azcore.AccessToken, acquiringResourceState]
@@ -42,6 +56,10 @@ func NewBearerTokenPolicy(cred azcore.TokenCredential, opts *armpolicy.BearerTok
 		opts = &armpolicy.BearerTokenOptions{}
 	}
 	p := &BearerTokenPolicy{cred: cred}
+	p.auxResources = make(map[string]*temporal.Resource[azcore.AccessToken, acquiringResourceState], len(opts.AuxiliaryTenants))
+	for _, t := range opts.AuxiliaryTenants {
+		p.auxResources[t] = temporal.NewResource(acquire)
+	}
 	p.scopes = make([]string, len(opts.Scopes))
 	copy(p.scopes, opts.Scopes)
 	p.btp = azruntime.NewBearerTokenPolicy(cred, opts.Scopes, &azpolicy.BearerTokenOptions{

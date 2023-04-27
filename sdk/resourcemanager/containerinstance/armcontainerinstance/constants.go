@@ -11,7 +11,7 @@ package armcontainerinstance
 
 const (
 	moduleName    = "armcontainerinstance"
-	moduleVersion = "v2.2.1"
+	moduleVersion = "v2.3.0"
 )
 
 // ContainerGroupIPAddressType - Specifies if the IP is exposed to the public internet or private VNET.
@@ -46,6 +46,22 @@ func PossibleContainerGroupNetworkProtocolValues() []ContainerGroupNetworkProtoc
 	}
 }
 
+// ContainerGroupPriority - The priority of the container group.
+type ContainerGroupPriority string
+
+const (
+	ContainerGroupPriorityRegular ContainerGroupPriority = "Regular"
+	ContainerGroupPrioritySpot    ContainerGroupPriority = "Spot"
+)
+
+// PossibleContainerGroupPriorityValues returns the possible values for the ContainerGroupPriority const type.
+func PossibleContainerGroupPriorityValues() []ContainerGroupPriority {
+	return []ContainerGroupPriority{
+		ContainerGroupPriorityRegular,
+		ContainerGroupPrioritySpot,
+	}
+}
+
 // ContainerGroupRestartPolicy - Restart policy for all containers within the container group.
 // * Always Always restart
 // * OnFailure Restart on failure
@@ -71,13 +87,15 @@ func PossibleContainerGroupRestartPolicyValues() []ContainerGroupRestartPolicy {
 type ContainerGroupSKU string
 
 const (
-	ContainerGroupSKUDedicated ContainerGroupSKU = "Dedicated"
-	ContainerGroupSKUStandard  ContainerGroupSKU = "Standard"
+	ContainerGroupSKUConfidential ContainerGroupSKU = "Confidential"
+	ContainerGroupSKUDedicated    ContainerGroupSKU = "Dedicated"
+	ContainerGroupSKUStandard     ContainerGroupSKU = "Standard"
 )
 
 // PossibleContainerGroupSKUValues returns the possible values for the ContainerGroupSKU const type.
 func PossibleContainerGroupSKUValues() []ContainerGroupSKU {
 	return []ContainerGroupSKU{
+		ContainerGroupSKUConfidential,
 		ContainerGroupSKUDedicated,
 		ContainerGroupSKUStandard,
 	}

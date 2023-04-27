@@ -190,8 +190,6 @@ type CommitBlockListOptions struct {
 	RequestID                    *string
 	Tier                         *blob.AccessTier
 	Timeout                      *int32
-	TransactionalContentCRC64    []byte
-	TransactionalContentMD5      []byte
 	HTTPHeaders                  *blob.HTTPHeaders
 	CPKInfo                      *blob.CPKInfo
 	CPKScopeInfo                 *blob.CPKScopeInfo
@@ -199,6 +197,12 @@ type CommitBlockListOptions struct {
 	LegalHold                    *bool
 	ImmutabilityPolicyMode       *blob.ImmutabilityPolicySetting
 	ImmutabilityPolicyExpiryTime *time.Time
+
+	// Deprecated: TransactionalContentCRC64 cannot be generated
+	TransactionalContentCRC64 []byte
+
+	// Deprecated: TransactionalContentCRC64 cannot be generated
+	TransactionalContentMD5 []byte
 }
 
 // ---------------------------------------------------------------------------------------------------------------------

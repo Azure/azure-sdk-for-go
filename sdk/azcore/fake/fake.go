@@ -193,7 +193,7 @@ func UnmarshalRequestAsJSON[T any](req *http.Request) (T, error) {
 	return tt, err
 }
 
-// Get returns the error for this responder.
+// GetError returns the error for this responder.
 // This method is typically called by the fake server internals.
 func GetError(e ErrorResponder, req *http.Request) error {
 	if e.err == nil {

@@ -27,10 +27,10 @@ type FileClientOptions struct {
 	LeaseID *string
 }
 
-// FileLeaseClient creates a file lease client for the provided file client.
+// NewFileClient creates a file lease client for the provided file client.
 //   - client - an instance of a file client
 //   - options - client options; pass nil to accept the default values
-func FileLeaseClient(client *file.Client, options *FileClientOptions) (*FileClient, error) {
+func NewFileClient(client *file.Client, options *FileClientOptions) (*FileClient, error) {
 	var leaseID *string
 	if options != nil {
 		leaseID = options.LeaseID

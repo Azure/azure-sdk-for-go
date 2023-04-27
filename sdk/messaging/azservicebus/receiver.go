@@ -387,16 +387,15 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	// might have exited before all credits were used up.
 	currentReceiverCredits := int64(linksWithID.Receiver.Credits())
 	creditsToIssue := int64(maxMessages) - currentReceiverCredits
-	r.amqpLinks.Writef(EventReceiver, "Asking for %d credits", maxMessages)
 
 	if creditsToIssue > 0 {
-		r.amqpLinks.Writef(EventReceiver, "Only need to issue %d additional credits", creditsToIssue)
+		r.amqpLinks.Writef(EventReceiver, "Issuing %d credits, have %d", creditsToIssue, currentReceiverCredits)
 
 		if err := linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
 			return nil, err
 		}
 	} else {
-		r.amqpLinks.Writef(EventReceiver, "No additional credits needed, still have %d credits active", currentReceiverCredits)
+		r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
 	}
 
 	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, r.defaultTimeAfterFirstMsg)
@@ -615,8 +614,6 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 	return func() {
 		defer close(done)
 
-		r.amqpLinks.Writef(EventReceiver, "Message releaser starting...")
-
 		for {
 			// we might not have all the messages we need here.
 			msg, err := receiver.Receive(ctx, nil)
@@ -630,7 +627,9 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 			}
 
 			if internal.IsCancelError(err) {
-				r.amqpLinks.Writef(exported.EventReceiver, "Message releaser pausing. Released %d messages", released)
+				if released > 0 {
+					r.amqpLinks.Writef(exported.EventReceiver, "Message releaser pausing. Released %d messages", released)
+				}
 				break
 			} else if internal.GetRecoveryKind(err) != internal.RecoveryKindNone {
 				r.amqpLinks.Writef(exported.EventReceiver, "Message releaser stopping because of link failure. Released %d messages. Will start again after next receive: %s", released, err)

@@ -77,28 +77,3 @@ func (c *ClientFactory) NewSnapshotsClient() *SnapshotsClient {
 	subClient, _ := NewSnapshotsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }
-
-func (c *ClientFactory) NewManagedClusterSnapshotsClient() *ManagedClusterSnapshotsClient {
-	subClient, _ := NewManagedClusterSnapshotsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewTrustedAccessRolesClient() *TrustedAccessRolesClient {
-	subClient, _ := NewTrustedAccessRolesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewTrustedAccessRoleBindingsClient() *TrustedAccessRoleBindingsClient {
-	subClient, _ := NewTrustedAccessRoleBindingsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewFleetsClient() *FleetsClient {
-	subClient, _ := NewFleetsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewFleetMembersClient() *FleetMembersClient {
-	subClient, _ := NewFleetMembersClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}

@@ -8,7 +8,6 @@ package service
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
@@ -24,9 +23,7 @@ import (
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions struct {
-	azcore.ClientOptions
-}
+type ClientOptions base.ClientOptions
 
 // Client represents a URL to the Azure File Storage service allowing you to manipulate file shares.
 type Client base.Client[generated.ServiceClient]

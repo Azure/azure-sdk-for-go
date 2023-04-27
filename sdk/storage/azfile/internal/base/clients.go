@@ -7,10 +7,16 @@
 package base
 
 import (
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/generated"
 )
+
+// ClientOptions contains the optional parameters when creating a Client.
+type ClientOptions struct {
+	azcore.ClientOptions
+}
 
 type Client[T any] struct {
 	inner     *T

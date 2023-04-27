@@ -257,6 +257,187 @@ type BlockBlobUnrecordedTestsSuite struct {
 //		_require.Nil(err)
 //		_require.EqualValues(destData, content)
 //	}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithMD5() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	contentMD5 := md5.Sum(sourceData)
+	rsc := streaming.NopCloser(r)
+
+	srcBlob := containerClient.NewBlockBlobClient("src" + testcommon.GenerateBlobName(testName))
+	destBlob := containerClient.NewBlockBlobClient("dst" + testcommon.GenerateBlobName(testName))
+
+	// Prepare source bbClient for copy.
+	_, err = srcBlob.Upload(context.Background(), rsc, nil)
+	_require.Nil(err)
+
+	// Get source blob url with SAS for StageFromURL.
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+	perms := sas.BlobPermissions{Read: true}
+
+	srcBlobParts.SAS, err = sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   perms.String(),
+	}.SignWithSharedKey(credential)
+	_require.NoError(err)
+
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	// Stage blocks from URL.
+	blockIDs := testcommon.GenerateBlockIDsList(2)
+
+	opts := blockblob.StageBlockFromURLOptions{
+		SourceContentValidation: blob.SourceContentValidationTypeMD5(contentMD5[:]),
+	}
+
+	stageResp1, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
+	_require.Nil(err)
+	_require.Equal(stageResp1.ContentMD5, contentMD5[:])
+
+	stageResp2, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[1], srcBlobURLWithSAS, &opts)
+	_require.Nil(err)
+	_require.Equal(stageResp2.ContentMD5, contentMD5[:])
+
+	// Check block list.
+	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
+	_require.Nil(err)
+	_require.NotNil(blockList.BlockList)
+	_require.Nil(blockList.BlockList.CommittedBlocks)
+	_require.NotNil(blockList.BlockList.UncommittedBlocks)
+	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
+
+	// Commit block list.
+	_, err = destBlob.CommitBlockList(context.Background(), blockIDs, nil)
+	_require.Nil(err)
+
+	// Check data integrity through downloading.
+	destBuffer := make([]byte, 4*1024)
+	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
+	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
+	_require.Nil(err)
+	_require.Equal(destBuffer, sourceData)
+
+	// Test stage block from URL with bad MD5 value
+	_, badMD5 := testcommon.GetDataAndReader(testName, 16)
+	var badMD5Validator blob.SourceContentValidationTypeMD5 = badMD5[:]
+	opts = blockblob.StageBlockFromURLOptions{
+		SourceContentValidation: badMD5Validator,
+	}
+	_, err = destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
+
+	_, err = destBlob.StageBlockFromURL(context.Background(), blockIDs[1], srcBlobURLWithSAS, &opts)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.MD5Mismatch)
+}
+
+func (s *BlockBlobUnrecordedTestsSuite) TestStageBlockFromURLWithCRC64() {
+	_require := require.New(s.T())
+	testName := s.T().Name()
+	svcClient, err := testcommon.GetServiceClient(s.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+
+	containerName := testcommon.GenerateContainerName(testName)
+	containerClient := testcommon.CreateNewContainer(context.Background(), _require, containerName, svcClient)
+	defer testcommon.DeleteContainer(context.Background(), _require, containerClient)
+
+	contentSize := 4 * 1024 // 4 KB
+	r, sourceData := testcommon.GetDataAndReader(testName, contentSize)
+	rsc := streaming.NopCloser(r)
+	crc64Value := crc64.Checksum(sourceData, shared.CRC64Table)
+	crc := make([]byte, 8)
+	binary.LittleEndian.PutUint64(crc, crc64Value)
+
+	srcBlob := containerClient.NewBlockBlobClient("src" + testcommon.GenerateBlobName(testName))
+	destBlob := containerClient.NewBlockBlobClient("dst" + testcommon.GenerateBlobName(testName))
+
+	// Prepare source bbClient for copy.
+	_, err = srcBlob.Upload(context.Background(), rsc, nil)
+	_require.Nil(err)
+
+	// Get source blob url with SAS for StageFromURL.
+	srcBlobParts, _ := blob.ParseURL(srcBlob.URL())
+	credential, err := testcommon.GetGenericSharedKeyCredential(testcommon.TestAccountDefault)
+	_require.Nil(err)
+	perms := sas.BlobPermissions{Read: true}
+
+	srcBlobParts.SAS, err = sas.BlobSignatureValues{
+		Protocol:      sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:    time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ContainerName: srcBlobParts.ContainerName,
+		BlobName:      srcBlobParts.BlobName,
+		Permissions:   perms.String(),
+	}.SignWithSharedKey(credential)
+	_require.NoError(err)
+
+	srcBlobURLWithSAS := srcBlobParts.String()
+
+	// Stage blocks from URL.
+	blockIDs := testcommon.GenerateBlockIDsList(2)
+
+	opts := blockblob.StageBlockFromURLOptions{
+		SourceContentValidation: blob.SourceContentValidationTypeCRC64(crc),
+	}
+
+	stageResp1, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
+	_require.Nil(err)
+	_require.Equal(stageResp1.ContentCRC64, crc)
+
+	stageResp2, err := destBlob.StageBlockFromURL(context.Background(), blockIDs[1], srcBlobURLWithSAS, &opts)
+	_require.Nil(err)
+	_require.Equal(stageResp2.ContentCRC64, crc)
+
+	// Check block list.
+	blockList, err := destBlob.GetBlockList(context.Background(), blockblob.BlockListTypeAll, nil)
+	_require.Nil(err)
+	_require.NotNil(blockList.BlockList)
+	_require.Nil(blockList.BlockList.CommittedBlocks)
+	_require.NotNil(blockList.BlockList.UncommittedBlocks)
+	_require.Len(blockList.BlockList.UncommittedBlocks, 2)
+
+	// Commit block list.
+	_, err = destBlob.CommitBlockList(context.Background(), blockIDs, nil)
+	_require.Nil(err)
+
+	// Check data integrity through downloading.
+	destBuffer := make([]byte, 4*1024)
+	downloadBufferOptions := blob.DownloadBufferOptions{Range: blob.HTTPRange{Offset: 0, Count: 4096}}
+	_, err = destBlob.DownloadBuffer(context.Background(), destBuffer, &downloadBufferOptions)
+	_require.Nil(err)
+	_require.Equal(destBuffer, sourceData)
+
+	// Test stage block from URL with bad CRC64 value
+	_, sourceData = testcommon.GetDataAndReader(testName, 16)
+	crc64Value = crc64.Checksum(sourceData, shared.CRC64Table)
+	badCRC := make([]byte, 8)
+	binary.LittleEndian.PutUint64(badCRC, crc64Value)
+	opts = blockblob.StageBlockFromURLOptions{
+		SourceContentValidation: blob.SourceContentValidationTypeCRC64(badCRC),
+	}
+	_, err = destBlob.StageBlockFromURL(context.Background(), blockIDs[0], srcBlobURLWithSAS, &opts)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
+
+	_, err = destBlob.StageBlockFromURL(context.Background(), blockIDs[1], srcBlobURLWithSAS, &opts)
+	_require.NotNil(err)
+	testcommon.ValidateBlobErrorCode(_require, err, bloberror.CRC64Mismatch)
+}
+
 //
 //	func (s *BlockBlobUnrecordedTestsSuite) TestCopyBlockBlobFromURL() {
 //		_require := require.New(s.T())

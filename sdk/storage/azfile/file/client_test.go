@@ -1794,7 +1794,7 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLOffsetNegative() {
 	_require.Equal(err.Error(), "invalid argument: source and destination offsets must be >= 0")
 }
 
-func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuthBlob() {
+func (f *FileUnrecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuthBlob() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 

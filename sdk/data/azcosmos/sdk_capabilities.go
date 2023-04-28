@@ -9,7 +9,7 @@ type supportedCapabilities uint64
 
 const (
 	supportedCapabilitiesNone           supportedCapabilities = 0
-	supportedCapabilitiesPartitionMerge supportedCapabilities = 1 << iota
+	supportedCapabilitiesPartitionMerge supportedCapabilities = 1 << 0
 )
 
 var supportedCapabilitiesHeaderValue = supportedCapabilitiesAsString()

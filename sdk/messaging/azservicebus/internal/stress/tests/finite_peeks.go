@@ -53,8 +53,8 @@ func FinitePeeks(remainingArgs []string) {
 	sc.PanicOnError("failed to abandon message",
 		receiver.AbandonMessage(sc.Context, tmp[0], nil))
 
-	maxPeeks := 10000
-	peekSleep := 500 * time.Millisecond
+	const maxPeeks = 10000
+	const peekSleep = 500 * time.Millisecond
 
 	log.Printf("Now peeking %d times, every %dms", maxPeeks, peekSleep/time.Millisecond)
 

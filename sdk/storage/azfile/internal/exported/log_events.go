@@ -12,6 +12,6 @@ import (
 
 // NOTE: these are publicly exported via type-aliasing in azfile/log.go
 const (
-	// EventUpload is used when we compute number of blocks to upload and size of each block.
+	// EventUpload is used when we compute number of chunks to upload and size of each chunk.
 	EventUpload log.Event = "azfile.Upload"
 )

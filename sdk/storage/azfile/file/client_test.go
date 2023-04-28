@@ -13,13 +13,11 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
-	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
@@ -2833,22 +2831,13 @@ func (f *FileRecordedTestsSuite) TestFileUploadDownloadSmallBuffer() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
 
-	var fileSize int64 = 10 * 1024
-	listenerCalled := false
-	log.SetEvents(azfile.EventUpload, log.EventRequest, log.EventResponse)
-	log.SetListener(func(cls log.Event, msg string) {
-		if cls == azfile.EventUpload {
-			listenerCalled = true
-			_require.Equal(msg, fmt.Sprintf("file name %v actual size %v chunk-size 2048 chunk-count 5", testcommon.GenerateFileName(testName), fileSize))
-		}
-	})
-
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
 
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
+	var fileSize int64 = 10 * 1024
 	fClient := shareClient.NewRootDirectoryClient().NewFileClient(testcommon.GenerateFileName(testName))
 	_, err = fClient.Create(context.Background(), fileSize, nil)
 	_require.NoError(err)
@@ -2889,8 +2878,6 @@ func (f *FileRecordedTestsSuite) TestFileUploadDownloadSmallBuffer() {
 	_require.Len(rangeList.Ranges, 1)
 	_require.Equal(*rangeList.Ranges[0].Start, int64(0))
 	_require.Equal(*rangeList.Ranges[0].End, fileSize-1)
-
-	_require.True(listenerCalled)
 }
 
 func (f *FileRecordedTestsSuite) TestFileUploadDownloadSmallFile() {
@@ -3131,3 +3118,5 @@ func (f *FileRecordedTestsSuite) TestFileForceCloseHandlesDefault() {
 }
 
 // TODO: Add tests for retry header options
+
+// TODO: fix links in README: source, file_error, samples

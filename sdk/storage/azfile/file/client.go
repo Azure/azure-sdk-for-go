@@ -280,8 +280,6 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 		o.ChunkSize = MaxUpdateRangeBytes
 	}
 
-	// TODO: Add logs
-
 	progress := int64(0)
 	progressLock := &sync.Mutex{}
 

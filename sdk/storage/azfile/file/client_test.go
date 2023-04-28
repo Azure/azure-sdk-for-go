@@ -13,9 +13,11 @@ import (
 	"crypto/rand"
 	"encoding/binary"
 	"fmt"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/shared"
@@ -1792,10 +1794,19 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLOffsetNegative() {
 	_require.Equal(err.Error(), "invalid argument: source and destination offsets must be >= 0")
 }
 
-// TODO: check why this is failing
-/*func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuth() {
+func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLCopySourceAuthBlob() {
 	_require := require.New(f.T())
 	testName := f.T().Name()
+
+	accountName, _ := testcommon.GetGenericAccountInfo(testcommon.TestAccountDefault)
+	_require.Greater(len(accountName), 0)
+
+	cred, err := testcommon.GetGenericTokenCredential()
+	_require.NoError(err)
+
+	// Getting token
+	accessToken, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
+	_require.NoError(err)
 
 	svcClient, err := testcommon.GetServiceClient(f.T(), testcommon.TestAccountDefault, nil)
 	_require.NoError(err)
@@ -1804,56 +1815,54 @@ func (f *FileRecordedTestsSuite) TestFileUploadRangeFromURLOffsetNegative() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, shareName, svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	var fileSize int64 = 1024 * 20
-	srcFileName := "src" + testcommon.GenerateFileName(testName)
-	srcFClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
-	_, err = srcFClient.Create(context.Background(), fileSize, nil)
-	_require.NoError(err)
-
-	gResp, err := srcFClient.GetProperties(context.Background(), nil)
-	_require.NoError(err)
-	_require.Equal(*gResp.ContentLength, fileSize)
-
+	var fileSize int64 = 1024 * 10
 	contentSize := 1024 * 8 // 8KB
-	content := make([]byte, contentSize)
-	body := bytes.NewReader(content)
-	rsc := streaming.NopCloser(body)
+	_, content := testcommon.GenerateData(contentSize)
 	contentCRC64 := crc64.Checksum(content, shared.CRC64Table)
 
-	_, err = srcFClient.UploadRange(context.Background(), 0, rsc, nil)
+	// create source block blob
+	blobClient, err := azblob.NewClient("https://"+accountName+".blob.core.windows.net/", cred, nil)
+	_require.NoError(err)
+
+	containerName := "goc" + testcommon.GenerateEntityName(testName)
+	blobName := "blob" + testcommon.GenerateEntityName(testName)
+	_, err = blobClient.CreateContainer(context.Background(), containerName, nil)
+	_require.NoError(err)
+	defer func() {
+		_, err := blobClient.DeleteContainer(context.Background(), containerName, nil)
+		_require.NoError(err)
+	}()
+
+	_, err = blobClient.UploadBuffer(context.Background(), containerName, blobName, content, nil)
 	_require.NoError(err)
 
 	destFClient := shareClient.NewRootDirectoryClient().NewFileClient("dest" + testcommon.GenerateFileName(testName))
 	_, err = destFClient.Create(context.Background(), fileSize, nil)
 	_require.NoError(err)
 
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	_require.NoError(err)
-
-	// Getting token
-	token, err := cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{"https://storage.azure.com/.default"}})
-	_require.NoError(err)
-
-	uResp, err := destFClient.UploadRangeFromURL(context.Background(), srcFClient.URL(), 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
+	blobURL := blobClient.ServiceClient().NewContainerClient(containerName).NewBlockBlobClient(blobName).URL()
+	uResp, err := destFClient.UploadRangeFromURL(context.Background(), blobURL, 0, 0, int64(contentSize), &file.UploadRangeFromURLOptions{
 		SourceContentCRC64:      contentCRC64,
-		CopySourceAuthorization: to.Ptr("Bearer " + token.Token),
+		CopySourceAuthorization: to.Ptr("Bearer " + accessToken.Token),
 	})
 	_require.NoError(err)
 	_require.NotNil(uResp.XMSContentCRC64)
 	_require.EqualValues(binary.LittleEndian.Uint64(uResp.XMSContentCRC64), contentCRC64)
 
-	rangeList, err := destFClient.GetRangeList(context.Background(), nil)
+	// validate the content uploaded
+	dResp, err := destFClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		Range: file.HTTPRange{Offset: 0, Count: int64(contentSize)},
+	})
 	_require.NoError(err)
-	_require.NotNil(rangeList.RequestID)
 
-	cResp, err := destFClient.ClearRange(context.Background(), file.HTTPRange{Offset: 0, Count: int64(contentSize)}, nil)
-	_require.NoError(err)
-	_require.Nil(cResp.ContentMD5)
+	data, err := ioutil.ReadAll(dResp.Body)
+	defer func() {
+		err = dResp.Body.Close()
+		_require.NoError(err)
+	}()
 
-	rangeList2, err := destFClient.GetRangeList(context.Background(), nil)
-	_require.NoError(err)
-	_require.NotNil(rangeList2.RequestID)
-}*/
+	_require.EqualValues(data, content)
+}
 
 func (f *FileUnrecordedTestsSuite) TestFileUploadBuffer() {
 	_require := require.New(f.T())
@@ -3107,7 +3116,5 @@ func (f *FileRecordedTestsSuite) TestFileForceCloseHandlesDefault() {
 	_require.EqualValues(*resp.NumberOfHandlesFailedToClose, 0)
 	_require.Nil(resp.Marker)
 }
-
-// TODO: Add tests for GetRangeList, ListHandles and ForceCloseHandles
 
 // TODO: Add tests for retry header options

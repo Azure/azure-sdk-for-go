@@ -51,7 +51,6 @@ func (o *CreateOptions) format() *generated.ShareClientCreateOptions {
 type DeleteOptions struct {
 	// Specifies the option include to delete the base share and all of its snapshots.
 	DeleteSnapshots *DeleteSnapshotsOptionType
-	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.
@@ -83,7 +82,6 @@ type RestoreOptions struct {
 
 // GetPropertiesOptions contains the optional parameters for the Client.GetProperties method.
 type GetPropertiesOptions struct {
-	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
 	// LeaseAccessConditions contains optional parameters to access leased entity.

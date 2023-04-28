@@ -1115,7 +1115,3 @@ func (d *DirectoryRecordedTestsSuite) TestDirectoryCreateNegativeWithoutSAS() {
 	_, err = dirClient.Create(context.Background(), nil)
 	_require.Error(err)
 }
-
-// TODO: add tests for listing files and directories after file client is completed
-
-// TODO: add tests for ListHandles and ForceCloseHandles

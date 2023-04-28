@@ -281,7 +281,6 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 		o.ChunkSize = MaxUpdateRangeBytes
 	}
 
-	// TODO: Add logs
 	if log.Should(exported.EventUpload) {
 		urlParts, err := sas.ParseURL(f.URL())
 		if err == nil {

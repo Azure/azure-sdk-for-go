@@ -24,25 +24,19 @@ import (
 // DiagnosticsClient contains the methods for the Diagnostics group.
 // Don't use this type directly, use NewDiagnosticsClient() instead.
 type DiagnosticsClient struct {
-	internal                *arm.Client
-	scope                   string
-	diagnosticsResourceName string
+	internal *arm.Client
 }
 
 // NewDiagnosticsClient creates a new instance of DiagnosticsClient with the specified values.
-//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
-//   - diagnosticsResourceName - Unique resource name for insight resources
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
-func NewDiagnosticsClient(scope string, diagnosticsResourceName string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticsClient, error) {
+func NewDiagnosticsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticsClient, error) {
 	cl, err := arm.NewClient(moduleName+".DiagnosticsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DiagnosticsClient{
-		scope:                   scope,
-		diagnosticsResourceName: diagnosticsResourceName,
-		internal:                cl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -51,10 +45,11 @@ func NewDiagnosticsClient(scope string, diagnosticsResourceName string, credenti
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
+//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
 //   - options - DiagnosticsClientCheckNameAvailabilityOptions contains the optional parameters for the DiagnosticsClient.CheckNameAvailability
 //     method.
-func (client *DiagnosticsClient) CheckNameAvailability(ctx context.Context, options *DiagnosticsClientCheckNameAvailabilityOptions) (DiagnosticsClientCheckNameAvailabilityResponse, error) {
-	req, err := client.checkNameAvailabilityCreateRequest(ctx, options)
+func (client *DiagnosticsClient) CheckNameAvailability(ctx context.Context, scope string, options *DiagnosticsClientCheckNameAvailabilityOptions) (DiagnosticsClientCheckNameAvailabilityResponse, error) {
+	req, err := client.checkNameAvailabilityCreateRequest(ctx, scope, options)
 	if err != nil {
 		return DiagnosticsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -69,9 +64,9 @@ func (client *DiagnosticsClient) CheckNameAvailability(ctx context.Context, opti
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *DiagnosticsClient) checkNameAvailabilityCreateRequest(ctx context.Context, options *DiagnosticsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) checkNameAvailabilityCreateRequest(ctx context.Context, scope string, options *DiagnosticsClientCheckNameAvailabilityOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Help/checkNameAvailability"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", client.scope)
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
 	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -103,11 +98,13 @@ func (client *DiagnosticsClient) checkNameAvailabilityHandleResponse(resp *http.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
+//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - diagnosticsResourceName - Unique resource name for insight resources
 //   - diagnosticResourceRequest - The required request body for this insightResource invocation.
 //   - options - DiagnosticsClientBeginCreateOptions contains the optional parameters for the DiagnosticsClient.BeginCreate method.
-func (client *DiagnosticsClient) BeginCreate(ctx context.Context, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*runtime.Poller[DiagnosticsClientCreateResponse], error) {
+func (client *DiagnosticsClient) BeginCreate(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*runtime.Poller[DiagnosticsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.create(ctx, diagnosticResourceRequest, options)
+		resp, err := client.create(ctx, scope, diagnosticsResourceName, diagnosticResourceRequest, options)
 		if err != nil {
 			return nil, err
 		}
@@ -127,8 +124,8 @@ func (client *DiagnosticsClient) BeginCreate(ctx context.Context, diagnosticReso
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
-func (client *DiagnosticsClient) create(ctx context.Context, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*http.Response, error) {
-	req, err := client.createCreateRequest(ctx, diagnosticResourceRequest, options)
+func (client *DiagnosticsClient) create(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*http.Response, error) {
+	req, err := client.createCreateRequest(ctx, scope, diagnosticsResourceName, diagnosticResourceRequest, options)
 	if err != nil {
 		return nil, err
 	}
@@ -143,13 +140,13 @@ func (client *DiagnosticsClient) create(ctx context.Context, diagnosticResourceR
 }
 
 // createCreateRequest creates the Create request.
-func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, scope string, diagnosticsResourceName string, diagnosticResourceRequest DiagnosticResource, options *DiagnosticsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", client.scope)
-	if client.diagnosticsResourceName == "" {
-		return nil, errors.New("parameter client.diagnosticsResourceName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if diagnosticsResourceName == "" {
+		return nil, errors.New("parameter diagnosticsResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{diagnosticsResourceName}", url.PathEscape(client.diagnosticsResourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{diagnosticsResourceName}", url.PathEscape(diagnosticsResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
@@ -165,9 +162,11 @@ func (client *DiagnosticsClient) createCreateRequest(ctx context.Context, diagno
 // If the operation fails it returns an *azcore.ResponseError type.
 //
 // Generated from API version 2023-01-01-preview
+//   - scope - This is an extension resource provider and only resource level extension is supported at the moment.
+//   - diagnosticsResourceName - Unique resource name for insight resources
 //   - options - DiagnosticsClientGetOptions contains the optional parameters for the DiagnosticsClient.Get method.
-func (client *DiagnosticsClient) Get(ctx context.Context, options *DiagnosticsClientGetOptions) (DiagnosticsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, options)
+func (client *DiagnosticsClient) Get(ctx context.Context, scope string, diagnosticsResourceName string, options *DiagnosticsClientGetOptions) (DiagnosticsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, scope, diagnosticsResourceName, options)
 	if err != nil {
 		return DiagnosticsClientGetResponse{}, err
 	}
@@ -182,13 +181,13 @@ func (client *DiagnosticsClient) Get(ctx context.Context, options *DiagnosticsCl
 }
 
 // getCreateRequest creates the Get request.
-func (client *DiagnosticsClient) getCreateRequest(ctx context.Context, options *DiagnosticsClientGetOptions) (*policy.Request, error) {
+func (client *DiagnosticsClient) getCreateRequest(ctx context.Context, scope string, diagnosticsResourceName string, options *DiagnosticsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}"
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", client.scope)
-	if client.diagnosticsResourceName == "" {
-		return nil, errors.New("parameter client.diagnosticsResourceName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+	if diagnosticsResourceName == "" {
+		return nil, errors.New("parameter diagnosticsResourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{diagnosticsResourceName}", url.PathEscape(client.diagnosticsResourceName))
+	urlPath = strings.ReplaceAll(urlPath, "{diagnosticsResourceName}", url.PathEscape(diagnosticsResourceName))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err

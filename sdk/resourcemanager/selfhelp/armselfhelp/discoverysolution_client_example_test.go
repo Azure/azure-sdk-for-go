@@ -17,18 +17,20 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc34cfefbd7e04dbb5c4940655bb8d75c0a05c6f/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/ListDiscoverySolutionsForKeyVaultResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d938a209ffd813aafe13b1899f0a1328fe186c87/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/ListDiscoverySolutionsForKeyVaultResource.json
 func ExampleDiscoverySolutionClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory("<scope>", "<diagnostics-resource-name>", nil, nil, cred, nil)
+	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDiscoverySolutionClient().NewListPager(nil)
+	pager := clientFactory.NewDiscoverySolutionClient().NewListPager("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", &armselfhelp.DiscoverySolutionClientListOptions{Filter: nil,
+		Skiptoken: nil,
+	})
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -40,33 +42,46 @@ func ExampleDiscoverySolutionClient_NewListPager() {
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page.DiscoveryResponse = armselfhelp.DiscoveryResponse{
-		// 	Value: []*armselfhelp.SolutionMetadata{
+		// 	Value: []*armselfhelp.SolutionMetadataResource{
 		// 		{
-		// 			Description: to.Ptr("This is a diagnostic"),
-		// 			RequiredParameterSets: [][]*string{
-		// 				[]*string{
-		// 					to.Ptr("ResourceUri")}},
-		// 					SolutionID: to.Ptr("SampleSolutionId1"),
-		// 					SolutionType: to.Ptr("Diagnostics"),
+		// 			Name: to.Ptr("SampleSolutionId1"),
+		// 			Type: to.Ptr("Microsoft.Help/discoverySolutions"),
+		// 			ID: to.Ptr("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/discoverySolutions/SampleSolutionId1"),
+		// 			Properties: &armselfhelp.SolutionMetadataProperties{
+		// 				Description: to.Ptr("This is a diagnostic"),
+		// 				RequiredParameterSets: [][]*string{
+		// 					[]*string{
+		// 						to.Ptr("ResourceUri")}},
+		// 						SolutionID: to.Ptr("SampleSolutionId1"),
+		// 						SolutionType: to.Ptr("Diagnostics"),
+		// 					},
 		// 				},
 		// 				{
-		// 					Description: to.Ptr("This is another diagnostic"),
-		// 					RequiredParameterSets: [][]*string{
-		// 						[]*string{
-		// 							to.Ptr("ResourceUri")}},
-		// 							SolutionID: to.Ptr("SampleSolutionId2"),
-		// 							SolutionType: to.Ptr("Diagnostics"),
+		// 					Name: to.Ptr("SampleSolutionId2"),
+		// 					Type: to.Ptr("Microsoft.Help/discoverySolutions"),
+		// 					ID: to.Ptr("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/discoverySolutions/SampleSolutionId2"),
+		// 					Properties: &armselfhelp.SolutionMetadataProperties{
+		// 						Description: to.Ptr("This is a diagnostic"),
+		// 						RequiredParameterSets: [][]*string{
+		// 							[]*string{
+		// 								to.Ptr("ResourceUri")}},
+		// 								SolutionID: to.Ptr("SampleSolutionId2"),
+		// 								SolutionType: to.Ptr("Diagnostics"),
+		// 							},
 		// 						},
 		// 						{
-		// 							Description: to.Ptr("This is another testing diagnostic"),
-		// 							SolutionID: to.Ptr("SampleSolutionId3"),
-		// 							SolutionType: to.Ptr("Diagnostics"),
-		// 						},
-		// 						{
-		// 							Description: to.Ptr("This is also another testing diagnostic"),
-		// 							SolutionID: to.Ptr("SampleSolutionId4"),
-		// 							SolutionType: to.Ptr("Diagnostics"),
-		// 					}},
-		// 				}
+		// 							Name: to.Ptr("SampleSolutionId3"),
+		// 							Type: to.Ptr("Microsoft.Help/discoverySolutions"),
+		// 							ID: to.Ptr("subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read/providers/Microsoft.Help/discoverySolutions/SampleSolutionId3"),
+		// 							Properties: &armselfhelp.SolutionMetadataProperties{
+		// 								Description: to.Ptr("This is a diagnostic"),
+		// 								RequiredParameterSets: [][]*string{
+		// 									[]*string{
+		// 										to.Ptr("ResourceUri")}},
+		// 										SolutionID: to.Ptr("SampleSolutionId3"),
+		// 										SolutionType: to.Ptr("Diagnostics"),
+		// 									},
+		// 							}},
+		// 						}
 	}
 }

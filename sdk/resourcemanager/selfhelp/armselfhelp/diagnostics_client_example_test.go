@@ -18,18 +18,18 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc34cfefbd7e04dbb5c4940655bb8d75c0a05c6f/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d938a209ffd813aafe13b1899f0a1328fe186c87/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsAvailable.json
 func ExampleDiagnosticsClient_CheckNameAvailability_exampleWhenNameIsAvailableForADiagnosticResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory("<scope>", "<diagnostics-resource-name>", nil, nil, cred, nil)
+	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDiagnosticsClient().CheckNameAvailability(ctx, &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewDiagnosticsClient().CheckNameAvailability(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
 		Name: to.Ptr("sampleName"),
 		Type: to.Ptr("Microsoft.Help/diagnostics"),
 	},
@@ -45,18 +45,18 @@ func ExampleDiagnosticsClient_CheckNameAvailability_exampleWhenNameIsAvailableFo
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc34cfefbd7e04dbb5c4940655bb8d75c0a05c6f/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d938a209ffd813aafe13b1899f0a1328fe186c87/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CheckNameAvailabilityForDiagnosticWhenNameIsNotAvailable.json
 func ExampleDiagnosticsClient_CheckNameAvailability_exampleWhenNameIsNotAvailableForADiagnosticResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory("<scope>", "<diagnostics-resource-name>", nil, nil, cred, nil)
+	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDiagnosticsClient().CheckNameAvailability(ctx, &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
+	res, err := clientFactory.NewDiagnosticsClient().CheckNameAvailability(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6", &armselfhelp.DiagnosticsClientCheckNameAvailabilityOptions{CheckNameAvailabilityRequest: &armselfhelp.CheckNameAvailabilityRequest{
 		Name: to.Ptr("sampleName"),
 		Type: to.Ptr("Microsoft.Help/diagnostics"),
 	},
@@ -74,18 +74,18 @@ func ExampleDiagnosticsClient_CheckNameAvailability_exampleWhenNameIsNotAvailabl
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc34cfefbd7e04dbb5c4940655bb8d75c0a05c6f/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CreateDiagnosticForKeyVaultResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d938a209ffd813aafe13b1899f0a1328fe186c87/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/CreateDiagnosticForKeyVaultResource.json
 func ExampleDiagnosticsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory("<scope>", "<diagnostics-resource-name>", nil, nil, cred, nil)
+	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewDiagnosticsClient().BeginCreate(ctx, armselfhelp.DiagnosticResource{}, nil)
+	poller, err := clientFactory.NewDiagnosticsClient().BeginCreate(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", "VMNotWorkingInsight", armselfhelp.DiagnosticResource{}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -95,18 +95,18 @@ func ExampleDiagnosticsClient_BeginCreate() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc34cfefbd7e04dbb5c4940655bb8d75c0a05c6f/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/GetDiagnosticForKeyVaultResource.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d938a209ffd813aafe13b1899f0a1328fe186c87/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/GetDiagnosticForKeyVaultResource.json
 func ExampleDiagnosticsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory("<scope>", "<diagnostics-resource-name>", nil, nil, cred, nil)
+	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDiagnosticsClient().Get(ctx, nil)
+	res, err := clientFactory.NewDiagnosticsClient().Get(ctx, "subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read", "VMNotWorkingInsight", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

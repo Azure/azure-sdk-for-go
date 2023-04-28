@@ -17,14 +17,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/selfhelp/armselfhelp"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/dc34cfefbd7e04dbb5c4940655bb8d75c0a05c6f/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/ListOperations.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/d938a209ffd813aafe13b1899f0a1328fe186c87/specification/help/resource-manager/Microsoft.Help/preview/2023-01-01-preview/examples/ListOperations.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armselfhelp.NewClientFactory("<scope>", "<diagnostics-resource-name>", nil, nil, cred, nil)
+	clientFactory, err := armselfhelp.NewClientFactory(cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}

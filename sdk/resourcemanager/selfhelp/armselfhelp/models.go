@@ -116,11 +116,19 @@ type DiscoveryResponse struct {
 	NextLink *string `json:"nextLink,omitempty"`
 
 	// The list of solution metadata.
-	Value []*SolutionMetadata `json:"value,omitempty"`
+	Value []*SolutionMetadataResource `json:"value,omitempty"`
 }
 
 // DiscoverySolutionClientListOptions contains the optional parameters for the DiscoverySolutionClient.NewListPager method.
 type DiscoverySolutionClientListOptions struct {
+	// Can be used to filter solutionIds by 'ProblemClassificationId'. The filter supports only 'and' and 'eq' operators. Example:
+	// $filter=ProblemClassificationId eq '1ddda5b4-cf6c-4d4f-91ad-bc38ab0e811e'
+	// and ProblemClassificationId eq '0a9673c2-7af6-4e19-90d3-4ee2461076d9'.
+	Filter *string
+	// Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element,
+	// the value of the nextLink element will include a skiptoken parameter that
+	// specifies a starting point to use for subsequent calls.
+	Skiptoken *string
 }
 
 // Error definition.
@@ -207,8 +215,8 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SolutionMetadata - Diagnostic solution metadata.
-type SolutionMetadata struct {
+// SolutionMetadataProperties - Diagnostic solution metadata.
+type SolutionMetadataProperties struct {
 	// A detailed description of solution.
 	Description *string `json:"description,omitempty"`
 
@@ -220,6 +228,24 @@ type SolutionMetadata struct {
 
 	// Solution Type.
 	SolutionType *string `json:"solutionType,omitempty"`
+}
+
+// SolutionMetadataResource - Solution Metadata resource
+type SolutionMetadataResource struct {
+	// Solution metadata Resource properties.
+	Properties *SolutionMetadataProperties `json:"properties,omitempty"`
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string `json:"id,omitempty" azure:"ro"`
+
+	// READ-ONLY; The name of the resource
+	Name *string `json:"name,omitempty" azure:"ro"`
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string `json:"type,omitempty" azure:"ro"`
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.

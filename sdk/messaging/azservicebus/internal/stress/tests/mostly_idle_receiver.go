@@ -83,7 +83,7 @@ func MostlyIdleReceiver(remainingArgs []string) {
 			messages, err := receiver.ReceiveMessages(sc.Context, 1, nil)
 			sc.PanicOnError(fmt.Sprintf("failed receiving messages for duration %s", duration), err)
 
-			log.Printf("Received messages %#v", messages)
+			log.Printf("Received %d messages", len(messages))
 			stats.AddReceived(int32(len(messages)))
 
 			for _, msg := range messages {

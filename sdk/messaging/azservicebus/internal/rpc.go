@@ -148,13 +148,10 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error)
 	return link, nil
 }
 
-const responseRouterShutdownMessage = "Response router has shut down"
-
 // responseRouter is responsible for taking any messages received on the 'response'
 // link and forwarding it to the proper channel. The channel is being select'd by the
 // original `RPC` call.
 func (l *rpcLink) responseRouter() {
-	defer azlog.Writef(l.logEvent, responseRouterShutdownMessage)
 	defer close(l.responseRouterClosed)
 
 	for {

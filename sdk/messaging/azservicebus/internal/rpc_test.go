@@ -8,7 +8,6 @@ import (
 	"errors"
 	"net"
 	"testing"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -36,10 +35,6 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 
 	defer func() { require.NoError(t, link.Close(context.Background())) }()
 
-	messagesCh := make(chan string, 10000)
-	endCapture := test.CaptureLogsForTestWithChannel(messagesCh, false)
-	defer endCapture()
-
 	responses := []*rpcTestResp{
 		// this error requires recovery (in this case, connection but there's no
 		// distinction between types in RPCLink)
@@ -53,23 +48,11 @@ func TestRPCLinkNonErrorRequiresRecovery(t *testing.T) {
 	})
 	require.Nil(t, resp)
 
-	// (give the response router a teeny bit to shut down)
-	time.Sleep(500 * time.Millisecond)
+	linkImpl := link.(*rpcLink)
+	<-linkImpl.responseRouterClosed
 
 	var netOpError net.Error
 	require.ErrorAs(t, err, &netOpError)
-
-LogLoop:
-	for {
-		select {
-		case msg := <-messagesCh:
-			if msg == "[rpctesting] "+responseRouterShutdownMessage {
-				break LogLoop
-			}
-		default:
-			require.Fail(t, "RPC router never shut down")
-		}
-	}
 }
 
 func TestRPCLinkNonErrorRequiresNoRecovery(t *testing.T) {

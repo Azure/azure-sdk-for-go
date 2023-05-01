@@ -4,7 +4,7 @@ Set-Location $PSScriptRoot
 function deployUsingLocalAddons() {
     $azureSDKToolsRoot="<Git clone of azure-sdk-tools>"
     $stressTestAddonsFolder = "$azureSDKToolsRoot/tools/stress-cluster/cluster/kubernetes/stress-test-addons"
-    $clusterResourceGroup = "<Resource Group for Cluster"
+    $clusterResourceGroup = "<Resource Group for Cluster>"
     $clusterSubscription = "<Azure Subscription>"
     $helmEnv = "pg2"
 

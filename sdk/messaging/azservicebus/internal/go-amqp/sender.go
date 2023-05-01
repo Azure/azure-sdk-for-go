@@ -101,7 +101,10 @@ func (s *Sender) send(ctx context.Context, msg *Message, opts *SendOptions) (cha
 		maxTransferFrameHeader = 66 // determined by calcMaxTransferFrameHeader
 	)
 	if len(msg.DeliveryTag) > maxDeliveryTagLength {
-		return nil, fmt.Errorf("delivery tag is over the allowed %v bytes, len: %v", maxDeliveryTagLength, len(msg.DeliveryTag))
+		return nil, &Error{
+			Condition:   ErrCondMessageSizeExceeded,
+			Description: fmt.Sprintf("delivery tag is over the allowed %v bytes, len: %v", maxDeliveryTagLength, len(msg.DeliveryTag)),
+		}
 	}
 
 	s.mu.Lock()
@@ -114,7 +117,10 @@ func (s *Sender) send(ctx context.Context, msg *Message, opts *SendOptions) (cha
 	}
 
 	if s.l.maxMessageSize != 0 && uint64(s.buf.Len()) > s.l.maxMessageSize {
-		return nil, fmt.Errorf("encoded message size exceeds max of %d", s.l.maxMessageSize)
+		return nil, &Error{
+			Condition:   ErrCondMessageSizeExceeded,
+			Description: fmt.Sprintf("encoded message size exceeds max of %d", s.l.maxMessageSize),
+		}
 	}
 
 	senderSettled := senderSettleModeValue(s.l.senderSettleMode) == SenderSettleModeSettled

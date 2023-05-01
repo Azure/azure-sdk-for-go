@@ -35,7 +35,7 @@ type Client struct {
 //   - stream - The streamDeclaration name as defined in the Data Collection Rule.
 //   - body - An array of objects matching the schema defined by the provided stream.
 //   - options - ClientUploadOptions contains the optional parameters for the Client.Upload method.
-func (client *Client) Upload(ctx context.Context, ruleID string, stream string, body any, options *ClientUploadOptions) (ClientUploadResponse, error) {
+func (client *Client) Upload(ctx context.Context, ruleID string, stream string, body []any, options *ClientUploadOptions) (ClientUploadResponse, error) {
 	req, err := client.uploadCreateRequest(ctx, ruleID, stream, body, options)
 	if err != nil {
 		return ClientUploadResponse{}, err
@@ -51,7 +51,7 @@ func (client *Client) Upload(ctx context.Context, ruleID string, stream string, 
 }
 
 // uploadCreateRequest creates the Upload request.
-func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, stream string, body any, options *ClientUploadOptions) (*policy.Request, error) {
+func (client *Client) uploadCreateRequest(ctx context.Context, ruleID string, stream string, body []any, options *ClientUploadOptions) (*policy.Request, error) {
 	urlPath := "/dataCollectionRules/{ruleId}/streams/{stream}"
 	if ruleID == "" {
 		return nil, errors.New("parameter ruleID cannot be empty")

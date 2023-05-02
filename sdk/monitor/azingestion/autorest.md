@@ -26,8 +26,5 @@ directive:
   - from: models.go
     where: $
     transform: return $.replace(/(?:\/\/.*\s)+type (?:ErrorResponse|ErrorDetail|ErrorAdditionalInfo).+\{(?:\s.+\s)+\}\s/g, "");
-  # - from: models_serde.go
-  #   where: $
-  #   transform: return $.replace(/(?:\/\/.*\s)+func \(\w \*?(?:ErrorResponse|ErrorDetail|ErrorAdditionalInfo)\).*\{\s(?:.+\s)+\}\s/g, "");
 
 ```

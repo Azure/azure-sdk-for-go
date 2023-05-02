@@ -769,6 +769,8 @@ type BlockBlobClientUploadOptions struct {
 	Timeout *int32
 	// Specify the transactional md5 for the body, to be validated by the service.
 	TransactionalContentMD5 []byte
+	// Specify the transactional crc64 for the body, to be validated by the service.
+	TransactionalContentCRC64 []byte // TODO: Regenerate appropriately
 }
 
 type BlockList struct {

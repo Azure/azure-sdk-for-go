@@ -161,6 +161,13 @@ func (bb *Client) Upload(ctx context.Context, body io.ReadSeekCloser, options *U
 
 	opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions := options.format()
 
+	if options != nil && options.TransactionalValidation != nil {
+		body, err = options.TransactionalValidation.Apply(body, opts)
+		if err != nil {
+			return UploadResponse{}, nil
+		}
+	}
+
 	resp, err := bb.generated().Upload(ctx, count, body, opts, httpHeaders, leaseInfo, cpkV, cpkN, accessConditions)
 	return resp, err
 }

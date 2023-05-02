@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2023-04-11)
+## 1.0.0 (2023-05-09)
 
 ### Features Added
 
@@ -13,13 +13,14 @@
 - Recovery now includes internal timeouts and also handles restarting a connection if AMQP primitives aren't closed cleanly.
 - Potential leaks for $cbs and $management when there was a partial failure. (PR#20564)
 - Latest go-amqp changes have been merged in with fixes for robustness.
+- Sending a message to an entity that is full will no longer retry. (PR#20722)
 
 ## 0.6.0 (2023-03-07)
 
 ### Features Added
 
-- Added the `ConsumerClientOptions.InstanceID` field. This optional field can enhance error messages from 
-  Event Hubs. For example, error messages related to ownership changes for a partition will contain the 
+- Added the `ConsumerClientOptions.InstanceID` field. This optional field can enhance error messages from
+  Event Hubs. For example, error messages related to ownership changes for a partition will contain the
   name of the link that has taken ownership, which can help with traceability.
 
 ### Breaking Changes
@@ -41,7 +42,7 @@
 ### Breaking Changes
 
 - ProcessorOptions.OwnerLevel has been removed. The Processor uses 0 as the owner level.
-- Uses the public release of `github.com/Azure/azure-sdk-for-go/sdk/storage/azblob` package rather than using an internal copy. 
+- Uses the public release of `github.com/Azure/azure-sdk-for-go/sdk/storage/azblob` package rather than using an internal copy.
   For an example, see [example_consuming_with_checkpoints_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go).
 
 ## 0.4.0 (2023-01-10)
@@ -49,7 +50,7 @@
 ### Bugs Fixed
 
 - User-Agent was incorrectly formatted in our AMQP-based clients. (PR#19712)
-- Connection recovery has been improved, removing some unnecessasry retries as well as adding a bound around 
+- Connection recovery has been improved, removing some unnecessasry retries as well as adding a bound around
   some operations (Close) that could potentially block recovery for a long time. (PR#19683)
 
 ## 0.3.0 (2022-11-10)
@@ -78,7 +79,7 @@
 - NewWebSocketConnArgs renamed to WebSocketConnParams
 - Code renamed to ErrorCode, including associated constants like `ErrorCodeOwnershipLost`.
 - OwnershipData, CheckpointData, and CheckpointStoreAddress have been folded into their individual structs: Ownership and Checkpoint.
-- StartPosition and OwnerLevel were erroneously included in the ConsumerClientOptions struct - they've been removed. These can be 
+- StartPosition and OwnerLevel were erroneously included in the ConsumerClientOptions struct - they've been removed. These can be
   configured in the PartitionClientOptions.
 
 ### Bugs Fixed
@@ -90,8 +91,8 @@
 
 ### Features Added
 
-- Adding in the new Processor type, which can be used to do distributed (and load balanced) consumption of events, using a 
-  CheckpointStore. The built-in checkpoints.BlobStore uses Azure Blob Storage for persistence. A full example is 
+- Adding in the new Processor type, which can be used to do distributed (and load balanced) consumption of events, using a
+  CheckpointStore. The built-in checkpoints.BlobStore uses Azure Blob Storage for persistence. A full example is
   in [example_consuming_with_checkpoints_test.go](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go).
 
 ### Breaking Changes
@@ -101,6 +102,7 @@
   instances (using ConsumerClient.NewPartitionClient), which allows you to share the same AMQP connection and receive from multiple
   partitions simultaneously.
 - Changes to EventData/ReceivedEventData:
+
   - ReceivedEventData now embeds EventData for fields common between the two, making it easier to change and resend.
   - `ApplicationProperties` renamed to `Properties`.
   - `PartitionKey` removed from `EventData`. To send events using a PartitionKey you must set it in the options
@@ -108,8 +110,8 @@
 
     ```go
     batch, err := producerClient.NewEventDataBatch(context.TODO(), &azeventhubs.NewEventDataBatchOptions{
-		  PartitionKey: to.Ptr("partition key"),
-	  })
+      PartitionKey: to.Ptr("partition key"),
+    })
     ```
 
 ### Bugs Fixed
@@ -120,4 +122,4 @@
 
 ## 0.1.0 (2022-08-11)
 
-- Initial preview for the new version of the Azure Event Hubs Go SDK. 
+- Initial preview for the new version of the Azure Event Hubs Go SDK.

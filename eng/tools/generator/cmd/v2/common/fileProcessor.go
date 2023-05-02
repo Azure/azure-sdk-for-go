@@ -31,13 +31,13 @@ const (
 type PullRequestLabel string
 
 const (
-	StableLabel                    PullRequestLabel = "stable"
-	BetaLabel                      PullRequestLabel = "beta"
-	FirstStableLabel               PullRequestLabel = "first stable"
-	FirstStableBreakingChangeLabel PullRequestLabel = "first stable,breaking-change"
-	FirstBetaLabel                 PullRequestLabel = "first beta"
-	StableBreakingChangeLabel      PullRequestLabel = "stable,breaking-change"
-	BetaBreakingChangeLabel        PullRequestLabel = "beta,breaking-change"
+	StableLabel                PullRequestLabel = "Stable"
+	BetaLabel                  PullRequestLabel = "Beta"
+	FirstGALabel               PullRequestLabel = "FirstGA"
+	FirstGABreakingChangeLabel PullRequestLabel = "FirstGA,BreakingChange"
+	FirstBetaLabel             PullRequestLabel = "FirstBeta"
+	StableBreakingChangeLabel  PullRequestLabel = "Stable,BreakingChange"
+	BetaBreakingChangeLabel    PullRequestLabel = "Beta,BreakingChange"
 )
 
 var (
@@ -55,6 +55,7 @@ type PackageInfo struct {
 	Config      string
 	SpecName    string
 	RequestLink string
+	Tag         string
 	ReleaseDate *time.Time
 }
 
@@ -180,8 +181,13 @@ func ChangeConfigWithCommitID(path, repoURL, commitID, specRPName string) error 
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, autorest_md_file_suffix) {
-			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.md", repoURL, commitID, specRPName)
-			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/resource-manager/readme.go.md", repoURL, commitID, specRPName)
+			indexResourceManager := strings.Index(line, "resource-manager")
+			indexReadme := strings.Index(line, autorest_md_file_suffix)
+			resourceManagerPath := []byte(line)
+			resourceManagerPath = resourceManagerPath[indexResourceManager : indexReadme-1]
+
+			lines[i] = fmt.Sprintf("- %s/blob/%s/specification/%s/%s/readme.md", repoURL, commitID, specRPName, resourceManagerPath)
+			lines[i+1] = fmt.Sprintf("- %s/blob/%s/specification/%s/%s/readme.go.md", repoURL, commitID, specRPName, resourceManagerPath)
 			break
 		}
 	}
@@ -277,9 +283,9 @@ func CalculateNewVersion(changelog *model.Changelog, previousVersion string, isC
 			}
 			newVersion = *tempVersion
 			if changelog.HasBreakingChanges() {
-				prl = FirstStableBreakingChangeLabel
+				prl = FirstGABreakingChangeLabel
 			} else {
-				prl = FirstStableLabel
+				prl = FirstGALabel
 			}
 		} else if changelog.HasBreakingChanges() || changelog.Modified.HasAdditiveChanges() {
 			newVersion = version.IncMinor()
@@ -449,8 +455,8 @@ func GetAlwaysSetBodyParamRequiredFlag(path string) (string, error) {
 	return "", nil
 }
 
-// AddPackageConfig add config in file
-func AddPackageConfig(path, config string) error {
+// AddTagSet add tag in file
+func AddTagSet(path, tag string) error {
 	b, err := os.ReadFile(path)
 	if err != nil {
 		return err
@@ -459,7 +465,7 @@ func AddPackageConfig(path, config string) error {
 	lines := strings.Split(string(b), "\n")
 	for i, line := range lines {
 		if strings.Contains(line, "tag:") {
-			lines[i] = config
+			lines[i] = tag
 			break
 		}
 
@@ -468,13 +474,13 @@ func AddPackageConfig(path, config string) error {
 			for j := len(lines) - 1; j > 0; j-- {
 				if strings.Contains(lines[j], "```") {
 					if lines[j-1] == "" {
-						lines[j-1] = config
+						lines[j-1] = tag
 						break
 					} else {
 						newLines := make([]string, len(lines))
 						copy(newLines, lines)
 
-						newLines = append(newLines[:j], config)
+						newLines = append(newLines[:j], tag)
 						tailLines := lines[j:]
 						lines = append(newLines, tailLines...)
 						break

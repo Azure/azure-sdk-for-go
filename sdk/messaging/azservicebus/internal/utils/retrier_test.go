@@ -292,9 +292,9 @@ func TestCalcDelay(t *testing.T) {
 
 func TestRetryLogging(t *testing.T) {
 	t.Run("normal error", func(t *testing.T) {
-		logsFn := test.CaptureLogsForTest()
+		logsFn := test.CaptureLogsForTest(false)
 
-		err := Retry(context.Background(), testLogEvent, "my_operation", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "(my_operation)", func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc", "Attempt %d, within test func, returning error hello", args.I)
 			return errors.New("hello")
 		}, func(err error) bool {
@@ -325,7 +325,7 @@ func TestRetryLogging(t *testing.T) {
 	t.Run("normal error2", func(t *testing.T) {
 		test.EnableStdoutLogging(t)
 
-		err := Retry(context.Background(), testLogEvent, "my_operation", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "(my_operation)", func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc", "Attempt %d, within test func, returning error hello", args.I)
 			return errors.New("hello")
 		}, func(err error) bool {
@@ -337,9 +337,9 @@ func TestRetryLogging(t *testing.T) {
 	})
 
 	t.Run("cancellation error", func(t *testing.T) {
-		logsFn := test.CaptureLogsForTest()
+		logsFn := test.CaptureLogsForTest(false)
 
-		err := Retry(context.Background(), testLogEvent, "test_operation", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "(test_operation)", func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc",
 				"Attempt %d, within test func", args.I)
 			return context.Canceled
@@ -357,9 +357,9 @@ func TestRetryLogging(t *testing.T) {
 	})
 
 	t.Run("custom fatal error", func(t *testing.T) {
-		logsFn := test.CaptureLogsForTest()
+		logsFn := test.CaptureLogsForTest(false)
 
-		err := Retry(context.Background(), testLogEvent, "test_operation", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "(test_operation)", func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc",
 				"Attempt %d, within test func", args.I)
 			return errors.New("custom fatal error")
@@ -377,10 +377,10 @@ func TestRetryLogging(t *testing.T) {
 	})
 
 	t.Run("with reset attempts", func(t *testing.T) {
-		logsFn := test.CaptureLogsForTest()
+		logsFn := test.CaptureLogsForTest(false)
 		reset := false
 
-		err := Retry(context.Background(), testLogEvent, "test_operation", func(ctx context.Context, args *RetryFnArgs) error {
+		err := Retry(context.Background(), testLogEvent, "(test_operation)", func(ctx context.Context, args *RetryFnArgs) error {
 			azlog.Writef("TestFunc", "Attempt %d, within test func", args.I)
 
 			if !reset {

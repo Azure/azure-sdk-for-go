@@ -15,11 +15,11 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_Get.json
-func ExampleServicesClient_Get() {
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_Get.json
+func ExampleServicesClient_Get_servicesGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -54,6 +54,9 @@ func ExampleServicesClient_Get() {
 	// 	},
 	// 	Properties: &armappplatform.ClusterResourceProperties{
 	// 		NetworkProfile: &armappplatform.NetworkProfile{
+	// 			IngressConfig: &armappplatform.IngressConfig{
+	// 				ReadTimeoutInSeconds: to.Ptr[int32](300),
+	// 			},
 	// 			OutboundIPs: &armappplatform.NetworkProfileOutboundIPs{
 	// 				PublicIPs: []*string{
 	// 					to.Ptr("20.39.3.173"),
@@ -95,7 +98,54 @@ func ExampleServicesClient_Get() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_Get_Consumption.json
+func ExampleServicesClient_Get_servicesGetConsumption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappplatform.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().Get(ctx, "myResourceGroup", "myservice", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ServiceResource = armappplatform.ServiceResource{
+	// 	Name: to.Ptr("myservice"),
+	// 	Type: to.Ptr("Microsoft.AppPlatform/Spring"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice"),
+	// 	SystemData: &armappplatform.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+	// 		CreatedBy: to.Ptr("sample-user"),
+	// 		CreatedByType: to.Ptr(armappplatform.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("sample-user"),
+	// 		LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
+	// 	Properties: &armappplatform.ClusterResourceProperties{
+	// 		InfraResourceGroup: to.Ptr("myenvironment_SpringApps_12345678abcd1234abcd12345678abcd"),
+	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.App/managedEnvironments/myenvironment"),
+	// 		ProvisioningState: to.Ptr(armappplatform.ProvisioningStateSucceeded),
+	// 		ServiceID: to.Ptr("12345678abcd1234abcd12345678abcd"),
+	// 	},
+	// 	SKU: &armappplatform.SKU{
+	// 		Name: to.Ptr("S0"),
+	// 		Tier: to.Ptr("StandardGen2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_CreateOrUpdate.json
 func ExampleServicesClient_BeginCreateOrUpdate_servicesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +236,172 @@ func ExampleServicesClient_BeginCreateOrUpdate_servicesCreateOrUpdate() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_CreateOrUpdate_VNetInjection.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_CreateOrUpdate_Consumption.json
+func ExampleServicesClient_BeginCreateOrUpdate_servicesCreateOrUpdateConsumption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappplatform.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myservice", armappplatform.ServiceResource{
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+		Properties: &armappplatform.ClusterResourceProperties{
+			ManagedEnvironmentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.App/managedEnvironments/myenvironment"),
+		},
+		SKU: &armappplatform.SKU{
+			Name: to.Ptr("S0"),
+			Tier: to.Ptr("StandardGen2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ServiceResource = armappplatform.ServiceResource{
+	// 	Name: to.Ptr("myservice"),
+	// 	Type: to.Ptr("Microsoft.AppPlatform/Spring"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice"),
+	// 	SystemData: &armappplatform.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+	// 		CreatedBy: to.Ptr("sample-user"),
+	// 		CreatedByType: to.Ptr(armappplatform.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("sample-user"),
+	// 		LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
+	// 	Properties: &armappplatform.ClusterResourceProperties{
+	// 		InfraResourceGroup: to.Ptr("myenvironment_SpringApps_12345678abcd1234abcd12345678abcd"),
+	// 		ManagedEnvironmentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.App/managedEnvironments/myenvironment"),
+	// 		ProvisioningState: to.Ptr(armappplatform.ProvisioningStateSucceeded),
+	// 		ServiceID: to.Ptr("12345678abcd1234abcd12345678abcd"),
+	// 	},
+	// 	SKU: &armappplatform.SKU{
+	// 		Name: to.Ptr("S0"),
+	// 		Tier: to.Ptr("StandardGen2"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_CreateOrUpdate_Enterprise.json
+func ExampleServicesClient_BeginCreateOrUpdate_servicesCreateOrUpdateEnterprise() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappplatform.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myservice", armappplatform.ServiceResource{
+		Location: to.Ptr("eastus"),
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+		Properties: &armappplatform.ClusterResourceProperties{
+			MarketplaceResource: &armappplatform.MarketplaceResource{
+				Plan:      to.Ptr("tanzu-asc-ent-mtr"),
+				Product:   to.Ptr("azure-spring-cloud-vmware-tanzu-2"),
+				Publisher: to.Ptr("vmware-inc"),
+			},
+		},
+		SKU: &armappplatform.SKU{
+			Name: to.Ptr("E0"),
+			Tier: to.Ptr("Enterprise"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res.ServiceResource = armappplatform.ServiceResource{
+	// 	Name: to.Ptr("myservice"),
+	// 	Type: to.Ptr("Microsoft.AppPlatform/Spring"),
+	// 	ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice"),
+	// 	SystemData: &armappplatform.SystemData{
+	// 		CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+	// 		CreatedBy: to.Ptr("sample-user"),
+	// 		CreatedByType: to.Ptr(armappplatform.CreatedByTypeUser),
+	// 		LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+	// 		LastModifiedBy: to.Ptr("sample-user"),
+	// 		LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
+	// 	},
+	// 	Location: to.Ptr("eastus"),
+	// 	Tags: map[string]*string{
+	// 		"key1": to.Ptr("value1"),
+	// 	},
+	// 	Properties: &armappplatform.ClusterResourceProperties{
+	// 		MarketplaceResource: &armappplatform.MarketplaceResource{
+	// 			Plan: to.Ptr("tanzu-asc-ent-mtr"),
+	// 			Product: to.Ptr("azure-spring-cloud-vmware-tanzu-2"),
+	// 			Publisher: to.Ptr("vmware-inc"),
+	// 		},
+	// 		NetworkProfile: &armappplatform.NetworkProfile{
+	// 			OutboundIPs: &armappplatform.NetworkProfileOutboundIPs{
+	// 				PublicIPs: []*string{
+	// 					to.Ptr("20.39.3.173"),
+	// 					to.Ptr("40.64.67.13")},
+	// 				},
+	// 				RequiredTraffics: []*armappplatform.RequiredTraffic{
+	// 					{
+	// 						Direction: to.Ptr(armappplatform.TrafficDirectionOutbound),
+	// 						IPs: []*string{
+	// 							to.Ptr("20.62.211.25"),
+	// 							to.Ptr("52.188.47.226")},
+	// 							Port: to.Ptr[int32](443),
+	// 							Protocol: to.Ptr("TCP"),
+	// 						},
+	// 						{
+	// 							Direction: to.Ptr(armappplatform.TrafficDirectionOutbound),
+	// 							IPs: []*string{
+	// 								to.Ptr("20.62.211.25"),
+	// 								to.Ptr("52.188.47.226")},
+	// 								Port: to.Ptr[int32](1194),
+	// 								Protocol: to.Ptr("UDP"),
+	// 							},
+	// 							{
+	// 								Direction: to.Ptr(armappplatform.TrafficDirectionOutbound),
+	// 								IPs: []*string{
+	// 									to.Ptr("20.62.211.25"),
+	// 									to.Ptr("52.188.47.226")},
+	// 									Port: to.Ptr[int32](9000),
+	// 									Protocol: to.Ptr("TCP"),
+	// 							}},
+	// 						},
+	// 						ProvisioningState: to.Ptr(armappplatform.ProvisioningStateSucceeded),
+	// 						ServiceID: to.Ptr("12345678abcd1234abcd12345678abcd"),
+	// 					},
+	// 					SKU: &armappplatform.SKU{
+	// 						Name: to.Ptr("E0"),
+	// 						Tier: to.Ptr("Enterprise"),
+	// 					},
+	// 				}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_CreateOrUpdate_VNetInjection.json
 func ExampleServicesClient_BeginCreateOrUpdate_servicesCreateOrUpdateVNetInjection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,11 +419,17 @@ func ExampleServicesClient_BeginCreateOrUpdate_servicesCreateOrUpdateVNetInjecti
 		},
 		Properties: &armappplatform.ClusterResourceProperties{
 			NetworkProfile: &armappplatform.NetworkProfile{
-				AppNetworkResourceGroup:            to.Ptr("my-app-network-rg"),
-				AppSubnetID:                        to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVirtualNetwork/subnets/apps"),
+				AppNetworkResourceGroup: to.Ptr("my-app-network-rg"),
+				AppSubnetID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVirtualNetwork/subnets/apps"),
+				IngressConfig: &armappplatform.IngressConfig{
+					ReadTimeoutInSeconds: to.Ptr[int32](300),
+				},
 				ServiceCidr:                        to.Ptr("10.8.0.0/16,10.244.0.0/16,10.245.0.1/16"),
 				ServiceRuntimeNetworkResourceGroup: to.Ptr("my-service-runtime-network-rg"),
 				ServiceRuntimeSubnetID:             to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVirtualNetwork/subnets/serviceRuntime"),
+			},
+			VnetAddons: &armappplatform.ServiceVNetAddons{
+				LogStreamPublicEndpoint: to.Ptr(true),
 			},
 		},
 		SKU: &armappplatform.SKU{
@@ -281,6 +502,9 @@ func ExampleServicesClient_BeginCreateOrUpdate_servicesCreateOrUpdateVNetInjecti
 	// 						},
 	// 						ProvisioningState: to.Ptr(armappplatform.ProvisioningStateSucceeded),
 	// 						ServiceID: to.Ptr("12345678abcd1234abcd12345678abcd"),
+	// 						VnetAddons: &armappplatform.ServiceVNetAddons{
+	// 							LogStreamPublicEndpoint: to.Ptr(true),
+	// 						},
 	// 					},
 	// 					SKU: &armappplatform.SKU{
 	// 						Name: to.Ptr("S0"),
@@ -289,7 +513,7 @@ func ExampleServicesClient_BeginCreateOrUpdate_servicesCreateOrUpdateVNetInjecti
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_Delete.json
 func ExampleServicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -310,7 +534,7 @@ func ExampleServicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_Update.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_Update.json
 func ExampleServicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -401,7 +625,7 @@ func ExampleServicesClient_BeginUpdate() {
 	// 				}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_ListTestKeys.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_ListTestKeys.json
 func ExampleServicesClient_ListTestKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -428,7 +652,7 @@ func ExampleServicesClient_ListTestKeys() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_RegenerateTestKey.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_RegenerateTestKey.json
 func ExampleServicesClient_RegenerateTestKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -457,7 +681,7 @@ func ExampleServicesClient_RegenerateTestKey() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_DisableTestEndpoint.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_DisableTestEndpoint.json
 func ExampleServicesClient_DisableTestEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -474,7 +698,7 @@ func ExampleServicesClient_DisableTestEndpoint() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_EnableTestEndpoint.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_EnableTestEndpoint.json
 func ExampleServicesClient_EnableTestEndpoint() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -501,7 +725,49 @@ func ExampleServicesClient_EnableTestEndpoint() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_CheckNameAvailability.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_Stop.json
+func ExampleServicesClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappplatform.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginStop(ctx, "myResourceGroup", "myservice", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_Start.json
+func ExampleServicesClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappplatform.NewClientFactory("<subscription-id>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginStart(ctx, "myResourceGroup", "myservice", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to pull the result: %v", err)
+	}
+}
+
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_CheckNameAvailability.json
 func ExampleServicesClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -529,7 +795,7 @@ func ExampleServicesClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_ListBySubscription.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_ListBySubscription.json
 func ExampleServicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -571,6 +837,9 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 			},
 		// 			Properties: &armappplatform.ClusterResourceProperties{
 		// 				NetworkProfile: &armappplatform.NetworkProfile{
+		// 					IngressConfig: &armappplatform.IngressConfig{
+		// 						ReadTimeoutInSeconds: to.Ptr[int32](300),
+		// 					},
 		// 					OutboundIPs: &armappplatform.NetworkProfileOutboundIPs{
 		// 						PublicIPs: []*string{
 		// 							to.Ptr("20.39.3.173"),
@@ -609,12 +878,39 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 								Name: to.Ptr("S0"),
 		// 								Tier: to.Ptr("Standard"),
 		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("myservice1"),
+		// 							Type: to.Ptr("Microsoft.AppPlatform/Spring"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice1"),
+		// 							SystemData: &armappplatform.SystemData{
+		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+		// 								CreatedBy: to.Ptr("sample-user"),
+		// 								CreatedByType: to.Ptr(armappplatform.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+		// 								LastModifiedBy: to.Ptr("sample-user"),
+		// 								LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
+		// 							},
+		// 							Location: to.Ptr("eastus"),
+		// 							Tags: map[string]*string{
+		// 								"key1": to.Ptr("value1"),
+		// 							},
+		// 							Properties: &armappplatform.ClusterResourceProperties{
+		// 								InfraResourceGroup: to.Ptr("myenvironment_SpringApps_12345678abcd1234abcd12345678abc1"),
+		// 								ManagedEnvironmentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.App/managedEnvironments/myenvironment"),
+		// 								ProvisioningState: to.Ptr(armappplatform.ProvisioningStateSucceeded),
+		// 								ServiceID: to.Ptr("12345678abcd1234abcd12345678abc1"),
+		// 							},
+		// 							SKU: &armappplatform.SKU{
+		// 								Name: to.Ptr("S0"),
+		// 								Tier: to.Ptr("StandardGen2"),
+		// 							},
 		// 					}},
 		// 				}
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Services_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Services_List.json
 func ExampleServicesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -656,6 +952,9 @@ func ExampleServicesClient_NewListPager() {
 		// 			},
 		// 			Properties: &armappplatform.ClusterResourceProperties{
 		// 				NetworkProfile: &armappplatform.NetworkProfile{
+		// 					IngressConfig: &armappplatform.IngressConfig{
+		// 						ReadTimeoutInSeconds: to.Ptr[int32](300),
+		// 					},
 		// 					OutboundIPs: &armappplatform.NetworkProfileOutboundIPs{
 		// 						PublicIPs: []*string{
 		// 							to.Ptr("20.39.3.173"),
@@ -693,6 +992,33 @@ func ExampleServicesClient_NewListPager() {
 		// 							SKU: &armappplatform.SKU{
 		// 								Name: to.Ptr("S0"),
 		// 								Tier: to.Ptr("Standard"),
+		// 							},
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("myservice1"),
+		// 							Type: to.Ptr("Microsoft.AppPlatform/Spring"),
+		// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.AppPlatform/Spring/myservice1"),
+		// 							SystemData: &armappplatform.SystemData{
+		// 								CreatedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:16:03.944Z"); return t}()),
+		// 								CreatedBy: to.Ptr("sample-user"),
+		// 								CreatedByType: to.Ptr(armappplatform.CreatedByTypeUser),
+		// 								LastModifiedAt: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2021-08-11T03:17:03.944Z"); return t}()),
+		// 								LastModifiedBy: to.Ptr("sample-user"),
+		// 								LastModifiedByType: to.Ptr(armappplatform.LastModifiedByTypeUser),
+		// 							},
+		// 							Location: to.Ptr("eastus"),
+		// 							Tags: map[string]*string{
+		// 								"key1": to.Ptr("value1"),
+		// 							},
+		// 							Properties: &armappplatform.ClusterResourceProperties{
+		// 								InfraResourceGroup: to.Ptr("myenvironment_SpringApps_12345678abcd1234abcd12345678abc1"),
+		// 								ManagedEnvironmentID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.App/managedEnvironments/myenvironment"),
+		// 								ProvisioningState: to.Ptr(armappplatform.ProvisioningStateSucceeded),
+		// 								ServiceID: to.Ptr("12345678abcd1234abcd12345678abc1"),
+		// 							},
+		// 							SKU: &armappplatform.SKU{
+		// 								Name: to.Ptr("S0"),
+		// 								Tier: to.Ptr("StandardGen2"),
 		// 							},
 		// 					}},
 		// 				}

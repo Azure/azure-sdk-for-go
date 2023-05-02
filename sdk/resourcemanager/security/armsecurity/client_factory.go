@@ -243,18 +243,13 @@ func (c *ClientFactory) NewAccountConnectorsClient() *AccountConnectorsClient {
 	return subClient
 }
 
-func (c *ClientFactory) NewSQLVulnerabilityAssessmentScansClient() *SQLVulnerabilityAssessmentScansClient {
-	subClient, _ := NewSQLVulnerabilityAssessmentScansClient(c.credential, c.options)
+func (c *ClientFactory) NewCenterClient() *CenterClient {
+	subClient, _ := NewCenterClient(c.credential, c.options)
 	return subClient
 }
 
-func (c *ClientFactory) NewSQLVulnerabilityAssessmentScanResultsClient() *SQLVulnerabilityAssessmentScanResultsClient {
-	subClient, _ := NewSQLVulnerabilityAssessmentScanResultsClient(c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewSQLVulnerabilityAssessmentBaselineRulesClient() *SQLVulnerabilityAssessmentBaselineRulesClient {
-	subClient, _ := NewSQLVulnerabilityAssessmentBaselineRulesClient(c.credential, c.options)
+func (c *ClientFactory) NewSensitivitySettingsClient() *SensitivitySettingsClient {
+	subClient, _ := NewSensitivitySettingsClient(c.credential, c.options)
 	return subClient
 }
 
@@ -278,38 +273,8 @@ func (c *ClientFactory) NewSoftwareInventoriesClient() *SoftwareInventoriesClien
 	return subClient
 }
 
-func (c *ClientFactory) NewConnectorsClient() *ConnectorsClient {
-	subClient, _ := NewConnectorsClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewGovernanceRuleClient() *GovernanceRuleClient {
-	subClient, _ := NewGovernanceRuleClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
 func (c *ClientFactory) NewGovernanceRulesClient() *GovernanceRulesClient {
-	subClient, _ := NewGovernanceRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewConnectorGovernanceRuleClient() *ConnectorGovernanceRuleClient {
-	subClient, _ := NewConnectorGovernanceRuleClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewConnectorGovernanceRulesClient() *ConnectorGovernanceRulesClient {
-	subClient, _ := NewConnectorGovernanceRulesClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewSubscriptionGovernanceRulesExecuteStatusClient() *SubscriptionGovernanceRulesExecuteStatusClient {
-	subClient, _ := NewSubscriptionGovernanceRulesExecuteStatusClient(c.subscriptionID, c.credential, c.options)
-	return subClient
-}
-
-func (c *ClientFactory) NewConnectorGovernanceRulesExecuteStatusClient() *ConnectorGovernanceRulesExecuteStatusClient {
-	subClient, _ := NewConnectorGovernanceRulesExecuteStatusClient(c.subscriptionID, c.credential, c.options)
+	subClient, _ := NewGovernanceRulesClient(c.credential, c.options)
 	return subClient
 }
 
@@ -335,5 +300,55 @@ func (c *ClientFactory) NewConnectorApplicationsClient() *ConnectorApplicationsC
 
 func (c *ClientFactory) NewConnectorApplicationClient() *ConnectorApplicationClient {
 	subClient, _ := NewConnectorApplicationClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewAPICollectionClient() *APICollectionClient {
+	subClient, _ := NewAPICollectionClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewAPICollectionOnboardingClient() *APICollectionOnboardingClient {
+	subClient, _ := NewAPICollectionOnboardingClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewAPICollectionOffboardingClient() *APICollectionOffboardingClient {
+	subClient, _ := NewAPICollectionOffboardingClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewHealthReportsClient() *HealthReportsClient {
+	subClient, _ := NewHealthReportsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewHealthReportClient() *HealthReportClient {
+	subClient, _ := NewHealthReportClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewSQLVulnerabilityAssessmentScansClient() *SQLVulnerabilityAssessmentScansClient {
+	subClient, _ := NewSQLVulnerabilityAssessmentScansClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewSQLVulnerabilityAssessmentScanResultsClient() *SQLVulnerabilityAssessmentScanResultsClient {
+	subClient, _ := NewSQLVulnerabilityAssessmentScanResultsClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewSQLVulnerabilityAssessmentBaselineRulesClient() *SQLVulnerabilityAssessmentBaselineRulesClient {
+	subClient, _ := NewSQLVulnerabilityAssessmentBaselineRulesClient(c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewConnectorsClient() *ConnectorsClient {
+	subClient, _ := NewConnectorsClient(c.subscriptionID, c.credential, c.options)
+	return subClient
+}
+
+func (c *ClientFactory) NewOperatorsClient() *OperatorsClient {
+	subClient, _ := NewOperatorsClient(c.subscriptionID, c.credential, c.options)
 	return subClient
 }

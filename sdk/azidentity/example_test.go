@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 )
 
-func ExampleNewOnBehalfOfCredentialFromCertificate() {
+func ExampleNewOnBehalfOfCredentialWithCertificate() {
 	data, err := os.ReadFile(certPath)
 	if err != nil {
 		// TODO: handle error

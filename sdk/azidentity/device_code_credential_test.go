@@ -99,7 +99,7 @@ func TestDeviceCodeCredential_Live(t *testing.T) {
 		},
 		{
 			desc: "instance discovery disabled",
-			opts: DeviceCodeCredentialOptions{DisableInstanceDiscovery: true, TenantID: liveSP.tenantID},
+			opts: DeviceCodeCredentialOptions{DisableAuthorityValidationAndInstanceDiscovery: true, TenantID: liveSP.tenantID},
 		},
 		{
 			desc: "optional tenant",
@@ -132,7 +132,11 @@ func TestDeviceCodeCredentialADFS_Live(t *testing.T) {
 	o, stop := initRecording(t)
 	defer stop()
 	o.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
-	opts := DeviceCodeCredentialOptions{TenantID: "adfs", ClientID: adfsLiveUser.clientID, ClientOptions: o, DisableInstanceDiscovery: true}
+	opts := DeviceCodeCredentialOptions{
+		ClientID:      adfsLiveUser.clientID,
+		ClientOptions: o, DisableAuthorityValidationAndInstanceDiscovery: true,
+		TenantID: "adfs",
+	}
 	if recording.GetRecordMode() == recording.PlaybackMode {
 		opts.UserPrompt = func(ctx context.Context, m DeviceCodeMessage) error { return nil }
 	}

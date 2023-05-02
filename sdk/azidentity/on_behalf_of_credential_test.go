@@ -29,7 +29,7 @@ func TestOnBehalfOfCredential(t *testing.T) {
 			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
 				certs, key := allCertTests[0].certs, allCertTests[0].key
 				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}}
-				return NewOnBehalfOfCredentialFromCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
+				return NewOnBehalfOfCredentialWithCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
 			},
 			name: "certificate",
 		},
@@ -37,7 +37,7 @@ func TestOnBehalfOfCredential(t *testing.T) {
 			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
 				certs, key := allCertTests[0].certs, allCertTests[0].key
 				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}, SendCertificateChain: true}
-				return NewOnBehalfOfCredentialFromCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
+				return NewOnBehalfOfCredentialWithCertificate(fakeTenantID, fakeClientID, expectedAssertion, certs, key, &o)
 			},
 			name:    "SNI",
 			sendX5C: true,
@@ -45,7 +45,7 @@ func TestOnBehalfOfCredential(t *testing.T) {
 		{
 			ctor: func(tp policy.Transporter) (*OnBehalfOfCredential, error) {
 				o := OnBehalfOfCredentialOptions{ClientOptions: policy.ClientOptions{Transport: tp}}
-				return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, expectedAssertion, "secret", &o)
+				return NewOnBehalfOfCredentialWithSecret(fakeTenantID, fakeClientID, expectedAssertion, "secret", &o)
 			},
 			name: "secret",
 		},

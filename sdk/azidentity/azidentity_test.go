@@ -279,7 +279,6 @@ func Test_NonHTTPSAuthorityHost(t *testing.T) {
 }
 
 func TestAdditionallyAllowedTenants(t *testing.T) {
-	t.Skip("unskip this test after restoring TokenRequestOptions.TenantID")
 	af := filepath.Join(t.TempDir(), t.Name()+credNameWorkloadIdentity)
 	if err := os.WriteFile(af, []byte("assertion"), os.ModePerm); err != nil {
 		t.Fatal(err)
@@ -321,7 +320,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 			err:    true,
 		},
 	} {
-		tro := policy.TokenRequestOptions{Scopes: []string{liveTestScope}}
+		tro := policy.TokenRequestOptions{Scopes: []string{liveTestScope}, TenantID: test.tenant}
 		for _, subtest := range []struct {
 			ctor func(azcore.ClientOptions) (azcore.TokenCredential, error)
 			env  map[string]string
@@ -374,7 +373,7 @@ func TestAdditionallyAllowedTenants(t *testing.T) {
 						AdditionallyAllowedTenants: test.allowed,
 						ClientOptions:              co,
 					}
-					return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
+					return NewOnBehalfOfCredentialWithSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
 				},
 			},
 			{
@@ -597,7 +596,7 @@ func TestClaims(t *testing.T) {
 			name: credNameOBO,
 			ctor: func(co azcore.ClientOptions) (azcore.TokenCredential, error) {
 				o := OnBehalfOfCredentialOptions{ClientOptions: co}
-				return NewOnBehalfOfCredentialFromSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
+				return NewOnBehalfOfCredentialWithSecret(fakeTenantID, fakeClientID, "assertion", fakeSecret, &o)
 			},
 		},
 		{

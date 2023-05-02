@@ -30,9 +30,7 @@ import (
 )
 
 // ClientOptions contains the optional parameters when creating a Client.
-type ClientOptions struct {
-	azcore.ClientOptions
-}
+type ClientOptions base.ClientOptions
 
 // Client defines a set of operations applicable to block blobs.
 type Client base.CompositeClient[generated.BlobClient, generated.BlockBlobClient]

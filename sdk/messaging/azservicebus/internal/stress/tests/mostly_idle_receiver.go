@@ -16,7 +16,7 @@ import (
 
 // MostlyIdleReceiver tests that if there are long idle periods that our connection continues to work and receive messages.
 func MostlyIdleReceiver(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("MostlyIdleReceiver")
+	sc := shared.MustCreateStressContext("MostlyIdleReceiver", nil)
 	defer sc.End()
 
 	// we'll try several levels of "idleness", with different connections to make sure they don't
@@ -83,7 +83,7 @@ func MostlyIdleReceiver(remainingArgs []string) {
 			messages, err := receiver.ReceiveMessages(sc.Context, 1, nil)
 			sc.PanicOnError(fmt.Sprintf("failed receiving messages for duration %s", duration), err)
 
-			log.Printf("Received messages %#v", messages)
+			log.Printf("Received %d messages", len(messages))
 			stats.AddReceived(int32(len(messages)))
 
 			for _, msg := range messages {

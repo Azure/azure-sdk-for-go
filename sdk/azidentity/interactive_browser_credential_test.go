@@ -111,7 +111,7 @@ func TestInteractiveBrowserCredential_Live(t *testing.T) {
 				PerCallPolicies: []policy.Policy{
 					&instanceDiscoveryPolicy{t},
 				}},
-			DisableInstanceDiscovery: true,
+			DisableAuthorityValidationAndInstanceDiscovery: true,
 		})
 		if err != nil {
 			t.Fatal(err)
@@ -134,7 +134,13 @@ func TestInteractiveBrowserCredentialADFS_Live(t *testing.T) {
 
 	clientOptions := policy.ClientOptions{Cloud: cloudConfig}
 
-	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{ClientOptions: clientOptions, ClientID: adfsLiveUser.clientID, TenantID: "adfs", RedirectURL: url, DisableInstanceDiscovery: true})
+	cred, err := NewInteractiveBrowserCredential(&InteractiveBrowserCredentialOptions{
+		ClientOptions: clientOptions,
+		ClientID:      adfsLiveUser.clientID,
+		DisableAuthorityValidationAndInstanceDiscovery: true,
+		RedirectURL: url,
+		TenantID:    "adfs",
+	})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -1,5 +1,16 @@
 # Release History
 
+## 1.0.0 (2023-04-28)
+### Breaking Changes
+
+- Field `ExactVersion` of struct `ImageReference` has been removed
+- Field `SharedGalleryImageID` of struct `ImageReference` has been removed
+
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+
+
 ## 0.3.0 (2023-02-24)
 ### Breaking Changes
 

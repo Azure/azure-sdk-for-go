@@ -1,6 +1,7 @@
 # Azure Key Vault Certificates client module for Go
 
 * Certificate management (this module) - create, manage, and deploy public and private SSL/TLS certificates
+* Managed HSM administration ([azadmin](https://aka.ms/azsdk/go/keyvault-admin/docs)) - role-based access control (RBAC), settings, and vault-level backup and restore options
 * Cryptographic key management ([azkeys](https://aka.ms/azsdk/go/keyvault-keys/docs)) - create, store, and control access to the keys used to encrypt your data
 * Secrets management ([azsecrets](https://aka.ms/azsdk/go/keyvault-secrets/docs)) - securely store and control access to tokens, passwords, certificates, API keys, and other secrets
 
@@ -56,7 +57,7 @@ func main() {
 
 ### Client
 
-With a [Client][client_docs] you can get certificates from the vault, create new certificates and
+With a [Client][client_docs], you can get certificates from the vault, create new certificates and
 new versions of existing certificates, update certificate metadata, and delete certificates. You
 can also manage certificate issuers, contacts, and management policies of certificates. This is
 illustrated in the [examples](#examples) below.
@@ -136,7 +137,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_sub]: https://azure.microsoft.com/free/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
 [keyvault_docs]: https://docs.microsoft.com/azure/key-vault/
-[client_docs]: https://aka.ms/azsdk/go/azcertificates
+[client_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/security/keyvault/azcertificates#Client
 [reference_docs]: https://aka.ms/azsdk/go/keyvault-certificates/docs
 [certificates_client_src]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/security/keyvault/azcertificates
 [certificates_samples]: https://aka.ms/azsdk/go/keyvault-certificates/docs#pkg-examples

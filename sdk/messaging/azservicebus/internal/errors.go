@@ -190,6 +190,10 @@ func GetRecoveryKind(err error) RecoveryKind {
 		return RecoveryKindFatal
 	}
 
+	if errors.Is(err, amqpwrap.ErrConnResetNeeded) {
+		return RecoveryKindConn
+	}
+
 	var netErr net.Error
 
 	// these are errors that can flow from the go-amqp connection to

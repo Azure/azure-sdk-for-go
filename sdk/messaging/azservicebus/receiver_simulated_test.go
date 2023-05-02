@@ -625,26 +625,28 @@ func TestReceiver_CreditsDontExceedMax(t *testing.T) {
 	err = sender.SendMessage(context.Background(), &Message{Body: []byte("hello world")}, nil)
 	require.NoError(t, err)
 
-	logsFn := test.CaptureLogsForTest()
+	logsFn := test.CaptureLogsForTest(false)
 
 	// no issue credit needed - we've still got the 5000 from last time since we didn't
 	// receive any messages.
 	messages, err = receiver.ReceiveMessages(baseReceiveCtx, 5000, nil)
 	require.NoError(t, err)
 	require.Equal(t, []string{"hello world"}, getSortedBodies(messages))
-	require.Contains(t, logsFn(), "[azsb.Receiver] No additional credits needed, still have 5000 credits active")
+	logs := logsFn()
+
+	require.Contains(t, logs, "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Have 5000 credits, no new credits needed")
 
 	ctx, cancel = context.WithTimeout(baseReceiveCtx, time.Second)
 	defer cancel()
 
-	logsFn = test.CaptureLogsForTest()
+	logsFn = test.CaptureLogsForTest(false)
 
 	// we ate a credit last time since we received a single message, so this time we'll still
 	// need to issue some more to backfill.
 	messages, err = receiver.ReceiveMessages(ctx, 5000, nil)
 	require.ErrorIs(t, err, context.DeadlineExceeded)
 	require.Empty(t, messages)
-	require.Contains(t, logsFn(), "[azsb.Receiver] Only need to issue 1 additional credits")
+	require.Contains(t, logsFn(), "[azsb.Receiver] [c:1, l:1, r:name:c:001|] Issuing 1 credits, have 4999")
 
 	require.Equal(t, 1, len(md.Events.GetOpenConns()))
 	require.Equal(t, 3+3, len(md.Events.GetOpenLinks()), "Sender and Receiver each own 3 links apiece ($mgmt, actual link)")

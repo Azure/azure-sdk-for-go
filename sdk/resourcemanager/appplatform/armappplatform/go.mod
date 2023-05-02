@@ -1,4 +1,4 @@
-module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform
+module github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2
 
 go 1.18
 

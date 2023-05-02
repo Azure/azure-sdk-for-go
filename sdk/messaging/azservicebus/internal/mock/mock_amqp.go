@@ -635,3 +635,286 @@ func (mr *MockAMQPClientMockRecorder) NewSession(ctx, opts interface{}) *gomock.
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewSession", reflect.TypeOf((*MockAMQPClient)(nil).NewSession), ctx, opts)
 }
+
+// MockgoamqpConn is a mock of goamqpConn interface.
+type MockgoamqpConn struct {
+	ctrl     *gomock.Controller
+	recorder *MockgoamqpConnMockRecorder
+}
+
+// MockgoamqpConnMockRecorder is the mock recorder for MockgoamqpConn.
+type MockgoamqpConnMockRecorder struct {
+	mock *MockgoamqpConn
+}
+
+// NewMockgoamqpConn creates a new mock instance.
+func NewMockgoamqpConn(ctrl *gomock.Controller) *MockgoamqpConn {
+	mock := &MockgoamqpConn{ctrl: ctrl}
+	mock.recorder = &MockgoamqpConnMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockgoamqpConn) EXPECT() *MockgoamqpConnMockRecorder {
+	return m.recorder
+}
+
+// Close mocks base method.
+func (m *MockgoamqpConn) Close() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Close")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Close indicates an expected call of Close.
+func (mr *MockgoamqpConnMockRecorder) Close() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockgoamqpConn)(nil).Close))
+}
+
+// NewSession mocks base method.
+func (m *MockgoamqpConn) NewSession(ctx context.Context, opts *amqp.SessionOptions) (*amqp.Session, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewSession", ctx, opts)
+	ret0, _ := ret[0].(*amqp.Session)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NewSession indicates an expected call of NewSession.
+func (mr *MockgoamqpConnMockRecorder) NewSession(ctx, opts interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewSession", reflect.TypeOf((*MockgoamqpConn)(nil).NewSession), ctx, opts)
+}
+
+// MockgoamqpSession is a mock of goamqpSession interface.
+type MockgoamqpSession struct {
+	ctrl     *gomock.Controller
+	recorder *MockgoamqpSessionMockRecorder
+}
+
+// MockgoamqpSessionMockRecorder is the mock recorder for MockgoamqpSession.
+type MockgoamqpSessionMockRecorder struct {
+	mock *MockgoamqpSession
+}
+
+// NewMockgoamqpSession creates a new mock instance.
+func NewMockgoamqpSession(ctrl *gomock.Controller) *MockgoamqpSession {
+	mock := &MockgoamqpSession{ctrl: ctrl}
+	mock.recorder = &MockgoamqpSessionMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockgoamqpSession) EXPECT() *MockgoamqpSessionMockRecorder {
+	return m.recorder
+}
+
+// Close mocks base method.
+func (m *MockgoamqpSession) Close(ctx context.Context) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Close", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Close indicates an expected call of Close.
+func (mr *MockgoamqpSessionMockRecorder) Close(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockgoamqpSession)(nil).Close), ctx)
+}
+
+// NewReceiver mocks base method.
+func (m *MockgoamqpSession) NewReceiver(ctx context.Context, source string, opts *amqp.ReceiverOptions) (*amqp.Receiver, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewReceiver", ctx, source, opts)
+	ret0, _ := ret[0].(*amqp.Receiver)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NewReceiver indicates an expected call of NewReceiver.
+func (mr *MockgoamqpSessionMockRecorder) NewReceiver(ctx, source, opts interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewReceiver", reflect.TypeOf((*MockgoamqpSession)(nil).NewReceiver), ctx, source, opts)
+}
+
+// NewSender mocks base method.
+func (m *MockgoamqpSession) NewSender(ctx context.Context, target string, opts *amqp.SenderOptions) (*amqp.Sender, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "NewSender", ctx, target, opts)
+	ret0, _ := ret[0].(*amqp.Sender)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// NewSender indicates an expected call of NewSender.
+func (mr *MockgoamqpSessionMockRecorder) NewSender(ctx, target, opts interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NewSender", reflect.TypeOf((*MockgoamqpSession)(nil).NewSender), ctx, target, opts)
+}
+
+// MockgoamqpReceiver is a mock of goamqpReceiver interface.
+type MockgoamqpReceiver struct {
+	ctrl     *gomock.Controller
+	recorder *MockgoamqpReceiverMockRecorder
+}
+
+// MockgoamqpReceiverMockRecorder is the mock recorder for MockgoamqpReceiver.
+type MockgoamqpReceiverMockRecorder struct {
+	mock *MockgoamqpReceiver
+}
+
+// NewMockgoamqpReceiver creates a new mock instance.
+func NewMockgoamqpReceiver(ctrl *gomock.Controller) *MockgoamqpReceiver {
+	mock := &MockgoamqpReceiver{ctrl: ctrl}
+	mock.recorder = &MockgoamqpReceiverMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockgoamqpReceiver) EXPECT() *MockgoamqpReceiverMockRecorder {
+	return m.recorder
+}
+
+// AcceptMessage mocks base method.
+func (m *MockgoamqpReceiver) AcceptMessage(ctx context.Context, msg *amqp.Message) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AcceptMessage", ctx, msg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AcceptMessage indicates an expected call of AcceptMessage.
+func (mr *MockgoamqpReceiverMockRecorder) AcceptMessage(ctx, msg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AcceptMessage", reflect.TypeOf((*MockgoamqpReceiver)(nil).AcceptMessage), ctx, msg)
+}
+
+// Close mocks base method.
+func (m *MockgoamqpReceiver) Close(ctx context.Context) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Close", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Close indicates an expected call of Close.
+func (mr *MockgoamqpReceiverMockRecorder) Close(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Close", reflect.TypeOf((*MockgoamqpReceiver)(nil).Close), ctx)
+}
+
+// IssueCredit mocks base method.
+func (m *MockgoamqpReceiver) IssueCredit(credit uint32) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IssueCredit", credit)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// IssueCredit indicates an expected call of IssueCredit.
+func (mr *MockgoamqpReceiverMockRecorder) IssueCredit(credit interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IssueCredit", reflect.TypeOf((*MockgoamqpReceiver)(nil).IssueCredit), credit)
+}
+
+// LinkName mocks base method.
+func (m *MockgoamqpReceiver) LinkName() string {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "LinkName")
+	ret0, _ := ret[0].(string)
+	return ret0
+}
+
+// LinkName indicates an expected call of LinkName.
+func (mr *MockgoamqpReceiverMockRecorder) LinkName() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LinkName", reflect.TypeOf((*MockgoamqpReceiver)(nil).LinkName))
+}
+
+// LinkSourceFilterValue mocks base method.
+func (m *MockgoamqpReceiver) LinkSourceFilterValue(name string) any {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "LinkSourceFilterValue", name)
+	ret0, _ := ret[0].(any)
+	return ret0
+}
+
+// LinkSourceFilterValue indicates an expected call of LinkSourceFilterValue.
+func (mr *MockgoamqpReceiverMockRecorder) LinkSourceFilterValue(name interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "LinkSourceFilterValue", reflect.TypeOf((*MockgoamqpReceiver)(nil).LinkSourceFilterValue), name)
+}
+
+// ModifyMessage mocks base method.
+func (m *MockgoamqpReceiver) ModifyMessage(ctx context.Context, msg *amqp.Message, options *amqp.ModifyMessageOptions) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ModifyMessage", ctx, msg, options)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ModifyMessage indicates an expected call of ModifyMessage.
+func (mr *MockgoamqpReceiverMockRecorder) ModifyMessage(ctx, msg, options interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ModifyMessage", reflect.TypeOf((*MockgoamqpReceiver)(nil).ModifyMessage), ctx, msg, options)
+}
+
+// Prefetched mocks base method.
+func (m *MockgoamqpReceiver) Prefetched() *amqp.Message {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Prefetched")
+	ret0, _ := ret[0].(*amqp.Message)
+	return ret0
+}
+
+// Prefetched indicates an expected call of Prefetched.
+func (mr *MockgoamqpReceiverMockRecorder) Prefetched() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Prefetched", reflect.TypeOf((*MockgoamqpReceiver)(nil).Prefetched))
+}
+
+// Receive mocks base method.
+func (m *MockgoamqpReceiver) Receive(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Receive", ctx, o)
+	ret0, _ := ret[0].(*amqp.Message)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Receive indicates an expected call of Receive.
+func (mr *MockgoamqpReceiverMockRecorder) Receive(ctx, o interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Receive", reflect.TypeOf((*MockgoamqpReceiver)(nil).Receive), ctx, o)
+}
+
+// RejectMessage mocks base method.
+func (m *MockgoamqpReceiver) RejectMessage(ctx context.Context, msg *amqp.Message, e *amqp.Error) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "RejectMessage", ctx, msg, e)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// RejectMessage indicates an expected call of RejectMessage.
+func (mr *MockgoamqpReceiverMockRecorder) RejectMessage(ctx, msg, e interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RejectMessage", reflect.TypeOf((*MockgoamqpReceiver)(nil).RejectMessage), ctx, msg, e)
+}
+
+// ReleaseMessage mocks base method.
+func (m *MockgoamqpReceiver) ReleaseMessage(ctx context.Context, msg *amqp.Message) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ReleaseMessage", ctx, msg)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ReleaseMessage indicates an expected call of ReleaseMessage.
+func (mr *MockgoamqpReceiverMockRecorder) ReleaseMessage(ctx, msg interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ReleaseMessage", reflect.TypeOf((*MockgoamqpReceiver)(nil).ReleaseMessage), ctx, msg)
+}

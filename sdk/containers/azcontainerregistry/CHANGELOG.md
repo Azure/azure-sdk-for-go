@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Add state restore for hash calculator when upload fails
 
 ### Other Changes
 

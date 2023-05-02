@@ -15,10 +15,10 @@ import (
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/appplatform/armappplatform/v2"
 )
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Certificates_Get.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Certificates_Get.json
 func ExampleCertificatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,6 +58,7 @@ func ExampleCertificatesClient_Get() {
 	// 			ExpirationDate: to.Ptr("2019-02-21T07:40:42Z"),
 	// 			IssuedDate: to.Ptr("2019-02-20T07:40:42Z"),
 	// 			Issuer: to.Ptr("mydomain.com"),
+	// 			ProvisioningState: to.Ptr(armappplatform.CertificateResourceProvisioningStateSucceeded),
 	// 			SubjectName: to.Ptr("mysubjectname"),
 	// 			Thumbprint: to.Ptr("934367bf1c97033f877db0f15cb1b586957d3133"),
 	// 			CertVersion: to.Ptr("08a219d06d874795a96db47e06fbb01e"),
@@ -68,7 +69,7 @@ func ExampleCertificatesClient_Get() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Certificates_CreateOrUpdate.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Certificates_CreateOrUpdate.json
 func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +130,7 @@ func ExampleCertificatesClient_BeginCreateOrUpdate() {
 	// 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Certificates_Delete.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Certificates_Delete.json
 func ExampleCertificatesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -150,7 +151,7 @@ func ExampleCertificatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/7a2ac91de424f271cf91cc8009f3fe9ee8249086/specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-04-01/examples/Certificates_List.json
+// Generated from example definition: https://github.com/Azure/azure-rest-api-specs/blob/1f22d4dbd99b0fe347ad79e79d4eb1ed44a87291/specification/appplatform/resource-manager/Microsoft.AppPlatform/preview/2023-01-01-preview/examples/Certificates_List.json
 func ExampleCertificatesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +162,7 @@ func ExampleCertificatesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewCertificatesClient().NewListPager("myResourceGroup", "myService", nil)
+	pager := clientFactory.NewCertificatesClient().NewListPager("myResourceGroup", "myservice", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -196,6 +197,7 @@ func ExampleCertificatesClient_NewListPager() {
 		// 					ExpirationDate: to.Ptr("2019-02-21T07:40:42Z"),
 		// 					IssuedDate: to.Ptr("2019-02-20T07:40:42Z"),
 		// 					Issuer: to.Ptr("mydomain.com"),
+		// 					ProvisioningState: to.Ptr(armappplatform.CertificateResourceProvisioningStateSucceeded),
 		// 					SubjectName: to.Ptr("mysubjectname"),
 		// 					Thumbprint: to.Ptr("934367bf1c97033f877db0f15cb1b586957d3133"),
 		// 					CertVersion: to.Ptr("08a219d06d874795a96db47e06fbb01e"),

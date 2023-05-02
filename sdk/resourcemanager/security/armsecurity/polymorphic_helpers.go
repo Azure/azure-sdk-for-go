@@ -193,6 +193,8 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &CspmMonitorAzureDevOpsOffering{}
 	case string(OfferingTypeCspmMonitorGcp):
 		b = &CspmMonitorGcpOffering{}
+	case string(OfferingTypeCspmMonitorGitLab):
+		b = &CspmMonitorGitLabOffering{}
 	case string(OfferingTypeCspmMonitorGithub):
 		b = &CspmMonitorGithubOffering{}
 	case string(OfferingTypeDefenderCspmAws):
@@ -209,6 +211,8 @@ func unmarshalCloudOfferingClassification(rawMsg json.RawMessage) (CloudOffering
 		b = &DefenderForDatabasesGcpOffering{}
 	case string(OfferingTypeDefenderForDevOpsAzureDevOps):
 		b = &DefenderForDevOpsAzureDevOpsOffering{}
+	case string(OfferingTypeDefenderForDevOpsGitLab):
+		b = &DefenderForDevOpsGitLabOffering{}
 	case string(OfferingTypeDefenderForDevOpsGithub):
 		b = &DefenderForDevOpsGithubOffering{}
 	case string(OfferingTypeDefenderForServersAws):
@@ -260,6 +264,8 @@ func unmarshalEnvironmentDataClassification(rawMsg json.RawMessage) (Environment
 		b = &GcpProjectEnvironmentData{}
 	case string(EnvironmentTypeGithubScope):
 		b = &GithubScopeEnvironmentData{}
+	case string(EnvironmentTypeGitlabScope):
+		b = &GitlabScopeEnvironmentData{}
 	default:
 		b = &EnvironmentData{}
 	}

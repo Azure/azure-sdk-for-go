@@ -12,18 +12,18 @@ package generated
 type ListBlobsIncludeItem string
 
 const (
-	ListBlobsIncludeItemCopy ListBlobsIncludeItem = "copy"
-	ListBlobsIncludeItemDeleted ListBlobsIncludeItem = "deleted"
-	ListBlobsIncludeItemMetadata ListBlobsIncludeItem = "metadata"
-	ListBlobsIncludeItemSnapshots ListBlobsIncludeItem = "snapshots"
+	ListBlobsIncludeItemCopy             ListBlobsIncludeItem = "copy"
+	ListBlobsIncludeItemDeleted          ListBlobsIncludeItem = "deleted"
+	ListBlobsIncludeItemMetadata         ListBlobsIncludeItem = "metadata"
+	ListBlobsIncludeItemSnapshots        ListBlobsIncludeItem = "snapshots"
 	ListBlobsIncludeItemUncommittedblobs ListBlobsIncludeItem = "uncommittedblobs"
-	ListBlobsIncludeItemVersions ListBlobsIncludeItem = "versions"
-	ListBlobsIncludeItemTags ListBlobsIncludeItem = "tags"
+	ListBlobsIncludeItemVersions         ListBlobsIncludeItem = "versions"
+	ListBlobsIncludeItemTags             ListBlobsIncludeItem = "tags"
 )
 
 // PossibleListBlobsIncludeItemValues returns the possible values for the ListBlobsIncludeItem const type.
 func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
-	return []ListBlobsIncludeItem{	
+	return []ListBlobsIncludeItem{
 		ListBlobsIncludeItemCopy,
 		ListBlobsIncludeItemDeleted,
 		ListBlobsIncludeItemMetadata,
@@ -37,15 +37,15 @@ func PossibleListBlobsIncludeItemValues() []ListBlobsIncludeItem {
 type PathExpiryOptions string
 
 const (
-	PathExpiryOptionsAbsolute PathExpiryOptions = "Absolute"
-	PathExpiryOptionsNeverExpire PathExpiryOptions = "NeverExpire"
+	PathExpiryOptionsAbsolute           PathExpiryOptions = "Absolute"
+	PathExpiryOptionsNeverExpire        PathExpiryOptions = "NeverExpire"
 	PathExpiryOptionsRelativeToCreation PathExpiryOptions = "RelativeToCreation"
-	PathExpiryOptionsRelativeToNow PathExpiryOptions = "RelativeToNow"
+	PathExpiryOptionsRelativeToNow      PathExpiryOptions = "RelativeToNow"
 )
 
 // PossiblePathExpiryOptionsValues returns the possible values for the PathExpiryOptions const type.
 func PossiblePathExpiryOptionsValues() []PathExpiryOptions {
-	return []PathExpiryOptions{	
+	return []PathExpiryOptions{
 		PathExpiryOptionsAbsolute,
 		PathExpiryOptionsNeverExpire,
 		PathExpiryOptionsRelativeToCreation,
@@ -57,12 +57,12 @@ type PathGetPropertiesAction string
 
 const (
 	PathGetPropertiesActionGetAccessControl PathGetPropertiesAction = "getAccessControl"
-	PathGetPropertiesActionGetStatus PathGetPropertiesAction = "getStatus"
+	PathGetPropertiesActionGetStatus        PathGetPropertiesAction = "getStatus"
 )
 
 // PossiblePathGetPropertiesActionValues returns the possible values for the PathGetPropertiesAction const type.
 func PossiblePathGetPropertiesActionValues() []PathGetPropertiesAction {
-	return []PathGetPropertiesAction{	
+	return []PathGetPropertiesAction{
 		PathGetPropertiesActionGetAccessControl,
 		PathGetPropertiesActionGetStatus,
 	}
@@ -72,15 +72,15 @@ type PathLeaseAction string
 
 const (
 	PathLeaseActionAcquire PathLeaseAction = "acquire"
-	PathLeaseActionBreak PathLeaseAction = "break"
-	PathLeaseActionChange PathLeaseAction = "change"
-	PathLeaseActionRenew PathLeaseAction = "renew"
+	PathLeaseActionBreak   PathLeaseAction = "break"
+	PathLeaseActionChange  PathLeaseAction = "change"
+	PathLeaseActionRenew   PathLeaseAction = "renew"
 	PathLeaseActionRelease PathLeaseAction = "release"
 )
 
 // PossiblePathLeaseActionValues returns the possible values for the PathLeaseAction const type.
 func PossiblePathLeaseActionValues() []PathLeaseAction {
-	return []PathLeaseAction{	
+	return []PathLeaseAction{
 		PathLeaseActionAcquire,
 		PathLeaseActionBreak,
 		PathLeaseActionChange,
@@ -93,12 +93,12 @@ type PathRenameMode string
 
 const (
 	PathRenameModeLegacy PathRenameMode = "legacy"
-	PathRenameModePosix PathRenameMode = "posix"
+	PathRenameModePosix  PathRenameMode = "posix"
 )
 
 // PossiblePathRenameModeValues returns the possible values for the PathRenameMode const type.
 func PossiblePathRenameModeValues() []PathRenameMode {
-	return []PathRenameMode{	
+	return []PathRenameMode{
 		PathRenameModeLegacy,
 		PathRenameModePosix,
 	}
@@ -108,12 +108,12 @@ type PathResourceType string
 
 const (
 	PathResourceTypeDirectory PathResourceType = "directory"
-	PathResourceTypeFile PathResourceType = "file"
+	PathResourceTypeFile      PathResourceType = "file"
 )
 
 // PossiblePathResourceTypeValues returns the possible values for the PathResourceType const type.
 func PossiblePathResourceTypeValues() []PathResourceType {
-	return []PathResourceType{	
+	return []PathResourceType{
 		PathResourceTypeDirectory,
 		PathResourceTypeFile,
 	}
@@ -122,14 +122,14 @@ func PossiblePathResourceTypeValues() []PathResourceType {
 type PathSetAccessControlRecursiveMode string
 
 const (
-	PathSetAccessControlRecursiveModeSet PathSetAccessControlRecursiveMode = "set"
+	PathSetAccessControlRecursiveModeSet    PathSetAccessControlRecursiveMode = "set"
 	PathSetAccessControlRecursiveModeModify PathSetAccessControlRecursiveMode = "modify"
 	PathSetAccessControlRecursiveModeRemove PathSetAccessControlRecursiveMode = "remove"
 )
 
 // PossiblePathSetAccessControlRecursiveModeValues returns the possible values for the PathSetAccessControlRecursiveMode const type.
 func PossiblePathSetAccessControlRecursiveModeValues() []PathSetAccessControlRecursiveMode {
-	return []PathSetAccessControlRecursiveMode{	
+	return []PathSetAccessControlRecursiveMode{
 		PathSetAccessControlRecursiveModeSet,
 		PathSetAccessControlRecursiveModeModify,
 		PathSetAccessControlRecursiveModeRemove,
@@ -139,16 +139,16 @@ func PossiblePathSetAccessControlRecursiveModeValues() []PathSetAccessControlRec
 type PathUpdateAction string
 
 const (
-	PathUpdateActionAppend PathUpdateAction = "append"
-	PathUpdateActionFlush PathUpdateAction = "flush"
-	PathUpdateActionSetProperties PathUpdateAction = "setProperties"
-	PathUpdateActionSetAccessControl PathUpdateAction = "setAccessControl"
+	PathUpdateActionAppend                    PathUpdateAction = "append"
+	PathUpdateActionFlush                     PathUpdateAction = "flush"
+	PathUpdateActionSetProperties             PathUpdateAction = "setProperties"
+	PathUpdateActionSetAccessControl          PathUpdateAction = "setAccessControl"
 	PathUpdateActionSetAccessControlRecursive PathUpdateAction = "setAccessControlRecursive"
 )
 
 // PossiblePathUpdateActionValues returns the possible values for the PathUpdateAction const type.
 func PossiblePathUpdateActionValues() []PathUpdateAction {
-	return []PathUpdateAction{	
+	return []PathUpdateAction{
 		PathUpdateActionAppend,
 		PathUpdateActionFlush,
 		PathUpdateActionSetProperties,
@@ -156,4 +156,3 @@ func PossiblePathUpdateActionValues() []PathUpdateAction {
 		PathUpdateActionSetAccessControlRecursive,
 	}
 }
-

@@ -9,14 +9,10 @@
 
 package generated
 
-
-
 import (
 	"strings"
 	"time"
 )
-
-
 
 const (
 	rfc1123JSON = `"` + time.RFC1123 + `"`

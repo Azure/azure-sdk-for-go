@@ -24,7 +24,7 @@ import (
 // Don't use this type directly, use NewFileSystemClient() instead.
 type FileSystemClient struct {
 	endpoint string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewFileSystemClient creates a new instance of FileSystemClient with the specified values.
@@ -33,7 +33,7 @@ type FileSystemClient struct {
 func NewFileSystemClient(endpoint string, pl runtime.Pipeline) *FileSystemClient {
 	client := &FileSystemClient{
 		endpoint: endpoint,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -494,4 +494,3 @@ func (client *FileSystemClient) setPropertiesHandleResponse(resp *http.Response)
 	}
 	return result, nil
 }
-

@@ -38,14 +38,14 @@ func (a *ACLFailedEntry) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "errorMessage":
-				err = unpopulate(val, "ErrorMessage", &a.ErrorMessage)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ErrorMessage", &a.ErrorMessage)
+			delete(rawMsg, key)
 		case "name":
-				err = unpopulate(val, "Name", &a.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Name", &a.Name)
+			delete(rawMsg, key)
 		case "type":
-				err = unpopulate(val, "Type", &a.Type)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Type", &a.Type)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", a, err)
@@ -59,8 +59,8 @@ func (b BlobHierarchyListSegment) MarshalXML(enc *xml.Encoder, start xml.StartEl
 	type alias BlobHierarchyListSegment
 	aux := &struct {
 		*alias
-		BlobItems *[]*BlobItemInternal `xml:"Blob"`
-		BlobPrefixes *[]*BlobPrefix `xml:"BlobPrefix"`
+		BlobItems    *[]*BlobItemInternal `xml:"Blob"`
+		BlobPrefixes *[]*BlobPrefix       `xml:"BlobPrefix"`
 	}{
 		alias: (*alias)(&b),
 	}
@@ -79,24 +79,24 @@ func (b BlobPropertiesInternal) MarshalXML(enc *xml.Encoder, start xml.StartElem
 	aux := &struct {
 		*alias
 		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5 *string `xml:"Content-MD5"`
-		CopyCompletionTime *timeRFC1123 `xml:"CopyCompletionTime"`
-		CreationTime *timeRFC1123 `xml:"Creation-Time"`
-		DeleteTime *timeRFC1123 `xml:"DeleteTime"`
-		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
-		ExpiresOn *timeRFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn *timeRFC1123 `xml:"LastAccessTime"`
-		LastModified *timeRFC1123 `xml:"Last-Modified"`
+		ContentMD5           *string      `xml:"Content-MD5"`
+		CopyCompletionTime   *timeRFC1123 `xml:"CopyCompletionTime"`
+		CreationTime         *timeRFC1123 `xml:"Creation-Time"`
+		DeleteTime           *timeRFC1123 `xml:"DeleteTime"`
+		DeletedTime          *timeRFC1123 `xml:"DeletedTime"`
+		ExpiresOn            *timeRFC1123 `xml:"Expiry-Time"`
+		LastAccessedOn       *timeRFC1123 `xml:"LastAccessTime"`
+		LastModified         *timeRFC1123 `xml:"Last-Modified"`
 	}{
-		alias: (*alias)(&b),
+		alias:                (*alias)(&b),
 		AccessTierChangeTime: (*timeRFC1123)(b.AccessTierChangeTime),
-		CopyCompletionTime: (*timeRFC1123)(b.CopyCompletionTime),
-		CreationTime: (*timeRFC1123)(b.CreationTime),
-		DeleteTime: (*timeRFC1123)(b.DeleteTime),
-		DeletedTime: (*timeRFC1123)(b.DeletedTime),
-		ExpiresOn: (*timeRFC1123)(b.ExpiresOn),
-		LastAccessedOn: (*timeRFC1123)(b.LastAccessedOn),
-		LastModified: (*timeRFC1123)(b.LastModified),
+		CopyCompletionTime:   (*timeRFC1123)(b.CopyCompletionTime),
+		CreationTime:         (*timeRFC1123)(b.CreationTime),
+		DeleteTime:           (*timeRFC1123)(b.DeleteTime),
+		DeletedTime:          (*timeRFC1123)(b.DeletedTime),
+		ExpiresOn:            (*timeRFC1123)(b.ExpiresOn),
+		LastAccessedOn:       (*timeRFC1123)(b.LastAccessedOn),
+		LastModified:         (*timeRFC1123)(b.LastModified),
 	}
 	if b.ContentMD5 != nil {
 		encodedContentMD5 := runtime.EncodeByteArray(b.ContentMD5, runtime.Base64StdFormat)
@@ -111,14 +111,14 @@ func (b *BlobPropertiesInternal) UnmarshalXML(dec *xml.Decoder, start xml.StartE
 	aux := &struct {
 		*alias
 		AccessTierChangeTime *timeRFC1123 `xml:"AccessTierChangeTime"`
-		ContentMD5 *string `xml:"Content-MD5"`
-		CopyCompletionTime *timeRFC1123 `xml:"CopyCompletionTime"`
-		CreationTime *timeRFC1123 `xml:"Creation-Time"`
-		DeleteTime *timeRFC1123 `xml:"DeleteTime"`
-		DeletedTime *timeRFC1123 `xml:"DeletedTime"`
-		ExpiresOn *timeRFC1123 `xml:"Expiry-Time"`
-		LastAccessedOn *timeRFC1123 `xml:"LastAccessTime"`
-		LastModified *timeRFC1123 `xml:"Last-Modified"`
+		ContentMD5           *string      `xml:"Content-MD5"`
+		CopyCompletionTime   *timeRFC1123 `xml:"CopyCompletionTime"`
+		CreationTime         *timeRFC1123 `xml:"Creation-Time"`
+		DeleteTime           *timeRFC1123 `xml:"DeleteTime"`
+		DeletedTime          *timeRFC1123 `xml:"DeletedTime"`
+		ExpiresOn            *timeRFC1123 `xml:"Expiry-Time"`
+		LastAccessedOn       *timeRFC1123 `xml:"LastAccessTime"`
+		LastModified         *timeRFC1123 `xml:"Last-Modified"`
 	}{
 		alias: (*alias)(b),
 	}
@@ -160,14 +160,14 @@ func (f *FileSystem) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "eTag":
-				err = unpopulate(val, "ETag", &f.ETag)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ETag", &f.ETag)
+			delete(rawMsg, key)
 		case "lastModified":
-				err = unpopulate(val, "LastModified", &f.LastModified)
-				delete(rawMsg, key)
+			err = unpopulate(val, "LastModified", &f.LastModified)
+			delete(rawMsg, key)
 		case "name":
-				err = unpopulate(val, "Name", &f.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Name", &f.Name)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", f, err)
@@ -193,8 +193,8 @@ func (f *FileSystemList) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "filesystems":
-				err = unpopulate(val, "Filesystems", &f.Filesystems)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Filesystems", &f.Filesystems)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", f, err)
@@ -230,38 +230,38 @@ func (p *Path) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "contentLength":
-				err = unpopulate(val, "ContentLength", &p.ContentLength)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ContentLength", &p.ContentLength)
+			delete(rawMsg, key)
 		case "creationTime":
-				err = unpopulate(val, "CreationTime", &p.CreationTime)
-				delete(rawMsg, key)
+			err = unpopulate(val, "CreationTime", &p.CreationTime)
+			delete(rawMsg, key)
 		case "eTag":
-				err = unpopulate(val, "ETag", &p.ETag)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ETag", &p.ETag)
+			delete(rawMsg, key)
 		case "EncryptionScope":
-				err = unpopulate(val, "EncryptionScope", &p.EncryptionScope)
-				delete(rawMsg, key)
+			err = unpopulate(val, "EncryptionScope", &p.EncryptionScope)
+			delete(rawMsg, key)
 		case "expiryTime":
-				err = unpopulate(val, "ExpiryTime", &p.ExpiryTime)
-				delete(rawMsg, key)
+			err = unpopulate(val, "ExpiryTime", &p.ExpiryTime)
+			delete(rawMsg, key)
 		case "group":
-				err = unpopulate(val, "Group", &p.Group)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Group", &p.Group)
+			delete(rawMsg, key)
 		case "isDirectory":
-				err = unpopulate(val, "IsDirectory", &p.IsDirectory)
-				delete(rawMsg, key)
+			err = unpopulate(val, "IsDirectory", &p.IsDirectory)
+			delete(rawMsg, key)
 		case "lastModified":
-				err = unpopulate(val, "LastModified", &p.LastModified)
-				delete(rawMsg, key)
+			err = unpopulate(val, "LastModified", &p.LastModified)
+			delete(rawMsg, key)
 		case "name":
-				err = unpopulate(val, "Name", &p.Name)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Name", &p.Name)
+			delete(rawMsg, key)
 		case "owner":
-				err = unpopulate(val, "Owner", &p.Owner)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Owner", &p.Owner)
+			delete(rawMsg, key)
 		case "permissions":
-				err = unpopulate(val, "Permissions", &p.Permissions)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Permissions", &p.Permissions)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", p, err)
@@ -287,8 +287,8 @@ func (p *PathList) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "paths":
-				err = unpopulate(val, "Paths", &p.Paths)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Paths", &p.Paths)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", p, err)
@@ -317,17 +317,17 @@ func (s *SetAccessControlRecursiveResponse) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "directoriesSuccessful":
-				err = unpopulate(val, "DirectoriesSuccessful", &s.DirectoriesSuccessful)
-				delete(rawMsg, key)
+			err = unpopulate(val, "DirectoriesSuccessful", &s.DirectoriesSuccessful)
+			delete(rawMsg, key)
 		case "failedEntries":
-				err = unpopulate(val, "FailedEntries", &s.FailedEntries)
-				delete(rawMsg, key)
+			err = unpopulate(val, "FailedEntries", &s.FailedEntries)
+			delete(rawMsg, key)
 		case "failureCount":
-				err = unpopulate(val, "FailureCount", &s.FailureCount)
-				delete(rawMsg, key)
+			err = unpopulate(val, "FailureCount", &s.FailureCount)
+			delete(rawMsg, key)
 		case "filesSuccessful":
-				err = unpopulate(val, "FilesSuccessful", &s.FilesSuccessful)
-				delete(rawMsg, key)
+			err = unpopulate(val, "FilesSuccessful", &s.FilesSuccessful)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -353,8 +353,8 @@ func (s *StorageError) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "error":
-				err = unpopulate(val, "Error", &s.Error)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Error", &s.Error)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -381,11 +381,11 @@ func (s *StorageErrorError) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "Code":
-				err = unpopulate(val, "Code", &s.Code)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Code", &s.Code)
+			delete(rawMsg, key)
 		case "Message":
-				err = unpopulate(val, "Message", &s.Message)
-				delete(rawMsg, key)
+			err = unpopulate(val, "Message", &s.Message)
+			delete(rawMsg, key)
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %v", s, err)
@@ -413,4 +413,3 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 	}
 	return nil
 }
-

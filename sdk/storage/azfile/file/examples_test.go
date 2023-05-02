@@ -13,12 +13,16 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/sas"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/service"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/share"
 	"io"
+	"io/ioutil"
 	"log"
+	"math/rand"
 	"os"
 	"strings"
+	"time"
 )
 
 func handleError(err error) {
@@ -72,7 +76,7 @@ func Example_client_NewClient_CreateShare_CreateDir_CreateFile() {
 
 }
 
-func Example_directory_NewClientFromConnectionString() {
+func Example_file_NewClientFromConnectionString() {
 	// Your connection string can be obtained from the Azure Portal.
 	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
 	if !ok {
@@ -274,6 +278,272 @@ func Example_fileClient_UploadAndClearRange() {
 
 	fmt.Println(rangeList2.Ranges, 0)
 	_, err = fileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	handleError(err)
+}
+
+func Example_fileClient_StartCopyFromURL() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	dstFileName := "testFile2"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	dstFileClient := shareClient.NewRootDirectoryClient().NewFileClient(dstFileName)
+
+	contentR, _ := generateData(int(fileSize))
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
+	handleError(err)
+
+	_, err = dstFileClient.StartCopyFromURL(context.Background(), srcFileClient.URL(), nil)
+	handleError(err)
+
+	_, err = srcFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = dstFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	handleError(err)
+}
+
+func Example_fileClient_DownloadStream() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	contentR, _ := generateData(int(fileSize))
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
+	handleError(err)
+
+	// validate data copied
+	resp, err := srcFileClient.DownloadStream(context.Background(), &file.DownloadStreamOptions{
+		Range: file.HTTPRange{Offset: 0, Count: fileSize},
+	})
+	handleError(err)
+
+	content1, err := io.ReadAll(resp.Body)
+	handleError(err)
+	fmt.Println(content1)
+
+	_, err = srcFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	handleError(err)
+}
+
+func Example_fileClient_DownloadBuffer() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	handleError(err)
+
+	err = srcFileClient.UploadBuffer(context.Background(), content, nil)
+	handleError(err)
+
+	destBuffer := make([]byte, fileSize)
+	_, err = srcFileClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
+		ChunkSize:   10 * 1024 * 1024,
+		Concurrency: 5,
+	})
+	handleError(err)
+
+	_, err = srcFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	handleError(err)
+}
+
+func Example_fileClient_DownloadFile() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	content := make([]byte, fileSize)
+	_, err = rand.Read(content)
+	handleError(err)
+
+	err = srcFileClient.UploadBuffer(context.Background(), content, nil)
+	handleError(err)
+
+	destFileName := "file.bin"
+	destFile, err := os.Create(destFileName)
+	handleError(err)
+	defer func(name string) {
+		err = os.Remove(name)
+		handleError(err)
+	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		handleError(err)
+	}(destFile)
+
+	_, err = srcFileClient.DownloadFile(context.Background(), destFile, nil)
+	handleError(err)
+
+	_, err = srcFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	handleError(err)
+}
+
+func Example_fileClient_UploadFile() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	_, content := generateData(int(fileSize))
+	err = ioutil.WriteFile(srcFileName, content, 0644)
+	handleError(err)
+	defer func() {
+		err = os.Remove(srcFileName)
+		handleError(err)
+	}()
+	fh, err := os.Open(srcFileName)
+	handleError(err)
+	defer func(fh *os.File) {
+		err := fh.Close()
+		handleError(err)
+	}(fh)
+
+	err = srcFileClient.UploadFile(context.Background(), fh, nil)
+
+	destFileName := "file.bin"
+	destFile, err := os.Create(destFileName)
+	handleError(err)
+	defer func(name string) {
+		err = os.Remove(name)
+		handleError(err)
+	}(destFileName)
+	defer func(destFile *os.File) {
+		err = destFile.Close()
+		handleError(err)
+	}(destFile)
+
+	_, err = srcFileClient.DownloadFile(context.Background(), destFile, nil)
+	handleError(err)
+
+	_, err = srcFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	handleError(err)
+}
+
+func Example_file_ClientGetSASURL() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	permission := sas.FilePermissions{Read: true}
+	start := time.Now()
+	expiry := start.AddDate(1, 0, 0)
+	options := file.GetSASURLOptions{StartTime: &start}
+	sasURL, err := srcFileClient.GetSASURL(permission, expiry, &options)
+	handleError(err)
+	_ = sasURL
+
+	_, err = srcFileClient.Delete(context.Background(), nil)
 	handleError(err)
 
 	_, err = shareClient.Delete(context.Background(), nil)

@@ -19,7 +19,7 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"math/rand"
+	"crypto/rand"
 	"os"
 	"strings"
 	"time"

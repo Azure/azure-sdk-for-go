@@ -11,7 +11,7 @@
 - Authentication errors could cause unnecessary retries, making calls taking longer to fail. (PR#20447)
 - Recovery now includes internal timeouts and also handles restarting a connection if AMQP primitives aren't closed cleanly.
 - Potential leaks for $cbs and $management when there was a partial failure. (PR#20564)
-- Sending a message to an entity that is full will no longer retry. (PR#TBD)
+- Sending a message to an entity that is full will no longer retry. (PR#20722)
 - Sending a message that is larger than what the link supports now returns ErrMessageTooLarge. (PR#20721)
 - Latest go-amqp changes have been merged in with fixes for robustness.
 

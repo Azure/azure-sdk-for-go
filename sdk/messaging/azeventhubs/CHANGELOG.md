@@ -13,7 +13,7 @@
 - Recovery now includes internal timeouts and also handles restarting a connection if AMQP primitives aren't closed cleanly.
 - Potential leaks for $cbs and $management when there was a partial failure. (PR#20564)
 - Latest go-amqp changes have been merged in with fixes for robustness.
-- Sending a message to an entity that is full will no longer retry. (PR#TBD)
+- Sending a message to an entity that is full will no longer retry. (PR#20722)
 
 ## 0.6.0 (2023-03-07)
 

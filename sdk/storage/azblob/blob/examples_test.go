@@ -188,7 +188,7 @@ func Example_blob_Client_CreateSnapshot() {
 			if blob.Snapshot != nil {
 				snapTime = *blob.Snapshot
 			}
-			fmt.Printf("Blob name: %s, Snapshot: %s\n", *blob.Name, snapTime)
+			fmt.Printf("Blob name: %s, Snapshot: %s\n", *blob.Name.Content, snapTime)
 		}
 	}
 

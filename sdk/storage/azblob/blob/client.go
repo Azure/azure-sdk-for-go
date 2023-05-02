@@ -263,8 +263,8 @@ func (b *Client) SetLegalHold(ctx context.Context, legalHold bool, options *SetL
 // CopyFromURL synchronously copies the data at the source URL to a block blob, with sizes up to 256 MB.
 // For more information, see https://docs.microsoft.com/en-us/rest/api/storageservices/copy-blob-from-url.
 func (b *Client) CopyFromURL(ctx context.Context, copySource string, options *CopyFromURLOptions) (CopyFromURLResponse, error) {
-	copyOptions, smac, mac, lac := options.format()
-	resp, err := b.generated().CopyFromURL(ctx, copySource, copyOptions, smac, mac, lac)
+	copyOptions, smac, mac, lac, cpkScopeInfo := options.format()
+	resp, err := b.generated().CopyFromURL(ctx, copySource, copyOptions, smac, mac, lac, cpkScopeInfo)
 	return resp, err
 }
 

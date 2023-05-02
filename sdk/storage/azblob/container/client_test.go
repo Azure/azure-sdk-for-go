@@ -990,7 +990,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsExact() {
 		_require.Nil(err)
 
 		for _, blob := range resp.Segment.BlobItems {
-			_require.Equal(nameMap[*blob.Name], true)
+			_require.Equal(nameMap[*blob.Name.Content], true)
 		}
 		if err != nil {
 			break
@@ -1027,7 +1027,7 @@ func (s *ContainerRecordedTestsSuite) TestContainerListBlobsMaxResultsSufficient
 		_require.Nil(err)
 
 		for _, blob := range resp.Segment.BlobItems {
-			_require.Equal(nameMap[*blob.Name], true)
+			_require.Equal(nameMap[*blob.Name.Content], true)
 		}
 		if err != nil {
 			break
@@ -1328,7 +1328,7 @@ func (s *ContainerRecordedTestsSuite) TestBlobListWrapper() {
 		_require.NoError(err)
 
 		for _, blob := range resp.Segment.BlobItems {
-			found = append(found, *blob.Name)
+			found = append(found, *blob.Name.Content)
 		}
 	}
 

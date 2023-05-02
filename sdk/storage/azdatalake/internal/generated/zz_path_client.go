@@ -12,14 +12,11 @@ package generated
 import (
 	"context"
 	"encoding/base64"
-	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"io"
 	"net/http"
-	"net/url"
 	"strconv"
-	"strings"
 	"time"
 )
 
@@ -27,22 +24,16 @@ import (
 // Don't use this type directly, use NewPathClient() instead.
 type PathClient struct {
 	endpoint string
-	fileSystem string
-	pathParam string
-	pl runtime.Pipeline
+	pl       runtime.Pipeline
 }
 
 // NewPathClient creates a new instance of PathClient with the specified values.
 //   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - fileSystem - The filesystem identifier.
-//   - pathParam - The file or directory path.
 //   - pl - the pipeline used for sending requests and handling responses.
-func NewPathClient(endpoint string, fileSystem string, pathParam string, pl runtime.Pipeline) *PathClient {
+func NewPathClient(endpoint string, pl runtime.Pipeline) *PathClient {
 	client := &PathClient{
 		endpoint: endpoint,
-		fileSystem: fileSystem,
-		pathParam: pathParam,
-		pl: pl,
+		pl:       pl,
 	}
 	return client
 }
@@ -73,16 +64,7 @@ func (client *PathClient) AppendData(ctx context.Context, body io.ReadSeekCloser
 
 // appendDataCreateRequest creates the AppendData request.
 func (client *PathClient) appendDataCreateRequest(ctx context.Context, body io.ReadSeekCloser, options *PathClientAppendDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, cpkInfo *CpkInfo) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -207,16 +189,7 @@ func (client *PathClient) Create(ctx context.Context, options *PathClientCreateO
 
 // createCreateRequest creates the Create request.
 func (client *PathClient) createCreateRequest(ctx context.Context, options *PathClientCreateOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, sourceModifiedAccessConditions *SourceModifiedAccessConditions, cpkInfo *CpkInfo) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -384,16 +357,7 @@ func (client *PathClient) Delete(ctx context.Context, options *PathClientDeleteO
 
 // deleteCreateRequest creates the Delete request.
 func (client *PathClient) deleteCreateRequest(ctx context.Context, options *PathClientDeleteOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -483,16 +447,7 @@ func (client *PathClient) FlushData(ctx context.Context, options *PathClientFlus
 
 // flushDataCreateRequest creates the FlushData request.
 func (client *PathClient) flushDataCreateRequest(ctx context.Context, options *PathClientFlushDataOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CpkInfo) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -642,16 +597,7 @@ func (client *PathClient) GetProperties(ctx context.Context, options *PathClient
 
 // getPropertiesCreateRequest creates the GetProperties request.
 func (client *PathClient) getPropertiesCreateRequest(ctx context.Context, options *PathClientGetPropertiesOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -812,16 +758,7 @@ func (client *PathClient) Lease(ctx context.Context, xmsLeaseAction PathLeaseAct
 
 // leaseCreateRequest creates the Lease request.
 func (client *PathClient) leaseCreateRequest(ctx context.Context, xmsLeaseAction PathLeaseAction, options *PathClientLeaseOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -926,16 +863,7 @@ func (client *PathClient) Read(ctx context.Context, options *PathClientReadOptio
 
 // readCreateRequest creates the Read request.
 func (client *PathClient) readCreateRequest(ctx context.Context, options *PathClientReadOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions, cpkInfo *CpkInfo) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1096,16 +1024,7 @@ func (client *PathClient) SetAccessControl(ctx context.Context, options *PathCli
 
 // setAccessControlCreateRequest creates the SetAccessControl request.
 func (client *PathClient) setAccessControlCreateRequest(ctx context.Context, options *PathClientSetAccessControlOptions, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1208,16 +1127,7 @@ func (client *PathClient) SetAccessControlRecursive(ctx context.Context, mode Pa
 
 // setAccessControlRecursiveCreateRequest creates the SetAccessControlRecursive request.
 func (client *PathClient) setAccessControlRecursiveCreateRequest(ctx context.Context, mode PathSetAccessControlRecursiveMode, options *PathClientSetAccessControlRecursiveOptions) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1299,16 +1209,7 @@ func (client *PathClient) SetExpiry(ctx context.Context, expiryOptions PathExpir
 
 // setExpiryCreateRequest creates the SetExpiry request.
 func (client *PathClient) setExpiryCreateRequest(ctx context.Context, expiryOptions PathExpiryOptions, options *PathClientSetExpiryOptions) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1384,16 +1285,7 @@ func (client *PathClient) Undelete(ctx context.Context, options *PathClientUndel
 
 // undeleteCreateRequest creates the Undelete request.
 func (client *PathClient) undeleteCreateRequest(ctx context.Context, options *PathClientUndeleteOptions) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1480,16 +1372,7 @@ func (client *PathClient) Update(ctx context.Context, action PathUpdateAction, m
 
 // updateCreateRequest creates the Update request.
 func (client *PathClient) updateCreateRequest(ctx context.Context, action PathUpdateAction, mode PathSetAccessControlRecursiveMode, body io.ReadSeekCloser, options *PathClientUpdateOptions, pathHTTPHeaders *PathHTTPHeaders, leaseAccessConditions *LeaseAccessConditions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	urlPath := "/{filesystem}/{path}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	if client.pathParam == "" {
-		return nil, errors.New("parameter client.pathParam cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{path}", url.PathEscape(client.pathParam))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -1645,4 +1528,3 @@ func (client *PathClient) updateHandleResponse(resp *http.Response) (PathClientU
 	}
 	return result, nil
 }
-

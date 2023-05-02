@@ -11,12 +11,10 @@ package generated
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -26,18 +24,15 @@ import (
 // Don't use this type directly, use NewFileSystemClient() instead.
 type FileSystemClient struct {
 	endpoint string
-	fileSystem string
 	pl runtime.Pipeline
 }
 
 // NewFileSystemClient creates a new instance of FileSystemClient with the specified values.
 //   - endpoint - The URL of the service account, container, or blob that is the target of the desired operation.
-//   - fileSystem - The filesystem identifier.
 //   - pl - the pipeline used for sending requests and handling responses.
-func NewFileSystemClient(endpoint string, fileSystem string, pl runtime.Pipeline) *FileSystemClient {
+func NewFileSystemClient(endpoint string, pl runtime.Pipeline) *FileSystemClient {
 	client := &FileSystemClient{
 		endpoint: endpoint,
-		fileSystem: fileSystem,
 		pl: pl,
 	}
 	return client
@@ -66,12 +61,7 @@ func (client *FileSystemClient) Create(ctx context.Context, options *FileSystemC
 
 // createCreateRequest creates the Create request.
 func (client *FileSystemClient) createCreateRequest(ctx context.Context, options *FileSystemClientCreateOptions) (*policy.Request, error) {
-	urlPath := "/{filesystem}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -155,12 +145,7 @@ func (client *FileSystemClient) Delete(ctx context.Context, options *FileSystemC
 
 // deleteCreateRequest creates the Delete request.
 func (client *FileSystemClient) deleteCreateRequest(ctx context.Context, options *FileSystemClientDeleteOptions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	urlPath := "/{filesystem}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -226,12 +211,7 @@ func (client *FileSystemClient) GetProperties(ctx context.Context, options *File
 
 // getPropertiesCreateRequest creates the GetProperties request.
 func (client *FileSystemClient) getPropertiesCreateRequest(ctx context.Context, options *FileSystemClientGetPropertiesOptions) (*policy.Request, error) {
-	urlPath := "/{filesystem}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	req, err := runtime.NewRequest(ctx, http.MethodHead, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodHead, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -289,42 +269,10 @@ func (client *FileSystemClient) getPropertiesHandleResponse(resp *http.Response)
 // Generated from API version 2020-10-02
 //   - options - FileSystemClientListBlobHierarchySegmentOptions contains the optional parameters for the FileSystemClient.NewListBlobHierarchySegmentPager
 //     method.
-func (client *FileSystemClient) NewListBlobHierarchySegmentPager(options *FileSystemClientListBlobHierarchySegmentOptions) (*runtime.Pager[FileSystemClientListBlobHierarchySegmentResponse]) {
-	return runtime.NewPager(runtime.PagingHandler[FileSystemClientListBlobHierarchySegmentResponse]{
-		More: func(page FileSystemClientListBlobHierarchySegmentResponse) bool {
-			return page.NextMarker != nil && len(*page.NextMarker) > 0
-		},
-		Fetcher: func(ctx context.Context, page *FileSystemClientListBlobHierarchySegmentResponse) (FileSystemClientListBlobHierarchySegmentResponse, error) {
-			var req *policy.Request
-			var err error
-			if page == nil {
-				req, err = client.listBlobHierarchySegmentCreateRequest(ctx, options)
-			} else {
-				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextMarker)
-			}
-			if err != nil {
-				return FileSystemClientListBlobHierarchySegmentResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return FileSystemClientListBlobHierarchySegmentResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FileSystemClientListBlobHierarchySegmentResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listBlobHierarchySegmentHandleResponse(resp)
-		},
-	})
-}
-
-// listBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
-func (client *FileSystemClient) listBlobHierarchySegmentCreateRequest(ctx context.Context, options *FileSystemClientListBlobHierarchySegmentOptions) (*policy.Request, error) {
-	urlPath := "/{filesystem}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+//
+// ListBlobHierarchySegmentCreateRequest creates the ListBlobHierarchySegment request.
+func (client *FileSystemClient) ListBlobHierarchySegmentCreateRequest(ctx context.Context, options *FileSystemClientListBlobHierarchySegmentOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -362,7 +310,7 @@ func (client *FileSystemClient) listBlobHierarchySegmentCreateRequest(ctx contex
 }
 
 // listBlobHierarchySegmentHandleResponse handles the ListBlobHierarchySegment response.
-func (client *FileSystemClient) listBlobHierarchySegmentHandleResponse(resp *http.Response) (FileSystemClientListBlobHierarchySegmentResponse, error) {
+func (client *FileSystemClient) ListBlobHierarchySegmentHandleResponse(resp *http.Response) (FileSystemClientListBlobHierarchySegmentResponse, error) {
 	result := FileSystemClientListBlobHierarchySegmentResponse{}
 	if val := resp.Header.Get("Content-Type"); val != "" {
 		result.ContentType = &val
@@ -395,36 +343,10 @@ func (client *FileSystemClient) listBlobHierarchySegmentHandleResponse(resp *htt
 //   - recursive - Required
 //   - options - FileSystemClientListPathsOptions contains the optional parameters for the FileSystemClient.NewListPathsPager
 //     method.
-func (client *FileSystemClient) NewListPathsPager(recursive bool, options *FileSystemClientListPathsOptions) (*runtime.Pager[FileSystemClientListPathsResponse]) {
-	return runtime.NewPager(runtime.PagingHandler[FileSystemClientListPathsResponse]{
-		More: func(page FileSystemClientListPathsResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *FileSystemClientListPathsResponse) (FileSystemClientListPathsResponse, error) {
-			req, err := client.listPathsCreateRequest(ctx, recursive, options)
-			if err != nil {
-				return FileSystemClientListPathsResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return FileSystemClientListPathsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return FileSystemClientListPathsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listPathsHandleResponse(resp)
-		},
-	})
-}
-
-// listPathsCreateRequest creates the ListPaths request.
-func (client *FileSystemClient) listPathsCreateRequest(ctx context.Context, recursive bool, options *FileSystemClientListPathsOptions) (*policy.Request, error) {
-	urlPath := "/{filesystem}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.endpoint, urlPath))
+//
+// ListPathsCreateRequest creates the ListPaths request.
+func (client *FileSystemClient) ListPathsCreateRequest(ctx context.Context, recursive bool, options *FileSystemClientListPathsOptions) (*policy.Request, error) {
+	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
 	}
@@ -456,7 +378,7 @@ func (client *FileSystemClient) listPathsCreateRequest(ctx context.Context, recu
 }
 
 // listPathsHandleResponse handles the ListPaths response.
-func (client *FileSystemClient) listPathsHandleResponse(resp *http.Response) (FileSystemClientListPathsResponse, error) {
+func (client *FileSystemClient) ListPathsHandleResponse(resp *http.Response) (FileSystemClientListPathsResponse, error) {
 	result := FileSystemClientListPathsResponse{}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)
@@ -517,12 +439,7 @@ func (client *FileSystemClient) SetProperties(ctx context.Context, options *File
 
 // setPropertiesCreateRequest creates the SetProperties request.
 func (client *FileSystemClient) setPropertiesCreateRequest(ctx context.Context, options *FileSystemClientSetPropertiesOptions, modifiedAccessConditions *ModifiedAccessConditions) (*policy.Request, error) {
-	urlPath := "/{filesystem}"
-	if client.fileSystem == "" {
-		return nil, errors.New("parameter client.fileSystem cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{filesystem}", url.PathEscape(client.fileSystem))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.endpoint, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, client.endpoint)
 	if err != nil {
 		return nil, err
 	}

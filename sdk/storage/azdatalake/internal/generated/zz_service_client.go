@@ -41,30 +41,9 @@ func NewServiceClient(endpoint string, pl runtime.Pipeline) *ServiceClient {
 // Generated from API version 2020-10-02
 //   - options - ServiceClientListFileSystemsOptions contains the optional parameters for the ServiceClient.NewListFileSystemsPager
 //     method.
-func (client *ServiceClient) NewListFileSystemsPager(options *ServiceClientListFileSystemsOptions) (*runtime.Pager[ServiceClientListFileSystemsResponse]) {
-	return runtime.NewPager(runtime.PagingHandler[ServiceClientListFileSystemsResponse]{
-		More: func(page ServiceClientListFileSystemsResponse) bool {
-			return false
-		},
-		Fetcher: func(ctx context.Context, page *ServiceClientListFileSystemsResponse) (ServiceClientListFileSystemsResponse, error) {
-			req, err := client.listFileSystemsCreateRequest(ctx, options)
-			if err != nil {
-				return ServiceClientListFileSystemsResponse{}, err
-			}
-			resp, err := client.pl.Do(req)
-			if err != nil {
-				return ServiceClientListFileSystemsResponse{}, err
-			}
-			if !runtime.HasStatusCode(resp, http.StatusOK) {
-				return ServiceClientListFileSystemsResponse{}, runtime.NewResponseError(resp)
-			}
-			return client.listFileSystemsHandleResponse(resp)
-		},
-	})
-}
-
-// listFileSystemsCreateRequest creates the ListFileSystems request.
-func (client *ServiceClient) listFileSystemsCreateRequest(ctx context.Context, options *ServiceClientListFileSystemsOptions) (*policy.Request, error) {
+//
+// ListFileSystemsCreateRequest creates the ListFileSystems request.
+func (client *FileSystemClient) ListFileSystemsCreateRequest(ctx context.Context, options *ServiceClientListFileSystemsOptions) (*policy.Request, error) {
 	req, err := runtime.NewRequest(ctx, http.MethodGet, client.endpoint)
 	if err != nil {
 		return nil, err
@@ -93,7 +72,7 @@ func (client *ServiceClient) listFileSystemsCreateRequest(ctx context.Context, o
 }
 
 // listFileSystemsHandleResponse handles the ListFileSystems response.
-func (client *ServiceClient) listFileSystemsHandleResponse(resp *http.Response) (ServiceClientListFileSystemsResponse, error) {
+func (client *FileSystemClient) ListFileSystemsHandleResponse(resp *http.Response) (ServiceClientListFileSystemsResponse, error) {
 	result := ServiceClientListFileSystemsResponse{}
 	if val := resp.Header.Get("Date"); val != "" {
 		date, err := time.Parse(time.RFC1123, val)

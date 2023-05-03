@@ -649,13 +649,4 @@ func Example_fileClient_UploadRangeFromURL() {
 
 	_, err = destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), nil)
 	handleError(err)
-	
-	_, err = srcFileClient.Delete(context.Background(), nil)
-	handleError(err)
-
-	_, err = dstFileClient.Delete(context.Background(), nil)
-	handleError(err)
-
-	_, err = shareClient.Delete(context.Background(), nil)
-	handleError(err)
 }

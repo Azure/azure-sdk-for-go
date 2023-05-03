@@ -1,4 +1,4 @@
-# Code Generation - Azure Queue SDK for Golang
+# Code Generation - Azure Datalake SDK for Golang
 
 ### Settings
 

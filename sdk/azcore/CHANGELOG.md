@@ -1,14 +1,10 @@
 # Release History
 
-## 1.5.1 (Unreleased)
+## 1.5.1 (2023-05-04)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Added support for ARM cross-tenant authentication. Set the `AuxiliaryTenants` field of `arm.ClientOptions` to enable.
+* Added `TenantID` field to `policy.TokenRequestOptions`.
 
 ## 1.5.0 (2023-04-06)
 

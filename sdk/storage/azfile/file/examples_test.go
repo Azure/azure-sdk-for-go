@@ -9,6 +9,7 @@ package file_test
 import (
 	"bytes"
 	"context"
+	"crypto/rand"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -19,7 +20,6 @@ import (
 	"io"
 	"io/ioutil"
 	"log"
-	"crypto/rand"
 	"os"
 	"strings"
 	"time"
@@ -312,6 +312,7 @@ func Example_fileClient_StartCopyFromURL() {
 	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
 	handleError(err)
 
+	// you can also use AbortCopy to abort copying
 	_, err = dstFileClient.StartCopyFromURL(context.Background(), srcFileClient.URL(), nil)
 	handleError(err)
 
@@ -395,10 +396,7 @@ func Example_fileClient_DownloadBuffer() {
 	handleError(err)
 
 	destBuffer := make([]byte, fileSize)
-	_, err = srcFileClient.DownloadBuffer(context.Background(), destBuffer, &file.DownloadBufferOptions{
-		ChunkSize:   10 * 1024 * 1024,
-		Concurrency: 5,
-	})
+	_, err = srcFileClient.DownloadBuffer(context.Background(), destBuffer, nil)
 	handleError(err)
 
 	_, err = srcFileClient.Delete(context.Background(), nil)
@@ -544,6 +542,117 @@ func Example_file_ClientGetSASURL() {
 	_ = sasURL
 
 	_, err = srcFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	handleError(err)
+}
+
+func Example_fileClient_Resize() {
+	// Your connection string can be obtained from the Azure Portal.
+	connectionString, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
+	if !ok {
+		log.Fatal("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+	}
+	shareName := "testShare"
+	srcFileName := "testFile"
+	fileSize := int64(5)
+
+	shareClient, err := share.NewClientFromConnectionString(connectionString, shareName, nil)
+	handleError(err)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	resp1, err := srcFileClient.GetProperties(context.Background(), nil)
+	handleError(err)
+	fmt.Println(*resp1.ContentLength)
+
+	_, err = srcFileClient.Resize(context.Background(), 6, nil)
+	handleError(err)
+
+	resp1, err = srcFileClient.GetProperties(context.Background(), nil)
+	handleError(err)
+	fmt.Println(*resp1.ContentLength)
+
+	_, err = srcFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = shareClient.Delete(context.Background(), nil)
+	handleError(err)
+}
+
+func Example_fileClient_UploadRangeFromURL() {
+	accountName, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_NAME")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_NAME could not be found")
+	}
+	accountKey, ok := os.LookupEnv("AZURE_STORAGE_ACCOUNT_KEY")
+	if !ok {
+		panic("AZURE_STORAGE_ACCOUNT_KEY could not be found")
+	}
+
+	serviceURL := fmt.Sprintf("https://%s.file.core.windows.net/", accountName)
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	handleError(err)
+
+	client, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	handleError(err)
+
+	shareClient := client.NewShareClient("testShare")
+	shareName := "testShare"
+	srcFileName := "testFile"
+	dstFileName := "testFile2"
+	fileSize := int64(5)
+
+	_, err = shareClient.Create(context.Background(), nil)
+	handleError(err)
+
+	srcFileClient := shareClient.NewRootDirectoryClient().NewFileClient(srcFileName)
+	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	dstFileClient := shareClient.NewRootDirectoryClient().NewFileClient(dstFileName)
+
+	contentR, _ := generateData(int(fileSize))
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)
+	handleError(err)
+
+	contentSize := 1024 * 8 // 8KB
+	content := make([]byte, contentSize)
+	body := bytes.NewReader(content)
+	rsc := streaming.NopCloser(body)
+
+	_, err = srcFileClient.UploadRange(context.Background(), 0, rsc, nil)
+	handleError(err)
+
+	perms := sas.FilePermissions{Read: true, Write: true}
+	sasQueryParams, err := sas.SignatureValues{
+		Protocol:    sas.ProtocolHTTPS,                    // Users MUST use HTTPS (not HTTP)
+		ExpiryTime:  time.Now().UTC().Add(48 * time.Hour), // 48-hours before expiration
+		ShareName:   shareName,
+		FilePath:    srcFileName,
+		Permissions: perms.String(),
+	}.SignWithSharedKey(cred)
+	handleError(err)
+
+	srcFileSAS := srcFileClient.URL() + "?" + sasQueryParams.Encode()
+
+	destFClient := shareClient.NewRootDirectoryClient().NewFileClient(dstFileName)
+	_, err = destFClient.Create(context.Background(), fileSize, nil)
+	handleError(err)
+
+	_, err = destFClient.UploadRangeFromURL(context.Background(), srcFileSAS, 0, 0, int64(contentSize), nil)
+
+	_, err = srcFileClient.Delete(context.Background(), nil)
+	handleError(err)
+
+	_, err = dstFileClient.Delete(context.Background(), nil)
 	handleError(err)
 
 	_, err = shareClient.Delete(context.Background(), nil)

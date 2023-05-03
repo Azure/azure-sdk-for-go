@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/sas"
+	"net/http"
 	"strings"
 	"testing"
 	"time"
@@ -124,6 +125,11 @@ func GetServiceClient(t *testing.T, accountType TestAccountType, options *servic
 	}
 
 	SetClientOptions(t, &options.ClientOptions)
+	options.ClientOptions.Transport = &http.Client{
+		Transport: &http.Transport{
+			Proxy: http.ProxyFromEnvironment,
+		},
+	}
 
 	cred, err := GetGenericSharedKeyCredential(accountType)
 	if err != nil {

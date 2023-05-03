@@ -10,11 +10,13 @@
 package generated
 
 import (
+	"encoding/base64"
 	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"reflect"
 	"time"
 )
@@ -106,6 +108,7 @@ func (b *BlobItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error 
 	type alias BlobItem
 	aux := &struct {
 		*alias
+		BlobName   *BlobName            `xml:"Name"`
 		Metadata   additionalProperties `xml:"Metadata"`
 		OrMetadata additionalProperties `xml:"OrMetadata"`
 	}{
@@ -116,6 +119,17 @@ func (b *BlobItem) UnmarshalXML(dec *xml.Decoder, start xml.StartElement) error 
 	}
 	b.Metadata = (map[string]*string)(aux.Metadata)
 	b.OrMetadata = (map[string]*string)(aux.OrMetadata)
+	if aux.BlobName != nil {
+		if aux.BlobName.Encoded != nil && *aux.BlobName.Encoded {
+			name, err := base64.StdEncoding.DecodeString(*aux.BlobName.Content)
+			if err != nil {
+				return err
+			}
+			b.Name = to.Ptr(string(name))
+		} else {
+			b.Name = aux.BlobName.Content
+		}
+	}
 	return nil
 }
 

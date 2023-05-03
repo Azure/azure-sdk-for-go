@@ -12,8 +12,10 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -22,6 +24,7 @@ import (
 	"github.com/stretchr/testify/require"
 	"strings"
 	"testing"
+	"time"
 )
 
 type TestAccountType string
@@ -44,6 +47,7 @@ const (
 const (
 	FakeStorageAccount = "fakestorage"
 	FakeStorageURL     = "https://fakestorage.file.core.windows.net"
+	FakeToken          = "faketoken"
 )
 
 const (
@@ -123,6 +127,20 @@ func GetGenericConnectionString(accountType TestAccountType) (*string, error) {
 	connectionString := fmt.Sprintf("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net/",
 		accountName, accountKey)
 	return &connectionString, nil
+}
+
+type FakeCredential struct {
+}
+
+func (c *FakeCredential) GetToken(ctx context.Context, opts policy.TokenRequestOptions) (azcore.AccessToken, error) {
+	return azcore.AccessToken{Token: FakeToken, ExpiresOn: time.Now().Add(time.Hour).UTC()}, nil
+}
+
+func GetGenericTokenCredential() (azcore.TokenCredential, error) {
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		return &FakeCredential{}, nil
+	}
+	return azidentity.NewDefaultAzureCredential(nil)
 }
 
 func GetServiceClientFromConnectionString(t *testing.T, accountType TestAccountType, options *service.ClientOptions) (*service.Client, error) {

@@ -4,8 +4,4 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* This is the initial preview release of the `azfile` library

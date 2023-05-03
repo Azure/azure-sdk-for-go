@@ -12,6 +12,7 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/fileerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/base"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/internal/exported"
@@ -280,7 +281,13 @@ func (f *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actua
 		o.ChunkSize = MaxUpdateRangeBytes
 	}
 
-	// TODO: Add logs
+	if log.Should(exported.EventUpload) {
+		urlParts, err := sas.ParseURL(f.URL())
+		if err == nil {
+			log.Writef(exported.EventUpload, "file name %s actual size %v chunk-size %v chunk-count %v",
+				urlParts.DirectoryOrFilePath, actualSize, o.ChunkSize, ((actualSize-1)/o.ChunkSize)+1)
+		}
+	}
 
 	progress := int64(0)
 	progressLock := &sync.Mutex{}

@@ -83,7 +83,6 @@ type ShareBreakOptions struct {
 	// header does not appear with a break operation, a fixed-duration lease breaks after the remaining lease period elapses,
 	// and an infinite lease breaks immediately.
 	BreakPeriod *int32
-	// TODO: Should snapshot be removed from the option bag
 	// The snapshot parameter is an opaque DateTime value that, when present, specifies the share snapshot to query.
 	ShareSnapshot *string
 	// AccessConditions contains optional parameters to access leased entity.

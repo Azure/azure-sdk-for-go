@@ -8,7 +8,7 @@ function deployUsingLocalAddons() {
     $helmEnv = "pg2"
 
     if (-not (Get-ChildItem $stressTestAddonsFolder)) {
-        Write-Host "Can't find the the new stress test adons folder at $stressTestAddonsFolder"
+        Write-Host "Can't find the the new stress test addons folder at $stressTestAddonsFolder"
         return
     }
 

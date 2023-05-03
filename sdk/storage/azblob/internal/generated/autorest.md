@@ -386,6 +386,26 @@ directive:
         replace(/xml:"CORS>CORSRule"/g, "xml:\"Cors>CorsRule\"");
 ```
 
+### Change BlobName xml to be correct
+``` yaml
+directive:
+  - from: source-file-go
+    where: $
+    transform: >-
+      return $.
+        replace(/xml:"content"/g, "xml:\",chardata\"");
+```
+
+### Fix Breaking change with BlobName
+``` yaml
+directive:
+- from: zz_models.go
+  where: $
+  transform: >-
+    return $.
+      replace(/Name\s+\*BlobName/g, `Name *string`);
+```
+
 ### Fix Content-Type header in submit batch request
 
 ``` yaml

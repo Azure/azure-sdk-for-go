@@ -535,8 +535,7 @@ type BlobItem struct {
 	Deleted *bool `xml:"Deleted"`
 
 	// REQUIRED
-	//Name *BlobName `xml:"Name"`
-	Name *string
+	Name *string `xml:"Name"`
 
 	// REQUIRED; Properties of a blob
 	Properties *BlobProperties `xml:"Properties"`
@@ -567,7 +566,7 @@ type BlobName struct {
 
 type BlobPrefix struct {
 	// REQUIRED
-	Name *BlobName `xml:"Name"`
+	Name *string `xml:"Name"`
 }
 
 // BlobProperties - Properties of a blob

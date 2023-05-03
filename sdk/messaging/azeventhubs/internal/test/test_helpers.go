@@ -40,6 +40,13 @@ func CaptureLogsForTest() func() []string {
 
 func CaptureLogsForTestWithChannel(messagesCh chan string) func() []string {
 	setAzLogListener(func(e azlog.Event, s string) {
+		defer func() {
+			if err := recover(); err != nil {
+				fmt.Printf("FAILED SENDING MESSAGE (%s), message was: [%s] %s\n", err, e, s)
+				panic(err)
+			}
+		}()
+
 		messagesCh <- fmt.Sprintf("[%s] %s", e, s)
 	})
 

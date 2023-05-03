@@ -14,6 +14,7 @@
 - Potential leaks for $cbs and $management when there was a partial failure. (PR#20564)
 - Latest go-amqp changes have been merged in with fixes for robustness.
 - Sending a message to an entity that is full will no longer retry. (PR#20722)
+- Checkpoint store handles multiple initial owners properly, allowing only one through. (PR#20727)
 
 ## 0.6.0 (2023-03-07)
 

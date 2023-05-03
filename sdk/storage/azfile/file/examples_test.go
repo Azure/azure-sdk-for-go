@@ -616,8 +616,6 @@ func Example_fileClient_UploadRangeFromURL() {
 	_, err = srcFileClient.Create(context.Background(), fileSize, nil)
 	handleError(err)
 
-	dstFileClient := shareClient.NewRootDirectoryClient().NewFileClient(dstFileName)
-
 	contentR, _ := generateData(int(fileSize))
 
 	_, err = srcFileClient.UploadRange(context.Background(), 0, contentR, nil)

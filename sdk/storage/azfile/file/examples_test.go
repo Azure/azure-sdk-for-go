@@ -603,12 +603,12 @@ func Example_fileClient_UploadRangeFromURL() {
 	client, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
 	handleError(err)
 
-	shareClient := client.NewShareClient("testShare")
 	shareName := "testShare"
 	srcFileName := "testFile"
 	dstFileName := "testFile2"
 	fileSize := int64(5)
 
+	shareClient := client.NewShareClient(shareName)
 	_, err = shareClient.Create(context.Background(), nil)
 	handleError(err)
 

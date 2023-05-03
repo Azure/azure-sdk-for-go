@@ -265,7 +265,7 @@ func TestBlobStore_OnlyOneOwnershipClaimSucceeds(t *testing.T) {
 		}
 
 		for _, claim := range claims {
-			require.False(t, claimed[claim.PartitionID], fmt.Sprintf("Partition ID %s isn't claimed more than once", claim.PartitionID))
+			require.False(t, claimed[claim.PartitionID], fmt.Sprintf("Partition ID %s was claimed more than once", claim.PartitionID))
 			require.NotNil(t, claim.ETag)
 			claimed[claim.PartitionID] = true
 		}
@@ -328,7 +328,7 @@ func TestBlobStore_OnlyOneOwnershipUpdateSucceeds(t *testing.T) {
 		}
 
 		for _, claim := range claims {
-			require.False(t, claimed[claim.PartitionID], fmt.Sprintf("Partition ID %s isn't claimed more than once", claim.PartitionID))
+			require.False(t, claimed[claim.PartitionID], fmt.Sprintf("Partition ID %s was claimed more than once", claim.PartitionID))
 			require.NotNil(t, claim.ETag)
 			claimed[claim.PartitionID] = true
 		}

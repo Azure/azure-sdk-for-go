@@ -214,16 +214,6 @@ func (b *BlobStore) setOwnershipMetadata(ctx context.Context, blobName string, o
 		return setMetadataResp.LastModified, *setMetadataResp.ETag, nil
 	}
 
-	setMetadataResp, err := blobClient.SetMetadata(ctx, blobMetadata, nil)
-
-	if err == nil {
-		return setMetadataResp.LastModified, *setMetadataResp.ETag, nil
-	}
-
-	if !bloberror.HasCode(err, bloberror.BlobNotFound) {
-		return nil, "", err
-	}
-
 	uploadResp, err := blobClient.Upload(ctx, streaming.NopCloser(bytes.NewReader([]byte{})), &blockblob.UploadOptions{
 		Metadata: blobMetadata,
 		AccessConditions: &blob.AccessConditions{

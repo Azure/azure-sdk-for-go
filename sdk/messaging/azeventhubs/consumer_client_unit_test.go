@@ -49,42 +49,46 @@ func TestUnitNewConsumerClient(t *testing.T) {
 
 func TestUnit_getOffsetExpression(t *testing.T) {
 	t.Run("Valid", func(t *testing.T) {
-		expr, err := getOffsetExpression(StartPosition{})
+		expr, err := getStartExpression(StartPosition{})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-offset > '@latest'", expr)
 
-		expr, err = getOffsetExpression(StartPosition{Earliest: to.Ptr(true)})
+		expr, err = getStartExpression(StartPosition{Earliest: to.Ptr(true)})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-offset > '-1'", expr)
 
-		expr, err = getOffsetExpression(StartPosition{Latest: to.Ptr(true)})
+		expr, err = getStartExpression(StartPosition{Latest: to.Ptr(true)})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-offset > '@latest'", expr)
 
-		expr, err = getOffsetExpression(StartPosition{Offset: to.Ptr(int64(101))})
+		expr, err = getStartExpression(StartPosition{Latest: to.Ptr(true), Inclusive: true})
+		require.NoError(t, err)
+		require.Equal(t, "amqp.annotation.x-opt-offset >= '@latest'", expr)
+
+		expr, err = getStartExpression(StartPosition{Offset: to.Ptr(int64(101))})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-offset > '101'", expr)
 
-		expr, err = getOffsetExpression(StartPosition{Offset: to.Ptr(int64(101)), Inclusive: true})
+		expr, err = getStartExpression(StartPosition{Offset: to.Ptr(int64(101)), Inclusive: true})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-offset >= '101'", expr)
 
-		expr, err = getOffsetExpression(StartPosition{SequenceNumber: to.Ptr(int64(202))})
+		expr, err = getStartExpression(StartPosition{SequenceNumber: to.Ptr(int64(202))})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-sequence-number > '202'", expr)
 
-		expr, err = getOffsetExpression(StartPosition{SequenceNumber: to.Ptr(int64(202)), Inclusive: true})
+		expr, err = getStartExpression(StartPosition{SequenceNumber: to.Ptr(int64(202)), Inclusive: true})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-sequence-number >= '202'", expr)
 
 		enqueueTime, err := time.Parse(time.RFC3339, "2020-01-01T01:02:03Z")
 		require.NoError(t, err)
 
-		expr, err = getOffsetExpression(StartPosition{EnqueuedTime: &enqueueTime})
+		expr, err = getStartExpression(StartPosition{EnqueuedTime: &enqueueTime})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-enqueued-time > '1577840523000'", expr)
 
-		expr, err = getOffsetExpression(StartPosition{EnqueuedTime: &enqueueTime, Inclusive: true})
+		expr, err = getStartExpression(StartPosition{EnqueuedTime: &enqueueTime, Inclusive: true})
 		require.NoError(t, err)
 		require.Equal(t, "amqp.annotation.x-opt-enqueued-time >= '1577840523000'", expr)
 	})
@@ -93,28 +97,28 @@ func TestUnit_getOffsetExpression(t *testing.T) {
 		enqueueTime, err := time.Parse(time.RFC3339, "2020-01-01T01:02:03Z")
 		require.NoError(t, err)
 
-		expr, err := getOffsetExpression(StartPosition{
+		expr, err := getStartExpression(StartPosition{
 			EnqueuedTime: &enqueueTime,
 			Offset:       to.Ptr[int64](101),
 		})
 		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 		require.Empty(t, expr)
 
-		expr, err = getOffsetExpression(StartPosition{
+		expr, err = getStartExpression(StartPosition{
 			Offset: to.Ptr[int64](202),
 			Latest: to.Ptr(true),
 		})
 		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 		require.Empty(t, expr)
 
-		expr, err = getOffsetExpression(StartPosition{
+		expr, err = getStartExpression(StartPosition{
 			Latest:         to.Ptr(true),
 			SequenceNumber: to.Ptr[int64](202),
 		})
 		require.EqualError(t, err, "only a single start point can be set: Earliest, EnqueuedTime, Latest, Offset, or SequenceNumber")
 		require.Empty(t, expr)
 
-		expr, err = getOffsetExpression(StartPosition{
+		expr, err = getStartExpression(StartPosition{
 			SequenceNumber: to.Ptr[int64](202),
 			Earliest:       to.Ptr(true),
 		})

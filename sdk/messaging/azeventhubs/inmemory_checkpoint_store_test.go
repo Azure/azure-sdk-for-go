@@ -206,13 +206,18 @@ func (cps *testCheckpointStore) ClaimOwnership(ctx context.Context, partitionOwn
 
 			current, exists := cps.ownerships[key]
 
-			if exists && po.ETag != nil && *current.ETag != *po.ETag {
-				// can't own it, didn't have the expected etag
-				return nil, nil
+			if exists {
+				if po.ETag == nil {
+					panic("Ownership blob exists, we should have claimed it using an etag")
+				}
+
+				if *po.ETag != *current.ETag {
+					// can't own it, didn't have the expected etag
+					return nil, nil
+				}
 			}
 
 			newOwnership := po
-
 			uuid, err := uuid.New()
 
 			if err != nil {

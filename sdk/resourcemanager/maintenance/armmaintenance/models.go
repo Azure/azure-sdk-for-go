@@ -14,22 +14,22 @@ import "time"
 // ApplyUpdate - Apply Update request
 type ApplyUpdate struct {
 	// Properties of the apply update
-	Properties *ApplyUpdateProperties `json:"properties,omitempty"`
+	Properties *ApplyUpdateProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
-// ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.List
+// ApplyUpdateForResourceGroupClientListOptions contains the optional parameters for the ApplyUpdateForResourceGroupClient.NewListPager
 // method.
 type ApplyUpdateForResourceGroupClientListOptions struct {
 	// placeholder for future optional parameters
@@ -38,13 +38,13 @@ type ApplyUpdateForResourceGroupClientListOptions struct {
 // ApplyUpdateProperties - Properties for apply update
 type ApplyUpdateProperties struct {
 	// Last Update time
-	LastUpdateTime *time.Time `json:"lastUpdateTime,omitempty"`
+	LastUpdateTime *time.Time
 
 	// The resourceId
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// The status
-	Status *UpdateStatus `json:"status,omitempty"`
+	Status *UpdateStatus
 }
 
 // ApplyUpdatesClientCreateOrUpdateOptions contains the optional parameters for the ApplyUpdatesClient.CreateOrUpdate method.
@@ -68,7 +68,7 @@ type ApplyUpdatesClientGetParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.List method.
+// ApplyUpdatesClientListOptions contains the optional parameters for the ApplyUpdatesClient.NewListPager method.
 type ApplyUpdatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -76,55 +76,55 @@ type ApplyUpdatesClientListOptions struct {
 // Configuration - Maintenance configuration record type
 type Configuration struct {
 	// Gets or sets location of the resource
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets properties of the resource
-	Properties *ConfigurationProperties `json:"properties,omitempty"`
+	Properties *ConfigurationProperties
 
 	// Gets or sets tags of the resource
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified identifier of the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConfigurationAssignment - Configuration Assignment
 type ConfigurationAssignment struct {
 	// Location of the resource
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the configuration assignment
-	Properties *ConfigurationAssignmentProperties `json:"properties,omitempty"`
+	Properties *ConfigurationAssignmentProperties
 
 	// READ-ONLY; Fully qualified identifier of the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConfigurationAssignmentProperties - Properties for configuration assignment
 type ConfigurationAssignmentProperties struct {
 	// The maintenance configuration Id
-	MaintenanceConfigurationID *string `json:"maintenanceConfigurationId,omitempty"`
+	MaintenanceConfigurationID *string
 
 	// The unique resourceId
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 // ConfigurationAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationAssignmentsClient.CreateOrUpdate
@@ -151,54 +151,34 @@ type ConfigurationAssignmentsClientDeleteParentOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsClientGetOptions contains the optional parameters for the ConfigurationAssignmentsClient.Get method.
-type ConfigurationAssignmentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationAssignmentsClientGetParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.GetParent
-// method.
-type ConfigurationAssignmentsClientGetParentOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.List
+// ConfigurationAssignmentsClientListOptions contains the optional parameters for the ConfigurationAssignmentsClient.NewListPager
 // method.
 type ConfigurationAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.ListParent
+// ConfigurationAssignmentsClientListParentOptions contains the optional parameters for the ConfigurationAssignmentsClient.NewListParentPager
 // method.
 type ConfigurationAssignmentsClientListParentOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConfigurationAssignmentsWithinSubscriptionClientListOptions contains the optional parameters for the ConfigurationAssignmentsWithinSubscriptionClient.List
-// method.
-type ConfigurationAssignmentsWithinSubscriptionClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
 // ConfigurationProperties - Properties for maintenance configuration
 type ConfigurationProperties struct {
 	// Gets or sets extensionProperties of the maintenanceConfiguration
-	ExtensionProperties map[string]*string `json:"extensionProperties,omitempty"`
-
-	// The input parameters to be passed to the patch run operation. This property only applies to Guest (InGuestPatch) scope.
-	InstallPatches *InputPatchConfiguration `json:"installPatches,omitempty"`
+	ExtensionProperties map[string]*string
 
 	// Gets or sets maintenanceScope of the configuration
-	MaintenanceScope *MaintenanceScope `json:"maintenanceScope,omitempty"`
+	MaintenanceScope *MaintenanceScope
 
 	// Definition of a MaintenanceWindow
-	MaintenanceWindow *Window `json:"maintenanceWindow,omitempty"`
+	MaintenanceWindow *Window
 
 	// Gets or sets namespace of the resource
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// Gets or sets the visibility of the configuration. The default value is 'Custom'
-	Visibility *Visibility `json:"visibility,omitempty"`
+	Visibility *Visibility
 }
 
 // ConfigurationsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationsClient.CreateOrUpdate
@@ -217,7 +197,7 @@ type ConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.List method.
+// ConfigurationsClientListOptions contains the optional parameters for the ConfigurationsClient.NewListPager method.
 type ConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -227,7 +207,7 @@ type ConfigurationsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.List
+// ConfigurationsForResourceGroupClientListOptions contains the optional parameters for the ConfigurationsForResourceGroupClient.NewListPager
 // method.
 type ConfigurationsForResourceGroupClientListOptions struct {
 	// placeholder for future optional parameters
@@ -236,124 +216,76 @@ type ConfigurationsForResourceGroupClientListOptions struct {
 // Error - An error response received from the Azure Maintenance service.
 type Error struct {
 	// Details of the error
-	Error *ErrorDetails `json:"error,omitempty"`
+	Error *ErrorDetails
 }
 
 // ErrorDetails - An error response details received from the Azure Maintenance service.
 type ErrorDetails struct {
 	// Service-defined error code. This code serves as a sub-status for the HTTP error code specified in the response.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Human-readable representation of the error.
-	Message *string `json:"message,omitempty"`
-}
-
-// InputLinuxParameters - Input properties for patching a Linux machine. This property only applies to Guest (InGuestPatch)
-// scope.
-type InputLinuxParameters struct {
-	// Classification category of patches to be patched
-	ClassificationsToInclude []*string `json:"classificationsToInclude,omitempty"`
-
-	// Package names to be excluded for patching.
-	PackageNameMasksToExclude []*string `json:"packageNameMasksToExclude,omitempty"`
-
-	// Package names to be included for patching.
-	PackageNameMasksToInclude []*string `json:"packageNameMasksToInclude,omitempty"`
-}
-
-// InputPatchConfiguration - Input configuration for a patch run
-type InputPatchConfiguration struct {
-	// Input parameters specific to patching Linux machine. For Windows machines, do not pass this property. This property only
-	// applies to Guest (InGuestPatch) scope.
-	LinuxParameters *InputLinuxParameters `json:"linuxParameters,omitempty"`
-
-	// Possible reboot preference as defined by the user based on which it would be decided to reboot the machine or not after
-	// the patch operation is completed. This property only applies to Guest
-	// (InGuestPatch) scope.
-	RebootSetting *RebootOptions `json:"rebootSetting,omitempty"`
-
-	// [Not supported] Tasks information for the Software update configuration.
-	Tasks *SoftwareUpdateConfigurationTasks `json:"tasks,omitempty"`
-
-	// Input parameters specific to patching a Windows machine. For Linux machines, do not pass this property. This property only
-	// applies to Guest (InGuestPatch) scope.
-	WindowsParameters *InputWindowsParameters `json:"windowsParameters,omitempty"`
-}
-
-// InputWindowsParameters - Input properties for patching a Windows machine. This property only applies to Guest (InGuestPatch)
-// scope.
-type InputWindowsParameters struct {
-	// Classification category of patches to be patched
-	ClassificationsToInclude []*string `json:"classificationsToInclude,omitempty"`
-
-	// Exclude patches which need reboot
-	ExcludeKbsRequiringReboot *bool `json:"excludeKbsRequiringReboot,omitempty"`
-
-	// Windows KBID to be excluded for patching.
-	KbNumbersToExclude []*string `json:"kbNumbersToExclude,omitempty"`
-
-	// Windows KBID to be included for patching.
-	KbNumbersToInclude []*string `json:"kbNumbersToInclude,omitempty"`
+	Message *string
 }
 
 // ListApplyUpdate - Response for ApplyUpdate list
 type ListApplyUpdate struct {
 	// The list of apply updates
-	Value []*ApplyUpdate `json:"value,omitempty"`
+	Value []*ApplyUpdate
 }
 
 // ListConfigurationAssignmentsResult - Response for ConfigurationAssignments list
 type ListConfigurationAssignmentsResult struct {
 	// The list of configuration Assignments
-	Value []*ConfigurationAssignment `json:"value,omitempty"`
+	Value []*ConfigurationAssignment
 }
 
 // ListMaintenanceConfigurationsResult - Response for MaintenanceConfigurations list
 type ListMaintenanceConfigurationsResult struct {
 	// The list of maintenance Configurations
-	Value []*Configuration `json:"value,omitempty"`
+	Value []*Configuration
 }
 
 // ListUpdatesResult - Response for Updates list
 type ListUpdatesResult struct {
 	// The pending updates
-	Value []*Update `json:"value,omitempty"`
+	Value []*Update
 }
 
 // Operation - Represents an operation returned by the GetOperations request
 type Operation struct {
 	// Display name of the operation
-	Display *OperationInfo `json:"display,omitempty"`
+	Display *OperationInfo
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Name of the operation
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 
 	// Properties of the operation
-	Properties interface{} `json:"properties,omitempty"`
+	Properties any
 }
 
 // OperationInfo - Information about an operation
 type OperationInfo struct {
 	// Description of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Name of the operation
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Name of the provider
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Name of the resource type
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -361,7 +293,7 @@ type OperationsClientListOptions struct {
 // OperationsListResult - Result of the List Operations operation
 type OperationsListResult struct {
 	// A collection of operations
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 }
 
 // PublicMaintenanceConfigurationsClientGetOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.Get
@@ -370,7 +302,7 @@ type PublicMaintenanceConfigurationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.List
+// PublicMaintenanceConfigurationsClientListOptions contains the optional parameters for the PublicMaintenanceConfigurationsClient.NewListPager
 // method.
 type PublicMaintenanceConfigurationsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -379,93 +311,72 @@ type PublicMaintenanceConfigurationsClientListOptions struct {
 // Resource - Definition of a Resource
 type Resource struct {
 	// READ-ONLY; Fully qualified identifier of the resource
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Type of the resource
-	Type *string `json:"type,omitempty" azure:"ro"`
-}
-
-// SoftwareUpdateConfigurationTasks - [Not supported] Task properties of the software update configuration.
-type SoftwareUpdateConfigurationTasks struct {
-	// [Not supported] List of post tasks. e.g. [{'source' :'runbook', 'taskScope': 'Resource', 'parameters': { 'arg1': 'value1'}}]
-	PostTasks []*TaskProperties `json:"postTasks,omitempty"`
-
-	// [Not supported] List of pre tasks. e.g. [{'source' :'runbook', 'taskScope': 'Global', 'parameters': { 'arg1': 'value1'}}]
-	PreTasks []*TaskProperties `json:"preTasks,omitempty"`
+	Type *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
-}
-
-// TaskProperties - [Not supported] Task properties of the software update configuration.
-type TaskProperties struct {
-	// [Not supported] Gets or sets the parameters of the task.
-	Parameters map[string]*string `json:"parameters,omitempty"`
-
-	// [Not supported] Gets or sets the name of the runbook.
-	Source *string `json:"source,omitempty"`
-
-	// [Not supported] Global Task execute once when schedule trigger. Resource task execute for each VM.
-	TaskScope *TaskScope `json:"taskScope,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // Update - Maintenance update on a resource
 type Update struct {
 	// Duration of impact in seconds
-	ImpactDurationInSec *int32 `json:"impactDurationInSec,omitempty"`
+	ImpactDurationInSec *int32
 
 	// The impact type
-	ImpactType *ImpactType `json:"impactType,omitempty"`
+	ImpactType *ImpactType
 
 	// The impact area
-	MaintenanceScope *MaintenanceScope `json:"maintenanceScope,omitempty"`
+	MaintenanceScope *MaintenanceScope
 
 	// Time when Azure will start force updates if not self-updated by customer before this time
-	NotBefore *time.Time `json:"notBefore,omitempty"`
+	NotBefore *time.Time
 
 	// Properties of the apply update
-	Properties *UpdateProperties `json:"properties,omitempty"`
+	Properties *UpdateProperties
 
 	// The status
-	Status *UpdateStatus `json:"status,omitempty"`
+	Status *UpdateStatus
 }
 
 // UpdateProperties - Properties for update
 type UpdateProperties struct {
 	// The resourceId
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
-// UpdatesClientListOptions contains the optional parameters for the UpdatesClient.List method.
+// UpdatesClientListOptions contains the optional parameters for the UpdatesClient.NewListPager method.
 type UpdatesClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.ListParent method.
+// UpdatesClientListParentOptions contains the optional parameters for the UpdatesClient.NewListParentPager method.
 type UpdatesClientListParentOptions struct {
 	// placeholder for future optional parameters
 }
@@ -474,12 +385,12 @@ type UpdatesClientListParentOptions struct {
 type Window struct {
 	// Duration of the maintenance window in HH:mm format. If not provided, default value will be used based on maintenance scope
 	// provided. Example: 05:00.
-	Duration *string `json:"duration,omitempty"`
+	Duration *string
 
 	// Effective expiration date of the maintenance window in YYYY-MM-DD hh:mm format. The window will be created in the time
 	// zone provided and adjusted to daylight savings according to that time zone.
 	// Expiration date must be set to a future date. If not provided, it will be set to the maximum datetime 9999-12-31 23:59:59.
-	ExpirationDateTime *string `json:"expirationDateTime,omitempty"`
+	ExpirationDateTime *string
 
 	// Rate at which a Maintenance window is expected to recur. The rate can be expressed as daily, weekly, or monthly schedules.
 	// Daily schedule are formatted as recurEvery: [Frequency as integer]['Day(s)'].
@@ -488,19 +399,18 @@ type Window struct {
 	// [Optional comma separated list of weekdays Monday-Sunday]. Weekly schedule examples are recurEvery: 3Weeks, recurEvery:
 	// Week Saturday,Sunday. Monthly schedules are formatted as [Frequency as
 	// integer]['Month(s)'] [Comma separated list of month days] or [Frequency as integer]['Month(s)'] [Week of Month (First,
-	// Second, Third, Fourth, Last)] [Weekday Monday-Sunday] [Optional Offset(No. of
-	// days)]. Offset value must be between -6 to 6 inclusive. Monthly schedule examples are recurEvery: Month, recurEvery: 2Months,
-	// recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery:
-	// Month Fourth Monday, recurEvery: Month Last Sunday Offset-3, recurEvery: Month Third Sunday Offset6.
-	RecurEvery *string `json:"recurEvery,omitempty"`
+	// Second, Third, Fourth, Last)] [Weekday Monday-Sunday]. Monthly schedule examples
+	// are recurEvery: Month, recurEvery: 2Months, recurEvery: Month day23,day24, recurEvery: Month Last Sunday, recurEvery: Month
+	// Fourth Monday.
+	RecurEvery *string
 
 	// Effective start date of the maintenance window in YYYY-MM-DD hh:mm format. The start date can be set to either the current
 	// date or future date. The window will be created in the time zone provided and
 	// adjusted to daylight savings according to that time zone.
-	StartDateTime *string `json:"startDateTime,omitempty"`
+	StartDateTime *string
 
 	// Name of the timezone. List of timezones can be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
 	// Example: Pacific Standard Time, UTC, W. Europe Standard Time, Korea
 	// Standard Time, Cen. Australia Standard Time.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }

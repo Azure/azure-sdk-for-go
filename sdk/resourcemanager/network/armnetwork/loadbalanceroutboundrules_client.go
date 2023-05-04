@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // LoadBalancerOutboundRulesClient contains the methods for the LoadBalancerOutboundRules group.
 // Don't use this type directly, use NewLoadBalancerOutboundRulesClient() instead.
 type LoadBalancerOutboundRulesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLoadBalancerOutboundRulesClient creates a new instance of LoadBalancerOutboundRulesClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLoadBalancerOutboundRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LoadBalancerOutboundRulesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LoadBalancerOutboundRulesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LoadBalancerOutboundRulesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets the specified load balancer outbound rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// loadBalancerName - The name of the load balancer.
-// outboundRuleName - The name of the outbound rule.
-// options - LoadBalancerOutboundRulesClientGetOptions contains the optional parameters for the LoadBalancerOutboundRulesClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - loadBalancerName - The name of the load balancer.
+//   - outboundRuleName - The name of the outbound rule.
+//   - options - LoadBalancerOutboundRulesClientGetOptions contains the optional parameters for the LoadBalancerOutboundRulesClient.Get
+//     method.
 func (client *LoadBalancerOutboundRulesClient) Get(ctx context.Context, resourceGroupName string, loadBalancerName string, outboundRuleName string, options *LoadBalancerOutboundRulesClientGetOptions) (LoadBalancerOutboundRulesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, loadBalancerName, outboundRuleName, options)
 	if err != nil {
 		return LoadBalancerOutboundRulesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LoadBalancerOutboundRulesClientGetResponse{}, err
 	}
@@ -98,12 +88,12 @@ func (client *LoadBalancerOutboundRulesClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -119,11 +109,12 @@ func (client *LoadBalancerOutboundRulesClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Gets all the outbound rules in a load balancer.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// loadBalancerName - The name of the load balancer.
-// options - LoadBalancerOutboundRulesClientListOptions contains the optional parameters for the LoadBalancerOutboundRulesClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - loadBalancerName - The name of the load balancer.
+//   - options - LoadBalancerOutboundRulesClientListOptions contains the optional parameters for the LoadBalancerOutboundRulesClient.NewListPager
+//     method.
 func (client *LoadBalancerOutboundRulesClient) NewListPager(resourceGroupName string, loadBalancerName string, options *LoadBalancerOutboundRulesClientListOptions) *runtime.Pager[LoadBalancerOutboundRulesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LoadBalancerOutboundRulesClientListResponse]{
 		More: func(page LoadBalancerOutboundRulesClientListResponse) bool {
@@ -140,7 +131,7 @@ func (client *LoadBalancerOutboundRulesClient) NewListPager(resourceGroupName st
 			if err != nil {
 				return LoadBalancerOutboundRulesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LoadBalancerOutboundRulesClientListResponse{}, err
 			}
@@ -167,12 +158,12 @@ func (client *LoadBalancerOutboundRulesClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,48 +25,40 @@ import (
 // PrivateLinkResourceClient contains the methods for the PrivateLinkResource group.
 // Don't use this type directly, use NewPrivateLinkResourceClient() instead.
 type PrivateLinkResourceClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPrivateLinkResourceClient creates a new instance of PrivateLinkResourceClient with the specified values.
-// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPrivateLinkResourceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourceClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PrivateLinkResourceClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PrivateLinkResourceClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets information about the specified private link resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// privateLinkResourceName - The private link resource name. This must be unique within the account.
-// options - PrivateLinkResourceClientGetOptions contains the optional parameters for the PrivateLinkResourceClient.Get method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - privateLinkResourceName - The private link resource name. This must be unique within the account.
+//   - options - PrivateLinkResourceClientGetOptions contains the optional parameters for the PrivateLinkResourceClient.Get method.
 func (client *PrivateLinkResourceClient) Get(ctx context.Context, resourceGroupName string, accountName string, privateLinkResourceName string, options *PrivateLinkResourceClientGetOptions) (PrivateLinkResourceClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, privateLinkResourceName, options)
 	if err != nil {
 		return PrivateLinkResourceClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PrivateLinkResourceClientGetResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *PrivateLinkResourceClient) getCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter privateLinkResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{privateLinkResourceName}", url.PathEscape(privateLinkResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -118,11 +108,12 @@ func (client *PrivateLinkResourceClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListByBatchAccountPager - Lists all of the private link resources in the specified account.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group that contains the Batch account.
-// accountName - The name of the Batch account.
-// options - PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.ListByBatchAccount
-// method.
+//   - resourceGroupName - The name of the resource group that contains the Batch account.
+//   - accountName - The name of the Batch account.
+//   - options - PrivateLinkResourceClientListByBatchAccountOptions contains the optional parameters for the PrivateLinkResourceClient.NewListByBatchAccountPager
+//     method.
 func (client *PrivateLinkResourceClient) NewListByBatchAccountPager(resourceGroupName string, accountName string, options *PrivateLinkResourceClientListByBatchAccountOptions) *runtime.Pager[PrivateLinkResourceClientListByBatchAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PrivateLinkResourceClientListByBatchAccountResponse]{
 		More: func(page PrivateLinkResourceClientListByBatchAccountResponse) bool {
@@ -139,7 +130,7 @@ func (client *PrivateLinkResourceClient) NewListByBatchAccountPager(resourceGrou
 			if err != nil {
 				return PrivateLinkResourceClientListByBatchAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PrivateLinkResourceClientListByBatchAccountResponse{}, err
 			}
@@ -166,7 +157,7 @@ func (client *PrivateLinkResourceClient) listByBatchAccountCreateRequest(ctx con
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

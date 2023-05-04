@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // FactoriesClient contains the methods for the Factories group.
 // Don't use this type directly, use NewFactoriesClient() instead.
 type FactoriesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFactoriesClient creates a new instance of FactoriesClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewFactoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FactoriesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FactoriesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FactoriesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // ConfigureFactoryRepo - Updates a factory's repo information.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// locationID - The location identifier.
-// factoryRepoUpdate - Update factory repo request definition.
-// options - FactoriesClientConfigureFactoryRepoOptions contains the optional parameters for the FactoriesClient.ConfigureFactoryRepo
-// method.
+//   - locationID - The location identifier.
+//   - factoryRepoUpdate - Update factory repo request definition.
+//   - options - FactoriesClientConfigureFactoryRepoOptions contains the optional parameters for the FactoriesClient.ConfigureFactoryRepo
+//     method.
 func (client *FactoriesClient) ConfigureFactoryRepo(ctx context.Context, locationID string, factoryRepoUpdate FactoryRepoUpdate, options *FactoriesClientConfigureFactoryRepoOptions) (FactoriesClientConfigureFactoryRepoResponse, error) {
 	req, err := client.configureFactoryRepoCreateRequest(ctx, locationID, factoryRepoUpdate, options)
 	if err != nil {
 		return FactoriesClientConfigureFactoryRepoResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientConfigureFactoryRepoResponse{}, err
 	}
@@ -88,7 +78,7 @@ func (client *FactoriesClient) configureFactoryRepoCreateRequest(ctx context.Con
 		return nil, errors.New("parameter locationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationId}", url.PathEscape(locationID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -110,18 +100,19 @@ func (client *FactoriesClient) configureFactoryRepoHandleResponse(resp *http.Res
 
 // CreateOrUpdate - Creates or updates a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// factory - Factory resource definition.
-// options - FactoriesClientCreateOrUpdateOptions contains the optional parameters for the FactoriesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - factory - Factory resource definition.
+//   - options - FactoriesClientCreateOrUpdateOptions contains the optional parameters for the FactoriesClient.CreateOrUpdate
+//     method.
 func (client *FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, factory Factory, options *FactoriesClientCreateOrUpdateOptions) (FactoriesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, factory, options)
 	if err != nil {
 		return FactoriesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientCreateOrUpdateResponse{}, err
 	}
@@ -146,7 +137,7 @@ func (client *FactoriesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,16 +162,17 @@ func (client *FactoriesClient) createOrUpdateHandleResponse(resp *http.Response)
 
 // Delete - Deletes a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - FactoriesClientDeleteOptions contains the optional parameters for the FactoriesClient.Delete method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - FactoriesClientDeleteOptions contains the optional parameters for the FactoriesClient.Delete method.
 func (client *FactoriesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, options *FactoriesClientDeleteOptions) (FactoriesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, options)
 	if err != nil {
 		return FactoriesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientDeleteResponse{}, err
 	}
@@ -205,7 +197,7 @@ func (client *FactoriesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -218,16 +210,17 @@ func (client *FactoriesClient) deleteCreateRequest(ctx context.Context, resource
 
 // Get - Gets a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - FactoriesClientGetOptions contains the optional parameters for the FactoriesClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - FactoriesClientGetOptions contains the optional parameters for the FactoriesClient.Get method.
 func (client *FactoriesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, options *FactoriesClientGetOptions) (FactoriesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, options)
 	if err != nil {
 		return FactoriesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientGetResponse{}, err
 	}
@@ -252,7 +245,7 @@ func (client *FactoriesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -277,18 +270,19 @@ func (client *FactoriesClient) getHandleResponse(resp *http.Response) (Factories
 
 // GetDataPlaneAccess - Get Data Plane access.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// policy - Data Plane user access policy definition.
-// options - FactoriesClientGetDataPlaneAccessOptions contains the optional parameters for the FactoriesClient.GetDataPlaneAccess
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - policy - Data Plane user access policy definition.
+//   - options - FactoriesClientGetDataPlaneAccessOptions contains the optional parameters for the FactoriesClient.GetDataPlaneAccess
+//     method.
 func (client *FactoriesClient) GetDataPlaneAccess(ctx context.Context, resourceGroupName string, factoryName string, policy UserAccessPolicy, options *FactoriesClientGetDataPlaneAccessOptions) (FactoriesClientGetDataPlaneAccessResponse, error) {
 	req, err := client.getDataPlaneAccessCreateRequest(ctx, resourceGroupName, factoryName, policy, options)
 	if err != nil {
 		return FactoriesClientGetDataPlaneAccessResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientGetDataPlaneAccessResponse{}, err
 	}
@@ -313,7 +307,7 @@ func (client *FactoriesClient) getDataPlaneAccessCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -335,18 +329,19 @@ func (client *FactoriesClient) getDataPlaneAccessHandleResponse(resp *http.Respo
 
 // GetGitHubAccessToken - Get GitHub Access Token.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// gitHubAccessTokenRequest - Get GitHub access token request definition.
-// options - FactoriesClientGetGitHubAccessTokenOptions contains the optional parameters for the FactoriesClient.GetGitHubAccessToken
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - gitHubAccessTokenRequest - Get GitHub access token request definition.
+//   - options - FactoriesClientGetGitHubAccessTokenOptions contains the optional parameters for the FactoriesClient.GetGitHubAccessToken
+//     method.
 func (client *FactoriesClient) GetGitHubAccessToken(ctx context.Context, resourceGroupName string, factoryName string, gitHubAccessTokenRequest GitHubAccessTokenRequest, options *FactoriesClientGetGitHubAccessTokenOptions) (FactoriesClientGetGitHubAccessTokenResponse, error) {
 	req, err := client.getGitHubAccessTokenCreateRequest(ctx, resourceGroupName, factoryName, gitHubAccessTokenRequest, options)
 	if err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
 	}
@@ -371,7 +366,7 @@ func (client *FactoriesClient) getGitHubAccessTokenCreateRequest(ctx context.Con
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -392,8 +387,9 @@ func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Res
 }
 
 // NewListPager - Lists factories under the specified subscription.
+//
 // Generated from API version 2018-06-01
-// options - FactoriesClientListOptions contains the optional parameters for the FactoriesClient.List method.
+//   - options - FactoriesClientListOptions contains the optional parameters for the FactoriesClient.NewListPager method.
 func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FactoriesClientListResponse]{
 		More: func(page FactoriesClientListResponse) bool {
@@ -410,7 +406,7 @@ func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions)
 			if err != nil {
 				return FactoriesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FactoriesClientListResponse{}, err
 			}
@@ -429,7 +425,7 @@ func (client *FactoriesClient) listCreateRequest(ctx context.Context, options *F
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -450,10 +446,11 @@ func (client *FactoriesClient) listHandleResponse(resp *http.Response) (Factorie
 }
 
 // NewListByResourceGroupPager - Lists factories.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// options - FactoriesClientListByResourceGroupOptions contains the optional parameters for the FactoriesClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The resource group name.
+//   - options - FactoriesClientListByResourceGroupOptions contains the optional parameters for the FactoriesClient.NewListByResourceGroupPager
+//     method.
 func (client *FactoriesClient) NewListByResourceGroupPager(resourceGroupName string, options *FactoriesClientListByResourceGroupOptions) *runtime.Pager[FactoriesClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FactoriesClientListByResourceGroupResponse]{
 		More: func(page FactoriesClientListByResourceGroupResponse) bool {
@@ -470,7 +467,7 @@ func (client *FactoriesClient) NewListByResourceGroupPager(resourceGroupName str
 			if err != nil {
 				return FactoriesClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FactoriesClientListByResourceGroupResponse{}, err
 			}
@@ -493,7 +490,7 @@ func (client *FactoriesClient) listByResourceGroupCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -515,17 +512,18 @@ func (client *FactoriesClient) listByResourceGroupHandleResponse(resp *http.Resp
 
 // Update - Updates a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// factoryUpdateParameters - The parameters for updating a factory.
-// options - FactoriesClientUpdateOptions contains the optional parameters for the FactoriesClient.Update method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - factoryUpdateParameters - The parameters for updating a factory.
+//   - options - FactoriesClientUpdateOptions contains the optional parameters for the FactoriesClient.Update method.
 func (client *FactoriesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, factoryUpdateParameters FactoryUpdateParameters, options *FactoriesClientUpdateOptions) (FactoriesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, factoryName, factoryUpdateParameters, options)
 	if err != nil {
 		return FactoriesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FactoriesClientUpdateResponse{}, err
 	}
@@ -550,7 +548,7 @@ func (client *FactoriesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

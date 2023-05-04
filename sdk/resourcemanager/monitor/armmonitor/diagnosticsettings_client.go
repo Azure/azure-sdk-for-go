@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,38 @@ import (
 // DiagnosticSettingsClient contains the methods for the DiagnosticSettings group.
 // Don't use this type directly, use NewDiagnosticSettingsClient() instead.
 type DiagnosticSettingsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewDiagnosticSettingsClient creates a new instance of DiagnosticSettingsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDiagnosticSettingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*DiagnosticSettingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DiagnosticSettingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DiagnosticSettingsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates diagnostic settings for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-05-01-preview
-// resourceURI - The identifier of the resource.
-// name - The name of the diagnostic setting.
-// parameters - Parameters supplied to the operation.
-// options - DiagnosticSettingsClientCreateOrUpdateOptions contains the optional parameters for the DiagnosticSettingsClient.CreateOrUpdate
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - name - The name of the diagnostic setting.
+//   - parameters - Parameters supplied to the operation.
+//   - options - DiagnosticSettingsClientCreateOrUpdateOptions contains the optional parameters for the DiagnosticSettingsClient.CreateOrUpdate
+//     method.
 func (client *DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, resourceURI string, name string, parameters DiagnosticSettingsResource, options *DiagnosticSettingsClientCreateOrUpdateOptions) (DiagnosticSettingsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceURI, name, parameters, options)
 	if err != nil {
 		return DiagnosticSettingsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticSettingsClientCreateOrUpdateResponse{}, err
 	}
@@ -83,7 +73,7 @@ func (client *DiagnosticSettingsClient) createOrUpdateCreateRequest(ctx context.
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -105,17 +95,18 @@ func (client *DiagnosticSettingsClient) createOrUpdateHandleResponse(resp *http.
 
 // Delete - Deletes existing diagnostic settings for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-05-01-preview
-// resourceURI - The identifier of the resource.
-// name - The name of the diagnostic setting.
-// options - DiagnosticSettingsClientDeleteOptions contains the optional parameters for the DiagnosticSettingsClient.Delete
-// method.
+//   - resourceURI - The identifier of the resource.
+//   - name - The name of the diagnostic setting.
+//   - options - DiagnosticSettingsClientDeleteOptions contains the optional parameters for the DiagnosticSettingsClient.Delete
+//     method.
 func (client *DiagnosticSettingsClient) Delete(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsClientDeleteOptions) (DiagnosticSettingsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceURI, name, options)
 	if err != nil {
 		return DiagnosticSettingsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticSettingsClientDeleteResponse{}, err
 	}
@@ -133,7 +124,7 @@ func (client *DiagnosticSettingsClient) deleteCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -146,16 +137,17 @@ func (client *DiagnosticSettingsClient) deleteCreateRequest(ctx context.Context,
 
 // Get - Gets the active diagnostic settings for the specified resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-05-01-preview
-// resourceURI - The identifier of the resource.
-// name - The name of the diagnostic setting.
-// options - DiagnosticSettingsClientGetOptions contains the optional parameters for the DiagnosticSettingsClient.Get method.
+//   - resourceURI - The identifier of the resource.
+//   - name - The name of the diagnostic setting.
+//   - options - DiagnosticSettingsClientGetOptions contains the optional parameters for the DiagnosticSettingsClient.Get method.
 func (client *DiagnosticSettingsClient) Get(ctx context.Context, resourceURI string, name string, options *DiagnosticSettingsClientGetOptions) (DiagnosticSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceURI, name, options)
 	if err != nil {
 		return DiagnosticSettingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DiagnosticSettingsClientGetResponse{}, err
 	}
@@ -173,7 +165,7 @@ func (client *DiagnosticSettingsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -194,9 +186,11 @@ func (client *DiagnosticSettingsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets the active diagnostic settings list for the specified resource.
+//
 // Generated from API version 2021-05-01-preview
-// resourceURI - The identifier of the resource.
-// options - DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.List method.
+//   - resourceURI - The identifier of the resource.
+//   - options - DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.NewListPager
+//     method.
 func (client *DiagnosticSettingsClient) NewListPager(resourceURI string, options *DiagnosticSettingsClientListOptions) *runtime.Pager[DiagnosticSettingsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DiagnosticSettingsClientListResponse]{
 		More: func(page DiagnosticSettingsClientListResponse) bool {
@@ -207,7 +201,7 @@ func (client *DiagnosticSettingsClient) NewListPager(resourceURI string, options
 			if err != nil {
 				return DiagnosticSettingsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DiagnosticSettingsClientListResponse{}, err
 			}
@@ -223,7 +217,7 @@ func (client *DiagnosticSettingsClient) NewListPager(resourceURI string, options
 func (client *DiagnosticSettingsClient) listCreateRequest(ctx context.Context, resourceURI string, options *DiagnosticSettingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Insights/diagnosticSettings"
 	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

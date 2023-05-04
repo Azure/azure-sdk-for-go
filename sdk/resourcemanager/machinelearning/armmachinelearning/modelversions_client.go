@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,51 +25,43 @@ import (
 // ModelVersionsClient contains the methods for the ModelVersions group.
 // Don't use this type directly, use NewModelVersionsClient() instead.
 type ModelVersionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewModelVersionsClient creates a new instance of ModelVersionsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewModelVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ModelVersionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ModelVersionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ModelVersionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name. This is case-sensitive.
-// version - Version identifier. This is case-sensitive.
-// body - Version entity to create or update.
-// options - ModelVersionsClientCreateOrUpdateOptions contains the optional parameters for the ModelVersionsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name. This is case-sensitive.
+//   - version - Version identifier. This is case-sensitive.
+//   - body - Version entity to create or update.
+//   - options - ModelVersionsClientCreateOrUpdateOptions contains the optional parameters for the ModelVersionsClient.CreateOrUpdate
+//     method.
 func (client *ModelVersionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body ModelVersion, options *ModelVersionsClientCreateOrUpdateOptions) (ModelVersionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
 	if err != nil {
 		return ModelVersionsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ModelVersionsClientCreateOrUpdateResponse{}, err
 	}
@@ -104,7 +94,7 @@ func (client *ModelVersionsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter version cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -126,18 +116,19 @@ func (client *ModelVersionsClient) createOrUpdateHandleResponse(resp *http.Respo
 
 // Delete - Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name. This is case-sensitive.
-// version - Version identifier. This is case-sensitive.
-// options - ModelVersionsClientDeleteOptions contains the optional parameters for the ModelVersionsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name. This is case-sensitive.
+//   - version - Version identifier. This is case-sensitive.
+//   - options - ModelVersionsClientDeleteOptions contains the optional parameters for the ModelVersionsClient.Delete method.
 func (client *ModelVersionsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *ModelVersionsClientDeleteOptions) (ModelVersionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, name, version, options)
 	if err != nil {
 		return ModelVersionsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ModelVersionsClientDeleteResponse{}, err
 	}
@@ -170,7 +161,7 @@ func (client *ModelVersionsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter version cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -183,18 +174,19 @@ func (client *ModelVersionsClient) deleteCreateRequest(ctx context.Context, reso
 
 // Get - Get version.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Container name. This is case-sensitive.
-// version - Version identifier. This is case-sensitive.
-// options - ModelVersionsClientGetOptions contains the optional parameters for the ModelVersionsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name. This is case-sensitive.
+//   - version - Version identifier. This is case-sensitive.
+//   - options - ModelVersionsClientGetOptions contains the optional parameters for the ModelVersionsClient.Get method.
 func (client *ModelVersionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *ModelVersionsClientGetOptions) (ModelVersionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, name, version, options)
 	if err != nil {
 		return ModelVersionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ModelVersionsClientGetResponse{}, err
 	}
@@ -227,7 +219,7 @@ func (client *ModelVersionsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter version cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -248,11 +240,12 @@ func (client *ModelVersionsClient) getHandleResponse(resp *http.Response) (Model
 }
 
 // NewListPager - List model versions.
+//
 // Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - Name of Azure Machine Learning workspace.
-// name - Model name. This is case-sensitive.
-// options - ModelVersionsClientListOptions contains the optional parameters for the ModelVersionsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Model name. This is case-sensitive.
+//   - options - ModelVersionsClientListOptions contains the optional parameters for the ModelVersionsClient.NewListPager method.
 func (client *ModelVersionsClient) NewListPager(resourceGroupName string, workspaceName string, name string, options *ModelVersionsClientListOptions) *runtime.Pager[ModelVersionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ModelVersionsClientListResponse]{
 		More: func(page ModelVersionsClientListResponse) bool {
@@ -269,7 +262,7 @@ func (client *ModelVersionsClient) NewListPager(resourceGroupName string, worksp
 			if err != nil {
 				return ModelVersionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ModelVersionsClientListResponse{}, err
 			}
@@ -300,7 +293,7 @@ func (client *ModelVersionsClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter name cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -90,13 +90,13 @@ type GrantsClientGetOptions struct {
 	IncludeAllocatedBudget *bool
 }
 
-// GrantsClientListAllOptions contains the optional parameters for the GrantsClient.ListAll method.
+// GrantsClientListAllOptions contains the optional parameters for the GrantsClient.NewListAllPager method.
 type GrantsClientListAllOptions struct {
 	// May be used to include information about budget that has been allocated.
 	IncludeAllocatedBudget *bool
 }
 
-// GrantsClientListOptions contains the optional parameters for the GrantsClient.List method.
+// GrantsClientListOptions contains the optional parameters for the GrantsClient.NewListPager method.
 type GrantsClientListOptions struct {
 	// May be used to include information about budget that has been allocated.
 	IncludeAllocatedBudget *bool
@@ -165,7 +165,7 @@ type JoinRequestsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// JoinRequestsClientListOptions contains the optional parameters for the JoinRequestsClient.List method.
+// JoinRequestsClientListOptions contains the optional parameters for the JoinRequestsClient.NewListPager method.
 type JoinRequestsClientListOptions struct {
 	// Include denied
 	IncludeDenied *bool
@@ -253,7 +253,7 @@ type LabsClientGetOptions struct {
 	IncludeBudget *bool
 }
 
-// LabsClientListAllOptions contains the optional parameters for the LabsClient.ListAll method.
+// LabsClientListAllOptions contains the optional parameters for the LabsClient.NewListAllPager method.
 type LabsClientListAllOptions struct {
 	// May be used to include budget information.
 	IncludeBudget *bool
@@ -261,7 +261,7 @@ type LabsClientListAllOptions struct {
 	IncludeDeleted *bool
 }
 
-// LabsClientListOptions contains the optional parameters for the LabsClient.List method.
+// LabsClientListOptions contains the optional parameters for the LabsClient.NewListPager method.
 type LabsClientListOptions struct {
 	// May be used to include budget information.
 	IncludeBudget *bool
@@ -434,7 +434,7 @@ type StudentLabsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StudentLabsClientListAllOptions contains the optional parameters for the StudentLabsClient.ListAll method.
+// StudentLabsClientListAllOptions contains the optional parameters for the StudentLabsClient.NewListAllPager method.
 type StudentLabsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
@@ -499,7 +499,7 @@ type StudentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// StudentsClientListOptions contains the optional parameters for the StudentsClient.List method.
+// StudentsClientListOptions contains the optional parameters for the StudentsClient.NewListPager method.
 type StudentsClientListOptions struct {
 	// May be used to show deleted items.
 	IncludeDeleted *bool

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // ApplicationAcceleratorsClient contains the methods for the ApplicationAccelerators group.
 // Don't use this type directly, use NewApplicationAcceleratorsClient() instead.
 type ApplicationAcceleratorsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewApplicationAcceleratorsClient creates a new instance of ApplicationAcceleratorsClient with the specified values.
-// subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewApplicationAcceleratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ApplicationAcceleratorsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ApplicationAcceleratorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ApplicationAcceleratorsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update the application accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationAcceleratorName - The name of the application accelerator.
-// applicationAcceleratorResource - The application accelerator for the create or update operation
-// options - ApplicationAcceleratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationAcceleratorsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationAcceleratorName - The name of the application accelerator.
+//   - applicationAcceleratorResource - The application accelerator for the create or update operation
+//   - options - ApplicationAcceleratorsClientBeginCreateOrUpdateOptions contains the optional parameters for the ApplicationAcceleratorsClient.BeginCreateOrUpdate
+//     method.
 func (client *ApplicationAcceleratorsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, applicationAcceleratorResource ApplicationAcceleratorResource, options *ApplicationAcceleratorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ApplicationAcceleratorsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, applicationAcceleratorName, applicationAcceleratorResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ApplicationAcceleratorsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationAcceleratorsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationAcceleratorsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationAcceleratorsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create or update the application accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *ApplicationAcceleratorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, applicationAcceleratorResource ApplicationAcceleratorResource, options *ApplicationAcceleratorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, applicationAcceleratorName, applicationAcceleratorResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,12 +106,12 @@ func (client *ApplicationAcceleratorsClient) createOrUpdateCreateRequest(ctx con
 		return nil, errors.New("parameter applicationAcceleratorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationAcceleratorName}", url.PathEscape(applicationAcceleratorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, applicationAcceleratorResource)
@@ -128,34 +119,36 @@ func (client *ApplicationAcceleratorsClient) createOrUpdateCreateRequest(ctx con
 
 // BeginDelete - Delete the application accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationAcceleratorName - The name of the application accelerator.
-// options - ApplicationAcceleratorsClientBeginDeleteOptions contains the optional parameters for the ApplicationAcceleratorsClient.BeginDelete
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationAcceleratorName - The name of the application accelerator.
+//   - options - ApplicationAcceleratorsClientBeginDeleteOptions contains the optional parameters for the ApplicationAcceleratorsClient.BeginDelete
+//     method.
 func (client *ApplicationAcceleratorsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, options *ApplicationAcceleratorsClientBeginDeleteOptions) (*runtime.Poller[ApplicationAcceleratorsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, applicationAcceleratorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ApplicationAcceleratorsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ApplicationAcceleratorsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ApplicationAcceleratorsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ApplicationAcceleratorsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete the application accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *ApplicationAcceleratorsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, options *ApplicationAcceleratorsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, applicationAcceleratorName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -184,12 +177,12 @@ func (client *ApplicationAcceleratorsClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter applicationAcceleratorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationAcceleratorName}", url.PathEscape(applicationAcceleratorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -197,19 +190,20 @@ func (client *ApplicationAcceleratorsClient) deleteCreateRequest(ctx context.Con
 
 // Get - Get the application accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationAcceleratorName - The name of the application accelerator.
-// options - ApplicationAcceleratorsClientGetOptions contains the optional parameters for the ApplicationAcceleratorsClient.Get
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationAcceleratorName - The name of the application accelerator.
+//   - options - ApplicationAcceleratorsClientGetOptions contains the optional parameters for the ApplicationAcceleratorsClient.Get
+//     method.
 func (client *ApplicationAcceleratorsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, options *ApplicationAcceleratorsClientGetOptions) (ApplicationAcceleratorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, applicationAcceleratorName, options)
 	if err != nil {
 		return ApplicationAcceleratorsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ApplicationAcceleratorsClientGetResponse{}, err
 	}
@@ -238,12 +232,12 @@ func (client *ApplicationAcceleratorsClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter applicationAcceleratorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationAcceleratorName}", url.PathEscape(applicationAcceleratorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,12 +253,13 @@ func (client *ApplicationAcceleratorsClient) getHandleResponse(resp *http.Respon
 }
 
 // NewListPager - Handle requests to list all application accelerator.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// options - ApplicationAcceleratorsClientListOptions contains the optional parameters for the ApplicationAcceleratorsClient.List
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - ApplicationAcceleratorsClientListOptions contains the optional parameters for the ApplicationAcceleratorsClient.NewListPager
+//     method.
 func (client *ApplicationAcceleratorsClient) NewListPager(resourceGroupName string, serviceName string, options *ApplicationAcceleratorsClientListOptions) *runtime.Pager[ApplicationAcceleratorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ApplicationAcceleratorsClientListResponse]{
 		More: func(page ApplicationAcceleratorsClientListResponse) bool {
@@ -281,7 +276,7 @@ func (client *ApplicationAcceleratorsClient) NewListPager(resourceGroupName stri
 			if err != nil {
 				return ApplicationAcceleratorsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ApplicationAcceleratorsClientListResponse{}, err
 			}
@@ -308,12 +303,12 @@ func (client *ApplicationAcceleratorsClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -18,6 +18,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/eng/tools/generator/repo"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/delta"
 	"github.com/Azure/azure-sdk-for-go/eng/tools/internal/exports"
+	"github.com/Masterminds/semver"
 	"github.com/go-git/go-git/v5"
 	"github.com/go-git/go-git/v5/config"
 	"github.com/go-git/go-git/v5/plumbing"
@@ -45,33 +46,33 @@ func GetAllVersionTags(rpName, namespaceName string) ([]string, error) {
 		return nil, err
 	}
 	var tags []string
+	var versions []string
+	versionTag := make(map[string]string)
 	for _, tag := range result {
 		tagName := tag["ref"].(string)
-		if strings.Contains(tagName, "sdk/resourcemanager/"+rpName+"/"+namespaceName) {
-			tags = append(tags, tag["ref"].(string))
+		if strings.Contains(tagName, "sdk/resourcemanager/"+rpName+"/"+namespaceName+"/v") {
+			m := regexp.MustCompile(semver.SemVerRegex).FindString(tagName)
+			versions = append(versions, m)
+			versionTag[m] = tagName
 		}
 	}
-	sort.Sort(releaseTagsSort(tags))
+
+	vs := make([]*semver.Version, len(versions))
+	for i, r := range versions {
+		v, err := semver.NewVersion(r)
+		if err != nil {
+			return nil, err
+		}
+
+		vs[i] = v
+	}
+	sort.Sort(sort.Reverse(semver.Collection(vs)))
+
+	for _, v := range vs {
+		tags = append(tags, versionTag[v.Original()])
+	}
 
 	return tags, nil
-}
-
-type releaseTagsSort []string
-
-func (t releaseTagsSort) Len() int {
-	return len(t)
-}
-
-func (t releaseTagsSort) Swap(i, j int) {
-	t[i], t[j] = t[j], t[i]
-}
-
-func (t releaseTagsSort) Less(i, j int) bool {
-	if t[i] > t[j] {
-		return !strings.Contains(t[i], t[j])
-	} else {
-		return strings.Contains(t[j], t[i])
-	}
 }
 
 func ContainsPreviewAPIVersion(packagePath string) (bool, error) {
@@ -276,6 +277,31 @@ func FuncFilter(changelog *model.Changelog) {
 
 	if changelog.Modified.HasBreakingChanges() {
 		funcOperation(changelog.Modified.BreakingChanges.Removed)
+
+		// function operation parameters from interface{} to any is not a breaking change
+		for f, v := range changelog.Modified.BreakingChanges.Funcs {
+			from := strings.Split(v.Params.From, ",")
+			to := strings.Split(v.Params.To, ",")
+			if len(from) != len(to) {
+				continue
+			}
+
+			flag := false
+			for i := range from {
+				if strings.TrimSpace(from[i]) != strings.TrimSpace(to[i]) {
+					if strings.TrimSpace(from[i]) == "interface{}" && strings.TrimSpace(to[i]) == "any" {
+						flag = true
+					} else {
+						flag = false
+						break
+					}
+				}
+			}
+
+			if flag {
+				delete(changelog.Modified.BreakingChanges.Funcs, f)
+			}
+		}
 	}
 }
 
@@ -345,6 +371,30 @@ func LROFilter(changelog *model.Changelog) {
 				if _, ok := changelog.Modified.AdditiveChanges.Funcs[beginFunc]; ok {
 					delete(changelog.Modified.AdditiveChanges.Funcs, beginFunc)
 					v.ReplacedBy = &beginFunc
+					removedContent.Funcs[bFunc] = v
+				}
+			}
+		}
+	}
+}
+
+// PageableFilter PageableFilter after OperationFilter
+func PageableFilter(changelog *model.Changelog) {
+	if changelog.Modified.HasBreakingChanges() && changelog.Modified.HasAdditiveChanges() && changelog.Modified.BreakingChanges.Removed != nil && changelog.Modified.BreakingChanges.Removed.Funcs != nil {
+		removedContent := changelog.Modified.BreakingChanges.Removed
+		for bFunc, v := range removedContent.Funcs {
+			var pagination string
+			clientFunc := strings.Split(bFunc, ".")
+			if len(clientFunc) == 2 {
+				if strings.Contains(clientFunc[1], "New") && strings.Contains(clientFunc[1], "Pager") {
+					clientFunc[1] = strings.TrimPrefix(strings.TrimSuffix(clientFunc[1], "Pager"), "New")
+					pagination = fmt.Sprintf("%s.%s", clientFunc[0], clientFunc[1])
+				} else {
+					pagination = fmt.Sprintf("%s.New%sPager", clientFunc[0], clientFunc[1])
+				}
+				if _, ok := changelog.Modified.AdditiveChanges.Funcs[pagination]; ok {
+					delete(changelog.Modified.AdditiveChanges.Funcs, pagination)
+					v.ReplacedBy = &pagination
 					removedContent.Funcs[bFunc] = v
 				}
 			}

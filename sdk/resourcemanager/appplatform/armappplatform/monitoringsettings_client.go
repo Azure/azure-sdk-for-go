@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // MonitoringSettingsClient contains the methods for the MonitoringSettings group.
 // Don't use this type directly, use NewMonitoringSettingsClient() instead.
 type MonitoringSettingsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMonitoringSettingsClient creates a new instance of MonitoringSettingsClient with the specified values.
-// subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMonitoringSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MonitoringSettingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MonitoringSettingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MonitoringSettingsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get the Monitoring Setting and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// options - MonitoringSettingsClientGetOptions contains the optional parameters for the MonitoringSettingsClient.Get method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - MonitoringSettingsClientGetOptions contains the optional parameters for the MonitoringSettingsClient.Get method.
 func (client *MonitoringSettingsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, options *MonitoringSettingsClientGetOptions) (MonitoringSettingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, options)
 	if err != nil {
 		return MonitoringSettingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MonitoringSettingsClientGetResponse{}, err
 	}
@@ -93,12 +83,12 @@ func (client *MonitoringSettingsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,34 +105,36 @@ func (client *MonitoringSettingsClient) getHandleResponse(resp *http.Response) (
 
 // BeginUpdatePatch - Update the Monitoring Setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// monitoringSettingResource - Parameters for the update operation
-// options - MonitoringSettingsClientBeginUpdatePatchOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePatch
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - monitoringSettingResource - Parameters for the update operation
+//   - options - MonitoringSettingsClientBeginUpdatePatchOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePatch
+//     method.
 func (client *MonitoringSettingsClient) BeginUpdatePatch(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsClientBeginUpdatePatchOptions) (*runtime.Poller[MonitoringSettingsClientUpdatePatchResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updatePatch(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MonitoringSettingsClientUpdatePatchResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MonitoringSettingsClientUpdatePatchResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitoringSettingsClientUpdatePatchResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MonitoringSettingsClientUpdatePatchResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // UpdatePatch - Update the Monitoring Setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *MonitoringSettingsClient) updatePatch(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsClientBeginUpdatePatchOptions) (*http.Response, error) {
 	req, err := client.updatePatchCreateRequest(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -167,12 +159,12 @@ func (client *MonitoringSettingsClient) updatePatchCreateRequest(ctx context.Con
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, monitoringSettingResource)
@@ -180,34 +172,36 @@ func (client *MonitoringSettingsClient) updatePatchCreateRequest(ctx context.Con
 
 // BeginUpdatePut - Update the Monitoring Setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// monitoringSettingResource - Parameters for the update operation
-// options - MonitoringSettingsClientBeginUpdatePutOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePut
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - monitoringSettingResource - Parameters for the update operation
+//   - options - MonitoringSettingsClientBeginUpdatePutOptions contains the optional parameters for the MonitoringSettingsClient.BeginUpdatePut
+//     method.
 func (client *MonitoringSettingsClient) BeginUpdatePut(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsClientBeginUpdatePutOptions) (*runtime.Poller[MonitoringSettingsClientUpdatePutResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.updatePut(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[MonitoringSettingsClientUpdatePutResponse](resp, client.pl, nil)
+		return runtime.NewPoller[MonitoringSettingsClientUpdatePutResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[MonitoringSettingsClientUpdatePutResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[MonitoringSettingsClientUpdatePutResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // UpdatePut - Update the Monitoring Setting.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *MonitoringSettingsClient) updatePut(ctx context.Context, resourceGroupName string, serviceName string, monitoringSettingResource MonitoringSettingResource, options *MonitoringSettingsClientBeginUpdatePutOptions) (*http.Response, error) {
 	req, err := client.updatePutCreateRequest(ctx, resourceGroupName, serviceName, monitoringSettingResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -232,12 +226,12 @@ func (client *MonitoringSettingsClient) updatePutCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, monitoringSettingResource)

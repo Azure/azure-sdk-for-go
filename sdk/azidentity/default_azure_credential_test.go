@@ -25,7 +25,7 @@ import (
 )
 
 func TestDefaultAzureCredential_GetTokenSuccess(t *testing.T) {
-	env := map[string]string{azureTenantID: fakeTenantID, azureClientID: fakeClientID, azureClientSecret: secret}
+	env := map[string]string{azureTenantID: fakeTenantID, azureClientID: fakeClientID, azureClientSecret: fakeSecret}
 	setEnvironmentVariables(t, env)
 	cred, err := NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,14 @@ type delayPolicy struct {
 }
 
 func (p *delayPolicy) Do(req *policy.Request) (resp *http.Response, err error) {
-	time.Sleep(p.delay)
+	if p.delay > 0 {
+		select {
+		case <-req.Raw().Context().Done():
+			return nil, req.Raw().Context().Err()
+		case <-time.After(p.delay):
+			// delay has elapsed, continue on
+		}
+	}
 	return req.Next()
 }
 
@@ -180,7 +187,7 @@ func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
 	defer close()
 	srv.SetResponse(mock.WithBody(accessTokenRespSuccess))
 
-	timeout := 5 * time.Millisecond
+	timeout := 100 * time.Millisecond
 	dp := delayPolicy{2 * timeout}
 	mic, err := NewManagedIdentityCredential(&ManagedIdentityCredentialOptions{
 		ClientOptions: policy.ClientOptions{
@@ -201,7 +208,7 @@ func TestDefaultAzureCredential_timeoutWrapper(t *testing.T) {
 		// expecting credentialUnavailableError because delay exceeds the wrapper's timeout
 		_, err = chain.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{liveTestScope}})
 		if _, ok := err.(*credentialUnavailableError); !ok {
-			t.Fatalf("expected credentialUnavailableError, got %v", err)
+			t.Fatalf("expected credentialUnavailableError, got %T: %v", err, err)
 		}
 	}
 

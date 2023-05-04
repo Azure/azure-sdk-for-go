@@ -14,194 +14,194 @@ import "time"
 // AutoShutdownProfile - Profile for how to handle shutting down virtual machines.
 type AutoShutdownProfile struct {
 	// The amount of time a VM will stay running after a user disconnects if this behavior is enabled.
-	DisconnectDelay *string `json:"disconnectDelay,omitempty"`
+	DisconnectDelay *string
 
 	// The amount of time a VM will idle before it is shutdown if this behavior is enabled.
-	IdleDelay *string `json:"idleDelay,omitempty"`
+	IdleDelay *string
 
 	// The amount of time a VM will stay running before it is shutdown if no connection is made and this behavior is enabled.
-	NoConnectDelay *string `json:"noConnectDelay,omitempty"`
+	NoConnectDelay *string
 
 	// Whether shutdown on disconnect is enabled
-	ShutdownOnDisconnect *EnableState `json:"shutdownOnDisconnect,omitempty"`
+	ShutdownOnDisconnect *EnableState
 
 	// Whether a VM will get shutdown when it has idled for a period of time.
-	ShutdownOnIdle *ShutdownOnIdleMode `json:"shutdownOnIdle,omitempty"`
+	ShutdownOnIdle *ShutdownOnIdleMode
 
 	// Whether a VM will get shutdown when it hasn't been connected to after a period of time.
-	ShutdownWhenNotConnected *EnableState `json:"shutdownWhenNotConnected,omitempty"`
+	ShutdownWhenNotConnected *EnableState
 }
 
 // ConnectionProfile - Connection profile for how users connect to lab virtual machines.
 type ConnectionProfile struct {
 	// The enabled access level for Client Access over RDP.
-	ClientRdpAccess *ConnectionType `json:"clientRdpAccess,omitempty"`
+	ClientRdpAccess *ConnectionType
 
 	// The enabled access level for Client Access over SSH.
-	ClientSSHAccess *ConnectionType `json:"clientSshAccess,omitempty"`
+	ClientSSHAccess *ConnectionType
 
 	// The enabled access level for Web Access over RDP.
-	WebRdpAccess *ConnectionType `json:"webRdpAccess,omitempty"`
+	WebRdpAccess *ConnectionType
 
 	// The enabled access level for Web Access over SSH.
-	WebSSHAccess *ConnectionType `json:"webSshAccess,omitempty"`
+	WebSSHAccess *ConnectionType
 }
 
 // Credentials for a user on a lab VM.
 type Credentials struct {
 	// REQUIRED; The username to use when signing in to lab VMs.
-	Username *string `json:"username,omitempty"`
+	Username *string
 
 	// The password for the user. This is required for the TemplateVM createOption.
-	Password *string `json:"password,omitempty"`
+	Password *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // Image - Lab services virtual machine image
 type Image struct {
 	// REQUIRED; Image resource properties
-	Properties *ImageProperties `json:"properties,omitempty"`
+	Properties *ImageProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the image.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ImageProperties - Properties of an image resource.
 type ImageProperties struct {
 	// The available regions of the image in the shared gallery.
-	AvailableRegions []*string `json:"availableRegions,omitempty"`
+	AvailableRegions []*string
 
 	// Is the image enabled
-	EnabledState *EnableState `json:"enabledState,omitempty"`
+	EnabledState *EnableState
 
 	// READ-ONLY; The image author.
-	Author *string `json:"author,omitempty" azure:"ro"`
+	Author *string
 
 	// READ-ONLY; A description of the image.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The image display name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; URL of the image icon.
-	IconURL *string `json:"iconUrl,omitempty" azure:"ro"`
+	IconURL *string
 
 	// READ-ONLY; The OS State of the image.
-	OSState *OsState `json:"osState,omitempty" azure:"ro"`
+	OSState *OsState
 
 	// READ-ONLY; The OS Type of the image.
-	OSType *OsType `json:"osType,omitempty" azure:"ro"`
+	OSType *OsType
 
 	// READ-ONLY; The ID of an offer associated with the image.
-	Offer *string `json:"offer,omitempty" azure:"ro"`
+	Offer *string
 
 	// READ-ONLY; The ID of marketplace plan associated with the image (optional).
-	Plan *string `json:"plan,omitempty" azure:"ro"`
+	Plan *string
 
 	// READ-ONLY; Current provisioning state of the image.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The ID of the publisher of the image.
-	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+	Publisher *string
 
 	// READ-ONLY; The image SKU.
-	SKU *string `json:"sku,omitempty" azure:"ro"`
+	SKU *string
 
 	// READ-ONLY; The ID for the image in the shared gallery.
-	SharedGalleryID *string `json:"sharedGalleryId,omitempty" azure:"ro"`
+	SharedGalleryID *string
 
 	// READ-ONLY; The status of image terms of use (enabled = accepted, disabled = not accepted).
-	TermsStatus *EnableState `json:"termsStatus,omitempty" azure:"ro"`
+	TermsStatus *EnableState
 
 	// READ-ONLY; The image version.
-	Version *string `json:"version,omitempty" azure:"ro"`
+	Version *string
 }
 
 // ImageReference - Image reference information. Used in the virtual machine profile.
 type ImageReference struct {
 	// Image resource ID
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The image offer if applicable.
-	Offer *string `json:"offer,omitempty"`
+	Offer *string
 
 	// The image publisher
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// The image SKU
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// The image version specified on creation.
-	Version *string `json:"version,omitempty"`
+	Version *string
 
 	// READ-ONLY; The actual version of the image after use.
-	ExactVersion *string `json:"exactVersion,omitempty" azure:"ro"`
+	ExactVersion *string
 }
 
 // ImageUpdate - Lab services virtual machine image for updates.
 type ImageUpdate struct {
 	// Image resource properties
-	Properties *ImageUpdateProperties `json:"properties,omitempty"`
+	Properties *ImageUpdateProperties
 }
 
 // ImageUpdateProperties - Properties of an image resource update
 type ImageUpdateProperties struct {
 	// Is the image enabled
-	EnabledState *EnableState `json:"enabledState,omitempty"`
+	EnabledState *EnableState
 }
 
 // ImagesClientCreateOrUpdateOptions contains the optional parameters for the ImagesClient.CreateOrUpdate method.
@@ -214,7 +214,7 @@ type ImagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.ListByLabPlan method.
+// ImagesClientListByLabPlanOptions contains the optional parameters for the ImagesClient.NewListByLabPlanPager method.
 type ImagesClientListByLabPlanOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -228,43 +228,43 @@ type ImagesClientUpdateOptions struct {
 // InviteBody - Body for a user invite request
 type InviteBody struct {
 	// Custom text for the invite email.
-	Text *string `json:"text,omitempty"`
+	Text *string
 }
 
 // Lab - The lab resource.
 type Lab struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Lab resource properties
-	Properties *LabProperties `json:"properties,omitempty"`
+	Properties *LabProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the lab.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LabNetworkProfile - Profile for how to handle networking for Labs.
 type LabNetworkProfile struct {
 	// The external load balancer resource id
-	LoadBalancerID *string `json:"loadBalancerId,omitempty"`
+	LoadBalancerID *string
 
 	// The external public IP resource id
-	PublicIPID *string `json:"publicIpId,omitempty"`
+	PublicIPID *string
 
 	// The external subnet resource id
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 }
 
 // LabPlan - Lab Plans act as a permission container for creating labs via labs.azure.com. Additionally, they can provide
@@ -272,105 +272,105 @@ type LabNetworkProfile struct {
 // defaults can still be overwritten.
 type LabPlan struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Lab plan resource properties
-	Properties *LabPlanProperties `json:"properties,omitempty"`
+	Properties *LabPlanProperties
 
 	// Managed Identity Information
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the lab plan.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LabPlanNetworkProfile - Profile for how to handle networking for Lab Plans.
 type LabPlanNetworkProfile struct {
 	// The external subnet resource id
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 }
 
 // LabPlanProperties - Lab plan resource properties
 type LabPlanProperties struct {
 	// The allowed regions for the lab creator to use when creating labs using this lab plan.
-	AllowedRegions []*string `json:"allowedRegions,omitempty"`
+	AllowedRegions []*string
 
 	// The default lab shutdown profile. This can be changed on a lab resource and only provides a default profile.
-	DefaultAutoShutdownProfile *AutoShutdownProfile `json:"defaultAutoShutdownProfile,omitempty"`
+	DefaultAutoShutdownProfile *AutoShutdownProfile
 
 	// The default lab connection profile. This can be changed on a lab resource and only provides a default profile.
-	DefaultConnectionProfile *ConnectionProfile `json:"defaultConnectionProfile,omitempty"`
+	DefaultConnectionProfile *ConnectionProfile
 
 	// The lab plan network profile. To enforce lab network policies they must be defined here and cannot be changed when there
 	// are existing labs associated with this lab plan.
-	DefaultNetworkProfile *LabPlanNetworkProfile `json:"defaultNetworkProfile,omitempty"`
+	DefaultNetworkProfile *LabPlanNetworkProfile
 
 	// Base Url of the lms instance this lab plan can link lab rosters against.
-	LinkedLmsInstance *string `json:"linkedLmsInstance,omitempty"`
+	LinkedLmsInstance *string
 
 	// Resource ID of the Shared Image Gallery attached to this lab plan. When saving a lab template virtual machine image it
 	// will be persisted in this gallery. Shared images from the gallery can be made
 	// available to use when creating new labs.
-	SharedGalleryID *string `json:"sharedGalleryId,omitempty"`
+	SharedGalleryID *string
 
 	// Support contact information and instructions for users of the lab plan. This information is displayed to lab owners and
 	// virtual machine users for all labs in the lab plan.
-	SupportInfo *SupportInfo `json:"supportInfo,omitempty"`
+	SupportInfo *SupportInfo
 
 	// READ-ONLY; Current provisioning state of the lab plan.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // LabPlanUpdate - Contains lab configuration and default settings. This variant is used for PATCH.
 type LabPlanUpdate struct {
 	// Managed Identity Information
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// Lab plan resource update properties
-	Properties *LabPlanUpdateProperties `json:"properties,omitempty"`
+	Properties *LabPlanUpdateProperties
 
 	// Resource tags.
-	Tags []*string `json:"tags,omitempty"`
+	Tags []*string
 }
 
 // LabPlanUpdateProperties - Lab plan resource properties for updates
 type LabPlanUpdateProperties struct {
 	// The allowed regions for the lab creator to use when creating labs using this lab plan.
-	AllowedRegions []*string `json:"allowedRegions,omitempty"`
+	AllowedRegions []*string
 
 	// The default lab shutdown profile. This can be changed on a lab resource and only provides a default profile.
-	DefaultAutoShutdownProfile *AutoShutdownProfile `json:"defaultAutoShutdownProfile,omitempty"`
+	DefaultAutoShutdownProfile *AutoShutdownProfile
 
 	// The default lab connection profile. This can be changed on a lab resource and only provides a default profile.
-	DefaultConnectionProfile *ConnectionProfile `json:"defaultConnectionProfile,omitempty"`
+	DefaultConnectionProfile *ConnectionProfile
 
 	// The lab plan network profile. To enforce lab network policies they must be defined here and cannot be changed when there
 	// are existing labs associated with this lab plan.
-	DefaultNetworkProfile *LabPlanNetworkProfile `json:"defaultNetworkProfile,omitempty"`
+	DefaultNetworkProfile *LabPlanNetworkProfile
 
 	// Base Url of the lms instance this lab plan can link lab rosters against.
-	LinkedLmsInstance *string `json:"linkedLmsInstance,omitempty"`
+	LinkedLmsInstance *string
 
 	// Resource ID of the Shared Image Gallery attached to this lab plan. When saving a lab template virtual machine image it
 	// will be persisted in this gallery. Shared images from the gallery can be made
 	// available to use when creating new labs.
-	SharedGalleryID *string `json:"sharedGalleryId,omitempty"`
+	SharedGalleryID *string
 
 	// Support contact information and instructions for users of the lab plan. This information is displayed to lab owners and
 	// virtual machine users for all labs in the lab plan.
-	SupportInfo *SupportInfo `json:"supportInfo,omitempty"`
+	SupportInfo *SupportInfo
 }
 
 // LabPlansClientBeginCreateOrUpdateOptions contains the optional parameters for the LabPlansClient.BeginCreateOrUpdate method.
@@ -402,12 +402,14 @@ type LabPlansClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansClientListByResourceGroupOptions contains the optional parameters for the LabPlansClient.ListByResourceGroup method.
+// LabPlansClientListByResourceGroupOptions contains the optional parameters for the LabPlansClient.NewListByResourceGroupPager
+// method.
 type LabPlansClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabPlansClientListBySubscriptionOptions contains the optional parameters for the LabPlansClient.ListBySubscription method.
+// LabPlansClientListBySubscriptionOptions contains the optional parameters for the LabPlansClient.NewListBySubscriptionPager
+// method.
 type LabPlansClientListBySubscriptionOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -417,81 +419,81 @@ type LabPlansClientListBySubscriptionOptions struct {
 type LabProperties struct {
 	// The resource auto shutdown configuration for the lab. This controls whether actions are taken on resources that are sitting
 	// idle.
-	AutoShutdownProfile *AutoShutdownProfile `json:"autoShutdownProfile,omitempty"`
+	AutoShutdownProfile *AutoShutdownProfile
 
 	// The connection profile for the lab. This controls settings such as web access to lab resources or whether RDP or SSH ports
 	// are open.
-	ConnectionProfile *ConnectionProfile `json:"connectionProfile,omitempty"`
+	ConnectionProfile *ConnectionProfile
 
 	// The description of the lab.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The ID of the lab plan. Used during resource creation to provide defaults and acts as a permission container when creating
 	// a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
 	// organization..
-	LabPlanID *string `json:"labPlanId,omitempty"`
+	LabPlanID *string
 
 	// The network profile for the lab, typically applied via a lab plan. This profile cannot be modified once a lab has been
 	// created.
-	NetworkProfile *LabNetworkProfile `json:"networkProfile,omitempty"`
+	NetworkProfile *LabNetworkProfile
 
 	// The lab user list management profile.
-	RosterProfile *RosterProfile `json:"rosterProfile,omitempty"`
+	RosterProfile *RosterProfile
 
 	// The lab security profile.
-	SecurityProfile *SecurityProfile `json:"securityProfile,omitempty"`
+	SecurityProfile *SecurityProfile
 
 	// The title of the lab.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// The profile used for creating lab virtual machines.
-	VirtualMachineProfile *VirtualMachineProfile `json:"virtualMachineProfile,omitempty"`
+	VirtualMachineProfile *VirtualMachineProfile
 
 	// READ-ONLY; Current provisioning state of the lab.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The lab state.
-	State *LabState `json:"state,omitempty" azure:"ro"`
+	State *LabState
 }
 
 // LabUpdate - The lab resource for updates.
 type LabUpdate struct {
 	// Lab resource properties
-	Properties *LabUpdateProperties `json:"properties,omitempty"`
+	Properties *LabUpdateProperties
 
 	// Resource tags.
-	Tags []*string `json:"tags,omitempty"`
+	Tags []*string
 }
 
 // LabUpdateProperties - Properties of a lab resource used for updates.
 type LabUpdateProperties struct {
 	// The resource auto shutdown configuration for the lab. This controls whether actions are taken on resources that are sitting
 	// idle.
-	AutoShutdownProfile *AutoShutdownProfile `json:"autoShutdownProfile,omitempty"`
+	AutoShutdownProfile *AutoShutdownProfile
 
 	// The connection profile for the lab. This controls settings such as web access to lab resources or whether RDP or SSH ports
 	// are open.
-	ConnectionProfile *ConnectionProfile `json:"connectionProfile,omitempty"`
+	ConnectionProfile *ConnectionProfile
 
 	// The description of the lab.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The ID of the lab plan. Used during resource creation to provide defaults and acts as a permission container when creating
 	// a lab via labs.azure.com. Setting a labPlanId on an existing lab provides
 	// organization..
-	LabPlanID *string `json:"labPlanId,omitempty"`
+	LabPlanID *string
 
 	// The lab user list management profile.
-	RosterProfile *RosterProfile `json:"rosterProfile,omitempty"`
+	RosterProfile *RosterProfile
 
 	// The lab security profile.
-	SecurityProfile *SecurityProfile `json:"securityProfile,omitempty"`
+	SecurityProfile *SecurityProfile
 
 	// The title of the lab.
-	Title *string `json:"title,omitempty"`
+	Title *string
 
 	// The profile used for creating lab virtual machines.
-	VirtualMachineProfile *VirtualMachineProfile `json:"virtualMachineProfile,omitempty"`
+	VirtualMachineProfile *VirtualMachineProfile
 }
 
 // LabsClientBeginCreateOrUpdateOptions contains the optional parameters for the LabsClient.BeginCreateOrUpdate method.
@@ -529,12 +531,12 @@ type LabsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.ListByResourceGroup method.
+// LabsClientListByResourceGroupOptions contains the optional parameters for the LabsClient.NewListByResourceGroupPager method.
 type LabsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.ListBySubscription method.
+// LabsClientListBySubscriptionOptions contains the optional parameters for the LabsClient.NewListBySubscriptionPager method.
 type LabsClientListBySubscriptionOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -543,83 +545,83 @@ type LabsClientListBySubscriptionOptions struct {
 // ListUsagesResult - List of Core Usages.
 type ListUsagesResult struct {
 	// The array page of Usages.
-	Value []*Usage `json:"value,omitempty"`
+	Value []*Usage
 
 	// READ-ONLY; The link to get the next page of Usage result.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationResult - A long running operation result
 type OperationResult struct {
 	// REQUIRED; The operation status
-	Status *OperationStatus `json:"status,omitempty"`
+	Status *OperationStatus
 
 	// End time
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The error for a failure if the operation failed.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// Percent completion
-	PercentComplete *float32 `json:"percentComplete,omitempty"`
+	PercentComplete *float32
 
 	// Start time
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 }
 
 // OperationResultsClientGetOptions contains the optional parameters for the OperationResultsClient.Get method.
@@ -627,7 +629,7 @@ type OperationResultsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -635,236 +637,236 @@ type OperationsClientListOptions struct {
 // PagedImages - Paged list of Lab services virtual machine images.
 type PagedImages struct {
 	// READ-ONLY; The link to get the next page of image results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The array page of virtual machine images.
-	Value []*Image `json:"value,omitempty" azure:"ro"`
+	Value []*Image
 }
 
 // PagedLabPlans - Paged list of lab plans.
 type PagedLabPlans struct {
 	// READ-ONLY; The link to get the next page of lab plan results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The array page of lab plans.
-	Value []*LabPlan `json:"value,omitempty" azure:"ro"`
+	Value []*LabPlan
 }
 
 // PagedLabs - Paged list of labs.
 type PagedLabs struct {
 	// READ-ONLY; The link to get the next page of image results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The array page of lab results.
-	Value []*Lab `json:"value,omitempty" azure:"ro"`
+	Value []*Lab
 }
 
 // PagedSKUInfos - Paged list of lab services skus.
 type PagedSKUInfos struct {
 	// READ-ONLY; The link to get the next page of sku results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The array page of sku results.
-	Value []*SKUInfo `json:"value,omitempty" azure:"ro"`
+	Value []*SKUInfo
 }
 
 // PagedSchedules - Paged list of schedules.
 type PagedSchedules struct {
 	// READ-ONLY; The link to get the next page of schedule results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The array page of schedule results.
-	Value []*Schedule `json:"value,omitempty" azure:"ro"`
+	Value []*Schedule
 }
 
 // PagedUsers - Paged list of users.
 type PagedUsers struct {
 	// READ-ONLY; The link to get the next page of image results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The array page of user results.
-	Value []*User `json:"value,omitempty" azure:"ro"`
+	Value []*User
 }
 
 // PagedVirtualMachines - Paged list of lab services virtual machines.
 type PagedVirtualMachines struct {
 	// READ-ONLY; The link to get the next page of virtual machine results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The array page of virtual machine results.
-	Value []*VirtualMachine `json:"value,omitempty" azure:"ro"`
+	Value []*VirtualMachine
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RecurrencePattern - Recurrence pattern of a lab schedule.
 type RecurrencePattern struct {
 	// REQUIRED; When the recurrence will expire. This date is inclusive.
-	ExpirationDate *time.Time `json:"expirationDate,omitempty"`
+	ExpirationDate *time.Time
 
 	// REQUIRED; The frequency of the recurrence.
-	Frequency *RecurrenceFrequency `json:"frequency,omitempty"`
+	Frequency *RecurrenceFrequency
 
 	// The interval to invoke the schedule on. For example, interval = 2 and RecurrenceFrequency.Daily will run every 2 days.
 	// When no interval is supplied, an interval of 1 is used.
-	Interval *int32 `json:"interval,omitempty"`
+	Interval *int32
 
 	// The week days the schedule runs. Used for when the Frequency is set to Weekly.
-	WeekDays []*WeekDay `json:"weekDays,omitempty"`
+	WeekDays []*WeekDay
 }
 
 // ResetPasswordBody - Body of a reset password request.
 type ResetPasswordBody struct {
 	// REQUIRED; The password
-	Password *string `json:"password,omitempty"`
+	Password *string
 
 	// REQUIRED; The user whose password is being reset
-	Username *string `json:"username,omitempty"`
+	Username *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RosterProfile - The lab user list management profile.
 type RosterProfile struct {
 	// The AAD group ID which this lab roster is populated from. Having this set enables AAD sync mode.
-	ActiveDirectoryGroupID *string `json:"activeDirectoryGroupId,omitempty"`
+	ActiveDirectoryGroupID *string
 
 	// The base URI identifying the lms instance.
-	LmsInstance *string `json:"lmsInstance,omitempty"`
+	LmsInstance *string
 
 	// The unique id of the azure lab services tool in the lms.
-	LtiClientID *string `json:"ltiClientId,omitempty"`
+	LtiClientID *string
 
 	// The unique context identifier for the lab in the lms.
-	LtiContextID *string `json:"ltiContextId,omitempty"`
+	LtiContextID *string
 
 	// The uri of the names and roles service endpoint on the lms for the class attached to this lab.
-	LtiRosterEndpoint *string `json:"ltiRosterEndpoint,omitempty"`
+	LtiRosterEndpoint *string
 }
 
 // SKU - The resource model definition representing SKU
 type SKU struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
 	// resource this may be omitted.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
 	// on a PUT.
-	Tier *SKUTier `json:"tier,omitempty"`
+	Tier *SKUTier
 }
 
 // SKUCapabilities - The array of capabilities of a lab services SKU.
 type SKUCapabilities struct {
 	// READ-ONLY; The name of the capability for a SKU.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The value of the capability for a SKU.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // SKUCapacity - The scale out/in options of the SKU.
 type SKUCapacity struct {
 	// READ-ONLY; The default capacity for this resource.
-	Default *int64 `json:"default,omitempty" azure:"ro"`
+	Default *int64
 
 	// READ-ONLY; The highest permitted capacity for this resource.
-	Maximum *int64 `json:"maximum,omitempty" azure:"ro"`
+	Maximum *int64
 
 	// READ-ONLY; The lowest permitted capacity for this resource.
-	Minimum *int64 `json:"minimum,omitempty" azure:"ro"`
+	Minimum *int64
 
 	// READ-ONLY; The localized name of the resource.
-	ScaleType *ScaleType `json:"scaleType,omitempty" azure:"ro"`
+	ScaleType *ScaleType
 }
 
 // SKUCost - The array of costs of a lab services SKU.
 type SKUCost struct {
 	// READ-ONLY; The extended unit.
-	ExtendedUnit *string `json:"extendedUnit,omitempty" azure:"ro"`
+	ExtendedUnit *string
 
 	// READ-ONLY; The meter id.
-	MeterID *string `json:"meterId,omitempty" azure:"ro"`
+	MeterID *string
 
 	// READ-ONLY; The quantity of units charged.
-	Quantity *float32 `json:"quantity,omitempty" azure:"ro"`
+	Quantity *float32
 }
 
 // SKUInfo - Azure Lab Services resource SKUs
 type SKUInfo struct {
 	// The scale out/in options of the SKU.
-	Capacity *SKUCapacity `json:"capacity,omitempty"`
+	Capacity *SKUCapacity
 
 	// READ-ONLY; The capabilities of the SKU.
-	Capabilities []*SKUCapabilities `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*SKUCapabilities
 
 	// READ-ONLY; Metadata for retrieving price info of a lab services SKUs.
-	Costs []*SKUCost `json:"costs,omitempty" azure:"ro"`
+	Costs []*SKUCost
 
 	// READ-ONLY; The family of the SKU.
-	Family *string `json:"family,omitempty" azure:"ro"`
+	Family *string
 
 	// READ-ONLY; List of locations that are available for a size.
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
+	Locations []*string
 
 	// READ-ONLY; The name of the SKU.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The lab services resource type.
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 
 	// READ-ONLY; Restrictions of a lab services SKUs.
-	Restrictions []*SKURestrictions `json:"restrictions,omitempty" azure:"ro"`
+	Restrictions []*SKURestrictions
 
 	// READ-ONLY; The SKU size.
-	Size *string `json:"size,omitempty" azure:"ro"`
+	Size *string
 
 	// READ-ONLY; The tier of the SKU.
-	Tier *LabServicesSKUTier `json:"tier,omitempty" azure:"ro"`
+	Tier *LabServicesSKUTier
 }
 
 // SKURestrictions - The restriction details.
 type SKURestrictions struct {
 	// READ-ONLY; The reason for the restriction.
-	ReasonCode *RestrictionReasonCode `json:"reasonCode,omitempty" azure:"ro"`
+	ReasonCode *RestrictionReasonCode
 
 	// READ-ONLY; The type of restriction.
-	Type *RestrictionType `json:"type,omitempty" azure:"ro"`
+	Type *RestrictionType
 
 	// READ-ONLY; The values of the restriction.
-	Values []*string `json:"values,omitempty" azure:"ro"`
+	Values []*string
 }
 
-// SKUsClientListOptions contains the optional parameters for the SKUsClient.List method.
+// SKUsClientListOptions contains the optional parameters for the SKUsClient.NewListPager method.
 type SKUsClientListOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -873,73 +875,73 @@ type SKUsClientListOptions struct {
 // SaveImageBody - Body for the save image POST
 type SaveImageBody struct {
 	// The ID of the lab virtual machine you want to save an image from.
-	LabVirtualMachineID *string `json:"labVirtualMachineId,omitempty"`
+	LabVirtualMachineID *string
 
 	// The name for the image we create.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // Schedule for automatically turning virtual machines in a lab on and off at specified times.
 type Schedule struct {
 	// REQUIRED; Schedule resource properties
-	Properties *ScheduleProperties `json:"properties,omitempty"`
+	Properties *ScheduleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the schedule.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScheduleProperties - Schedule resource properties
 type ScheduleProperties struct {
 	// Notes for this schedule.
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// The recurrence pattern of the scheduled actions.
-	RecurrencePattern *RecurrencePattern `json:"recurrencePattern,omitempty"`
+	RecurrencePattern *RecurrencePattern
 
 	// When lab user virtual machines will be started. Timestamp offsets will be ignored and timeZoneId is used instead.
-	StartAt *time.Time `json:"startAt,omitempty"`
+	StartAt *time.Time
 
 	// When lab user virtual machines will be stopped. Timestamp offsets will be ignored and timeZoneId is used instead.
-	StopAt *time.Time `json:"stopAt,omitempty"`
+	StopAt *time.Time
 
 	// The IANA timezone id for the schedule.
-	TimeZoneID *string `json:"timeZoneId,omitempty"`
+	TimeZoneID *string
 
 	// READ-ONLY; Current provisioning state of the schedule.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ScheduleUpdate - Schedule for automatically turning virtual machines in a lab on and off at specified times. Used for updates.
 type ScheduleUpdate struct {
 	// Schedule resource properties
-	Properties *ScheduleUpdateProperties `json:"properties,omitempty"`
+	Properties *ScheduleUpdateProperties
 }
 
 // ScheduleUpdateProperties - Schedule resource properties used for updates.
 type ScheduleUpdateProperties struct {
 	// Notes for this schedule.
-	Notes *string `json:"notes,omitempty"`
+	Notes *string
 
 	// The recurrence pattern of the scheduled actions.
-	RecurrencePattern *RecurrencePattern `json:"recurrencePattern,omitempty"`
+	RecurrencePattern *RecurrencePattern
 
 	// When lab user virtual machines will be started. Timestamp offsets will be ignored and timeZoneId is used instead.
-	StartAt *time.Time `json:"startAt,omitempty"`
+	StartAt *time.Time
 
 	// When lab user virtual machines will be stopped. Timestamp offsets will be ignored and timeZoneId is used instead.
-	StopAt *time.Time `json:"stopAt,omitempty"`
+	StopAt *time.Time
 
 	// The IANA timezone id for the schedule.
-	TimeZoneID *string `json:"timeZoneId,omitempty"`
+	TimeZoneID *string
 }
 
 // SchedulesClientBeginDeleteOptions contains the optional parameters for the SchedulesClient.BeginDelete method.
@@ -958,7 +960,7 @@ type SchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.ListByLab method.
+// SchedulesClientListByLabOptions contains the optional parameters for the SchedulesClient.NewListByLabPager method.
 type SchedulesClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -972,104 +974,104 @@ type SchedulesClientUpdateOptions struct {
 // SecurityProfile - The lab security profile.
 type SecurityProfile struct {
 	// Whether any user or only specified users can register to a lab.
-	OpenAccess *EnableState `json:"openAccess,omitempty"`
+	OpenAccess *EnableState
 
 	// READ-ONLY; The registration code for the lab.
-	RegistrationCode *string `json:"registrationCode,omitempty" azure:"ro"`
+	RegistrationCode *string
 }
 
 // SupportInfo - Support contact information and instructions.
 type SupportInfo struct {
 	// Support contact email address.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// Support instructions.
-	Instructions *string `json:"instructions,omitempty"`
+	Instructions *string
 
 	// Support contact phone number.
-	Phone *string `json:"phone,omitempty"`
+	Phone *string
 
 	// Support web address.
-	URL *string `json:"url,omitempty"`
+	URL *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // TrackedResourceUpdate - Base tracked resource type for all PATCH updates.
 type TrackedResourceUpdate struct {
 	// Resource tags.
-	Tags []*string `json:"tags,omitempty"`
+	Tags []*string
 }
 
 // Usage - The core usage details.
 type Usage struct {
 	// The current usage.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
+	CurrentValue *int64
 
 	// The fully qualified arm resource id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The limit integer.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// The name.
-	Name *UsageName `json:"name,omitempty"`
+	Name *UsageName
 
 	// The unit details.
-	Unit *UsageUnit `json:"unit,omitempty"`
+	Unit *UsageUnit
 }
 
 // UsageName - The Usage Names.
 type UsageName struct {
 	// The localized name of the resource.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// The instances of the resource.
-	SKUInstances []*string `json:"skuInstances,omitempty"`
+	SKUInstances []*string
 
 	// The name of the resource.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
-// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager method.
 type UsagesClientListByLocationOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -1078,58 +1080,58 @@ type UsagesClientListByLocationOptions struct {
 // User of a lab that can register for and use virtual machines within the lab.
 type User struct {
 	// REQUIRED; User resource properties
-	Properties *UserProperties `json:"properties,omitempty"`
+	Properties *UserProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the user resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserProperties - User resource properties
 type UserProperties struct {
 	// REQUIRED; Email address of the user.
-	Email *string `json:"email,omitempty"`
+	Email *string
 
 	// The amount of usage quota time the user gets in addition to the lab usage quota.
-	AdditionalUsageQuota *string `json:"additionalUsageQuota,omitempty"`
+	AdditionalUsageQuota *string
 
 	// READ-ONLY; Display name of the user, for example user's full name.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; Date and time when the invitation message was sent to the user.
-	InvitationSent *time.Time `json:"invitationSent,omitempty" azure:"ro"`
+	InvitationSent *time.Time
 
 	// READ-ONLY; State of the invitation message for the user.
-	InvitationState *InvitationState `json:"invitationState,omitempty" azure:"ro"`
+	InvitationState *InvitationState
 
 	// READ-ONLY; Current provisioning state of the user resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; State of the user's registration within the lab.
-	RegistrationState *RegistrationState `json:"registrationState,omitempty" azure:"ro"`
+	RegistrationState *RegistrationState
 
 	// READ-ONLY; How long the user has used their virtual machines in this lab.
-	TotalUsage *string `json:"totalUsage,omitempty" azure:"ro"`
+	TotalUsage *string
 }
 
 // UserUpdate - User of a lab that can register for and use virtual machines within the lab. Used for updates.
 type UserUpdate struct {
 	// User resource properties
-	Properties *UserUpdateProperties `json:"properties,omitempty"`
+	Properties *UserUpdateProperties
 }
 
 // UserUpdateProperties - User resource properties used for updates.
 type UserUpdateProperties struct {
 	// The amount of usage quota time the user gets in addition to the lab usage quota.
-	AdditionalUsageQuota *string `json:"additionalUsageQuota,omitempty"`
+	AdditionalUsageQuota *string
 }
 
 // UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate method.
@@ -1161,7 +1163,7 @@ type UsersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// UsersClientListByLabOptions contains the optional parameters for the UsersClient.ListByLab method.
+// UsersClientListByLabOptions contains the optional parameters for the UsersClient.NewListByLabPager method.
 type UsersClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string
@@ -1170,97 +1172,97 @@ type UsersClientListByLabOptions struct {
 // VirtualMachine - A lab virtual machine resource.
 type VirtualMachine struct {
 	// REQUIRED; Virtual machine resource properties
-	Properties *VirtualMachineProperties `json:"properties,omitempty"`
+	Properties *VirtualMachineProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; System data of the Lab virtual machine.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VirtualMachineAdditionalCapabilities - The additional capabilities for a lab VM.
 type VirtualMachineAdditionalCapabilities struct {
 	// Flag to pre-install dedicated GPU drivers.
-	InstallGpuDrivers *EnableState `json:"installGpuDrivers,omitempty"`
+	InstallGpuDrivers *EnableState
 }
 
 // VirtualMachineConnectionProfile - The connection information for the virtual machine
 type VirtualMachineConnectionProfile struct {
 	// READ-ONLY; The username used to log on to the virtual machine as admin.
-	AdminUsername *string `json:"adminUsername,omitempty" azure:"ro"`
+	AdminUsername *string
 
 	// READ-ONLY; The username used to log on to the virtual machine as non-admin, if one exists.
-	NonAdminUsername *string `json:"nonAdminUsername,omitempty" azure:"ro"`
+	NonAdminUsername *string
 
 	// READ-ONLY; The private IP address of the virtual machine.
-	PrivateIPAddress *string `json:"privateIpAddress,omitempty" azure:"ro"`
+	PrivateIPAddress *string
 
 	// READ-ONLY; Port and host name separated by semicolon for connecting via RDP protocol to the virtual machine.
-	RdpAuthority *string `json:"rdpAuthority,omitempty" azure:"ro"`
+	RdpAuthority *string
 
 	// READ-ONLY; URL for connecting via RDP protocol to the virtual machine in browser.
-	RdpInBrowserURL *string `json:"rdpInBrowserUrl,omitempty" azure:"ro"`
+	RdpInBrowserURL *string
 
 	// READ-ONLY; Port and host name separated by semicolon for connecting via SSH protocol to the virtual machine.
-	SSHAuthority *string `json:"sshAuthority,omitempty" azure:"ro"`
+	SSHAuthority *string
 
 	// READ-ONLY; URL for connecting via SSH protocol to the virtual machine in browser.
-	SSHInBrowserURL *string `json:"sshInBrowserUrl,omitempty" azure:"ro"`
+	SSHInBrowserURL *string
 }
 
 // VirtualMachineProfile - The base virtual machine configuration for a lab.
 type VirtualMachineProfile struct {
 	// REQUIRED; Credentials for the admin user on the VM.
-	AdminUser *Credentials `json:"adminUser,omitempty"`
+	AdminUser *Credentials
 
 	// REQUIRED; Indicates what lab virtual machines are created from.
-	CreateOption *CreateOption `json:"createOption,omitempty"`
+	CreateOption *CreateOption
 
 	// REQUIRED; The image configuration for lab virtual machines.
-	ImageReference *ImageReference `json:"imageReference,omitempty"`
+	ImageReference *ImageReference
 
 	// REQUIRED; The SKU for the lab. Defines the type of virtual machines used in the lab.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// REQUIRED; The initial quota alloted to each lab user. Must be a time span between 0 and 9999 hours.
-	UsageQuota *string `json:"usageQuota,omitempty"`
+	UsageQuota *string
 
 	// Additional VM capabilities.
-	AdditionalCapabilities *VirtualMachineAdditionalCapabilities `json:"additionalCapabilities,omitempty"`
+	AdditionalCapabilities *VirtualMachineAdditionalCapabilities
 
 	// Credentials for the non-admin user on the VM, if one exists.
-	NonAdminUser *Credentials `json:"nonAdminUser,omitempty"`
+	NonAdminUser *Credentials
 
 	// Enabling this option will use the same password for all user VMs.
-	UseSharedPassword *EnableState `json:"useSharedPassword,omitempty"`
+	UseSharedPassword *EnableState
 
 	// READ-ONLY; The OS type of the image
-	OSType *OsType `json:"osType,omitempty" azure:"ro"`
+	OSType *OsType
 }
 
 // VirtualMachineProperties - Virtual machine resource properties
 type VirtualMachineProperties struct {
 	// READ-ONLY; The lab user ID (not the PUID!) of who claimed the virtual machine.
-	ClaimedByUserID *string `json:"claimedByUserId,omitempty" azure:"ro"`
+	ClaimedByUserID *string
 
 	// READ-ONLY; Profile for information about connecting to the virtual machine.
-	ConnectionProfile *VirtualMachineConnectionProfile `json:"connectionProfile,omitempty" azure:"ro"`
+	ConnectionProfile *VirtualMachineConnectionProfile
 
 	// READ-ONLY; Current provisioning state of the virtual machine.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The current state of the virtual machine
-	State *VirtualMachineState `json:"state,omitempty" azure:"ro"`
+	State *VirtualMachineState
 
 	// READ-ONLY; The type of this VM resource
-	VMType *VirtualMachineType `json:"vmType,omitempty" azure:"ro"`
+	VMType *VirtualMachineType
 }
 
 // VirtualMachinesClientBeginRedeployOptions contains the optional parameters for the VirtualMachinesClient.BeginRedeploy
@@ -1300,7 +1302,8 @@ type VirtualMachinesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.ListByLab method.
+// VirtualMachinesClientListByLabOptions contains the optional parameters for the VirtualMachinesClient.NewListByLabPager
+// method.
 type VirtualMachinesClientListByLabOptions struct {
 	// The filter to apply to the operation.
 	Filter *string

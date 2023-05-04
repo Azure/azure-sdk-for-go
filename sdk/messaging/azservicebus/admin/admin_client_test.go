@@ -1086,7 +1086,7 @@ type fakeEM struct {
 	getResponses []string
 }
 
-func (em *fakeEM) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
+func (em *fakeEM) Get(ctx context.Context, entityPath string, respObj any) (*http.Response, error) {
 	jsonPath := em.getResponses[0]
 	em.getResponses = em.getResponses[1:]
 
@@ -1245,7 +1245,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 			Name: "ruleWithSQLFilterWithParams",
 			Filter: &SQLFilter{
 				Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
-				Parameters: map[string]interface{}{
+				Parameters: map[string]any{
 					"@stringVar":   "hello world",
 					"@intVar":      int64(100),
 					"@floatVar":    float64(100.1),
@@ -1268,7 +1268,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 				SessionID:        to.Ptr("sessionID"),
 				Subject:          to.Ptr("subject"),
 				To:               to.Ptr("to"),
-				ApplicationProperties: map[string]interface{}{
+				ApplicationProperties: map[string]any{
 					"CustomProp1": "hello",
 				},
 			},
@@ -1283,7 +1283,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 			Name: "ruleWithAction",
 			Action: &SQLAction{
 				Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
-				Parameters: map[string]interface{}{
+				Parameters: map[string]any{
 					"@stringVar":   "hello world",
 					"@intVar":      int64(100),
 					"@floatVar":    float64(100.1),
@@ -1302,7 +1302,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 			Name: "ruleWithFilterAndAction",
 			Filter: &SQLFilter{
 				Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
-				Parameters: map[string]interface{}{
+				Parameters: map[string]any{
 					"@stringVar":   "hello world",
 					"@intVar":      int64(100),
 					"@floatVar":    float64(100.1),
@@ -1312,7 +1312,7 @@ func TestAdminClient_CreateRules(t *testing.T) {
 			},
 			Action: &SQLAction{
 				Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
-				Parameters: map[string]interface{}{
+				Parameters: map[string]any{
 					"@stringVar":   "hello world",
 					"@intVar":      int64(100),
 					"@floatVar":    float64(100.1),
@@ -1465,7 +1465,7 @@ type emwrap struct {
 	inner atom.EntityManager
 }
 
-func (em *emwrap) Put(ctx context.Context, entityPath string, body interface{}, respObj interface{}, options *atom.ExecuteOptions) (*http.Response, error) {
+func (em *emwrap) Put(ctx context.Context, entityPath string, body any, respObj any, options *atom.ExecuteOptions) (*http.Response, error) {
 	resp, err := em.inner.Put(ctx, entityPath, body, respObj, options)
 
 	if err != nil {
@@ -1481,7 +1481,7 @@ func (em *emwrap) Delete(ctx context.Context, entityPath string) (*http.Response
 }
 func (em *emwrap) TokenProvider() auth.TokenProvider { return em.inner.TokenProvider() }
 
-func (em *emwrap) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
+func (em *emwrap) Get(ctx context.Context, entityPath string, respObj any) (*http.Response, error) {
 	resp, err := em.inner.Get(ctx, entityPath, respObj)
 
 	if err != nil {
@@ -1492,7 +1492,7 @@ func (em *emwrap) Get(ctx context.Context, entityPath string, respObj interface{
 	return resp, err
 }
 
-func (*emwrap) makeFilterAndActionUnknown(respObj interface{}) {
+func (*emwrap) makeFilterAndActionUnknown(respObj any) {
 	switch actual := respObj.(type) {
 	case **atom.RuleEnvelope:
 		f := (*actual).Content.RuleDescription.Filter
@@ -1526,7 +1526,7 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 		Name: "ruleWithFilterAndAction",
 		Filter: &SQLFilter{
 			Expression: "MessageID=@stringVar OR MessageID=@intVar OR MessageID=@floatVar OR MessageID=@dateTimeVar OR MessageID=@boolVar",
-			Parameters: map[string]interface{}{
+			Parameters: map[string]any{
 				"@stringVar":   "hello world",
 				"@intVar":      int64(100),
 				"@floatVar":    float64(100.1),
@@ -1536,7 +1536,7 @@ func TestAdminClient_UnknownFilterRoundtrippingWorks(t *testing.T) {
 		},
 		Action: &SQLAction{
 			Expression: "SET MessageID=@stringVar SET MessageID=@intVar SET MessageID=@floatVar SET MessageID=@dateTimeVar SET MessageID=@boolVar",
-			Parameters: map[string]interface{}{
+			Parameters: map[string]any{
 				"@stringVar":   "hello world",
 				"@intVar":      int64(100),
 				"@floatVar":    float64(100.1),
@@ -1608,7 +1608,7 @@ type entityManagerForPagerTests struct {
 	getPaths []string
 }
 
-func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string, respObj interface{}) (*http.Response, error) {
+func (em *entityManagerForPagerTests) Get(ctx context.Context, entityPath string, respObj any) (*http.Response, error) {
 	em.getPaths = append(em.getPaths, entityPath)
 
 	switch feedPtrPtr := respObj.(type) {
@@ -1634,7 +1634,7 @@ func TestAdminClient_pagerWithLightPage(t *testing.T) {
 	em := &entityManagerForPagerTests{}
 	adminClient.em = em
 
-	pager := adminClient.newPagerFunc("/$Resources/Topics", 10, func(pv interface{}) int {
+	pager := adminClient.newPagerFunc("/$Resources/Topics", 10, func(pv any) int {
 		// note that we're returning fewer results than the max page size
 		// in ATOM < max page size means this is the last page of results.
 		return 3
@@ -1677,7 +1677,7 @@ func TestAdminClient_pagerWithFullPage(t *testing.T) {
 	// first request - got 10 results back, not EOF
 	simulatedPageSize := 10
 
-	pager := adminClient.newPagerFunc("/$Resources/Topics", 10, func(pv interface{}) int {
+	pager := adminClient.newPagerFunc("/$Resources/Topics", 10, func(pv any) int {
 		return simulatedPageSize
 	})
 

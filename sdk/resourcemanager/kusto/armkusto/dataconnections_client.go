@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // DataConnectionsClient contains the methods for the DataConnections group.
 // Don't use this type directly, use NewDataConnectionsClient() instead.
 type DataConnectionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataConnectionsClient creates a new instance of DataConnectionsClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataConnectionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataConnectionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckNameAvailability - Checks that the data connection name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// databaseName - The name of the database in the Kusto cluster.
-// dataConnectionName - The name of the data connection.
-// options - DataConnectionsClientCheckNameAvailabilityOptions contains the optional parameters for the DataConnectionsClient.CheckNameAvailability
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - databaseName - The name of the database in the Kusto cluster.
+//   - dataConnectionName - The name of the data connection.
+//   - options - DataConnectionsClientCheckNameAvailabilityOptions contains the optional parameters for the DataConnectionsClient.CheckNameAvailability
+//     method.
 func (client *DataConnectionsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName DataConnectionCheckNameRequest, options *DataConnectionsClientCheckNameAvailabilityOptions) (DataConnectionsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, options)
 	if err != nil {
 		return DataConnectionsClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataConnectionsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -99,12 +89,12 @@ func (client *DataConnectionsClient) checkNameAvailabilityCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, dataConnectionName)
@@ -121,35 +111,37 @@ func (client *DataConnectionsClient) checkNameAvailabilityHandleResponse(resp *h
 
 // BeginCreateOrUpdate - Creates or updates a data connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// databaseName - The name of the database in the Kusto cluster.
-// dataConnectionName - The name of the data connection.
-// parameters - The data connection parameters supplied to the CreateOrUpdate operation.
-// options - DataConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - databaseName - The name of the database in the Kusto cluster.
+//   - dataConnectionName - The name of the data connection.
+//   - parameters - The data connection parameters supplied to the CreateOrUpdate operation.
+//   - options - DataConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginCreateOrUpdate
+//     method.
 func (client *DataConnectionsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DataConnectionsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DataConnectionsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataConnectionsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DataConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataConnectionsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a data connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
+//
+// Generated from API version 2022-12-29
 func (client *DataConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -182,12 +174,12 @@ func (client *DataConnectionsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -195,36 +187,38 @@ func (client *DataConnectionsClient) createOrUpdateCreateRequest(ctx context.Con
 
 // BeginDataConnectionValidation - Checks that the data connection parameters are valid.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// databaseName - The name of the database in the Kusto cluster.
-// parameters - The data connection parameters supplied to the CreateOrUpdate operation.
-// options - DataConnectionsClientBeginDataConnectionValidationOptions contains the optional parameters for the DataConnectionsClient.BeginDataConnectionValidation
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - databaseName - The name of the database in the Kusto cluster.
+//   - parameters - The data connection parameters supplied to the CreateOrUpdate operation.
+//   - options - DataConnectionsClientBeginDataConnectionValidationOptions contains the optional parameters for the DataConnectionsClient.BeginDataConnectionValidation
+//     method.
 func (client *DataConnectionsClient) BeginDataConnectionValidation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DataConnectionValidation, options *DataConnectionsClientBeginDataConnectionValidationOptions) (*runtime.Poller[DataConnectionsClientDataConnectionValidationResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.dataConnectionValidation(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[DataConnectionsClientDataConnectionValidationResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataConnectionsClientDataConnectionValidationResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[DataConnectionsClientDataConnectionValidationResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataConnectionsClientDataConnectionValidationResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // DataConnectionValidation - Checks that the data connection parameters are valid.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
+//
+// Generated from API version 2022-12-29
 func (client *DataConnectionsClient) dataConnectionValidation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, parameters DataConnectionValidation, options *DataConnectionsClientBeginDataConnectionValidationOptions) (*http.Response, error) {
 	req, err := client.dataConnectionValidationCreateRequest(ctx, resourceGroupName, clusterName, databaseName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -253,12 +247,12 @@ func (client *DataConnectionsClient) dataConnectionValidationCreateRequest(ctx c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -266,34 +260,36 @@ func (client *DataConnectionsClient) dataConnectionValidationCreateRequest(ctx c
 
 // BeginDelete - Deletes the data connection with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// databaseName - The name of the database in the Kusto cluster.
-// dataConnectionName - The name of the data connection.
-// options - DataConnectionsClientBeginDeleteOptions contains the optional parameters for the DataConnectionsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - databaseName - The name of the database in the Kusto cluster.
+//   - dataConnectionName - The name of the data connection.
+//   - options - DataConnectionsClientBeginDeleteOptions contains the optional parameters for the DataConnectionsClient.BeginDelete
+//     method.
 func (client *DataConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *DataConnectionsClientBeginDeleteOptions) (*runtime.Poller[DataConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DataConnectionsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataConnectionsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DataConnectionsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataConnectionsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the data connection with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
+//
+// Generated from API version 2022-12-29
 func (client *DataConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *DataConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -326,12 +322,12 @@ func (client *DataConnectionsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -339,18 +335,19 @@ func (client *DataConnectionsClient) deleteCreateRequest(ctx context.Context, re
 
 // Get - Returns a data connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// databaseName - The name of the database in the Kusto cluster.
-// dataConnectionName - The name of the data connection.
-// options - DataConnectionsClientGetOptions contains the optional parameters for the DataConnectionsClient.Get method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - databaseName - The name of the database in the Kusto cluster.
+//   - dataConnectionName - The name of the data connection.
+//   - options - DataConnectionsClientGetOptions contains the optional parameters for the DataConnectionsClient.Get method.
 func (client *DataConnectionsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, options *DataConnectionsClientGetOptions) (DataConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, options)
 	if err != nil {
 		return DataConnectionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataConnectionsClientGetResponse{}, err
 	}
@@ -383,12 +380,12 @@ func (client *DataConnectionsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -404,12 +401,13 @@ func (client *DataConnectionsClient) getHandleResponse(resp *http.Response) (Dat
 }
 
 // NewListByDatabasePager - Returns the list of data connections of the given Kusto database.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// databaseName - The name of the database in the Kusto cluster.
-// options - DataConnectionsClientListByDatabaseOptions contains the optional parameters for the DataConnectionsClient.ListByDatabase
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - databaseName - The name of the database in the Kusto cluster.
+//   - options - DataConnectionsClientListByDatabaseOptions contains the optional parameters for the DataConnectionsClient.NewListByDatabasePager
+//     method.
 func (client *DataConnectionsClient) NewListByDatabasePager(resourceGroupName string, clusterName string, databaseName string, options *DataConnectionsClientListByDatabaseOptions) *runtime.Pager[DataConnectionsClientListByDatabaseResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataConnectionsClientListByDatabaseResponse]{
 		More: func(page DataConnectionsClientListByDatabaseResponse) bool {
@@ -420,7 +418,7 @@ func (client *DataConnectionsClient) NewListByDatabasePager(resourceGroupName st
 			if err != nil {
 				return DataConnectionsClientListByDatabaseResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataConnectionsClientListByDatabaseResponse{}, err
 			}
@@ -451,12 +449,12 @@ func (client *DataConnectionsClient) listByDatabaseCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -473,35 +471,37 @@ func (client *DataConnectionsClient) listByDatabaseHandleResponse(resp *http.Res
 
 // BeginUpdate - Updates a data connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// databaseName - The name of the database in the Kusto cluster.
-// dataConnectionName - The name of the data connection.
-// parameters - The data connection parameters supplied to the Update operation.
-// options - DataConnectionsClientBeginUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginUpdate
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - databaseName - The name of the database in the Kusto cluster.
+//   - dataConnectionName - The name of the data connection.
+//   - parameters - The data connection parameters supplied to the Update operation.
+//   - options - DataConnectionsClientBeginUpdateOptions contains the optional parameters for the DataConnectionsClient.BeginUpdate
+//     method.
 func (client *DataConnectionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginUpdateOptions) (*runtime.Poller[DataConnectionsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DataConnectionsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataConnectionsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DataConnectionsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataConnectionsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Updates a data connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
+//
+// Generated from API version 2022-12-29
 func (client *DataConnectionsClient) update(ctx context.Context, resourceGroupName string, clusterName string, databaseName string, dataConnectionName string, parameters DataConnectionClassification, options *DataConnectionsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, databaseName, dataConnectionName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -534,12 +534,12 @@ func (client *DataConnectionsClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,68 +24,61 @@ import (
 // VirtualHubIPConfigurationClient contains the methods for the VirtualHubIPConfiguration group.
 // Don't use this type directly, use NewVirtualHubIPConfigurationClient() instead.
 type VirtualHubIPConfigurationClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewVirtualHubIPConfigurationClient creates a new instance of VirtualHubIPConfigurationClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualHubIPConfigurationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualHubIPConfigurationClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".VirtualHubIPConfigurationClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &VirtualHubIPConfigurationClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// ipConfigName - The name of the ipconfig.
-// parameters - Hub Ip Configuration parameters.
-// options - VirtualHubIPConfigurationClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHubIPConfigurationClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - ipConfigName - The name of the ipconfig.
+//   - parameters - Hub Ip Configuration parameters.
+//   - options - VirtualHubIPConfigurationClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHubIPConfigurationClient.BeginCreateOrUpdate
+//     method.
 func (client *VirtualHubIPConfigurationClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualHubIPConfigurationClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, ipConfigName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualHubIPConfigurationClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualHubIPConfigurationClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualHubIPConfigurationClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualHubIPConfigurationClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates a VirtualHubIpConfiguration resource if it doesn't exist else updates the existing VirtualHubIpConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualHubIPConfigurationClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, parameters HubIPConfiguration, options *VirtualHubIPConfigurationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,12 +107,12 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx c
 		return nil, errors.New("parameter ipConfigName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ipConfigName}", url.PathEscape(ipConfigName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -129,35 +120,37 @@ func (client *VirtualHubIPConfigurationClient) createOrUpdateCreateRequest(ctx c
 
 // BeginDelete - Deletes a VirtualHubIpConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHubBgpConnection.
-// virtualHubName - The name of the VirtualHub.
-// ipConfigName - The name of the ipconfig.
-// options - VirtualHubIPConfigurationClientBeginDeleteOptions contains the optional parameters for the VirtualHubIPConfigurationClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHubBgpConnection.
+//   - virtualHubName - The name of the VirtualHub.
+//   - ipConfigName - The name of the ipconfig.
+//   - options - VirtualHubIPConfigurationClientBeginDeleteOptions contains the optional parameters for the VirtualHubIPConfigurationClient.BeginDelete
+//     method.
 func (client *VirtualHubIPConfigurationClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationClientBeginDeleteOptions) (*runtime.Poller[VirtualHubIPConfigurationClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualHubIPConfigurationClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualHubIPConfigurationClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualHubIPConfigurationClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualHubIPConfigurationClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a VirtualHubIpConfiguration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualHubIPConfigurationClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -186,12 +179,12 @@ func (client *VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.C
 		return nil, errors.New("parameter ipConfigName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ipConfigName}", url.PathEscape(ipConfigName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,18 +192,19 @@ func (client *VirtualHubIPConfigurationClient) deleteCreateRequest(ctx context.C
 
 // Get - Retrieves the details of a Virtual Hub Ip configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// ipConfigName - The name of the ipconfig.
-// options - VirtualHubIPConfigurationClientGetOptions contains the optional parameters for the VirtualHubIPConfigurationClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - ipConfigName - The name of the ipconfig.
+//   - options - VirtualHubIPConfigurationClientGetOptions contains the optional parameters for the VirtualHubIPConfigurationClient.Get
+//     method.
 func (client *VirtualHubIPConfigurationClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, ipConfigName string, options *VirtualHubIPConfigurationClientGetOptions) (VirtualHubIPConfigurationClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, ipConfigName, options)
 	if err != nil {
 		return VirtualHubIPConfigurationClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualHubIPConfigurationClientGetResponse{}, err
 	}
@@ -239,12 +233,12 @@ func (client *VirtualHubIPConfigurationClient) getCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter ipConfigName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ipConfigName}", url.PathEscape(ipConfigName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -260,11 +254,12 @@ func (client *VirtualHubIPConfigurationClient) getHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Retrieves the details of all VirtualHubIpConfigurations.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// options - VirtualHubIPConfigurationClientListOptions contains the optional parameters for the VirtualHubIPConfigurationClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - options - VirtualHubIPConfigurationClientListOptions contains the optional parameters for the VirtualHubIPConfigurationClient.NewListPager
+//     method.
 func (client *VirtualHubIPConfigurationClient) NewListPager(resourceGroupName string, virtualHubName string, options *VirtualHubIPConfigurationClientListOptions) *runtime.Pager[VirtualHubIPConfigurationClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualHubIPConfigurationClientListResponse]{
 		More: func(page VirtualHubIPConfigurationClientListResponse) bool {
@@ -281,7 +276,7 @@ func (client *VirtualHubIPConfigurationClient) NewListPager(resourceGroupName st
 			if err != nil {
 				return VirtualHubIPConfigurationClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VirtualHubIPConfigurationClientListResponse{}, err
 			}
@@ -308,12 +303,12 @@ func (client *VirtualHubIPConfigurationClient) listCreateRequest(ctx context.Con
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

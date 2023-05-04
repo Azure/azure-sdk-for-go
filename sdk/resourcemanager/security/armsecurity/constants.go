@@ -11,7 +11,7 @@ package armsecurity
 
 const (
 	moduleName    = "armsecurity"
-	moduleVersion = "v0.9.0"
+	moduleVersion = "v0.11.0"
 )
 
 // AADConnectivityState - The connectivity state of the external AAD solution
@@ -381,6 +381,7 @@ const (
 	CloudNameAzure       CloudName = "Azure"
 	CloudNameAzureDevOps CloudName = "AzureDevOps"
 	CloudNameGCP         CloudName = "GCP"
+	CloudNameGitLab      CloudName = "GitLab"
 	CloudNameGithub      CloudName = "Github"
 )
 
@@ -391,7 +392,26 @@ func PossibleCloudNameValues() []CloudName {
 		CloudNameAzure,
 		CloudNameAzureDevOps,
 		CloudNameGCP,
+		CloudNameGitLab,
 		CloudNameGithub,
+	}
+}
+
+// Code - The operation status code.
+type Code string
+
+const (
+	// CodeFailed - Extension was not created/updated successfully. See operation status message for more details.
+	CodeFailed Code = "Failed"
+	// CodeSucceeded - Extension was created/updated successfully.
+	CodeSucceeded Code = "Succeeded"
+)
+
+// PossibleCodeValues returns the possible values for the Code const type.
+func PossibleCodeValues() []Code {
+	return []Code{
+		CodeFailed,
+		CodeSucceeded,
 	}
 }
 
@@ -566,6 +586,7 @@ const (
 	EnvironmentTypeAzureDevOpsScope EnvironmentType = "AzureDevOpsScope"
 	EnvironmentTypeGcpProject       EnvironmentType = "GcpProject"
 	EnvironmentTypeGithubScope      EnvironmentType = "GithubScope"
+	EnvironmentTypeGitlabScope      EnvironmentType = "GitlabScope"
 )
 
 // PossibleEnvironmentTypeValues returns the possible values for the EnvironmentType const type.
@@ -575,6 +596,7 @@ func PossibleEnvironmentTypeValues() []EnvironmentType {
 		EnvironmentTypeAzureDevOpsScope,
 		EnvironmentTypeGcpProject,
 		EnvironmentTypeGithubScope,
+		EnvironmentTypeGitlabScope,
 	}
 }
 
@@ -901,6 +923,24 @@ func PossibleIntentValues() []Intent {
 	}
 }
 
+// IsEnabled - Indicates whether the extension is enabled.
+type IsEnabled string
+
+const (
+	// IsEnabledFalse - Indicates the extension is disabled
+	IsEnabledFalse IsEnabled = "False"
+	// IsEnabledTrue - Indicates the extension is enabled
+	IsEnabledTrue IsEnabled = "True"
+)
+
+// PossibleIsEnabledValues returns the possible values for the IsEnabled const type.
+func PossibleIsEnabledValues() []IsEnabled {
+	return []IsEnabled{
+		IsEnabledFalse,
+		IsEnabledTrue,
+	}
+}
+
 // Kind - The kind of alert simulation.
 type Kind string
 
@@ -937,6 +977,26 @@ func PossibleMinimalSeverityValues() []MinimalSeverity {
 	}
 }
 
+// MipIntegrationStatus - Microsoft information protection integration status
+type MipIntegrationStatus string
+
+const (
+	MipIntegrationStatusNoAutoLabelingRules MipIntegrationStatus = "noAutoLabelingRules"
+	MipIntegrationStatusNoConsent           MipIntegrationStatus = "noConsent"
+	MipIntegrationStatusNoMipLabels         MipIntegrationStatus = "noMipLabels"
+	MipIntegrationStatusOk                  MipIntegrationStatus = "Ok"
+)
+
+// PossibleMipIntegrationStatusValues returns the possible values for the MipIntegrationStatus const type.
+func PossibleMipIntegrationStatusValues() []MipIntegrationStatus {
+	return []MipIntegrationStatus{
+		MipIntegrationStatusNoAutoLabelingRules,
+		MipIntegrationStatusNoConsent,
+		MipIntegrationStatusNoMipLabels,
+		MipIntegrationStatusOk,
+	}
+}
+
 // OfferingType - The type of the security offering.
 type OfferingType string
 
@@ -944,6 +1004,7 @@ const (
 	OfferingTypeCspmMonitorAws               OfferingType = "CspmMonitorAws"
 	OfferingTypeCspmMonitorAzureDevOps       OfferingType = "CspmMonitorAzureDevOps"
 	OfferingTypeCspmMonitorGcp               OfferingType = "CspmMonitorGcp"
+	OfferingTypeCspmMonitorGitLab            OfferingType = "CspmMonitorGitLab"
 	OfferingTypeCspmMonitorGithub            OfferingType = "CspmMonitorGithub"
 	OfferingTypeDefenderCspmAws              OfferingType = "DefenderCspmAws"
 	OfferingTypeDefenderCspmGcp              OfferingType = "DefenderCspmGcp"
@@ -952,6 +1013,7 @@ const (
 	OfferingTypeDefenderForDatabasesAws      OfferingType = "DefenderForDatabasesAws"
 	OfferingTypeDefenderForDatabasesGcp      OfferingType = "DefenderForDatabasesGcp"
 	OfferingTypeDefenderForDevOpsAzureDevOps OfferingType = "DefenderForDevOpsAzureDevOps"
+	OfferingTypeDefenderForDevOpsGitLab      OfferingType = "DefenderForDevOpsGitLab"
 	OfferingTypeDefenderForDevOpsGithub      OfferingType = "DefenderForDevOpsGithub"
 	OfferingTypeDefenderForServersAws        OfferingType = "DefenderForServersAws"
 	OfferingTypeDefenderForServersGcp        OfferingType = "DefenderForServersGcp"
@@ -964,6 +1026,7 @@ func PossibleOfferingTypeValues() []OfferingType {
 		OfferingTypeCspmMonitorAws,
 		OfferingTypeCspmMonitorAzureDevOps,
 		OfferingTypeCspmMonitorGcp,
+		OfferingTypeCspmMonitorGitLab,
 		OfferingTypeCspmMonitorGithub,
 		OfferingTypeDefenderCspmAws,
 		OfferingTypeDefenderCspmGcp,
@@ -972,10 +1035,32 @@ func PossibleOfferingTypeValues() []OfferingType {
 		OfferingTypeDefenderForDatabasesAws,
 		OfferingTypeDefenderForDatabasesGcp,
 		OfferingTypeDefenderForDevOpsAzureDevOps,
+		OfferingTypeDefenderForDevOpsGitLab,
 		OfferingTypeDefenderForDevOpsGithub,
 		OfferingTypeDefenderForServersAws,
 		OfferingTypeDefenderForServersGcp,
 		OfferingTypeInformationProtectionAws,
+	}
+}
+
+// OperationResult - The status of the long run operation result of governance rule
+type OperationResult string
+
+const (
+	// OperationResultCanceled - The operation canceled
+	OperationResultCanceled OperationResult = "Canceled"
+	// OperationResultFailed - The operation failed
+	OperationResultFailed OperationResult = "Failed"
+	// OperationResultSucceeded - The operation succeeded
+	OperationResultSucceeded OperationResult = "Succeeded"
+)
+
+// PossibleOperationResultValues returns the possible values for the OperationResult const type.
+func PossibleOperationResultValues() []OperationResult {
+	return []OperationResult{
+		OperationResultCanceled,
+		OperationResultFailed,
+		OperationResultSucceeded,
 	}
 }
 
@@ -1059,9 +1144,9 @@ func PossiblePermissionPropertyValues() []PermissionProperty {
 	}
 }
 
-// PricingTier - The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard,
-// with the standard tier available with a trial period. The standard tier offers advanced
-// security capabilities, while the free tier offers basic security features.
+// PricingTier - The pricing tier value. Microsoft Defender for Cloud is provided in two pricing tiers: free and standard.
+// The standard tier offers advanced security capabilities, while the free tier offers basic
+// security features.
 type PricingTier string
 
 const (
@@ -1500,7 +1585,7 @@ func PossibleScanTriggerTypeValues() []ScanTriggerType {
 	}
 }
 
-// ScanningMode - The scanning mode for the vm scan.
+// ScanningMode - The scanning mode for the VM scan.
 type ScanningMode string
 
 const (
@@ -1511,6 +1596,26 @@ const (
 func PossibleScanningModeValues() []ScanningMode {
 	return []ScanningMode{
 		ScanningModeDefault,
+	}
+}
+
+// ScopeName - The resource scope of the health report
+type ScopeName string
+
+const (
+	ScopeNameClusters        ScopeName = "Clusters"
+	ScopeNameConnectors      ScopeName = "Connectors"
+	ScopeNameUnknown         ScopeName = "Unknown"
+	ScopeNameVirtualMachines ScopeName = "VirtualMachines"
+)
+
+// PossibleScopeNameValues returns the possible values for the ScopeName const type.
+func PossibleScopeNameValues() []ScopeName {
+	return []ScopeName{
+		ScopeNameClusters,
+		ScopeNameConnectors,
+		ScopeNameUnknown,
+		ScopeNameVirtualMachines,
 	}
 }
 
@@ -1728,6 +1833,24 @@ func PossibleStatusValues() []Status {
 	return []Status{
 		StatusInitiated,
 		StatusRevoked,
+	}
+}
+
+// StatusName - The status of the health report
+type StatusName string
+
+const (
+	StatusNameHealthy       StatusName = "Healthy"
+	StatusNameNotApplicable StatusName = "NotApplicable"
+	StatusNameNotHealthy    StatusName = "NotHealthy"
+)
+
+// PossibleStatusNameValues returns the possible values for the StatusName const type.
+func PossibleStatusNameValues() []StatusName {
+	return []StatusName{
+		StatusNameHealthy,
+		StatusNameNotApplicable,
+		StatusNameNotHealthy,
 	}
 }
 

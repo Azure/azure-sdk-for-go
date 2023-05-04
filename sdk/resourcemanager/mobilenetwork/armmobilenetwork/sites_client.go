@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // SitesClient contains the methods for the Sites group.
 // Don't use this type directly, use NewSitesClient() instead.
 type SitesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSitesClient creates a new instance of SitesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SitesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SitesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SitesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,36 +47,38 @@ func NewSitesClient(subscriptionID string, credential azcore.TokenCredential, op
 // BeginCreateOrUpdate - Creates or updates a mobile network site. Must be created in the same location as its parent mobile
 // network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// siteName - The name of the mobile network site.
-// parameters - Parameters supplied to the create or update mobile network site operation.
-// options - SitesClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - siteName - The name of the mobile network site.
+//   - parameters - Parameters supplied to the create or update mobile network site operation.
+//   - options - SitesClientBeginCreateOrUpdateOptions contains the optional parameters for the SitesClient.BeginCreateOrUpdate
+//     method.
 func (client *SitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, parameters Site, options *SitesClientBeginCreateOrUpdateOptions) (*runtime.Poller[SitesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, mobileNetworkName, siteName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SitesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SitesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SitesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SitesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *SitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, parameters Site, options *SitesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, mobileNetworkName, siteName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +107,7 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 		return nil, errors.New("parameter siteName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -130,35 +121,37 @@ func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, reso
 // BeginDelete - Deletes the specified mobile network site. This will also delete any network functions that are a part of
 // this site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// siteName - The name of the mobile network site.
-// options - SitesClientBeginDeleteOptions contains the optional parameters for the SitesClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - siteName - The name of the mobile network site.
+//   - options - SitesClientBeginDeleteOptions contains the optional parameters for the SitesClient.BeginDelete method.
 func (client *SitesClient) BeginDelete(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, options *SitesClientBeginDeleteOptions) (*runtime.Poller[SitesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, mobileNetworkName, siteName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[SitesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SitesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[SitesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[SitesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified mobile network site. This will also delete any network functions that are a part of this
 // site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
 func (client *SitesClient) deleteOperation(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, options *SitesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, mobileNetworkName, siteName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -187,7 +180,7 @@ func (client *SitesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter siteName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -200,17 +193,18 @@ func (client *SitesClient) deleteCreateRequest(ctx context.Context, resourceGrou
 
 // Get - Gets information about the specified mobile network site.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// siteName - The name of the mobile network site.
-// options - SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - siteName - The name of the mobile network site.
+//   - options - SitesClientGetOptions contains the optional parameters for the SitesClient.Get method.
 func (client *SitesClient) Get(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, options *SitesClientGetOptions) (SitesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, mobileNetworkName, siteName, options)
 	if err != nil {
 		return SitesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SitesClientGetResponse{}, err
 	}
@@ -239,7 +233,7 @@ func (client *SitesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter siteName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -260,11 +254,12 @@ func (client *SitesClient) getHandleResponse(resp *http.Response) (SitesClientGe
 }
 
 // NewListByMobileNetworkPager - Lists all sites in the mobile network.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// options - SitesClientListByMobileNetworkOptions contains the optional parameters for the SitesClient.ListByMobileNetwork
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - options - SitesClientListByMobileNetworkOptions contains the optional parameters for the SitesClient.NewListByMobileNetworkPager
+//     method.
 func (client *SitesClient) NewListByMobileNetworkPager(resourceGroupName string, mobileNetworkName string, options *SitesClientListByMobileNetworkOptions) *runtime.Pager[SitesClientListByMobileNetworkResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SitesClientListByMobileNetworkResponse]{
 		More: func(page SitesClientListByMobileNetworkResponse) bool {
@@ -281,7 +276,7 @@ func (client *SitesClient) NewListByMobileNetworkPager(resourceGroupName string,
 			if err != nil {
 				return SitesClientListByMobileNetworkResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SitesClientListByMobileNetworkResponse{}, err
 			}
@@ -308,7 +303,7 @@ func (client *SitesClient) listByMobileNetworkCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter mobileNetworkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{mobileNetworkName}", url.PathEscape(mobileNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -330,18 +325,19 @@ func (client *SitesClient) listByMobileNetworkHandleResponse(resp *http.Response
 
 // UpdateTags - Updates site tags.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-11-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// mobileNetworkName - The name of the mobile network.
-// siteName - The name of the mobile network site.
-// parameters - Parameters supplied to update network site tags.
-// options - SitesClientUpdateTagsOptions contains the optional parameters for the SitesClient.UpdateTags method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - mobileNetworkName - The name of the mobile network.
+//   - siteName - The name of the mobile network site.
+//   - parameters - Parameters supplied to update network site tags.
+//   - options - SitesClientUpdateTagsOptions contains the optional parameters for the SitesClient.UpdateTags method.
 func (client *SitesClient) UpdateTags(ctx context.Context, resourceGroupName string, mobileNetworkName string, siteName string, parameters TagsObject, options *SitesClientUpdateTagsOptions) (SitesClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, mobileNetworkName, siteName, parameters, options)
 	if err != nil {
 		return SitesClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SitesClientUpdateTagsResponse{}, err
 	}
@@ -370,7 +366,7 @@ func (client *SitesClient) updateTagsCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter siteName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{siteName}", url.PathEscape(siteName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

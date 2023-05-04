@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // OperationsClient contains the methods for the Operations group.
 // Don't use this type directly, use NewOperationsClient() instead.
 type OperationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewOperationsClient creates a new instance of OperationsClient with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".OperationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &OperationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // GetOperationResult - Gets the operation result for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// vaultName - The name of the recovery services vault.
-// options - OperationsClientGetOperationResultOptions contains the optional parameters for the OperationsClient.GetOperationResult
-// method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the recovery services vault.
+//   - options - OperationsClientGetOperationResultOptions contains the optional parameters for the OperationsClient.GetOperationResult
+//     method.
 func (client *OperationsClient) GetOperationResult(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *OperationsClientGetOperationResultOptions) (OperationsClientGetOperationResultResponse, error) {
 	req, err := client.getOperationResultCreateRequest(ctx, resourceGroupName, vaultName, operationID, options)
 	if err != nil {
 		return OperationsClientGetOperationResultResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return OperationsClientGetOperationResultResponse{}, err
 	}
@@ -96,12 +86,12 @@ func (client *OperationsClient) getOperationResultCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,9 +107,9 @@ func (client *OperationsClient) getOperationResultHandleResponse(resp *http.Resp
 }
 
 // NewListPager - Returns the list of available operations.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01
-// options - OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+//
+// Generated from API version 2023-01-01
+//   - options - OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 func (client *OperationsClient) NewListPager(options *OperationsClientListOptions) *runtime.Pager[OperationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationsClientListResponse]{
 		More: func(page OperationsClientListResponse) bool {
@@ -136,7 +126,7 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 			if err != nil {
 				return OperationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return OperationsClientListResponse{}, err
 			}
@@ -151,12 +141,12 @@ func (client *OperationsClient) NewListPager(options *OperationsClientListOption
 // listCreateRequest creates the List request.
 func (client *OperationsClient) listCreateRequest(ctx context.Context, options *OperationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.RecoveryServices/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -173,17 +163,18 @@ func (client *OperationsClient) listHandleResponse(resp *http.Response) (Operati
 
 // OperationStatusGet - Gets the operation status for a resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-04-01
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// vaultName - The name of the recovery services vault.
-// options - OperationsClientOperationStatusGetOptions contains the optional parameters for the OperationsClient.OperationStatusGet
-// method.
+//
+// Generated from API version 2023-01-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vaultName - The name of the recovery services vault.
+//   - options - OperationsClientOperationStatusGetOptions contains the optional parameters for the OperationsClient.OperationStatusGet
+//     method.
 func (client *OperationsClient) OperationStatusGet(ctx context.Context, resourceGroupName string, vaultName string, operationID string, options *OperationsClientOperationStatusGetOptions) (OperationsClientOperationStatusGetResponse, error) {
 	req, err := client.operationStatusGetCreateRequest(ctx, resourceGroupName, vaultName, operationID, options)
 	if err != nil {
 		return OperationsClientOperationStatusGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return OperationsClientOperationStatusGetResponse{}, err
 	}
@@ -212,12 +203,12 @@ func (client *OperationsClient) operationStatusGetCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter operationID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-04-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -23,7 +23,7 @@ type ActionClassification interface {
 // Action to be applied.
 type Action struct {
 	// REQUIRED; Action that should be applied.
-	ActionType *ActionType `json:"actionType,omitempty"`
+	ActionType *ActionType
 }
 
 // GetAction implements the ActionClassification interface for type Action.
@@ -32,16 +32,16 @@ func (a *Action) GetAction() *Action { return a }
 // ActionStatus - Action status
 type ActionStatus struct {
 	// Value indicating whether alert is suppressed.
-	IsSuppressed *bool `json:"isSuppressed,omitempty"`
+	IsSuppressed *bool
 }
 
 // AddActionGroups - Add action groups to alert processing rule.
 type AddActionGroups struct {
 	// REQUIRED; List of action group Ids to add to alert processing rule.
-	ActionGroupIDs []*string `json:"actionGroupIds,omitempty"`
+	ActionGroupIDs []*string
 
 	// REQUIRED; Action that should be applied.
-	ActionType *ActionType `json:"actionType,omitempty"`
+	ActionType *ActionType
 }
 
 // GetAction implements the ActionClassification interface for type AddActionGroups.
@@ -54,110 +54,110 @@ func (a *AddActionGroups) GetAction() *Action {
 // Alert - An alert created in alert management service.
 type Alert struct {
 	// Alert property bag
-	Properties *AlertProperties `json:"properties,omitempty"`
+	Properties *AlertProperties
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertModification - Alert Modification details
 type AlertModification struct {
 	// Properties of the alert modification item.
-	Properties *AlertModificationProperties `json:"properties,omitempty"`
+	Properties *AlertModificationProperties
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertModificationItem - Alert modification item.
 type AlertModificationItem struct {
 	// Modification comments
-	Comments *string `json:"comments,omitempty"`
+	Comments *string
 
 	// Description of the modification
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Reason for the modification
-	ModificationEvent *AlertModificationEvent `json:"modificationEvent,omitempty"`
+	ModificationEvent *AlertModificationEvent
 
 	// Modified date and time
-	ModifiedAt *string `json:"modifiedAt,omitempty"`
+	ModifiedAt *string
 
 	// Modified user details (Principal client name)
-	ModifiedBy *string `json:"modifiedBy,omitempty"`
+	ModifiedBy *string
 
 	// New value
-	NewValue *string `json:"newValue,omitempty"`
+	NewValue *string
 
 	// Old value
-	OldValue *string `json:"oldValue,omitempty"`
+	OldValue *string
 }
 
 // AlertModificationProperties - Properties of the alert modification item.
 type AlertModificationProperties struct {
 	// Modification details
-	Modifications []*AlertModificationItem `json:"modifications,omitempty"`
+	Modifications []*AlertModificationItem
 
 	// READ-ONLY; Unique Id of the alert for which the history is being retrieved
-	AlertID *string `json:"alertId,omitempty" azure:"ro"`
+	AlertID *string
 }
 
 // AlertProcessingRule - Alert processing rule object containing target scopes, conditions and scheduling logic.
 type AlertProcessingRule struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Alert processing rule properties.
-	Properties *AlertProcessingRuleProperties `json:"properties,omitempty"`
+	Properties *AlertProcessingRuleProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Alert processing rule system data.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertProcessingRuleProperties - Alert processing rule properties defining scopes, conditions and scheduling logic for alert
 // processing rule.
 type AlertProcessingRuleProperties struct {
 	// REQUIRED; Actions to be applied.
-	Actions []ActionClassification `json:"actions,omitempty"`
+	Actions []ActionClassification
 
 	// REQUIRED; Scopes on which alert processing rule will apply.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 
 	// Conditions on which alerts will be filtered.
-	Conditions []*Condition `json:"conditions,omitempty"`
+	Conditions []*Condition
 
 	// Description of alert processing rule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates if the given alert processing rule is enabled or disabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Scheduling for alert processing rule.
-	Schedule *Schedule `json:"schedule,omitempty"`
+	Schedule *Schedule
 }
 
 // AlertProcessingRulesClientCreateOrUpdateOptions contains the optional parameters for the AlertProcessingRulesClient.CreateOrUpdate
@@ -177,13 +177,13 @@ type AlertProcessingRulesClientGetByNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertProcessingRulesClientListByResourceGroupOptions contains the optional parameters for the AlertProcessingRulesClient.ListByResourceGroup
+// AlertProcessingRulesClientListByResourceGroupOptions contains the optional parameters for the AlertProcessingRulesClient.NewListByResourceGroupPager
 // method.
 type AlertProcessingRulesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertProcessingRulesClientListBySubscriptionOptions contains the optional parameters for the AlertProcessingRulesClient.ListBySubscription
+// AlertProcessingRulesClientListBySubscriptionOptions contains the optional parameters for the AlertProcessingRulesClient.NewListBySubscriptionPager
 // method.
 type AlertProcessingRulesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -197,22 +197,22 @@ type AlertProcessingRulesClientUpdateOptions struct {
 // AlertProcessingRulesList - List of alert processing rules.
 type AlertProcessingRulesList struct {
 	// URL to fetch the next set of alert processing rules.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of alert processing rules.
-	Value []*AlertProcessingRule `json:"value,omitempty"`
+	Value []*AlertProcessingRule
 }
 
 // AlertProperties - Alert property bag
 type AlertProperties struct {
 	// This object contains consistent fields across different monitor services.
-	Essentials *Essentials `json:"essentials,omitempty"`
+	Essentials *Essentials
 
 	// READ-ONLY; Information specific to the monitor service that gives more contextual details about the alert.
-	Context interface{} `json:"context,omitempty" azure:"ro"`
+	Context any
 
 	// READ-ONLY; Config which would be used for displaying the data in portal.
-	EgressConfig interface{} `json:"egressConfig,omitempty" azure:"ro"`
+	EgressConfig any
 }
 
 // AlertsClientChangeStateOptions contains the optional parameters for the AlertsClient.ChangeState method.
@@ -221,7 +221,7 @@ type AlertsClientChangeStateOptions struct {
 	Comment *string
 }
 
-// AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.GetAll method.
+// AlertsClientGetAllOptions contains the optional parameters for the AlertsClient.NewGetAllPager method.
 type AlertsClientGetAllOptions struct {
 	// Filter by specific alert rule. Default value is to select all.
 	AlertRule *string
@@ -310,16 +310,16 @@ type AlertsClientMetaDataOptions struct {
 // AlertsList - List the alerts.
 type AlertsList struct {
 	// URL to fetch the next set of alerts.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of alerts
-	Value []*Alert `json:"value,omitempty"`
+	Value []*Alert
 }
 
 // AlertsMetaData - alert meta data information.
 type AlertsMetaData struct {
 	// alert meta data property bag
-	Properties AlertsMetaDataPropertiesClassification `json:"properties,omitempty"`
+	Properties AlertsMetaDataPropertiesClassification
 }
 
 // AlertsMetaDataPropertiesClassification provides polymorphic access to related types.
@@ -334,7 +334,7 @@ type AlertsMetaDataPropertiesClassification interface {
 // AlertsMetaDataProperties - alert meta data property bag
 type AlertsMetaDataProperties struct {
 	// REQUIRED; Identification of the information to be retrieved by API call
-	MetadataIdentifier *MetadataIdentifier `json:"metadataIdentifier,omitempty"`
+	MetadataIdentifier *MetadataIdentifier
 }
 
 // GetAlertsMetaDataProperties implements the AlertsMetaDataPropertiesClassification interface for type AlertsMetaDataProperties.
@@ -343,70 +343,70 @@ func (a *AlertsMetaDataProperties) GetAlertsMetaDataProperties() *AlertsMetaData
 // AlertsSummary - Summary of alerts based on the input filters and 'groupby' parameters.
 type AlertsSummary struct {
 	// Group the result set.
-	Properties *AlertsSummaryGroup `json:"properties,omitempty"`
+	Properties *AlertsSummaryGroup
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertsSummaryGroup - Group the result set.
 type AlertsSummaryGroup struct {
 	// Name of the field aggregated
-	Groupedby *string `json:"groupedby,omitempty"`
+	Groupedby *string
 
 	// Total count of the smart groups.
-	SmartGroupsCount *int64 `json:"smartGroupsCount,omitempty"`
+	SmartGroupsCount *int64
 
 	// Total count of the result set.
-	Total *int64 `json:"total,omitempty"`
+	Total *int64
 
 	// List of the items
-	Values []*AlertsSummaryGroupItem `json:"values,omitempty"`
+	Values []*AlertsSummaryGroupItem
 }
 
 // AlertsSummaryGroupItem - Alerts summary group item
 type AlertsSummaryGroupItem struct {
 	// Count of the aggregated field
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Name of the field aggregated
-	Groupedby *string `json:"groupedby,omitempty"`
+	Groupedby *string
 
 	// Value of the aggregated field
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// List of the items
-	Values []*AlertsSummaryGroupItem `json:"values,omitempty"`
+	Values []*AlertsSummaryGroupItem
 }
 
 // Condition to trigger an alert processing rule.
 type Condition struct {
 	// Field for a given condition.
-	Field *Field `json:"field,omitempty"`
+	Field *Field
 
 	// Operator for a given condition.
-	Operator *Operator `json:"operator,omitempty"`
+	Operator *Operator
 
 	// List of values to match for a given condition.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // DailyRecurrence - Daily recurrence object.
 type DailyRecurrence struct {
 	// REQUIRED; Specifies when the recurrence should be applied.
-	RecurrenceType *RecurrenceType `json:"recurrenceType,omitempty"`
+	RecurrenceType *RecurrenceType
 
 	// End time for recurrence.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// Start time for recurrence.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 }
 
 // GetRecurrence implements the RecurrenceClassification interface for type DailyRecurrence.
@@ -421,165 +421,165 @@ func (d *DailyRecurrence) GetRecurrence() *Recurrence {
 // ErrorResponse - An error response from the service.
 type ErrorResponse struct {
 	// Details of error response.
-	Error *ErrorResponseBody `json:"error,omitempty"`
+	Error *ErrorResponseBody
 }
 
 // ErrorResponseAutoGenerated - An error response from the service.
 type ErrorResponseAutoGenerated struct {
 	// Details of error response.
-	Error *ErrorResponseBodyAutoGenerated `json:"error,omitempty"`
+	Error *ErrorResponseBodyAutoGenerated
 }
 
 // ErrorResponseAutoGenerated2 - An error response from the service.
 type ErrorResponseAutoGenerated2 struct {
 	// Details of error response.
-	Error *ErrorResponseBodyAutoGenerated2 `json:"error,omitempty"`
+	Error *ErrorResponseBodyAutoGenerated2
 }
 
 // ErrorResponseBody - Details of error response.
 type ErrorResponseBody struct {
 	// Error code, intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// A list of additional details about the error.
-	Details []*ErrorResponseBody `json:"details,omitempty"`
+	Details []*ErrorResponseBody
 
 	// Description of the error, intended for display in user interface.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Target of the particular error, for example name of the property.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ErrorResponseBodyAutoGenerated - Details of error response.
 type ErrorResponseBodyAutoGenerated struct {
 	// Error code, intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// A list of additional details about the error.
-	Details []*ErrorResponseBodyAutoGenerated `json:"details,omitempty"`
+	Details []*ErrorResponseBodyAutoGenerated
 
 	// Description of the error, intended for display in user interface.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Target of the particular error, for example name of the property.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // ErrorResponseBodyAutoGenerated2 - Details of error response.
 type ErrorResponseBodyAutoGenerated2 struct {
 	// Error code, intended to be consumed programmatically.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// A list of additional details about the error.
-	Details []*ErrorResponseBodyAutoGenerated2 `json:"details,omitempty"`
+	Details []*ErrorResponseBodyAutoGenerated2
 
 	// Description of the error, intended for display in user interface.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Target of the particular error, for example name of the property.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // Essentials - This object contains consistent fields across different monitor services.
 type Essentials struct {
 	// Action status
-	ActionStatus *ActionStatus `json:"actionStatus,omitempty"`
+	ActionStatus *ActionStatus
 
 	// Alert description.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Target ARM resource, on which alert got created.
-	TargetResource *string `json:"targetResource,omitempty"`
+	TargetResource *string
 
 	// Resource group of target ARM resource, on which alert got created.
-	TargetResourceGroup *string `json:"targetResourceGroup,omitempty"`
+	TargetResourceGroup *string
 
 	// Name of the target ARM resource name, on which alert got created.
-	TargetResourceName *string `json:"targetResourceName,omitempty"`
+	TargetResourceName *string
 
 	// Resource type of target ARM resource, on which alert got created.
-	TargetResourceType *string `json:"targetResourceType,omitempty"`
+	TargetResourceType *string
 
 	// READ-ONLY; Rule(monitor) which fired alert instance. Depending on the monitor service, this would be ARM id or name of
 	// the rule.
-	AlertRule *string `json:"alertRule,omitempty" azure:"ro"`
+	AlertRule *string
 
 	// READ-ONLY; Alert object state, which can be modified by the user.
-	AlertState *AlertState `json:"alertState,omitempty" azure:"ro"`
+	AlertState *AlertState
 
 	// READ-ONLY; Last modification time(ISO-8601 format) of alert instance.
-	LastModifiedDateTime *time.Time `json:"lastModifiedDateTime,omitempty" azure:"ro"`
+	LastModifiedDateTime *time.Time
 
 	// READ-ONLY; User who last modified the alert, in case of monitor service updates user would be 'system', otherwise name
 	// of the user.
-	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty" azure:"ro"`
+	LastModifiedUserName *string
 
 	// READ-ONLY; Condition of the rule at the monitor service. It represents whether the underlying conditions have crossed the
 	// defined alert rule thresholds.
-	MonitorCondition *MonitorCondition `json:"monitorCondition,omitempty" azure:"ro"`
+	MonitorCondition *MonitorCondition
 
 	// READ-ONLY; Resolved time(ISO-8601 format) of alert instance. This will be updated when monitor service resolves the alert
 	// instance because the rule condition is no longer met.
-	MonitorConditionResolvedDateTime *time.Time `json:"monitorConditionResolvedDateTime,omitempty" azure:"ro"`
+	MonitorConditionResolvedDateTime *time.Time
 
 	// READ-ONLY; Monitor service on which the rule(monitor) is set.
-	MonitorService *MonitorService `json:"monitorService,omitempty" azure:"ro"`
+	MonitorService *MonitorService
 
 	// READ-ONLY; Severity of alert Sev0 being highest and Sev4 being lowest.
-	Severity *Severity `json:"severity,omitempty" azure:"ro"`
+	Severity *Severity
 
 	// READ-ONLY; The type of signal the alert is based on, which could be metrics, logs or activity logs.
-	SignalType *SignalType `json:"signalType,omitempty" azure:"ro"`
+	SignalType *SignalType
 
 	// READ-ONLY; Unique Id of the smart group
-	SmartGroupID *string `json:"smartGroupId,omitempty" azure:"ro"`
+	SmartGroupID *string
 
 	// READ-ONLY; Verbose reason describing the reason why this alert instance is added to a smart group
-	SmartGroupingReason *string `json:"smartGroupingReason,omitempty" azure:"ro"`
+	SmartGroupingReason *string
 
 	// READ-ONLY; Unique Id created by monitor service for each alert instance. This could be used to track the issue at the monitor
 	// service, in case of Nagios, Zabbix, SCOM etc.
-	SourceCreatedID *string `json:"sourceCreatedId,omitempty" azure:"ro"`
+	SourceCreatedID *string
 
 	// READ-ONLY; Creation time(ISO-8601 format) of alert instance.
-	StartDateTime *time.Time `json:"startDateTime,omitempty" azure:"ro"`
+	StartDateTime *time.Time
 }
 
 // ManagedResource - An azure managed resource object.
 type ManagedResource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MonitorServiceDetails - Details of a monitor service
 type MonitorServiceDetails struct {
 	// Monitor service display name
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// Monitor service name
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // MonitorServiceList - Monitor service details
 type MonitorServiceList struct {
 	// REQUIRED; Array of operations
-	Data []*MonitorServiceDetails `json:"data,omitempty"`
+	Data []*MonitorServiceDetails
 
 	// REQUIRED; Identification of the information to be retrieved by API call
-	MetadataIdentifier *MetadataIdentifier `json:"metadataIdentifier,omitempty"`
+	MetadataIdentifier *MetadataIdentifier
 }
 
 // GetAlertsMetaDataProperties implements the AlertsMetaDataPropertiesClassification interface for type MonitorServiceList.
@@ -592,16 +592,16 @@ func (m *MonitorServiceList) GetAlertsMetaDataProperties() *AlertsMetaDataProper
 // MonthlyRecurrence - Monthly recurrence object.
 type MonthlyRecurrence struct {
 	// REQUIRED; Specifies the values for monthly recurrence pattern.
-	DaysOfMonth []*int32 `json:"daysOfMonth,omitempty"`
+	DaysOfMonth []*int32
 
 	// REQUIRED; Specifies when the recurrence should be applied.
-	RecurrenceType *RecurrenceType `json:"recurrenceType,omitempty"`
+	RecurrenceType *RecurrenceType
 
 	// End time for recurrence.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// Start time for recurrence.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 }
 
 // GetRecurrence implements the RecurrenceClassification interface for type MonthlyRecurrence.
@@ -616,31 +616,31 @@ func (m *MonthlyRecurrence) GetRecurrence() *Recurrence {
 // Operation provided by provider
 type Operation struct {
 	// Properties of the operation
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Name of the operation
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Origin of the operation
-	Origin *string `json:"origin,omitempty"`
+	Origin *string
 }
 
 // OperationDisplay - Properties of the operation
 type OperationDisplay struct {
 	// Description of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation name
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Provider name
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource name
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -648,25 +648,25 @@ type OperationsClientListOptions struct {
 // OperationsList - Lists the operations available in the AlertsManagement RP.
 type OperationsList struct {
 	// REQUIRED; Array of operations
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 
 	// URL to fetch the next set of alerts.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // PatchObject - Data contract for patch.
 type PatchObject struct {
 	// Properties supported by patch operation.
-	Properties *PatchProperties `json:"properties,omitempty"`
+	Properties *PatchProperties
 
 	// Tags to be updated.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PatchProperties - Alert processing rule properties supported by patch.
 type PatchProperties struct {
 	// Indicates if the given alert processing rule is enabled or disabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // RecurrenceClassification provides polymorphic access to related types.
@@ -681,13 +681,13 @@ type RecurrenceClassification interface {
 // Recurrence object.
 type Recurrence struct {
 	// REQUIRED; Specifies when the recurrence should be applied.
-	RecurrenceType *RecurrenceType `json:"recurrenceType,omitempty"`
+	RecurrenceType *RecurrenceType
 
 	// End time for recurrence.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// Start time for recurrence.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 }
 
 // GetRecurrence implements the RecurrenceClassification interface for type Recurrence.
@@ -696,7 +696,7 @@ func (r *Recurrence) GetRecurrence() *Recurrence { return r }
 // RemoveAllActionGroups - Indicates if all action groups should be removed.
 type RemoveAllActionGroups struct {
 	// REQUIRED; Action that should be applied.
-	ActionType *ActionType `json:"actionType,omitempty"`
+	ActionType *ActionType
 }
 
 // GetAction implements the ActionClassification interface for type RemoveAllActionGroups.
@@ -709,148 +709,148 @@ func (r *RemoveAllActionGroups) GetAction() *Action {
 // Resource - An azure resource object
 type Resource struct {
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Schedule - Scheduling configuration for a given alert processing rule.
 type Schedule struct {
 	// Scheduling effective from time. Date-Time in ISO-8601 format without timezone suffix.
-	EffectiveFrom *string `json:"effectiveFrom,omitempty"`
+	EffectiveFrom *string
 
 	// Scheduling effective until time. Date-Time in ISO-8601 format without timezone suffix.
-	EffectiveUntil *string `json:"effectiveUntil,omitempty"`
+	EffectiveUntil *string
 
 	// List of recurrences.
-	Recurrences []RecurrenceClassification `json:"recurrences,omitempty"`
+	Recurrences []RecurrenceClassification
 
 	// Scheduling time zone.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // SmartGroup - Set of related alerts grouped together smartly by AMS.
 type SmartGroup struct {
 	// Properties of smart group.
-	Properties *SmartGroupProperties `json:"properties,omitempty"`
+	Properties *SmartGroupProperties
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SmartGroupAggregatedProperty - Aggregated property of each type
 type SmartGroupAggregatedProperty struct {
 	// Total number of items of type.
-	Count *int64 `json:"count,omitempty"`
+	Count *int64
 
 	// Name of the type.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // SmartGroupModification - Alert Modification details
 type SmartGroupModification struct {
 	// Properties of the smartGroup modification item.
-	Properties *SmartGroupModificationProperties `json:"properties,omitempty"`
+	Properties *SmartGroupModificationProperties
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SmartGroupModificationItem - smartGroup modification item.
 type SmartGroupModificationItem struct {
 	// Modification comments
-	Comments *string `json:"comments,omitempty"`
+	Comments *string
 
 	// Description of the modification
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Reason for the modification
-	ModificationEvent *SmartGroupModificationEvent `json:"modificationEvent,omitempty"`
+	ModificationEvent *SmartGroupModificationEvent
 
 	// Modified date and time
-	ModifiedAt *string `json:"modifiedAt,omitempty"`
+	ModifiedAt *string
 
 	// Modified user details (Principal client name)
-	ModifiedBy *string `json:"modifiedBy,omitempty"`
+	ModifiedBy *string
 
 	// New value
-	NewValue *string `json:"newValue,omitempty"`
+	NewValue *string
 
 	// Old value
-	OldValue *string `json:"oldValue,omitempty"`
+	OldValue *string
 }
 
 // SmartGroupModificationProperties - Properties of the smartGroup modification item.
 type SmartGroupModificationProperties struct {
 	// Modification details
-	Modifications []*SmartGroupModificationItem `json:"modifications,omitempty"`
+	Modifications []*SmartGroupModificationItem
 
 	// URL to fetch the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// READ-ONLY; Unique Id of the smartGroup for which the history is being retrieved
-	SmartGroupID *string `json:"smartGroupId,omitempty" azure:"ro"`
+	SmartGroupID *string
 }
 
 // SmartGroupProperties - Properties of smart group.
 type SmartGroupProperties struct {
 	// Summary of alertSeverities in the smart group
-	AlertSeverities []*SmartGroupAggregatedProperty `json:"alertSeverities,omitempty"`
+	AlertSeverities []*SmartGroupAggregatedProperty
 
 	// Summary of alertStates in the smart group
-	AlertStates []*SmartGroupAggregatedProperty `json:"alertStates,omitempty"`
+	AlertStates []*SmartGroupAggregatedProperty
 
 	// Total number of alerts in smart group
-	AlertsCount *int64 `json:"alertsCount,omitempty"`
+	AlertsCount *int64
 
 	// Summary of monitorConditions in the smart group
-	MonitorConditions []*SmartGroupAggregatedProperty `json:"monitorConditions,omitempty"`
+	MonitorConditions []*SmartGroupAggregatedProperty
 
 	// Summary of monitorServices in the smart group
-	MonitorServices []*SmartGroupAggregatedProperty `json:"monitorServices,omitempty"`
+	MonitorServices []*SmartGroupAggregatedProperty
 
 	// The URI to fetch the next page of alerts. Call ListNext() with this URI to fetch the next page alerts.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// Summary of target resource groups in the smart group
-	ResourceGroups []*SmartGroupAggregatedProperty `json:"resourceGroups,omitempty"`
+	ResourceGroups []*SmartGroupAggregatedProperty
 
 	// Summary of target resource types in the smart group
-	ResourceTypes []*SmartGroupAggregatedProperty `json:"resourceTypes,omitempty"`
+	ResourceTypes []*SmartGroupAggregatedProperty
 
 	// Summary of target resources in the smart group
-	Resources []*SmartGroupAggregatedProperty `json:"resources,omitempty"`
+	Resources []*SmartGroupAggregatedProperty
 
 	// READ-ONLY; Last updated time of smart group. Date-Time in ISO-8601 format.
-	LastModifiedDateTime *time.Time `json:"lastModifiedDateTime,omitempty" azure:"ro"`
+	LastModifiedDateTime *time.Time
 
 	// READ-ONLY; Last modified by user name.
-	LastModifiedUserName *string `json:"lastModifiedUserName,omitempty" azure:"ro"`
+	LastModifiedUserName *string
 
 	// READ-ONLY; Severity of smart group is the highest(Sev0 >… > Sev4) severity of all the alerts in the group.
-	Severity *Severity `json:"severity,omitempty" azure:"ro"`
+	Severity *Severity
 
 	// READ-ONLY; Smart group state
-	SmartGroupState *State `json:"smartGroupState,omitempty" azure:"ro"`
+	SmartGroupState *State
 
 	// READ-ONLY; Creation time of smart group. Date-Time in ISO-8601 format.
-	StartDateTime *time.Time `json:"startDateTime,omitempty" azure:"ro"`
+	StartDateTime *time.Time
 }
 
 // SmartGroupsClientChangeStateOptions contains the optional parameters for the SmartGroupsClient.ChangeState method.
@@ -858,7 +858,7 @@ type SmartGroupsClientChangeStateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.GetAll method.
+// SmartGroupsClientGetAllOptions contains the optional parameters for the SmartGroupsClient.NewGetAllPager method.
 type SmartGroupsClientGetAllOptions struct {
 	// Filter by monitor condition which is either 'Fired' or 'Resolved'. Default value is to select all.
 	MonitorCondition *MonitorCondition
@@ -898,46 +898,46 @@ type SmartGroupsClientGetHistoryOptions struct {
 // SmartGroupsList - List the alerts.
 type SmartGroupsList struct {
 	// URL to fetch the next set of alerts.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of alerts
-	Value []*SmartGroup `json:"value,omitempty"`
+	Value []*SmartGroup
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // WeeklyRecurrence - Weekly recurrence object.
 type WeeklyRecurrence struct {
 	// REQUIRED; Specifies the values for weekly recurrence pattern.
-	DaysOfWeek []*DaysOfWeek `json:"daysOfWeek,omitempty"`
+	DaysOfWeek []*DaysOfWeek
 
 	// REQUIRED; Specifies when the recurrence should be applied.
-	RecurrenceType *RecurrenceType `json:"recurrenceType,omitempty"`
+	RecurrenceType *RecurrenceType
 
 	// End time for recurrence.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// Start time for recurrence.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 }
 
 // GetRecurrence implements the RecurrenceClassification interface for type WeeklyRecurrence.

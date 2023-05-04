@@ -4,15 +4,12 @@
 package azservicebus_test
 
 import (
-	"context"
 	"fmt"
-	"net"
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus"
-	"nhooyr.io/websocket"
 )
 
 func ExampleNewClient() {
@@ -39,27 +36,6 @@ func ExampleNewClientFromConnectionString() {
 	// the `NewClient` function instead.
 
 	client, err = azservicebus.NewClientFromConnectionString(connectionString, nil)
-
-	if err != nil {
-		panic(err)
-	}
-}
-
-func ExampleNewClient_usingWebsockets() {
-	// NOTE: If you'd like to authenticate via Azure Active Directory look at
-	// the `NewClient` function instead.
-	client, err = azservicebus.NewClientFromConnectionString(connectionString, &azservicebus.ClientOptions{
-		NewWebSocketConn: func(ctx context.Context, args azservicebus.NewWebSocketConnArgs) (net.Conn, error) {
-			opts := &websocket.DialOptions{Subprotocols: []string{"amqp"}}
-			wssConn, _, err := websocket.Dial(ctx, args.Host, opts)
-
-			if err != nil {
-				return nil, err
-			}
-
-			return websocket.NetConn(context.Background(), wssConn, websocket.MessageBinary), nil
-		},
-	})
 
 	if err != nil {
 		panic(err)

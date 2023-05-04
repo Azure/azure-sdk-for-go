@@ -7,16 +7,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/uuid"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/amqpwrap"
-	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/exported"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azeventhubs/internal/go-amqp"
 )
 
@@ -38,12 +35,13 @@ type (
 		sessionID     *string
 		id            string
 
-		responseMu              sync.Mutex
-		startResponseRouterOnce *sync.Once
-		responseMap             map[string]chan rpcResponse
-		rpcLinkCtx              context.Context
-		rpcLinkCtxCancel        context.CancelFunc
-		broadcastErr            error // the error that caused the responseMap to be nil'd
+		responseMu           sync.Mutex
+		responseRouterClosed chan struct{}
+
+		responseMap      map[string]chan rpcResponse
+		rpcLinkCtx       context.Context
+		rpcLinkCtxCancel context.CancelFunc
+		broadcastErr     error // the error that caused the responseMap to be nil'd
 
 		logEvent azlog.Event
 
@@ -58,14 +56,6 @@ type (
 		message *amqp.Message
 		err     error
 	}
-)
-
-// Response codes that come back over the "RPC" style links like cbs or management.
-const (
-	// RPCResponseCodeLockLost comes back if you lose a message lock _or_ a session lock.
-	// (NOTE: this is the one HTTP code that doesn't make intuitive sense. For all others I've just
-	// used the HTTP status code instead.
-	RPCResponseCodeLockLost = http.StatusGone
 )
 
 // RPCError is an error from an RPCLink.
@@ -92,16 +82,8 @@ type RPCLinkArgs struct {
 	LogEvent azlog.Event
 }
 
-func closeOrLog(name string, closeable interface {
-	Close(ctx context.Context) error
-}) {
-	if err := closeable.Close(context.Background()); err != nil {
-		log.Writef(exported.EventAuth, "Failed closing %s for RPC Link: %s", name, err.Error())
-	}
-}
-
 // NewRPCLink will build a new request response link
-func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
+func NewRPCLink(ctx context.Context, args RPCLinkArgs) (amqpwrap.RPCLink, error) {
 	session, err := args.Client.NewSession(ctx, nil)
 
 	if err != nil {
@@ -110,7 +92,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 
 	linkID, err := uuid.New()
 	if err != nil {
-		closeOrLog("session", session)
+		_ = session.Close(ctx)
 		return nil, err
 	}
 
@@ -120,10 +102,10 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 		clientAddress: strings.Replace("$", "", args.Address, -1) + replyPostfix + id,
 		id:            id,
 
-		uuidNewV4:               uuid.New,
-		responseMap:             map[string]chan rpcResponse{},
-		startResponseRouterOnce: &sync.Once{},
-		logEvent:                args.LogEvent,
+		uuidNewV4:            uuid.New,
+		responseMap:          map[string]chan rpcResponse{},
+		responseRouterClosed: make(chan struct{}),
+		logEvent:             args.LogEvent,
 	}
 
 	sender, err := session.NewSender(
@@ -132,7 +114,7 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 		nil,
 	)
 	if err != nil {
-		closeOrLog("session", session)
+		_ = session.Close(ctx)
 		return nil, err
 	}
 
@@ -145,16 +127,15 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 		const name = "com.microsoft:session-filter"
 		const code = uint64(0x00000137000000C)
 		if link.sessionID == nil {
-			receiverOpts.Filters = append(receiverOpts.Filters, amqp.LinkFilterSource(name, code, nil))
+			receiverOpts.Filters = append(receiverOpts.Filters, amqp.NewLinkFilter(name, code, nil))
 		} else {
-			receiverOpts.Filters = append(receiverOpts.Filters, amqp.LinkFilterSource(name, code, link.sessionID))
+			receiverOpts.Filters = append(receiverOpts.Filters, amqp.NewLinkFilter(name, code, link.sessionID))
 		}
 	}
 
 	receiver, err := session.NewReceiver(ctx, args.Address, receiverOpts)
 	if err != nil {
-		closeOrLog("sender", sender)
-		closeOrLog("session", session)
+		_ = session.Close(ctx)
 		return nil, err
 	}
 
@@ -162,19 +143,22 @@ func NewRPCLink(ctx context.Context, args RPCLinkArgs) (*rpcLink, error) {
 	link.receiver = receiver
 	link.rpcLinkCtx, link.rpcLinkCtxCancel = context.WithCancel(context.Background())
 
+	go link.responseRouter()
+
 	return link, nil
 }
 
 const responseRouterShutdownMessage = "Response router has shut down"
 
-// startResponseRouter is responsible for taking any messages received on the 'response'
+// responseRouter is responsible for taking any messages received on the 'response'
 // link and forwarding it to the proper channel. The channel is being select'd by the
 // original `RPC` call.
-func (l *rpcLink) startResponseRouter() {
+func (l *rpcLink) responseRouter() {
 	defer azlog.Writef(l.logEvent, responseRouterShutdownMessage)
+	defer close(l.responseRouterClosed)
 
 	for {
-		res, err := l.receiver.Receive(l.rpcLinkCtx)
+		res, err := l.receiver.Receive(l.rpcLinkCtx, nil)
 
 		if err != nil {
 			// if the link or connection has a malfunction that would require it to restart then
@@ -219,10 +203,6 @@ func (l *rpcLink) startResponseRouter() {
 
 // RPC sends a request and waits on a response for that request
 func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResponse, error) {
-	l.startResponseRouterOnce.Do(func() {
-		go l.startResponseRouter()
-	})
-
 	copiedMessage, messageID, err := addMessageID(msg, l.uuidNewV4)
 
 	if err != nil {
@@ -237,7 +217,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 	msg.Properties.ReplyTo = &l.clientAddress
 
 	if msg.ApplicationProperties == nil {
-		msg.ApplicationProperties = make(map[string]interface{})
+		msg.ApplicationProperties = make(map[string]any)
 	}
 
 	if _, ok := msg.ApplicationProperties["server-timeout"]; !ok {
@@ -252,7 +232,7 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 		return nil, l.broadcastErr
 	}
 
-	err = l.sender.Send(ctx, msg)
+	err = l.sender.Send(ctx, msg, nil)
 
 	if err != nil {
 		l.deleteChannelFromMap(messageID)
@@ -326,38 +306,15 @@ func (l *rpcLink) RPC(ctx context.Context, msg *amqp.Message) (*amqpwrap.RPCResp
 func (l *rpcLink) Close(ctx context.Context) error {
 	l.rpcLinkCtxCancel()
 
-	if err := l.closeReceiver(ctx); err != nil {
-		_ = l.closeSender(ctx)
-		_ = l.closeSession(ctx)
-		return err
+	select {
+	case <-l.responseRouterClosed:
+	case <-ctx.Done():
 	}
 
-	if err := l.closeSender(ctx); err != nil {
-		_ = l.closeSession(ctx)
-		return err
-	}
-
-	return l.closeSession(ctx)
-}
-
-func (l *rpcLink) closeReceiver(ctx context.Context) error {
-	if l.receiver != nil {
-		return l.receiver.Close(ctx)
-	}
-	return nil
-}
-
-func (l *rpcLink) closeSender(ctx context.Context) error {
-	if l.sender != nil {
-		return l.sender.Close(ctx)
-	}
-	return nil
-}
-
-func (l *rpcLink) closeSession(ctx context.Context) error {
 	if l.session != nil {
 		return l.session.Close(ctx)
 	}
+
 	return nil
 }
 

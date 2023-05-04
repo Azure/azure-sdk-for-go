@@ -14,46 +14,46 @@ import "time"
 // Container - A FluidRelay Container.
 type Container struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The resource-specific properties for this resource.
-	Properties *ContainerProperties `json:"properties,omitempty" azure:"ro"`
+	Properties *ContainerProperties
 
 	// READ-ONLY; System meta data for this resource, including creation and modification information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ContainerList - Paged response
 type ContainerList struct {
 	// A sequence of FluidRelay containers.
-	Value []*Container `json:"value,omitempty"`
+	Value []*Container
 
 	// READ-ONLY; A link to the next page of results, if any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ContainerProperties - The properties of a Fluid Relay Container resource.
 type ContainerProperties struct {
 	// READ-ONLY; The creation time of this resource
-	CreationTime *time.Time `json:"creationTime,omitempty" azure:"ro"`
+	CreationTime *time.Time
 
 	// READ-ONLY; The frsContainerId for this container
-	FrsContainerID *string `json:"frsContainerId,omitempty" azure:"ro"`
+	FrsContainerID *string
 
 	// READ-ONLY; The Fluid tenantId for this container
-	FrsTenantID *string `json:"frsTenantId,omitempty" azure:"ro"`
+	FrsTenantID *string
 
 	// READ-ONLY; Last time when user access this resource
-	LastAccessTime *time.Time `json:"lastAccessTime,omitempty" azure:"ro"`
+	LastAccessTime *time.Time
 
 	// READ-ONLY; Provision states for FluidRelay RP
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ContainersClientDeleteOptions contains the optional parameters for the ContainersClient.Delete method.
@@ -66,7 +66,7 @@ type ContainersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ContainersClientListByFluidRelayServersOptions contains the optional parameters for the ContainersClient.ListByFluidRelayServers
+// ContainersClientListByFluidRelayServersOptions contains the optional parameters for the ContainersClient.NewListByFluidRelayServersPager
 // method.
 type ContainersClientListByFluidRelayServersOptions struct {
 	// placeholder for future optional parameters
@@ -75,131 +75,131 @@ type ContainersClientListByFluidRelayServersOptions struct {
 // CustomerManagedKeyEncryptionProperties - All Customer-managed key encryption properties for the resource.
 type CustomerManagedKeyEncryptionProperties struct {
 	// All identity configuration for Customer-managed key settings defining which identity should be used to auth to Key Vault.
-	KeyEncryptionKeyIdentity *CustomerManagedKeyEncryptionPropertiesKeyEncryptionKeyIdentity `json:"keyEncryptionKeyIdentity,omitempty"`
+	KeyEncryptionKeyIdentity *CustomerManagedKeyEncryptionPropertiesKeyEncryptionKeyIdentity
 
 	// key encryption key Url, with or without a version. Ex: https://contosovault.vault.azure.net/keys/contosokek/562a4bb76b524a1493a6afe8e536ee78
 	// or https://contosovault.vault.azure.net/keys/contosokek.
 	// Key auto rotation is enabled by providing a key uri without version. Otherwise, customer is responsible for rotating the
 	// key. The keyEncryptionKeyIdentity(either SystemAssigned or UserAssigned) should
 	// have permission to access this key url.
-	KeyEncryptionKeyURL *string `json:"keyEncryptionKeyUrl,omitempty"`
+	KeyEncryptionKeyURL *string
 }
 
 // CustomerManagedKeyEncryptionPropertiesKeyEncryptionKeyIdentity - All identity configuration for Customer-managed key settings
 // defining which identity should be used to auth to Key Vault.
 type CustomerManagedKeyEncryptionPropertiesKeyEncryptionKeyIdentity struct {
 	// Values can be SystemAssigned or UserAssigned
-	IdentityType *CmkIdentityType `json:"identityType,omitempty"`
+	IdentityType *CmkIdentityType
 
 	// user assigned identity to use for accessing key encryption key Url. Ex: /subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/
 	// /providers/Microsoft.ManagedIdentity/userAssignedIdentities/myId. Mutually exclusive with identityType systemAssignedIdentity.
-	UserAssignedIdentityResourceID *string `json:"userAssignedIdentityResourceId,omitempty"`
+	UserAssignedIdentityResourceID *string
 }
 
 // EncryptionProperties - All encryption configuration for a resource.
 type EncryptionProperties struct {
 	// All Customer-managed key encryption properties for the resource.
-	CustomerManagedKeyEncryption *CustomerManagedKeyEncryptionProperties `json:"customerManagedKeyEncryption,omitempty"`
+	CustomerManagedKeyEncryption *CustomerManagedKeyEncryptionProperties
 }
 
 // Endpoints - The Fluid Relay endpoints for this server
 type Endpoints struct {
 	// READ-ONLY; The Fluid Relay Orderer endpoints.
-	OrdererEndpoints []*string `json:"ordererEndpoints,omitempty" azure:"ro"`
+	OrdererEndpoints []*string
 
 	// READ-ONLY; The Fluid Relay service endpoints.
-	ServiceEndpoints []*string `json:"serviceEndpoints,omitempty" azure:"ro"`
+	ServiceEndpoints []*string
 
 	// READ-ONLY; The Fluid Relay storage endpoints.
-	StorageEndpoints []*string `json:"storageEndpoints,omitempty" azure:"ro"`
+	StorageEndpoints []*string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // Identity for the resource.
 type Identity struct {
 	// The identity type.
-	Type *ResourceIdentityType `json:"type,omitempty"`
+	Type *ResourceIdentityType
 
 	// The list of user identities associated with the resource.
-	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentitiesValue
 
 	// READ-ONLY; The principal ID of resource identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of resource.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // OperationDisplay - The object that represents the operation.
 type OperationDisplay struct {
 	// Description of the operation, e.g., 'Write confluent'.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type, e.g., read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.FluidRelay
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Type on which the operation is performed, e.g., 'servers'.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of GET request to list FluidRelay operations.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of FluidRelay operations supported by the Microsoft.FluidRelay provider.
-	Value []*OperationResult `json:"value,omitempty"`
+	Value []*OperationResult
 }
 
 // OperationResult - A FluidRelay REST API operation.
 type OperationResult struct {
 	// The object that represents the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Indicates whether the operation is a data action
-	IsDataAction *bool `json:"isDataAction,omitempty"`
+	IsDataAction *bool
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -208,115 +208,115 @@ type OperationsClientListOptions struct {
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RegenerateKeyRequest - Specifies which key should be generated.
 type RegenerateKeyRequest struct {
 	// REQUIRED; The key to regenerate.
-	KeyName *KeyName `json:"keyName,omitempty"`
+	KeyName *KeyName
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Server - A FluidRelay Server.
 type Server struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The type of identity used for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The resource-specific properties for this resource.
-	Properties *ServerProperties `json:"properties,omitempty"`
+	Properties *ServerProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; System meta data for this resource, including creation and modification information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServerKeys - The set of available keys for this server.
 type ServerKeys struct {
 	// READ-ONLY; The primary key for this server
-	Key1 *string `json:"key1,omitempty" azure:"ro"`
+	Key1 *string
 
 	// READ-ONLY; The secondary key for this server
-	Key2 *string `json:"key2,omitempty" azure:"ro"`
+	Key2 *string
 }
 
 // ServerList - Paged response
 type ServerList struct {
 	// REQUIRED; A sequence of FluidRelay servers.
-	Value []*Server `json:"value,omitempty"`
+	Value []*Server
 
 	// A link to the next page of results, if any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // ServerProperties - The properties of a Fluid Relay Service resource.
 type ServerProperties struct {
 	// All encryption configuration for a resource.
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+	Encryption *EncryptionProperties
 
 	// Provision states for FluidRelay RP
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty"`
+	ProvisioningState *ProvisioningState
 
 	// Sku of the storage associated with the resource
-	Storagesku *StorageSKU `json:"storagesku,omitempty"`
+	Storagesku *StorageSKU
 
 	// READ-ONLY; The Fluid Relay Service endpoints for this server.
-	FluidRelayEndpoints *Endpoints `json:"fluidRelayEndpoints,omitempty" azure:"ro"`
+	FluidRelayEndpoints *Endpoints
 
 	// READ-ONLY; The Fluid tenantId for this server
-	FrsTenantID *string `json:"frsTenantId,omitempty" azure:"ro"`
+	FrsTenantID *string
 }
 
 // ServerUpdate - The updatable properties of a Fluid Relay server
 type ServerUpdate struct {
 	// The type of identity used for the resource.
-	Identity *Identity `json:"identity,omitempty"`
+	Identity *Identity
 
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The resource-specific properties that can be updated for this resource.
-	Properties *ServerUpdateProperties `json:"properties,omitempty"`
+	Properties *ServerUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ServerUpdateProperties - The properties that can be provided when updating FluidRelayServer resource
 type ServerUpdateProperties struct {
 	// All encryption configuration for a resource.
-	Encryption *EncryptionProperties `json:"encryption,omitempty"`
+	Encryption *EncryptionProperties
 }
 
 // ServersClientCreateOrUpdateOptions contains the optional parameters for the ServersClient.CreateOrUpdate method.
@@ -334,12 +334,14 @@ type ServersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.ListByResourceGroup method.
+// ServersClientListByResourceGroupOptions contains the optional parameters for the ServersClient.NewListByResourceGroupPager
+// method.
 type ServersClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServersClientListBySubscriptionOptions contains the optional parameters for the ServersClient.ListBySubscription method.
+// ServersClientListBySubscriptionOptions contains the optional parameters for the ServersClient.NewListBySubscriptionPager
+// method.
 type ServersClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -362,47 +364,47 @@ type ServersClientUpdateOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 type UserAssignedIdentitiesValue struct {
 	// READ-ONLY; The client id of user assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal id of user assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }

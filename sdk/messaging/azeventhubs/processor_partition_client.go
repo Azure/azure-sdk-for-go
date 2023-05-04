@@ -5,27 +5,28 @@ package azeventhubs
 
 import "context"
 
-// ProcessorPartitionClient allows you to receive events, similar to a PartitionClient, with
-// integration into a checkpoint store for tracking progress.
+// ProcessorPartitionClient allows you to receive events, similar to a [PartitionClient], with a
+// checkpoint store for tracking progress.
 //
-// This type is instantiated from [Processor.NextPartitionClient], which handles dynamic load balancing.
+// This type is instantiated from [Processor.NextPartitionClient], which handles load balancing
+// of partition ownership between multiple [Processor] instances.
 //
-// See [example_processor_test.go] for an example of typical usage.
+// See [example_consuming_with_checkpoints_test.go] for an example.
 //
 // NOTE: If you do NOT want to use dynamic load balancing, and would prefer to track state and ownership
-// manually, use the [ConsumerClient] type instead.
+// manually, use the [ConsumerClient] instead.
 //
-// [example_processor_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_processor_test.go
+// [example_consuming_with_checkpoints_test.go]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/messaging/azeventhubs/example_consuming_with_checkpoints_test.go
 type ProcessorPartitionClient struct {
 	partitionID           string
-	innerClient           *PartitionClient // *azeventhubs.PartitionClient
+	innerClient           *PartitionClient
 	checkpointStore       CheckpointStore
 	cleanupFn             func()
 	consumerClientDetails consumerClientDetails
 }
 
-// ReceiveEvents receives events until 'count' events have been received or the context has
-// expired or been cancelled.
+// ReceiveEvents receives events until 'count' events have been received or the context
+// has been cancelled.
 //
 // See [PartitionClient.ReceiveEvents] for more information, including troubleshooting.
 func (c *ProcessorPartitionClient) ReceiveEvents(ctx context.Context, count int, options *ReceiveEventsOptions) ([]*ReceivedEventData, error) {

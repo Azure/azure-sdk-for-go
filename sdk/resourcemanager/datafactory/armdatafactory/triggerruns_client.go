@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // TriggerRunsClient contains the methods for the TriggerRuns group.
 // Don't use this type directly, use NewTriggerRunsClient() instead.
 type TriggerRunsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTriggerRunsClient creates a new instance of TriggerRunsClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTriggerRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TriggerRunsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TriggerRunsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TriggerRunsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Cancel - Cancel a single trigger instance by runId.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// runID - The pipeline run identifier.
-// options - TriggerRunsClientCancelOptions contains the optional parameters for the TriggerRunsClient.Cancel method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - runID - The pipeline run identifier.
+//   - options - TriggerRunsClientCancelOptions contains the optional parameters for the TriggerRunsClient.Cancel method.
 func (client *TriggerRunsClient) Cancel(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsClientCancelOptions) (TriggerRunsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, factoryName, triggerName, runID, options)
 	if err != nil {
 		return TriggerRunsClientCancelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TriggerRunsClientCancelResponse{}, err
 	}
@@ -101,7 +91,7 @@ func (client *TriggerRunsClient) cancelCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -114,18 +104,19 @@ func (client *TriggerRunsClient) cancelCreateRequest(ctx context.Context, resour
 
 // QueryByFactory - Query trigger runs.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// filterParameters - Parameters to filter the pipeline run.
-// options - TriggerRunsClientQueryByFactoryOptions contains the optional parameters for the TriggerRunsClient.QueryByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - filterParameters - Parameters to filter the pipeline run.
+//   - options - TriggerRunsClientQueryByFactoryOptions contains the optional parameters for the TriggerRunsClient.QueryByFactory
+//     method.
 func (client *TriggerRunsClient) QueryByFactory(ctx context.Context, resourceGroupName string, factoryName string, filterParameters RunFilterParameters, options *TriggerRunsClientQueryByFactoryOptions) (TriggerRunsClientQueryByFactoryResponse, error) {
 	req, err := client.queryByFactoryCreateRequest(ctx, resourceGroupName, factoryName, filterParameters, options)
 	if err != nil {
 		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TriggerRunsClientQueryByFactoryResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *TriggerRunsClient) queryByFactoryCreateRequest(ctx context.Context
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,18 +163,19 @@ func (client *TriggerRunsClient) queryByFactoryHandleResponse(resp *http.Respons
 
 // Rerun - Rerun single trigger instance by runId.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// triggerName - The trigger name.
-// runID - The pipeline run identifier.
-// options - TriggerRunsClientRerunOptions contains the optional parameters for the TriggerRunsClient.Rerun method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - triggerName - The trigger name.
+//   - runID - The pipeline run identifier.
+//   - options - TriggerRunsClientRerunOptions contains the optional parameters for the TriggerRunsClient.Rerun method.
 func (client *TriggerRunsClient) Rerun(ctx context.Context, resourceGroupName string, factoryName string, triggerName string, runID string, options *TriggerRunsClientRerunOptions) (TriggerRunsClientRerunResponse, error) {
 	req, err := client.rerunCreateRequest(ctx, resourceGroupName, factoryName, triggerName, runID, options)
 	if err != nil {
 		return TriggerRunsClientRerunResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TriggerRunsClientRerunResponse{}, err
 	}
@@ -216,7 +208,7 @@ func (client *TriggerRunsClient) rerunCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

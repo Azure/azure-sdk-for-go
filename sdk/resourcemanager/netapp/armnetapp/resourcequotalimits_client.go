@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,39 @@ import (
 // ResourceQuotaLimitsClient contains the methods for the NetAppResourceQuotaLimits group.
 // Don't use this type directly, use NewResourceQuotaLimitsClient() instead.
 type ResourceQuotaLimitsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewResourceQuotaLimitsClient creates a new instance of ResourceQuotaLimitsClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewResourceQuotaLimitsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceQuotaLimitsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ResourceQuotaLimitsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ResourceQuotaLimitsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get the default and current subscription quota limit
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-05-01
-// location - The location
-// quotaLimitName - The name of the Quota Limit
-// options - ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - location - The name of Azure region.
+//   - quotaLimitName - The name of the Quota Limit
+//   - options - ResourceQuotaLimitsClientGetOptions contains the optional parameters for the ResourceQuotaLimitsClient.Get method.
 func (client *ResourceQuotaLimitsClient) Get(ctx context.Context, location string, quotaLimitName string, options *ResourceQuotaLimitsClientGetOptions) (ResourceQuotaLimitsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, quotaLimitName, options)
 	if err != nil {
 		return ResourceQuotaLimitsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ResourceQuotaLimitsClientGetResponse{}, err
 	}
@@ -92,12 +81,12 @@ func (client *ResourceQuotaLimitsClient) getCreateRequest(ctx context.Context, l
 		return nil, errors.New("parameter quotaLimitName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{quotaLimitName}", url.PathEscape(quotaLimitName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -113,10 +102,11 @@ func (client *ResourceQuotaLimitsClient) getHandleResponse(resp *http.Response) 
 }
 
 // NewListPager - Get the default and current limits for quotas
-// Generated from API version 2022-05-01
-// location - The location
-// options - ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - The name of Azure region.
+//   - options - ResourceQuotaLimitsClientListOptions contains the optional parameters for the ResourceQuotaLimitsClient.NewListPager
+//     method.
 func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *ResourceQuotaLimitsClientListOptions) *runtime.Pager[ResourceQuotaLimitsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ResourceQuotaLimitsClientListResponse]{
 		More: func(page ResourceQuotaLimitsClientListResponse) bool {
@@ -127,7 +117,7 @@ func (client *ResourceQuotaLimitsClient) NewListPager(location string, options *
 			if err != nil {
 				return ResourceQuotaLimitsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ResourceQuotaLimitsClientListResponse{}, err
 			}
@@ -150,12 +140,12 @@ func (client *ResourceQuotaLimitsClient) listCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-05-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

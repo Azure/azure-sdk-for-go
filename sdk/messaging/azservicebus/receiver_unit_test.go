@@ -27,7 +27,8 @@ func TestReceiver_ReceiveMessages_AMQPLinksFailure(t *testing.T) {
 		amqpLinks:   fakeAMQPLinks,
 		receiveMode: ReceiveModePeekLock,
 		// TODO: need to make this test rely less on stubbing.
-		cancelReleaser: &atomic.Value{},
+		cancelReleaser:    &atomic.Value{},
+		maxAllowedCredits: defaultLinkRxBuffer,
 	}
 
 	receiver.cancelReleaser.Store(emptyCancelFn)
@@ -63,7 +64,8 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 			amqpLinks: &internal.FakeAMQPLinks{
 				Receiver: &internal.FakeAMQPReceiver{},
 			},
-			cancelReleaser: &atomic.Value{},
+			cancelReleaser:    &atomic.Value{},
+			maxAllowedCredits: defaultLinkRxBuffer,
 		}
 
 		r.cancelReleaser.Store(emptyCancelFn)
@@ -89,7 +91,8 @@ func TestReceiverCancellationUnitTests(t *testing.T) {
 					},
 				},
 			},
-			cancelReleaser: &atomic.Value{},
+			cancelReleaser:    &atomic.Value{},
+			maxAllowedCredits: defaultLinkRxBuffer,
 		}
 
 		r.cancelReleaser.Store(emptyCancelFn)
@@ -166,7 +169,7 @@ func TestReceiver_releaserFunc(t *testing.T) {
 		},
 	}
 
-	logsFn := test.CaptureLogsForTest()
+	logsFn := test.CaptureLogsForTest(false)
 
 	releaserFn := receiver.newReleaserFunc(&amqpReceiver)
 	releaserFn()
@@ -180,9 +183,11 @@ func TestReceiver_releaserFunc(t *testing.T) {
 	<-receiverClosed
 	t.Logf("Receiver has closed")
 
+	logs := logsFn()
+
 	require.Contains(t,
-		logsFn(),
-		fmt.Sprintf("[azsb.Receiver] [fakelink] Message releaser pausing. Released %d messages", successfulReleases),
+		logs,
+		fmt.Sprintf("[azsb.Receiver] [prefix] Message releaser pausing. Released %d messages", successfulReleases),
 	)
 }
 
@@ -198,18 +203,18 @@ func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 
 	amqpReceiver.ReceiveFn = func(ctx context.Context) (*amqp.Message, error) {
 		if amqpReceiver.ReceiveCalled > 2 {
-			return nil, amqp.ErrLinkClosed
+			return nil, &amqp.LinkError{}
 		}
 
 		// This is one of the few error types classified as RecoveryKindNone
 		// in the releaser this means we'll just retry since the link is still
 		// considered good at this point.
 		return nil, &amqp.Error{
-			Condition: amqp.ErrorCondition("com.microsoft:server-busy"),
+			Condition: amqp.ErrCond("com.microsoft:server-busy"),
 		}
 	}
 
-	logsFn := test.CaptureLogsForTest()
+	logsFn := test.CaptureLogsForTest(false)
 
 	releaserFn := receiver.newReleaserFunc(&amqpReceiver)
 	releaserFn()
@@ -221,7 +226,7 @@ func TestReceiver_releaserFunc_errorOnFirstMessage(t *testing.T) {
 
 	require.Contains(t,
 		logsFn(),
-		fmt.Sprintf("[azsb.Receiver] [fakelink] Message releaser stopping because of link failure. Released 0 messages. Will start again after next receive: %s", amqp.ErrLinkClosed))
+		fmt.Sprintf("[azsb.Receiver] Message releaser stopping because of link failure. Released 0 messages. Will start again after next receive: %s", &amqp.LinkError{}))
 }
 
 func TestReceiver_releaserFunc_receiveAndDeleteIsNoop(t *testing.T) {
@@ -254,7 +259,7 @@ func TestReceiver_releaserFunc_receiveAndDeleteIsNoop(t *testing.T) {
 }
 
 func TestReceiver_fetchMessages_FirstMessageFailure(t *testing.T) {
-	errors := []error{amqp.ErrLinkClosed, context.Canceled}
+	errors := []error{&amqp.LinkError{}, context.Canceled}
 
 	for _, err := range errors {
 		t.Run("error: "+err.Error(), func(t *testing.T) {
@@ -270,7 +275,7 @@ func TestReceiver_fetchMessages_FirstMessageFailure(t *testing.T) {
 				}{
 					{
 						M: nil,
-						E: amqp.ErrLinkClosed,
+						E: &amqp.LinkError{},
 					},
 				},
 				PrefetchedResults: []*amqp.Message{
@@ -286,7 +291,8 @@ func TestReceiver_fetchMessages_FirstMessageFailure(t *testing.T) {
 			defer cancel()
 
 			res := receiver.fetchMessages(ctx, amqpReceiver, 3, time.Hour)
-			require.ErrorIs(t, res.Error, amqp.ErrLinkClosed)
+			var linkErr *amqp.LinkError
+			require.ErrorAs(t, res.Error, &linkErr)
 
 			require.Equal(t, []*amqp.Message{
 				{Data: [][]byte{[]byte(("prefetched message 1"))}},

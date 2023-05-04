@@ -2,3 +2,5 @@ stress
 stress.exe
 logs
 generatedValues.yaml
+deploy-test-*.ps1
+*.log

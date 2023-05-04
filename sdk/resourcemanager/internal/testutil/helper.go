@@ -22,6 +22,7 @@ import (
 )
 
 // GetEnv will return the os env variable and fallback to the given string if env variable not exist.
+// Deprecated: use github.com/Azure/azure-sdk-for-go/sdk/internal/recording.GetEnvVariable instead.
 func GetEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
 		return value

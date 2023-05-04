@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,55 +24,43 @@ import (
 // RecoveryPointsClient contains the methods for the RecoveryPoints group.
 // Don't use this type directly, use NewRecoveryPointsClient() instead.
 type RecoveryPointsClient struct {
-	host              string
-	resourceName      string
-	resourceGroupName string
-	subscriptionID    string
-	pl                runtime.Pipeline
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewRecoveryPointsClient creates a new instance of RecoveryPointsClient with the specified values.
-// resourceName - The name of the recovery services vault.
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
-func NewRecoveryPointsClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
+func NewRecoveryPointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointsClient, error) {
+	cl, err := arm.NewClient(moduleName+".RecoveryPointsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RecoveryPointsClient{
-		resourceName:      resourceName,
-		resourceGroupName: resourceGroupName,
-		subscriptionID:    subscriptionID,
-		host:              ep,
-		pl:                pl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get the details of specified recovery point.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// fabricName - The fabric name.
-// protectionContainerName - The protection container name.
-// replicatedProtectedItemName - The replication protected item name.
-// recoveryPointName - The recovery point name.
-// options - RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
-func (client *RecoveryPointsClient) Get(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string, options *RecoveryPointsClientGetOptions) (RecoveryPointsClientGetResponse, error) {
-	req, err := client.getCreateRequest(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, recoveryPointName, options)
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - The fabric name.
+//   - protectionContainerName - The protection container name.
+//   - replicatedProtectedItemName - The replication protected item name.
+//   - recoveryPointName - The recovery point name.
+//   - options - RecoveryPointsClientGetOptions contains the optional parameters for the RecoveryPointsClient.Get method.
+func (client *RecoveryPointsClient) Get(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string, options *RecoveryPointsClientGetOptions) (RecoveryPointsClientGetResponse, error) {
+	req, err := client.getCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName, recoveryPointName, options)
 	if err != nil {
 		return RecoveryPointsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RecoveryPointsClientGetResponse{}, err
 	}
@@ -85,16 +71,16 @@ func (client *RecoveryPointsClient) Get(ctx context.Context, fabricName string, 
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string, options *RecoveryPointsClientGetOptions) (*policy.Request, error) {
+func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, recoveryPointName string, options *RecoveryPointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints/{recoveryPointName}"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -115,7 +101,7 @@ func (client *RecoveryPointsClient) getCreateRequest(ctx context.Context, fabric
 		return nil, errors.New("parameter recoveryPointName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{recoveryPointName}", url.PathEscape(recoveryPointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -136,13 +122,16 @@ func (client *RecoveryPointsClient) getHandleResponse(resp *http.Response) (Reco
 }
 
 // NewListByReplicationProtectedItemsPager - Lists the available recovery points for a replication protected item.
+//
 // Generated from API version 2022-10-01
-// fabricName - The fabric name.
-// protectionContainerName - The protection container name.
-// replicatedProtectedItemName - The replication protected item name.
-// options - RecoveryPointsClientListByReplicationProtectedItemsOptions contains the optional parameters for the RecoveryPointsClient.ListByReplicationProtectedItems
-// method.
-func (client *RecoveryPointsClient) NewListByReplicationProtectedItemsPager(fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) *runtime.Pager[RecoveryPointsClientListByReplicationProtectedItemsResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - fabricName - The fabric name.
+//   - protectionContainerName - The protection container name.
+//   - replicatedProtectedItemName - The replication protected item name.
+//   - options - RecoveryPointsClientListByReplicationProtectedItemsOptions contains the optional parameters for the RecoveryPointsClient.NewListByReplicationProtectedItemsPager
+//     method.
+func (client *RecoveryPointsClient) NewListByReplicationProtectedItemsPager(resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) *runtime.Pager[RecoveryPointsClientListByReplicationProtectedItemsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RecoveryPointsClientListByReplicationProtectedItemsResponse]{
 		More: func(page RecoveryPointsClientListByReplicationProtectedItemsResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -151,14 +140,14 @@ func (client *RecoveryPointsClient) NewListByReplicationProtectedItemsPager(fabr
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listByReplicationProtectedItemsCreateRequest(ctx, fabricName, protectionContainerName, replicatedProtectedItemName, options)
+				req, err = client.listByReplicationProtectedItemsCreateRequest(ctx, resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return RecoveryPointsClientListByReplicationProtectedItemsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RecoveryPointsClientListByReplicationProtectedItemsResponse{}, err
 			}
@@ -171,16 +160,16 @@ func (client *RecoveryPointsClient) NewListByReplicationProtectedItemsPager(fabr
 }
 
 // listByReplicationProtectedItemsCreateRequest creates the ListByReplicationProtectedItems request.
-func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest(ctx context.Context, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) (*policy.Request, error) {
+func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, fabricName string, protectionContainerName string, replicatedProtectedItemName string, options *RecoveryPointsClientListByReplicationProtectedItemsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationProtectionContainers/{protectionContainerName}/replicationProtectedItems/{replicatedProtectedItemName}/recoveryPoints"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
@@ -197,7 +186,7 @@ func (client *RecoveryPointsClient) listByReplicationProtectedItemsCreateRequest
 		return nil, errors.New("parameter replicatedProtectedItemName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{replicatedProtectedItemName}", url.PathEscape(replicatedProtectedItemName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

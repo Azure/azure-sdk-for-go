@@ -15,8 +15,8 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/pollers"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/poller"
 	"github.com/stretchr/testify/require"
 )
 
@@ -62,33 +62,33 @@ func TestCanResume(t *testing.T) {
 }
 
 func TestNew(t *testing.T) {
-	poller, err := New[struct{}](exported.Pipeline{}, nil)
+	bp, err := New[struct{}](exported.Pipeline{}, nil)
 	require.NoError(t, err)
-	require.Empty(t, poller.CurState)
+	require.Empty(t, bp.CurState)
 
 	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusCreated
-	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	bp, err = New[struct{}](exported.Pipeline{}, resp)
 	require.NoError(t, err)
-	require.Equal(t, "Started", poller.CurState)
+	require.Equal(t, "Started", bp.CurState)
 
 	resp = initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusOK
-	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	bp, err = New[struct{}](exported.Pipeline{}, resp)
 	require.NoError(t, err)
-	require.Equal(t, "Started", poller.CurState)
+	require.Equal(t, "Started", bp.CurState)
 
 	resp = initialResponse(http.MethodPut, http.NoBody)
 	resp.StatusCode = http.StatusOK
-	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	bp, err = New[struct{}](exported.Pipeline{}, resp)
 	require.NoError(t, err)
-	require.Equal(t, pollers.StatusSucceeded, poller.CurState)
+	require.Equal(t, poller.StatusSucceeded, bp.CurState)
 
 	resp = initialResponse(http.MethodPut, http.NoBody)
 	resp.StatusCode = http.StatusNoContent
-	poller, err = New[struct{}](exported.Pipeline{}, resp)
+	bp, err = New[struct{}](exported.Pipeline{}, resp)
 	require.NoError(t, err)
-	require.Equal(t, pollers.StatusSucceeded, poller.CurState)
+	require.Equal(t, poller.StatusSucceeded, bp.CurState)
 }
 
 type widget struct {
@@ -98,18 +98,18 @@ type widget struct {
 func TestUpdateNoProvStateFail(t *testing.T) {
 	resp := initialResponse(http.MethodPut, strings.NewReader(`{ "properties": { "provisioningState": "Started" } }`))
 	resp.StatusCode = http.StatusOK
-	poller, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
+	bp, err := New[widget](exported.NewPipeline(shared.TransportFunc(func(req *http.Request) (*http.Response, error) {
 		return &http.Response{
 			StatusCode: http.StatusOK,
 			Body:       http.NoBody,
 		}, nil
 	})), resp)
 	require.NoError(t, err)
-	require.False(t, poller.Done())
-	resp, err = poller.Poll(context.Background())
-	require.ErrorIs(t, err, pollers.ErrNoBody)
+	require.False(t, bp.Done())
+	resp, err = bp.Poll(context.Background())
+	require.ErrorIs(t, err, poller.ErrNoBody)
 	require.Nil(t, resp)
-	require.False(t, poller.Done())
+	require.False(t, bp.Done())
 }
 
 func TestUpdateNoProvStateSuccess(t *testing.T) {

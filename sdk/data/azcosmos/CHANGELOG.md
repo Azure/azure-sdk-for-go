@@ -1,14 +1,17 @@
 # Release History
 
-## 0.3.4 (Unreleased)
+## 0.3.5 (2023-05-09)
 
 ### Features Added
-
-### Breaking Changes
+* Added support for accounts with [merge support](https://aka.ms/cosmosdbsdksupportformerge) enabled
 
 ### Bugs Fixed
+* Fixed unmarshalling error when using projections in value queries
 
-### Other Changes
+## 0.3.4 (2023-04-11)
+
+### Features Added
+* Added `NullPartitionKey` variable to create and query documents with null partition key in CosmosDB
 
 ## 0.3.3 (2023-01-10)
 

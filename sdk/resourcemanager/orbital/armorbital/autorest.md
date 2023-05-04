@@ -5,8 +5,8 @@
 ``` yaml
 azure-arm: true
 require:
-- https://github.com/Azure/azure-rest-api-specs/blob/08a74065e38665d8a9bb5f2653e92b2abd45bf99/specification/orbital/resource-manager/readme.md
-- https://github.com/Azure/azure-rest-api-specs/blob/08a74065e38665d8a9bb5f2653e92b2abd45bf99/specification/orbital/resource-manager/readme.go.md
+- https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/orbital/resource-manager/readme.md
+- https://github.com/Azure/azure-rest-api-specs/blob/1e7b408f3323e7f5424745718fe62c7a043a2337/specification/orbital/resource-manager/readme.go.md
 license-header: MICROSOFT_MIT_NO_VERSION
-module-version: 1.0.0
+module-version: 2.0.1
 ```

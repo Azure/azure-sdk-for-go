@@ -7,6 +7,7 @@
 package shared
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -93,4 +94,65 @@ func TestCParseConnectionStringAzurite(t *testing.T) {
 	require.Equal(t, "http://local-machine:11002/custom/account/path/faketokensignature", parsed.ServiceURL)
 	require.Equal(t, "dummyaccountname", parsed.AccountName)
 	require.Equal(t, "secretkeykey", parsed.AccountKey)
+}
+
+func TestSerializeBlobTags(t *testing.T) {
+	var tags map[string]string
+
+	// Case 1
+	tags = nil
+	blobTags := SerializeBlobTags(tags)
+	require.Nil(t, blobTags)
+
+	// Case 2
+	tags = map[string]string{}
+	blobTags = SerializeBlobTags(tags)
+	require.Nil(t, blobTags)
+
+	// Case 3
+	tags = map[string]string{
+		"foo": "bar",
+		"az":  "sdk",
+		"sdk": "storage",
+	}
+	blobTags = SerializeBlobTags(tags)
+	require.NotNil(t, blobTags)
+	for _, tagPtr := range (*blobTags).BlobTagSet {
+		require.Contains(t, tags, *tagPtr.Key)
+		require.Equal(t, tags[*tagPtr.Key], *tagPtr.Value)
+		delete(tags, *tagPtr.Key)
+	}
+	require.Len(t, tags, 0)
+}
+
+func TestSerializeBlobTagsToStrPtr(t *testing.T) {
+	var tags map[string]string
+
+	// Case 1
+	tags = nil
+	tagsStr := SerializeBlobTagsToStrPtr(tags)
+	require.Nil(t, tagsStr)
+
+	// Case 2
+	tags = map[string]string{}
+	tagsStr = SerializeBlobTagsToStrPtr(tags)
+	require.Nil(t, tagsStr)
+
+	// Case 3
+	tags = map[string]string{
+		"foo": "bar",
+		"az":  "sdk",
+		"sdk": "storage",
+	}
+	tagsStr = SerializeBlobTagsToStrPtr(tags)
+	require.NotNil(t, tagsStr)
+	// split string on &
+	kvPairs := strings.Split(*tagsStr, "&")
+	for _, kv := range kvPairs {
+		pair := strings.Split(kv, "=")
+		require.Contains(t, tags, pair[0])
+		require.Equal(t, tags[pair[0]], pair[1])
+		delete(tags, pair[0])
+	}
+	require.Len(t, tags, 0)
 }

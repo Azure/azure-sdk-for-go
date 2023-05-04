@@ -14,12 +14,12 @@ type MigrationRecoveryPointsClientGetResponse struct {
 	MigrationRecoveryPoint
 }
 
-// MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse contains the response from method MigrationRecoveryPointsClient.ListByReplicationMigrationItems.
+// MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse contains the response from method MigrationRecoveryPointsClient.NewListByReplicationMigrationItemsPager.
 type MigrationRecoveryPointsClientListByReplicationMigrationItemsResponse struct {
 	MigrationRecoveryPointCollection
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationsDiscoveryCollection
 }
@@ -29,7 +29,7 @@ type RecoveryPointsClientGetResponse struct {
 	RecoveryPoint
 }
 
-// RecoveryPointsClientListByReplicationProtectedItemsResponse contains the response from method RecoveryPointsClient.ListByReplicationProtectedItems.
+// RecoveryPointsClientListByReplicationProtectedItemsResponse contains the response from method RecoveryPointsClient.NewListByReplicationProtectedItemsPager.
 type RecoveryPointsClientListByReplicationProtectedItemsResponse struct {
 	RecoveryPointCollection
 }
@@ -44,12 +44,12 @@ type ReplicationAlertSettingsClientGetResponse struct {
 	Alert
 }
 
-// ReplicationAlertSettingsClientListResponse contains the response from method ReplicationAlertSettingsClient.List.
+// ReplicationAlertSettingsClientListResponse contains the response from method ReplicationAlertSettingsClient.NewListPager.
 type ReplicationAlertSettingsClientListResponse struct {
 	AlertCollection
 }
 
-// ReplicationAppliancesClientListResponse contains the response from method ReplicationAppliancesClient.List.
+// ReplicationAppliancesClientListResponse contains the response from method ReplicationAppliancesClient.NewListPager.
 type ReplicationAppliancesClientListResponse struct {
 	ApplianceCollection
 }
@@ -69,22 +69,22 @@ type ReplicationEventsClientGetResponse struct {
 	Event
 }
 
-// ReplicationEventsClientListResponse contains the response from method ReplicationEventsClient.List.
+// ReplicationEventsClientListResponse contains the response from method ReplicationEventsClient.NewListPager.
 type ReplicationEventsClientListResponse struct {
 	EventCollection
 }
 
-// ReplicationFabricsClientCheckConsistencyResponse contains the response from method ReplicationFabricsClient.CheckConsistency.
+// ReplicationFabricsClientCheckConsistencyResponse contains the response from method ReplicationFabricsClient.BeginCheckConsistency.
 type ReplicationFabricsClientCheckConsistencyResponse struct {
 	Fabric
 }
 
-// ReplicationFabricsClientCreateResponse contains the response from method ReplicationFabricsClient.Create.
+// ReplicationFabricsClientCreateResponse contains the response from method ReplicationFabricsClient.BeginCreate.
 type ReplicationFabricsClientCreateResponse struct {
 	Fabric
 }
 
-// ReplicationFabricsClientDeleteResponse contains the response from method ReplicationFabricsClient.Delete.
+// ReplicationFabricsClientDeleteResponse contains the response from method ReplicationFabricsClient.BeginDelete.
 type ReplicationFabricsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -94,37 +94,37 @@ type ReplicationFabricsClientGetResponse struct {
 	Fabric
 }
 
-// ReplicationFabricsClientListResponse contains the response from method ReplicationFabricsClient.List.
+// ReplicationFabricsClientListResponse contains the response from method ReplicationFabricsClient.NewListPager.
 type ReplicationFabricsClientListResponse struct {
 	FabricCollection
 }
 
-// ReplicationFabricsClientMigrateToAADResponse contains the response from method ReplicationFabricsClient.MigrateToAAD.
+// ReplicationFabricsClientMigrateToAADResponse contains the response from method ReplicationFabricsClient.BeginMigrateToAAD.
 type ReplicationFabricsClientMigrateToAADResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationFabricsClientPurgeResponse contains the response from method ReplicationFabricsClient.Purge.
+// ReplicationFabricsClientPurgeResponse contains the response from method ReplicationFabricsClient.BeginPurge.
 type ReplicationFabricsClientPurgeResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationFabricsClientReassociateGatewayResponse contains the response from method ReplicationFabricsClient.ReassociateGateway.
+// ReplicationFabricsClientReassociateGatewayResponse contains the response from method ReplicationFabricsClient.BeginReassociateGateway.
 type ReplicationFabricsClientReassociateGatewayResponse struct {
 	Fabric
 }
 
-// ReplicationFabricsClientRenewCertificateResponse contains the response from method ReplicationFabricsClient.RenewCertificate.
+// ReplicationFabricsClientRenewCertificateResponse contains the response from method ReplicationFabricsClient.BeginRenewCertificate.
 type ReplicationFabricsClientRenewCertificateResponse struct {
 	Fabric
 }
 
-// ReplicationJobsClientCancelResponse contains the response from method ReplicationJobsClient.Cancel.
+// ReplicationJobsClientCancelResponse contains the response from method ReplicationJobsClient.BeginCancel.
 type ReplicationJobsClientCancelResponse struct {
 	Job
 }
 
-// ReplicationJobsClientExportResponse contains the response from method ReplicationJobsClient.Export.
+// ReplicationJobsClientExportResponse contains the response from method ReplicationJobsClient.BeginExport.
 type ReplicationJobsClientExportResponse struct {
 	Job
 }
@@ -134,17 +134,17 @@ type ReplicationJobsClientGetResponse struct {
 	Job
 }
 
-// ReplicationJobsClientListResponse contains the response from method ReplicationJobsClient.List.
+// ReplicationJobsClientListResponse contains the response from method ReplicationJobsClient.NewListPager.
 type ReplicationJobsClientListResponse struct {
 	JobCollection
 }
 
-// ReplicationJobsClientRestartResponse contains the response from method ReplicationJobsClient.Restart.
+// ReplicationJobsClientRestartResponse contains the response from method ReplicationJobsClient.BeginRestart.
 type ReplicationJobsClientRestartResponse struct {
 	Job
 }
 
-// ReplicationJobsClientResumeResponse contains the response from method ReplicationJobsClient.Resume.
+// ReplicationJobsClientResumeResponse contains the response from method ReplicationJobsClient.BeginResume.
 type ReplicationJobsClientResumeResponse struct {
 	Job
 }
@@ -154,17 +154,17 @@ type ReplicationLogicalNetworksClientGetResponse struct {
 	LogicalNetwork
 }
 
-// ReplicationLogicalNetworksClientListByReplicationFabricsResponse contains the response from method ReplicationLogicalNetworksClient.ListByReplicationFabrics.
+// ReplicationLogicalNetworksClientListByReplicationFabricsResponse contains the response from method ReplicationLogicalNetworksClient.NewListByReplicationFabricsPager.
 type ReplicationLogicalNetworksClientListByReplicationFabricsResponse struct {
 	LogicalNetworkCollection
 }
 
-// ReplicationMigrationItemsClientCreateResponse contains the response from method ReplicationMigrationItemsClient.Create.
+// ReplicationMigrationItemsClientCreateResponse contains the response from method ReplicationMigrationItemsClient.BeginCreate.
 type ReplicationMigrationItemsClientCreateResponse struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsClientDeleteResponse contains the response from method ReplicationMigrationItemsClient.Delete.
+// ReplicationMigrationItemsClientDeleteResponse contains the response from method ReplicationMigrationItemsClient.BeginDelete.
 type ReplicationMigrationItemsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -174,57 +174,57 @@ type ReplicationMigrationItemsClientGetResponse struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationMigrationItemsClient.ListByReplicationProtectionContainers.
+// ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationMigrationItemsClient.NewListByReplicationProtectionContainersPager.
 type ReplicationMigrationItemsClientListByReplicationProtectionContainersResponse struct {
 	MigrationItemCollection
 }
 
-// ReplicationMigrationItemsClientListResponse contains the response from method ReplicationMigrationItemsClient.List.
+// ReplicationMigrationItemsClientListResponse contains the response from method ReplicationMigrationItemsClient.NewListPager.
 type ReplicationMigrationItemsClientListResponse struct {
 	MigrationItemCollection
 }
 
-// ReplicationMigrationItemsClientMigrateResponse contains the response from method ReplicationMigrationItemsClient.Migrate.
+// ReplicationMigrationItemsClientMigrateResponse contains the response from method ReplicationMigrationItemsClient.BeginMigrate.
 type ReplicationMigrationItemsClientMigrateResponse struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsClientPauseReplicationResponse contains the response from method ReplicationMigrationItemsClient.PauseReplication.
+// ReplicationMigrationItemsClientPauseReplicationResponse contains the response from method ReplicationMigrationItemsClient.BeginPauseReplication.
 type ReplicationMigrationItemsClientPauseReplicationResponse struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsClientResumeReplicationResponse contains the response from method ReplicationMigrationItemsClient.ResumeReplication.
+// ReplicationMigrationItemsClientResumeReplicationResponse contains the response from method ReplicationMigrationItemsClient.BeginResumeReplication.
 type ReplicationMigrationItemsClientResumeReplicationResponse struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsClientResyncResponse contains the response from method ReplicationMigrationItemsClient.Resync.
+// ReplicationMigrationItemsClientResyncResponse contains the response from method ReplicationMigrationItemsClient.BeginResync.
 type ReplicationMigrationItemsClientResyncResponse struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsClientTestMigrateCleanupResponse contains the response from method ReplicationMigrationItemsClient.TestMigrateCleanup.
+// ReplicationMigrationItemsClientTestMigrateCleanupResponse contains the response from method ReplicationMigrationItemsClient.BeginTestMigrateCleanup.
 type ReplicationMigrationItemsClientTestMigrateCleanupResponse struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsClientTestMigrateResponse contains the response from method ReplicationMigrationItemsClient.TestMigrate.
+// ReplicationMigrationItemsClientTestMigrateResponse contains the response from method ReplicationMigrationItemsClient.BeginTestMigrate.
 type ReplicationMigrationItemsClientTestMigrateResponse struct {
 	MigrationItem
 }
 
-// ReplicationMigrationItemsClientUpdateResponse contains the response from method ReplicationMigrationItemsClient.Update.
+// ReplicationMigrationItemsClientUpdateResponse contains the response from method ReplicationMigrationItemsClient.BeginUpdate.
 type ReplicationMigrationItemsClientUpdateResponse struct {
 	MigrationItem
 }
 
-// ReplicationNetworkMappingsClientCreateResponse contains the response from method ReplicationNetworkMappingsClient.Create.
+// ReplicationNetworkMappingsClientCreateResponse contains the response from method ReplicationNetworkMappingsClient.BeginCreate.
 type ReplicationNetworkMappingsClientCreateResponse struct {
 	NetworkMapping
 }
 
-// ReplicationNetworkMappingsClientDeleteResponse contains the response from method ReplicationNetworkMappingsClient.Delete.
+// ReplicationNetworkMappingsClientDeleteResponse contains the response from method ReplicationNetworkMappingsClient.BeginDelete.
 type ReplicationNetworkMappingsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -234,17 +234,17 @@ type ReplicationNetworkMappingsClientGetResponse struct {
 	NetworkMapping
 }
 
-// ReplicationNetworkMappingsClientListByReplicationNetworksResponse contains the response from method ReplicationNetworkMappingsClient.ListByReplicationNetworks.
+// ReplicationNetworkMappingsClientListByReplicationNetworksResponse contains the response from method ReplicationNetworkMappingsClient.NewListByReplicationNetworksPager.
 type ReplicationNetworkMappingsClientListByReplicationNetworksResponse struct {
 	NetworkMappingCollection
 }
 
-// ReplicationNetworkMappingsClientListResponse contains the response from method ReplicationNetworkMappingsClient.List.
+// ReplicationNetworkMappingsClientListResponse contains the response from method ReplicationNetworkMappingsClient.NewListPager.
 type ReplicationNetworkMappingsClientListResponse struct {
 	NetworkMappingCollection
 }
 
-// ReplicationNetworkMappingsClientUpdateResponse contains the response from method ReplicationNetworkMappingsClient.Update.
+// ReplicationNetworkMappingsClientUpdateResponse contains the response from method ReplicationNetworkMappingsClient.BeginUpdate.
 type ReplicationNetworkMappingsClientUpdateResponse struct {
 	NetworkMapping
 }
@@ -254,22 +254,22 @@ type ReplicationNetworksClientGetResponse struct {
 	Network
 }
 
-// ReplicationNetworksClientListByReplicationFabricsResponse contains the response from method ReplicationNetworksClient.ListByReplicationFabrics.
+// ReplicationNetworksClientListByReplicationFabricsResponse contains the response from method ReplicationNetworksClient.NewListByReplicationFabricsPager.
 type ReplicationNetworksClientListByReplicationFabricsResponse struct {
 	NetworkCollection
 }
 
-// ReplicationNetworksClientListResponse contains the response from method ReplicationNetworksClient.List.
+// ReplicationNetworksClientListResponse contains the response from method ReplicationNetworksClient.NewListPager.
 type ReplicationNetworksClientListResponse struct {
 	NetworkCollection
 }
 
-// ReplicationPoliciesClientCreateResponse contains the response from method ReplicationPoliciesClient.Create.
+// ReplicationPoliciesClientCreateResponse contains the response from method ReplicationPoliciesClient.BeginCreate.
 type ReplicationPoliciesClientCreateResponse struct {
 	Policy
 }
 
-// ReplicationPoliciesClientDeleteResponse contains the response from method ReplicationPoliciesClient.Delete.
+// ReplicationPoliciesClientDeleteResponse contains the response from method ReplicationPoliciesClient.BeginDelete.
 type ReplicationPoliciesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -279,12 +279,12 @@ type ReplicationPoliciesClientGetResponse struct {
 	Policy
 }
 
-// ReplicationPoliciesClientListResponse contains the response from method ReplicationPoliciesClient.List.
+// ReplicationPoliciesClientListResponse contains the response from method ReplicationPoliciesClient.NewListPager.
 type ReplicationPoliciesClientListResponse struct {
 	PolicyCollection
 }
 
-// ReplicationPoliciesClientUpdateResponse contains the response from method ReplicationPoliciesClient.Update.
+// ReplicationPoliciesClientUpdateResponse contains the response from method ReplicationPoliciesClient.BeginUpdate.
 type ReplicationPoliciesClientUpdateResponse struct {
 	Policy
 }
@@ -294,37 +294,37 @@ type ReplicationProtectableItemsClientGetResponse struct {
 	ProtectableItem
 }
 
-// ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectableItemsClient.ListByReplicationProtectionContainers.
+// ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectableItemsClient.NewListByReplicationProtectionContainersPager.
 type ReplicationProtectableItemsClientListByReplicationProtectionContainersResponse struct {
 	ProtectableItemCollection
 }
 
-// ReplicationProtectedItemsClientAddDisksResponse contains the response from method ReplicationProtectedItemsClient.AddDisks.
+// ReplicationProtectedItemsClientAddDisksResponse contains the response from method ReplicationProtectedItemsClient.BeginAddDisks.
 type ReplicationProtectedItemsClientAddDisksResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientApplyRecoveryPointResponse contains the response from method ReplicationProtectedItemsClient.ApplyRecoveryPoint.
+// ReplicationProtectedItemsClientApplyRecoveryPointResponse contains the response from method ReplicationProtectedItemsClient.BeginApplyRecoveryPoint.
 type ReplicationProtectedItemsClientApplyRecoveryPointResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientCreateResponse contains the response from method ReplicationProtectedItemsClient.Create.
+// ReplicationProtectedItemsClientCreateResponse contains the response from method ReplicationProtectedItemsClient.BeginCreate.
 type ReplicationProtectedItemsClientCreateResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientDeleteResponse contains the response from method ReplicationProtectedItemsClient.Delete.
+// ReplicationProtectedItemsClientDeleteResponse contains the response from method ReplicationProtectedItemsClient.BeginDelete.
 type ReplicationProtectedItemsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationProtectedItemsClientFailoverCancelResponse contains the response from method ReplicationProtectedItemsClient.FailoverCancel.
+// ReplicationProtectedItemsClientFailoverCancelResponse contains the response from method ReplicationProtectedItemsClient.BeginFailoverCancel.
 type ReplicationProtectedItemsClientFailoverCancelResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientFailoverCommitResponse contains the response from method ReplicationProtectedItemsClient.FailoverCommit.
+// ReplicationProtectedItemsClientFailoverCommitResponse contains the response from method ReplicationProtectedItemsClient.BeginFailoverCommit.
 type ReplicationProtectedItemsClientFailoverCommitResponse struct {
 	ReplicationProtectedItem
 }
@@ -334,87 +334,87 @@ type ReplicationProtectedItemsClientGetResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectedItemsClient.ListByReplicationProtectionContainers.
+// ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse contains the response from method ReplicationProtectedItemsClient.NewListByReplicationProtectionContainersPager.
 type ReplicationProtectedItemsClientListByReplicationProtectionContainersResponse struct {
 	ReplicationProtectedItemCollection
 }
 
-// ReplicationProtectedItemsClientListResponse contains the response from method ReplicationProtectedItemsClient.List.
+// ReplicationProtectedItemsClientListResponse contains the response from method ReplicationProtectedItemsClient.NewListPager.
 type ReplicationProtectedItemsClientListResponse struct {
 	ReplicationProtectedItemCollection
 }
 
-// ReplicationProtectedItemsClientPlannedFailoverResponse contains the response from method ReplicationProtectedItemsClient.PlannedFailover.
+// ReplicationProtectedItemsClientPlannedFailoverResponse contains the response from method ReplicationProtectedItemsClient.BeginPlannedFailover.
 type ReplicationProtectedItemsClientPlannedFailoverResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientPurgeResponse contains the response from method ReplicationProtectedItemsClient.Purge.
+// ReplicationProtectedItemsClientPurgeResponse contains the response from method ReplicationProtectedItemsClient.BeginPurge.
 type ReplicationProtectedItemsClientPurgeResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationProtectedItemsClientRemoveDisksResponse contains the response from method ReplicationProtectedItemsClient.RemoveDisks.
+// ReplicationProtectedItemsClientRemoveDisksResponse contains the response from method ReplicationProtectedItemsClient.BeginRemoveDisks.
 type ReplicationProtectedItemsClientRemoveDisksResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientRepairReplicationResponse contains the response from method ReplicationProtectedItemsClient.RepairReplication.
+// ReplicationProtectedItemsClientRepairReplicationResponse contains the response from method ReplicationProtectedItemsClient.BeginRepairReplication.
 type ReplicationProtectedItemsClientRepairReplicationResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientReprotectResponse contains the response from method ReplicationProtectedItemsClient.Reprotect.
+// ReplicationProtectedItemsClientReprotectResponse contains the response from method ReplicationProtectedItemsClient.BeginReprotect.
 type ReplicationProtectedItemsClientReprotectResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientResolveHealthErrorsResponse contains the response from method ReplicationProtectedItemsClient.ResolveHealthErrors.
+// ReplicationProtectedItemsClientResolveHealthErrorsResponse contains the response from method ReplicationProtectedItemsClient.BeginResolveHealthErrors.
 type ReplicationProtectedItemsClientResolveHealthErrorsResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientSwitchProviderResponse contains the response from method ReplicationProtectedItemsClient.SwitchProvider.
+// ReplicationProtectedItemsClientSwitchProviderResponse contains the response from method ReplicationProtectedItemsClient.BeginSwitchProvider.
 type ReplicationProtectedItemsClientSwitchProviderResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientTestFailoverCleanupResponse contains the response from method ReplicationProtectedItemsClient.TestFailoverCleanup.
+// ReplicationProtectedItemsClientTestFailoverCleanupResponse contains the response from method ReplicationProtectedItemsClient.BeginTestFailoverCleanup.
 type ReplicationProtectedItemsClientTestFailoverCleanupResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientTestFailoverResponse contains the response from method ReplicationProtectedItemsClient.TestFailover.
+// ReplicationProtectedItemsClientTestFailoverResponse contains the response from method ReplicationProtectedItemsClient.BeginTestFailover.
 type ReplicationProtectedItemsClientTestFailoverResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientUnplannedFailoverResponse contains the response from method ReplicationProtectedItemsClient.UnplannedFailover.
+// ReplicationProtectedItemsClientUnplannedFailoverResponse contains the response from method ReplicationProtectedItemsClient.BeginUnplannedFailover.
 type ReplicationProtectedItemsClientUnplannedFailoverResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientUpdateApplianceResponse contains the response from method ReplicationProtectedItemsClient.UpdateAppliance.
+// ReplicationProtectedItemsClientUpdateApplianceResponse contains the response from method ReplicationProtectedItemsClient.BeginUpdateAppliance.
 type ReplicationProtectedItemsClientUpdateApplianceResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientUpdateMobilityServiceResponse contains the response from method ReplicationProtectedItemsClient.UpdateMobilityService.
+// ReplicationProtectedItemsClientUpdateMobilityServiceResponse contains the response from method ReplicationProtectedItemsClient.BeginUpdateMobilityService.
 type ReplicationProtectedItemsClientUpdateMobilityServiceResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectedItemsClientUpdateResponse contains the response from method ReplicationProtectedItemsClient.Update.
+// ReplicationProtectedItemsClientUpdateResponse contains the response from method ReplicationProtectedItemsClient.BeginUpdate.
 type ReplicationProtectedItemsClientUpdateResponse struct {
 	ReplicationProtectedItem
 }
 
-// ReplicationProtectionContainerMappingsClientCreateResponse contains the response from method ReplicationProtectionContainerMappingsClient.Create.
+// ReplicationProtectionContainerMappingsClientCreateResponse contains the response from method ReplicationProtectionContainerMappingsClient.BeginCreate.
 type ReplicationProtectionContainerMappingsClientCreateResponse struct {
 	ProtectionContainerMapping
 }
 
-// ReplicationProtectionContainerMappingsClientDeleteResponse contains the response from method ReplicationProtectionContainerMappingsClient.Delete.
+// ReplicationProtectionContainerMappingsClientDeleteResponse contains the response from method ReplicationProtectionContainerMappingsClient.BeginDelete.
 type ReplicationProtectionContainerMappingsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -425,37 +425,37 @@ type ReplicationProtectionContainerMappingsClientGetResponse struct {
 }
 
 // ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse contains the response from method
-// ReplicationProtectionContainerMappingsClient.ListByReplicationProtectionContainers.
+// ReplicationProtectionContainerMappingsClient.NewListByReplicationProtectionContainersPager.
 type ReplicationProtectionContainerMappingsClientListByReplicationProtectionContainersResponse struct {
 	ProtectionContainerMappingCollection
 }
 
-// ReplicationProtectionContainerMappingsClientListResponse contains the response from method ReplicationProtectionContainerMappingsClient.List.
+// ReplicationProtectionContainerMappingsClientListResponse contains the response from method ReplicationProtectionContainerMappingsClient.NewListPager.
 type ReplicationProtectionContainerMappingsClientListResponse struct {
 	ProtectionContainerMappingCollection
 }
 
-// ReplicationProtectionContainerMappingsClientPurgeResponse contains the response from method ReplicationProtectionContainerMappingsClient.Purge.
+// ReplicationProtectionContainerMappingsClientPurgeResponse contains the response from method ReplicationProtectionContainerMappingsClient.BeginPurge.
 type ReplicationProtectionContainerMappingsClientPurgeResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationProtectionContainerMappingsClientUpdateResponse contains the response from method ReplicationProtectionContainerMappingsClient.Update.
+// ReplicationProtectionContainerMappingsClientUpdateResponse contains the response from method ReplicationProtectionContainerMappingsClient.BeginUpdate.
 type ReplicationProtectionContainerMappingsClientUpdateResponse struct {
 	ProtectionContainerMapping
 }
 
-// ReplicationProtectionContainersClientCreateResponse contains the response from method ReplicationProtectionContainersClient.Create.
+// ReplicationProtectionContainersClientCreateResponse contains the response from method ReplicationProtectionContainersClient.BeginCreate.
 type ReplicationProtectionContainersClientCreateResponse struct {
 	ProtectionContainer
 }
 
-// ReplicationProtectionContainersClientDeleteResponse contains the response from method ReplicationProtectionContainersClient.Delete.
+// ReplicationProtectionContainersClientDeleteResponse contains the response from method ReplicationProtectionContainersClient.BeginDelete.
 type ReplicationProtectionContainersClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationProtectionContainersClientDiscoverProtectableItemResponse contains the response from method ReplicationProtectionContainersClient.DiscoverProtectableItem.
+// ReplicationProtectionContainersClientDiscoverProtectableItemResponse contains the response from method ReplicationProtectionContainersClient.BeginDiscoverProtectableItem.
 type ReplicationProtectionContainersClientDiscoverProtectableItemResponse struct {
 	ProtectionContainer
 }
@@ -465,17 +465,17 @@ type ReplicationProtectionContainersClientGetResponse struct {
 	ProtectionContainer
 }
 
-// ReplicationProtectionContainersClientListByReplicationFabricsResponse contains the response from method ReplicationProtectionContainersClient.ListByReplicationFabrics.
+// ReplicationProtectionContainersClientListByReplicationFabricsResponse contains the response from method ReplicationProtectionContainersClient.NewListByReplicationFabricsPager.
 type ReplicationProtectionContainersClientListByReplicationFabricsResponse struct {
 	ProtectionContainerCollection
 }
 
-// ReplicationProtectionContainersClientListResponse contains the response from method ReplicationProtectionContainersClient.List.
+// ReplicationProtectionContainersClientListResponse contains the response from method ReplicationProtectionContainersClient.NewListPager.
 type ReplicationProtectionContainersClientListResponse struct {
 	ProtectionContainerCollection
 }
 
-// ReplicationProtectionContainersClientSwitchProtectionResponse contains the response from method ReplicationProtectionContainersClient.SwitchProtection.
+// ReplicationProtectionContainersClientSwitchProtectionResponse contains the response from method ReplicationProtectionContainersClient.BeginSwitchProtection.
 type ReplicationProtectionContainersClientSwitchProtectionResponse struct {
 	ProtectionContainer
 }
@@ -490,27 +490,27 @@ type ReplicationProtectionIntentsClientGetResponse struct {
 	ReplicationProtectionIntent
 }
 
-// ReplicationProtectionIntentsClientListResponse contains the response from method ReplicationProtectionIntentsClient.List.
+// ReplicationProtectionIntentsClientListResponse contains the response from method ReplicationProtectionIntentsClient.NewListPager.
 type ReplicationProtectionIntentsClientListResponse struct {
 	ReplicationProtectionIntentCollection
 }
 
-// ReplicationRecoveryPlansClientCreateResponse contains the response from method ReplicationRecoveryPlansClient.Create.
+// ReplicationRecoveryPlansClientCreateResponse contains the response from method ReplicationRecoveryPlansClient.BeginCreate.
 type ReplicationRecoveryPlansClientCreateResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansClientDeleteResponse contains the response from method ReplicationRecoveryPlansClient.Delete.
+// ReplicationRecoveryPlansClientDeleteResponse contains the response from method ReplicationRecoveryPlansClient.BeginDelete.
 type ReplicationRecoveryPlansClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationRecoveryPlansClientFailoverCancelResponse contains the response from method ReplicationRecoveryPlansClient.FailoverCancel.
+// ReplicationRecoveryPlansClientFailoverCancelResponse contains the response from method ReplicationRecoveryPlansClient.BeginFailoverCancel.
 type ReplicationRecoveryPlansClientFailoverCancelResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansClientFailoverCommitResponse contains the response from method ReplicationRecoveryPlansClient.FailoverCommit.
+// ReplicationRecoveryPlansClientFailoverCommitResponse contains the response from method ReplicationRecoveryPlansClient.BeginFailoverCommit.
 type ReplicationRecoveryPlansClientFailoverCommitResponse struct {
 	RecoveryPlan
 }
@@ -520,47 +520,47 @@ type ReplicationRecoveryPlansClientGetResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansClientListResponse contains the response from method ReplicationRecoveryPlansClient.List.
+// ReplicationRecoveryPlansClientListResponse contains the response from method ReplicationRecoveryPlansClient.NewListPager.
 type ReplicationRecoveryPlansClientListResponse struct {
 	RecoveryPlanCollection
 }
 
-// ReplicationRecoveryPlansClientPlannedFailoverResponse contains the response from method ReplicationRecoveryPlansClient.PlannedFailover.
+// ReplicationRecoveryPlansClientPlannedFailoverResponse contains the response from method ReplicationRecoveryPlansClient.BeginPlannedFailover.
 type ReplicationRecoveryPlansClientPlannedFailoverResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansClientReprotectResponse contains the response from method ReplicationRecoveryPlansClient.Reprotect.
+// ReplicationRecoveryPlansClientReprotectResponse contains the response from method ReplicationRecoveryPlansClient.BeginReprotect.
 type ReplicationRecoveryPlansClientReprotectResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansClientTestFailoverCleanupResponse contains the response from method ReplicationRecoveryPlansClient.TestFailoverCleanup.
+// ReplicationRecoveryPlansClientTestFailoverCleanupResponse contains the response from method ReplicationRecoveryPlansClient.BeginTestFailoverCleanup.
 type ReplicationRecoveryPlansClientTestFailoverCleanupResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansClientTestFailoverResponse contains the response from method ReplicationRecoveryPlansClient.TestFailover.
+// ReplicationRecoveryPlansClientTestFailoverResponse contains the response from method ReplicationRecoveryPlansClient.BeginTestFailover.
 type ReplicationRecoveryPlansClientTestFailoverResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansClientUnplannedFailoverResponse contains the response from method ReplicationRecoveryPlansClient.UnplannedFailover.
+// ReplicationRecoveryPlansClientUnplannedFailoverResponse contains the response from method ReplicationRecoveryPlansClient.BeginUnplannedFailover.
 type ReplicationRecoveryPlansClientUnplannedFailoverResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryPlansClientUpdateResponse contains the response from method ReplicationRecoveryPlansClient.Update.
+// ReplicationRecoveryPlansClientUpdateResponse contains the response from method ReplicationRecoveryPlansClient.BeginUpdate.
 type ReplicationRecoveryPlansClientUpdateResponse struct {
 	RecoveryPlan
 }
 
-// ReplicationRecoveryServicesProvidersClientCreateResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Create.
+// ReplicationRecoveryServicesProvidersClientCreateResponse contains the response from method ReplicationRecoveryServicesProvidersClient.BeginCreate.
 type ReplicationRecoveryServicesProvidersClientCreateResponse struct {
 	RecoveryServicesProvider
 }
 
-// ReplicationRecoveryServicesProvidersClientDeleteResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Delete.
+// ReplicationRecoveryServicesProvidersClientDeleteResponse contains the response from method ReplicationRecoveryServicesProvidersClient.BeginDelete.
 type ReplicationRecoveryServicesProvidersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -570,32 +570,32 @@ type ReplicationRecoveryServicesProvidersClientGetResponse struct {
 	RecoveryServicesProvider
 }
 
-// ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse contains the response from method ReplicationRecoveryServicesProvidersClient.ListByReplicationFabrics.
+// ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse contains the response from method ReplicationRecoveryServicesProvidersClient.NewListByReplicationFabricsPager.
 type ReplicationRecoveryServicesProvidersClientListByReplicationFabricsResponse struct {
 	RecoveryServicesProviderCollection
 }
 
-// ReplicationRecoveryServicesProvidersClientListResponse contains the response from method ReplicationRecoveryServicesProvidersClient.List.
+// ReplicationRecoveryServicesProvidersClientListResponse contains the response from method ReplicationRecoveryServicesProvidersClient.NewListPager.
 type ReplicationRecoveryServicesProvidersClientListResponse struct {
 	RecoveryServicesProviderCollection
 }
 
-// ReplicationRecoveryServicesProvidersClientPurgeResponse contains the response from method ReplicationRecoveryServicesProvidersClient.Purge.
+// ReplicationRecoveryServicesProvidersClientPurgeResponse contains the response from method ReplicationRecoveryServicesProvidersClient.BeginPurge.
 type ReplicationRecoveryServicesProvidersClientPurgeResponse struct {
 	// placeholder for future response values
 }
 
-// ReplicationRecoveryServicesProvidersClientRefreshProviderResponse contains the response from method ReplicationRecoveryServicesProvidersClient.RefreshProvider.
+// ReplicationRecoveryServicesProvidersClientRefreshProviderResponse contains the response from method ReplicationRecoveryServicesProvidersClient.BeginRefreshProvider.
 type ReplicationRecoveryServicesProvidersClientRefreshProviderResponse struct {
 	RecoveryServicesProvider
 }
 
-// ReplicationStorageClassificationMappingsClientCreateResponse contains the response from method ReplicationStorageClassificationMappingsClient.Create.
+// ReplicationStorageClassificationMappingsClientCreateResponse contains the response from method ReplicationStorageClassificationMappingsClient.BeginCreate.
 type ReplicationStorageClassificationMappingsClientCreateResponse struct {
 	StorageClassificationMapping
 }
 
-// ReplicationStorageClassificationMappingsClientDeleteResponse contains the response from method ReplicationStorageClassificationMappingsClient.Delete.
+// ReplicationStorageClassificationMappingsClientDeleteResponse contains the response from method ReplicationStorageClassificationMappingsClient.BeginDelete.
 type ReplicationStorageClassificationMappingsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -606,12 +606,12 @@ type ReplicationStorageClassificationMappingsClientGetResponse struct {
 }
 
 // ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse contains the response from
-// method ReplicationStorageClassificationMappingsClient.ListByReplicationStorageClassifications.
+// method ReplicationStorageClassificationMappingsClient.NewListByReplicationStorageClassificationsPager.
 type ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse struct {
 	StorageClassificationMappingCollection
 }
 
-// ReplicationStorageClassificationMappingsClientListResponse contains the response from method ReplicationStorageClassificationMappingsClient.List.
+// ReplicationStorageClassificationMappingsClientListResponse contains the response from method ReplicationStorageClassificationMappingsClient.NewListPager.
 type ReplicationStorageClassificationMappingsClientListResponse struct {
 	StorageClassificationMappingCollection
 }
@@ -621,12 +621,12 @@ type ReplicationStorageClassificationsClientGetResponse struct {
 	StorageClassification
 }
 
-// ReplicationStorageClassificationsClientListByReplicationFabricsResponse contains the response from method ReplicationStorageClassificationsClient.ListByReplicationFabrics.
+// ReplicationStorageClassificationsClientListByReplicationFabricsResponse contains the response from method ReplicationStorageClassificationsClient.NewListByReplicationFabricsPager.
 type ReplicationStorageClassificationsClientListByReplicationFabricsResponse struct {
 	StorageClassificationCollection
 }
 
-// ReplicationStorageClassificationsClientListResponse contains the response from method ReplicationStorageClassificationsClient.List.
+// ReplicationStorageClassificationsClientListResponse contains the response from method ReplicationStorageClassificationsClient.NewListPager.
 type ReplicationStorageClassificationsClientListResponse struct {
 	StorageClassificationCollection
 }
@@ -636,12 +636,12 @@ type ReplicationVaultHealthClientGetResponse struct {
 	VaultHealthDetails
 }
 
-// ReplicationVaultHealthClientRefreshResponse contains the response from method ReplicationVaultHealthClient.Refresh.
+// ReplicationVaultHealthClientRefreshResponse contains the response from method ReplicationVaultHealthClient.BeginRefresh.
 type ReplicationVaultHealthClientRefreshResponse struct {
 	VaultHealthDetails
 }
 
-// ReplicationVaultSettingClientCreateResponse contains the response from method ReplicationVaultSettingClient.Create.
+// ReplicationVaultSettingClientCreateResponse contains the response from method ReplicationVaultSettingClient.BeginCreate.
 type ReplicationVaultSettingClientCreateResponse struct {
 	VaultSetting
 }
@@ -651,17 +651,17 @@ type ReplicationVaultSettingClientGetResponse struct {
 	VaultSetting
 }
 
-// ReplicationVaultSettingClientListResponse contains the response from method ReplicationVaultSettingClient.List.
+// ReplicationVaultSettingClientListResponse contains the response from method ReplicationVaultSettingClient.NewListPager.
 type ReplicationVaultSettingClientListResponse struct {
 	VaultSettingCollection
 }
 
-// ReplicationvCentersClientCreateResponse contains the response from method ReplicationvCentersClient.Create.
+// ReplicationvCentersClientCreateResponse contains the response from method ReplicationvCentersClient.BeginCreate.
 type ReplicationvCentersClientCreateResponse struct {
 	VCenter
 }
 
-// ReplicationvCentersClientDeleteResponse contains the response from method ReplicationvCentersClient.Delete.
+// ReplicationvCentersClientDeleteResponse contains the response from method ReplicationvCentersClient.BeginDelete.
 type ReplicationvCentersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -671,17 +671,17 @@ type ReplicationvCentersClientGetResponse struct {
 	VCenter
 }
 
-// ReplicationvCentersClientListByReplicationFabricsResponse contains the response from method ReplicationvCentersClient.ListByReplicationFabrics.
+// ReplicationvCentersClientListByReplicationFabricsResponse contains the response from method ReplicationvCentersClient.NewListByReplicationFabricsPager.
 type ReplicationvCentersClientListByReplicationFabricsResponse struct {
 	VCenterCollection
 }
 
-// ReplicationvCentersClientListResponse contains the response from method ReplicationvCentersClient.List.
+// ReplicationvCentersClientListResponse contains the response from method ReplicationvCentersClient.NewListPager.
 type ReplicationvCentersClientListResponse struct {
 	VCenterCollection
 }
 
-// ReplicationvCentersClientUpdateResponse contains the response from method ReplicationvCentersClient.Update.
+// ReplicationvCentersClientUpdateResponse contains the response from method ReplicationvCentersClient.BeginUpdate.
 type ReplicationvCentersClientUpdateResponse struct {
 	VCenter
 }
@@ -691,7 +691,7 @@ type SupportedOperatingSystemsClientGetResponse struct {
 	SupportedOperatingSystems
 }
 
-// TargetComputeSizesClientListByReplicationProtectedItemsResponse contains the response from method TargetComputeSizesClient.ListByReplicationProtectedItems.
+// TargetComputeSizesClientListByReplicationProtectedItemsResponse contains the response from method TargetComputeSizesClient.NewListByReplicationProtectedItemsPager.
 type TargetComputeSizesClientListByReplicationProtectedItemsResponse struct {
 	TargetComputeSizeCollection
 }

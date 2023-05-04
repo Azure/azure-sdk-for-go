@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -16,12 +17,19 @@ import (
 
 type MockReceiver struct {
 	*mock.MockAMQPReceiverCloser
-	Opts            *amqp.ReceiverOptions
-	Session         *MockSession
-	Source          string
-	Status          *Status
-	TargetAddress   string
-	InternalReceive func(ctx context.Context) (*amqp.Message, error)
+	Opts          *amqp.ReceiverOptions
+	Session       *MockSession
+	Source        string
+	Status        *Status
+	TargetAddress string
+
+	// InternalReceive will receive from our default mock. Useful if you want to
+	// change the default EXPECT() for AMQPReceiver.Receive().
+	InternalReceive func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error)
+
+	// InternalIssueCredit will issue credit for our default mock. Useful if you
+	// want to change the default EXPECT() for AMQPReceiver.IssueCredit().
+	InternalIssueCredit func(credit uint32) error
 }
 
 func (rcvr *MockReceiver) Done() <-chan error {
@@ -69,6 +77,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		Source:                 source,
 		Status:                 NewStatus(sess.Status),
 		TargetAddress:          opts.TargetAddress,
+		Opts:                   opts,
 	}
 
 	id := fmt.Sprintf("%s|%s|%s|e:%s", sess.Conn.Name(), sess.ID, md.nextUniqueName("r"), source)
@@ -83,7 +92,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 	var credits uint32
 	var q *Queue
 
-	rcvr.InternalReceive = func(ctx context.Context) (*amqp.Message, error) {
+	rcvr.InternalReceive = func(ctx context.Context, o *amqp.ReceiveOptions) (*amqp.Message, error) {
 		m, err := q.Receive(ctx, rcvr.LinkEvent(), rcvr.Status)
 
 		if err != nil {
@@ -92,6 +101,11 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 
 		credits--
 		return m, nil
+	}
+
+	rcvr.InternalIssueCredit = func(credit uint32) error {
+		credits += credit
+		return q.IssueCredit(credit, rcvr.LinkEvent(), rcvr.Status)
 	}
 
 	if err := md.options.PreReceiverMock(rcvr, ctx); err != nil {
@@ -109,10 +123,15 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		q = md.upsertQueue(source)
 	}
 
-	rcvr.EXPECT().Receive(gomock.Any()).DoAndReturn(rcvr.InternalReceive).AnyTimes()
+	rcvr.EXPECT().Receive(gomock.Any(), gomock.Nil()).DoAndReturn(rcvr.InternalReceive).AnyTimes()
+
+	var closed int64
 
 	rcvr.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
-		md.Events.CloseLink(rcvr.LinkEvent())
+		if atomic.CompareAndSwapInt64(&closed, 0, 1) {
+			md.Events.CloseLink(rcvr.LinkEvent())
+			return nil
+		}
 
 		select {
 		case <-ctx.Done():
@@ -120,7 +139,7 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 		case <-sess.Status.Done():
 			return sess.Status.Err()
 		default:
-			rcvr.Status.CloseWithError(amqp.ErrLinkClosed)
+			rcvr.Status.CloseWithError(&amqp.LinkError{})
 		}
 
 		return nil
@@ -148,11 +167,8 @@ func (md *MockData) NewReceiver(ctx context.Context, source string, opts *amqp.R
 
 	rcvr.EXPECT().Prefetched().Return((*amqp.Message)(nil)).AnyTimes()
 
-	if opts.ManualCredits {
-		rcvr.EXPECT().IssueCredit(gomock.Any()).DoAndReturn(func(credit uint32) error {
-			credits += credit
-			return q.IssueCredit(credit, rcvr.LinkEvent(), rcvr.Status)
-		}).AnyTimes()
+	if opts.Credit == -1 {
+		rcvr.EXPECT().IssueCredit(gomock.Any()).DoAndReturn(rcvr.InternalIssueCredit).AnyTimes()
 	} else {
 		// assume unlimited credits for this receiver - the AMQP stack is going to take care of replenishing credits.
 		_ = q.IssueCredit(math.MaxUint32, rcvr.LinkEvent(), rcvr.Status)

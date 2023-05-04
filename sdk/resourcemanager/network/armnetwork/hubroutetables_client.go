@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,68 +24,61 @@ import (
 // HubRouteTablesClient contains the methods for the HubRouteTables group.
 // Don't use this type directly, use NewHubRouteTablesClient() instead.
 type HubRouteTablesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewHubRouteTablesClient creates a new instance of HubRouteTablesClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewHubRouteTablesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HubRouteTablesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".HubRouteTablesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &HubRouteTablesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// routeTableName - The name of the RouteTable.
-// routeTableParameters - Parameters supplied to create or update RouteTable.
-// options - HubRouteTablesClientBeginCreateOrUpdateOptions contains the optional parameters for the HubRouteTablesClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - routeTableName - The name of the RouteTable.
+//   - routeTableParameters - Parameters supplied to create or update RouteTable.
+//   - options - HubRouteTablesClientBeginCreateOrUpdateOptions contains the optional parameters for the HubRouteTablesClient.BeginCreateOrUpdate
+//     method.
 func (client *HubRouteTablesClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesClientBeginCreateOrUpdateOptions) (*runtime.Poller[HubRouteTablesClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[HubRouteTablesClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HubRouteTablesClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[HubRouteTablesClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[HubRouteTablesClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates a RouteTable resource if it doesn't exist else updates the existing RouteTable.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *HubRouteTablesClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, routeTableParameters HubRouteTable, options *HubRouteTablesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, routeTableParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,12 +107,12 @@ func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter routeTableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, routeTableParameters)
@@ -129,35 +120,37 @@ func (client *HubRouteTablesClient) createOrUpdateCreateRequest(ctx context.Cont
 
 // BeginDelete - Deletes a RouteTable.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the RouteTable.
-// virtualHubName - The name of the VirtualHub.
-// routeTableName - The name of the RouteTable.
-// options - HubRouteTablesClientBeginDeleteOptions contains the optional parameters for the HubRouteTablesClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the RouteTable.
+//   - virtualHubName - The name of the VirtualHub.
+//   - routeTableName - The name of the RouteTable.
+//   - options - HubRouteTablesClientBeginDeleteOptions contains the optional parameters for the HubRouteTablesClient.BeginDelete
+//     method.
 func (client *HubRouteTablesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesClientBeginDeleteOptions) (*runtime.Poller[HubRouteTablesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[HubRouteTablesClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HubRouteTablesClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[HubRouteTablesClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[HubRouteTablesClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a RouteTable.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *HubRouteTablesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -186,12 +179,12 @@ func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter routeTableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -199,17 +192,18 @@ func (client *HubRouteTablesClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Retrieves the details of a RouteTable.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// routeTableName - The name of the RouteTable.
-// options - HubRouteTablesClientGetOptions contains the optional parameters for the HubRouteTablesClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - routeTableName - The name of the RouteTable.
+//   - options - HubRouteTablesClientGetOptions contains the optional parameters for the HubRouteTablesClient.Get method.
 func (client *HubRouteTablesClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, routeTableName string, options *HubRouteTablesClientGetOptions) (HubRouteTablesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, routeTableName, options)
 	if err != nil {
 		return HubRouteTablesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HubRouteTablesClientGetResponse{}, err
 	}
@@ -238,12 +232,12 @@ func (client *HubRouteTablesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter routeTableName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{routeTableName}", url.PathEscape(routeTableName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,10 +253,11 @@ func (client *HubRouteTablesClient) getHandleResponse(resp *http.Response) (HubR
 }
 
 // NewListPager - Retrieves the details of all RouteTables.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// options - HubRouteTablesClientListOptions contains the optional parameters for the HubRouteTablesClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - options - HubRouteTablesClientListOptions contains the optional parameters for the HubRouteTablesClient.NewListPager method.
 func (client *HubRouteTablesClient) NewListPager(resourceGroupName string, virtualHubName string, options *HubRouteTablesClientListOptions) *runtime.Pager[HubRouteTablesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[HubRouteTablesClientListResponse]{
 		More: func(page HubRouteTablesClientListResponse) bool {
@@ -279,7 +274,7 @@ func (client *HubRouteTablesClient) NewListPager(resourceGroupName string, virtu
 			if err != nil {
 				return HubRouteTablesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HubRouteTablesClientListResponse{}, err
 			}
@@ -306,12 +301,12 @@ func (client *HubRouteTablesClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

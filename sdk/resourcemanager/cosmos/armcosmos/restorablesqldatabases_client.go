@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // RestorableSQLDatabasesClient contains the methods for the RestorableSQLDatabases group.
 // Don't use this type directly, use NewRestorableSQLDatabasesClient() instead.
 type RestorableSQLDatabasesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewRestorableSQLDatabasesClient creates a new instance of RestorableSQLDatabasesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRestorableSQLDatabasesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableSQLDatabasesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RestorableSQLDatabasesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RestorableSQLDatabasesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,11 +47,12 @@ func NewRestorableSQLDatabasesClient(subscriptionID string, credential azcore.To
 // NewListPager - Show the event feed of all mutations done on all the Azure Cosmos DB SQL databases under the restorable
 // account. This helps in scenario where database was accidentally deleted to get the deletion
 // time. This API requires 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/…/read' permission
-// Generated from API version 2022-08-15-preview
-// location - Cosmos DB region, with spaces between words and each word capitalized.
-// instanceID - The instanceId GUID of a restorable database account.
-// options - RestorableSQLDatabasesClientListOptions contains the optional parameters for the RestorableSQLDatabasesClient.List
-// method.
+//
+// Generated from API version 2023-03-15
+//   - location - Cosmos DB region, with spaces between words and each word capitalized.
+//   - instanceID - The instanceId GUID of a restorable database account.
+//   - options - RestorableSQLDatabasesClientListOptions contains the optional parameters for the RestorableSQLDatabasesClient.NewListPager
+//     method.
 func (client *RestorableSQLDatabasesClient) NewListPager(location string, instanceID string, options *RestorableSQLDatabasesClientListOptions) *runtime.Pager[RestorableSQLDatabasesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RestorableSQLDatabasesClientListResponse]{
 		More: func(page RestorableSQLDatabasesClientListResponse) bool {
@@ -73,7 +63,7 @@ func (client *RestorableSQLDatabasesClient) NewListPager(location string, instan
 			if err != nil {
 				return RestorableSQLDatabasesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RestorableSQLDatabasesClientListResponse{}, err
 			}
@@ -100,12 +90,12 @@ func (client *RestorableSQLDatabasesClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter instanceID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2023-03-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

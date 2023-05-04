@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,45 +24,37 @@ import (
 // ServicePrincipalsClient contains the methods for the ServicePrincipals group.
 // Don't use this type directly, use NewServicePrincipalsClient() instead.
 type ServicePrincipalsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewServicePrincipalsClient creates a new instance of ServicePrincipalsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewServicePrincipalsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServicePrincipalsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ServicePrincipalsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ServicePrincipalsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get the Automanage AAD first party Application Service Principal details for the subscription id.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// options - ServicePrincipalsClientGetOptions contains the optional parameters for the ServicePrincipalsClient.Get method.
+//   - options - ServicePrincipalsClientGetOptions contains the optional parameters for the ServicePrincipalsClient.Get method.
 func (client *ServicePrincipalsClient) Get(ctx context.Context, options *ServicePrincipalsClientGetOptions) (ServicePrincipalsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, options)
 	if err != nil {
 		return ServicePrincipalsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServicePrincipalsClientGetResponse{}, err
 	}
@@ -81,7 +71,7 @@ func (client *ServicePrincipalsClient) getCreateRequest(ctx context.Context, opt
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -103,10 +93,10 @@ func (client *ServicePrincipalsClient) getHandleResponse(resp *http.Response) (S
 
 // NewListBySubscriptionPager - Get the Automanage AAD first party Application Service Principal details for the subscription
 // id.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-05-04
-// options - ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.ListBySubscription
-// method.
+//   - options - ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.NewListBySubscriptionPager
+//     method.
 func (client *ServicePrincipalsClient) NewListBySubscriptionPager(options *ServicePrincipalsClientListBySubscriptionOptions) *runtime.Pager[ServicePrincipalsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ServicePrincipalsClientListBySubscriptionResponse]{
 		More: func(page ServicePrincipalsClientListBySubscriptionResponse) bool {
@@ -117,7 +107,7 @@ func (client *ServicePrincipalsClient) NewListBySubscriptionPager(options *Servi
 			if err != nil {
 				return ServicePrincipalsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ServicePrincipalsClientListBySubscriptionResponse{}, err
 			}
@@ -136,7 +126,7 @@ func (client *ServicePrincipalsClient) listBySubscriptionCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

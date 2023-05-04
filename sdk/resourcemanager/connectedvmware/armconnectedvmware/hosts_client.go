@@ -22,8 +22,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,65 +33,58 @@ import (
 // HostsClient contains the methods for the Hosts group.
 // Don't use this type directly, use NewHostsClient() instead.
 type HostsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewHostsClient creates a new instance of HostsClient with the specified values.
-// subscriptionID - The Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewHostsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HostsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".HostsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &HostsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Create Or Update host.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// hostName - Name of the host.
-// body - Request payload.
-// options - HostsClientBeginCreateOptions contains the optional parameters for the HostsClient.BeginCreate method.
+//   - resourceGroupName - The Resource Group Name.
+//   - hostName - Name of the host.
+//   - body - Request payload.
+//   - options - HostsClientBeginCreateOptions contains the optional parameters for the HostsClient.BeginCreate method.
 func (client *HostsClient) BeginCreate(ctx context.Context, resourceGroupName string, hostName string, body Host, options *HostsClientBeginCreateOptions) (*runtime.Poller[HostsClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, hostName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[HostsClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[HostsClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[HostsClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[HostsClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create Or Update host.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *HostsClient) create(ctx context.Context, resourceGroupName string, hostName string, body Host, options *HostsClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, hostName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +109,7 @@ func (client *HostsClient) createCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter hostName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostName}", url.PathEscape(hostName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,31 +122,33 @@ func (client *HostsClient) createCreateRequest(ctx context.Context, resourceGrou
 
 // BeginDelete - Implements host DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// hostName - Name of the host.
-// options - HostsClientBeginDeleteOptions contains the optional parameters for the HostsClient.BeginDelete method.
+//   - resourceGroupName - The Resource Group Name.
+//   - hostName - Name of the host.
+//   - options - HostsClientBeginDeleteOptions contains the optional parameters for the HostsClient.BeginDelete method.
 func (client *HostsClient) BeginDelete(ctx context.Context, resourceGroupName string, hostName string, options *HostsClientBeginDeleteOptions) (*runtime.Poller[HostsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, hostName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[HostsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[HostsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[HostsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[HostsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Implements host DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *HostsClient) deleteOperation(ctx context.Context, resourceGroupName string, hostName string, options *HostsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, hostName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +173,7 @@ func (client *HostsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter hostName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostName}", url.PathEscape(hostName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,16 +189,17 @@ func (client *HostsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 
 // Get - Implements host GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// hostName - Name of the host.
-// options - HostsClientGetOptions contains the optional parameters for the HostsClient.Get method.
+//   - resourceGroupName - The Resource Group Name.
+//   - hostName - Name of the host.
+//   - options - HostsClientGetOptions contains the optional parameters for the HostsClient.Get method.
 func (client *HostsClient) Get(ctx context.Context, resourceGroupName string, hostName string, options *HostsClientGetOptions) (HostsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, hostName, options)
 	if err != nil {
 		return HostsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HostsClientGetResponse{}, err
 	}
@@ -230,7 +224,7 @@ func (client *HostsClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter hostName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostName}", url.PathEscape(hostName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,9 +245,9 @@ func (client *HostsClient) getHandleResponse(resp *http.Response) (HostsClientGe
 }
 
 // NewListPager - List of hosts in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// options - HostsClientListOptions contains the optional parameters for the HostsClient.List method.
+//   - options - HostsClientListOptions contains the optional parameters for the HostsClient.NewListPager method.
 func (client *HostsClient) NewListPager(options *HostsClientListOptions) *runtime.Pager[HostsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[HostsClientListResponse]{
 		More: func(page HostsClientListResponse) bool {
@@ -270,7 +264,7 @@ func (client *HostsClient) NewListPager(options *HostsClientListOptions) *runtim
 			if err != nil {
 				return HostsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HostsClientListResponse{}, err
 			}
@@ -289,7 +283,7 @@ func (client *HostsClient) listCreateRequest(ctx context.Context, options *Hosts
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,11 +304,11 @@ func (client *HostsClient) listHandleResponse(resp *http.Response) (HostsClientL
 }
 
 // NewListByResourceGroupPager - List of hosts in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// options - HostsClientListByResourceGroupOptions contains the optional parameters for the HostsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - options - HostsClientListByResourceGroupOptions contains the optional parameters for the HostsClient.NewListByResourceGroupPager
+//     method.
 func (client *HostsClient) NewListByResourceGroupPager(resourceGroupName string, options *HostsClientListByResourceGroupOptions) *runtime.Pager[HostsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[HostsClientListByResourceGroupResponse]{
 		More: func(page HostsClientListByResourceGroupResponse) bool {
@@ -331,7 +325,7 @@ func (client *HostsClient) NewListByResourceGroupPager(resourceGroupName string,
 			if err != nil {
 				return HostsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return HostsClientListByResourceGroupResponse{}, err
 			}
@@ -354,7 +348,7 @@ func (client *HostsClient) listByResourceGroupCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -376,17 +370,18 @@ func (client *HostsClient) listByResourceGroupHandleResponse(resp *http.Response
 
 // Update - API to update certain properties of the host resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// hostName - Name of the host.
-// body - Resource properties to update.
-// options - HostsClientUpdateOptions contains the optional parameters for the HostsClient.Update method.
+//   - resourceGroupName - The Resource Group Name.
+//   - hostName - Name of the host.
+//   - body - Resource properties to update.
+//   - options - HostsClientUpdateOptions contains the optional parameters for the HostsClient.Update method.
 func (client *HostsClient) Update(ctx context.Context, resourceGroupName string, hostName string, body ResourcePatch, options *HostsClientUpdateOptions) (HostsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, hostName, body, options)
 	if err != nil {
 		return HostsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return HostsClientUpdateResponse{}, err
 	}
@@ -411,7 +406,7 @@ func (client *HostsClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter hostName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{hostName}", url.PathEscape(hostName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

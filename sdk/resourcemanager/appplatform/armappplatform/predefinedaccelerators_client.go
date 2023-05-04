@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // PredefinedAcceleratorsClient contains the methods for the PredefinedAccelerators group.
 // Don't use this type directly, use NewPredefinedAcceleratorsClient() instead.
 type PredefinedAcceleratorsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPredefinedAcceleratorsClient creates a new instance of PredefinedAcceleratorsClient with the specified values.
-// subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPredefinedAcceleratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PredefinedAcceleratorsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PredefinedAcceleratorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PredefinedAcceleratorsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginDisable - Disable predefined accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationAcceleratorName - The name of the application accelerator.
-// predefinedAcceleratorName - The name of the predefined accelerator.
-// options - PredefinedAcceleratorsClientBeginDisableOptions contains the optional parameters for the PredefinedAcceleratorsClient.BeginDisable
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationAcceleratorName - The name of the application accelerator.
+//   - predefinedAcceleratorName - The name of the predefined accelerator.
+//   - options - PredefinedAcceleratorsClientBeginDisableOptions contains the optional parameters for the PredefinedAcceleratorsClient.BeginDisable
+//     method.
 func (client *PredefinedAcceleratorsClient) BeginDisable(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, predefinedAcceleratorName string, options *PredefinedAcceleratorsClientBeginDisableOptions) (*runtime.Poller[PredefinedAcceleratorsClientDisableResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.disable(ctx, resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[PredefinedAcceleratorsClientDisableResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PredefinedAcceleratorsClientDisableResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[PredefinedAcceleratorsClientDisableResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PredefinedAcceleratorsClientDisableResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Disable - Disable predefined accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *PredefinedAcceleratorsClient) disable(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, predefinedAcceleratorName string, options *PredefinedAcceleratorsClientBeginDisableOptions) (*http.Response, error) {
 	req, err := client.disableCreateRequest(ctx, resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -119,12 +110,12 @@ func (client *PredefinedAcceleratorsClient) disableCreateRequest(ctx context.Con
 		return nil, errors.New("parameter predefinedAcceleratorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{predefinedAcceleratorName}", url.PathEscape(predefinedAcceleratorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -132,35 +123,37 @@ func (client *PredefinedAcceleratorsClient) disableCreateRequest(ctx context.Con
 
 // BeginEnable - Enable predefined accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationAcceleratorName - The name of the application accelerator.
-// predefinedAcceleratorName - The name of the predefined accelerator.
-// options - PredefinedAcceleratorsClientBeginEnableOptions contains the optional parameters for the PredefinedAcceleratorsClient.BeginEnable
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationAcceleratorName - The name of the application accelerator.
+//   - predefinedAcceleratorName - The name of the predefined accelerator.
+//   - options - PredefinedAcceleratorsClientBeginEnableOptions contains the optional parameters for the PredefinedAcceleratorsClient.BeginEnable
+//     method.
 func (client *PredefinedAcceleratorsClient) BeginEnable(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, predefinedAcceleratorName string, options *PredefinedAcceleratorsClientBeginEnableOptions) (*runtime.Poller[PredefinedAcceleratorsClientEnableResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.enable(ctx, resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[PredefinedAcceleratorsClientEnableResponse](resp, client.pl, nil)
+		return runtime.NewPoller[PredefinedAcceleratorsClientEnableResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[PredefinedAcceleratorsClientEnableResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[PredefinedAcceleratorsClientEnableResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Enable - Enable predefined accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *PredefinedAcceleratorsClient) enable(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, predefinedAcceleratorName string, options *PredefinedAcceleratorsClientBeginEnableOptions) (*http.Response, error) {
 	req, err := client.enableCreateRequest(ctx, resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -193,12 +186,12 @@ func (client *PredefinedAcceleratorsClient) enableCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter predefinedAcceleratorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{predefinedAcceleratorName}", url.PathEscape(predefinedAcceleratorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -206,20 +199,21 @@ func (client *PredefinedAcceleratorsClient) enableCreateRequest(ctx context.Cont
 
 // Get - Get the predefined accelerator.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationAcceleratorName - The name of the application accelerator.
-// predefinedAcceleratorName - The name of the predefined accelerator.
-// options - PredefinedAcceleratorsClientGetOptions contains the optional parameters for the PredefinedAcceleratorsClient.Get
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationAcceleratorName - The name of the application accelerator.
+//   - predefinedAcceleratorName - The name of the predefined accelerator.
+//   - options - PredefinedAcceleratorsClientGetOptions contains the optional parameters for the PredefinedAcceleratorsClient.Get
+//     method.
 func (client *PredefinedAcceleratorsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, applicationAcceleratorName string, predefinedAcceleratorName string, options *PredefinedAcceleratorsClientGetOptions) (PredefinedAcceleratorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, applicationAcceleratorName, predefinedAcceleratorName, options)
 	if err != nil {
 		return PredefinedAcceleratorsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PredefinedAcceleratorsClientGetResponse{}, err
 	}
@@ -252,12 +246,12 @@ func (client *PredefinedAcceleratorsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter predefinedAcceleratorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{predefinedAcceleratorName}", url.PathEscape(predefinedAcceleratorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -273,13 +267,14 @@ func (client *PredefinedAcceleratorsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Handle requests to list all predefined accelerators.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// applicationAcceleratorName - The name of the application accelerator.
-// options - PredefinedAcceleratorsClientListOptions contains the optional parameters for the PredefinedAcceleratorsClient.List
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - applicationAcceleratorName - The name of the application accelerator.
+//   - options - PredefinedAcceleratorsClientListOptions contains the optional parameters for the PredefinedAcceleratorsClient.NewListPager
+//     method.
 func (client *PredefinedAcceleratorsClient) NewListPager(resourceGroupName string, serviceName string, applicationAcceleratorName string, options *PredefinedAcceleratorsClientListOptions) *runtime.Pager[PredefinedAcceleratorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[PredefinedAcceleratorsClientListResponse]{
 		More: func(page PredefinedAcceleratorsClientListResponse) bool {
@@ -296,7 +291,7 @@ func (client *PredefinedAcceleratorsClient) NewListPager(resourceGroupName strin
 			if err != nil {
 				return PredefinedAcceleratorsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return PredefinedAcceleratorsClientListResponse{}, err
 			}
@@ -327,12 +322,12 @@ func (client *PredefinedAcceleratorsClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter applicationAcceleratorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{applicationAcceleratorName}", url.PathEscape(applicationAcceleratorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

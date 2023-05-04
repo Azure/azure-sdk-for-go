@@ -9,22 +9,22 @@
 
 package armnetworkfunction
 
-// AzureTrafficCollectorsByResourceGroupClientListResponse contains the response from method AzureTrafficCollectorsByResourceGroupClient.List.
+// AzureTrafficCollectorsByResourceGroupClientListResponse contains the response from method AzureTrafficCollectorsByResourceGroupClient.NewListPager.
 type AzureTrafficCollectorsByResourceGroupClientListResponse struct {
 	AzureTrafficCollectorListResult
 }
 
-// AzureTrafficCollectorsBySubscriptionClientListResponse contains the response from method AzureTrafficCollectorsBySubscriptionClient.List.
+// AzureTrafficCollectorsBySubscriptionClientListResponse contains the response from method AzureTrafficCollectorsBySubscriptionClient.NewListPager.
 type AzureTrafficCollectorsBySubscriptionClientListResponse struct {
 	AzureTrafficCollectorListResult
 }
 
-// AzureTrafficCollectorsClientCreateOrUpdateResponse contains the response from method AzureTrafficCollectorsClient.CreateOrUpdate.
+// AzureTrafficCollectorsClientCreateOrUpdateResponse contains the response from method AzureTrafficCollectorsClient.BeginCreateOrUpdate.
 type AzureTrafficCollectorsClientCreateOrUpdateResponse struct {
 	AzureTrafficCollector
 }
 
-// AzureTrafficCollectorsClientDeleteResponse contains the response from method AzureTrafficCollectorsClient.Delete.
+// AzureTrafficCollectorsClientDeleteResponse contains the response from method AzureTrafficCollectorsClient.BeginDelete.
 type AzureTrafficCollectorsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -39,17 +39,17 @@ type AzureTrafficCollectorsClientUpdateTagsResponse struct {
 	AzureTrafficCollector
 }
 
-// ClientListOperationsResponse contains the response from method Client.ListOperations.
+// ClientListOperationsResponse contains the response from method Client.NewListOperationsPager.
 type ClientListOperationsResponse struct {
 	OperationListResult
 }
 
-// CollectorPoliciesClientCreateOrUpdateResponse contains the response from method CollectorPoliciesClient.CreateOrUpdate.
+// CollectorPoliciesClientCreateOrUpdateResponse contains the response from method CollectorPoliciesClient.BeginCreateOrUpdate.
 type CollectorPoliciesClientCreateOrUpdateResponse struct {
 	CollectorPolicy
 }
 
-// CollectorPoliciesClientDeleteResponse contains the response from method CollectorPoliciesClient.Delete.
+// CollectorPoliciesClientDeleteResponse contains the response from method CollectorPoliciesClient.BeginDelete.
 type CollectorPoliciesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -59,7 +59,7 @@ type CollectorPoliciesClientGetResponse struct {
 	CollectorPolicy
 }
 
-// CollectorPoliciesClientListResponse contains the response from method CollectorPoliciesClient.List.
+// CollectorPoliciesClientListResponse contains the response from method CollectorPoliciesClient.NewListPager.
 type CollectorPoliciesClientListResponse struct {
 	CollectorPolicyListResult
 }

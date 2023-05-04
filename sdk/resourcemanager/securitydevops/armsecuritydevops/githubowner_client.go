@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // GitHubOwnerClient contains the methods for the GitHubOwner group.
 // Don't use this type directly, use NewGitHubOwnerClient() instead.
 type GitHubOwnerClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGitHubOwnerClient creates a new instance of GitHubOwnerClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGitHubOwnerClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitHubOwnerClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GitHubOwnerClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GitHubOwnerClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create or update a monitored GitHub owner.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// gitHubConnectorName - Name of the GitHub Connector.
-// gitHubOwnerName - Name of the GitHub Owner.
-// gitHubOwner - Github owner.
-// options - GitHubOwnerClientBeginCreateOrUpdateOptions contains the optional parameters for the GitHubOwnerClient.BeginCreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gitHubConnectorName - Name of the GitHub Connector.
+//   - gitHubOwnerName - Name of the GitHub Owner.
+//   - gitHubOwner - Github owner.
+//   - options - GitHubOwnerClientBeginCreateOrUpdateOptions contains the optional parameters for the GitHubOwnerClient.BeginCreateOrUpdate
+//     method.
 func (client *GitHubOwnerClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubOwnerName string, gitHubOwner GitHubOwner, options *GitHubOwnerClientBeginCreateOrUpdateOptions) (*runtime.Poller[GitHubOwnerClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[GitHubOwnerClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GitHubOwnerClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[GitHubOwnerClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GitHubOwnerClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create or update a monitored GitHub owner.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *GitHubOwnerClient) createOrUpdate(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubOwnerName string, gitHubOwner GitHubOwner, options *GitHubOwnerClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,7 +106,7 @@ func (client *GitHubOwnerClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter gitHubOwnerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gitHubOwnerName}", url.PathEscape(gitHubOwnerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -128,17 +119,18 @@ func (client *GitHubOwnerClient) createOrUpdateCreateRequest(ctx context.Context
 
 // Get - Returns a monitored GitHub repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// gitHubConnectorName - Name of the GitHub Connector.
-// gitHubOwnerName - Name of the GitHub Owner.
-// options - GitHubOwnerClientGetOptions contains the optional parameters for the GitHubOwnerClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gitHubConnectorName - Name of the GitHub Connector.
+//   - gitHubOwnerName - Name of the GitHub Owner.
+//   - options - GitHubOwnerClientGetOptions contains the optional parameters for the GitHubOwnerClient.Get method.
 func (client *GitHubOwnerClient) Get(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubOwnerName string, options *GitHubOwnerClientGetOptions) (GitHubOwnerClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, gitHubConnectorName, gitHubOwnerName, options)
 	if err != nil {
 		return GitHubOwnerClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GitHubOwnerClientGetResponse{}, err
 	}
@@ -167,7 +159,7 @@ func (client *GitHubOwnerClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter gitHubOwnerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gitHubOwnerName}", url.PathEscape(gitHubOwnerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -188,10 +180,11 @@ func (client *GitHubOwnerClient) getHandleResponse(resp *http.Response) (GitHubO
 }
 
 // NewListPager - Returns a list of monitored GitHub owners.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// gitHubConnectorName - Name of the GitHub Connector.
-// options - GitHubOwnerClientListOptions contains the optional parameters for the GitHubOwnerClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gitHubConnectorName - Name of the GitHub Connector.
+//   - options - GitHubOwnerClientListOptions contains the optional parameters for the GitHubOwnerClient.NewListPager method.
 func (client *GitHubOwnerClient) NewListPager(resourceGroupName string, gitHubConnectorName string, options *GitHubOwnerClientListOptions) *runtime.Pager[GitHubOwnerClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GitHubOwnerClientListResponse]{
 		More: func(page GitHubOwnerClientListResponse) bool {
@@ -208,7 +201,7 @@ func (client *GitHubOwnerClient) NewListPager(resourceGroupName string, gitHubCo
 			if err != nil {
 				return GitHubOwnerClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GitHubOwnerClientListResponse{}, err
 			}
@@ -235,7 +228,7 @@ func (client *GitHubOwnerClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter gitHubConnectorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gitHubConnectorName}", url.PathEscape(gitHubConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -257,33 +250,35 @@ func (client *GitHubOwnerClient) listHandleResponse(resp *http.Response) (GitHub
 
 // BeginUpdate - Patch a monitored GitHub repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// gitHubConnectorName - Name of the GitHub Connector.
-// gitHubOwnerName - Name of the GitHub Owner.
-// gitHubOwner - Github owner.
-// options - GitHubOwnerClientBeginUpdateOptions contains the optional parameters for the GitHubOwnerClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - gitHubConnectorName - Name of the GitHub Connector.
+//   - gitHubOwnerName - Name of the GitHub Owner.
+//   - gitHubOwner - Github owner.
+//   - options - GitHubOwnerClientBeginUpdateOptions contains the optional parameters for the GitHubOwnerClient.BeginUpdate method.
 func (client *GitHubOwnerClient) BeginUpdate(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubOwnerName string, gitHubOwner GitHubOwner, options *GitHubOwnerClientBeginUpdateOptions) (*runtime.Poller[GitHubOwnerClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GitHubOwnerClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GitHubOwnerClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GitHubOwnerClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GitHubOwnerClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Patch a monitored GitHub repository.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01-preview
 func (client *GitHubOwnerClient) update(ctx context.Context, resourceGroupName string, gitHubConnectorName string, gitHubOwnerName string, gitHubOwner GitHubOwner, options *GitHubOwnerClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, gitHubConnectorName, gitHubOwnerName, gitHubOwner, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -312,7 +307,7 @@ func (client *GitHubOwnerClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter gitHubOwnerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{gitHubOwnerName}", url.PathEscape(gitHubOwnerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // DataFlowDebugSessionClient contains the methods for the DataFlowDebugSession group.
 // Don't use this type directly, use NewDataFlowDebugSessionClient() instead.
 type DataFlowDebugSessionClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataFlowDebugSessionClient creates a new instance of DataFlowDebugSessionClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataFlowDebugSessionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataFlowDebugSessionClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataFlowDebugSessionClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataFlowDebugSessionClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // AddDataFlow - Add a data flow into debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// request - Data flow debug session definition with debug content.
-// options - DataFlowDebugSessionClientAddDataFlowOptions contains the optional parameters for the DataFlowDebugSessionClient.AddDataFlow
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - request - Data flow debug session definition with debug content.
+//   - options - DataFlowDebugSessionClientAddDataFlowOptions contains the optional parameters for the DataFlowDebugSessionClient.AddDataFlow
+//     method.
 func (client *DataFlowDebugSessionClient) AddDataFlow(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugPackage, options *DataFlowDebugSessionClientAddDataFlowOptions) (DataFlowDebugSessionClientAddDataFlowResponse, error) {
 	req, err := client.addDataFlowCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
 		return DataFlowDebugSessionClientAddDataFlowResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataFlowDebugSessionClientAddDataFlowResponse{}, err
 	}
@@ -93,7 +83,7 @@ func (client *DataFlowDebugSessionClient) addDataFlowCreateRequest(ctx context.C
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,33 +105,35 @@ func (client *DataFlowDebugSessionClient) addDataFlowHandleResponse(resp *http.R
 
 // BeginCreate - Creates a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// request - Data flow debug session definition
-// options - DataFlowDebugSessionClientBeginCreateOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginCreate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - request - Data flow debug session definition
+//   - options - DataFlowDebugSessionClientBeginCreateOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginCreate
+//     method.
 func (client *DataFlowDebugSessionClient) BeginCreate(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientBeginCreateOptions) (*runtime.Poller[DataFlowDebugSessionClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, factoryName, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DataFlowDebugSessionClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataFlowDebugSessionClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DataFlowDebugSessionClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataFlowDebugSessionClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *DataFlowDebugSessionClient) create(ctx context.Context, resourceGroupName string, factoryName string, request CreateDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +158,7 @@ func (client *DataFlowDebugSessionClient) createCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -179,18 +171,19 @@ func (client *DataFlowDebugSessionClient) createCreateRequest(ctx context.Contex
 
 // Delete - Deletes a data flow debug session.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// request - Data flow debug session definition for deletion
-// options - DataFlowDebugSessionClientDeleteOptions contains the optional parameters for the DataFlowDebugSessionClient.Delete
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - request - Data flow debug session definition for deletion
+//   - options - DataFlowDebugSessionClientDeleteOptions contains the optional parameters for the DataFlowDebugSessionClient.Delete
+//     method.
 func (client *DataFlowDebugSessionClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, request DeleteDataFlowDebugSessionRequest, options *DataFlowDebugSessionClientDeleteOptions) (DataFlowDebugSessionClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
 		return DataFlowDebugSessionClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataFlowDebugSessionClientDeleteResponse{}, err
 	}
@@ -215,7 +208,7 @@ func (client *DataFlowDebugSessionClient) deleteCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -228,33 +221,35 @@ func (client *DataFlowDebugSessionClient) deleteCreateRequest(ctx context.Contex
 
 // BeginExecuteCommand - Execute a data flow debug command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// request - Data flow debug command definition.
-// options - DataFlowDebugSessionClientBeginExecuteCommandOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginExecuteCommand
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - request - Data flow debug command definition.
+//   - options - DataFlowDebugSessionClientBeginExecuteCommandOptions contains the optional parameters for the DataFlowDebugSessionClient.BeginExecuteCommand
+//     method.
 func (client *DataFlowDebugSessionClient) BeginExecuteCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionClientBeginExecuteCommandOptions) (*runtime.Poller[DataFlowDebugSessionClientExecuteCommandResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.executeCommand(ctx, resourceGroupName, factoryName, request, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DataFlowDebugSessionClientExecuteCommandResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DataFlowDebugSessionClientExecuteCommandResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DataFlowDebugSessionClientExecuteCommandResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DataFlowDebugSessionClientExecuteCommandResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // ExecuteCommand - Execute a data flow debug command.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *DataFlowDebugSessionClient) executeCommand(ctx context.Context, resourceGroupName string, factoryName string, request DataFlowDebugCommandRequest, options *DataFlowDebugSessionClientBeginExecuteCommandOptions) (*http.Response, error) {
 	req, err := client.executeCommandCreateRequest(ctx, resourceGroupName, factoryName, request, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -279,7 +274,7 @@ func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -291,11 +286,12 @@ func (client *DataFlowDebugSessionClient) executeCommandCreateRequest(ctx contex
 }
 
 // NewQueryByFactoryPager - Query all active data flow debug sessions.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - DataFlowDebugSessionClientQueryByFactoryOptions contains the optional parameters for the DataFlowDebugSessionClient.QueryByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - DataFlowDebugSessionClientQueryByFactoryOptions contains the optional parameters for the DataFlowDebugSessionClient.NewQueryByFactoryPager
+//     method.
 func (client *DataFlowDebugSessionClient) NewQueryByFactoryPager(resourceGroupName string, factoryName string, options *DataFlowDebugSessionClientQueryByFactoryOptions) *runtime.Pager[DataFlowDebugSessionClientQueryByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataFlowDebugSessionClientQueryByFactoryResponse]{
 		More: func(page DataFlowDebugSessionClientQueryByFactoryResponse) bool {
@@ -312,7 +308,7 @@ func (client *DataFlowDebugSessionClient) NewQueryByFactoryPager(resourceGroupNa
 			if err != nil {
 				return DataFlowDebugSessionClientQueryByFactoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataFlowDebugSessionClientQueryByFactoryResponse{}, err
 			}
@@ -339,7 +335,7 @@ func (client *DataFlowDebugSessionClient) queryByFactoryCreateRequest(ctx contex
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

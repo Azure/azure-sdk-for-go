@@ -14,79 +14,79 @@ import "time"
 // AllowedEnvironmentType - Represents an allowed environment type.
 type AllowedEnvironmentType struct {
 	// Properties of an allowed environment type.
-	Properties *AllowedEnvironmentTypeProperties `json:"properties,omitempty"`
+	Properties *AllowedEnvironmentTypeProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AllowedEnvironmentTypeListResult - Result of the allowed environment type list operation.
 type AllowedEnvironmentTypeListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*AllowedEnvironmentType `json:"value,omitempty" azure:"ro"`
+	Value []*AllowedEnvironmentType
 }
 
 // AllowedEnvironmentTypeProperties - Properties of an allowed environment type.
 type AllowedEnvironmentTypeProperties struct {
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // AttachedNetworkConnection - Represents an attached NetworkConnection.
 type AttachedNetworkConnection struct {
 	// Attached NetworkConnection properties.
-	Properties *AttachedNetworkConnectionProperties `json:"properties,omitempty"`
+	Properties *AttachedNetworkConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AttachedNetworkConnectionProperties - Properties of an attached NetworkConnection.
 type AttachedNetworkConnectionProperties struct {
 	// REQUIRED; The resource ID of the NetworkConnection you want to attach.
-	NetworkConnectionID *string `json:"networkConnectionId,omitempty"`
+	NetworkConnectionID *string
 
 	// READ-ONLY; AAD Join type of the network. This is populated based on the referenced Network Connection.
-	DomainJoinType *DomainJoinType `json:"domainJoinType,omitempty" azure:"ro"`
+	DomainJoinType *DomainJoinType
 
 	// READ-ONLY; Health check status values
-	HealthCheckStatus *HealthCheckStatus `json:"healthCheckStatus,omitempty" azure:"ro"`
+	HealthCheckStatus *HealthCheckStatus
 
 	// READ-ONLY; The geo-location where the NetworkConnection resource specified in 'networkConnectionResourceId' property lives.
-	NetworkConnectionLocation *string `json:"networkConnectionLocation,omitempty" azure:"ro"`
+	NetworkConnectionLocation *string
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // AttachedNetworkListResult - Results of the Attached Networks list operation.
 type AttachedNetworkListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*AttachedNetworkConnection `json:"value,omitempty" azure:"ro"`
+	Value []*AttachedNetworkConnection
 }
 
 // AttachedNetworksClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedNetworksClient.BeginCreateOrUpdate
@@ -114,14 +114,14 @@ type AttachedNetworksClientGetByProjectOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttachedNetworksClientListByDevCenterOptions contains the optional parameters for the AttachedNetworksClient.ListByDevCenter
+// AttachedNetworksClientListByDevCenterOptions contains the optional parameters for the AttachedNetworksClient.NewListByDevCenterPager
 // method.
 type AttachedNetworksClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// AttachedNetworksClientListByProjectOptions contains the optional parameters for the AttachedNetworksClient.ListByProject
+// AttachedNetworksClientListByProjectOptions contains the optional parameters for the AttachedNetworksClient.NewListByProjectPager
 // method.
 type AttachedNetworksClientListByProjectOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -131,74 +131,74 @@ type AttachedNetworksClientListByProjectOptions struct {
 // Capability - A name/value pair to describe a capability.
 type Capability struct {
 	// READ-ONLY; Name of the capability.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Value of the capability.
-	Value *string `json:"value,omitempty" azure:"ro"`
+	Value *string
 }
 
 // Catalog - Represents a catalog.
 type Catalog struct {
 	// Catalog properties.
-	Properties *CatalogProperties `json:"properties,omitempty"`
+	Properties *CatalogProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // CatalogListResult - Results of the catalog list operation.
 type CatalogListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*Catalog `json:"value,omitempty" azure:"ro"`
+	Value []*Catalog
 }
 
 // CatalogProperties - Properties of a catalog.
 type CatalogProperties struct {
 	// Properties for an Azure DevOps catalog type.
-	AdoGit *GitCatalog `json:"adoGit,omitempty"`
+	AdoGit *GitCatalog
 
 	// Properties for a GitHub catalog type.
-	GitHub *GitCatalog `json:"gitHub,omitempty"`
+	GitHub *GitCatalog
 
 	// READ-ONLY; When the catalog was last synced.
-	LastSyncTime *time.Time `json:"lastSyncTime,omitempty" azure:"ro"`
+	LastSyncTime *time.Time
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The synchronization state of the catalog.
-	SyncState *CatalogSyncState `json:"syncState,omitempty" azure:"ro"`
+	SyncState *CatalogSyncState
 }
 
 // CatalogUpdate - The catalog's properties for partial update. Properties not provided in the update request will not be
 // changed.
 type CatalogUpdate struct {
 	// Catalog properties for update.
-	Properties *CatalogUpdateProperties `json:"properties,omitempty"`
+	Properties *CatalogUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // CatalogUpdateProperties - Properties of a catalog. These properties can be updated after the resource has been created.
 type CatalogUpdateProperties struct {
 	// Properties for an Azure DevOps catalog type.
-	AdoGit *GitCatalog `json:"adoGit,omitempty"`
+	AdoGit *GitCatalog
 
 	// Properties for a GitHub catalog type.
-	GitHub *GitCatalog `json:"gitHub,omitempty"`
+	GitHub *GitCatalog
 }
 
 // CatalogsClientBeginCreateOrUpdateOptions contains the optional parameters for the CatalogsClient.BeginCreateOrUpdate method.
@@ -230,7 +230,7 @@ type CatalogsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// CatalogsClientListByDevCenterOptions contains the optional parameters for the CatalogsClient.ListByDevCenter method.
+// CatalogsClientListByDevCenterOptions contains the optional parameters for the CatalogsClient.NewListByDevCenterPager method.
 type CatalogsClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -245,95 +245,95 @@ type CheckNameAvailabilityClientExecuteOptions struct {
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
 	// The name of the resource for which availability needs to be checked.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResponse - The check availability result.
 type CheckNameAvailabilityResponse struct {
 	// Detailed reason why the given name is available.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicates if the resource name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason why the given name is not available.
-	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
+	Reason *CheckNameAvailabilityReason
 }
 
 // DevBoxDefinition - Represents a definition for a Developer Machine.
 type DevBoxDefinition struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Dev Box definition properties
-	Properties *DevBoxDefinitionProperties `json:"properties,omitempty"`
+	Properties *DevBoxDefinitionProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DevBoxDefinitionListResult - Results of the Dev Box definition list operation.
 type DevBoxDefinitionListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*DevBoxDefinition `json:"value,omitempty" azure:"ro"`
+	Value []*DevBoxDefinition
 }
 
 // DevBoxDefinitionProperties - Properties of a Dev Box definition.
 type DevBoxDefinitionProperties struct {
 	// Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable of supporting
 	// hibernation. To find out more see https://aka.ms/devbox/hibernate
-	HibernateSupport *HibernateSupport `json:"hibernateSupport,omitempty"`
+	HibernateSupport *HibernateSupport
 
 	// Image reference information.
-	ImageReference *ImageReference `json:"imageReference,omitempty"`
+	ImageReference *ImageReference
 
 	// The storage type used for the Operating System disk of Dev Boxes created using this definition.
-	OSStorageType *string `json:"osStorageType,omitempty"`
+	OSStorageType *string
 
 	// The SKU for Dev Boxes created using this definition.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; Image reference information for the currently active image (only populated during updates).
-	ActiveImageReference *ImageReference `json:"activeImageReference,omitempty" azure:"ro"`
+	ActiveImageReference *ImageReference
 
 	// READ-ONLY; Details for image validator error. Populated when the image validation is not successful.
-	ImageValidationErrorDetails *ImageValidationErrorDetails `json:"imageValidationErrorDetails,omitempty" azure:"ro"`
+	ImageValidationErrorDetails *ImageValidationErrorDetails
 
 	// READ-ONLY; Validation status of the configured image.
-	ImageValidationStatus *ImageValidationStatus `json:"imageValidationStatus,omitempty" azure:"ro"`
+	ImageValidationStatus *ImageValidationStatus
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // DevBoxDefinitionUpdate - Partial update of a Dev Box definition resource.
 type DevBoxDefinitionUpdate struct {
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of a Dev Box definition to be updated.
-	Properties *DevBoxDefinitionUpdateProperties `json:"properties,omitempty"`
+	Properties *DevBoxDefinitionUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // DevBoxDefinitionUpdateProperties - Properties of a Dev Box definition. These properties can be updated after the resource
@@ -341,16 +341,16 @@ type DevBoxDefinitionUpdate struct {
 type DevBoxDefinitionUpdateProperties struct {
 	// Indicates whether Dev Boxes created with this definition are capable of hibernation. Not all images are capable of supporting
 	// hibernation. To find out more see https://aka.ms/devbox/hibernate
-	HibernateSupport *HibernateSupport `json:"hibernateSupport,omitempty"`
+	HibernateSupport *HibernateSupport
 
 	// Image reference information.
-	ImageReference *ImageReference `json:"imageReference,omitempty"`
+	ImageReference *ImageReference
 
 	// The storage type used for the Operating System disk of Dev Boxes created using this definition.
-	OSStorageType *string `json:"osStorageType,omitempty"`
+	OSStorageType *string
 
 	// The SKU for Dev Boxes created using this definition.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 }
 
 // DevBoxDefinitionsClientBeginCreateOrUpdateOptions contains the optional parameters for the DevBoxDefinitionsClient.BeginCreateOrUpdate
@@ -385,14 +385,14 @@ type DevBoxDefinitionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevBoxDefinitionsClientListByDevCenterOptions contains the optional parameters for the DevBoxDefinitionsClient.ListByDevCenter
+// DevBoxDefinitionsClientListByDevCenterOptions contains the optional parameters for the DevBoxDefinitionsClient.NewListByDevCenterPager
 // method.
 type DevBoxDefinitionsClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// DevBoxDefinitionsClientListByProjectOptions contains the optional parameters for the DevBoxDefinitionsClient.ListByProject
+// DevBoxDefinitionsClientListByProjectOptions contains the optional parameters for the DevBoxDefinitionsClient.NewListByProjectPager
 // method.
 type DevBoxDefinitionsClientListByProjectOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -402,28 +402,28 @@ type DevBoxDefinitionsClientListByProjectOptions struct {
 // DevCenter - Represents a devcenter resource.
 type DevCenter struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Managed identity properties
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// DevCenter properties
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DevCentersClientBeginCreateOrUpdateOptions contains the optional parameters for the DevCentersClient.BeginCreateOrUpdate
@@ -450,14 +450,14 @@ type DevCentersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DevCentersClientListByResourceGroupOptions contains the optional parameters for the DevCentersClient.ListByResourceGroup
+// DevCentersClientListByResourceGroupOptions contains the optional parameters for the DevCentersClient.NewListByResourceGroupPager
 // method.
 type DevCentersClientListByResourceGroupOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// DevCentersClientListBySubscriptionOptions contains the optional parameters for the DevCentersClient.ListBySubscription
+// DevCentersClientListBySubscriptionOptions contains the optional parameters for the DevCentersClient.NewListBySubscriptionPager
 // method.
 type DevCentersClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -467,53 +467,53 @@ type DevCentersClientListBySubscriptionOptions struct {
 // EnvironmentRole - A role that can be assigned to a user.
 type EnvironmentRole struct {
 	// READ-ONLY; This is a description of the Role Assignment.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The common name of the Role Assignment. This is a descriptive name such as 'AcrPush'.
-	RoleName *string `json:"roleName,omitempty" azure:"ro"`
+	RoleName *string
 }
 
 // EnvironmentType - Represents an environment type.
 type EnvironmentType struct {
 	// Properties of an environment type.
-	Properties *EnvironmentTypeProperties `json:"properties,omitempty"`
+	Properties *EnvironmentTypeProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // EnvironmentTypeListResult - Result of the environment type list operation.
 type EnvironmentTypeListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*EnvironmentType `json:"value,omitempty" azure:"ro"`
+	Value []*EnvironmentType
 }
 
 // EnvironmentTypeProperties - Properties of an environment type.
 type EnvironmentTypeProperties struct {
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // EnvironmentTypeUpdate - The environment type for partial update. Properties not provided in the update request will not
 // be changed.
 type EnvironmentTypeUpdate struct {
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // EnvironmentTypesClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentTypesClient.CreateOrUpdate
@@ -532,7 +532,7 @@ type EnvironmentTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// EnvironmentTypesClientListByDevCenterOptions contains the optional parameters for the EnvironmentTypesClient.ListByDevCenter
+// EnvironmentTypesClientListByDevCenterOptions contains the optional parameters for the EnvironmentTypesClient.NewListByDevCenterPager
 // method.
 type EnvironmentTypesClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -547,28 +547,28 @@ type EnvironmentTypesClientUpdateOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // GalleriesClientBeginCreateOrUpdateOptions contains the optional parameters for the GalleriesClient.BeginCreateOrUpdate
@@ -589,7 +589,8 @@ type GalleriesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GalleriesClientListByDevCenterOptions contains the optional parameters for the GalleriesClient.ListByDevCenter method.
+// GalleriesClientListByDevCenterOptions contains the optional parameters for the GalleriesClient.NewListByDevCenterPager
+// method.
 type GalleriesClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -598,236 +599,236 @@ type GalleriesClientListByDevCenterOptions struct {
 // Gallery - Represents a gallery.
 type Gallery struct {
 	// Gallery properties.
-	Properties *GalleryProperties `json:"properties,omitempty"`
+	Properties *GalleryProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GalleryListResult - Results of the gallery list operation.
 type GalleryListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*Gallery `json:"value,omitempty" azure:"ro"`
+	Value []*Gallery
 }
 
 // GalleryProperties - Properties of a gallery.
 type GalleryProperties struct {
 	// REQUIRED; The resource ID of the backing Azure Compute Gallery.
-	GalleryResourceID *string `json:"galleryResourceId,omitempty"`
+	GalleryResourceID *string
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // GitCatalog - Properties for a Git repository catalog.
 type GitCatalog struct {
 	// Git branch.
-	Branch *string `json:"branch,omitempty"`
+	Branch *string
 
 	// The folder where the catalog items can be found inside the repository.
-	Path *string `json:"path,omitempty"`
+	Path *string
 
 	// A reference to the Key Vault secret containing a security token to authenticate to a Git repository.
-	SecretIdentifier *string `json:"secretIdentifier,omitempty"`
+	SecretIdentifier *string
 
 	// Git URI.
-	URI *string `json:"uri,omitempty"`
+	URI *string
 }
 
 // HealthCheck - An individual health check item
 type HealthCheck struct {
 	// READ-ONLY; Additional details about the health check or the recommended action.
-	AdditionalDetails *string `json:"additionalDetails,omitempty" azure:"ro"`
+	AdditionalDetails *string
 
 	// READ-ONLY; The display name of this health check item.
-	DisplayName *string `json:"displayName,omitempty" azure:"ro"`
+	DisplayName *string
 
 	// READ-ONLY; End time of the health check item.
-	EndDateTime *time.Time `json:"endDateTime,omitempty" azure:"ro"`
+	EndDateTime *time.Time
 
 	// READ-ONLY; The type of error that occurred during this health check.
-	ErrorType *string `json:"errorType,omitempty" azure:"ro"`
+	ErrorType *string
 
 	// READ-ONLY; The recommended action to fix the corresponding error.
-	RecommendedAction *string `json:"recommendedAction,omitempty" azure:"ro"`
+	RecommendedAction *string
 
 	// READ-ONLY; Start time of health check item.
-	StartDateTime *time.Time `json:"startDateTime,omitempty" azure:"ro"`
+	StartDateTime *time.Time
 
 	// READ-ONLY; The status of the health check item.
-	Status *HealthCheckStatus `json:"status,omitempty" azure:"ro"`
+	Status *HealthCheckStatus
 }
 
 // HealthCheckStatusDetails - Health Check details.
 type HealthCheckStatusDetails struct {
 	// Health check status details properties.
-	Properties *HealthCheckStatusDetailsProperties `json:"properties,omitempty"`
+	Properties *HealthCheckStatusDetailsProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // HealthCheckStatusDetailsListResult - Result of the network health check list operation.
 type HealthCheckStatusDetailsListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*HealthCheckStatusDetails `json:"value,omitempty" azure:"ro"`
+	Value []*HealthCheckStatusDetails
 }
 
 // HealthCheckStatusDetailsProperties - Health Check properties.
 type HealthCheckStatusDetailsProperties struct {
 	// READ-ONLY; End time of last execution of the health checks.
-	EndDateTime *time.Time `json:"endDateTime,omitempty" azure:"ro"`
+	EndDateTime *time.Time
 
 	// READ-ONLY; Details for each health check item.
-	HealthChecks []*HealthCheck `json:"healthChecks,omitempty" azure:"ro"`
+	HealthChecks []*HealthCheck
 
 	// READ-ONLY; Start time of last execution of the health checks.
-	StartDateTime *time.Time `json:"startDateTime,omitempty" azure:"ro"`
+	StartDateTime *time.Time
 }
 
 // Image - Represents an image.
 type Image struct {
 	// Image properties.
-	Properties *ImageProperties `json:"properties,omitempty"`
+	Properties *ImageProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ImageListResult - Results of the image list operation.
 type ImageListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*Image `json:"value,omitempty" azure:"ro"`
+	Value []*Image
 }
 
 // ImageProperties - Properties of an image.
 type ImageProperties struct {
 	// READ-ONLY; The description of the image.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The name of the image offer.
-	Offer *string `json:"offer,omitempty" azure:"ro"`
+	Offer *string
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The publisher of the image.
-	Publisher *string `json:"publisher,omitempty" azure:"ro"`
+	Publisher *string
 
 	// READ-ONLY; The recommended machine configuration to use with the image.
-	RecommendedMachineConfiguration *RecommendedMachineConfiguration `json:"recommendedMachineConfiguration,omitempty" azure:"ro"`
+	RecommendedMachineConfiguration *RecommendedMachineConfiguration
 
 	// READ-ONLY; The SKU name for the image.
-	SKU *string `json:"sku,omitempty" azure:"ro"`
+	SKU *string
 }
 
 // ImageReference - Image reference information
 type ImageReference struct {
 	// Image ID, or Image version ID. When Image ID is provided, its latest version will be used.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The image offer.
-	Offer *string `json:"offer,omitempty"`
+	Offer *string
 
 	// The image publisher.
-	Publisher *string `json:"publisher,omitempty"`
+	Publisher *string
 
 	// The image sku.
-	SKU *string `json:"sku,omitempty"`
+	SKU *string
 
 	// READ-ONLY; The actual version of the image after use. When id references a gallery image latest version, this will indicate
 	// the actual version in use.
-	ExactVersion *string `json:"exactVersion,omitempty" azure:"ro"`
+	ExactVersion *string
 }
 
 // ImageValidationErrorDetails - Image validation error details
 type ImageValidationErrorDetails struct {
 	// An identifier for the error.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// A message describing the error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ImageVersion - Represents an image version.
 type ImageVersion struct {
 	// Image version properties.
-	Properties *ImageVersionProperties `json:"properties,omitempty"`
+	Properties *ImageVersionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ImageVersionListResult - Results of the image version list operation.
 type ImageVersionListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*ImageVersion `json:"value,omitempty" azure:"ro"`
+	Value []*ImageVersion
 }
 
 // ImageVersionProperties - Properties of an image version.
 type ImageVersionProperties struct {
 	// READ-ONLY; If the version should be excluded from being treated as the latest version.
-	ExcludeFromLatest *bool `json:"excludeFromLatest,omitempty" azure:"ro"`
+	ExcludeFromLatest *bool
 
 	// READ-ONLY; The semantic version string.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The size of the OS disk image, in GB.
-	OSDiskImageSizeInGb *int32 `json:"osDiskImageSizeInGb,omitempty" azure:"ro"`
+	OSDiskImageSizeInGb *int32
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The datetime that the backing image version was published.
-	PublishedDate *time.Time `json:"publishedDate,omitempty" azure:"ro"`
+	PublishedDate *time.Time
 }
 
 // ImageVersionsClientGetOptions contains the optional parameters for the ImageVersionsClient.Get method.
@@ -835,7 +836,8 @@ type ImageVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.ListByImage method.
+// ImageVersionsClientListByImageOptions contains the optional parameters for the ImageVersionsClient.NewListByImagePager
+// method.
 type ImageVersionsClientListByImageOptions struct {
 	// placeholder for future optional parameters
 }
@@ -845,13 +847,13 @@ type ImagesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ImagesClientListByDevCenterOptions contains the optional parameters for the ImagesClient.ListByDevCenter method.
+// ImagesClientListByDevCenterOptions contains the optional parameters for the ImagesClient.NewListByDevCenterPager method.
 type ImagesClientListByDevCenterOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// ImagesClientListByGalleryOptions contains the optional parameters for the ImagesClient.ListByGallery method.
+// ImagesClientListByGalleryOptions contains the optional parameters for the ImagesClient.NewListByGalleryPager method.
 type ImagesClientListByGalleryOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -860,105 +862,105 @@ type ImagesClientListByGalleryOptions struct {
 // ListResult - Result of the list devcenters operation
 type ListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*DevCenter `json:"value,omitempty" azure:"ro"`
+	Value []*DevCenter
 }
 
 // ListUsagesResult - List of Core Usages.
 type ListUsagesResult struct {
 	// READ-ONLY; The link to get the next page of Usage result.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; The array page of Usages.
-	Value []*Usage `json:"value,omitempty" azure:"ro"`
+	Value []*Usage
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
 	// The dictionary values can be empty objects ({}) in
 	// requests.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
 	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // NetworkConnection - Network related settings
 type NetworkConnection struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of a Network Connection
-	Properties *NetworkProperties `json:"properties,omitempty"`
+	Properties *NetworkProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // NetworkConnectionListResult - Result of the network connection list operation.
 type NetworkConnectionListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*NetworkConnection `json:"value,omitempty" azure:"ro"`
+	Value []*NetworkConnection
 }
 
 // NetworkConnectionUpdate - The network connection properties for partial update. Properties not provided in the update request
 // will not be changed.
 type NetworkConnectionUpdate struct {
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of a network connection resource to be updated.
-	Properties *NetworkConnectionUpdateProperties `json:"properties,omitempty"`
+	Properties *NetworkConnectionUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // NetworkConnectionUpdateProperties - Properties of network connection. These properties can be updated after the resource
 // has been created.
 type NetworkConnectionUpdateProperties struct {
 	// Active Directory domain name
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// The password for the account used to join domain
-	DomainPassword *string `json:"domainPassword,omitempty"`
+	DomainPassword *string
 
 	// The username of an Active Directory account (user or service account) that has permissions to create computer objects in
 	// Active Directory. Required format: admin@contoso.com.
-	DomainUsername *string `json:"domainUsername,omitempty"`
+	DomainUsername *string
 
 	// Active Directory domain Organization Unit (OU)
-	OrganizationUnit *string `json:"organizationUnit,omitempty"`
+	OrganizationUnit *string
 
 	// The subnet to attach Virtual Machines to
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 }
 
 // NetworkConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the NetworkConnectionsClient.BeginCreateOrUpdate
@@ -1000,21 +1002,21 @@ type NetworkConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// NetworkConnectionsClientListByResourceGroupOptions contains the optional parameters for the NetworkConnectionsClient.ListByResourceGroup
+// NetworkConnectionsClientListByResourceGroupOptions contains the optional parameters for the NetworkConnectionsClient.NewListByResourceGroupPager
 // method.
 type NetworkConnectionsClientListByResourceGroupOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// NetworkConnectionsClientListBySubscriptionOptions contains the optional parameters for the NetworkConnectionsClient.ListBySubscription
+// NetworkConnectionsClientListBySubscriptionOptions contains the optional parameters for the NetworkConnectionsClient.NewListBySubscriptionPager
 // method.
 type NetworkConnectionsClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// NetworkConnectionsClientListHealthDetailsOptions contains the optional parameters for the NetworkConnectionsClient.ListHealthDetails
+// NetworkConnectionsClientListHealthDetailsOptions contains the optional parameters for the NetworkConnectionsClient.NewListHealthDetailsPager
 // method.
 type NetworkConnectionsClientListHealthDetailsOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1024,142 +1026,142 @@ type NetworkConnectionsClientListHealthDetailsOptions struct {
 // NetworkProperties - Network properties
 type NetworkProperties struct {
 	// REQUIRED; AAD Join type.
-	DomainJoinType *DomainJoinType `json:"domainJoinType,omitempty"`
+	DomainJoinType *DomainJoinType
 
 	// Active Directory domain name
-	DomainName *string `json:"domainName,omitempty"`
+	DomainName *string
 
 	// The password for the account used to join domain
-	DomainPassword *string `json:"domainPassword,omitempty"`
+	DomainPassword *string
 
 	// The username of an Active Directory account (user or service account) that has permissions to create computer objects in
 	// Active Directory. Required format: admin@contoso.com.
-	DomainUsername *string `json:"domainUsername,omitempty"`
+	DomainUsername *string
 
 	// The name for resource group where NICs will be placed.
-	NetworkingResourceGroupName *string `json:"networkingResourceGroupName,omitempty"`
+	NetworkingResourceGroupName *string
 
 	// Active Directory domain Organization Unit (OU)
-	OrganizationUnit *string `json:"organizationUnit,omitempty"`
+	OrganizationUnit *string
 
 	// The subnet to attach Virtual Machines to
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// READ-ONLY; Overall health status of the network connection. Health checks are run on creation, update, and periodically
 	// to validate the network connection.
-	HealthCheckStatus *HealthCheckStatus `json:"healthCheckStatus,omitempty" azure:"ro"`
+	HealthCheckStatus *HealthCheckStatus
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
 // OperationStatus - The current status of an async operation
 type OperationStatus struct {
 	// REQUIRED; Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The end time of the operation.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// If present, details of the operation error.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// Fully qualified ID for the async operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the async operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operations list.
-	Operations []*OperationStatusResult `json:"operations,omitempty"`
+	Operations []*OperationStatusResult
 
 	// Percent of the operation that is complete.
-	PercentComplete *float32 `json:"percentComplete,omitempty"`
+	PercentComplete *float32
 
 	// The start time of the operation.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// READ-ONLY; Custom operation properties, populated only for a successful operation.
-	Properties interface{} `json:"properties,omitempty" azure:"ro"`
+	Properties any
 
 	// READ-ONLY; The id of the resource.
-	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+	ResourceID *string
 }
 
 // OperationStatusResult - The current status of an async operation.
 type OperationStatusResult struct {
 	// REQUIRED; Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The end time of the operation.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// If present, details of the operation error.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// Fully qualified ID for the async operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the async operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operations list.
-	Operations []*OperationStatusResult `json:"operations,omitempty"`
+	Operations []*OperationStatusResult
 
 	// Percent of the operation that is complete.
-	PercentComplete *float32 `json:"percentComplete,omitempty"`
+	PercentComplete *float32
 
 	// The start time of the operation.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // OperationStatusesClientGetOptions contains the optional parameters for the OperationStatusesClient.Get method.
@@ -1167,7 +1169,7 @@ type OperationStatusesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1175,79 +1177,79 @@ type OperationsClientListOptions struct {
 // Pool - A pool of Virtual Machines.
 type Pool struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Pool properties
-	Properties *PoolProperties `json:"properties,omitempty"`
+	Properties *PoolProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PoolListResult - Results of the machine pool list operation.
 type PoolListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*Pool `json:"value,omitempty" azure:"ro"`
+	Value []*Pool
 }
 
 // PoolProperties - Properties of a Pool
 type PoolProperties struct {
 	// Name of a Dev Box definition in parent Project of this Pool
-	DevBoxDefinitionName *string `json:"devBoxDefinitionName,omitempty"`
+	DevBoxDefinitionName *string
 
 	// Specifies the license type indicating the caller has already acquired licenses for the Dev Boxes that will be created.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// Indicates whether owners of Dev Boxes in this pool are added as local administrators on the Dev Box.
-	LocalAdministrator *LocalAdminStatus `json:"localAdministrator,omitempty"`
+	LocalAdministrator *LocalAdminStatus
 
 	// Name of a Network Connection in parent Project of this Pool
-	NetworkConnectionName *string `json:"networkConnectionName,omitempty"`
+	NetworkConnectionName *string
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // PoolUpdate - The pool properties for partial update. Properties not provided in the update request will not be changed.
 type PoolUpdate struct {
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of a pool to be updated.
-	Properties *PoolUpdateProperties `json:"properties,omitempty"`
+	Properties *PoolUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // PoolUpdateProperties - Properties of a Pool. These properties can be updated after the resource has been created.
 type PoolUpdateProperties struct {
 	// Name of a Dev Box definition in parent Project of this Pool
-	DevBoxDefinitionName *string `json:"devBoxDefinitionName,omitempty"`
+	DevBoxDefinitionName *string
 
 	// Specifies the license type indicating the caller has already acquired licenses for the Dev Boxes that will be created.
-	LicenseType *LicenseType `json:"licenseType,omitempty"`
+	LicenseType *LicenseType
 
 	// Indicates whether owners of Dev Boxes in this pool are added as local administrators on the Dev Box.
-	LocalAdministrator *LocalAdminStatus `json:"localAdministrator,omitempty"`
+	LocalAdministrator *LocalAdminStatus
 
 	// Name of a Network Connection in parent Project of this Pool
-	NetworkConnectionName *string `json:"networkConnectionName,omitempty"`
+	NetworkConnectionName *string
 }
 
 // PoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the PoolsClient.BeginCreateOrUpdate method.
@@ -1273,7 +1275,7 @@ type PoolsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PoolsClientListByProjectOptions contains the optional parameters for the PoolsClient.ListByProject method.
+// PoolsClientListByProjectOptions contains the optional parameters for the PoolsClient.NewListByProjectPager method.
 type PoolsClientListByProjectOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1282,25 +1284,25 @@ type PoolsClientListByProjectOptions struct {
 // Project - Represents a project resource.
 type Project struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of a project.
-	Properties *ProjectProperties `json:"properties,omitempty"`
+	Properties *ProjectProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProjectAllowedEnvironmentTypesClientGetOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.Get
@@ -1309,7 +1311,7 @@ type ProjectAllowedEnvironmentTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.List
+// ProjectAllowedEnvironmentTypesClientListOptions contains the optional parameters for the ProjectAllowedEnvironmentTypesClient.NewListPager
 // method.
 type ProjectAllowedEnvironmentTypesClientListOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -1319,95 +1321,95 @@ type ProjectAllowedEnvironmentTypesClientListOptions struct {
 // ProjectEnvironmentType - Represents an environment type.
 type ProjectEnvironmentType struct {
 	// Managed identity properties
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// The geo-location for the environment type
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of an environment type.
-	Properties *ProjectEnvironmentTypeProperties `json:"properties,omitempty"`
+	Properties *ProjectEnvironmentTypeProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProjectEnvironmentTypeListResult - Result of the project environment type list operation.
 type ProjectEnvironmentTypeListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*ProjectEnvironmentType `json:"value,omitempty" azure:"ro"`
+	Value []*ProjectEnvironmentType
 }
 
 // ProjectEnvironmentTypeProperties - Properties of a project environment type.
 type ProjectEnvironmentTypeProperties struct {
 	// The role definition assigned to the environment creator on backing resources.
-	CreatorRoleAssignment *ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment `json:"creatorRoleAssignment,omitempty"`
+	CreatorRoleAssignment *ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment
 
 	// Id of a subscription that the environment type will be mapped to. The environment's resources will be deployed into this
 	// subscription.
-	DeploymentTargetID *string `json:"deploymentTargetId,omitempty"`
+	DeploymentTargetID *string
 
 	// Defines whether this Environment Type can be used in this Project.
-	Status *EnableStatus `json:"status,omitempty"`
+	Status *EnableStatus
 
 	// Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object of role
 	// definition IDs.
-	UserRoleAssignments map[string]*UserRoleAssignmentValue `json:"userRoleAssignments,omitempty"`
+	UserRoleAssignments map[string]*UserRoleAssignmentValue
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ProjectEnvironmentTypeUpdate - The project environment type for partial update. Properties not provided in the update request
 // will not be changed.
 type ProjectEnvironmentTypeUpdate struct {
 	// Managed identity properties
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Properties to configure an environment type.
-	Properties *ProjectEnvironmentTypeUpdateProperties `json:"properties,omitempty"`
+	Properties *ProjectEnvironmentTypeUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ProjectEnvironmentTypeUpdateProperties - Properties of a project environment type. These properties can be updated after
 // the resource has been created.
 type ProjectEnvironmentTypeUpdateProperties struct {
 	// The role definition assigned to the environment creator on backing resources.
-	CreatorRoleAssignment *ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment `json:"creatorRoleAssignment,omitempty"`
+	CreatorRoleAssignment *ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment
 
 	// Id of a subscription that the environment type will be mapped to. The environment's resources will be deployed into this
 	// subscription.
-	DeploymentTargetID *string `json:"deploymentTargetId,omitempty"`
+	DeploymentTargetID *string
 
 	// Defines whether this Environment Type can be used in this Project.
-	Status *EnableStatus `json:"status,omitempty"`
+	Status *EnableStatus
 
 	// Role Assignments created on environment backing resources. This is a mapping from a user object ID to an object of role
 	// definition IDs.
-	UserRoleAssignments map[string]*UserRoleAssignmentValue `json:"userRoleAssignments,omitempty"`
+	UserRoleAssignments map[string]*UserRoleAssignmentValue
 }
 
 // ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment - The role definition assigned to the environment creator on
 // backing resources.
 type ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment struct {
 	// A map of roles to assign to the environment creator.
-	Roles map[string]*EnvironmentRole `json:"roles,omitempty"`
+	Roles map[string]*EnvironmentRole
 }
 
 // ProjectEnvironmentTypesClientCreateOrUpdateOptions contains the optional parameters for the ProjectEnvironmentTypesClient.CreateOrUpdate
@@ -1427,7 +1429,8 @@ type ProjectEnvironmentTypesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectEnvironmentTypesClientListOptions contains the optional parameters for the ProjectEnvironmentTypesClient.List method.
+// ProjectEnvironmentTypesClientListOptions contains the optional parameters for the ProjectEnvironmentTypesClient.NewListPager
+// method.
 type ProjectEnvironmentTypesClientListOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1442,46 +1445,46 @@ type ProjectEnvironmentTypesClientUpdateOptions struct {
 // ProjectListResult - Results of the project list operation.
 type ProjectListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*Project `json:"value,omitempty" azure:"ro"`
+	Value []*Project
 }
 
 // ProjectProperties - Properties of a project.
 type ProjectProperties struct {
 	// Description of the project.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Resource Id of an associated DevCenter
-	DevCenterID *string `json:"devCenterId,omitempty"`
+	DevCenterID *string
 
 	// READ-ONLY; The URI of the resource.
-	DevCenterURI *string `json:"devCenterUri,omitempty" azure:"ro"`
+	DevCenterURI *string
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ProjectUpdate - The project properties for partial update. Properties not provided in the update request will not be changed.
 type ProjectUpdate struct {
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of a project to be updated.
-	Properties *ProjectUpdateProperties `json:"properties,omitempty"`
+	Properties *ProjectUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ProjectUpdateProperties - Properties of a project. These properties can be updated after the resource has been created.
 type ProjectUpdateProperties struct {
 	// Description of the project.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Resource Id of an associated DevCenter
-	DevCenterID *string `json:"devCenterId,omitempty"`
+	DevCenterID *string
 }
 
 // ProjectsClientBeginCreateOrUpdateOptions contains the optional parameters for the ProjectsClient.BeginCreateOrUpdate method.
@@ -1507,13 +1510,15 @@ type ProjectsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ProjectsClientListByResourceGroupOptions contains the optional parameters for the ProjectsClient.ListByResourceGroup method.
+// ProjectsClientListByResourceGroupOptions contains the optional parameters for the ProjectsClient.NewListByResourceGroupPager
+// method.
 type ProjectsClientListByResourceGroupOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
 }
 
-// ProjectsClientListBySubscriptionOptions contains the optional parameters for the ProjectsClient.ListBySubscription method.
+// ProjectsClientListBySubscriptionOptions contains the optional parameters for the ProjectsClient.NewListBySubscriptionPager
+// method.
 type ProjectsClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1522,89 +1527,89 @@ type ProjectsClientListBySubscriptionOptions struct {
 // Properties of the devcenter.
 type Properties struct {
 	// READ-ONLY; The URI of the resource.
-	DevCenterURI *string `json:"devCenterUri,omitempty" azure:"ro"`
+	DevCenterURI *string
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // RecommendedMachineConfiguration - Properties for a recommended machine configuration.
 type RecommendedMachineConfiguration struct {
 	// READ-ONLY; Recommended memory range.
-	Memory *ResourceRange `json:"memory,omitempty" azure:"ro"`
+	Memory *ResourceRange
 
 	// READ-ONLY; Recommended vCPU range.
-	VCPUs *ResourceRange `json:"vCPUs,omitempty" azure:"ro"`
+	VCPUs *ResourceRange
 }
 
 // ResourceRange - Properties for a range of values.
 type ResourceRange struct {
 	// READ-ONLY; Maximum value.
-	Max *int32 `json:"max,omitempty" azure:"ro"`
+	Max *int32
 
 	// READ-ONLY; Minimum value.
-	Min *int32 `json:"min,omitempty" azure:"ro"`
+	Min *int32
 }
 
 // SKU - The resource model definition representing SKU
 type SKU struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
 	// resource this may be omitted.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
 	// on a PUT.
-	Tier *SKUTier `json:"tier,omitempty"`
+	Tier *SKUTier
 }
 
 // SKUInfo - The resource model definition representing SKU for DevCenter resources
 type SKUInfo struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// If the SKU supports scale out/in then the capacity integer should be included. If scale out/in is not possible for the
 	// resource this may be omitted.
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// If the service has different generations of hardware, for the same SKU, then that can be captured here.
-	Family *string `json:"family,omitempty"`
+	Family *string
 
 	// The SKU size. When the name field is the combination of tier and some other value, this would be the standalone code.
-	Size *string `json:"size,omitempty"`
+	Size *string
 
 	// This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not required
 	// on a PUT.
-	Tier *SKUTier `json:"tier,omitempty"`
+	Tier *SKUTier
 
 	// READ-ONLY; Collection of name/value pairs to describe the SKU capabilities.
-	Capabilities []*Capability `json:"capabilities,omitempty" azure:"ro"`
+	Capabilities []*Capability
 
 	// READ-ONLY; SKU supported locations.
-	Locations []*string `json:"locations,omitempty" azure:"ro"`
+	Locations []*string
 
 	// READ-ONLY; The name of the resource type
-	ResourceType *string `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *string
 }
 
 // SKUListResult - Results of the Microsoft.DevCenter SKU list operation.
 type SKUListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*SKUInfo `json:"value,omitempty" azure:"ro"`
+	Value []*SKUInfo
 }
 
-// SKUsClientListBySubscriptionOptions contains the optional parameters for the SKUsClient.ListBySubscription method.
+// SKUsClientListBySubscriptionOptions contains the optional parameters for the SKUsClient.NewListBySubscriptionPager method.
 type SKUsClientListBySubscriptionOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1613,80 +1618,80 @@ type SKUsClientListBySubscriptionOptions struct {
 // Schedule - Represents a Schedule to execute a task.
 type Schedule struct {
 	// Properties of a Schedule resource
-	Properties *ScheduleProperties `json:"properties,omitempty"`
+	Properties *ScheduleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScheduleListResult - Result of the schedule list operation.
 type ScheduleListResult struct {
 	// READ-ONLY; URL to get the next set of results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Current page of results.
-	Value []*Schedule `json:"value,omitempty" azure:"ro"`
+	Value []*Schedule
 }
 
 // ScheduleProperties - The Schedule properties defining when and what to execute.
 type ScheduleProperties struct {
 	// The frequency of this scheduled task.
-	Frequency *ScheduledFrequency `json:"frequency,omitempty"`
+	Frequency *ScheduledFrequency
 
 	// Indicates whether or not this scheduled task is enabled.
-	State *EnableStatus `json:"state,omitempty"`
+	State *EnableStatus
 
 	// The target time to trigger the action. The format is HH:MM.
-	Time *string `json:"time,omitempty"`
+	Time *string
 
 	// The IANA timezone id at which the schedule should execute.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 
 	// Supported type this scheduled task represents.
-	Type *ScheduledType `json:"type,omitempty"`
+	Type *ScheduledType
 
 	// READ-ONLY; The provisioning state of the resource.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // ScheduleUpdate - The schedule properties for partial update. Properties not provided in the update request will not be
 // changed.
 type ScheduleUpdate struct {
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of a schedule resource to be updated.
-	Properties *ScheduleUpdateProperties `json:"properties,omitempty"`
+	Properties *ScheduleUpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ScheduleUpdateProperties - Updatable properties of a Schedule.
 type ScheduleUpdateProperties struct {
 	// The frequency of this scheduled task.
-	Frequency *ScheduledFrequency `json:"frequency,omitempty"`
+	Frequency *ScheduledFrequency
 
 	// Indicates whether or not this scheduled task is enabled.
-	State *EnableStatus `json:"state,omitempty"`
+	State *EnableStatus
 
 	// The target time to trigger the action. The format is HH:MM.
-	Time *string `json:"time,omitempty"`
+	Time *string
 
 	// The IANA timezone id at which the schedule should execute.
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 
 	// Supported type this scheduled task represents.
-	Type *ScheduledType `json:"type,omitempty"`
+	Type *ScheduledType
 }
 
 // SchedulesClientBeginCreateOrUpdateOptions contains the optional parameters for the SchedulesClient.BeginCreateOrUpdate
@@ -1720,7 +1725,7 @@ type SchedulesClientGetOptions struct {
 	Top *int32
 }
 
-// SchedulesClientListByPoolOptions contains the optional parameters for the SchedulesClient.ListByPool method.
+// SchedulesClientListByPoolOptions contains the optional parameters for the SchedulesClient.NewListByPoolPager method.
 type SchedulesClientListByPoolOptions struct {
 	// The maximum number of resources to return from the operation. Example: '$top=10'.
 	Top *int32
@@ -1729,61 +1734,61 @@ type SchedulesClientListByPoolOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // Update - The devcenter resource for partial updates. Properties not provided in the update request will not be changed.
 type Update struct {
 	// Managed identity properties
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // Usage - The core usage details.
 type Usage struct {
 	// The current usage.
-	CurrentValue *int64 `json:"currentValue,omitempty"`
+	CurrentValue *int64
 
 	// The limit integer.
-	Limit *int64 `json:"limit,omitempty"`
+	Limit *int64
 
 	// The name.
-	Name *UsageName `json:"name,omitempty"`
+	Name *UsageName
 
 	// The unit details.
-	Unit *UsageUnit `json:"unit,omitempty"`
+	Unit *UsageUnit
 }
 
 // UsageName - The Usage Names.
 type UsageName struct {
 	// The localized name of the resource.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
 
 	// The name of the resource.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
-// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.ListByLocation method.
+// UsagesClientListByLocationOptions contains the optional parameters for the UsagesClient.NewListByLocationPager method.
 type UsagesClientListByLocationOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1791,14 +1796,14 @@ type UsagesClientListByLocationOptions struct {
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }
 
 // UserRoleAssignmentValue - Mapping of user object ID to role assignments.
 type UserRoleAssignmentValue struct {
 	// A map of roles to assign to the parent user.
-	Roles map[string]*EnvironmentRole `json:"roles,omitempty"`
+	Roles map[string]*EnvironmentRole
 }

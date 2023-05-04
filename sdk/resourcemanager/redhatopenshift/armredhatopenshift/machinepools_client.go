@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // MachinePoolsClient contains the methods for the MachinePools group.
 // Don't use this type directly, use NewMachinePoolsClient() instead.
 type MachinePoolsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewMachinePoolsClient creates a new instance of MachinePoolsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewMachinePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MachinePoolsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".MachinePoolsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &MachinePoolsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - The operation returns properties of a MachinePool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// childResourceName - The name of the MachinePool resource.
-// parameters - The MachinePool resource.
-// options - MachinePoolsClientCreateOrUpdateOptions contains the optional parameters for the MachinePoolsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - childResourceName - The name of the MachinePool resource.
+//   - parameters - The MachinePool resource.
+//   - options - MachinePoolsClientCreateOrUpdateOptions contains the optional parameters for the MachinePoolsClient.CreateOrUpdate
+//     method.
 func (client *MachinePoolsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters MachinePool, options *MachinePoolsClientCreateOrUpdateOptions) (MachinePoolsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return MachinePoolsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MachinePoolsClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *MachinePoolsClient) createOrUpdateCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter childResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{childResourceName}", url.PathEscape(childResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *MachinePoolsClient) createOrUpdateHandleResponse(resp *http.Respon
 
 // Delete - The operation returns nothing.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// childResourceName - The name of the MachinePool resource.
-// options - MachinePoolsClientDeleteOptions contains the optional parameters for the MachinePoolsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - childResourceName - The name of the MachinePool resource.
+//   - options - MachinePoolsClientDeleteOptions contains the optional parameters for the MachinePoolsClient.Delete method.
 func (client *MachinePoolsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *MachinePoolsClientDeleteOptions) (MachinePoolsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return MachinePoolsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MachinePoolsClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *MachinePoolsClient) deleteCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter childResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{childResourceName}", url.PathEscape(childResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +163,18 @@ func (client *MachinePoolsClient) deleteCreateRequest(ctx context.Context, resou
 
 // Get - The operation returns properties of a MachinePool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// childResourceName - The name of the MachinePool resource.
-// options - MachinePoolsClientGetOptions contains the optional parameters for the MachinePoolsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - childResourceName - The name of the MachinePool resource.
+//   - options - MachinePoolsClientGetOptions contains the optional parameters for the MachinePoolsClient.Get method.
 func (client *MachinePoolsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, options *MachinePoolsClientGetOptions) (MachinePoolsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, options)
 	if err != nil {
 		return MachinePoolsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MachinePoolsClientGetResponse{}, err
 	}
@@ -211,7 +203,7 @@ func (client *MachinePoolsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter childResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{childResourceName}", url.PathEscape(childResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,10 +224,11 @@ func (client *MachinePoolsClient) getHandleResponse(resp *http.Response) (Machin
 }
 
 // NewListPager - The operation returns properties of each MachinePool.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// options - MachinePoolsClientListOptions contains the optional parameters for the MachinePoolsClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - options - MachinePoolsClientListOptions contains the optional parameters for the MachinePoolsClient.NewListPager method.
 func (client *MachinePoolsClient) NewListPager(resourceGroupName string, resourceName string, options *MachinePoolsClientListOptions) *runtime.Pager[MachinePoolsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MachinePoolsClientListResponse]{
 		More: func(page MachinePoolsClientListResponse) bool {
@@ -252,7 +245,7 @@ func (client *MachinePoolsClient) NewListPager(resourceGroupName string, resourc
 			if err != nil {
 				return MachinePoolsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return MachinePoolsClientListResponse{}, err
 			}
@@ -279,7 +272,7 @@ func (client *MachinePoolsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter resourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -301,18 +294,19 @@ func (client *MachinePoolsClient) listHandleResponse(resp *http.Response) (Machi
 
 // Update - The operation returns properties of a MachinePool.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-04
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// resourceName - The name of the OpenShift cluster resource.
-// childResourceName - The name of the MachinePool resource.
-// parameters - The MachinePool resource.
-// options - MachinePoolsClientUpdateOptions contains the optional parameters for the MachinePoolsClient.Update method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the OpenShift cluster resource.
+//   - childResourceName - The name of the MachinePool resource.
+//   - parameters - The MachinePool resource.
+//   - options - MachinePoolsClientUpdateOptions contains the optional parameters for the MachinePoolsClient.Update method.
 func (client *MachinePoolsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, childResourceName string, parameters MachinePoolUpdate, options *MachinePoolsClientUpdateOptions) (MachinePoolsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, childResourceName, parameters, options)
 	if err != nil {
 		return MachinePoolsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return MachinePoolsClientUpdateResponse{}, err
 	}
@@ -341,7 +335,7 @@ func (client *MachinePoolsClient) updateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter childResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{childResourceName}", url.PathEscape(childResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

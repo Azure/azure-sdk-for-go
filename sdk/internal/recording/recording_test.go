@@ -10,6 +10,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -692,4 +693,46 @@ func TestRace(t *testing.T) {
 			LiveOnly(t)
 		})
 	}
+}
+
+func Test_generateAlphaNumericID(t *testing.T) {
+	seed1 := int64(1234567)
+	seed2 := int64(7654321)
+	randomSource1 := rand.NewSource(seed1)
+	randomSource2 := rand.NewSource(seed2)
+	randomSource3 := rand.NewSource(seed2)
+	rand1, err := generateAlphaNumericID("test", 10, false, randomSource1)
+	require.NoError(t, err)
+	require.Equal(t, 10, len(rand1))
+	require.Equal(t, "test", rand1[0:4])
+	rand2, err := generateAlphaNumericID("test", 10, false, randomSource2)
+	require.NoError(t, err)
+	rand3, err := generateAlphaNumericID("test", 10, false, randomSource3)
+	require.NoError(t, err)
+	require.Equal(t, rand2, rand3)
+	require.NotEqual(t, rand1, rand2)
+}
+
+func TestGenerateAlphaNumericID(t *testing.T) {
+	recordMode = RecordingMode
+	err := Start(t, packagePath, nil)
+	require.NoError(t, err)
+	rand1, err := GenerateAlphaNumericID(t, "test", 10, false)
+	require.NoError(t, err)
+	rand2, err := GenerateAlphaNumericID(t, "test", 10, false)
+	require.NoError(t, err)
+	require.NotEqual(t, rand1, rand2)
+	err = Stop(t, nil)
+	require.NoError(t, err)
+	recordMode = PlaybackMode
+	err = Start(t, packagePath, nil)
+	require.NoError(t, err)
+	rand3, err := GenerateAlphaNumericID(t, "test", 10, false)
+	require.NoError(t, err)
+	rand4, err := GenerateAlphaNumericID(t, "test", 10, false)
+	require.NoError(t, err)
+	require.Equal(t, rand1, rand3)
+	require.Equal(t, rand2, rand4)
+	err = Stop(t, nil)
+	require.NoError(t, err)
 }

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // LinkedServicesClient contains the methods for the LinkedServices group.
 // Don't use this type directly, use NewLinkedServicesClient() instead.
 type LinkedServicesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewLinkedServicesClient creates a new instance of LinkedServicesClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewLinkedServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LinkedServicesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".LinkedServicesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &LinkedServicesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// linkedServiceName - The linked service name.
-// linkedService - Linked service resource definition.
-// options - LinkedServicesClientCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - linkedServiceName - The linked service name.
+//   - linkedService - Linked service resource definition.
+//   - options - LinkedServicesClientCreateOrUpdateOptions contains the optional parameters for the LinkedServicesClient.CreateOrUpdate
+//     method.
 func (client *LinkedServicesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, linkedService LinkedServiceResource, options *LinkedServicesClientCreateOrUpdateOptions) (LinkedServicesClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, linkedService, options)
 	if err != nil {
 		return LinkedServicesClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LinkedServicesClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *LinkedServicesClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter linkedServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkedServiceName}", url.PathEscape(linkedServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -123,17 +113,18 @@ func (client *LinkedServicesClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// linkedServiceName - The linked service name.
-// options - LinkedServicesClientDeleteOptions contains the optional parameters for the LinkedServicesClient.Delete method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - linkedServiceName - The linked service name.
+//   - options - LinkedServicesClientDeleteOptions contains the optional parameters for the LinkedServicesClient.Delete method.
 func (client *LinkedServicesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientDeleteOptions) (LinkedServicesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, options)
 	if err != nil {
 		return LinkedServicesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LinkedServicesClientDeleteResponse{}, err
 	}
@@ -162,7 +153,7 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter linkedServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkedServiceName}", url.PathEscape(linkedServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,17 +166,18 @@ func (client *LinkedServicesClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Gets a linked service.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// linkedServiceName - The linked service name.
-// options - LinkedServicesClientGetOptions contains the optional parameters for the LinkedServicesClient.Get method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - linkedServiceName - The linked service name.
+//   - options - LinkedServicesClientGetOptions contains the optional parameters for the LinkedServicesClient.Get method.
 func (client *LinkedServicesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, linkedServiceName string, options *LinkedServicesClientGetOptions) (LinkedServicesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, linkedServiceName, options)
 	if err != nil {
 		return LinkedServicesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return LinkedServicesClientGetResponse{}, err
 	}
@@ -214,7 +206,7 @@ func (client *LinkedServicesClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter linkedServiceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkedServiceName}", url.PathEscape(linkedServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -238,11 +230,12 @@ func (client *LinkedServicesClient) getHandleResponse(resp *http.Response) (Link
 }
 
 // NewListByFactoryPager - Lists linked services.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// options - LinkedServicesClientListByFactoryOptions contains the optional parameters for the LinkedServicesClient.ListByFactory
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - options - LinkedServicesClientListByFactoryOptions contains the optional parameters for the LinkedServicesClient.NewListByFactoryPager
+//     method.
 func (client *LinkedServicesClient) NewListByFactoryPager(resourceGroupName string, factoryName string, options *LinkedServicesClientListByFactoryOptions) *runtime.Pager[LinkedServicesClientListByFactoryResponse] {
 	return runtime.NewPager(runtime.PagingHandler[LinkedServicesClientListByFactoryResponse]{
 		More: func(page LinkedServicesClientListByFactoryResponse) bool {
@@ -259,7 +252,7 @@ func (client *LinkedServicesClient) NewListByFactoryPager(resourceGroupName stri
 			if err != nil {
 				return LinkedServicesClientListByFactoryResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return LinkedServicesClientListByFactoryResponse{}, err
 			}
@@ -286,7 +279,7 @@ func (client *LinkedServicesClient) listByFactoryCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter factoryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{factoryName}", url.PathEscape(factoryName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

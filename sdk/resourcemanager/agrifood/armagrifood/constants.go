@@ -11,7 +11,7 @@ package armagrifood
 
 const (
 	moduleName    = "armagrifood"
-	moduleVersion = "v0.7.0"
+	moduleVersion = "v0.8.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

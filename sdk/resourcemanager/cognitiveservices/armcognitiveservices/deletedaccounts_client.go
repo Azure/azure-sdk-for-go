@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // DeletedAccountsClient contains the methods for the DeletedAccounts group.
 // Don't use this type directly, use NewDeletedAccountsClient() instead.
 type DeletedAccountsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDeletedAccountsClient creates a new instance of DeletedAccountsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDeletedAccountsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeletedAccountsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DeletedAccountsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DeletedAccountsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Returns a Cognitive Services account specified by the parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// location - Resource location.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// options - DeletedAccountsClientGetOptions contains the optional parameters for the DeletedAccountsClient.Get method.
+//
+// Generated from API version 2022-12-01
+//   - location - Resource location.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - options - DeletedAccountsClientGetOptions contains the optional parameters for the DeletedAccountsClient.Get method.
 func (client *DeletedAccountsClient) Get(ctx context.Context, location string, resourceGroupName string, accountName string, options *DeletedAccountsClientGetOptions) (DeletedAccountsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, location, resourceGroupName, accountName, options)
 	if err != nil {
 		return DeletedAccountsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeletedAccountsClientGetResponse{}, err
 	}
@@ -96,12 +86,12 @@ func (client *DeletedAccountsClient) getCreateRequest(ctx context.Context, locat
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,8 +107,10 @@ func (client *DeletedAccountsClient) getHandleResponse(resp *http.Response) (Del
 }
 
 // NewListPager - Returns all the resources of a particular type belonging to a subscription.
-// Generated from API version 2022-10-01
-// options - DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.List method.
+//
+// Generated from API version 2022-12-01
+//   - options - DeletedAccountsClientListOptions contains the optional parameters for the DeletedAccountsClient.NewListPager
+//     method.
 func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClientListOptions) *runtime.Pager[DeletedAccountsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeletedAccountsClientListResponse]{
 		More: func(page DeletedAccountsClientListResponse) bool {
@@ -135,7 +127,7 @@ func (client *DeletedAccountsClient) NewListPager(options *DeletedAccountsClient
 			if err != nil {
 				return DeletedAccountsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeletedAccountsClientListResponse{}, err
 			}
@@ -154,12 +146,12 @@ func (client *DeletedAccountsClient) listCreateRequest(ctx context.Context, opti
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -176,33 +168,35 @@ func (client *DeletedAccountsClient) listHandleResponse(resp *http.Response) (De
 
 // BeginPurge - Deletes a Cognitive Services account from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// location - Resource location.
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// options - DeletedAccountsClientBeginPurgeOptions contains the optional parameters for the DeletedAccountsClient.BeginPurge
-// method.
+//
+// Generated from API version 2022-12-01
+//   - location - Resource location.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - options - DeletedAccountsClientBeginPurgeOptions contains the optional parameters for the DeletedAccountsClient.BeginPurge
+//     method.
 func (client *DeletedAccountsClient) BeginPurge(ctx context.Context, location string, resourceGroupName string, accountName string, options *DeletedAccountsClientBeginPurgeOptions) (*runtime.Poller[DeletedAccountsClientPurgeResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.purge(ctx, location, resourceGroupName, accountName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeletedAccountsClientPurgeResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeletedAccountsClientPurgeResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeletedAccountsClientPurgeResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeletedAccountsClientPurgeResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Purge - Deletes a Cognitive Services account from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
+//
+// Generated from API version 2022-12-01
 func (client *DeletedAccountsClient) purge(ctx context.Context, location string, resourceGroupName string, accountName string, options *DeletedAccountsClientBeginPurgeOptions) (*http.Response, error) {
 	req, err := client.purgeCreateRequest(ctx, location, resourceGroupName, accountName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -231,12 +225,12 @@ func (client *DeletedAccountsClient) purgeCreateRequest(ctx context.Context, loc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

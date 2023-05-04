@@ -7,38 +7,57 @@ matrix:
     batch:
       testTarget: batch
       type: "batch"
-      rounds: 100
+      rounds: 1000
       prefetch: 0
       verbose: ""
       sleepAfter: "5m"
     batchprefetchoff:
       testTarget: batch
-      rounds: 100
+      rounds: 1000
       prefetch: -1
       verbose: ""
       sleepAfter: "5m"
     batchinfinite:
       testTarget: batch
       type: "batch"
-      rounds: 100
+      rounds: 1000
       prefetch: 0
       verbose: ""
       sleepAfter: "5m"
+    batchinfinitechaos:
+      testTarget: batch
+      type: "batch"
+      rounds: 1000
+      prefetch: 0
+      verbose: ""
+      sleepAfter: "5m"
+      # this value is injected as a label value in templates/deploy-job.yaml
+      # this'll activate our standard chaos policy, which is at the bottom of that file.
+      chaos: "true"
     processor:
       testTarget: processor
-      rounds: 100
+      rounds: 1000
       prefetch: 0
       verbose: ""
       sleepAfter: "5m"
+    processorchaos:
+      testTarget: processor
+      rounds: 1000
+      prefetch: 0
+      verbose: ""
+      sleepAfter: "5m"
+      # this value is injected as a label value in templates/deploy-job.yaml
+      # this'll activate our standard chaos policy, which is at the bottom of that file.
+      chaos: "true"
     processorprefetchoff:
       testTarget: processor
-      rounds: 100
+      rounds: 1000
       prefetch: -1
       verbose: ""
       sleepAfter: "5m"
     processorinfinite:
       testTarget: processor
-      rounds: 100
+      rounds: 1000
       prefetch: 0
       verbose: ""
       sleepAfter: "5m"

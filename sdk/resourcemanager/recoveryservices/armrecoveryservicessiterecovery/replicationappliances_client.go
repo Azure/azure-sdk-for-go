@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,34 @@ import (
 // ReplicationAppliancesClient contains the methods for the ReplicationAppliances group.
 // Don't use this type directly, use NewReplicationAppliancesClient() instead.
 type ReplicationAppliancesClient struct {
-	host              string
-	resourceName      string
-	resourceGroupName string
-	subscriptionID    string
-	pl                runtime.Pipeline
+	internal       *arm.Client
+	subscriptionID string
 }
 
 // NewReplicationAppliancesClient creates a new instance of ReplicationAppliancesClient with the specified values.
-// resourceName - The name of the recovery services vault.
-// resourceGroupName - The name of the resource group where the recovery services vault is present.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
-func NewReplicationAppliancesClient(resourceName string, resourceGroupName string, subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationAppliancesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+//   - subscriptionID - The subscription Id.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
+func NewReplicationAppliancesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ReplicationAppliancesClient, error) {
+	cl, err := arm.NewClient(moduleName+".ReplicationAppliancesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ReplicationAppliancesClient{
-		resourceName:      resourceName,
-		resourceGroupName: resourceGroupName,
-		subscriptionID:    subscriptionID,
-		host:              ep,
-		pl:                pl,
+		subscriptionID: subscriptionID,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Gets the list of Azure Site Recovery appliances for the vault.
+//
 // Generated from API version 2022-10-01
-// options - ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.List
-// method.
-func (client *ReplicationAppliancesClient) NewListPager(options *ReplicationAppliancesClientListOptions) *runtime.Pager[ReplicationAppliancesClientListResponse] {
+//   - resourceName - The name of the recovery services vault.
+//   - resourceGroupName - The name of the resource group where the recovery services vault is present.
+//   - options - ReplicationAppliancesClientListOptions contains the optional parameters for the ReplicationAppliancesClient.NewListPager
+//     method.
+func (client *ReplicationAppliancesClient) NewListPager(resourceName string, resourceGroupName string, options *ReplicationAppliancesClientListOptions) *runtime.Pager[ReplicationAppliancesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ReplicationAppliancesClientListResponse]{
 		More: func(page ReplicationAppliancesClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
@@ -74,14 +60,14 @@ func (client *ReplicationAppliancesClient) NewListPager(options *ReplicationAppl
 			var req *policy.Request
 			var err error
 			if page == nil {
-				req, err = client.listCreateRequest(ctx, options)
+				req, err = client.listCreateRequest(ctx, resourceName, resourceGroupName, options)
 			} else {
 				req, err = runtime.NewRequest(ctx, http.MethodGet, *page.NextLink)
 			}
 			if err != nil {
 				return ReplicationAppliancesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ReplicationAppliancesClientListResponse{}, err
 			}
@@ -94,21 +80,21 @@ func (client *ReplicationAppliancesClient) NewListPager(options *ReplicationAppl
 }
 
 // listCreateRequest creates the List request.
-func (client *ReplicationAppliancesClient) listCreateRequest(ctx context.Context, options *ReplicationAppliancesClientListOptions) (*policy.Request, error) {
+func (client *ReplicationAppliancesClient) listCreateRequest(ctx context.Context, resourceName string, resourceGroupName string, options *ReplicationAppliancesClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationAppliances"
-	if client.resourceName == "" {
-		return nil, errors.New("parameter client.resourceName cannot be empty")
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(client.resourceName))
-	if client.resourceGroupName == "" {
-		return nil, errors.New("parameter client.resourceGroupName cannot be empty")
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(client.resourceGroupName))
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

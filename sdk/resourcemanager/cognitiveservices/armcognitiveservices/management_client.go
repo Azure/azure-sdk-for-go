@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,47 +24,39 @@ import (
 // ManagementClient contains the methods for the CognitiveServicesManagementClient group.
 // Don't use this type directly, use NewManagementClient() instead.
 type ManagementClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewManagementClient creates a new instance of ManagementClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagementClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagementClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ManagementClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ManagementClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckDomainAvailability - Check whether a domain is available.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// parameters - Check Domain Availability parameter.
-// options - ManagementClientCheckDomainAvailabilityOptions contains the optional parameters for the ManagementClient.CheckDomainAvailability
-// method.
+//
+// Generated from API version 2022-12-01
+//   - parameters - Check Domain Availability parameter.
+//   - options - ManagementClientCheckDomainAvailabilityOptions contains the optional parameters for the ManagementClient.CheckDomainAvailability
+//     method.
 func (client *ManagementClient) CheckDomainAvailability(ctx context.Context, parameters CheckDomainAvailabilityParameter, options *ManagementClientCheckDomainAvailabilityOptions) (ManagementClientCheckDomainAvailabilityResponse, error) {
 	req, err := client.checkDomainAvailabilityCreateRequest(ctx, parameters, options)
 	if err != nil {
 		return ManagementClientCheckDomainAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementClientCheckDomainAvailabilityResponse{}, err
 	}
@@ -83,12 +73,12 @@ func (client *ManagementClient) checkDomainAvailabilityCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -105,17 +95,18 @@ func (client *ManagementClient) checkDomainAvailabilityHandleResponse(resp *http
 
 // CheckSKUAvailability - Check available SKUs.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// location - Resource location.
-// parameters - Check SKU Availability POST body.
-// options - ManagementClientCheckSKUAvailabilityOptions contains the optional parameters for the ManagementClient.CheckSKUAvailability
-// method.
+//
+// Generated from API version 2022-12-01
+//   - location - Resource location.
+//   - parameters - Check SKU Availability POST body.
+//   - options - ManagementClientCheckSKUAvailabilityOptions contains the optional parameters for the ManagementClient.CheckSKUAvailability
+//     method.
 func (client *ManagementClient) CheckSKUAvailability(ctx context.Context, location string, parameters CheckSKUAvailabilityParameter, options *ManagementClientCheckSKUAvailabilityOptions) (ManagementClientCheckSKUAvailabilityResponse, error) {
 	req, err := client.checkSKUAvailabilityCreateRequest(ctx, location, parameters, options)
 	if err != nil {
 		return ManagementClientCheckSKUAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagementClientCheckSKUAvailabilityResponse{}, err
 	}
@@ -136,12 +127,12 @@ func (client *ManagementClient) checkSKUAvailabilityCreateRequest(ctx context.Co
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,49 +25,41 @@ import (
 // WorkflowRunsClient contains the methods for the WorkflowRuns group.
 // Don't use this type directly, use NewWorkflowRunsClient() instead.
 type WorkflowRunsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewWorkflowRunsClient creates a new instance of WorkflowRunsClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewWorkflowRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkflowRunsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".WorkflowRunsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &WorkflowRunsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Cancel - Cancels a workflow run.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// options - WorkflowRunsClientCancelOptions contains the optional parameters for the WorkflowRunsClient.Cancel method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - options - WorkflowRunsClientCancelOptions contains the optional parameters for the WorkflowRunsClient.Cancel method.
 func (client *WorkflowRunsClient) Cancel(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, options *WorkflowRunsClientCancelOptions) (WorkflowRunsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, resourceGroupName, name, workflowName, runName, options)
 	if err != nil {
 		return WorkflowRunsClientCancelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowRunsClientCancelResponse{}, err
 	}
@@ -102,12 +92,12 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter runName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,18 +105,19 @@ func (client *WorkflowRunsClient) cancelCreateRequest(ctx context.Context, resou
 
 // Get - Gets a workflow run.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// runName - The workflow run name.
-// options - WorkflowRunsClientGetOptions contains the optional parameters for the WorkflowRunsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - runName - The workflow run name.
+//   - options - WorkflowRunsClientGetOptions contains the optional parameters for the WorkflowRunsClient.Get method.
 func (client *WorkflowRunsClient) Get(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, options *WorkflowRunsClientGetOptions) (WorkflowRunsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, workflowName, runName, options)
 	if err != nil {
 		return WorkflowRunsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return WorkflowRunsClientGetResponse{}, err
 	}
@@ -159,12 +150,12 @@ func (client *WorkflowRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter runName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runName}", url.PathEscape(runName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -180,12 +171,12 @@ func (client *WorkflowRunsClient) getHandleResponse(resp *http.Response) (Workfl
 }
 
 // NewListPager - Gets a list of workflow runs.
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// resourceGroupName - Name of the resource group to which the resource belongs.
-// name - Site name.
-// workflowName - The workflow name.
-// options - WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - Name of the resource group to which the resource belongs.
+//   - name - Site name.
+//   - workflowName - The workflow name.
+//   - options - WorkflowRunsClientListOptions contains the optional parameters for the WorkflowRunsClient.NewListPager method.
 func (client *WorkflowRunsClient) NewListPager(resourceGroupName string, name string, workflowName string, options *WorkflowRunsClientListOptions) *runtime.Pager[WorkflowRunsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[WorkflowRunsClientListResponse]{
 		More: func(page WorkflowRunsClientListResponse) bool {
@@ -202,7 +193,7 @@ func (client *WorkflowRunsClient) NewListPager(resourceGroupName string, name st
 			if err != nil {
 				return WorkflowRunsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return WorkflowRunsClientListResponse{}, err
 			}
@@ -233,12 +224,12 @@ func (client *WorkflowRunsClient) listCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter workflowName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workflowName}", url.PathEscape(workflowName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

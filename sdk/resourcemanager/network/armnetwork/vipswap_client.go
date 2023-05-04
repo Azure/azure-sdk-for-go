@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,64 +24,57 @@ import (
 // VipSwapClient contains the methods for the VipSwap group.
 // Don't use this type directly, use NewVipSwapClient() instead.
 type VipSwapClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewVipSwapClient creates a new instance of VipSwapClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVipSwapClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VipSwapClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".VipSwapClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &VipSwapClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Performs vip swap operation on swappable cloud services.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// groupName - The name of the resource group.
-// resourceName - The name of the cloud service.
-// parameters - SwapResource object where slot type should be the target slot after vip swap for the specified cloud service.
-// options - VipSwapClientBeginCreateOptions contains the optional parameters for the VipSwapClient.BeginCreate method.
+//
+// Generated from API version 2022-09-01
+//   - groupName - The name of the resource group.
+//   - resourceName - The name of the cloud service.
+//   - parameters - SwapResource object where slot type should be the target slot after vip swap for the specified cloud service.
+//   - options - VipSwapClientBeginCreateOptions contains the optional parameters for the VipSwapClient.BeginCreate method.
 func (client *VipSwapClient) BeginCreate(ctx context.Context, groupName string, resourceName string, parameters SwapResource, options *VipSwapClientBeginCreateOptions) (*runtime.Poller[VipSwapClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, groupName, resourceName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[VipSwapClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[VipSwapClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[VipSwapClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VipSwapClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Performs vip swap operation on swappable cloud services.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VipSwapClient) create(ctx context.Context, groupName string, resourceName string, parameters SwapResource, options *VipSwapClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, groupName, resourceName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -109,12 +100,12 @@ func (client *VipSwapClient) createCreateRequest(ctx context.Context, groupName 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -123,16 +114,17 @@ func (client *VipSwapClient) createCreateRequest(ctx context.Context, groupName 
 // Get - Gets the SwapResource which identifies the slot type for the specified cloud service. The slot type on a cloud service
 // can either be Staging or Production
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// groupName - The name of the resource group.
-// resourceName - The name of the cloud service.
-// options - VipSwapClientGetOptions contains the optional parameters for the VipSwapClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - groupName - The name of the resource group.
+//   - resourceName - The name of the cloud service.
+//   - options - VipSwapClientGetOptions contains the optional parameters for the VipSwapClient.Get method.
 func (client *VipSwapClient) Get(ctx context.Context, groupName string, resourceName string, options *VipSwapClientGetOptions) (VipSwapClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, groupName, resourceName, options)
 	if err != nil {
 		return VipSwapClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VipSwapClientGetResponse{}, err
 	}
@@ -158,12 +150,12 @@ func (client *VipSwapClient) getCreateRequest(ctx context.Context, groupName str
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,16 +173,17 @@ func (client *VipSwapClient) getHandleResponse(resp *http.Response) (VipSwapClie
 // List - Gets the list of SwapResource which identifies the slot type for the specified cloud service. The slot type on a
 // cloud service can either be Staging or Production
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// groupName - The name of the resource group.
-// resourceName - The name of the cloud service.
-// options - VipSwapClientListOptions contains the optional parameters for the VipSwapClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - groupName - The name of the resource group.
+//   - resourceName - The name of the cloud service.
+//   - options - VipSwapClientListOptions contains the optional parameters for the VipSwapClient.List method.
 func (client *VipSwapClient) List(ctx context.Context, groupName string, resourceName string, options *VipSwapClientListOptions) (VipSwapClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, groupName, resourceName, options)
 	if err != nil {
 		return VipSwapClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VipSwapClientListResponse{}, err
 	}
@@ -215,12 +208,12 @@ func (client *VipSwapClient) listCreateRequest(ctx context.Context, groupName st
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

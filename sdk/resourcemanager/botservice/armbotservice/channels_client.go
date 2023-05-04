@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // ChannelsClient contains the methods for the Channels group.
 // Don't use this type directly, use NewChannelsClient() instead.
 type ChannelsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewChannelsClient creates a new instance of ChannelsClient with the specified values.
-// subscriptionID - Azure Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChannelsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ChannelsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ChannelsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Creates a Channel registration for a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-15
-// resourceGroupName - The name of the Bot resource group in the user subscription.
-// resourceName - The name of the Bot resource.
-// channelName - The name of the Channel resource.
-// parameters - The parameters to provide for the created bot.
-// options - ChannelsClientCreateOptions contains the optional parameters for the ChannelsClient.Create method.
+//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+//   - resourceName - The name of the Bot resource.
+//   - channelName - The name of the Channel resource.
+//   - parameters - The parameters to provide for the created bot.
+//   - options - ChannelsClientCreateOptions contains the optional parameters for the ChannelsClient.Create method.
 func (client *ChannelsClient) Create(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsClientCreateOptions) (ChannelsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, resourceName, channelName, parameters, options)
 	if err != nil {
 		return ChannelsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ChannelsClientCreateResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *ChannelsClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,17 +109,18 @@ func (client *ChannelsClient) createHandleResponse(resp *http.Response) (Channel
 
 // Delete - Deletes a Channel registration from a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-15
-// resourceGroupName - The name of the Bot resource group in the user subscription.
-// resourceName - The name of the Bot resource.
-// channelName - The name of the Bot resource.
-// options - ChannelsClientDeleteOptions contains the optional parameters for the ChannelsClient.Delete method.
+//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+//   - resourceName - The name of the Bot resource.
+//   - channelName - The name of the Bot resource.
+//   - options - ChannelsClientDeleteOptions contains the optional parameters for the ChannelsClient.Delete method.
 func (client *ChannelsClient) Delete(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsClientDeleteOptions) (ChannelsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, channelName, options)
 	if err != nil {
 		return ChannelsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ChannelsClientDeleteResponse{}, err
 	}
@@ -158,7 +149,7 @@ func (client *ChannelsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -171,17 +162,18 @@ func (client *ChannelsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Returns a BotService Channel registration specified by the parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-15
-// resourceGroupName - The name of the Bot resource group in the user subscription.
-// resourceName - The name of the Bot resource.
-// channelName - The name of the Bot resource.
-// options - ChannelsClientGetOptions contains the optional parameters for the ChannelsClient.Get method.
+//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+//   - resourceName - The name of the Bot resource.
+//   - channelName - The name of the Bot resource.
+//   - options - ChannelsClientGetOptions contains the optional parameters for the ChannelsClient.Get method.
 func (client *ChannelsClient) Get(ctx context.Context, resourceGroupName string, resourceName string, channelName string, options *ChannelsClientGetOptions) (ChannelsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, resourceName, channelName, options)
 	if err != nil {
 		return ChannelsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ChannelsClientGetResponse{}, err
 	}
@@ -210,7 +202,7 @@ func (client *ChannelsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -231,11 +223,12 @@ func (client *ChannelsClient) getHandleResponse(resp *http.Response) (ChannelsCl
 }
 
 // NewListByResourceGroupPager - Returns all the Channel registrations of a particular BotService resource
+//
 // Generated from API version 2022-09-15
-// resourceGroupName - The name of the Bot resource group in the user subscription.
-// resourceName - The name of the Bot resource.
-// options - ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+//   - resourceName - The name of the Bot resource.
+//   - options - ChannelsClientListByResourceGroupOptions contains the optional parameters for the ChannelsClient.NewListByResourceGroupPager
+//     method.
 func (client *ChannelsClient) NewListByResourceGroupPager(resourceGroupName string, resourceName string, options *ChannelsClientListByResourceGroupOptions) *runtime.Pager[ChannelsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ChannelsClientListByResourceGroupResponse]{
 		More: func(page ChannelsClientListByResourceGroupResponse) bool {
@@ -252,7 +245,7 @@ func (client *ChannelsClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return ChannelsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ChannelsClientListByResourceGroupResponse{}, err
 			}
@@ -279,7 +272,7 @@ func (client *ChannelsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -301,17 +294,18 @@ func (client *ChannelsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // ListWithKeys - Lists a Channel registration for a Bot Service including secrets
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-15
-// resourceGroupName - The name of the Bot resource group in the user subscription.
-// resourceName - The name of the Bot resource.
-// channelName - The name of the Channel resource.
-// options - ChannelsClientListWithKeysOptions contains the optional parameters for the ChannelsClient.ListWithKeys method.
+//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+//   - resourceName - The name of the Bot resource.
+//   - channelName - The name of the Channel resource.
+//   - options - ChannelsClientListWithKeysOptions contains the optional parameters for the ChannelsClient.ListWithKeys method.
 func (client *ChannelsClient) ListWithKeys(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, options *ChannelsClientListWithKeysOptions) (ChannelsClientListWithKeysResponse, error) {
 	req, err := client.listWithKeysCreateRequest(ctx, resourceGroupName, resourceName, channelName, options)
 	if err != nil {
 		return ChannelsClientListWithKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ChannelsClientListWithKeysResponse{}, err
 	}
@@ -340,7 +334,7 @@ func (client *ChannelsClient) listWithKeysCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -362,18 +356,19 @@ func (client *ChannelsClient) listWithKeysHandleResponse(resp *http.Response) (C
 
 // Update - Updates a Channel registration for a Bot Service
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-15
-// resourceGroupName - The name of the Bot resource group in the user subscription.
-// resourceName - The name of the Bot resource.
-// channelName - The name of the Channel resource.
-// parameters - The parameters to provide for the created bot.
-// options - ChannelsClientUpdateOptions contains the optional parameters for the ChannelsClient.Update method.
+//   - resourceGroupName - The name of the Bot resource group in the user subscription.
+//   - resourceName - The name of the Bot resource.
+//   - channelName - The name of the Channel resource.
+//   - parameters - The parameters to provide for the created bot.
+//   - options - ChannelsClientUpdateOptions contains the optional parameters for the ChannelsClient.Update method.
 func (client *ChannelsClient) Update(ctx context.Context, resourceGroupName string, resourceName string, channelName ChannelName, parameters BotChannel, options *ChannelsClientUpdateOptions) (ChannelsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, channelName, parameters, options)
 	if err != nil {
 		return ChannelsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ChannelsClientUpdateResponse{}, err
 	}
@@ -402,7 +397,7 @@ func (client *ChannelsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

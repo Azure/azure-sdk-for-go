@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,50 +25,42 @@ import (
 // GroupsClient contains the methods for the NetworkGroups group.
 // Don't use this type directly, use NewGroupsClient() instead.
 type GroupsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGroupsClient creates a new instance of GroupsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GroupsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GroupsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a network group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// networkGroupName - The name of the network group.
-// parameters - Parameters supplied to the specify which network group need to create
-// options - GroupsClientCreateOrUpdateOptions contains the optional parameters for the GroupsClient.CreateOrUpdate method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - networkGroupName - The name of the network group.
+//   - parameters - Parameters supplied to the specify which network group need to create
+//   - options - GroupsClientCreateOrUpdateOptions contains the optional parameters for the GroupsClient.CreateOrUpdate method.
 func (client *GroupsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, parameters Group, options *GroupsClientCreateOrUpdateOptions) (GroupsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, networkManagerName, networkGroupName, parameters, options)
 	if err != nil {
 		return GroupsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -99,12 +89,12 @@ func (client *GroupsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter networkGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkGroupName}", url.PathEscape(networkGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -127,34 +117,36 @@ func (client *GroupsClient) createOrUpdateHandleResponse(resp *http.Response) (G
 
 // BeginDelete - Deletes a network group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// networkGroupName - The name of the network group.
-// options - GroupsClientBeginDeleteOptions contains the optional parameters for the GroupsClient.BeginDelete method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - networkGroupName - The name of the network group.
+//   - options - GroupsClientBeginDeleteOptions contains the optional parameters for the GroupsClient.BeginDelete method.
 func (client *GroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, options *GroupsClientBeginDeleteOptions) (*runtime.Poller[GroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, networkGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[GroupsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GroupsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[GroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a network group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *GroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, options *GroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, networkManagerName, networkGroupName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -183,12 +175,12 @@ func (client *GroupsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, errors.New("parameter networkGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkGroupName}", url.PathEscape(networkGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Force != nil {
 		reqQP.Set("force", strconv.FormatBool(*options.Force))
 	}
@@ -199,17 +191,18 @@ func (client *GroupsClient) deleteCreateRequest(ctx context.Context, resourceGro
 
 // Get - Gets the specified network group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// networkGroupName - The name of the network group.
-// options - GroupsClientGetOptions contains the optional parameters for the GroupsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - networkGroupName - The name of the network group.
+//   - options - GroupsClientGetOptions contains the optional parameters for the GroupsClient.Get method.
 func (client *GroupsClient) Get(ctx context.Context, resourceGroupName string, networkManagerName string, networkGroupName string, options *GroupsClientGetOptions) (GroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, networkManagerName, networkGroupName, options)
 	if err != nil {
 		return GroupsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return GroupsClientGetResponse{}, err
 	}
@@ -238,12 +231,12 @@ func (client *GroupsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, errors.New("parameter networkGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkGroupName}", url.PathEscape(networkGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -259,10 +252,11 @@ func (client *GroupsClient) getHandleResponse(resp *http.Response) (GroupsClient
 }
 
 // NewListPager - Lists the specified network group.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// options - GroupsClientListOptions contains the optional parameters for the GroupsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - options - GroupsClientListOptions contains the optional parameters for the GroupsClient.NewListPager method.
 func (client *GroupsClient) NewListPager(resourceGroupName string, networkManagerName string, options *GroupsClientListOptions) *runtime.Pager[GroupsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[GroupsClientListResponse]{
 		More: func(page GroupsClientListResponse) bool {
@@ -279,7 +273,7 @@ func (client *GroupsClient) NewListPager(resourceGroupName string, networkManage
 			if err != nil {
 				return GroupsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return GroupsClientListResponse{}, err
 			}
@@ -306,12 +300,12 @@ func (client *GroupsClient) listCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter networkManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

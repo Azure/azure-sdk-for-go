@@ -18,7 +18,7 @@ import (
 
 // MarshalJSON implements the json.Marshaller interface for type A2AAddDisksInput.
 func (a A2AAddDisksInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "vmDisks", a.VMDisks)
 	populate(objectMap, "vmManagedDisks", a.VMManagedDisks)
@@ -53,7 +53,7 @@ func (a *A2AAddDisksInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AApplyRecoveryPointInput.
 func (a A2AApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2A"
 	return json.Marshal(objectMap)
 }
@@ -80,7 +80,7 @@ func (a *A2AApplyRecoveryPointInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AContainerCreationInput.
 func (a A2AContainerCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2A"
 	return json.Marshal(objectMap)
 }
@@ -107,7 +107,7 @@ func (a *A2AContainerCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AContainerMappingInput.
 func (a A2AContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
 	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
 	populate(objectMap, "automationAccountAuthenticationType", a.AutomationAccountAuthenticationType)
@@ -146,7 +146,7 @@ func (a *A2AContainerMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2ACreateProtectionIntentInput.
 func (a A2ACreateProtectionIntentInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
 	populate(objectMap, "autoProtectionOfDataDisk", a.AutoProtectionOfDataDisk)
 	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
@@ -261,7 +261,7 @@ func (a *A2ACreateProtectionIntentInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationApplyRecoveryPointInput.
 func (a A2ACrossClusterMigrationApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2ACrossClusterMigration"
 	return json.Marshal(objectMap)
 }
@@ -288,7 +288,7 @@ func (a *A2ACrossClusterMigrationApplyRecoveryPointInput) UnmarshalJSON(data []b
 
 // MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationContainerCreationInput.
 func (a A2ACrossClusterMigrationContainerCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2ACrossClusterMigration"
 	return json.Marshal(objectMap)
 }
@@ -315,7 +315,7 @@ func (a *A2ACrossClusterMigrationContainerCreationInput) UnmarshalJSON(data []by
 
 // MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationEnableProtectionInput.
 func (a A2ACrossClusterMigrationEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricObjectId", a.FabricObjectID)
 	objectMap["instanceType"] = "A2ACrossClusterMigration"
 	populate(objectMap, "recoveryContainerId", a.RecoveryContainerID)
@@ -350,7 +350,7 @@ func (a *A2ACrossClusterMigrationEnableProtectionInput) UnmarshalJSON(data []byt
 
 // MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationPolicyCreationInput.
 func (a A2ACrossClusterMigrationPolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2ACrossClusterMigration"
 	return json.Marshal(objectMap)
 }
@@ -377,7 +377,7 @@ func (a *A2ACrossClusterMigrationPolicyCreationInput) UnmarshalJSON(data []byte)
 
 // MarshalJSON implements the json.Marshaller interface for type A2ACrossClusterMigrationReplicationDetails.
 func (a A2ACrossClusterMigrationReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricObjectId", a.FabricObjectID)
 	objectMap["instanceType"] = "A2ACrossClusterMigration"
 	populate(objectMap, "lifecycleId", a.LifecycleID)
@@ -428,7 +428,7 @@ func (a *A2ACrossClusterMigrationReplicationDetails) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type A2AEnableProtectionInput.
 func (a A2AEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	populate(objectMap, "fabricObjectId", a.FabricObjectID)
 	objectMap["instanceType"] = "A2A"
@@ -527,7 +527,7 @@ func (a *A2AEnableProtectionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AEventDetails.
 func (a A2AEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricLocation", a.FabricLocation)
 	populate(objectMap, "fabricName", a.FabricName)
 	populate(objectMap, "fabricObjectId", a.FabricObjectID)
@@ -578,7 +578,7 @@ func (a *A2AEventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AExtendedLocationDetails.
 func (a A2AExtendedLocationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "primaryExtendedLocation", a.PrimaryExtendedLocation)
 	populate(objectMap, "recoveryExtendedLocation", a.RecoveryExtendedLocation)
 	return json.Marshal(objectMap)
@@ -609,7 +609,7 @@ func (a *A2AExtendedLocationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2APolicyCreationInput.
 func (a A2APolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", a.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", a.CrashConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "A2A"
@@ -652,7 +652,7 @@ func (a *A2APolicyCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2APolicyDetails.
 func (a A2APolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", a.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", a.CrashConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "A2A"
@@ -699,7 +699,7 @@ func (a *A2APolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AProtectedDiskDetails.
 func (a A2AProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedDiskLevelOperation", a.AllowedDiskLevelOperation)
 	populate(objectMap, "dataPendingAtSourceAgentInMB", a.DataPendingAtSourceAgentInMB)
 	populate(objectMap, "dataPendingInStagingStorageAccountInMB", a.DataPendingInStagingStorageAccountInMB)
@@ -814,7 +814,7 @@ func (a *A2AProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AProtectedManagedDiskDetails.
 func (a A2AProtectedManagedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedDiskLevelOperation", a.AllowedDiskLevelOperation)
 	populate(objectMap, "dataPendingAtSourceAgentInMB", a.DataPendingAtSourceAgentInMB)
 	populate(objectMap, "dataPendingInStagingStorageAccountInMB", a.DataPendingInStagingStorageAccountInMB)
@@ -949,7 +949,7 @@ func (a *A2AProtectedManagedDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AProtectionContainerMappingDetails.
 func (a A2AProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
 	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
 	populate(objectMap, "automationAccountAuthenticationType", a.AutomationAccountAuthenticationType)
@@ -996,7 +996,7 @@ func (a *A2AProtectionContainerMappingDetails) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type A2AProtectionIntentDiskInputDetails.
 func (a A2AProtectionIntentDiskInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskUri", a.DiskURI)
 	populate(objectMap, "primaryStagingStorageAccountCustomInput", a.PrimaryStagingStorageAccountCustomInput)
 	populate(objectMap, "recoveryAzureStorageAccountCustomInput", a.RecoveryAzureStorageAccountCustomInput)
@@ -1031,7 +1031,7 @@ func (a *A2AProtectionIntentDiskInputDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AProtectionIntentManagedDiskInputDetails.
 func (a A2AProtectionIntentManagedDiskInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	populate(objectMap, "diskId", a.DiskID)
 	populate(objectMap, "primaryStagingStorageAccountCustomInput", a.PrimaryStagingStorageAccountCustomInput)
@@ -1082,7 +1082,7 @@ func (a *A2AProtectionIntentManagedDiskInputDetails) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type A2ARecoveryPointDetails.
 func (a A2ARecoveryPointDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "disks", a.Disks)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "recoveryPointSyncType", a.RecoveryPointSyncType)
@@ -1117,7 +1117,7 @@ func (a *A2ARecoveryPointDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2ARemoveDisksInput.
 func (a A2ARemoveDisksInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "vmDisksUris", a.VMDisksUris)
 	populate(objectMap, "vmManagedDisksIds", a.VMManagedDisksIDs)
@@ -1152,7 +1152,7 @@ func (a *A2ARemoveDisksInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AReplicationDetails.
 func (a A2AReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "agentCertificateExpiryDate", a.AgentCertificateExpiryDate)
 	populateTimeRFC3339(objectMap, "agentExpiryDate", a.AgentExpiryDate)
 	populate(objectMap, "agentVersion", a.AgentVersion)
@@ -1391,7 +1391,7 @@ func (a *A2AReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AReplicationIntentDetails.
 func (a A2AReplicationIntentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
 	populate(objectMap, "autoProtectionOfDataDisk", a.AutoProtectionOfDataDisk)
 	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
@@ -1506,7 +1506,7 @@ func (a *A2AReplicationIntentDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AReprotectInput.
 func (a A2AReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "policyId", a.PolicyID)
 	populate(objectMap, "recoveryAvailabilitySetId", a.RecoveryAvailabilitySetID)
@@ -1557,7 +1557,7 @@ func (a *A2AReprotectInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2ASwitchProtectionInput.
 func (a A2ASwitchProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "policyId", a.PolicyID)
@@ -1636,7 +1636,7 @@ func (a *A2ASwitchProtectionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2ATestFailoverInput.
 func (a A2ATestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "cloudServiceCreationOption", a.CloudServiceCreationOption)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "recoveryPointId", a.RecoveryPointID)
@@ -1671,7 +1671,7 @@ func (a *A2ATestFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AUnplannedFailoverInput.
 func (a A2AUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "cloudServiceCreationOption", a.CloudServiceCreationOption)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "recoveryPointId", a.RecoveryPointID)
@@ -1706,7 +1706,7 @@ func (a *A2AUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AUnprotectedDiskDetails.
 func (a A2AUnprotectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskAutoProtectionStatus", a.DiskAutoProtectionStatus)
 	populate(objectMap, "diskLunId", a.DiskLunID)
 	return json.Marshal(objectMap)
@@ -1737,7 +1737,7 @@ func (a *A2AUnprotectedDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AUpdateContainerMappingInput.
 func (a A2AUpdateContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentAutoUpdateStatus", a.AgentAutoUpdateStatus)
 	populate(objectMap, "automationAccountArmId", a.AutomationAccountArmID)
 	populate(objectMap, "automationAccountAuthenticationType", a.AutomationAccountAuthenticationType)
@@ -1776,7 +1776,7 @@ func (a *A2AUpdateContainerMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AUpdateReplicationProtectedItemInput.
 func (a A2AUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "managedDiskUpdateDetails", a.ManagedDiskUpdateDetails)
@@ -1839,7 +1839,7 @@ func (a *A2AUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type A2AVMDiskInputDetails.
 func (a A2AVMDiskInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskUri", a.DiskURI)
 	populate(objectMap, "primaryStagingAzureStorageAccountId", a.PrimaryStagingAzureStorageAccountID)
 	populate(objectMap, "recoveryAzureStorageAccountId", a.RecoveryAzureStorageAccountID)
@@ -1874,7 +1874,7 @@ func (a *A2AVMDiskInputDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AVMManagedDiskInputDetails.
 func (a A2AVMManagedDiskInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	populate(objectMap, "diskId", a.DiskID)
 	populate(objectMap, "primaryStagingAzureStorageAccountId", a.PrimaryStagingAzureStorageAccountID)
@@ -1925,7 +1925,7 @@ func (a *A2AVMManagedDiskInputDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AVMManagedDiskUpdateDetails.
 func (a A2AVMManagedDiskUpdateDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionInfo", a.DiskEncryptionInfo)
 	populate(objectMap, "diskId", a.DiskID)
 	populate(objectMap, "failoverDiskName", a.FailoverDiskName)
@@ -1972,7 +1972,7 @@ func (a *A2AVMManagedDiskUpdateDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type A2AZoneDetails.
 func (a A2AZoneDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "source", a.Source)
 	populate(objectMap, "target", a.Target)
 	return json.Marshal(objectMap)
@@ -2003,7 +2003,7 @@ func (a *A2AZoneDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ASRTask.
 func (a ASRTask) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedActions", a.AllowedActions)
 	populate(objectMap, "customDetails", a.CustomDetails)
 	populateTimeRFC3339(objectMap, "endTime", a.EndTime)
@@ -2074,7 +2074,7 @@ func (a *ASRTask) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AddDisksInput.
 func (a AddDisksInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -2101,7 +2101,7 @@ func (a *AddDisksInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AddDisksInputProperties.
 func (a AddDisksInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", a.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -2128,7 +2128,7 @@ func (a *AddDisksInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AddDisksProviderSpecificInput.
 func (a AddDisksProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = a.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -2155,7 +2155,7 @@ func (a *AddDisksProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AddRecoveryServicesProviderInput.
 func (a AddRecoveryServicesProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -2182,7 +2182,7 @@ func (a *AddRecoveryServicesProviderInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AddRecoveryServicesProviderInputProperties.
 func (a AddRecoveryServicesProviderInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "authenticationIdentityInput", a.AuthenticationIdentityInput)
 	populate(objectMap, "biosId", a.BiosID)
 	populate(objectMap, "dataPlaneAuthenticationIdentityInput", a.DataPlaneAuthenticationIdentityInput)
@@ -2229,7 +2229,7 @@ func (a *AddRecoveryServicesProviderInputProperties) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type AddVCenterRequest.
 func (a AddVCenterRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -2256,7 +2256,7 @@ func (a *AddVCenterRequest) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AddVCenterRequestProperties.
 func (a AddVCenterRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "friendlyName", a.FriendlyName)
 	populate(objectMap, "ipAddress", a.IPAddress)
 	populate(objectMap, "port", a.Port)
@@ -2299,7 +2299,7 @@ func (a *AddVCenterRequestProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AgentDetails.
 func (a AgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentId", a.AgentID)
 	populate(objectMap, "biosId", a.BiosID)
 	populate(objectMap, "disks", a.Disks)
@@ -2342,7 +2342,7 @@ func (a *AgentDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AgentDiskDetails.
 func (a AgentDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "capacityInBytes", a.CapacityInBytes)
 	populate(objectMap, "diskId", a.DiskID)
 	populate(objectMap, "diskName", a.DiskName)
@@ -2385,7 +2385,7 @@ func (a *AgentDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Alert.
 func (a Alert) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "location", a.Location)
 	populate(objectMap, "name", a.Name)
@@ -2428,7 +2428,7 @@ func (a *Alert) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AlertCollection.
 func (a AlertCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", a.NextLink)
 	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
@@ -2459,7 +2459,7 @@ func (a *AlertCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AlertProperties.
 func (a AlertProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "customEmailAddresses", a.CustomEmailAddresses)
 	populate(objectMap, "locale", a.Locale)
 	populate(objectMap, "sendToOwners", a.SendToOwners)
@@ -2494,7 +2494,7 @@ func (a *AlertProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ApplianceCollection.
 func (a ApplianceCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", a.NextLink)
 	populate(objectMap, "value", a.Value)
 	return json.Marshal(objectMap)
@@ -2525,7 +2525,7 @@ func (a *ApplianceCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ApplianceQueryParameter.
 func (a ApplianceQueryParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerType", a.ProviderType)
 	return json.Marshal(objectMap)
 }
@@ -2552,7 +2552,7 @@ func (a *ApplianceQueryParameter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ApplianceSpecificDetails.
 func (a ApplianceSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = a.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -2579,7 +2579,7 @@ func (a *ApplianceSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ApplyRecoveryPointInput.
 func (a ApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", a.Properties)
 	return json.Marshal(objectMap)
 }
@@ -2606,7 +2606,7 @@ func (a *ApplyRecoveryPointInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ApplyRecoveryPointInputProperties.
 func (a ApplyRecoveryPointInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", a.ProviderSpecificDetails)
 	populate(objectMap, "recoveryPointId", a.RecoveryPointID)
 	return json.Marshal(objectMap)
@@ -2637,7 +2637,7 @@ func (a *ApplyRecoveryPointInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ApplyRecoveryPointProviderSpecificInput.
 func (a ApplyRecoveryPointProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = a.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -2664,7 +2664,7 @@ func (a *ApplyRecoveryPointProviderSpecificInput) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type AsrJobDetails.
 func (a AsrJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectDetails", a.AffectedObjectDetails)
 	objectMap["instanceType"] = "AsrJobDetails"
 	return json.Marshal(objectMap)
@@ -2695,7 +2695,7 @@ func (a *AsrJobDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AutomationRunbookTaskDetails.
 func (a AutomationRunbookTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "accountName", a.AccountName)
 	populate(objectMap, "cloudServiceName", a.CloudServiceName)
 	objectMap["instanceType"] = "AutomationRunbookTaskDetails"
@@ -2758,7 +2758,7 @@ func (a *AutomationRunbookTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AzureFabricCreationInput.
 func (a AzureFabricCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "Azure"
 	populate(objectMap, "location", a.Location)
 	return json.Marshal(objectMap)
@@ -2789,7 +2789,7 @@ func (a *AzureFabricCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AzureFabricSpecificDetails.
 func (a AzureFabricSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "containerIds", a.ContainerIDs)
 	populate(objectMap, "extendedLocations", a.ExtendedLocations)
 	objectMap["instanceType"] = "Azure"
@@ -2832,7 +2832,7 @@ func (a *AzureFabricSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AzureToAzureCreateNetworkMappingInput.
 func (a AzureToAzureCreateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "AzureToAzure"
 	populate(objectMap, "primaryNetworkId", a.PrimaryNetworkID)
 	return json.Marshal(objectMap)
@@ -2863,7 +2863,7 @@ func (a *AzureToAzureCreateNetworkMappingInput) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type AzureToAzureNetworkMappingSettings.
 func (a AzureToAzureNetworkMappingSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "AzureToAzure"
 	populate(objectMap, "primaryFabricLocation", a.PrimaryFabricLocation)
 	populate(objectMap, "recoveryFabricLocation", a.RecoveryFabricLocation)
@@ -2898,7 +2898,7 @@ func (a *AzureToAzureNetworkMappingSettings) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AzureToAzureUpdateNetworkMappingInput.
 func (a AzureToAzureUpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "AzureToAzure"
 	populate(objectMap, "primaryNetworkId", a.PrimaryNetworkID)
 	return json.Marshal(objectMap)
@@ -2929,7 +2929,7 @@ func (a *AzureToAzureUpdateNetworkMappingInput) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type AzureToAzureVMSyncedConfigDetails.
 func (a AzureToAzureVMSyncedConfigDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "inputEndpoints", a.InputEndpoints)
 	populate(objectMap, "tags", a.Tags)
 	return json.Marshal(objectMap)
@@ -2960,7 +2960,7 @@ func (a *AzureToAzureVMSyncedConfigDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type AzureVMDiskDetails.
 func (a AzureVMDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "customTargetDiskName", a.CustomTargetDiskName)
 	populate(objectMap, "diskEncryptionSetId", a.DiskEncryptionSetID)
 	populate(objectMap, "diskId", a.DiskID)
@@ -3023,7 +3023,7 @@ func (a *AzureVMDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ComputeSizeErrorDetails.
 func (c ComputeSizeErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "message", c.Message)
 	populate(objectMap, "severity", c.Severity)
 	return json.Marshal(objectMap)
@@ -3054,7 +3054,7 @@ func (c *ComputeSizeErrorDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ConfigurationSettings.
 func (c ConfigurationSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = c.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -3081,7 +3081,7 @@ func (c *ConfigurationSettings) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ConfigureAlertRequest.
 func (c ConfigureAlertRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3108,7 +3108,7 @@ func (c *ConfigureAlertRequest) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ConfigureAlertRequestProperties.
 func (c ConfigureAlertRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "customEmailAddresses", c.CustomEmailAddresses)
 	populate(objectMap, "locale", c.Locale)
 	populate(objectMap, "sendToOwners", c.SendToOwners)
@@ -3143,7 +3143,7 @@ func (c *ConfigureAlertRequestProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ConsistencyCheckTaskDetails.
 func (c ConsistencyCheckTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "ConsistencyCheckTaskDetails"
 	populate(objectMap, "vmDetails", c.VMDetails)
 	return json.Marshal(objectMap)
@@ -3174,7 +3174,7 @@ func (c *ConsistencyCheckTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreateNetworkMappingInput.
 func (c CreateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3201,7 +3201,7 @@ func (c *CreateNetworkMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreateNetworkMappingInputProperties.
 func (c CreateNetworkMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricSpecificDetails", c.FabricSpecificDetails)
 	populate(objectMap, "recoveryFabricName", c.RecoveryFabricName)
 	populate(objectMap, "recoveryNetworkId", c.RecoveryNetworkID)
@@ -3236,7 +3236,7 @@ func (c *CreateNetworkMappingInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreatePolicyInput.
 func (c CreatePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3263,7 +3263,7 @@ func (c *CreatePolicyInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreatePolicyInputProperties.
 func (c CreatePolicyInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificInput", c.ProviderSpecificInput)
 	return json.Marshal(objectMap)
 }
@@ -3290,7 +3290,7 @@ func (c *CreatePolicyInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreateProtectionContainerInput.
 func (c CreateProtectionContainerInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3317,7 +3317,7 @@ func (c *CreateProtectionContainerInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreateProtectionContainerInputProperties.
 func (c CreateProtectionContainerInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificInput", c.ProviderSpecificInput)
 	return json.Marshal(objectMap)
 }
@@ -3344,7 +3344,7 @@ func (c *CreateProtectionContainerInputProperties) UnmarshalJSON(data []byte) er
 
 // MarshalJSON implements the json.Marshaller interface for type CreateProtectionContainerMappingInput.
 func (c CreateProtectionContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3371,7 +3371,7 @@ func (c *CreateProtectionContainerMappingInput) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type CreateProtectionContainerMappingInputProperties.
 func (c CreateProtectionContainerMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "policyId", c.PolicyID)
 	populate(objectMap, "providerSpecificInput", c.ProviderSpecificInput)
 	populate(objectMap, "targetProtectionContainerId", c.TargetProtectionContainerID)
@@ -3406,7 +3406,7 @@ func (c *CreateProtectionContainerMappingInputProperties) UnmarshalJSON(data []b
 
 // MarshalJSON implements the json.Marshaller interface for type CreateProtectionIntentInput.
 func (c CreateProtectionIntentInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3433,7 +3433,7 @@ func (c *CreateProtectionIntentInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreateProtectionIntentProperties.
 func (c CreateProtectionIntentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", c.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -3460,7 +3460,7 @@ func (c *CreateProtectionIntentProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreateProtectionIntentProviderSpecificDetails.
 func (c CreateProtectionIntentProviderSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = c.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -3487,7 +3487,7 @@ func (c *CreateProtectionIntentProviderSpecificDetails) UnmarshalJSON(data []byt
 
 // MarshalJSON implements the json.Marshaller interface for type CreateRecoveryPlanInput.
 func (c CreateRecoveryPlanInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", c.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3514,7 +3514,7 @@ func (c *CreateRecoveryPlanInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CreateRecoveryPlanInputProperties.
 func (c CreateRecoveryPlanInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "failoverDeploymentModel", c.FailoverDeploymentModel)
 	populate(objectMap, "groups", c.Groups)
 	populate(objectMap, "primaryFabricId", c.PrimaryFabricID)
@@ -3557,7 +3557,7 @@ func (c *CreateRecoveryPlanInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CriticalJobHistoryDetails.
 func (c CriticalJobHistoryDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "jobId", c.JobID)
 	populate(objectMap, "jobName", c.JobName)
 	populate(objectMap, "jobStatus", c.JobStatus)
@@ -3596,7 +3596,7 @@ func (c *CriticalJobHistoryDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CurrentJobDetails.
 func (c CurrentJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "jobId", c.JobID)
 	populate(objectMap, "jobName", c.JobName)
 	populateTimeRFC3339(objectMap, "startTime", c.StartTime)
@@ -3631,7 +3631,7 @@ func (c *CurrentJobDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type CurrentScenarioDetails.
 func (c CurrentScenarioDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "jobId", c.JobID)
 	populate(objectMap, "scenarioName", c.ScenarioName)
 	populateTimeRFC3339(objectMap, "startTime", c.StartTime)
@@ -3666,7 +3666,7 @@ func (c *CurrentScenarioDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DataStore.
 func (d DataStore) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "capacity", d.Capacity)
 	populate(objectMap, "freeSpace", d.FreeSpace)
 	populate(objectMap, "symbolicName", d.SymbolicName)
@@ -3709,7 +3709,7 @@ func (d *DataStore) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DisableProtectionInput.
 func (d DisableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", d.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3736,7 +3736,7 @@ func (d *DisableProtectionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DisableProtectionInputProperties.
 func (d DisableProtectionInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "disableProtectionReason", d.DisableProtectionReason)
 	populate(objectMap, "replicationProviderInput", d.ReplicationProviderInput)
 	return json.Marshal(objectMap)
@@ -3767,7 +3767,7 @@ func (d *DisableProtectionInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DisableProtectionProviderSpecificInput.
 func (d DisableProtectionProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = d.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -3794,7 +3794,7 @@ func (d *DisableProtectionProviderSpecificInput) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type DiscoverProtectableItemRequest.
 func (d DiscoverProtectableItemRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", d.Properties)
 	return json.Marshal(objectMap)
 }
@@ -3821,7 +3821,7 @@ func (d *DiscoverProtectableItemRequest) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DiscoverProtectableItemRequestProperties.
 func (d DiscoverProtectableItemRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "friendlyName", d.FriendlyName)
 	populate(objectMap, "ipAddress", d.IPAddress)
 	populate(objectMap, "osType", d.OSType)
@@ -3856,7 +3856,7 @@ func (d *DiscoverProtectableItemRequestProperties) UnmarshalJSON(data []byte) er
 
 // MarshalJSON implements the json.Marshaller interface for type DiskDetails.
 func (d DiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "maxSizeMB", d.MaxSizeMB)
 	populate(objectMap, "vhdId", d.VhdID)
 	populate(objectMap, "vhdName", d.VhdName)
@@ -3895,7 +3895,7 @@ func (d *DiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DiskEncryptionInfo.
 func (d DiskEncryptionInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionKeyInfo", d.DiskEncryptionKeyInfo)
 	populate(objectMap, "keyEncryptionKeyInfo", d.KeyEncryptionKeyInfo)
 	return json.Marshal(objectMap)
@@ -3926,7 +3926,7 @@ func (d *DiskEncryptionInfo) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DiskEncryptionKeyInfo.
 func (d DiskEncryptionKeyInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "keyVaultResourceArmId", d.KeyVaultResourceArmID)
 	populate(objectMap, "secretIdentifier", d.SecretIdentifier)
 	return json.Marshal(objectMap)
@@ -3957,7 +3957,7 @@ func (d *DiskEncryptionKeyInfo) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DiskVolumeDetails.
 func (d DiskVolumeDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "label", d.Label)
 	populate(objectMap, "name", d.Name)
 	return json.Marshal(objectMap)
@@ -3988,7 +3988,7 @@ func (d *DiskVolumeDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Display.
 func (d Display) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "description", d.Description)
 	populate(objectMap, "operation", d.Operation)
 	populate(objectMap, "provider", d.Provider)
@@ -4027,7 +4027,7 @@ func (d *Display) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type DraDetails.
 func (d DraDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "biosId", d.BiosID)
 	populate(objectMap, "forwardProtectedItemCount", d.ForwardProtectedItemCount)
 	populate(objectMap, "health", d.Health)
@@ -4086,7 +4086,7 @@ func (d *DraDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EnableMigrationInput.
 func (e EnableMigrationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", e.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4113,7 +4113,7 @@ func (e *EnableMigrationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EnableMigrationInputProperties.
 func (e EnableMigrationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "policyId", e.PolicyID)
 	populate(objectMap, "providerSpecificDetails", e.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
@@ -4144,7 +4144,7 @@ func (e *EnableMigrationInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EnableMigrationProviderSpecificInput.
 func (e EnableMigrationProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = e.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -4171,7 +4171,7 @@ func (e *EnableMigrationProviderSpecificInput) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type EnableProtectionInput.
 func (e EnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", e.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4198,7 +4198,7 @@ func (e *EnableProtectionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EnableProtectionInputProperties.
 func (e EnableProtectionInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "policyId", e.PolicyID)
 	populate(objectMap, "protectableItemId", e.ProtectableItemID)
 	populate(objectMap, "providerSpecificDetails", e.ProviderSpecificDetails)
@@ -4233,7 +4233,7 @@ func (e *EnableProtectionInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EnableProtectionProviderSpecificInput.
 func (e EnableProtectionProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = e.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -4260,7 +4260,7 @@ func (e *EnableProtectionProviderSpecificInput) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type EncryptionDetails.
 func (e EncryptionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "kekCertExpiryDate", e.KekCertExpiryDate)
 	populate(objectMap, "kekCertThumbprint", e.KekCertThumbprint)
 	populate(objectMap, "kekState", e.KekState)
@@ -4295,7 +4295,7 @@ func (e *EncryptionDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Event.
 func (e Event) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", e.ID)
 	populate(objectMap, "location", e.Location)
 	populate(objectMap, "name", e.Name)
@@ -4338,7 +4338,7 @@ func (e *Event) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EventCollection.
 func (e EventCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", e.NextLink)
 	populate(objectMap, "value", e.Value)
 	return json.Marshal(objectMap)
@@ -4369,7 +4369,7 @@ func (e *EventCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EventProperties.
 func (e EventProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectCorrelationId", e.AffectedObjectCorrelationID)
 	populate(objectMap, "affectedObjectFriendlyName", e.AffectedObjectFriendlyName)
 	populate(objectMap, "description", e.Description)
@@ -4436,7 +4436,7 @@ func (e *EventProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EventProviderSpecificDetails.
 func (e EventProviderSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = e.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -4463,7 +4463,7 @@ func (e *EventProviderSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EventQueryParameter.
 func (e EventQueryParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectCorrelationId", e.AffectedObjectCorrelationID)
 	populate(objectMap, "affectedObjectFriendlyName", e.AffectedObjectFriendlyName)
 	populateTimeRFC3339(objectMap, "endTime", e.EndTime)
@@ -4518,7 +4518,7 @@ func (e *EventQueryParameter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type EventSpecificDetails.
 func (e EventSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = e.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -4545,7 +4545,7 @@ func (e *EventSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ExistingProtectionProfile.
 func (e ExistingProtectionProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "protectionProfileId", e.ProtectionProfileID)
 	objectMap["resourceType"] = "Existing"
 	return json.Marshal(objectMap)
@@ -4576,7 +4576,7 @@ func (e *ExistingProtectionProfile) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ExistingRecoveryAvailabilitySet.
 func (e ExistingRecoveryAvailabilitySet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "recoveryAvailabilitySetId", e.RecoveryAvailabilitySetID)
 	objectMap["resourceType"] = "Existing"
 	return json.Marshal(objectMap)
@@ -4607,7 +4607,7 @@ func (e *ExistingRecoveryAvailabilitySet) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ExistingRecoveryProximityPlacementGroup.
 func (e ExistingRecoveryProximityPlacementGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "recoveryProximityPlacementGroupId", e.RecoveryProximityPlacementGroupID)
 	objectMap["resourceType"] = "Existing"
 	return json.Marshal(objectMap)
@@ -4638,7 +4638,7 @@ func (e *ExistingRecoveryProximityPlacementGroup) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type ExistingRecoveryResourceGroup.
 func (e ExistingRecoveryResourceGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "recoveryResourceGroupId", e.RecoveryResourceGroupID)
 	objectMap["resourceType"] = "Existing"
 	return json.Marshal(objectMap)
@@ -4669,7 +4669,7 @@ func (e *ExistingRecoveryResourceGroup) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ExistingRecoveryVirtualNetwork.
 func (e ExistingRecoveryVirtualNetwork) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "recoverySubnetName", e.RecoverySubnetName)
 	populate(objectMap, "recoveryVirtualNetworkId", e.RecoveryVirtualNetworkID)
 	objectMap["resourceType"] = "Existing"
@@ -4704,7 +4704,7 @@ func (e *ExistingRecoveryVirtualNetwork) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ExistingStorageAccount.
 func (e ExistingStorageAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "azureStorageAccountId", e.AzureStorageAccountID)
 	objectMap["resourceType"] = "Existing"
 	return json.Marshal(objectMap)
@@ -4735,7 +4735,7 @@ func (e *ExistingStorageAccount) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ExportJobDetails.
 func (e ExportJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectDetails", e.AffectedObjectDetails)
 	populate(objectMap, "blobUri", e.BlobURI)
 	objectMap["instanceType"] = "ExportJobDetails"
@@ -4774,7 +4774,7 @@ func (e *ExportJobDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ExtendedLocation.
 func (e ExtendedLocation) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "name", e.Name)
 	populate(objectMap, "type", e.Type)
 	return json.Marshal(objectMap)
@@ -4805,7 +4805,7 @@ func (e *ExtendedLocation) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Fabric.
 func (f Fabric) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", f.ID)
 	populate(objectMap, "location", f.Location)
 	populate(objectMap, "name", f.Name)
@@ -4848,7 +4848,7 @@ func (f *Fabric) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricCollection.
 func (f FabricCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", f.NextLink)
 	populate(objectMap, "value", f.Value)
 	return json.Marshal(objectMap)
@@ -4879,7 +4879,7 @@ func (f *FabricCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricCreationInput.
 func (f FabricCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", f.Properties)
 	return json.Marshal(objectMap)
 }
@@ -4906,7 +4906,7 @@ func (f *FabricCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricCreationInputProperties.
 func (f FabricCreationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "customDetails", f.CustomDetails)
 	return json.Marshal(objectMap)
 }
@@ -4933,7 +4933,7 @@ func (f *FabricCreationInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricProperties.
 func (f FabricProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "bcdrState", f.BcdrState)
 	populate(objectMap, "customDetails", f.CustomDetails)
 	populate(objectMap, "encryptionDetails", f.EncryptionDetails)
@@ -4988,7 +4988,7 @@ func (f *FabricProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricQueryParameter.
 func (f FabricQueryParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "biosId", f.BiosID)
 	populate(objectMap, "discoveryType", f.DiscoveryType)
 	populate(objectMap, "fetchAgentDetails", f.FetchAgentDetails)
@@ -5035,7 +5035,7 @@ func (f *FabricQueryParameter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricReplicationGroupTaskDetails.
 func (f FabricReplicationGroupTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "FabricReplicationGroupTaskDetails"
 	populate(objectMap, "jobTask", f.JobTask)
 	populate(objectMap, "skippedReason", f.SkippedReason)
@@ -5074,7 +5074,7 @@ func (f *FabricReplicationGroupTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricSpecificCreateNetworkMappingInput.
 func (f FabricSpecificCreateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = f.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -5101,7 +5101,7 @@ func (f *FabricSpecificCreateNetworkMappingInput) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type FabricSpecificCreationInput.
 func (f FabricSpecificCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = f.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -5128,7 +5128,7 @@ func (f *FabricSpecificCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricSpecificDetails.
 func (f FabricSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = f.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -5155,7 +5155,7 @@ func (f *FabricSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FabricSpecificUpdateNetworkMappingInput.
 func (f FabricSpecificUpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = f.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -5182,7 +5182,7 @@ func (f *FabricSpecificUpdateNetworkMappingInput) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type FailoverJobDetails.
 func (f FailoverJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectDetails", f.AffectedObjectDetails)
 	objectMap["instanceType"] = "FailoverJobDetails"
 	populate(objectMap, "protectedItemDetails", f.ProtectedItemDetails)
@@ -5217,7 +5217,7 @@ func (f *FailoverJobDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FailoverProcessServerRequest.
 func (f FailoverProcessServerRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", f.Properties)
 	return json.Marshal(objectMap)
 }
@@ -5244,7 +5244,7 @@ func (f *FailoverProcessServerRequest) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type FailoverProcessServerRequestProperties.
 func (f FailoverProcessServerRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "containerName", f.ContainerName)
 	populate(objectMap, "sourceProcessServerId", f.SourceProcessServerID)
 	populate(objectMap, "targetProcessServerId", f.TargetProcessServerID)
@@ -5287,7 +5287,7 @@ func (f *FailoverProcessServerRequestProperties) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type FailoverReplicationProtectedItemDetails.
 func (f FailoverReplicationProtectedItemDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "friendlyName", f.FriendlyName)
 	populate(objectMap, "name", f.Name)
 	populate(objectMap, "networkConnectionStatus", f.NetworkConnectionStatus)
@@ -5346,7 +5346,7 @@ func (f *FailoverReplicationProtectedItemDetails) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type GroupTaskDetails.
 func (g GroupTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "childTasks", g.ChildTasks)
 	objectMap["instanceType"] = g.InstanceType
 	return json.Marshal(objectMap)
@@ -5377,7 +5377,7 @@ func (g *GroupTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HealthError.
 func (h HealthError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "creationTimeUtc", h.CreationTimeUTC)
 	populate(objectMap, "customerResolvability", h.CustomerResolvability)
 	populate(objectMap, "entityId", h.EntityID)
@@ -5460,7 +5460,7 @@ func (h *HealthError) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HealthErrorSummary.
 func (h HealthErrorSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedResourceCorrelationIds", h.AffectedResourceCorrelationIDs)
 	populate(objectMap, "affectedResourceSubtype", h.AffectedResourceSubtype)
 	populate(objectMap, "affectedResourceType", h.AffectedResourceType)
@@ -5511,7 +5511,7 @@ func (h *HealthErrorSummary) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVHostDetails.
 func (h HyperVHostDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", h.ID)
 	populate(objectMap, "marsAgentVersion", h.MarsAgentVersion)
 	populate(objectMap, "name", h.Name)
@@ -5546,7 +5546,7 @@ func (h *HyperVHostDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplica2012EventDetails.
 func (h HyperVReplica2012EventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "containerName", h.ContainerName)
 	populate(objectMap, "fabricName", h.FabricName)
 	objectMap["instanceType"] = "HyperVReplica2012"
@@ -5589,7 +5589,7 @@ func (h *HyperVReplica2012EventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplica2012R2EventDetails.
 func (h HyperVReplica2012R2EventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "containerName", h.ContainerName)
 	populate(objectMap, "fabricName", h.FabricName)
 	objectMap["instanceType"] = "HyperVReplica2012R2"
@@ -5632,7 +5632,7 @@ func (h *HyperVReplica2012R2EventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureApplyRecoveryPointInput.
 func (h HyperVReplicaAzureApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
 	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
 	populate(objectMap, "secondaryKekCertificatePfx", h.SecondaryKekCertificatePfx)
@@ -5667,7 +5667,7 @@ func (h *HyperVReplicaAzureApplyRecoveryPointInput) UnmarshalJSON(data []byte) e
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureDiskInputDetails.
 func (h HyperVReplicaAzureDiskInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", h.DiskEncryptionSetID)
 	populate(objectMap, "diskId", h.DiskID)
 	populate(objectMap, "diskType", h.DiskType)
@@ -5706,7 +5706,7 @@ func (h *HyperVReplicaAzureDiskInputDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureEnableProtectionInput.
 func (h HyperVReplicaAzureEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", h.DiskEncryptionSetID)
 	populate(objectMap, "diskType", h.DiskType)
 	populate(objectMap, "disksToInclude", h.DisksToInclude)
@@ -5845,7 +5845,7 @@ func (h *HyperVReplicaAzureEnableProtectionInput) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureEventDetails.
 func (h HyperVReplicaAzureEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "containerName", h.ContainerName)
 	populate(objectMap, "fabricName", h.FabricName)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
@@ -5884,7 +5884,7 @@ func (h *HyperVReplicaAzureEventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureFailbackProviderInput.
 func (h HyperVReplicaAzureFailbackProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "dataSyncOption", h.DataSyncOption)
 	objectMap["instanceType"] = "HyperVReplicaAzureFailback"
 	populate(objectMap, "providerIdForAlternateRecovery", h.ProviderIDForAlternateRecovery)
@@ -5923,7 +5923,7 @@ func (h *HyperVReplicaAzureFailbackProviderInput) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureManagedDiskDetails.
 func (h HyperVReplicaAzureManagedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", h.DiskEncryptionSetID)
 	populate(objectMap, "diskId", h.DiskID)
 	populate(objectMap, "replicaDiskType", h.ReplicaDiskType)
@@ -5962,7 +5962,7 @@ func (h *HyperVReplicaAzureManagedDiskDetails) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzurePlannedFailoverProviderInput.
 func (h HyperVReplicaAzurePlannedFailoverProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
 	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
 	populate(objectMap, "recoveryPointId", h.RecoveryPointID)
@@ -6001,7 +6001,7 @@ func (h *HyperVReplicaAzurePlannedFailoverProviderInput) UnmarshalJSON(data []by
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzurePolicyDetails.
 func (h HyperVReplicaAzurePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "activeStorageAccountId", h.ActiveStorageAccountID)
 	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
 	populate(objectMap, "encryption", h.Encryption)
@@ -6052,7 +6052,7 @@ func (h *HyperVReplicaAzurePolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzurePolicyInput.
 func (h HyperVReplicaAzurePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
 	populate(objectMap, "onlineReplicationStartTime", h.OnlineReplicationStartTime)
@@ -6099,7 +6099,7 @@ func (h *HyperVReplicaAzurePolicyInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureReplicationDetails.
 func (h HyperVReplicaAzureReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "azureVmDiskDetails", h.AzureVMDiskDetails)
 	populate(objectMap, "enableRdpOnTargetOption", h.EnableRdpOnTargetOption)
 	populate(objectMap, "encryption", h.Encryption)
@@ -6258,7 +6258,7 @@ func (h *HyperVReplicaAzureReplicationDetails) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureReprotectInput.
 func (h HyperVReplicaAzureReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "hvHostVmId", h.HvHostVMID)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
 	populate(objectMap, "logStorageAccountId", h.LogStorageAccountID)
@@ -6309,7 +6309,7 @@ func (h *HyperVReplicaAzureReprotectInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureTestFailoverInput.
 func (h HyperVReplicaAzureTestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
 	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
 	populate(objectMap, "recoveryPointId", h.RecoveryPointID)
@@ -6348,7 +6348,7 @@ func (h *HyperVReplicaAzureTestFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureUnplannedFailoverInput.
 func (h HyperVReplicaAzureUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
 	populate(objectMap, "primaryKekCertificatePfx", h.PrimaryKekCertificatePfx)
 	populate(objectMap, "recoveryPointId", h.RecoveryPointID)
@@ -6387,7 +6387,7 @@ func (h *HyperVReplicaAzureUnplannedFailoverInput) UnmarshalJSON(data []byte) er
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaAzureUpdateReplicationProtectedItemInput.
 func (h HyperVReplicaAzureUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskIdToDiskEncryptionMap", h.DiskIDToDiskEncryptionMap)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
 	populate(objectMap, "recoveryAzureV1ResourceGroupId", h.RecoveryAzureV1ResourceGroupID)
@@ -6458,7 +6458,7 @@ func (h *HyperVReplicaAzureUpdateReplicationProtectedItemInput) UnmarshalJSON(da
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBaseEventDetails.
 func (h HyperVReplicaBaseEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "containerName", h.ContainerName)
 	populate(objectMap, "fabricName", h.FabricName)
 	objectMap["instanceType"] = "HyperVReplicaBaseEventDetails"
@@ -6501,7 +6501,7 @@ func (h *HyperVReplicaBaseEventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBasePolicyDetails.
 func (h HyperVReplicaBasePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
 	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
 	populate(objectMap, "compression", h.Compression)
@@ -6568,7 +6568,7 @@ func (h *HyperVReplicaBasePolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBaseReplicationDetails.
 func (h HyperVReplicaBaseReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "initialReplicationDetails", h.InitialReplicationDetails)
 	objectMap["instanceType"] = "HyperVReplicaBaseReplicationDetails"
 	populateTimeRFC3339(objectMap, "lastReplicatedTime", h.LastReplicatedTime)
@@ -6623,7 +6623,7 @@ func (h *HyperVReplicaBaseReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBluePolicyDetails.
 func (h HyperVReplicaBluePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
 	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
 	populate(objectMap, "compression", h.Compression)
@@ -6694,7 +6694,7 @@ func (h *HyperVReplicaBluePolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBluePolicyInput.
 func (h HyperVReplicaBluePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
 	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
 	populate(objectMap, "compression", h.Compression)
@@ -6765,7 +6765,7 @@ func (h *HyperVReplicaBluePolicyInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaBlueReplicationDetails.
 func (h HyperVReplicaBlueReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "initialReplicationDetails", h.InitialReplicationDetails)
 	objectMap["instanceType"] = "HyperVReplica2012R2"
 	populateTimeRFC3339(objectMap, "lastReplicatedTime", h.LastReplicatedTime)
@@ -6820,7 +6820,7 @@ func (h *HyperVReplicaBlueReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaPolicyDetails.
 func (h HyperVReplicaPolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
 	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
 	populate(objectMap, "compression", h.Compression)
@@ -6887,7 +6887,7 @@ func (h *HyperVReplicaPolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaPolicyInput.
 func (h HyperVReplicaPolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedAuthenticationType", h.AllowedAuthenticationType)
 	populate(objectMap, "applicationConsistentSnapshotFrequencyInHours", h.ApplicationConsistentSnapshotFrequencyInHours)
 	populate(objectMap, "compression", h.Compression)
@@ -6954,7 +6954,7 @@ func (h *HyperVReplicaPolicyInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVReplicaReplicationDetails.
 func (h HyperVReplicaReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "initialReplicationDetails", h.InitialReplicationDetails)
 	objectMap["instanceType"] = "HyperVReplica2012"
 	populateTimeRFC3339(objectMap, "lastReplicatedTime", h.LastReplicatedTime)
@@ -7009,7 +7009,7 @@ func (h *HyperVReplicaReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVSiteDetails.
 func (h HyperVSiteDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "hyperVHosts", h.HyperVHosts)
 	objectMap["instanceType"] = "HyperVSite"
 	return json.Marshal(objectMap)
@@ -7040,7 +7040,7 @@ func (h *HyperVSiteDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type HyperVVirtualMachineDetails.
 func (h HyperVVirtualMachineDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskDetails", h.DiskDetails)
 	populate(objectMap, "generation", h.Generation)
 	populate(objectMap, "hasFibreChannelAdapter", h.HasFibreChannelAdapter)
@@ -7099,7 +7099,7 @@ func (h *HyperVVirtualMachineDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type IPConfigDetails.
 func (i IPConfigDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "ipAddressType", i.IPAddressType)
 	populate(objectMap, "isPrimary", i.IsPrimary)
 	populate(objectMap, "isSeletedForFailover", i.IsSeletedForFailover)
@@ -7182,7 +7182,7 @@ func (i *IPConfigDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type IPConfigInputDetails.
 func (i IPConfigInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "ipConfigName", i.IPConfigName)
 	populate(objectMap, "isPrimary", i.IsPrimary)
 	populate(objectMap, "isSeletedForFailover", i.IsSeletedForFailover)
@@ -7249,7 +7249,7 @@ func (i *IPConfigInputDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type IdentityProviderDetails.
 func (i IdentityProviderDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "aadAuthority", i.AADAuthority)
 	populate(objectMap, "applicationId", i.ApplicationID)
 	populate(objectMap, "audience", i.Audience)
@@ -7292,7 +7292,7 @@ func (i *IdentityProviderDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type IdentityProviderInput.
 func (i IdentityProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "aadAuthority", i.AADAuthority)
 	populate(objectMap, "applicationId", i.ApplicationID)
 	populate(objectMap, "audience", i.Audience)
@@ -7335,7 +7335,7 @@ func (i *IdentityProviderInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAgentDetails.
 func (i InMageAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "agentExpiryDate", i.AgentExpiryDate)
 	populate(objectMap, "agentUpdateStatus", i.AgentUpdateStatus)
 	populate(objectMap, "agentVersion", i.AgentVersion)
@@ -7374,7 +7374,7 @@ func (i *InMageAgentDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ApplyRecoveryPointInput.
 func (i InMageAzureV2ApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageAzureV2"
 	return json.Marshal(objectMap)
 }
@@ -7401,7 +7401,7 @@ func (i *InMageAzureV2ApplyRecoveryPointInput) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2DiskInputDetails.
 func (i InMageAzureV2DiskInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskId", i.DiskID)
 	populate(objectMap, "diskType", i.DiskType)
@@ -7440,7 +7440,7 @@ func (i *InMageAzureV2DiskInputDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2EnableProtectionInput.
 func (i InMageAzureV2EnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskType", i.DiskType)
 	populate(objectMap, "disksToInclude", i.DisksToInclude)
@@ -7571,7 +7571,7 @@ func (i *InMageAzureV2EnableProtectionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2EventDetails.
 func (i InMageAzureV2EventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "category", i.Category)
 	populate(objectMap, "component", i.Component)
 	populate(objectMap, "correctiveAction", i.CorrectiveAction)
@@ -7626,7 +7626,7 @@ func (i *InMageAzureV2EventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ManagedDiskDetails.
 func (i InMageAzureV2ManagedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskId", i.DiskID)
 	populate(objectMap, "replicaDiskType", i.ReplicaDiskType)
@@ -7669,7 +7669,7 @@ func (i *InMageAzureV2ManagedDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2PolicyDetails.
 func (i InMageAzureV2PolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "InMageAzureV2"
@@ -7716,7 +7716,7 @@ func (i *InMageAzureV2PolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2PolicyInput.
 func (i InMageAzureV2PolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "InMageAzureV2"
@@ -7763,7 +7763,7 @@ func (i *InMageAzureV2PolicyInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ProtectedDiskDetails.
 func (i InMageAzureV2ProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskCapacityInBytes", i.DiskCapacityInBytes)
 	populate(objectMap, "diskId", i.DiskID)
 	populate(objectMap, "diskName", i.DiskName)
@@ -7878,7 +7878,7 @@ func (i *InMageAzureV2ProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2RecoveryPointDetails.
 func (i InMageAzureV2RecoveryPointDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageAzureV2"
 	populate(objectMap, "isMultiVmSyncPoint", i.IsMultiVMSyncPoint)
 	return json.Marshal(objectMap)
@@ -7909,7 +7909,7 @@ func (i *InMageAzureV2RecoveryPointDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ReplicationDetails.
 func (i InMageAzureV2ReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "agentExpiryDate", i.AgentExpiryDate)
 	populate(objectMap, "agentVersion", i.AgentVersion)
 	populate(objectMap, "azureVMDiskDetails", i.AzureVMDiskDetails)
@@ -8204,7 +8204,7 @@ func (i *InMageAzureV2ReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2ReprotectInput.
 func (i InMageAzureV2ReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "disksToInclude", i.DisksToInclude)
 	objectMap["instanceType"] = "InMageAzureV2"
 	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
@@ -8259,7 +8259,7 @@ func (i *InMageAzureV2ReprotectInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2SwitchProviderBlockingErrorDetails.
 func (i InMageAzureV2SwitchProviderBlockingErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "errorCode", i.ErrorCode)
 	populate(objectMap, "errorMessage", i.ErrorMessage)
 	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
@@ -8306,7 +8306,7 @@ func (i *InMageAzureV2SwitchProviderBlockingErrorDetails) UnmarshalJSON(data []b
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2SwitchProviderDetails.
 func (i InMageAzureV2SwitchProviderDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "targetApplianceId", i.TargetApplianceID)
 	populate(objectMap, "targetFabricId", i.TargetFabricID)
 	populate(objectMap, "targetResourceId", i.TargetResourceID)
@@ -8345,7 +8345,7 @@ func (i *InMageAzureV2SwitchProviderDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2SwitchProviderInput.
 func (i InMageAzureV2SwitchProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageAzureV2"
 	populate(objectMap, "targetApplianceID", i.TargetApplianceID)
 	populate(objectMap, "targetFabricID", i.TargetFabricID)
@@ -8384,7 +8384,7 @@ func (i *InMageAzureV2SwitchProviderInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2TestFailoverInput.
 func (i InMageAzureV2TestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageAzureV2"
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	return json.Marshal(objectMap)
@@ -8415,7 +8415,7 @@ func (i *InMageAzureV2TestFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2UnplannedFailoverInput.
 func (i InMageAzureV2UnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageAzureV2"
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	return json.Marshal(objectMap)
@@ -8446,7 +8446,7 @@ func (i *InMageAzureV2UnplannedFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageAzureV2UpdateReplicationProtectedItemInput.
 func (i InMageAzureV2UpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageAzureV2"
 	populate(objectMap, "recoveryAzureV1ResourceGroupId", i.RecoveryAzureV1ResourceGroupID)
 	populate(objectMap, "recoveryAzureV2ResourceGroupId", i.RecoveryAzureV2ResourceGroupID)
@@ -8513,7 +8513,7 @@ func (i *InMageAzureV2UpdateReplicationProtectedItemInput) UnmarshalJSON(data []
 
 // MarshalJSON implements the json.Marshaller interface for type InMageBasePolicyDetails.
 func (i InMageBasePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "InMageBasePolicyDetails"
 	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
@@ -8556,7 +8556,7 @@ func (i *InMageBasePolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageDisableProtectionProviderSpecificInput.
 func (i InMageDisableProtectionProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMage"
 	populate(objectMap, "replicaVmDeletionStatus", i.ReplicaVMDeletionStatus)
 	return json.Marshal(objectMap)
@@ -8587,7 +8587,7 @@ func (i *InMageDisableProtectionProviderSpecificInput) UnmarshalJSON(data []byte
 
 // MarshalJSON implements the json.Marshaller interface for type InMageDiskDetails.
 func (i InMageDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskConfiguration", i.DiskConfiguration)
 	populate(objectMap, "diskId", i.DiskID)
 	populate(objectMap, "diskName", i.DiskName)
@@ -8634,7 +8634,7 @@ func (i *InMageDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageDiskExclusionInput.
 func (i InMageDiskExclusionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskSignatureOptions", i.DiskSignatureOptions)
 	populate(objectMap, "volumeOptions", i.VolumeOptions)
 	return json.Marshal(objectMap)
@@ -8665,7 +8665,7 @@ func (i *InMageDiskExclusionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageDiskSignatureExclusionOptions.
 func (i InMageDiskSignatureExclusionOptions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskSignature", i.DiskSignature)
 	return json.Marshal(objectMap)
 }
@@ -8692,7 +8692,7 @@ func (i *InMageDiskSignatureExclusionOptions) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageEnableProtectionInput.
 func (i InMageEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "datastoreName", i.DatastoreName)
 	populate(objectMap, "diskExclusionInput", i.DiskExclusionInput)
 	populate(objectMap, "disksToInclude", i.DisksToInclude)
@@ -8759,7 +8759,7 @@ func (i *InMageEnableProtectionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageFabricSwitchProviderBlockingErrorDetails.
 func (i InMageFabricSwitchProviderBlockingErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "errorCode", i.ErrorCode)
 	populate(objectMap, "errorMessage", i.ErrorMessage)
 	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
@@ -8806,7 +8806,7 @@ func (i *InMageFabricSwitchProviderBlockingErrorDetails) UnmarshalJSON(data []by
 
 // MarshalJSON implements the json.Marshaller interface for type InMagePolicyDetails.
 func (i InMagePolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "InMage"
 	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
@@ -8849,7 +8849,7 @@ func (i *InMagePolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMagePolicyInput.
 func (i InMagePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "InMage"
 	populate(objectMap, "multiVmSyncStatus", i.MultiVMSyncStatus)
@@ -8892,7 +8892,7 @@ func (i *InMagePolicyInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageProtectedDiskDetails.
 func (i InMageProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskCapacityInBytes", i.DiskCapacityInBytes)
 	populate(objectMap, "diskId", i.DiskID)
 	populate(objectMap, "diskName", i.DiskName)
@@ -9003,7 +9003,7 @@ func (i *InMageProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmAgentUpgradeBlockingErrorDetails.
 func (i InMageRcmAgentUpgradeBlockingErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "errorCode", i.ErrorCode)
 	populate(objectMap, "errorMessage", i.ErrorMessage)
 	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
@@ -9050,7 +9050,7 @@ func (i *InMageRcmAgentUpgradeBlockingErrorDetails) UnmarshalJSON(data []byte) e
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmApplianceDetails.
 func (i InMageRcmApplianceDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "dra", i.Dra)
 	populate(objectMap, "fabricArmId", i.FabricArmID)
 	populate(objectMap, "id", i.ID)
@@ -9117,7 +9117,7 @@ func (i *InMageRcmApplianceDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmApplianceSpecificDetails.
 func (i InMageRcmApplianceSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appliances", i.Appliances)
 	objectMap["instanceType"] = "InMageRcm"
 	return json.Marshal(objectMap)
@@ -9148,7 +9148,7 @@ func (i *InMageRcmApplianceSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmApplyRecoveryPointInput.
 func (i InMageRcmApplyRecoveryPointInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	return json.Marshal(objectMap)
@@ -9179,7 +9179,7 @@ func (i *InMageRcmApplyRecoveryPointInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmDiscoveredProtectedVMDetails.
 func (i InMageRcmDiscoveredProtectedVMDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "createdTimestamp", i.CreatedTimestamp)
 	populate(objectMap, "datastores", i.Datastores)
 	populate(objectMap, "ipAddresses", i.IPAddresses)
@@ -9250,7 +9250,7 @@ func (i *InMageRcmDiscoveredProtectedVMDetails) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmDiskInput.
 func (i InMageRcmDiskInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskId", i.DiskID)
 	populate(objectMap, "diskType", i.DiskType)
@@ -9289,7 +9289,7 @@ func (i *InMageRcmDiskInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmDisksDefaultInput.
 func (i InMageRcmDisksDefaultInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", i.DiskEncryptionSetID)
 	populate(objectMap, "diskType", i.DiskType)
 	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
@@ -9324,7 +9324,7 @@ func (i *InMageRcmDisksDefaultInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmEnableProtectionInput.
 func (i InMageRcmEnableProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "disksDefault", i.DisksDefault)
 	populate(objectMap, "disksToInclude", i.DisksToInclude)
 	populate(objectMap, "fabricDiscoveryMachineId", i.FabricDiscoveryMachineID)
@@ -9423,7 +9423,7 @@ func (i *InMageRcmEnableProtectionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmEventDetails.
 func (i InMageRcmEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "applianceName", i.ApplianceName)
 	populate(objectMap, "componentDisplayName", i.ComponentDisplayName)
 	populate(objectMap, "fabricName", i.FabricName)
@@ -9482,7 +9482,7 @@ func (i *InMageRcmEventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFabricCreationInput.
 func (i InMageRcmFabricCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "physicalSiteId", i.PhysicalSiteID)
 	populate(objectMap, "sourceAgentIdentity", i.SourceAgentIdentity)
@@ -9521,7 +9521,7 @@ func (i *InMageRcmFabricCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFabricSpecificDetails.
 func (i InMageRcmFabricSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentDetails", i.AgentDetails)
 	populate(objectMap, "controlPlaneUri", i.ControlPlaneURI)
 	populate(objectMap, "dataPlaneUri", i.DataPlaneURI)
@@ -9612,7 +9612,7 @@ func (i *InMageRcmFabricSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFabricSwitchProviderBlockingErrorDetails.
 func (i InMageRcmFabricSwitchProviderBlockingErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "errorCode", i.ErrorCode)
 	populate(objectMap, "errorMessage", i.ErrorMessage)
 	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
@@ -9659,7 +9659,7 @@ func (i *InMageRcmFabricSwitchProviderBlockingErrorDetails) UnmarshalJSON(data [
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackDiscoveredProtectedVMDetails.
 func (i InMageRcmFailbackDiscoveredProtectedVMDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "createdTimestamp", i.CreatedTimestamp)
 	populate(objectMap, "datastores", i.Datastores)
 	populate(objectMap, "ipAddresses", i.IPAddresses)
@@ -9730,7 +9730,7 @@ func (i *InMageRcmFailbackDiscoveredProtectedVMDetails) UnmarshalJSON(data []byt
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackEventDetails.
 func (i InMageRcmFailbackEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "applianceName", i.ApplianceName)
 	populate(objectMap, "componentDisplayName", i.ComponentDisplayName)
 	objectMap["instanceType"] = "InMageRcmFailback"
@@ -9777,7 +9777,7 @@ func (i *InMageRcmFailbackEventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackMobilityAgentDetails.
 func (i InMageRcmFailbackMobilityAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "agentVersionExpiryDate", i.AgentVersionExpiryDate)
 	populate(objectMap, "driverVersion", i.DriverVersion)
 	populateTimeRFC3339(objectMap, "driverVersionExpiryDate", i.DriverVersionExpiryDate)
@@ -9836,7 +9836,7 @@ func (i *InMageRcmFailbackMobilityAgentDetails) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackNicDetails.
 func (i InMageRcmFailbackNicDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "adapterType", i.AdapterType)
 	populate(objectMap, "macAddress", i.MacAddress)
 	populate(objectMap, "networkName", i.NetworkName)
@@ -9875,7 +9875,7 @@ func (i *InMageRcmFailbackNicDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackPlannedFailoverProviderInput.
 func (i InMageRcmFailbackPlannedFailoverProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcmFailback"
 	populate(objectMap, "recoveryPointType", i.RecoveryPointType)
 	return json.Marshal(objectMap)
@@ -9906,7 +9906,7 @@ func (i *InMageRcmFailbackPlannedFailoverProviderInput) UnmarshalJSON(data []byt
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackPolicyCreationInput.
 func (i InMageRcmFailbackPolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "InMageRcmFailback"
@@ -9941,7 +9941,7 @@ func (i *InMageRcmFailbackPolicyCreationInput) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackPolicyDetails.
 func (i InMageRcmFailbackPolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "InMageRcmFailback"
@@ -9976,7 +9976,7 @@ func (i *InMageRcmFailbackPolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackProtectedDiskDetails.
 func (i InMageRcmFailbackProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "capacityInBytes", i.CapacityInBytes)
 	populate(objectMap, "dataPendingAtSourceAgentInMB", i.DataPendingAtSourceAgentInMB)
 	populate(objectMap, "dataPendingInLogDataStoreInMB", i.DataPendingInLogDataStoreInMB)
@@ -10043,7 +10043,7 @@ func (i *InMageRcmFailbackProtectedDiskDetails) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackReplicationDetails.
 func (i InMageRcmFailbackReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "azureVirtualMachineId", i.AzureVirtualMachineID)
 	populate(objectMap, "discoveredVmDetails", i.DiscoveredVMDetails)
 	populate(objectMap, "initialReplicationProcessedBytes", i.InitialReplicationProcessedBytes)
@@ -10186,7 +10186,7 @@ func (i *InMageRcmFailbackReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackReprotectInput.
 func (i InMageRcmFailbackReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcmFailback"
 	populate(objectMap, "policyId", i.PolicyID)
 	populate(objectMap, "processServerId", i.ProcessServerID)
@@ -10225,7 +10225,7 @@ func (i *InMageRcmFailbackReprotectInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmFailbackSyncDetails.
 func (i InMageRcmFailbackSyncDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "last15MinutesTransferredBytes", i.Last15MinutesTransferredBytes)
 	populate(objectMap, "lastDataTransferTimeUtc", i.LastDataTransferTimeUTC)
 	populate(objectMap, "lastRefreshTime", i.LastRefreshTime)
@@ -10280,7 +10280,7 @@ func (i *InMageRcmFailbackSyncDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmLastAgentUpgradeErrorDetails.
 func (i InMageRcmLastAgentUpgradeErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "errorCode", i.ErrorCode)
 	populate(objectMap, "errorMessage", i.ErrorMessage)
 	populate(objectMap, "errorMessageParameters", i.ErrorMessageParameters)
@@ -10327,7 +10327,7 @@ func (i *InMageRcmLastAgentUpgradeErrorDetails) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmMobilityAgentDetails.
 func (i InMageRcmMobilityAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "agentVersionExpiryDate", i.AgentVersionExpiryDate)
 	populate(objectMap, "driverVersion", i.DriverVersion)
 	populateTimeRFC3339(objectMap, "driverVersionExpiryDate", i.DriverVersionExpiryDate)
@@ -10390,7 +10390,7 @@ func (i *InMageRcmMobilityAgentDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmNicDetails.
 func (i InMageRcmNicDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "isPrimaryNic", i.IsPrimaryNic)
 	populate(objectMap, "isSelectedForFailover", i.IsSelectedForFailover)
 	populate(objectMap, "nicId", i.NicID)
@@ -10465,7 +10465,7 @@ func (i *InMageRcmNicDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmNicInput.
 func (i InMageRcmNicInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "isPrimaryNic", i.IsPrimaryNic)
 	populate(objectMap, "isSelectedForFailover", i.IsSelectedForFailover)
 	populate(objectMap, "nicId", i.NicID)
@@ -10516,7 +10516,7 @@ func (i *InMageRcmNicInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmPolicyCreationInput.
 func (i InMageRcmPolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
 	populate(objectMap, "enableMultiVmSync", i.EnableMultiVMSync)
@@ -10559,7 +10559,7 @@ func (i *InMageRcmPolicyCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmPolicyDetails.
 func (i InMageRcmPolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", i.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", i.CrashConsistentFrequencyInMinutes)
 	populate(objectMap, "enableMultiVmSync", i.EnableMultiVMSync)
@@ -10602,7 +10602,7 @@ func (i *InMageRcmPolicyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmProtectedDiskDetails.
 func (i InMageRcmProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "capacityInBytes", i.CapacityInBytes)
 	populate(objectMap, "dataPendingAtSourceAgentInMB", i.DataPendingAtSourceAgentInMB)
 	populate(objectMap, "dataPendingInLogDataStoreInMB", i.DataPendingInLogDataStoreInMB)
@@ -10685,7 +10685,7 @@ func (i *InMageRcmProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmProtectionContainerMappingDetails.
 func (i InMageRcmProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "enableAgentAutoUpgrade", i.EnableAgentAutoUpgrade)
 	objectMap["instanceType"] = "InMageRcm"
 	return json.Marshal(objectMap)
@@ -10716,7 +10716,7 @@ func (i *InMageRcmProtectionContainerMappingDetails) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmRecoveryPointDetails.
 func (i InMageRcmRecoveryPointDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "isMultiVmSyncPoint", i.IsMultiVMSyncPoint)
 	return json.Marshal(objectMap)
@@ -10747,7 +10747,7 @@ func (i *InMageRcmRecoveryPointDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmReplicationDetails.
 func (i InMageRcmReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentUpgradeAttemptToVersion", i.AgentUpgradeAttemptToVersion)
 	populate(objectMap, "agentUpgradeBlockingErrorDetails", i.AgentUpgradeBlockingErrorDetails)
 	populate(objectMap, "agentUpgradeJobId", i.AgentUpgradeJobID)
@@ -10982,7 +10982,7 @@ func (i *InMageRcmReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmReprotectInput.
 func (i InMageRcmReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "datastoreName", i.DatastoreName)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "logStorageAccountId", i.LogStorageAccountID)
@@ -11025,7 +11025,7 @@ func (i *InMageRcmReprotectInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmSyncDetails.
 func (i InMageRcmSyncDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "last15MinutesTransferredBytes", i.Last15MinutesTransferredBytes)
 	populate(objectMap, "lastDataTransferTimeUtc", i.LastDataTransferTimeUTC)
 	populate(objectMap, "lastRefreshTime", i.LastRefreshTime)
@@ -11080,7 +11080,7 @@ func (i *InMageRcmSyncDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmTestFailoverInput.
 func (i InMageRcmTestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "networkId", i.NetworkID)
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
@@ -11115,7 +11115,7 @@ func (i *InMageRcmTestFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmUnplannedFailoverInput.
 func (i InMageRcmUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "performShutdown", i.PerformShutdown)
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
@@ -11150,7 +11150,7 @@ func (i *InMageRcmUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmUpdateApplianceForReplicationProtectedItemInput.
 func (i InMageRcmUpdateApplianceForReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "runAsAccountId", i.RunAsAccountID)
 	return json.Marshal(objectMap)
@@ -11181,7 +11181,7 @@ func (i *InMageRcmUpdateApplianceForReplicationProtectedItemInput) UnmarshalJSON
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmUpdateContainerMappingInput.
 func (i InMageRcmUpdateContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "enableAgentAutoUpgrade", i.EnableAgentAutoUpgrade)
 	objectMap["instanceType"] = "InMageRcm"
 	return json.Marshal(objectMap)
@@ -11212,7 +11212,7 @@ func (i *InMageRcmUpdateContainerMappingInput) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type InMageRcmUpdateReplicationProtectedItemInput.
 func (i InMageRcmUpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "licenseType", i.LicenseType)
 	populate(objectMap, "targetAvailabilitySetId", i.TargetAvailabilitySetID)
@@ -11283,7 +11283,7 @@ func (i *InMageRcmUpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte
 
 // MarshalJSON implements the json.Marshaller interface for type InMageReplicationDetails.
 func (i InMageReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "activeSiteType", i.ActiveSiteType)
 	populate(objectMap, "agentDetails", i.AgentDetails)
 	populate(objectMap, "azureStorageAccountId", i.AzureStorageAccountID)
@@ -11470,7 +11470,7 @@ func (i *InMageReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageReprotectInput.
 func (i InMageReprotectInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "datastoreName", i.DatastoreName)
 	populate(objectMap, "diskExclusionInput", i.DiskExclusionInput)
 	populate(objectMap, "disksToInclude", i.DisksToInclude)
@@ -11529,7 +11529,7 @@ func (i *InMageReprotectInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageTestFailoverInput.
 func (i InMageTestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMage"
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	populate(objectMap, "recoveryPointType", i.RecoveryPointType)
@@ -11564,7 +11564,7 @@ func (i *InMageTestFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageUnplannedFailoverInput.
 func (i InMageUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMage"
 	populate(objectMap, "recoveryPointId", i.RecoveryPointID)
 	populate(objectMap, "recoveryPointType", i.RecoveryPointType)
@@ -11599,7 +11599,7 @@ func (i *InMageUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InMageVolumeExclusionOptions.
 func (i InMageVolumeExclusionOptions) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "onlyExcludeIfSingleVolume", i.OnlyExcludeIfSingleVolume)
 	populate(objectMap, "volumeLabel", i.VolumeLabel)
 	return json.Marshal(objectMap)
@@ -11630,7 +11630,7 @@ func (i *InMageVolumeExclusionOptions) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InconsistentVMDetails.
 func (i InconsistentVMDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "cloudName", i.CloudName)
 	populate(objectMap, "details", i.Details)
 	populate(objectMap, "errorIds", i.ErrorIDs)
@@ -11669,7 +11669,7 @@ func (i *InconsistentVMDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InitialReplicationDetails.
 func (i InitialReplicationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "initialReplicationProgressPercentage", i.InitialReplicationProgressPercentage)
 	populate(objectMap, "initialReplicationType", i.InitialReplicationType)
 	return json.Marshal(objectMap)
@@ -11700,7 +11700,7 @@ func (i *InitialReplicationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InlineWorkflowTaskDetails.
 func (i InlineWorkflowTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "childTasks", i.ChildTasks)
 	objectMap["instanceType"] = "InlineWorkflowTaskDetails"
 	populate(objectMap, "workflowIds", i.WorkflowIDs)
@@ -11735,7 +11735,7 @@ func (i *InlineWorkflowTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InnerHealthError.
 func (i InnerHealthError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "creationTimeUtc", i.CreationTimeUTC)
 	populate(objectMap, "customerResolvability", i.CustomerResolvability)
 	populate(objectMap, "entityId", i.EntityID)
@@ -11814,7 +11814,7 @@ func (i *InnerHealthError) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type InputEndpoint.
 func (i InputEndpoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "endpointName", i.EndpointName)
 	populate(objectMap, "privatePort", i.PrivatePort)
 	populate(objectMap, "protocol", i.Protocol)
@@ -11853,7 +11853,7 @@ func (i *InputEndpoint) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Job.
 func (j Job) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", j.ID)
 	populate(objectMap, "location", j.Location)
 	populate(objectMap, "name", j.Name)
@@ -11896,7 +11896,7 @@ func (j *Job) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JobCollection.
 func (j JobCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", j.NextLink)
 	populate(objectMap, "value", j.Value)
 	return json.Marshal(objectMap)
@@ -11927,7 +11927,7 @@ func (j *JobCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JobDetails.
 func (j JobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectDetails", j.AffectedObjectDetails)
 	objectMap["instanceType"] = j.InstanceType
 	return json.Marshal(objectMap)
@@ -11958,7 +11958,7 @@ func (j *JobDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JobEntity.
 func (j JobEntity) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "jobFriendlyName", j.JobFriendlyName)
 	populate(objectMap, "jobId", j.JobID)
 	populate(objectMap, "jobScenarioName", j.JobScenarioName)
@@ -12005,7 +12005,7 @@ func (j *JobEntity) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JobErrorDetails.
 func (j JobErrorDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "creationTime", j.CreationTime)
 	populate(objectMap, "errorLevel", j.ErrorLevel)
 	populate(objectMap, "providerErrorDetails", j.ProviderErrorDetails)
@@ -12048,7 +12048,7 @@ func (j *JobErrorDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JobProperties.
 func (j JobProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "activityId", j.ActivityID)
 	populate(objectMap, "allowedActions", j.AllowedActions)
 	populate(objectMap, "customDetails", j.CustomDetails)
@@ -12127,7 +12127,7 @@ func (j *JobProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JobQueryParameter.
 func (j JobQueryParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectTypes", j.AffectedObjectTypes)
 	populate(objectMap, "endTime", j.EndTime)
 	populate(objectMap, "fabricId", j.FabricID)
@@ -12182,7 +12182,7 @@ func (j *JobQueryParameter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JobStatusEventDetails.
 func (j JobStatusEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectType", j.AffectedObjectType)
 	objectMap["instanceType"] = "JobStatus"
 	populate(objectMap, "jobFriendlyName", j.JobFriendlyName)
@@ -12225,7 +12225,7 @@ func (j *JobStatusEventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type JobTaskDetails.
 func (j JobTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "JobTaskDetails"
 	populate(objectMap, "jobTask", j.JobTask)
 	return json.Marshal(objectMap)
@@ -12256,7 +12256,7 @@ func (j *JobTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type KeyEncryptionKeyInfo.
 func (k KeyEncryptionKeyInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "keyIdentifier", k.KeyIdentifier)
 	populate(objectMap, "keyVaultResourceArmId", k.KeyVaultResourceArmID)
 	return json.Marshal(objectMap)
@@ -12287,7 +12287,7 @@ func (k *KeyEncryptionKeyInfo) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type LogicalNetwork.
 func (l LogicalNetwork) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", l.ID)
 	populate(objectMap, "location", l.Location)
 	populate(objectMap, "name", l.Name)
@@ -12330,7 +12330,7 @@ func (l *LogicalNetwork) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type LogicalNetworkCollection.
 func (l LogicalNetworkCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", l.NextLink)
 	populate(objectMap, "value", l.Value)
 	return json.Marshal(objectMap)
@@ -12361,7 +12361,7 @@ func (l *LogicalNetworkCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type LogicalNetworkProperties.
 func (l LogicalNetworkProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "friendlyName", l.FriendlyName)
 	populate(objectMap, "logicalNetworkDefinitionsStatus", l.LogicalNetworkDefinitionsStatus)
 	populate(objectMap, "logicalNetworkUsage", l.LogicalNetworkUsage)
@@ -12400,7 +12400,7 @@ func (l *LogicalNetworkProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ManualActionTaskDetails.
 func (m ManualActionTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "ManualActionTaskDetails"
 	populate(objectMap, "instructions", m.Instructions)
 	populate(objectMap, "name", m.Name)
@@ -12439,7 +12439,7 @@ func (m *ManualActionTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MarsAgentDetails.
 func (m MarsAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "biosId", m.BiosID)
 	populate(objectMap, "fabricObjectId", m.FabricObjectID)
 	populate(objectMap, "fqdn", m.Fqdn)
@@ -12498,7 +12498,7 @@ func (m *MarsAgentDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MasterTargetServer.
 func (m MasterTargetServer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "agentExpiryDate", m.AgentExpiryDate)
 	populate(objectMap, "agentVersion", m.AgentVersion)
 	populate(objectMap, "agentVersionDetails", m.AgentVersionDetails)
@@ -12593,7 +12593,7 @@ func (m *MasterTargetServer) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrateInput.
 func (m MigrateInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", m.Properties)
 	return json.Marshal(objectMap)
 }
@@ -12620,7 +12620,7 @@ func (m *MigrateInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrateInputProperties.
 func (m MigrateInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", m.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -12647,7 +12647,7 @@ func (m *MigrateInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrateProviderSpecificInput.
 func (m MigrateProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = m.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -12674,7 +12674,7 @@ func (m *MigrateProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrationItem.
 func (m MigrationItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", m.ID)
 	populate(objectMap, "location", m.Location)
 	populate(objectMap, "name", m.Name)
@@ -12717,7 +12717,7 @@ func (m *MigrationItem) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrationItemCollection.
 func (m MigrationItemCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", m.NextLink)
 	populate(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
@@ -12748,7 +12748,7 @@ func (m *MigrationItemCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrationItemProperties.
 func (m MigrationItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedOperations", m.AllowedOperations)
 	populate(objectMap, "criticalJobHistory", m.CriticalJobHistory)
 	populate(objectMap, "currentJob", m.CurrentJob)
@@ -12851,7 +12851,7 @@ func (m *MigrationItemProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrationItemsQueryParameter.
 func (m MigrationItemsQueryParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "instanceType", m.InstanceType)
 	populate(objectMap, "sourceContainerName", m.SourceContainerName)
 	populate(objectMap, "sourceFabricName", m.SourceFabricName)
@@ -12886,7 +12886,7 @@ func (m *MigrationItemsQueryParameter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrationProviderSpecificSettings.
 func (m MigrationProviderSpecificSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = m.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -12913,7 +12913,7 @@ func (m *MigrationProviderSpecificSettings) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrationRecoveryPoint.
 func (m MigrationRecoveryPoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", m.ID)
 	populate(objectMap, "location", m.Location)
 	populate(objectMap, "name", m.Name)
@@ -12956,7 +12956,7 @@ func (m *MigrationRecoveryPoint) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrationRecoveryPointCollection.
 func (m MigrationRecoveryPointCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", m.NextLink)
 	populate(objectMap, "value", m.Value)
 	return json.Marshal(objectMap)
@@ -12987,7 +12987,7 @@ func (m *MigrationRecoveryPointCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MigrationRecoveryPointProperties.
 func (m MigrationRecoveryPointProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "recoveryPointTime", m.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", m.RecoveryPointType)
 	return json.Marshal(objectMap)
@@ -13018,7 +13018,7 @@ func (m *MigrationRecoveryPointProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type MobilityServiceUpdate.
 func (m MobilityServiceUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "osType", m.OSType)
 	populate(objectMap, "rebootStatus", m.RebootStatus)
 	populate(objectMap, "version", m.Version)
@@ -13053,7 +13053,7 @@ func (m *MobilityServiceUpdate) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Network.
 func (n Network) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", n.ID)
 	populate(objectMap, "location", n.Location)
 	populate(objectMap, "name", n.Name)
@@ -13096,7 +13096,7 @@ func (n *Network) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type NetworkCollection.
 func (n NetworkCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", n.NextLink)
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
@@ -13127,7 +13127,7 @@ func (n *NetworkCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type NetworkMapping.
 func (n NetworkMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", n.ID)
 	populate(objectMap, "location", n.Location)
 	populate(objectMap, "name", n.Name)
@@ -13170,7 +13170,7 @@ func (n *NetworkMapping) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type NetworkMappingCollection.
 func (n NetworkMappingCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", n.NextLink)
 	populate(objectMap, "value", n.Value)
 	return json.Marshal(objectMap)
@@ -13201,7 +13201,7 @@ func (n *NetworkMappingCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type NetworkMappingFabricSpecificSettings.
 func (n NetworkMappingFabricSpecificSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = n.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -13228,7 +13228,7 @@ func (n *NetworkMappingFabricSpecificSettings) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type NetworkMappingProperties.
 func (n NetworkMappingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricSpecificSettings", n.FabricSpecificSettings)
 	populate(objectMap, "primaryFabricFriendlyName", n.PrimaryFabricFriendlyName)
 	populate(objectMap, "primaryNetworkFriendlyName", n.PrimaryNetworkFriendlyName)
@@ -13287,7 +13287,7 @@ func (n *NetworkMappingProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type NetworkProperties.
 func (n NetworkProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricType", n.FabricType)
 	populate(objectMap, "friendlyName", n.FriendlyName)
 	populate(objectMap, "networkType", n.NetworkType)
@@ -13326,7 +13326,7 @@ func (n *NetworkProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type NewProtectionProfile.
 func (n NewProtectionProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", n.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", n.CrashConsistentFrequencyInMinutes)
 	populate(objectMap, "multiVmSyncStatus", n.MultiVMSyncStatus)
@@ -13373,7 +13373,7 @@ func (n *NewProtectionProfile) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type NewRecoveryVirtualNetwork.
 func (n NewRecoveryVirtualNetwork) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "recoveryVirtualNetworkName", n.RecoveryVirtualNetworkName)
 	populate(objectMap, "recoveryVirtualNetworkResourceGroupName", n.RecoveryVirtualNetworkResourceGroupName)
 	objectMap["resourceType"] = "New"
@@ -13408,7 +13408,7 @@ func (n *NewRecoveryVirtualNetwork) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type OSDetails.
 func (o OSDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "osEdition", o.OSEdition)
 	populate(objectMap, "oSMajorVersion", o.OSMajorVersion)
 	populate(objectMap, "oSMinorVersion", o.OSMinorVersion)
@@ -13455,7 +13455,7 @@ func (o *OSDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type OSDiskDetails.
 func (o OSDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "osType", o.OSType)
 	populate(objectMap, "osVhdId", o.OSVhdID)
 	populate(objectMap, "vhdName", o.VhdName)
@@ -13490,7 +13490,7 @@ func (o *OSDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type OSVersionWrapper.
 func (o OSVersionWrapper) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "servicePack", o.ServicePack)
 	populate(objectMap, "version", o.Version)
 	return json.Marshal(objectMap)
@@ -13521,11 +13521,11 @@ func (o *OSVersionWrapper) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type OperationsDiscovery.
 func (o OperationsDiscovery) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "display", o.Display)
 	populate(objectMap, "name", o.Name)
 	populate(objectMap, "origin", o.Origin)
-	populate(objectMap, "properties", &o.Properties)
+	populateAny(objectMap, "properties", o.Properties)
 	return json.Marshal(objectMap)
 }
 
@@ -13560,7 +13560,7 @@ func (o *OperationsDiscovery) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type OperationsDiscoveryCollection.
 func (o OperationsDiscoveryCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", o.NextLink)
 	populate(objectMap, "value", o.Value)
 	return json.Marshal(objectMap)
@@ -13591,7 +13591,7 @@ func (o *OperationsDiscoveryCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PauseReplicationInput.
 func (p PauseReplicationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", p.Properties)
 	return json.Marshal(objectMap)
 }
@@ -13618,7 +13618,7 @@ func (p *PauseReplicationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PauseReplicationInputProperties.
 func (p PauseReplicationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "instanceType", p.InstanceType)
 	return json.Marshal(objectMap)
 }
@@ -13645,7 +13645,7 @@ func (p *PauseReplicationInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PlannedFailoverInput.
 func (p PlannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", p.Properties)
 	return json.Marshal(objectMap)
 }
@@ -13672,7 +13672,7 @@ func (p *PlannedFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PlannedFailoverInputProperties.
 func (p PlannedFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "failoverDirection", p.FailoverDirection)
 	populate(objectMap, "providerSpecificDetails", p.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
@@ -13703,7 +13703,7 @@ func (p *PlannedFailoverInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PlannedFailoverProviderSpecificFailoverInput.
 func (p PlannedFailoverProviderSpecificFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = p.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -13730,7 +13730,7 @@ func (p *PlannedFailoverProviderSpecificFailoverInput) UnmarshalJSON(data []byte
 
 // MarshalJSON implements the json.Marshaller interface for type Policy.
 func (p Policy) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", p.ID)
 	populate(objectMap, "location", p.Location)
 	populate(objectMap, "name", p.Name)
@@ -13773,7 +13773,7 @@ func (p *Policy) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PolicyCollection.
 func (p PolicyCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
@@ -13804,7 +13804,7 @@ func (p *PolicyCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PolicyProperties.
 func (p PolicyProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "friendlyName", p.FriendlyName)
 	populate(objectMap, "providerSpecificDetails", p.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
@@ -13835,7 +13835,7 @@ func (p *PolicyProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PolicyProviderSpecificDetails.
 func (p PolicyProviderSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = p.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -13862,7 +13862,7 @@ func (p *PolicyProviderSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type PolicyProviderSpecificInput.
 func (p PolicyProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = p.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -13889,7 +13889,7 @@ func (p *PolicyProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProcessServer.
 func (p ProcessServer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "agentExpiryDate", p.AgentExpiryDate)
 	populate(objectMap, "agentVersion", p.AgentVersion)
 	populate(objectMap, "agentVersionDetails", p.AgentVersionDetails)
@@ -14056,7 +14056,7 @@ func (p *ProcessServer) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProcessServerDetails.
 func (p ProcessServerDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "availableMemoryInBytes", p.AvailableMemoryInBytes)
 	populate(objectMap, "availableSpaceInBytes", p.AvailableSpaceInBytes)
 	populate(objectMap, "biosId", p.BiosID)
@@ -14195,7 +14195,7 @@ func (p *ProcessServerDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectableItem.
 func (p ProtectableItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", p.ID)
 	populate(objectMap, "location", p.Location)
 	populate(objectMap, "name", p.Name)
@@ -14238,7 +14238,7 @@ func (p *ProtectableItem) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectableItemCollection.
 func (p ProtectableItemCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
@@ -14269,7 +14269,7 @@ func (p *ProtectableItemCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectableItemProperties.
 func (p ProtectableItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "customDetails", p.CustomDetails)
 	populate(objectMap, "friendlyName", p.FriendlyName)
 	populate(objectMap, "protectionReadinessErrors", p.ProtectionReadinessErrors)
@@ -14320,7 +14320,7 @@ func (p *ProtectableItemProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectableItemQueryParameter.
 func (p ProtectableItemQueryParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "state", p.State)
 	return json.Marshal(objectMap)
 }
@@ -14347,7 +14347,7 @@ func (p *ProtectableItemQueryParameter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectedItemsQueryParameter.
 func (p ProtectedItemsQueryParameter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricObjectId", p.FabricObjectID)
 	populate(objectMap, "instanceType", p.InstanceType)
 	populate(objectMap, "multiVmGroupCreateOption", p.MultiVMGroupCreateOption)
@@ -14402,7 +14402,7 @@ func (p *ProtectedItemsQueryParameter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainer.
 func (p ProtectionContainer) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", p.ID)
 	populate(objectMap, "location", p.Location)
 	populate(objectMap, "name", p.Name)
@@ -14445,7 +14445,7 @@ func (p *ProtectionContainer) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerCollection.
 func (p ProtectionContainerCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
@@ -14476,7 +14476,7 @@ func (p *ProtectionContainerCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerFabricSpecificDetails.
 func (p ProtectionContainerFabricSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "instanceType", p.InstanceType)
 	return json.Marshal(objectMap)
 }
@@ -14503,7 +14503,7 @@ func (p *ProtectionContainerFabricSpecificDetails) UnmarshalJSON(data []byte) er
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerMapping.
 func (p ProtectionContainerMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", p.ID)
 	populate(objectMap, "location", p.Location)
 	populate(objectMap, "name", p.Name)
@@ -14546,7 +14546,7 @@ func (p *ProtectionContainerMapping) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerMappingCollection.
 func (p ProtectionContainerMappingCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", p.NextLink)
 	populate(objectMap, "value", p.Value)
 	return json.Marshal(objectMap)
@@ -14577,7 +14577,7 @@ func (p *ProtectionContainerMappingCollection) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerMappingProperties.
 func (p ProtectionContainerMappingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "health", p.Health)
 	populate(objectMap, "healthErrorDetails", p.HealthErrorDetails)
 	populate(objectMap, "policyFriendlyName", p.PolicyFriendlyName)
@@ -14644,7 +14644,7 @@ func (p *ProtectionContainerMappingProperties) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerMappingProviderSpecificDetails.
 func (p ProtectionContainerMappingProviderSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = p.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -14671,7 +14671,7 @@ func (p *ProtectionContainerMappingProviderSpecificDetails) UnmarshalJSON(data [
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionContainerProperties.
 func (p ProtectionContainerProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricFriendlyName", p.FabricFriendlyName)
 	populate(objectMap, "fabricSpecificDetails", p.FabricSpecificDetails)
 	populate(objectMap, "fabricType", p.FabricType)
@@ -14722,7 +14722,7 @@ func (p *ProtectionContainerProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProtectionProfileCustomDetails.
 func (p ProtectionProfileCustomDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["resourceType"] = p.ResourceType
 	return json.Marshal(objectMap)
 }
@@ -14749,7 +14749,7 @@ func (p *ProtectionProfileCustomDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProviderError.
 func (p ProviderError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "errorCode", p.ErrorCode)
 	populate(objectMap, "errorId", p.ErrorID)
 	populate(objectMap, "errorMessage", p.ErrorMessage)
@@ -14792,7 +14792,7 @@ func (p *ProviderError) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ProviderSpecificRecoveryPointDetails.
 func (p ProviderSpecificRecoveryPointDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = p.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -14819,7 +14819,7 @@ func (p *ProviderSpecificRecoveryPointDetails) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type PushInstallerDetails.
 func (p PushInstallerDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "biosId", p.BiosID)
 	populate(objectMap, "fabricObjectId", p.FabricObjectID)
 	populate(objectMap, "fqdn", p.Fqdn)
@@ -14878,7 +14878,7 @@ func (p *PushInstallerDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RcmProxyDetails.
 func (r RcmProxyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "biosId", r.BiosID)
 	populate(objectMap, "clientAuthenticationType", r.ClientAuthenticationType)
 	populate(objectMap, "fabricObjectId", r.FabricObjectID)
@@ -14941,7 +14941,7 @@ func (r *RcmProxyDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryAvailabilitySetCustomDetails.
 func (r RecoveryAvailabilitySetCustomDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["resourceType"] = r.ResourceType
 	return json.Marshal(objectMap)
 }
@@ -14968,7 +14968,7 @@ func (r *RecoveryAvailabilitySetCustomDetails) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlan.
 func (r RecoveryPlan) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
@@ -15011,7 +15011,7 @@ func (r *RecoveryPlan) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanA2ADetails.
 func (r RecoveryPlanA2ADetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "primaryExtendedLocation", r.PrimaryExtendedLocation)
 	populate(objectMap, "primaryZone", r.PrimaryZone)
@@ -15054,7 +15054,7 @@ func (r *RecoveryPlanA2ADetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanA2AFailoverInput.
 func (r RecoveryPlanA2AFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "cloudServiceCreationOption", r.CloudServiceCreationOption)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "multiVmSyncPointOption", r.MultiVMSyncPointOption)
@@ -15093,7 +15093,7 @@ func (r *RecoveryPlanA2AFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanA2AInput.
 func (r RecoveryPlanA2AInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "A2A"
 	populate(objectMap, "primaryExtendedLocation", r.PrimaryExtendedLocation)
 	populate(objectMap, "primaryZone", r.PrimaryZone)
@@ -15136,7 +15136,7 @@ func (r *RecoveryPlanA2AInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanAction.
 func (r RecoveryPlanAction) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "actionName", r.ActionName)
 	populate(objectMap, "customDetails", r.CustomDetails)
 	populate(objectMap, "failoverDirections", r.FailoverDirections)
@@ -15175,7 +15175,7 @@ func (r *RecoveryPlanAction) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanActionDetails.
 func (r RecoveryPlanActionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -15202,7 +15202,7 @@ func (r *RecoveryPlanActionDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanAutomationRunbookActionDetails.
 func (r RecoveryPlanAutomationRunbookActionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricLocation", r.FabricLocation)
 	objectMap["instanceType"] = "AutomationRunbookActionDetails"
 	populate(objectMap, "runbookId", r.RunbookID)
@@ -15241,7 +15241,7 @@ func (r *RecoveryPlanAutomationRunbookActionDetails) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanCollection.
 func (r RecoveryPlanCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
@@ -15272,7 +15272,7 @@ func (r *RecoveryPlanCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanGroup.
 func (r RecoveryPlanGroup) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "endGroupActions", r.EndGroupActions)
 	populate(objectMap, "groupType", r.GroupType)
 	populate(objectMap, "replicationProtectedItems", r.ReplicationProtectedItems)
@@ -15311,7 +15311,7 @@ func (r *RecoveryPlanGroup) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanGroupTaskDetails.
 func (r RecoveryPlanGroupTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "childTasks", r.ChildTasks)
 	populate(objectMap, "groupId", r.GroupID)
 	objectMap["instanceType"] = "RecoveryPlanGroupTaskDetails"
@@ -15354,7 +15354,7 @@ func (r *RecoveryPlanGroupTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanHyperVReplicaAzureFailbackInput.
 func (r RecoveryPlanHyperVReplicaAzureFailbackInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "dataSyncOption", r.DataSyncOption)
 	objectMap["instanceType"] = "HyperVReplicaAzureFailback"
 	populate(objectMap, "recoveryVmCreationOption", r.RecoveryVMCreationOption)
@@ -15389,7 +15389,7 @@ func (r *RecoveryPlanHyperVReplicaAzureFailbackInput) UnmarshalJSON(data []byte)
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanHyperVReplicaAzureFailoverInput.
 func (r RecoveryPlanHyperVReplicaAzureFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "HyperVReplicaAzure"
 	populate(objectMap, "primaryKekCertificatePfx", r.PrimaryKekCertificatePfx)
 	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
@@ -15428,7 +15428,7 @@ func (r *RecoveryPlanHyperVReplicaAzureFailoverInput) UnmarshalJSON(data []byte)
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanInMageAzureV2FailoverInput.
 func (r RecoveryPlanInMageAzureV2FailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageAzureV2"
 	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
 	populate(objectMap, "useMultiVmSyncPoint", r.UseMultiVMSyncPoint)
@@ -15463,7 +15463,7 @@ func (r *RecoveryPlanInMageAzureV2FailoverInput) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanInMageFailoverInput.
 func (r RecoveryPlanInMageFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMage"
 	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
 	return json.Marshal(objectMap)
@@ -15494,7 +15494,7 @@ func (r *RecoveryPlanInMageFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanInMageRcmFailbackFailoverInput.
 func (r RecoveryPlanInMageRcmFailbackFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcmFailback"
 	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
 	populate(objectMap, "useMultiVmSyncPoint", r.UseMultiVMSyncPoint)
@@ -15529,7 +15529,7 @@ func (r *RecoveryPlanInMageRcmFailbackFailoverInput) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanInMageRcmFailoverInput.
 func (r RecoveryPlanInMageRcmFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "InMageRcm"
 	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
 	populate(objectMap, "useMultiVmSyncPoint", r.UseMultiVMSyncPoint)
@@ -15564,7 +15564,7 @@ func (r *RecoveryPlanInMageRcmFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanManualActionDetails.
 func (r RecoveryPlanManualActionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "description", r.Description)
 	objectMap["instanceType"] = "ManualActionDetails"
 	return json.Marshal(objectMap)
@@ -15595,7 +15595,7 @@ func (r *RecoveryPlanManualActionDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanPlannedFailoverInput.
 func (r RecoveryPlanPlannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -15622,7 +15622,7 @@ func (r *RecoveryPlanPlannedFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanPlannedFailoverInputProperties.
 func (r RecoveryPlanPlannedFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "failoverDirection", r.FailoverDirection)
 	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
@@ -15653,7 +15653,7 @@ func (r *RecoveryPlanPlannedFailoverInputProperties) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanProperties.
 func (r RecoveryPlanProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedOperations", r.AllowedOperations)
 	populate(objectMap, "currentScenario", r.CurrentScenario)
 	populate(objectMap, "currentScenarioStatus", r.CurrentScenarioStatus)
@@ -15740,7 +15740,7 @@ func (r *RecoveryPlanProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanProtectedItem.
 func (r RecoveryPlanProtectedItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "virtualMachineId", r.VirtualMachineID)
 	return json.Marshal(objectMap)
@@ -15771,7 +15771,7 @@ func (r *RecoveryPlanProtectedItem) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanProviderSpecificDetails.
 func (r RecoveryPlanProviderSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -15798,7 +15798,7 @@ func (r *RecoveryPlanProviderSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanProviderSpecificFailoverInput.
 func (r RecoveryPlanProviderSpecificFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -15825,7 +15825,7 @@ func (r *RecoveryPlanProviderSpecificFailoverInput) UnmarshalJSON(data []byte) e
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanProviderSpecificInput.
 func (r RecoveryPlanProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -15852,7 +15852,7 @@ func (r *RecoveryPlanProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanScriptActionDetails.
 func (r RecoveryPlanScriptActionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricLocation", r.FabricLocation)
 	objectMap["instanceType"] = "ScriptActionDetails"
 	populate(objectMap, "path", r.Path)
@@ -15891,7 +15891,7 @@ func (r *RecoveryPlanScriptActionDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanShutdownGroupTaskDetails.
 func (r RecoveryPlanShutdownGroupTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "childTasks", r.ChildTasks)
 	populate(objectMap, "groupId", r.GroupID)
 	objectMap["instanceType"] = "RecoveryPlanShutdownGroupTaskDetails"
@@ -15934,7 +15934,7 @@ func (r *RecoveryPlanShutdownGroupTaskDetails) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanTestFailoverCleanupInput.
 func (r RecoveryPlanTestFailoverCleanupInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -15961,7 +15961,7 @@ func (r *RecoveryPlanTestFailoverCleanupInput) UnmarshalJSON(data []byte) error 
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanTestFailoverCleanupInputProperties.
 func (r RecoveryPlanTestFailoverCleanupInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "comments", r.Comments)
 	return json.Marshal(objectMap)
 }
@@ -15988,7 +15988,7 @@ func (r *RecoveryPlanTestFailoverCleanupInputProperties) UnmarshalJSON(data []by
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanTestFailoverInput.
 func (r RecoveryPlanTestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -16015,7 +16015,7 @@ func (r *RecoveryPlanTestFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanTestFailoverInputProperties.
 func (r RecoveryPlanTestFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "failoverDirection", r.FailoverDirection)
 	populate(objectMap, "networkId", r.NetworkID)
 	populate(objectMap, "networkType", r.NetworkType)
@@ -16054,7 +16054,7 @@ func (r *RecoveryPlanTestFailoverInputProperties) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanUnplannedFailoverInput.
 func (r RecoveryPlanUnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -16081,7 +16081,7 @@ func (r *RecoveryPlanUnplannedFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPlanUnplannedFailoverInputProperties.
 func (r RecoveryPlanUnplannedFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "failoverDirection", r.FailoverDirection)
 	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
 	populate(objectMap, "sourceSiteOperations", r.SourceSiteOperations)
@@ -16116,7 +16116,7 @@ func (r *RecoveryPlanUnplannedFailoverInputProperties) UnmarshalJSON(data []byte
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPoint.
 func (r RecoveryPoint) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
@@ -16159,7 +16159,7 @@ func (r *RecoveryPoint) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPointCollection.
 func (r RecoveryPointCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
@@ -16190,7 +16190,7 @@ func (r *RecoveryPointCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryPointProperties.
 func (r RecoveryPointProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
 	populateTimeRFC3339(objectMap, "recoveryPointTime", r.RecoveryPointTime)
 	populate(objectMap, "recoveryPointType", r.RecoveryPointType)
@@ -16225,7 +16225,7 @@ func (r *RecoveryPointProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryProximityPlacementGroupCustomDetails.
 func (r RecoveryProximityPlacementGroupCustomDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["resourceType"] = r.ResourceType
 	return json.Marshal(objectMap)
 }
@@ -16252,7 +16252,7 @@ func (r *RecoveryProximityPlacementGroupCustomDetails) UnmarshalJSON(data []byte
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryResourceGroupCustomDetails.
 func (r RecoveryResourceGroupCustomDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["resourceType"] = r.ResourceType
 	return json.Marshal(objectMap)
 }
@@ -16279,7 +16279,7 @@ func (r *RecoveryResourceGroupCustomDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryServicesProvider.
 func (r RecoveryServicesProvider) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
@@ -16322,7 +16322,7 @@ func (r *RecoveryServicesProvider) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryServicesProviderCollection.
 func (r RecoveryServicesProviderCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
@@ -16353,7 +16353,7 @@ func (r *RecoveryServicesProviderCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryServicesProviderProperties.
 func (r RecoveryServicesProviderProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "allowedScenarios", r.AllowedScenarios)
 	populate(objectMap, "authenticationIdentityDetails", r.AuthenticationIdentityDetails)
 	populate(objectMap, "biosId", r.BiosID)
@@ -16456,7 +16456,7 @@ func (r *RecoveryServicesProviderProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RecoveryVirtualNetworkCustomDetails.
 func (r RecoveryVirtualNetworkCustomDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["resourceType"] = r.ResourceType
 	return json.Marshal(objectMap)
 }
@@ -16483,7 +16483,7 @@ func (r *RecoveryVirtualNetworkCustomDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RemoveDisksInput.
 func (r RemoveDisksInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -16510,7 +16510,7 @@ func (r *RemoveDisksInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RemoveDisksInputProperties.
 func (r RemoveDisksInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -16537,7 +16537,7 @@ func (r *RemoveDisksInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RemoveDisksProviderSpecificInput.
 func (r RemoveDisksProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -16564,7 +16564,7 @@ func (r *RemoveDisksProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RemoveProtectionContainerMappingInput.
 func (r RemoveProtectionContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -16591,7 +16591,7 @@ func (r *RemoveProtectionContainerMappingInput) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type RemoveProtectionContainerMappingInputProperties.
 func (r RemoveProtectionContainerMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificInput", r.ProviderSpecificInput)
 	return json.Marshal(objectMap)
 }
@@ -16618,7 +16618,7 @@ func (r *RemoveProtectionContainerMappingInputProperties) UnmarshalJSON(data []b
 
 // MarshalJSON implements the json.Marshaller interface for type RenewCertificateInput.
 func (r RenewCertificateInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -16645,7 +16645,7 @@ func (r *RenewCertificateInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RenewCertificateInputProperties.
 func (r RenewCertificateInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "renewCertificateType", r.RenewCertificateType)
 	return json.Marshal(objectMap)
 }
@@ -16672,7 +16672,7 @@ func (r *RenewCertificateInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationAgentDetails.
 func (r ReplicationAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "biosId", r.BiosID)
 	populate(objectMap, "fabricObjectId", r.FabricObjectID)
 	populate(objectMap, "fqdn", r.Fqdn)
@@ -16731,7 +16731,7 @@ func (r *ReplicationAgentDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationAppliance.
 func (r ReplicationAppliance) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -16758,7 +16758,7 @@ func (r *ReplicationAppliance) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationApplianceProperties.
 func (r ReplicationApplianceProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -16785,7 +16785,7 @@ func (r *ReplicationApplianceProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationEligibilityResults.
 func (r ReplicationEligibilityResults) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "properties", r.Properties)
@@ -16824,7 +16824,7 @@ func (r *ReplicationEligibilityResults) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationEligibilityResultsCollection.
 func (r ReplicationEligibilityResultsCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
 }
@@ -16851,7 +16851,7 @@ func (r *ReplicationEligibilityResultsCollection) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationEligibilityResultsErrorInfo.
 func (r ReplicationEligibilityResultsErrorInfo) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "code", r.Code)
 	populate(objectMap, "message", r.Message)
 	populate(objectMap, "possibleCauses", r.PossibleCauses)
@@ -16894,7 +16894,7 @@ func (r *ReplicationEligibilityResultsErrorInfo) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationEligibilityResultsProperties.
 func (r ReplicationEligibilityResultsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "clientRequestId", r.ClientRequestID)
 	populate(objectMap, "errors", r.Errors)
 	return json.Marshal(objectMap)
@@ -16925,7 +16925,7 @@ func (r *ReplicationEligibilityResultsProperties) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationGroupDetails.
 func (r ReplicationGroupDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "ReplicationGroupDetails"
 	return json.Marshal(objectMap)
 }
@@ -16952,7 +16952,7 @@ func (r *ReplicationGroupDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProtectedItem.
 func (r ReplicationProtectedItem) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
@@ -16995,7 +16995,7 @@ func (r *ReplicationProtectedItem) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProtectedItemCollection.
 func (r ReplicationProtectedItemCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
@@ -17026,7 +17026,7 @@ func (r *ReplicationProtectedItemCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProtectedItemProperties.
 func (r ReplicationProtectedItemProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "activeLocation", r.ActiveLocation)
 	populate(objectMap, "allowedOperations", r.AllowedOperations)
 	populate(objectMap, "currentScenario", r.CurrentScenario)
@@ -17169,7 +17169,7 @@ func (r *ReplicationProtectedItemProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProtectionIntent.
 func (r ReplicationProtectionIntent) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
@@ -17212,7 +17212,7 @@ func (r *ReplicationProtectionIntent) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProtectionIntentCollection.
 func (r ReplicationProtectionIntentCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", r.NextLink)
 	populate(objectMap, "value", r.Value)
 	return json.Marshal(objectMap)
@@ -17243,7 +17243,7 @@ func (r *ReplicationProtectionIntentCollection) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProtectionIntentProperties.
 func (r ReplicationProtectionIntentProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "creationTimeUTC", r.CreationTimeUTC)
 	populate(objectMap, "friendlyName", r.FriendlyName)
 	populate(objectMap, "isActive", r.IsActive)
@@ -17290,7 +17290,7 @@ func (r *ReplicationProtectionIntentProperties) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProtectionIntentProviderSpecificSettings.
 func (r ReplicationProtectionIntentProviderSpecificSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -17317,7 +17317,7 @@ func (r *ReplicationProtectionIntentProviderSpecificSettings) UnmarshalJSON(data
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProviderContainerUnmappingInput.
 func (r ReplicationProviderContainerUnmappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "instanceType", r.InstanceType)
 	return json.Marshal(objectMap)
 }
@@ -17344,7 +17344,7 @@ func (r *ReplicationProviderContainerUnmappingInput) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProviderSpecificContainerCreationInput.
 func (r ReplicationProviderSpecificContainerCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -17371,7 +17371,7 @@ func (r *ReplicationProviderSpecificContainerCreationInput) UnmarshalJSON(data [
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProviderSpecificContainerMappingInput.
 func (r ReplicationProviderSpecificContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -17398,7 +17398,7 @@ func (r *ReplicationProviderSpecificContainerMappingInput) UnmarshalJSON(data []
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProviderSpecificSettings.
 func (r ReplicationProviderSpecificSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -17425,7 +17425,7 @@ func (r *ReplicationProviderSpecificSettings) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReplicationProviderSpecificUpdateContainerMappingInput.
 func (r ReplicationProviderSpecificUpdateContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -17452,7 +17452,7 @@ func (r *ReplicationProviderSpecificUpdateContainerMappingInput) UnmarshalJSON(d
 
 // MarshalJSON implements the json.Marshaller interface for type ReprotectAgentDetails.
 func (r ReprotectAgentDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "accessibleDatastores", r.AccessibleDatastores)
 	populate(objectMap, "biosId", r.BiosID)
 	populate(objectMap, "fabricObjectId", r.FabricObjectID)
@@ -17527,7 +17527,7 @@ func (r *ReprotectAgentDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResolveHealthError.
 func (r ResolveHealthError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "healthErrorId", r.HealthErrorID)
 	return json.Marshal(objectMap)
 }
@@ -17554,7 +17554,7 @@ func (r *ResolveHealthError) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResolveHealthInput.
 func (r ResolveHealthInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -17581,7 +17581,7 @@ func (r *ResolveHealthInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResolveHealthInputProperties.
 func (r ResolveHealthInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "healthErrors", r.HealthErrors)
 	return json.Marshal(objectMap)
 }
@@ -17608,7 +17608,7 @@ func (r *ResolveHealthInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Resource.
 func (r Resource) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "location", r.Location)
 	populate(objectMap, "name", r.Name)
@@ -17647,7 +17647,7 @@ func (r *Resource) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResourceHealthSummary.
 func (r ResourceHealthSummary) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "categorizedResourceCounts", r.CategorizedResourceCounts)
 	populate(objectMap, "issues", r.Issues)
 	populate(objectMap, "resourceCount", r.ResourceCount)
@@ -17682,7 +17682,7 @@ func (r *ResourceHealthSummary) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResumeJobParams.
 func (r ResumeJobParams) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -17709,7 +17709,7 @@ func (r *ResumeJobParams) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResumeJobParamsProperties.
 func (r ResumeJobParamsProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "comments", r.Comments)
 	return json.Marshal(objectMap)
 }
@@ -17736,7 +17736,7 @@ func (r *ResumeJobParamsProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResumeReplicationInput.
 func (r ResumeReplicationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -17763,7 +17763,7 @@ func (r *ResumeReplicationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResumeReplicationInputProperties.
 func (r ResumeReplicationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -17790,7 +17790,7 @@ func (r *ResumeReplicationInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResumeReplicationProviderSpecificInput.
 func (r ResumeReplicationProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -17817,7 +17817,7 @@ func (r *ResumeReplicationProviderSpecificInput) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type ResyncInput.
 func (r ResyncInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -17844,7 +17844,7 @@ func (r *ResyncInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResyncInputProperties.
 func (r ResyncInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -17871,7 +17871,7 @@ func (r *ResyncInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ResyncProviderSpecificInput.
 func (r ResyncProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -17898,7 +17898,7 @@ func (r *ResyncProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RetentionVolume.
 func (r RetentionVolume) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "capacityInBytes", r.CapacityInBytes)
 	populate(objectMap, "freeSpaceInBytes", r.FreeSpaceInBytes)
 	populate(objectMap, "thresholdPercentage", r.ThresholdPercentage)
@@ -17937,7 +17937,7 @@ func (r *RetentionVolume) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReverseReplicationInput.
 func (r ReverseReplicationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", r.Properties)
 	return json.Marshal(objectMap)
 }
@@ -17964,7 +17964,7 @@ func (r *ReverseReplicationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReverseReplicationInputProperties.
 func (r ReverseReplicationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "failoverDirection", r.FailoverDirection)
 	populate(objectMap, "providerSpecificDetails", r.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
@@ -17995,7 +17995,7 @@ func (r *ReverseReplicationInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ReverseReplicationProviderSpecificInput.
 func (r ReverseReplicationProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = r.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -18022,7 +18022,7 @@ func (r *ReverseReplicationProviderSpecificInput) UnmarshalJSON(data []byte) err
 
 // MarshalJSON implements the json.Marshaller interface for type RoleAssignment.
 func (r RoleAssignment) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", r.ID)
 	populate(objectMap, "name", r.Name)
 	populate(objectMap, "principalId", r.PrincipalID)
@@ -18065,7 +18065,7 @@ func (r *RoleAssignment) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type RunAsAccount.
 func (r RunAsAccount) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "accountId", r.AccountID)
 	populate(objectMap, "accountName", r.AccountName)
 	return json.Marshal(objectMap)
@@ -18096,7 +18096,7 @@ func (r *RunAsAccount) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ScriptActionTaskDetails.
 func (s ScriptActionTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "ScriptActionTaskDetails"
 	populate(objectMap, "isPrimarySideScript", s.IsPrimarySideScript)
 	populate(objectMap, "name", s.Name)
@@ -18139,7 +18139,7 @@ func (s *ScriptActionTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type ServiceError.
 func (s ServiceError) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "activityId", s.ActivityID)
 	populate(objectMap, "code", s.Code)
 	populate(objectMap, "message", s.Message)
@@ -18182,7 +18182,7 @@ func (s *ServiceError) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type StorageAccountCustomDetails.
 func (s StorageAccountCustomDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["resourceType"] = s.ResourceType
 	return json.Marshal(objectMap)
 }
@@ -18209,7 +18209,7 @@ func (s *StorageAccountCustomDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type StorageClassification.
 func (s StorageClassification) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "location", s.Location)
 	populate(objectMap, "name", s.Name)
@@ -18252,7 +18252,7 @@ func (s *StorageClassification) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type StorageClassificationCollection.
 func (s StorageClassificationCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", s.NextLink)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
@@ -18283,7 +18283,7 @@ func (s *StorageClassificationCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type StorageClassificationMapping.
 func (s StorageClassificationMapping) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "location", s.Location)
 	populate(objectMap, "name", s.Name)
@@ -18326,7 +18326,7 @@ func (s *StorageClassificationMapping) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type StorageClassificationMappingCollection.
 func (s StorageClassificationMappingCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", s.NextLink)
 	populate(objectMap, "value", s.Value)
 	return json.Marshal(objectMap)
@@ -18357,7 +18357,7 @@ func (s *StorageClassificationMappingCollection) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type StorageClassificationMappingInput.
 func (s StorageClassificationMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -18384,7 +18384,7 @@ func (s *StorageClassificationMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type StorageClassificationMappingProperties.
 func (s StorageClassificationMappingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "targetStorageClassificationId", s.TargetStorageClassificationID)
 	return json.Marshal(objectMap)
 }
@@ -18411,7 +18411,7 @@ func (s *StorageClassificationMappingProperties) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type StorageClassificationProperties.
 func (s StorageClassificationProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "friendlyName", s.FriendlyName)
 	return json.Marshal(objectMap)
 }
@@ -18438,7 +18438,7 @@ func (s *StorageClassificationProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type StorageMappingInputProperties.
 func (s StorageMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "targetStorageClassificationId", s.TargetStorageClassificationID)
 	return json.Marshal(objectMap)
 }
@@ -18465,7 +18465,7 @@ func (s *StorageMappingInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type Subnet.
 func (s Subnet) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "addressList", s.AddressList)
 	populate(objectMap, "friendlyName", s.FriendlyName)
 	populate(objectMap, "name", s.Name)
@@ -18500,7 +18500,7 @@ func (s *Subnet) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SupportedOSDetails.
 func (s SupportedOSDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "osName", s.OSName)
 	populate(objectMap, "osType", s.OSType)
 	populate(objectMap, "osVersions", s.OSVersions)
@@ -18535,7 +18535,7 @@ func (s *SupportedOSDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SupportedOSProperties.
 func (s SupportedOSProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "supportedOsList", s.SupportedOsList)
 	return json.Marshal(objectMap)
 }
@@ -18562,7 +18562,7 @@ func (s *SupportedOSProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SupportedOSProperty.
 func (s SupportedOSProperty) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "instanceType", s.InstanceType)
 	populate(objectMap, "supportedOs", s.SupportedOs)
 	return json.Marshal(objectMap)
@@ -18593,7 +18593,7 @@ func (s *SupportedOSProperty) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SupportedOperatingSystems.
 func (s SupportedOperatingSystems) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", s.ID)
 	populate(objectMap, "location", s.Location)
 	populate(objectMap, "name", s.Name)
@@ -18636,7 +18636,7 @@ func (s *SupportedOperatingSystems) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SwitchProtectionInput.
 func (s SwitchProtectionInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -18663,7 +18663,7 @@ func (s *SwitchProtectionInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SwitchProtectionInputProperties.
 func (s SwitchProtectionInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", s.ProviderSpecificDetails)
 	populate(objectMap, "replicationProtectedItemName", s.ReplicationProtectedItemName)
 	return json.Marshal(objectMap)
@@ -18694,7 +18694,7 @@ func (s *SwitchProtectionInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SwitchProtectionJobDetails.
 func (s SwitchProtectionJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectDetails", s.AffectedObjectDetails)
 	objectMap["instanceType"] = "SwitchProtectionJobDetails"
 	populate(objectMap, "newReplicationProtectedItemId", s.NewReplicationProtectedItemID)
@@ -18729,7 +18729,7 @@ func (s *SwitchProtectionJobDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SwitchProtectionProviderSpecificInput.
 func (s SwitchProtectionProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = s.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -18756,7 +18756,7 @@ func (s *SwitchProtectionProviderSpecificInput) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type SwitchProviderInput.
 func (s SwitchProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", s.Properties)
 	return json.Marshal(objectMap)
 }
@@ -18783,7 +18783,7 @@ func (s *SwitchProviderInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SwitchProviderInputProperties.
 func (s SwitchProviderInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", s.ProviderSpecificDetails)
 	populate(objectMap, "targetInstanceType", s.TargetInstanceType)
 	return json.Marshal(objectMap)
@@ -18814,7 +18814,7 @@ func (s *SwitchProviderInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type SwitchProviderSpecificInput.
 func (s SwitchProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = s.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -18841,7 +18841,7 @@ func (s *SwitchProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TargetComputeSize.
 func (t TargetComputeSize) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", t.ID)
 	populate(objectMap, "name", t.Name)
 	populate(objectMap, "properties", t.Properties)
@@ -18880,7 +18880,7 @@ func (t *TargetComputeSize) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TargetComputeSizeCollection.
 func (t TargetComputeSizeCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", t.NextLink)
 	populate(objectMap, "value", t.Value)
 	return json.Marshal(objectMap)
@@ -18911,7 +18911,7 @@ func (t *TargetComputeSizeCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TargetComputeSizeProperties.
 func (t TargetComputeSizeProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "cpuCoresCount", t.CPUCoresCount)
 	populate(objectMap, "errors", t.Errors)
 	populate(objectMap, "friendlyName", t.FriendlyName)
@@ -18974,7 +18974,7 @@ func (t *TargetComputeSizeProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TaskTypeDetails.
 func (t TaskTypeDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = t.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -19001,7 +19001,7 @@ func (t *TaskTypeDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestFailoverCleanupInput.
 func (t TestFailoverCleanupInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", t.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19028,7 +19028,7 @@ func (t *TestFailoverCleanupInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestFailoverCleanupInputProperties.
 func (t TestFailoverCleanupInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "comments", t.Comments)
 	return json.Marshal(objectMap)
 }
@@ -19055,7 +19055,7 @@ func (t *TestFailoverCleanupInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestFailoverInput.
 func (t TestFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", t.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19082,7 +19082,7 @@ func (t *TestFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestFailoverInputProperties.
 func (t TestFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "failoverDirection", t.FailoverDirection)
 	populate(objectMap, "networkId", t.NetworkID)
 	populate(objectMap, "networkType", t.NetworkType)
@@ -19121,7 +19121,7 @@ func (t *TestFailoverInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestFailoverJobDetails.
 func (t TestFailoverJobDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "affectedObjectDetails", t.AffectedObjectDetails)
 	populate(objectMap, "comments", t.Comments)
 	objectMap["instanceType"] = "TestFailoverJobDetails"
@@ -19176,7 +19176,7 @@ func (t *TestFailoverJobDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestFailoverProviderSpecificInput.
 func (t TestFailoverProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = t.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -19203,7 +19203,7 @@ func (t *TestFailoverProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestMigrateCleanupInput.
 func (t TestMigrateCleanupInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", t.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19230,7 +19230,7 @@ func (t *TestMigrateCleanupInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestMigrateCleanupInputProperties.
 func (t TestMigrateCleanupInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "comments", t.Comments)
 	return json.Marshal(objectMap)
 }
@@ -19257,7 +19257,7 @@ func (t *TestMigrateCleanupInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestMigrateInput.
 func (t TestMigrateInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", t.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19284,7 +19284,7 @@ func (t *TestMigrateInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestMigrateInputProperties.
 func (t TestMigrateInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", t.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -19311,7 +19311,7 @@ func (t *TestMigrateInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type TestMigrateProviderSpecificInput.
 func (t TestMigrateProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = t.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -19338,7 +19338,7 @@ func (t *TestMigrateProviderSpecificInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UnplannedFailoverInput.
 func (u UnplannedFailoverInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19365,7 +19365,7 @@ func (u *UnplannedFailoverInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UnplannedFailoverInputProperties.
 func (u UnplannedFailoverInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "failoverDirection", u.FailoverDirection)
 	populate(objectMap, "providerSpecificDetails", u.ProviderSpecificDetails)
 	populate(objectMap, "sourceSiteOperations", u.SourceSiteOperations)
@@ -19400,7 +19400,7 @@ func (u *UnplannedFailoverInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UnplannedFailoverProviderSpecificInput.
 func (u UnplannedFailoverProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = u.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -19427,7 +19427,7 @@ func (u *UnplannedFailoverProviderSpecificInput) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateApplianceForReplicationProtectedItemInput.
 func (u UpdateApplianceForReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19454,7 +19454,7 @@ func (u *UpdateApplianceForReplicationProtectedItemInput) UnmarshalJSON(data []b
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateApplianceForReplicationProtectedItemInputProperties.
 func (u UpdateApplianceForReplicationProtectedItemInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", u.ProviderSpecificDetails)
 	populate(objectMap, "targetApplianceId", u.TargetApplianceID)
 	return json.Marshal(objectMap)
@@ -19485,7 +19485,7 @@ func (u *UpdateApplianceForReplicationProtectedItemInputProperties) UnmarshalJSO
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateApplianceForReplicationProtectedItemProviderSpecificInput.
 func (u UpdateApplianceForReplicationProtectedItemProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = u.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -19512,7 +19512,7 @@ func (u *UpdateApplianceForReplicationProtectedItemProviderSpecificInput) Unmars
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateDiskInput.
 func (u UpdateDiskInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskId", u.DiskID)
 	populate(objectMap, "targetDiskName", u.TargetDiskName)
 	return json.Marshal(objectMap)
@@ -19543,7 +19543,7 @@ func (u *UpdateDiskInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateMigrationItemInput.
 func (u UpdateMigrationItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19570,7 +19570,7 @@ func (u *UpdateMigrationItemInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateMigrationItemInputProperties.
 func (u UpdateMigrationItemInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificDetails", u.ProviderSpecificDetails)
 	return json.Marshal(objectMap)
 }
@@ -19597,7 +19597,7 @@ func (u *UpdateMigrationItemInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateMigrationItemProviderSpecificInput.
 func (u UpdateMigrationItemProviderSpecificInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = u.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -19624,7 +19624,7 @@ func (u *UpdateMigrationItemProviderSpecificInput) UnmarshalJSON(data []byte) er
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateMobilityServiceRequest.
 func (u UpdateMobilityServiceRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19651,7 +19651,7 @@ func (u *UpdateMobilityServiceRequest) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateMobilityServiceRequestProperties.
 func (u UpdateMobilityServiceRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "runAsAccountId", u.RunAsAccountID)
 	return json.Marshal(objectMap)
 }
@@ -19678,7 +19678,7 @@ func (u *UpdateMobilityServiceRequestProperties) UnmarshalJSON(data []byte) erro
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateNetworkMappingInput.
 func (u UpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19705,7 +19705,7 @@ func (u *UpdateNetworkMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateNetworkMappingInputProperties.
 func (u UpdateNetworkMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "fabricSpecificDetails", u.FabricSpecificDetails)
 	populate(objectMap, "recoveryFabricName", u.RecoveryFabricName)
 	populate(objectMap, "recoveryNetworkId", u.RecoveryNetworkID)
@@ -19740,7 +19740,7 @@ func (u *UpdateNetworkMappingInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdatePolicyInput.
 func (u UpdatePolicyInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19767,7 +19767,7 @@ func (u *UpdatePolicyInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdatePolicyInputProperties.
 func (u UpdatePolicyInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "replicationProviderSettings", u.ReplicationProviderSettings)
 	return json.Marshal(objectMap)
 }
@@ -19794,7 +19794,7 @@ func (u *UpdatePolicyInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateProtectionContainerMappingInput.
 func (u UpdateProtectionContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19821,7 +19821,7 @@ func (u *UpdateProtectionContainerMappingInput) UnmarshalJSON(data []byte) error
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateProtectionContainerMappingInputProperties.
 func (u UpdateProtectionContainerMappingInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "providerSpecificInput", u.ProviderSpecificInput)
 	return json.Marshal(objectMap)
 }
@@ -19848,7 +19848,7 @@ func (u *UpdateProtectionContainerMappingInputProperties) UnmarshalJSON(data []b
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateRecoveryPlanInput.
 func (u UpdateRecoveryPlanInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19875,7 +19875,7 @@ func (u *UpdateRecoveryPlanInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateRecoveryPlanInputProperties.
 func (u UpdateRecoveryPlanInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "groups", u.Groups)
 	return json.Marshal(objectMap)
 }
@@ -19902,7 +19902,7 @@ func (u *UpdateRecoveryPlanInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateReplicationProtectedItemInput.
 func (u UpdateReplicationProtectedItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -19929,7 +19929,7 @@ func (u *UpdateReplicationProtectedItemInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateReplicationProtectedItemInputProperties.
 func (u UpdateReplicationProtectedItemInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "enableRdpOnTargetOption", u.EnableRdpOnTargetOption)
 	populate(objectMap, "licenseType", u.LicenseType)
 	populate(objectMap, "providerSpecificDetails", u.ProviderSpecificDetails)
@@ -19992,7 +19992,7 @@ func (u *UpdateReplicationProtectedItemInputProperties) UnmarshalJSON(data []byt
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateReplicationProtectedItemProviderInput.
 func (u UpdateReplicationProtectedItemProviderInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = u.InstanceType
 	return json.Marshal(objectMap)
 }
@@ -20019,7 +20019,7 @@ func (u *UpdateReplicationProtectedItemProviderInput) UnmarshalJSON(data []byte)
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateVCenterRequest.
 func (u UpdateVCenterRequest) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", u.Properties)
 	return json.Marshal(objectMap)
 }
@@ -20046,7 +20046,7 @@ func (u *UpdateVCenterRequest) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type UpdateVCenterRequestProperties.
 func (u UpdateVCenterRequestProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "friendlyName", u.FriendlyName)
 	populate(objectMap, "ipAddress", u.IPAddress)
 	populate(objectMap, "port", u.Port)
@@ -20089,7 +20089,7 @@ func (u *UpdateVCenterRequestProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VCenter.
 func (v VCenter) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", v.ID)
 	populate(objectMap, "location", v.Location)
 	populate(objectMap, "name", v.Name)
@@ -20132,7 +20132,7 @@ func (v *VCenter) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VCenterCollection.
 func (v VCenterCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", v.NextLink)
 	populate(objectMap, "value", v.Value)
 	return json.Marshal(objectMap)
@@ -20163,7 +20163,7 @@ func (v *VCenterCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VCenterProperties.
 func (v VCenterProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "discoveryStatus", v.DiscoveryStatus)
 	populate(objectMap, "fabricArmResourceName", v.FabricArmResourceName)
 	populate(objectMap, "friendlyName", v.FriendlyName)
@@ -20230,7 +20230,7 @@ func (v *VCenterProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMNicDetails.
 func (v VMNicDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "enableAcceleratedNetworkingOnRecovery", v.EnableAcceleratedNetworkingOnRecovery)
 	populate(objectMap, "enableAcceleratedNetworkingOnTfo", v.EnableAcceleratedNetworkingOnTfo)
 	populate(objectMap, "ipConfigs", v.IPConfigs)
@@ -20329,7 +20329,7 @@ func (v *VMNicDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMNicInputDetails.
 func (v VMNicInputDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "enableAcceleratedNetworkingOnRecovery", v.EnableAcceleratedNetworkingOnRecovery)
 	populate(objectMap, "enableAcceleratedNetworkingOnTfo", v.EnableAcceleratedNetworkingOnTfo)
 	populate(objectMap, "ipConfigs", v.IPConfigs)
@@ -20408,7 +20408,7 @@ func (v *VMNicInputDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMNicUpdatesTaskDetails.
 func (v VMNicUpdatesTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VmNicUpdatesTaskDetails"
 	populate(objectMap, "name", v.Name)
 	populate(objectMap, "nicId", v.NicID)
@@ -20447,7 +20447,7 @@ func (v *VMNicUpdatesTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtContainerCreationInput.
 func (v VMwareCbtContainerCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareCbt"
 	return json.Marshal(objectMap)
 }
@@ -20474,7 +20474,7 @@ func (v *VMwareCbtContainerCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtContainerMappingInput.
 func (v VMwareCbtContainerMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareCbt"
 	populate(objectMap, "keyVaultId", v.KeyVaultID)
 	populate(objectMap, "keyVaultUri", v.KeyVaultURI)
@@ -20525,7 +20525,7 @@ func (v *VMwareCbtContainerMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtDiskInput.
 func (v VMwareCbtDiskInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskEncryptionSetId", v.DiskEncryptionSetID)
 	populate(objectMap, "diskId", v.DiskID)
 	populate(objectMap, "diskType", v.DiskType)
@@ -20572,7 +20572,7 @@ func (v *VMwareCbtDiskInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtEnableMigrationInput.
 func (v VMwareCbtEnableMigrationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "dataMoverRunAsAccountId", v.DataMoverRunAsAccountID)
 	populate(objectMap, "disksToInclude", v.DisksToInclude)
 	objectMap["instanceType"] = "VMwareCbt"
@@ -20691,7 +20691,7 @@ func (v *VMwareCbtEnableMigrationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtEventDetails.
 func (v VMwareCbtEventDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareCbt"
 	populate(objectMap, "migrationItemName", v.MigrationItemName)
 	return json.Marshal(objectMap)
@@ -20722,7 +20722,7 @@ func (v *VMwareCbtEventDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtMigrateInput.
 func (v VMwareCbtMigrateInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareCbt"
 	populate(objectMap, "performShutdown", v.PerformShutdown)
 	return json.Marshal(objectMap)
@@ -20753,7 +20753,7 @@ func (v *VMwareCbtMigrateInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtMigrationDetails.
 func (v VMwareCbtMigrationDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "dataMoverRunAsAccountId", v.DataMoverRunAsAccountID)
 	populate(objectMap, "firmwareType", v.FirmwareType)
 	populate(objectMap, "initialSeedingProgressPercentage", v.InitialSeedingProgressPercentage)
@@ -20932,7 +20932,7 @@ func (v *VMwareCbtMigrationDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtNicDetails.
 func (v VMwareCbtNicDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "isPrimaryNic", v.IsPrimaryNic)
 	populate(objectMap, "isSelectedForMigration", v.IsSelectedForMigration)
 	populate(objectMap, "nicId", v.NicID)
@@ -21011,7 +21011,7 @@ func (v *VMwareCbtNicDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtNicInput.
 func (v VMwareCbtNicInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "isPrimaryNic", v.IsPrimaryNic)
 	populate(objectMap, "isSelectedForMigration", v.IsSelectedForMigration)
 	populate(objectMap, "nicId", v.NicID)
@@ -21066,7 +21066,7 @@ func (v *VMwareCbtNicInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtPolicyCreationInput.
 func (v VMwareCbtPolicyCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", v.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", v.CrashConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "VMwareCbt"
@@ -21105,7 +21105,7 @@ func (v *VMwareCbtPolicyCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtProtectedDiskDetails.
 func (v VMwareCbtProtectedDiskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "capacityInBytes", v.CapacityInBytes)
 	populate(objectMap, "diskEncryptionSetId", v.DiskEncryptionSetID)
 	populate(objectMap, "diskId", v.DiskID)
@@ -21184,7 +21184,7 @@ func (v *VMwareCbtProtectedDiskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtProtectionContainerMappingDetails.
 func (v VMwareCbtProtectionContainerMappingDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareCbt"
 	populate(objectMap, "keyVaultId", v.KeyVaultID)
 	populate(objectMap, "keyVaultUri", v.KeyVaultURI)
@@ -21239,7 +21239,7 @@ func (v *VMwareCbtProtectionContainerMappingDetails) UnmarshalJSON(data []byte) 
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtResumeReplicationInput.
 func (v VMwareCbtResumeReplicationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "deleteMigrationResources", v.DeleteMigrationResources)
 	objectMap["instanceType"] = "VMwareCbt"
 	return json.Marshal(objectMap)
@@ -21270,7 +21270,7 @@ func (v *VMwareCbtResumeReplicationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtResyncInput.
 func (v VMwareCbtResyncInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareCbt"
 	populate(objectMap, "skipCbtReset", v.SkipCbtReset)
 	return json.Marshal(objectMap)
@@ -21301,7 +21301,7 @@ func (v *VMwareCbtResyncInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtTestMigrateInput.
 func (v VMwareCbtTestMigrateInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareCbt"
 	populate(objectMap, "networkId", v.NetworkID)
 	populate(objectMap, "recoveryPointId", v.RecoveryPointID)
@@ -21340,7 +21340,7 @@ func (v *VMwareCbtTestMigrateInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtUpdateDiskInput.
 func (v VMwareCbtUpdateDiskInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskId", v.DiskID)
 	populate(objectMap, "isOSDisk", v.IsOSDisk)
 	populate(objectMap, "targetDiskName", v.TargetDiskName)
@@ -21375,7 +21375,7 @@ func (v *VMwareCbtUpdateDiskInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareCbtUpdateMigrationItemInput.
 func (v VMwareCbtUpdateMigrationItemInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareCbt"
 	populate(objectMap, "licenseType", v.LicenseType)
 	populate(objectMap, "performAutoResync", v.PerformAutoResync)
@@ -21470,7 +21470,7 @@ func (v *VMwareCbtUpdateMigrationItemInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareDetails.
 func (v VMwareDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentCount", v.AgentCount)
 	populateTimeRFC3339(objectMap, "agentExpiryDate", v.AgentExpiryDate)
 	populate(objectMap, "agentVersion", v.AgentVersion)
@@ -21629,7 +21629,7 @@ func (v *VMwareDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareV2FabricCreationInput.
 func (v VMwareV2FabricCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareV2"
 	populate(objectMap, "migrationSolutionId", v.MigrationSolutionID)
 	populate(objectMap, "physicalSiteId", v.PhysicalSiteID)
@@ -21668,7 +21668,7 @@ func (v *VMwareV2FabricCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareV2FabricSpecificDetails.
 func (v VMwareV2FabricSpecificDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMwareV2"
 	populate(objectMap, "migrationSolutionId", v.MigrationSolutionID)
 	populate(objectMap, "physicalSiteId", v.PhysicalSiteID)
@@ -21723,7 +21723,7 @@ func (v *VMwareV2FabricSpecificDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VMwareVirtualMachineDetails.
 func (v VMwareVirtualMachineDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "agentGeneratedId", v.AgentGeneratedID)
 	populate(objectMap, "agentInstalled", v.AgentInstalled)
 	populate(objectMap, "agentVersion", v.AgentVersion)
@@ -21790,7 +21790,7 @@ func (v *VMwareVirtualMachineDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VaultHealthDetails.
 func (v VaultHealthDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", v.ID)
 	populate(objectMap, "location", v.Location)
 	populate(objectMap, "name", v.Name)
@@ -21833,7 +21833,7 @@ func (v *VaultHealthDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VaultHealthProperties.
 func (v VaultHealthProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "containersHealth", v.ContainersHealth)
 	populate(objectMap, "fabricsHealth", v.FabricsHealth)
 	populate(objectMap, "protectedItemsHealth", v.ProtectedItemsHealth)
@@ -21872,7 +21872,7 @@ func (v *VaultHealthProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VaultSetting.
 func (v VaultSetting) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "id", v.ID)
 	populate(objectMap, "location", v.Location)
 	populate(objectMap, "name", v.Name)
@@ -21915,7 +21915,7 @@ func (v *VaultSetting) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VaultSettingCollection.
 func (v VaultSettingCollection) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "nextLink", v.NextLink)
 	populate(objectMap, "value", v.Value)
 	return json.Marshal(objectMap)
@@ -21946,7 +21946,7 @@ func (v *VaultSettingCollection) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VaultSettingCreationInput.
 func (v VaultSettingCreationInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "properties", v.Properties)
 	return json.Marshal(objectMap)
 }
@@ -21973,7 +21973,7 @@ func (v *VaultSettingCreationInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VaultSettingCreationInputProperties.
 func (v VaultSettingCreationInputProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "migrationSolutionId", v.MigrationSolutionID)
 	populate(objectMap, "vmwareToAzureProviderType", v.VmwareToAzureProviderType)
 	return json.Marshal(objectMap)
@@ -22004,7 +22004,7 @@ func (v *VaultSettingCreationInputProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VaultSettingProperties.
 func (v VaultSettingProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "migrationSolutionId", v.MigrationSolutionID)
 	populate(objectMap, "vmwareToAzureProviderType", v.VmwareToAzureProviderType)
 	return json.Marshal(objectMap)
@@ -22035,7 +22035,7 @@ func (v *VaultSettingProperties) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VersionDetails.
 func (v VersionDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populateTimeRFC3339(objectMap, "expiryDate", v.ExpiryDate)
 	populate(objectMap, "status", v.Status)
 	populate(objectMap, "version", v.Version)
@@ -22070,7 +22070,7 @@ func (v *VersionDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VirtualMachineTaskDetails.
 func (v VirtualMachineTaskDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VirtualMachineTaskDetails"
 	populate(objectMap, "jobTask", v.JobTask)
 	populate(objectMap, "skippedReason", v.SkippedReason)
@@ -22109,7 +22109,7 @@ func (v *VirtualMachineTaskDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmmDetails.
 func (v VmmDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VMM"
 	return json.Marshal(objectMap)
 }
@@ -22136,7 +22136,7 @@ func (v *VmmDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmmToAzureCreateNetworkMappingInput.
 func (v VmmToAzureCreateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VmmToAzure"
 	return json.Marshal(objectMap)
 }
@@ -22163,7 +22163,7 @@ func (v *VmmToAzureCreateNetworkMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmmToAzureNetworkMappingSettings.
 func (v VmmToAzureNetworkMappingSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VmmToAzure"
 	return json.Marshal(objectMap)
 }
@@ -22190,7 +22190,7 @@ func (v *VmmToAzureNetworkMappingSettings) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmmToAzureUpdateNetworkMappingInput.
 func (v VmmToAzureUpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VmmToAzure"
 	return json.Marshal(objectMap)
 }
@@ -22217,7 +22217,7 @@ func (v *VmmToAzureUpdateNetworkMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmmToVmmCreateNetworkMappingInput.
 func (v VmmToVmmCreateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VmmToVmm"
 	return json.Marshal(objectMap)
 }
@@ -22244,7 +22244,7 @@ func (v *VmmToVmmCreateNetworkMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmmToVmmNetworkMappingSettings.
 func (v VmmToVmmNetworkMappingSettings) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VmmToVmm"
 	return json.Marshal(objectMap)
 }
@@ -22271,7 +22271,7 @@ func (v *VmmToVmmNetworkMappingSettings) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmmToVmmUpdateNetworkMappingInput.
 func (v VmmToVmmUpdateNetworkMappingInput) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	objectMap["instanceType"] = "VmmToVmm"
 	return json.Marshal(objectMap)
 }
@@ -22298,7 +22298,7 @@ func (v *VmmToVmmUpdateNetworkMappingInput) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmmVirtualMachineDetails.
 func (v VmmVirtualMachineDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "diskDetails", v.DiskDetails)
 	populate(objectMap, "generation", v.Generation)
 	populate(objectMap, "hasFibreChannelAdapter", v.HasFibreChannelAdapter)
@@ -22357,7 +22357,7 @@ func (v *VmmVirtualMachineDetails) UnmarshalJSON(data []byte) error {
 
 // MarshalJSON implements the json.Marshaller interface for type VmwareCbtPolicyDetails.
 func (v VmwareCbtPolicyDetails) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]interface{})
+	objectMap := make(map[string]any)
 	populate(objectMap, "appConsistentFrequencyInMinutes", v.AppConsistentFrequencyInMinutes)
 	populate(objectMap, "crashConsistentFrequencyInMinutes", v.CrashConsistentFrequencyInMinutes)
 	objectMap["instanceType"] = "VMwareCbt"
@@ -22394,7 +22394,7 @@ func (v *VmwareCbtPolicyDetails) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-func populate(m map[string]interface{}, k string, v interface{}) {
+func populate(m map[string]any, k string, v any) {
 	if v == nil {
 		return
 	} else if azcore.IsNullValue(v) {
@@ -22404,7 +22404,17 @@ func populate(m map[string]interface{}, k string, v interface{}) {
 	}
 }
 
-func unpopulate(data json.RawMessage, fn string, v interface{}) error {
+func populateAny(m map[string]any, k string, v any) {
+	if v == nil {
+		return
+	} else if azcore.IsNullValue(v) {
+		m[k] = nil
+	} else {
+		m[k] = v
+	}
+}
+
+func unpopulate(data json.RawMessage, fn string, v any) error {
 	if data == nil {
 		return nil
 	}

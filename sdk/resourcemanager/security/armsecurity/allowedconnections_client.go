@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // AllowedConnectionsClient contains the methods for the AllowedConnections group.
 // Don't use this type directly, use NewAllowedConnectionsClient() instead.
 type AllowedConnectionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAllowedConnectionsClient creates a new instance of AllowedConnectionsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAllowedConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AllowedConnectionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AllowedConnectionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AllowedConnectionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets the list of all possible traffic between resources for the subscription and location, based on connection type.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
-// connectionType - The type of allowed connections (Internal, External)
-// options - AllowedConnectionsClientGetOptions contains the optional parameters for the AllowedConnectionsClient.Get method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - connectionType - The type of allowed connections (Internal, External)
+//   - options - AllowedConnectionsClientGetOptions contains the optional parameters for the AllowedConnectionsClient.Get method.
 func (client *AllowedConnectionsClient) Get(ctx context.Context, resourceGroupName string, ascLocation string, connectionType ConnectionType, options *AllowedConnectionsClientGetOptions) (AllowedConnectionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ascLocation, connectionType, options)
 	if err != nil {
 		return AllowedConnectionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AllowedConnectionsClientGetResponse{}, err
 	}
@@ -96,7 +86,7 @@ func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter connectionType cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{connectionType}", url.PathEscape(string(connectionType)))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,8 +107,10 @@ func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets the list of all possible traffic between resources for the subscription
+//
 // Generated from API version 2020-01-01
-// options - AllowedConnectionsClientListOptions contains the optional parameters for the AllowedConnectionsClient.List method.
+//   - options - AllowedConnectionsClientListOptions contains the optional parameters for the AllowedConnectionsClient.NewListPager
+//     method.
 func (client *AllowedConnectionsClient) NewListPager(options *AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AllowedConnectionsClientListResponse]{
 		More: func(page AllowedConnectionsClientListResponse) bool {
@@ -135,7 +127,7 @@ func (client *AllowedConnectionsClient) NewListPager(options *AllowedConnections
 			if err != nil {
 				return AllowedConnectionsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AllowedConnectionsClientListResponse{}, err
 			}
@@ -154,7 +146,7 @@ func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, o
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,10 +167,11 @@ func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) 
 }
 
 // NewListByHomeRegionPager - Gets the list of all possible traffic between resources for the subscription and location.
+//
 // Generated from API version 2020-01-01
-// ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
-// options - AllowedConnectionsClientListByHomeRegionOptions contains the optional parameters for the AllowedConnectionsClient.ListByHomeRegion
-// method.
+//   - ascLocation - The location where ASC stores the data of the subscription. can be retrieved from Get locations
+//   - options - AllowedConnectionsClientListByHomeRegionOptions contains the optional parameters for the AllowedConnectionsClient.NewListByHomeRegionPager
+//     method.
 func (client *AllowedConnectionsClient) NewListByHomeRegionPager(ascLocation string, options *AllowedConnectionsClientListByHomeRegionOptions) *runtime.Pager[AllowedConnectionsClientListByHomeRegionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AllowedConnectionsClientListByHomeRegionResponse]{
 		More: func(page AllowedConnectionsClientListByHomeRegionResponse) bool {
@@ -195,7 +188,7 @@ func (client *AllowedConnectionsClient) NewListByHomeRegionPager(ascLocation str
 			if err != nil {
 				return AllowedConnectionsClientListByHomeRegionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AllowedConnectionsClientListByHomeRegionResponse{}, err
 			}
@@ -218,7 +211,7 @@ func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx contex
 		return nil, errors.New("parameter ascLocation cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

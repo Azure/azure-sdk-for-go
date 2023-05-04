@@ -1,5 +1,26 @@
 # Release History
 
+## 0.8.0 (2023-04-28)
+### Features Added
+
+- New function `*ClientFactory.NewOrganizationsClient() *OrganizationsClient`
+- New function `NewOrganizationsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*OrganizationsClient, error)`
+- New function `*OrganizationsClient.GetAPIKey(context.Context, string, *OrganizationsClientGetAPIKeyOptions) (OrganizationsClientGetAPIKeyResponse, error)`
+- New struct `MarketplaceSaaSInfo`
+- New struct `MarketplaceSaaSInfoMarketplaceSubscription`
+- New struct `UserAPIKeyResponse`
+- New struct `UserEmailID`
+- New field `DeploymentURL` in struct `DeploymentInfoResponse`
+- New field `MarketplaceSaasInfo` in struct `DeploymentInfoResponse`
+- New field `GenerateAPIKey` in struct `MonitorResource`
+
+
+## 0.7.0 (2023-03-28)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+
+
 ## 0.6.0 (2022-11-10)
 ### Features Added
 

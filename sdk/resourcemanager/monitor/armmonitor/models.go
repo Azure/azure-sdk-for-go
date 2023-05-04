@@ -16,15 +16,15 @@ type AccessModeSettings struct {
 	// REQUIRED; Specifies the default access mode of ingestion through associated private endpoints in scope. If not specified
 	// default value is 'Open'. You can override this default setting for a specific private
 	// endpoint connection by adding an exclusion in the 'exclusions' array.
-	IngestionAccessMode *AccessMode `json:"ingestionAccessMode,omitempty"`
+	IngestionAccessMode *AccessMode
 
 	// REQUIRED; Specifies the default access mode of queries through associated private endpoints in scope. If not specified
 	// default value is 'Open'. You can override this default setting for a specific private
 	// endpoint connection by adding an exclusion in the 'exclusions' array.
-	QueryAccessMode *AccessMode `json:"queryAccessMode,omitempty"`
+	QueryAccessMode *AccessMode
 
 	// List of exclusions that override the default access mode settings for specific private endpoint connections.
-	Exclusions []*AccessModeSettingsExclusion `json:"exclusions,omitempty"`
+	Exclusions []*AccessModeSettingsExclusion
 }
 
 // AccessModeSettingsExclusion - Properties that define the scope private link mode settings exclusion item. This setting
@@ -32,152 +32,154 @@ type AccessModeSettings struct {
 // connection.
 type AccessModeSettingsExclusion struct {
 	// Specifies the access mode of ingestion through the specified private endpoint connection in the exclusion.
-	IngestionAccessMode *AccessMode `json:"ingestionAccessMode,omitempty"`
+	IngestionAccessMode *AccessMode
 
 	// The private endpoint connection name associated to the private endpoint on which we want to apply the specific access mode
 	// settings.
-	PrivateEndpointConnectionName *string `json:"privateEndpointConnectionName,omitempty"`
+	PrivateEndpointConnectionName *string
 
 	// Specifies the access mode of queries through the specified private endpoint connection in the exclusion.
-	QueryAccessMode *AccessMode `json:"queryAccessMode,omitempty"`
+	QueryAccessMode *AccessMode
 }
 
 // ActionDetail - The action detail
 type ActionDetail struct {
 	// The detail of the friendly error message
-	Detail *string `json:"Detail,omitempty"`
+	Detail *string
 
 	// The mechanism type
-	MechanismType *string `json:"MechanismType,omitempty"`
+	MechanismType *string
 
 	// The name of the action
-	Name *string `json:"Name,omitempty"`
+	Name *string
 
 	// The send time
-	SendTime *string `json:"SendTime,omitempty"`
+	SendTime *string
 
 	// The status of the action
-	Status *string `json:"Status,omitempty"`
+	Status *string
 
 	// The substatus of the action
-	SubState *string `json:"SubState,omitempty"`
+	SubState *string
 }
 
 // ActionGroup - An Azure action group.
 type ActionGroup struct {
 	// REQUIRED; Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers
 	// will receive communications.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// REQUIRED; The short name of the action group. This will be used in SMS messages.
-	GroupShortName *string `json:"groupShortName,omitempty"`
+	GroupShortName *string
 
 	// The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are
 	// supported.
-	ArmRoleReceivers []*ArmRoleReceiver `json:"armRoleReceivers,omitempty"`
+	ArmRoleReceivers []*ArmRoleReceiver
 
 	// The list of AutomationRunbook receivers that are part of this action group.
-	AutomationRunbookReceivers []*AutomationRunbookReceiver `json:"automationRunbookReceivers,omitempty"`
+	AutomationRunbookReceivers []*AutomationRunbookReceiver
 
 	// The list of AzureAppPush receivers that are part of this action group.
-	AzureAppPushReceivers []*AzureAppPushReceiver `json:"azureAppPushReceivers,omitempty"`
+	AzureAppPushReceivers []*AzureAppPushReceiver
 
 	// The list of azure function receivers that are part of this action group.
-	AzureFunctionReceivers []*AzureFunctionReceiver `json:"azureFunctionReceivers,omitempty"`
+	AzureFunctionReceivers []*AzureFunctionReceiver
 
 	// The list of email receivers that are part of this action group.
-	EmailReceivers []*EmailReceiver `json:"emailReceivers,omitempty"`
+	EmailReceivers []*EmailReceiver
 
 	// The list of event hub receivers that are part of this action group.
-	EventHubReceivers []*EventHubReceiver `json:"eventHubReceivers,omitempty"`
+	EventHubReceivers []*EventHubReceiver
 
 	// The list of ITSM receivers that are part of this action group.
-	ItsmReceivers []*ItsmReceiver `json:"itsmReceivers,omitempty"`
+	ItsmReceivers []*ItsmReceiver
 
 	// The list of logic app receivers that are part of this action group.
-	LogicAppReceivers []*LogicAppReceiver `json:"logicAppReceivers,omitempty"`
+	LogicAppReceivers []*LogicAppReceiver
 
 	// The list of SMS receivers that are part of this action group.
-	SmsReceivers []*SmsReceiver `json:"smsReceivers,omitempty"`
+	SmsReceivers []*SmsReceiver
 
 	// The list of voice receivers that are part of this action group.
-	VoiceReceivers []*VoiceReceiver `json:"voiceReceivers,omitempty"`
+	VoiceReceivers []*VoiceReceiver
 
 	// The list of webhook receivers that are part of this action group.
-	WebhookReceivers []*WebhookReceiver `json:"webhookReceivers,omitempty"`
+	WebhookReceivers []*WebhookReceiver
 }
 
 // ActionGroupAutoGenerated - A pointer to an Azure Action Group.
 type ActionGroupAutoGenerated struct {
 	// REQUIRED; The resource ID of the Action Group. This cannot be null or empty.
-	ActionGroupID *string `json:"actionGroupId,omitempty"`
+	ActionGroupID *string
 
 	// the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload.
-	WebhookProperties map[string]*string `json:"webhookProperties,omitempty"`
+	WebhookProperties map[string]*string
 }
 
 // ActionGroupList - A list of action groups.
 type ActionGroupList struct {
 	// Provides the link to retrieve the next set of elements.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of action groups.
-	Value []*ActionGroupResource `json:"value,omitempty"`
+	Value []*ActionGroupResource
 }
 
 // ActionGroupPatch - An Azure action group for patch operations.
 type ActionGroupPatch struct {
 	// Indicates whether this action group is enabled. If an action group is not enabled, then none of its actions will be activated.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
+}
+
+// ActionGroupPatchAutoGenerated - A tenant action group for patch operations.
+type ActionGroupPatchAutoGenerated struct {
+	// Indicates whether this tenant action group is enabled. If a tenant action group is not enabled, then none of its actions
+	// will be activated.
+	Enabled *bool
 }
 
 // ActionGroupPatchBody - An action group object for the body of patch operations.
 type ActionGroupPatchBody struct {
 	// The action group settings for an update operation.
-	Properties *ActionGroupPatch `json:"properties,omitempty"`
+	Properties *ActionGroupPatch
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
+}
+
+// ActionGroupPatchBodyAutoGenerated - A tenant action group object for the body of patch operations.
+type ActionGroupPatchBodyAutoGenerated struct {
+	// The action group settings for an update operation.
+	Properties *ActionGroupPatchAutoGenerated
+
+	// Resource tags
+	Tags map[string]*string
 }
 
 // ActionGroupResource - An action group resource.
 type ActionGroupResource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The action groups properties of the resource.
-	Properties *ActionGroup `json:"properties,omitempty"`
+	Properties *ActionGroup
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions contains the optional parameters for the ActionGroupsClient.BeginCreateNotificationsAtActionGroupResourceLevel
 // method.
 type ActionGroupsClientBeginCreateNotificationsAtActionGroupResourceLevelOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions contains the optional parameters for the ActionGroupsClient.BeginCreateNotificationsAtResourceGroupLevel
-// method.
-type ActionGroupsClientBeginCreateNotificationsAtResourceGroupLevelOptions struct {
-	// Resumes the LRO from the provided token.
-	ResumeToken string
-}
-
-// ActionGroupsClientBeginPostTestNotificationsOptions contains the optional parameters for the ActionGroupsClient.BeginPostTestNotifications
-// method.
-type ActionGroupsClientBeginPostTestNotificationsOptions struct {
 	// Resumes the LRO from the provided token.
 	ResumeToken string
 }
@@ -208,25 +210,13 @@ type ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelOptions str
 	// placeholder for future optional parameters
 }
 
-// ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions contains the optional parameters for the ActionGroupsClient.GetTestNotificationsAtResourceGroupLevel
-// method.
-type ActionGroupsClientGetTestNotificationsAtResourceGroupLevelOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ActionGroupsClientGetTestNotificationsOptions contains the optional parameters for the ActionGroupsClient.GetTestNotifications
-// method.
-type ActionGroupsClientGetTestNotificationsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ActionGroupsClientListByResourceGroupOptions contains the optional parameters for the ActionGroupsClient.ListByResourceGroup
+// ActionGroupsClientListByResourceGroupOptions contains the optional parameters for the ActionGroupsClient.NewListByResourceGroupPager
 // method.
 type ActionGroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ActionGroupsClientListBySubscriptionIDOptions contains the optional parameters for the ActionGroupsClient.ListBySubscriptionID
+// ActionGroupsClientListBySubscriptionIDOptions contains the optional parameters for the ActionGroupsClient.NewListBySubscriptionIDPager
 // method.
 type ActionGroupsClientListBySubscriptionIDOptions struct {
 	// placeholder for future optional parameters
@@ -240,38 +230,38 @@ type ActionGroupsClientUpdateOptions struct {
 // ActionList - A list of Activity Log Alert rule actions.
 type ActionList struct {
 	// The list of the Action Groups.
-	ActionGroups []*ActionGroupAutoGenerated `json:"actionGroups,omitempty"`
+	ActionGroups []*ActionGroupAutoGenerated
 }
 
 // Actions to invoke when the alert fires.
 type Actions struct {
 	// Action Group resource Ids to invoke when the alert fires.
-	ActionGroups []*string `json:"actionGroups,omitempty"`
+	ActionGroups []*string
 
 	// The properties of an alert payload.
-	CustomProperties map[string]*string `json:"customProperties,omitempty"`
+	CustomProperties map[string]*string
 }
 
 // ActivityLogAlertResource - An Activity Log Alert rule resource.
 type ActivityLogAlertResource struct {
 	// The location of the resource. Since Azure Activity Log Alerts is a global service, the location of the rules should always
 	// be 'global'.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The Activity Log Alert rule properties of the resource.
-	Properties *AlertRuleProperties `json:"properties,omitempty"`
+	Properties *AlertRuleProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ActivityLogAlertsClientCreateOrUpdateOptions contains the optional parameters for the ActivityLogAlertsClient.CreateOrUpdate
@@ -290,13 +280,13 @@ type ActivityLogAlertsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.ListByResourceGroup
+// ActivityLogAlertsClientListByResourceGroupOptions contains the optional parameters for the ActivityLogAlertsClient.NewListByResourceGroupPager
 // method.
 type ActivityLogAlertsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.ListBySubscriptionID
+// ActivityLogAlertsClientListBySubscriptionIDOptions contains the optional parameters for the ActivityLogAlertsClient.NewListBySubscriptionIDPager
 // method.
 type ActivityLogAlertsClientListBySubscriptionIDOptions struct {
 	// placeholder for future optional parameters
@@ -307,7 +297,7 @@ type ActivityLogAlertsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ActivityLogsClientListOptions contains the optional parameters for the ActivityLogsClient.List method.
+// ActivityLogsClientListOptions contains the optional parameters for the ActivityLogsClient.NewListPager method.
 type ActivityLogsClientListOptions struct {
 	// Used to fetch events with only the given properties.
 	// The $select argument is a comma separated list of property names to be returned. Possible values are: authorization, claims,
@@ -320,34 +310,34 @@ type ActivityLogsClientListOptions struct {
 // AlertRule - An alert rule.
 type AlertRule struct {
 	// REQUIRED; the condition that results in the alert rule being activated.
-	Condition RuleConditionClassification `json:"condition,omitempty"`
+	Condition RuleConditionClassification
 
 	// REQUIRED; the flag that indicates whether the alert rule is enabled.
-	IsEnabled *bool `json:"isEnabled,omitempty"`
+	IsEnabled *bool
 
 	// REQUIRED; the name of the alert rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// action that is performed when the alert rule becomes active, and when an alert condition is resolved.
-	Action RuleActionClassification `json:"action,omitempty"`
+	Action RuleActionClassification
 
 	// the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
-	Actions []RuleActionClassification `json:"actions,omitempty"`
+	Actions []RuleActionClassification
 
 	// the description of the alert rule that will be included in the alert email.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// the provisioning state.
-	ProvisioningState *string `json:"provisioningState,omitempty"`
+	ProvisioningState *string
 
 	// READ-ONLY; Last time the rule was updated in ISO8601 format.
-	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
+	LastUpdatedTime *time.Time
 }
 
 // AlertRuleAllOfCondition - An Activity Log Alert rule condition that is met when all its member conditions are met.
 type AlertRuleAllOfCondition struct {
 	// REQUIRED; The list of Activity Log Alert rule conditions.
-	AllOf []*AlertRuleAnyOfOrLeafCondition `json:"allOf,omitempty"`
+	AllOf []*AlertRuleAnyOfOrLeafCondition
 }
 
 // AlertRuleAnyOfOrLeafCondition - An Activity Log Alert rule condition that is met when all its member conditions are met.
@@ -359,19 +349,19 @@ type AlertRuleAllOfCondition struct {
 // 'containsAny' should not be set in an AnyOf Condition.
 type AlertRuleAnyOfOrLeafCondition struct {
 	// An Activity Log Alert rule condition that is met when at least one of its member leaf conditions are met.
-	AnyOf []*AlertRuleLeafCondition `json:"anyOf,omitempty"`
+	AnyOf []*AlertRuleLeafCondition
 
 	// The value of the event's field will be compared to the values in this array (case-insensitive) to determine if the condition
 	// is met.
-	ContainsAny []*string `json:"containsAny,omitempty"`
+	ContainsAny []*string
 
 	// The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is met.
-	Equals *string `json:"equals,omitempty"`
+	Equals *string
 
 	// The name of the Activity Log event's field that this condition will examine. The possible values for this field are (case-insensitive):
 	// 'resourceId', 'category', 'caller', 'level', 'operationName',
 	// 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties'.
-	Field *string `json:"field,omitempty"`
+	Field *string
 }
 
 // AlertRuleIncidentsClientGetOptions contains the optional parameters for the AlertRuleIncidentsClient.Get method.
@@ -379,7 +369,7 @@ type AlertRuleIncidentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertRuleIncidentsClientListByAlertRuleOptions contains the optional parameters for the AlertRuleIncidentsClient.ListByAlertRule
+// AlertRuleIncidentsClientListByAlertRuleOptions contains the optional parameters for the AlertRuleIncidentsClient.NewListByAlertRulePager
 // method.
 type AlertRuleIncidentsClientListByAlertRuleOptions struct {
 	// placeholder for future optional parameters
@@ -390,97 +380,97 @@ type AlertRuleIncidentsClientListByAlertRuleOptions struct {
 type AlertRuleLeafCondition struct {
 	// The value of the event's field will be compared to the values in this array (case-insensitive) to determine if the condition
 	// is met.
-	ContainsAny []*string `json:"containsAny,omitempty"`
+	ContainsAny []*string
 
 	// The value of the event's field will be compared to this value (case-insensitive) to determine if the condition is met.
-	Equals *string `json:"equals,omitempty"`
+	Equals *string
 
 	// The name of the Activity Log event's field that this condition will examine. The possible values for this field are (case-insensitive):
 	// 'resourceId', 'category', 'caller', 'level', 'operationName',
 	// 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with 'properties'.
-	Field *string `json:"field,omitempty"`
+	Field *string
 }
 
 // AlertRuleList - A list of Activity Log Alert rules.
 type AlertRuleList struct {
 	// Provides the link to retrieve the next set of elements.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of Activity Log Alert rules.
-	Value []*ActivityLogAlertResource `json:"value,omitempty"`
+	Value []*ActivityLogAlertResource
 }
 
 // AlertRulePatchObject - An Activity Log Alert rule object for the body of patch operations.
 type AlertRulePatchObject struct {
 	// The activity log alert settings for an update operation.
-	Properties *AlertRulePatchProperties `json:"properties,omitempty"`
+	Properties *AlertRulePatchProperties
 
 	// The resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AlertRulePatchProperties - An Activity Log Alert rule properties for patch operations.
 type AlertRulePatchProperties struct {
 	// Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert rule is not enabled, then none of its
 	// actions will be activated.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // AlertRuleProperties - An Azure Activity Log Alert rule.
 type AlertRuleProperties struct {
 	// REQUIRED; The actions that will activate when the condition is met.
-	Actions *ActionList `json:"actions,omitempty"`
+	Actions *ActionList
 
 	// REQUIRED; The condition that will cause this alert to activate.
-	Condition *AlertRuleAllOfCondition `json:"condition,omitempty"`
+	Condition *AlertRuleAllOfCondition
 
 	// REQUIRED; A list of resource IDs that will be used as prefixes. The alert will only apply to Activity Log events with resource
 	// IDs that fall under one of these prefixes. This list must include at least one
 	// item.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 
 	// A description of this Activity Log Alert rule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert rule is not enabled, then none of its
 	// actions will be activated.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // AlertRuleResource - The alert rule resource.
 type AlertRuleResource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The alert rule properties of the resource.
-	Properties *AlertRule `json:"properties,omitempty"`
+	Properties *AlertRule
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AlertRuleResourceCollection - Represents a collection of alert rule resources.
 type AlertRuleResourceCollection struct {
 	// the values for the alert rule resources.
-	Value []*AlertRuleResource `json:"value,omitempty"`
+	Value []*AlertRuleResource
 }
 
 // AlertRuleResourcePatch - The alert rule object for patch operations.
 type AlertRuleResourcePatch struct {
 	// The properties of an alert rule.
-	Properties *AlertRule `json:"properties,omitempty"`
+	Properties *AlertRule
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AlertRulesClientCreateOrUpdateOptions contains the optional parameters for the AlertRulesClient.CreateOrUpdate method.
@@ -498,13 +488,13 @@ type AlertRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertRulesClientListByResourceGroupOptions contains the optional parameters for the AlertRulesClient.ListByResourceGroup
+// AlertRulesClientListByResourceGroupOptions contains the optional parameters for the AlertRulesClient.NewListByResourceGroupPager
 // method.
 type AlertRulesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AlertRulesClientListBySubscriptionOptions contains the optional parameters for the AlertRulesClient.ListBySubscription
+// AlertRulesClientListBySubscriptionOptions contains the optional parameters for the AlertRulesClient.NewListBySubscriptionPager
 // method.
 type AlertRulesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -518,162 +508,162 @@ type AlertRulesClientUpdateOptions struct {
 // ArmRoleReceiver - An arm role receiver.
 type ArmRoleReceiver struct {
 	// REQUIRED; The name of the arm role receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The arm role id.
-	RoleID *string `json:"roleId,omitempty"`
+	RoleID *string
 
 	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool `json:"useCommonAlertSchema,omitempty"`
+	UseCommonAlertSchema *bool
 }
 
 // AutomationRunbookReceiver - The Azure Automation Runbook notification receiver.
 type AutomationRunbookReceiver struct {
 	// REQUIRED; The Azure automation account Id which holds this runbook and authenticate to Azure resource.
-	AutomationAccountID *string `json:"automationAccountId,omitempty"`
+	AutomationAccountID *string
 
 	// REQUIRED; Indicates whether this instance is global runbook.
-	IsGlobalRunbook *bool `json:"isGlobalRunbook,omitempty"`
+	IsGlobalRunbook *bool
 
 	// REQUIRED; The name for this runbook.
-	RunbookName *string `json:"runbookName,omitempty"`
+	RunbookName *string
 
 	// REQUIRED; The resource id for webhook linked to this runbook.
-	WebhookResourceID *string `json:"webhookResourceId,omitempty"`
+	WebhookResourceID *string
 
 	// Indicates name of the webhook.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The URI where webhooks should be sent.
-	ServiceURI *string `json:"serviceUri,omitempty"`
+	ServiceURI *string
 
 	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool `json:"useCommonAlertSchema,omitempty"`
+	UseCommonAlertSchema *bool
 }
 
 // AutoscaleErrorResponse - Describes the format of Error response.
 type AutoscaleErrorResponse struct {
 	// The error object.
-	Error *AutoscaleErrorResponseError `json:"error,omitempty"`
+	Error *AutoscaleErrorResponseError
 
 	// READ-ONLY; The system metadata related to the response.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 }
 
 // AutoscaleErrorResponseError - The error object.
 type AutoscaleErrorResponseError struct {
 	// One of a server-defined set of error codes.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// A human-readable representation of the error's details.
-	Details *string `json:"details,omitempty"`
+	Details *string
 
 	// A human-readable representation of the error.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// The target of the particular error.
-	Target *string `json:"target,omitempty"`
+	Target *string
 }
 
 // AutoscaleNotification - Autoscale notification.
 type AutoscaleNotification struct {
 	// CONSTANT; the operation associated with the notification and its value must be "scale"
 	// Field has constant value "Scale", any specified value is ignored.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// the email notification.
-	Email *EmailNotification `json:"email,omitempty"`
+	Email *EmailNotification
 
 	// the collection of webhook notifications.
-	Webhooks []*WebhookNotification `json:"webhooks,omitempty"`
+	Webhooks []*WebhookNotification
 }
 
 // AutoscaleProfile - Autoscale profile.
 type AutoscaleProfile struct {
 	// REQUIRED; the number of instances that can be used during this profile.
-	Capacity *ScaleCapacity `json:"capacity,omitempty"`
+	Capacity *ScaleCapacity
 
 	// REQUIRED; the name of the profile.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; the collection of rules that provide the triggers and parameters for the scaling action. A maximum of 10 rules
 	// can be specified.
-	Rules []*ScaleRule `json:"rules,omitempty"`
+	Rules []*ScaleRule
 
 	// the specific date-time for the profile. This element is not used if the Recurrence element is used.
-	FixedDate *TimeWindow `json:"fixedDate,omitempty"`
+	FixedDate *TimeWindow
 
 	// the repeating times at which this profile begins. This element is not used if the FixedDate element is used.
-	Recurrence *Recurrence `json:"recurrence,omitempty"`
+	Recurrence *Recurrence
 }
 
 // AutoscaleSetting - A setting that contains all of the configuration for the automatic scaling of a resource.
 type AutoscaleSetting struct {
 	// REQUIRED; the collection of automatic scaling profiles that specify different scaling parameters for different time periods.
 	// A maximum of 20 profiles can be specified.
-	Profiles []*AutoscaleProfile `json:"profiles,omitempty"`
+	Profiles []*AutoscaleProfile
 
 	// the enabled flag. Specifies whether automatic scaling is enabled for the resource. The default value is 'false'.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// the name of the autoscale setting.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// the collection of notifications.
-	Notifications []*AutoscaleNotification `json:"notifications,omitempty"`
+	Notifications []*AutoscaleNotification
 
 	// the predictive autoscale policy mode.
-	PredictiveAutoscalePolicy *PredictiveAutoscalePolicy `json:"predictiveAutoscalePolicy,omitempty"`
+	PredictiveAutoscalePolicy *PredictiveAutoscalePolicy
 
 	// the location of the resource that the autoscale setting should be added to.
-	TargetResourceLocation *string `json:"targetResourceLocation,omitempty"`
+	TargetResourceLocation *string
 
 	// the resource identifier of the resource that the autoscale setting should be added to.
-	TargetResourceURI *string `json:"targetResourceUri,omitempty"`
+	TargetResourceURI *string
 }
 
 // AutoscaleSettingResource - The autoscale setting resource.
 type AutoscaleSettingResource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The autoscale setting of the resource.
-	Properties *AutoscaleSetting `json:"properties,omitempty"`
+	Properties *AutoscaleSetting
 
 	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this
 	// resource (across resource groups). A maximum of 15 tags can be provided for a
 	// resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata related to the response.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AutoscaleSettingResourceCollection - Represents a collection of autoscale setting resources.
 type AutoscaleSettingResourceCollection struct {
 	// REQUIRED; the values for the autoscale setting resources.
-	Value []*AutoscaleSettingResource `json:"value,omitempty"`
+	Value []*AutoscaleSettingResource
 
 	// URL to get the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // AutoscaleSettingResourcePatch - The autoscale setting object for patch operations.
 type AutoscaleSettingResourcePatch struct {
 	// The autoscale setting properties of the update operation.
-	Properties *AutoscaleSetting `json:"properties,omitempty"`
+	Properties *AutoscaleSetting
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AutoscaleSettingsClientCreateOrUpdateOptions contains the optional parameters for the AutoscaleSettingsClient.CreateOrUpdate
@@ -692,13 +682,13 @@ type AutoscaleSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutoscaleSettingsClientListByResourceGroupOptions contains the optional parameters for the AutoscaleSettingsClient.ListByResourceGroup
+// AutoscaleSettingsClientListByResourceGroupOptions contains the optional parameters for the AutoscaleSettingsClient.NewListByResourceGroupPager
 // method.
 type AutoscaleSettingsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AutoscaleSettingsClientListBySubscriptionOptions contains the optional parameters for the AutoscaleSettingsClient.ListBySubscription
+// AutoscaleSettingsClientListBySubscriptionOptions contains the optional parameters for the AutoscaleSettingsClient.NewListBySubscriptionPager
 // method.
 type AutoscaleSettingsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -712,132 +702,268 @@ type AutoscaleSettingsClientUpdateOptions struct {
 // AzureAppPushReceiver - The Azure mobile App push notification receiver.
 type AzureAppPushReceiver struct {
 	// REQUIRED; The email address registered for the Azure mobile app.
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 
 	// REQUIRED; The name of the Azure mobile app push receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
+}
+
+// AzureAppPushReceiverAutoGenerated - The Azure mobile App push notification receiver.
+type AzureAppPushReceiverAutoGenerated struct {
+	// REQUIRED; The email address registered for the Azure mobile app.
+	EmailAddress *string
+
+	// REQUIRED; The name of the Azure mobile app push receiver. Names must be unique across all receivers within a tenant action
+	// group.
+	Name *string
 }
 
 // AzureFunctionReceiver - An azure function receiver.
 type AzureFunctionReceiver struct {
 	// REQUIRED; The azure resource id of the function app.
-	FunctionAppResourceID *string `json:"functionAppResourceId,omitempty"`
+	FunctionAppResourceID *string
 
 	// REQUIRED; The function name in the function app.
-	FunctionName *string `json:"functionName,omitempty"`
+	FunctionName *string
 
 	// REQUIRED; The http trigger url where http request sent to.
-	HTTPTriggerURL *string `json:"httpTriggerUrl,omitempty"`
+	HTTPTriggerURL *string
 
 	// REQUIRED; The name of the azure function receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool `json:"useCommonAlertSchema,omitempty"`
+	UseCommonAlertSchema *bool
 }
 
 // AzureMonitorMetricsDestination - Azure Monitor Metrics destination.
 type AzureMonitorMetricsDestination struct {
 	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // AzureMonitorPrivateLinkScope - An Azure Monitor PrivateLinkScope definition.
 type AzureMonitorPrivateLinkScope struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Properties that define a Azure Monitor PrivateLinkScope resource.
-	Properties *AzureMonitorPrivateLinkScopeProperties `json:"properties,omitempty"`
+	Properties *AzureMonitorPrivateLinkScopeProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; System data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureMonitorPrivateLinkScopeListResult - Describes the list of Azure Monitor PrivateLinkScope resources.
 type AzureMonitorPrivateLinkScopeListResult struct {
 	// REQUIRED; List of Azure Monitor PrivateLinkScope definitions.
-	Value []*AzureMonitorPrivateLinkScope `json:"value,omitempty"`
+	Value []*AzureMonitorPrivateLinkScope
 
 	// The URI to get the next set of Azure Monitor PrivateLinkScope definitions if too many PrivateLinkScopes where returned
 	// in the result set.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // AzureMonitorPrivateLinkScopeProperties - Properties that define a Azure Monitor PrivateLinkScope resource.
 type AzureMonitorPrivateLinkScopeProperties struct {
 	// REQUIRED; Access mode settings
-	AccessModeSettings *AccessModeSettings `json:"accessModeSettings,omitempty"`
+	AccessModeSettings *AccessModeSettings
 
 	// READ-ONLY; List of private endpoint connections.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Current state of this PrivateLinkScope: whether or not is has been provisioned within the resource group it
 	// is defined. Users cannot change this value but are able to read from it. Values will include
 	// Provisioning ,Succeeded, Canceled and Failed.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
+}
+
+// AzureMonitorWorkspace - Properties of an Azure Monitor workspace
+type AzureMonitorWorkspace struct {
+	// READ-ONLY; The immutable ID of the Azure Monitor workspace. This property is read-only.
+	AccountID *string
+
+	// READ-ONLY; The Data Collection Rule and Endpoint used for ingestion by default.
+	DefaultIngestionSettings *AzureMonitorWorkspaceDefaultIngestionSettings
+
+	// READ-ONLY; Information about metrics for the Azure Monitor workspace
+	Metrics *AzureMonitorWorkspaceMetrics
+
+	// READ-ONLY; The provisioning state of the Azure Monitor workspace. Set to Succeeded if everything is healthy.
+	ProvisioningState *ProvisioningState
+}
+
+// AzureMonitorWorkspaceDefaultIngestionSettings - The Data Collection Rule and Endpoint used for ingestion by default.
+type AzureMonitorWorkspaceDefaultIngestionSettings struct {
+	// READ-ONLY; The Azure resource Id of the default data collection endpoint for this workspace.
+	DataCollectionEndpointResourceID *string
+
+	// READ-ONLY; The Azure resource Id of the default data collection rule for this workspace.
+	DataCollectionRuleResourceID *string
+}
+
+// AzureMonitorWorkspaceMetrics - Information about metrics for the Azure Monitor workspace
+type AzureMonitorWorkspaceMetrics struct {
+	// READ-ONLY; An internal identifier for the metrics container. Only to be used by the system
+	InternalID *string
+
+	// READ-ONLY; The Prometheus query endpoint for the workspace
+	PrometheusQueryEndpoint *string
+}
+
+// AzureMonitorWorkspaceResource - An Azure Monitor Workspace definition
+type AzureMonitorWorkspaceResource struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource properties
+	Properties *AzureMonitorWorkspaceResourceProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Resource entity tag (ETag)
+	Etag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AzureMonitorWorkspaceResourceForUpdate - Definition of ARM tracked top level resource properties for update operation
+type AzureMonitorWorkspaceResourceForUpdate struct {
+	// Resource tags
+	Tags map[string]*string
+}
+
+// AzureMonitorWorkspaceResourceListResult - A pageable list of resources
+type AzureMonitorWorkspaceResourceListResult struct {
+	// REQUIRED; A list of resources
+	Value []*AzureMonitorWorkspaceResource
+
+	// The URL to use for getting the next set of results
+	NextLink *string
+}
+
+// AzureMonitorWorkspaceResourceProperties - Resource properties
+type AzureMonitorWorkspaceResourceProperties struct {
+	// READ-ONLY; The immutable ID of the Azure Monitor workspace. This property is read-only.
+	AccountID *string
+
+	// READ-ONLY; The Data Collection Rule and Endpoint used for ingestion by default.
+	DefaultIngestionSettings *AzureMonitorWorkspaceDefaultIngestionSettings
+
+	// READ-ONLY; Information about metrics for the Azure Monitor workspace
+	Metrics *AzureMonitorWorkspaceMetrics
+
+	// READ-ONLY; The provisioning state of the Azure Monitor workspace. Set to Succeeded if everything is healthy.
+	ProvisioningState *ProvisioningState
+}
+
+// AzureMonitorWorkspacesClientCreateOptions contains the optional parameters for the AzureMonitorWorkspacesClient.Create
+// method.
+type AzureMonitorWorkspacesClientCreateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureMonitorWorkspacesClientDeleteOptions contains the optional parameters for the AzureMonitorWorkspacesClient.Delete
+// method.
+type AzureMonitorWorkspacesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureMonitorWorkspacesClientGetOptions contains the optional parameters for the AzureMonitorWorkspacesClient.Get method.
+type AzureMonitorWorkspacesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureMonitorWorkspacesClientListByResourceGroupOptions contains the optional parameters for the AzureMonitorWorkspacesClient.NewListByResourceGroupPager
+// method.
+type AzureMonitorWorkspacesClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureMonitorWorkspacesClientListBySubscriptionOptions contains the optional parameters for the AzureMonitorWorkspacesClient.NewListBySubscriptionPager
+// method.
+type AzureMonitorWorkspacesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AzureMonitorWorkspacesClientUpdateOptions contains the optional parameters for the AzureMonitorWorkspacesClient.Update
+// method.
+type AzureMonitorWorkspacesClientUpdateOptions struct {
+	// The payload
+	AzureMonitorWorkspaceProperties *AzureMonitorWorkspaceResourceForUpdate
 }
 
 // AzureResource - An azure resource object
 type AzureResource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AzureResourceAutoGenerated - An Azure resource object.
 type AzureResourceAutoGenerated struct {
 	// The location of the resource. Since Azure Activity Log Alerts is a global service, the location of the rules should always
 	// be 'global'.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The resource Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BaselineMetadata - Represents a baseline metadata value.
 type BaselineMetadata struct {
 	// REQUIRED; Name of the baseline metadata.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Value of the baseline metadata.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
-// BaselinesClientListOptions contains the optional parameters for the BaselinesClient.List method.
+// BaselinesClientListOptions contains the optional parameters for the BaselinesClient.NewListPager method.
 type BaselinesClientListOptions struct {
 	// The list of aggregation types (comma separated) to retrieve.
 	Aggregation *string
@@ -870,42 +996,42 @@ type BaselinesClientListOptions struct {
 // ColumnDefinition - Definition of custom data column.
 type ColumnDefinition struct {
 	// The name of the column.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The type of the column data.
-	Type *KnownColumnDefinitionType `json:"type,omitempty"`
+	Type *KnownColumnDefinitionType
 }
 
 // Condition - A condition of the scheduled query rule.
 type Condition struct {
 	// List of Dimensions conditions
-	Dimensions []*Dimension `json:"dimensions,omitempty"`
+	Dimensions []*Dimension
 
 	// The minimum number of violations required within the selected lookback time window required to raise an alert. Relevant
 	// only for rules of the kind LogAlert.
-	FailingPeriods *ConditionFailingPeriods `json:"failingPeriods,omitempty"`
+	FailingPeriods *ConditionFailingPeriods
 
 	// The column containing the metric measure number. Relevant only for rules of the kind LogAlert.
-	MetricMeasureColumn *string `json:"metricMeasureColumn,omitempty"`
+	MetricMeasureColumn *string
 
 	// The name of the metric to be sent. Relevant and required only for rules of the kind LogToMetric.
-	MetricName *string `json:"metricName,omitempty"`
+	MetricName *string
 
 	// The criteria operator. Relevant and required only for rules of the kind LogAlert.
-	Operator *ConditionOperator `json:"operator,omitempty"`
+	Operator *ConditionOperator
 
 	// Log query alert
-	Query *string `json:"query,omitempty"`
+	Query *string
 
 	// The column containing the resource id. The content of the column must be a uri formatted as resource id. Relevant only
 	// for rules of the kind LogAlert.
-	ResourceIDColumn *string `json:"resourceIdColumn,omitempty"`
+	ResourceIDColumn *string
 
 	// the criteria threshold value that activates the alert. Relevant and required only for rules of the kind LogAlert.
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold *float64
 
 	// Aggregation type. Relevant and required only for rules of the kind LogAlert.
-	TimeAggregation *TimeAggregation `json:"timeAggregation,omitempty"`
+	TimeAggregation *TimeAggregation
 }
 
 // ConditionFailingPeriods - The minimum number of violations required within the selected lookback time window required to
@@ -913,146 +1039,219 @@ type Condition struct {
 type ConditionFailingPeriods struct {
 	// The number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods. Default value is
 	// 1
-	MinFailingPeriodsToAlert *int64 `json:"minFailingPeriodsToAlert,omitempty"`
+	MinFailingPeriodsToAlert *int64
 
 	// The number of aggregated lookback points. The lookback time window is calculated based on the aggregation granularity (windowSize)
 	// and the selected number of aggregated points. Default value is 1
-	NumberOfEvaluationPeriods *int64 `json:"numberOfEvaluationPeriods,omitempty"`
+	NumberOfEvaluationPeriods *int64
 }
 
 // ConfigurationAccessEndpointSpec - Definition of the endpoint used for accessing configuration.
 type ConfigurationAccessEndpointSpec struct {
 	// READ-ONLY; The endpoint. This property is READ-ONLY.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
 }
 
 // Context - The context info
 type Context struct {
 	// The context id type
-	ContextType *string `json:"contextType,omitempty"`
+	ContextType *string
 
 	// The source of the notification request
-	NotificationSource *string `json:"notificationSource,omitempty"`
+	NotificationSource *string
 }
 
 // DataCollectionEndpoint - Definition of data collection endpoint.
 type DataCollectionEndpoint struct {
 	// The endpoint used by clients to access their configuration.
-	ConfigurationAccess *DataCollectionEndpointConfigurationAccess `json:"configurationAccess,omitempty"`
+	ConfigurationAccess *DataCollectionEndpointConfigurationAccess
 
 	// Description of the data collection endpoint.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The immutable ID of this data collection endpoint resource. This property is READ-ONLY.
-	ImmutableID *string `json:"immutableId,omitempty"`
+	ImmutableID *string
 
 	// The endpoint used by clients to ingest logs.
-	LogsIngestion *DataCollectionEndpointLogsIngestion `json:"logsIngestion,omitempty"`
+	LogsIngestion *DataCollectionEndpointLogsIngestion
+
+	// The endpoint used by clients to ingest metrics.
+	MetricsIngestion *DataCollectionEndpointMetricsIngestion
 
 	// Network access control rules for the endpoints.
-	NetworkACLs *DataCollectionEndpointNetworkACLs `json:"networkAcls,omitempty"`
+	NetworkACLs *DataCollectionEndpointNetworkACLs
+
+	// READ-ONLY; Failover configuration on this endpoint. This property is READ-ONLY.
+	FailoverConfiguration *DataCollectionEndpointFailoverConfiguration
+
+	// READ-ONLY; Metadata for the resource. This property is READ-ONLY.
+	Metadata *DataCollectionEndpointMetadata
+
+	// READ-ONLY; List of Azure Monitor Private Link Scope Resources to which this data collection endpoint resource is associated.
+	// This property is READ-ONLY.
+	PrivateLinkScopedResources []*PrivateLinkScopedResource
 
 	// READ-ONLY; The resource provisioning state. This property is READ-ONLY.
-	ProvisioningState *KnownDataCollectionEndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KnownDataCollectionEndpointProvisioningState
 }
 
 // DataCollectionEndpointConfigurationAccess - The endpoint used by clients to access their configuration.
 type DataCollectionEndpointConfigurationAccess struct {
 	// READ-ONLY; The endpoint. This property is READ-ONLY.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
+}
+
+// DataCollectionEndpointFailoverConfiguration - Failover configuration on this endpoint. This property is READ-ONLY.
+type DataCollectionEndpointFailoverConfiguration struct {
+	// Active location where data flow will occur.
+	ActiveLocation *string
+
+	// Locations that are configured for failover.
+	Locations []*LocationSpec
 }
 
 // DataCollectionEndpointLogsIngestion - The endpoint used by clients to ingest logs.
 type DataCollectionEndpointLogsIngestion struct {
 	// READ-ONLY; The endpoint. This property is READ-ONLY.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
+}
+
+// DataCollectionEndpointMetadata - Metadata for the resource. This property is READ-ONLY.
+type DataCollectionEndpointMetadata struct {
+	// READ-ONLY; Azure offering managing this resource on-behalf-of customer.
+	ProvisionedBy *string
+
+	// READ-ONLY; Resource Id of azure offering managing this resource on-behalf-of customer.
+	ProvisionedByResourceID *string
+}
+
+// DataCollectionEndpointMetricsIngestion - The endpoint used by clients to ingest metrics.
+type DataCollectionEndpointMetricsIngestion struct {
+	// READ-ONLY; The endpoint. This property is READ-ONLY.
+	Endpoint *string
 }
 
 // DataCollectionEndpointNetworkACLs - Network access control rules for the endpoints.
 type DataCollectionEndpointNetworkACLs struct {
 	// The configuration to set whether network access from public internet to the endpoints are allowed.
-	PublicNetworkAccess *KnownPublicNetworkAccessOptions `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *KnownPublicNetworkAccessOptions
 }
 
 // DataCollectionEndpointResource - Definition of ARM tracked top level resource.
 type DataCollectionEndpointResource struct {
 	// REQUIRED; The geo-location where the resource lives.
-	Location *string `json:"location,omitempty"`
+	Location *string
+
+	// Managed service identity of the resource.
+	Identity *DataCollectionEndpointResourceIdentity
 
 	// The kind of the resource.
-	Kind *KnownDataCollectionEndpointResourceKind `json:"kind,omitempty"`
+	Kind *KnownDataCollectionEndpointResourceKind
 
 	// Resource properties.
-	Properties *DataCollectionEndpointResourceProperties `json:"properties,omitempty"`
+	Properties *DataCollectionEndpointResourceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource entity tag (ETag).
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified ID of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *DataCollectionEndpointResourceSystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *DataCollectionEndpointResourceSystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// DataCollectionEndpointResourceIdentity - Managed service identity of the resource.
+type DataCollectionEndpointResourceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // DataCollectionEndpointResourceListResult - A pageable list of resources.
 type DataCollectionEndpointResourceListResult struct {
 	// REQUIRED; A list of resources.
-	Value []*DataCollectionEndpointResource `json:"value,omitempty"`
+	Value []*DataCollectionEndpointResource
 
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // DataCollectionEndpointResourceProperties - Resource properties.
 type DataCollectionEndpointResourceProperties struct {
 	// The endpoint used by clients to access their configuration.
-	ConfigurationAccess *DataCollectionEndpointConfigurationAccess `json:"configurationAccess,omitempty"`
+	ConfigurationAccess *DataCollectionEndpointConfigurationAccess
 
 	// Description of the data collection endpoint.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The immutable ID of this data collection endpoint resource. This property is READ-ONLY.
-	ImmutableID *string `json:"immutableId,omitempty"`
+	ImmutableID *string
 
 	// The endpoint used by clients to ingest logs.
-	LogsIngestion *DataCollectionEndpointLogsIngestion `json:"logsIngestion,omitempty"`
+	LogsIngestion *DataCollectionEndpointLogsIngestion
+
+	// The endpoint used by clients to ingest metrics.
+	MetricsIngestion *DataCollectionEndpointMetricsIngestion
 
 	// Network access control rules for the endpoints.
-	NetworkACLs *DataCollectionEndpointNetworkACLs `json:"networkAcls,omitempty"`
+	NetworkACLs *DataCollectionEndpointNetworkACLs
+
+	// READ-ONLY; Failover configuration on this endpoint. This property is READ-ONLY.
+	FailoverConfiguration *DataCollectionEndpointFailoverConfiguration
+
+	// READ-ONLY; Metadata for the resource. This property is READ-ONLY.
+	Metadata *DataCollectionEndpointMetadata
+
+	// READ-ONLY; List of Azure Monitor Private Link Scope Resources to which this data collection endpoint resource is associated.
+	// This property is READ-ONLY.
+	PrivateLinkScopedResources []*PrivateLinkScopedResource
 
 	// READ-ONLY; The resource provisioning state. This property is READ-ONLY.
-	ProvisioningState *KnownDataCollectionEndpointProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KnownDataCollectionEndpointProvisioningState
 }
 
 // DataCollectionEndpointResourceSystemData - Metadata pertaining to creation and last modification of the resource.
 type DataCollectionEndpointResourceSystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // DataCollectionEndpointsClientCreateOptions contains the optional parameters for the DataCollectionEndpointsClient.Create
@@ -1073,13 +1272,13 @@ type DataCollectionEndpointsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataCollectionEndpointsClientListByResourceGroupOptions contains the optional parameters for the DataCollectionEndpointsClient.ListByResourceGroup
+// DataCollectionEndpointsClientListByResourceGroupOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListByResourceGroupPager
 // method.
 type DataCollectionEndpointsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataCollectionEndpointsClientListBySubscriptionOptions contains the optional parameters for the DataCollectionEndpointsClient.ListBySubscription
+// DataCollectionEndpointsClientListBySubscriptionOptions contains the optional parameters for the DataCollectionEndpointsClient.NewListBySubscriptionPager
 // method.
 type DataCollectionEndpointsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1095,126 +1294,129 @@ type DataCollectionEndpointsClientUpdateOptions struct {
 // DataCollectionRule - Definition of what monitoring data to collect and where that data should be sent.
 type DataCollectionRule struct {
 	// The resource ID of the data collection endpoint that this rule can be used with.
-	DataCollectionEndpointID *string `json:"dataCollectionEndpointId,omitempty"`
+	DataCollectionEndpointID *string
 
 	// The specification of data flows.
-	DataFlows []*DataFlow `json:"dataFlows,omitempty"`
+	DataFlows []*DataFlow
 
 	// The specification of data sources. This property is optional and can be omitted if the rule is meant to be used via direct
 	// calls to the provisioned endpoint.
-	DataSources *DataCollectionRuleDataSources `json:"dataSources,omitempty"`
+	DataSources *DataCollectionRuleDataSources
 
 	// Description of the data collection rule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The specification of destinations.
-	Destinations *DataCollectionRuleDestinations `json:"destinations,omitempty"`
+	Destinations *DataCollectionRuleDestinations
 
 	// Declaration of custom streams used in this rule.
-	StreamDeclarations map[string]*StreamDeclaration `json:"streamDeclarations,omitempty"`
+	StreamDeclarations map[string]*StreamDeclaration
 
 	// READ-ONLY; The immutable ID of this data collection rule. This property is READ-ONLY.
-	ImmutableID *string `json:"immutableId,omitempty" azure:"ro"`
+	ImmutableID *string
 
 	// READ-ONLY; Metadata about the resource
-	Metadata *DataCollectionRuleMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *DataCollectionRuleMetadata
 
 	// READ-ONLY; The resource provisioning state.
-	ProvisioningState *KnownDataCollectionRuleProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KnownDataCollectionRuleProvisioningState
 }
 
 // DataCollectionRuleAssociation - Definition of association of a data collection rule with a monitored Azure resource.
 type DataCollectionRuleAssociation struct {
 	// The resource ID of the data collection endpoint that is to be associated.
-	DataCollectionEndpointID *string `json:"dataCollectionEndpointId,omitempty"`
+	DataCollectionEndpointID *string
 
 	// The resource ID of the data collection rule that is to be associated.
-	DataCollectionRuleID *string `json:"dataCollectionRuleId,omitempty"`
+	DataCollectionRuleID *string
 
 	// Description of the association.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; Metadata about the resource
-	Metadata *DataCollectionRuleAssociationMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *DataCollectionRuleAssociationMetadata
 
 	// READ-ONLY; The resource provisioning state.
-	ProvisioningState *KnownDataCollectionRuleAssociationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KnownDataCollectionRuleAssociationProvisioningState
 }
 
 // DataCollectionRuleAssociationMetadata - Metadata about the resource
 type DataCollectionRuleAssociationMetadata struct {
 	// READ-ONLY; Azure offering managing this resource on-behalf-of customer.
-	ProvisionedBy *string `json:"provisionedBy,omitempty" azure:"ro"`
+	ProvisionedBy *string
+
+	// READ-ONLY; Resource Id of azure offering managing this resource on-behalf-of customer.
+	ProvisionedByResourceID *string
 }
 
 // DataCollectionRuleAssociationProxyOnlyResource - Definition of generic ARM proxy resource.
 type DataCollectionRuleAssociationProxyOnlyResource struct {
 	// Resource properties.
-	Properties *DataCollectionRuleAssociationProxyOnlyResourceProperties `json:"properties,omitempty"`
+	Properties *DataCollectionRuleAssociationProxyOnlyResourceProperties
 
 	// READ-ONLY; Resource entity tag (ETag).
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified ID of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *DataCollectionRuleAssociationProxyOnlyResourceSystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *DataCollectionRuleAssociationProxyOnlyResourceSystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DataCollectionRuleAssociationProxyOnlyResourceListResult - A pageable list of resources.
 type DataCollectionRuleAssociationProxyOnlyResourceListResult struct {
 	// REQUIRED; A list of resources.
-	Value []*DataCollectionRuleAssociationProxyOnlyResource `json:"value,omitempty"`
+	Value []*DataCollectionRuleAssociationProxyOnlyResource
 
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // DataCollectionRuleAssociationProxyOnlyResourceProperties - Resource properties.
 type DataCollectionRuleAssociationProxyOnlyResourceProperties struct {
 	// The resource ID of the data collection endpoint that is to be associated.
-	DataCollectionEndpointID *string `json:"dataCollectionEndpointId,omitempty"`
+	DataCollectionEndpointID *string
 
 	// The resource ID of the data collection rule that is to be associated.
-	DataCollectionRuleID *string `json:"dataCollectionRuleId,omitempty"`
+	DataCollectionRuleID *string
 
 	// Description of the association.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// READ-ONLY; Metadata about the resource
-	Metadata *DataCollectionRuleAssociationMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *DataCollectionRuleAssociationMetadata
 
 	// READ-ONLY; The resource provisioning state.
-	ProvisioningState *KnownDataCollectionRuleAssociationProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KnownDataCollectionRuleAssociationProvisioningState
 }
 
 // DataCollectionRuleAssociationProxyOnlyResourceSystemData - Metadata pertaining to creation and last modification of the
 // resource.
 type DataCollectionRuleAssociationProxyOnlyResourceSystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // DataCollectionRuleAssociationsClientCreateOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.Create
@@ -1236,19 +1438,19 @@ type DataCollectionRuleAssociationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByDataCollectionEndpoint
+// DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByDataCollectionEndpointPager
 // method.
 type DataCollectionRuleAssociationsClientListByDataCollectionEndpointOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByResource
+// DataCollectionRuleAssociationsClientListByResourceOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByResourcePager
 // method.
 type DataCollectionRuleAssociationsClientListByResourceOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.ListByRule
+// DataCollectionRuleAssociationsClientListByRuleOptions contains the optional parameters for the DataCollectionRuleAssociationsClient.NewListByRulePager
 // method.
 type DataCollectionRuleAssociationsClientListByRuleOptions struct {
 	// placeholder for future optional parameters
@@ -1257,129 +1459,185 @@ type DataCollectionRuleAssociationsClientListByRuleOptions struct {
 // DataCollectionRuleDataSources - The specification of data sources. This property is optional and can be omitted if the
 // rule is meant to be used via direct calls to the provisioned endpoint.
 type DataCollectionRuleDataSources struct {
+	// Specifications of pull based data sources
+	DataImports *DataSourcesSpecDataImports
+
 	// The list of Azure VM extension data source configurations.
-	Extensions []*ExtensionDataSource `json:"extensions,omitempty"`
+	Extensions []*ExtensionDataSource
 
 	// The list of IIS logs source configurations.
-	IisLogs []*IisLogsDataSource `json:"iisLogs,omitempty"`
+	IisLogs []*IisLogsDataSource
 
 	// The list of Log files source configurations.
-	LogFiles []*LogFilesDataSource `json:"logFiles,omitempty"`
+	LogFiles []*LogFilesDataSource
 
 	// The list of performance counter data source configurations.
-	PerformanceCounters []*PerfCounterDataSource `json:"performanceCounters,omitempty"`
+	PerformanceCounters []*PerfCounterDataSource
+
+	// The list of platform telemetry configurations
+	PlatformTelemetry []*PlatformTelemetryDataSource
+
+	// The list of Prometheus forwarder data source configurations.
+	PrometheusForwarder []*PrometheusForwarderDataSource
 
 	// The list of Syslog data source configurations.
-	Syslog []*SyslogDataSource `json:"syslog,omitempty"`
+	Syslog []*SyslogDataSource
 
 	// The list of Windows Event Log data source configurations.
-	WindowsEventLogs []*WindowsEventLogDataSource `json:"windowsEventLogs,omitempty"`
+	WindowsEventLogs []*WindowsEventLogDataSource
+
+	// The list of Windows Firewall logs source configurations.
+	WindowsFirewallLogs []*WindowsFirewallLogsDataSource
 }
 
 // DataCollectionRuleDestinations - The specification of destinations.
 type DataCollectionRuleDestinations struct {
 	// Azure Monitor Metrics destination.
-	AzureMonitorMetrics *DestinationsSpecAzureMonitorMetrics `json:"azureMonitorMetrics,omitempty"`
+	AzureMonitorMetrics *DestinationsSpecAzureMonitorMetrics
+
+	// List of Event Hubs destinations.
+	EventHubs []*EventHubDestination
+
+	// List of Event Hubs Direct destinations.
+	EventHubsDirect []*EventHubDirectDestination
 
 	// List of Log Analytics destinations.
-	LogAnalytics []*LogAnalyticsDestination `json:"logAnalytics,omitempty"`
+	LogAnalytics []*LogAnalyticsDestination
+
+	// List of monitoring account destinations.
+	MonitoringAccounts []*MonitoringAccountDestination
+
+	// List of storage accounts destinations.
+	StorageAccounts []*StorageBlobDestination
+
+	// List of Storage Blob Direct destinations. To be used only for sending data directly to store from the agent.
+	StorageBlobsDirect []*StorageBlobDestination
+
+	// List of Storage Table Direct destinations.
+	StorageTablesDirect []*StorageTableDestination
 }
 
 // DataCollectionRuleMetadata - Metadata about the resource
 type DataCollectionRuleMetadata struct {
 	// READ-ONLY; Azure offering managing this resource on-behalf-of customer.
-	ProvisionedBy *string `json:"provisionedBy,omitempty" azure:"ro"`
+	ProvisionedBy *string
+
+	// READ-ONLY; Resource Id of azure offering managing this resource on-behalf-of customer.
+	ProvisionedByResourceID *string
 }
 
 // DataCollectionRuleResource - Definition of ARM tracked top level resource.
 type DataCollectionRuleResource struct {
 	// REQUIRED; The geo-location where the resource lives.
-	Location *string `json:"location,omitempty"`
+	Location *string
+
+	// Managed service identity of the resource.
+	Identity *DataCollectionRuleResourceIdentity
 
 	// The kind of the resource.
-	Kind *KnownDataCollectionRuleResourceKind `json:"kind,omitempty"`
+	Kind *KnownDataCollectionRuleResourceKind
 
 	// Resource properties.
-	Properties *DataCollectionRuleResourceProperties `json:"properties,omitempty"`
+	Properties *DataCollectionRuleResourceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Resource entity tag (ETag).
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified ID of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Metadata pertaining to creation and last modification of the resource.
-	SystemData *DataCollectionRuleResourceSystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *DataCollectionRuleResourceSystemData
 
 	// READ-ONLY; The type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// DataCollectionRuleResourceIdentity - Managed service identity of the resource.
+type DataCollectionRuleResourceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // DataCollectionRuleResourceListResult - A pageable list of resources.
 type DataCollectionRuleResourceListResult struct {
 	// REQUIRED; A list of resources.
-	Value []*DataCollectionRuleResource `json:"value,omitempty"`
+	Value []*DataCollectionRuleResource
 
 	// The URL to use for getting the next set of results.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 }
 
 // DataCollectionRuleResourceProperties - Resource properties.
 type DataCollectionRuleResourceProperties struct {
 	// The resource ID of the data collection endpoint that this rule can be used with.
-	DataCollectionEndpointID *string `json:"dataCollectionEndpointId,omitempty"`
+	DataCollectionEndpointID *string
 
 	// The specification of data flows.
-	DataFlows []*DataFlow `json:"dataFlows,omitempty"`
+	DataFlows []*DataFlow
 
 	// The specification of data sources. This property is optional and can be omitted if the rule is meant to be used via direct
 	// calls to the provisioned endpoint.
-	DataSources *DataCollectionRuleDataSources `json:"dataSources,omitempty"`
+	DataSources *DataCollectionRuleDataSources
 
 	// Description of the data collection rule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The specification of destinations.
-	Destinations *DataCollectionRuleDestinations `json:"destinations,omitempty"`
+	Destinations *DataCollectionRuleDestinations
 
 	// Declaration of custom streams used in this rule.
-	StreamDeclarations map[string]*StreamDeclaration `json:"streamDeclarations,omitempty"`
+	StreamDeclarations map[string]*StreamDeclaration
 
 	// READ-ONLY; The immutable ID of this data collection rule. This property is READ-ONLY.
-	ImmutableID *string `json:"immutableId,omitempty" azure:"ro"`
+	ImmutableID *string
 
 	// READ-ONLY; Metadata about the resource
-	Metadata *DataCollectionRuleMetadata `json:"metadata,omitempty" azure:"ro"`
+	Metadata *DataCollectionRuleMetadata
 
 	// READ-ONLY; The resource provisioning state.
-	ProvisioningState *KnownDataCollectionRuleProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *KnownDataCollectionRuleProvisioningState
 }
 
 // DataCollectionRuleResourceSystemData - Metadata pertaining to creation and last modification of the resource.
 type DataCollectionRuleResourceSystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // DataCollectionRulesClientCreateOptions contains the optional parameters for the DataCollectionRulesClient.Create method.
@@ -1398,13 +1656,13 @@ type DataCollectionRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataCollectionRulesClientListByResourceGroupOptions contains the optional parameters for the DataCollectionRulesClient.ListByResourceGroup
+// DataCollectionRulesClientListByResourceGroupOptions contains the optional parameters for the DataCollectionRulesClient.NewListByResourceGroupPager
 // method.
 type DataCollectionRulesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DataCollectionRulesClientListBySubscriptionOptions contains the optional parameters for the DataCollectionRulesClient.ListBySubscription
+// DataCollectionRulesClientListBySubscriptionOptions contains the optional parameters for the DataCollectionRulesClient.NewListBySubscriptionPager
 // method.
 type DataCollectionRulesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -1419,108 +1677,165 @@ type DataCollectionRulesClientUpdateOptions struct {
 // DataContainer - Information about a container with data for a given resource.
 type DataContainer struct {
 	// REQUIRED; Log Analytics workspace information.
-	Workspace *WorkspaceInfo `json:"workspace,omitempty"`
+	Workspace *WorkspaceInfo
 }
 
 // DataFlow - Definition of which streams are sent to which destinations.
 type DataFlow struct {
+	// The builtIn transform to transform stream data
+	BuiltInTransform *string
+
 	// List of destinations for this data flow.
-	Destinations []*string `json:"destinations,omitempty"`
+	Destinations []*string
 
 	// The output stream of the transform. Only required if the transform changes data to a different stream.
-	OutputStream *string `json:"outputStream,omitempty"`
+	OutputStream *string
 
 	// List of streams for this data flow.
-	Streams []*KnownDataFlowStreams `json:"streams,omitempty"`
+	Streams []*KnownDataFlowStreams
 
 	// The KQL query to transform stream data.
-	TransformKql *string `json:"transformKql,omitempty"`
+	TransformKql *string
+}
+
+type DataImportSources struct {
+	// Definition of Event Hub configuration.
+	EventHub *DataImportSourcesEventHub
+}
+
+// DataImportSourcesEventHub - Definition of Event Hub configuration.
+type DataImportSourcesEventHub struct {
+	// Event Hub consumer group name
+	ConsumerGroup *string
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string
+
+	// The stream to collect from EventHub
+	Stream *string
 }
 
 // DataSourcesSpec - Specification of data sources that will be collected.
 type DataSourcesSpec struct {
+	// Specifications of pull based data sources
+	DataImports *DataSourcesSpecDataImports
+
 	// The list of Azure VM extension data source configurations.
-	Extensions []*ExtensionDataSource `json:"extensions,omitempty"`
+	Extensions []*ExtensionDataSource
 
 	// The list of IIS logs source configurations.
-	IisLogs []*IisLogsDataSource `json:"iisLogs,omitempty"`
+	IisLogs []*IisLogsDataSource
 
 	// The list of Log files source configurations.
-	LogFiles []*LogFilesDataSource `json:"logFiles,omitempty"`
+	LogFiles []*LogFilesDataSource
 
 	// The list of performance counter data source configurations.
-	PerformanceCounters []*PerfCounterDataSource `json:"performanceCounters,omitempty"`
+	PerformanceCounters []*PerfCounterDataSource
+
+	// The list of platform telemetry configurations
+	PlatformTelemetry []*PlatformTelemetryDataSource
+
+	// The list of Prometheus forwarder data source configurations.
+	PrometheusForwarder []*PrometheusForwarderDataSource
 
 	// The list of Syslog data source configurations.
-	Syslog []*SyslogDataSource `json:"syslog,omitempty"`
+	Syslog []*SyslogDataSource
 
 	// The list of Windows Event Log data source configurations.
-	WindowsEventLogs []*WindowsEventLogDataSource `json:"windowsEventLogs,omitempty"`
+	WindowsEventLogs []*WindowsEventLogDataSource
+
+	// The list of Windows Firewall logs source configurations.
+	WindowsFirewallLogs []*WindowsFirewallLogsDataSource
+}
+
+// DataSourcesSpecDataImports - Specifications of pull based data sources
+type DataSourcesSpecDataImports struct {
+	// Definition of Event Hub configuration.
+	EventHub *DataImportSourcesEventHub
 }
 
 // DefaultErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type DefaultErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // DestinationsSpec - Specification of destinations that can be used in data flows.
 type DestinationsSpec struct {
 	// Azure Monitor Metrics destination.
-	AzureMonitorMetrics *DestinationsSpecAzureMonitorMetrics `json:"azureMonitorMetrics,omitempty"`
+	AzureMonitorMetrics *DestinationsSpecAzureMonitorMetrics
+
+	// List of Event Hubs destinations.
+	EventHubs []*EventHubDestination
+
+	// List of Event Hubs Direct destinations.
+	EventHubsDirect []*EventHubDirectDestination
 
 	// List of Log Analytics destinations.
-	LogAnalytics []*LogAnalyticsDestination `json:"logAnalytics,omitempty"`
+	LogAnalytics []*LogAnalyticsDestination
+
+	// List of monitoring account destinations.
+	MonitoringAccounts []*MonitoringAccountDestination
+
+	// List of storage accounts destinations.
+	StorageAccounts []*StorageBlobDestination
+
+	// List of Storage Blob Direct destinations. To be used only for sending data directly to store from the agent.
+	StorageBlobsDirect []*StorageBlobDestination
+
+	// List of Storage Table Direct destinations.
+	StorageTablesDirect []*StorageTableDestination
 }
 
 // DestinationsSpecAzureMonitorMetrics - Azure Monitor Metrics destination.
 type DestinationsSpecAzureMonitorMetrics struct {
 	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // DiagnosticSettings - The diagnostic settings.
 type DiagnosticSettings struct {
 	// The resource Id for the event hub authorization rule.
-	EventHubAuthorizationRuleID *string `json:"eventHubAuthorizationRuleId,omitempty"`
+	EventHubAuthorizationRuleID *string
 
 	// The name of the event hub. If none is specified, the default event hub will be selected.
-	EventHubName *string `json:"eventHubName,omitempty"`
+	EventHubName *string
 
 	// A string indicating whether the export to Log Analytics should use the default destination type, i.e. AzureDiagnostics,
 	// or use a destination type constructed as follows: _. Possible values are:
 	// Dedicated and null (null is default.)
-	LogAnalyticsDestinationType *string `json:"logAnalyticsDestinationType,omitempty"`
+	LogAnalyticsDestinationType *string
 
 	// The list of logs settings.
-	Logs []*LogSettings `json:"logs,omitempty"`
+	Logs []*LogSettings
 
 	// The full ARM resource ID of the Marketplace resource to which you would like to send Diagnostic Logs.
-	MarketplacePartnerID *string `json:"marketplacePartnerId,omitempty"`
+	MarketplacePartnerID *string
 
 	// The list of metric settings.
-	Metrics []*MetricSettings `json:"metrics,omitempty"`
+	Metrics []*MetricSettings
 
 	// The service bus rule Id of the diagnostic setting. This is here to maintain backwards compatibility.
-	ServiceBusRuleID *string `json:"serviceBusRuleId,omitempty"`
+	ServiceBusRuleID *string
 
 	// The resource ID of the storage account to which you would like to send Diagnostic Logs.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 
 	// The full ARM resource ID of the Log Analytics workspace to which you would like to send Diagnostic Logs. Example:
 	// /subscriptions/4b9e8510-67ab-4e9a-95a9-e2f1e570ea9c/resourceGroups/insights-integration/providers/Microsoft.OperationalInsights/workspaces/viruela2
-	WorkspaceID *string `json:"workspaceId,omitempty"`
+	WorkspaceID *string
 }
 
 // DiagnosticSettingsCategory - The diagnostic settings Category.
 type DiagnosticSettingsCategory struct {
 	// the collection of what category groups are supported.
-	CategoryGroups []*string `json:"categoryGroups,omitempty"`
+	CategoryGroups []*string
 
 	// The type of the diagnostic settings category.
-	CategoryType *CategoryType `json:"categoryType,omitempty"`
+	CategoryType *CategoryType
 }
 
 // DiagnosticSettingsCategoryClientGetOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.Get
@@ -1529,7 +1844,7 @@ type DiagnosticSettingsCategoryClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.List
+// DiagnosticSettingsCategoryClientListOptions contains the optional parameters for the DiagnosticSettingsCategoryClient.NewListPager
 // method.
 type DiagnosticSettingsCategoryClientListOptions struct {
 	// placeholder for future optional parameters
@@ -1538,25 +1853,25 @@ type DiagnosticSettingsCategoryClientListOptions struct {
 // DiagnosticSettingsCategoryResource - The diagnostic settings category resource.
 type DiagnosticSettingsCategoryResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The properties of a Diagnostic Settings Category.
-	Properties *DiagnosticSettingsCategory `json:"properties,omitempty" azure:"ro"`
+	Properties *DiagnosticSettingsCategory
 
 	// READ-ONLY; The system metadata related to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiagnosticSettingsCategoryResourceCollection - Represents a collection of diagnostic setting category resources.
 type DiagnosticSettingsCategoryResourceCollection struct {
 	// The collection of diagnostic settings category resources.
-	Value []*DiagnosticSettingsCategoryResource `json:"value,omitempty"`
+	Value []*DiagnosticSettingsCategoryResource
 }
 
 // DiagnosticSettingsClientCreateOrUpdateOptions contains the optional parameters for the DiagnosticSettingsClient.CreateOrUpdate
@@ -1575,7 +1890,7 @@ type DiagnosticSettingsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.List method.
+// DiagnosticSettingsClientListOptions contains the optional parameters for the DiagnosticSettingsClient.NewListPager method.
 type DiagnosticSettingsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1583,78 +1898,78 @@ type DiagnosticSettingsClientListOptions struct {
 // DiagnosticSettingsResource - The diagnostic setting resource.
 type DiagnosticSettingsResource struct {
 	// Properties of a Diagnostic Settings Resource.
-	Properties *DiagnosticSettings `json:"properties,omitempty"`
+	Properties *DiagnosticSettings
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata related to this resource.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // DiagnosticSettingsResourceCollection - Represents a collection of alert rule resources.
 type DiagnosticSettingsResourceCollection struct {
 	// The collection of diagnostic settings resources;.
-	Value []*DiagnosticSettingsResource `json:"value,omitempty"`
+	Value []*DiagnosticSettingsResource
 }
 
 // Dimension splitting and filtering definition
 type Dimension struct {
 	// REQUIRED; Name of the dimension
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Operator for dimension values
-	Operator *DimensionOperator `json:"operator,omitempty"`
+	Operator *DimensionOperator
 
 	// REQUIRED; List of dimension values
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // DynamicMetricCriteria - Criterion for dynamic threshold.
 type DynamicMetricCriteria struct {
 	// REQUIRED; The extent of deviation required to trigger an alert. This will affect how tight the threshold is to the metric
 	// series pattern.
-	AlertSensitivity *DynamicThresholdSensitivity `json:"alertSensitivity,omitempty"`
+	AlertSensitivity *DynamicThresholdSensitivity
 
 	// REQUIRED; Specifies the type of threshold criteria
-	CriterionType *CriterionType `json:"criterionType,omitempty"`
+	CriterionType *CriterionType
 
 	// REQUIRED; The minimum number of violations required within the selected lookback time window required to raise an alert.
-	FailingPeriods *DynamicThresholdFailingPeriods `json:"failingPeriods,omitempty"`
+	FailingPeriods *DynamicThresholdFailingPeriods
 
 	// REQUIRED; Name of the metric.
-	MetricName *string `json:"metricName,omitempty"`
+	MetricName *string
 
 	// REQUIRED; Name of the criteria.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The operator used to compare the metric value against the threshold.
-	Operator *DynamicThresholdOperator `json:"operator,omitempty"`
+	Operator *DynamicThresholdOperator
 
 	// REQUIRED; the criteria time aggregation types.
-	TimeAggregation *AggregationTypeEnum `json:"timeAggregation,omitempty"`
+	TimeAggregation *AggregationTypeEnum
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of dimension conditions.
-	Dimensions []*MetricDimension `json:"dimensions,omitempty"`
+	Dimensions []*MetricDimension
 
 	// Use this option to set the date from which to start learning the metric historical data and calculate the dynamic thresholds
 	// (in ISO8601 format)
-	IgnoreDataBefore *time.Time `json:"ignoreDataBefore,omitempty"`
+	IgnoreDataBefore *time.Time
 
 	// Namespace of the metric.
-	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	MetricNamespace *string
 
 	// Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped.
-	SkipMetricValidation *bool `json:"skipMetricValidation,omitempty"`
+	SkipMetricValidation *bool
 }
 
 // GetMultiMetricCriteria implements the MultiMetricCriteriaClassification interface for type DynamicMetricCriteria.
@@ -1675,142 +1990,189 @@ func (d *DynamicMetricCriteria) GetMultiMetricCriteria() *MultiMetricCriteria {
 // to raise an alert.
 type DynamicThresholdFailingPeriods struct {
 	// REQUIRED; The number of violations to trigger an alert. Should be smaller or equal to numberOfEvaluationPeriods.
-	MinFailingPeriodsToAlert *float32 `json:"minFailingPeriodsToAlert,omitempty"`
+	MinFailingPeriodsToAlert *float32
 
 	// REQUIRED; The number of aggregated lookback points. The lookback time window is calculated based on the aggregation granularity
 	// (windowSize) and the selected number of aggregated points.
-	NumberOfEvaluationPeriods *float32 `json:"numberOfEvaluationPeriods,omitempty"`
+	NumberOfEvaluationPeriods *float32
 }
 
 // EmailNotification - Email notification of an autoscale event.
 type EmailNotification struct {
 	// the custom e-mails list. This value can be null or empty, in which case this attribute will be ignored.
-	CustomEmails []*string `json:"customEmails,omitempty"`
+	CustomEmails []*string
 
 	// a value indicating whether to send email to subscription administrator.
-	SendToSubscriptionAdministrator *bool `json:"sendToSubscriptionAdministrator,omitempty"`
+	SendToSubscriptionAdministrator *bool
 
 	// a value indicating whether to send email to subscription co-administrators.
-	SendToSubscriptionCoAdministrators *bool `json:"sendToSubscriptionCoAdministrators,omitempty"`
+	SendToSubscriptionCoAdministrators *bool
 }
 
 // EmailReceiver - An email receiver.
 type EmailReceiver struct {
 	// REQUIRED; The email address of this receiver.
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 
 	// REQUIRED; The name of the email receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool `json:"useCommonAlertSchema,omitempty"`
+	UseCommonAlertSchema *bool
 
 	// READ-ONLY; The receiver status of the e-mail.
-	Status *ReceiverStatus `json:"status,omitempty" azure:"ro"`
+	Status *ReceiverStatus
+}
+
+// EmailReceiverAutoGenerated - An email receiver.
+type EmailReceiverAutoGenerated struct {
+	// REQUIRED; The email address of this receiver.
+	EmailAddress *string
+
+	// REQUIRED; The name of the email receiver. Names must be unique across all receivers within a tenant action group.
+	Name *string
+
+	// Indicates whether to use common alert schema.
+	UseCommonAlertSchema *bool
+
+	// READ-ONLY; The receiver status of the e-mail.
+	Status *ReceiverStatus
 }
 
 // EnableRequest - Describes a receiver that should be resubscribed.
 type EnableRequest struct {
 	// REQUIRED; The name of the receiver to resubscribe.
-	ReceiverName *string `json:"receiverName,omitempty"`
+	ReceiverName *string
 }
 
 // Error details.
 type Error struct {
 	// REQUIRED; Error code identifying the specific error.
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message in the caller's locale.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
-// ErrorContract - Describes the format of Error response.
+// ErrorContract - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+// (This also follows the OData error response format.)
 type ErrorContract struct {
+	// The error object.
+	Error *ErrorResponse
+}
+
+// ErrorContractAutoGenerated - Describes the format of Error response.
+type ErrorContractAutoGenerated struct {
 	// The error details.
-	Error *ErrorResponseDetails `json:"error,omitempty"`
+	Error *ErrorResponseDetails
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
+}
+
+// ErrorDetailAutoGenerated - The error detail.
+type ErrorDetailAutoGenerated struct {
+	// READ-ONLY; The error additional info.
+	AdditionalInfo []*ErrorAdditionalInfo
+
+	// READ-ONLY; The error code.
+	Code *string
+
+	// READ-ONLY; The error details.
+	Details []*ErrorDetailAutoGenerated
+
+	// READ-ONLY; The error message.
+	Message *string
+
+	// READ-ONLY; The error target.
+	Target *string
 }
 
 // ErrorResponse - Describes the format of Error response.
 type ErrorResponse struct {
 	// Error code
-	Code *string `json:"code,omitempty"`
+	Code *string
 
 	// Error message indicating why the operation failed.
-	Message *string `json:"message,omitempty"`
+	Message *string
 }
 
 // ErrorResponseAdditionalInfo - The resource management error additional info.
 type ErrorResponseAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorResponseAutoGenerated - The error response.
 type ErrorResponseAutoGenerated struct {
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error message indicating why the operation failed.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
+}
+
+// ErrorResponseAutoGenerated2 - Common error response for all Azure Resource Manager APIs to return error details for failed
+// operations. (This also follows the OData error response format.).
+type ErrorResponseAutoGenerated2 struct {
+	// The error object.
+	Error *ErrorDetailAutoGenerated
 }
 
 // ErrorResponseCommonV2 - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponseCommonV2 struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // ErrorResponseDetails - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.)
 type ErrorResponseDetails struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorResponseAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorResponseAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorResponseDetails `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorResponseDetails
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
-// EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.List method.
+// EventCategoriesClientListOptions contains the optional parameters for the EventCategoriesClient.NewListPager method.
 type EventCategoriesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -1819,124 +2181,154 @@ type EventCategoriesClientListOptions struct {
 // Alert, Recommendation, Policy.
 type EventCategoryCollection struct {
 	// REQUIRED; the list that includes the Azure event categories.
-	Value []*LocalizableString `json:"value,omitempty"`
+	Value []*LocalizableString
 }
 
 // EventData - The Azure event log entries are of type EventData
 type EventData struct {
 	// READ-ONLY; The sender authorization information.
-	Authorization *SenderAuthorization `json:"authorization,omitempty" azure:"ro"`
+	Authorization *SenderAuthorization
 
 	// READ-ONLY; the email address of the user who has performed the operation, the UPN claim or SPN claim based on availability.
-	Caller *string `json:"caller,omitempty" azure:"ro"`
+	Caller *string
 
 	// READ-ONLY; the event category.
-	Category *LocalizableString `json:"category,omitempty" azure:"ro"`
+	Category *LocalizableString
 
 	// READ-ONLY; key value pairs to identify ARM permissions.
-	Claims map[string]*string `json:"claims,omitempty" azure:"ro"`
+	Claims map[string]*string
 
 	// READ-ONLY; the correlation Id, usually a GUID in the string format. The correlation Id is shared among the events that
 	// belong to the same uber operation.
-	CorrelationID *string `json:"correlationId,omitempty" azure:"ro"`
+	CorrelationID *string
 
 	// READ-ONLY; the description of the event.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; the event data Id. This is a unique identifier for an event.
-	EventDataID *string `json:"eventDataId,omitempty" azure:"ro"`
+	EventDataID *string
 
 	// READ-ONLY; the event name. This value should not be confused with OperationName. For practical purposes, OperationName
 	// might be more appealing to end users.
-	EventName *LocalizableString `json:"eventName,omitempty" azure:"ro"`
+	EventName *LocalizableString
 
 	// READ-ONLY; the timestamp of when the event was generated by the Azure service processing the request corresponding the
 	// event. It in ISO 8601 format.
-	EventTimestamp *time.Time `json:"eventTimestamp,omitempty" azure:"ro"`
+	EventTimestamp *time.Time
 
 	// READ-ONLY; the HTTP request info. Usually includes the 'clientRequestId', 'clientIpAddress' (IP address of the user who
 	// initiated the event) and 'method' (HTTP method e.g. PUT).
-	HTTPRequest *HTTPRequestInfo `json:"httpRequest,omitempty" azure:"ro"`
+	HTTPRequest *HTTPRequestInfo
 
 	// READ-ONLY; the Id of this event as required by ARM for RBAC. It contains the EventDataID and a timestamp information.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; the event level
-	Level *EventLevel `json:"level,omitempty" azure:"ro"`
+	Level *EventLevel
 
 	// READ-ONLY; It is usually a GUID shared among the events corresponding to single operation. This value should not be confused
 	// with EventName.
-	OperationID *string `json:"operationId,omitempty" azure:"ro"`
+	OperationID *string
 
 	// READ-ONLY; the operation name.
-	OperationName *LocalizableString `json:"operationName,omitempty" azure:"ro"`
+	OperationName *LocalizableString
 
 	// READ-ONLY; the set of pairs (usually a Dictionary) that includes details about the event.
-	Properties map[string]*string `json:"properties,omitempty" azure:"ro"`
+	Properties map[string]*string
 
 	// READ-ONLY; the resource group name of the impacted resource.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty" azure:"ro"`
+	ResourceGroupName *string
 
 	// READ-ONLY; the resource uri that uniquely identifies the resource that caused this event.
-	ResourceID *string `json:"resourceId,omitempty" azure:"ro"`
+	ResourceID *string
 
 	// READ-ONLY; the resource provider name of the impacted resource.
-	ResourceProviderName *LocalizableString `json:"resourceProviderName,omitempty" azure:"ro"`
+	ResourceProviderName *LocalizableString
 
 	// READ-ONLY; the resource type
-	ResourceType *LocalizableString `json:"resourceType,omitempty" azure:"ro"`
+	ResourceType *LocalizableString
 
 	// READ-ONLY; a string describing the status of the operation. Some typical values are: Started, In progress, Succeeded, Failed,
 	// Resolved.
-	Status *LocalizableString `json:"status,omitempty" azure:"ro"`
+	Status *LocalizableString
 
 	// READ-ONLY; the event sub status. Most of the time, when included, this captures the HTTP status code of the REST call.
 	// Common values are: OK (HTTP Status Code: 200), Created (HTTP Status Code: 201), Accepted
 	// (HTTP Status Code: 202), No Content (HTTP Status Code: 204), Bad Request(HTTP Status Code: 400), Not Found (HTTP Status
 	// Code: 404), Conflict (HTTP Status Code: 409), Internal Server Error (HTTP Status
 	// Code: 500), Service Unavailable (HTTP Status Code:503), Gateway Timeout (HTTP Status Code: 504)
-	SubStatus *LocalizableString `json:"subStatus,omitempty" azure:"ro"`
+	SubStatus *LocalizableString
 
 	// READ-ONLY; the timestamp of when the event became available for querying via this API. It is in ISO 8601 format. This value
 	// should not be confused eventTimestamp. As there might be a delay between the occurrence
 	// time of the event, and the time that the event is submitted to the Azure logging infrastructure.
-	SubmissionTimestamp *time.Time `json:"submissionTimestamp,omitempty" azure:"ro"`
+	SubmissionTimestamp *time.Time
 
 	// READ-ONLY; the Azure subscription Id usually a GUID.
-	SubscriptionID *string `json:"subscriptionId,omitempty" azure:"ro"`
+	SubscriptionID *string
 
 	// READ-ONLY; the Azure tenant Id
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // EventDataCollection - Represents collection of events.
 type EventDataCollection struct {
 	// REQUIRED; this list that includes the Azure audit logs.
-	Value []*EventData `json:"value,omitempty"`
+	Value []*EventData
 
 	// Provides the link to retrieve the next set of events.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
+}
+
+type EventHubDataSource struct {
+	// Event Hub consumer group name
+	ConsumerGroup *string
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string
+
+	// The stream to collect from EventHub
+	Stream *string
+}
+
+type EventHubDestination struct {
+	// The resource ID of the event hub.
+	EventHubResourceID *string
+
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string
+}
+
+type EventHubDirectDestination struct {
+	// The resource ID of the event hub.
+	EventHubResourceID *string
+
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string
 }
 
 // EventHubReceiver - An Event hub receiver.
 type EventHubReceiver struct {
 	// REQUIRED; The name of the specific Event Hub queue
-	EventHubName *string `json:"eventHubName,omitempty"`
+	EventHubName *string
 
 	// REQUIRED; The Event Hub namespace
-	EventHubNameSpace *string `json:"eventHubNameSpace,omitempty"`
+	EventHubNameSpace *string
 
 	// REQUIRED; The name of the Event hub receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The Id for the subscription containing this event hub
-	SubscriptionID *string `json:"subscriptionId,omitempty"`
+	SubscriptionID *string
 
 	// The tenant Id for the subscription containing this event hub
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool `json:"useCommonAlertSchema,omitempty"`
+	UseCommonAlertSchema *bool
 }
 
 // ExtensionDataSource - Definition of which data will be collected from a separate VM extension that integrates with the
@@ -1944,119 +2336,161 @@ type EventHubReceiver struct {
 // defined.
 type ExtensionDataSource struct {
 	// REQUIRED; The name of the VM extension.
-	ExtensionName *string `json:"extensionName,omitempty"`
+	ExtensionName *string
 
 	// The extension settings. The format is specific for particular extension.
-	ExtensionSettings interface{} `json:"extensionSettings,omitempty"`
+	ExtensionSettings any
 
 	// The list of data sources this extension needs data from.
-	InputDataSources []*string `json:"inputDataSources,omitempty"`
+	InputDataSources []*string
 
 	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// List of streams that this data source will be sent to. A stream indicates what schema will be used for this data and usually
 	// what table in Log Analytics the data will be sent to.
-	Streams []*KnownExtensionDataSourceStreams `json:"streams,omitempty"`
+	Streams []*KnownExtensionDataSourceStreams
+}
+
+type FailoverConfigurationSpec struct {
+	// Active location where data flow will occur.
+	ActiveLocation *string
+
+	// Locations that are configured for failover.
+	Locations []*LocationSpec
 }
 
 // HTTPRequestInfo - The Http request info.
 type HTTPRequestInfo struct {
 	// the client Ip Address
-	ClientIPAddress *string `json:"clientIpAddress,omitempty"`
+	ClientIPAddress *string
 
 	// the client request id.
-	ClientRequestID *string `json:"clientRequestId,omitempty"`
+	ClientRequestID *string
 
 	// the Http request method.
-	Method *string `json:"method,omitempty"`
+	Method *string
 
 	// the Uri.
-	URI *string `json:"uri,omitempty"`
+	URI *string
+}
+
+// Identity for the resource.
+type Identity struct {
+	// REQUIRED; Type of managed service identity.
+	Type *IdentityType
+
+	// The list of user identities associated with the resource. The user identity dictionary key references will be ARM resource
+	// ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+	UserAssignedIdentities map[string]*UserIdentityProperties
+
+	// READ-ONLY; The principal ID of resource identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of resource.
+	TenantID *string
 }
 
 // IisLogsDataSource - Enables IIS logs to be collected by this data collection rule.
 type IisLogsDataSource struct {
 	// REQUIRED; IIS streams
-	Streams []*string `json:"streams,omitempty"`
+	Streams []*string
 
 	// Absolute paths file location
-	LogDirectories []*string `json:"logDirectories,omitempty"`
+	LogDirectories []*string
 
 	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // Incident - An alert incident indicates the activation status of an alert rule.
 type Incident struct {
 	// READ-ONLY; The time at which the incident was activated in ISO8601 format.
-	ActivatedTime *time.Time `json:"activatedTime,omitempty" azure:"ro"`
+	ActivatedTime *time.Time
 
 	// READ-ONLY; A boolean to indicate whether the incident is active or resolved.
-	IsActive *bool `json:"isActive,omitempty" azure:"ro"`
+	IsActive *bool
 
 	// READ-ONLY; Incident name.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The time at which the incident was resolved in ISO8601 format. If null, it means the incident is still active.
-	ResolvedTime *time.Time `json:"resolvedTime,omitempty" azure:"ro"`
+	ResolvedTime *time.Time
 
 	// READ-ONLY; Rule name that is associated with the incident.
-	RuleName *string `json:"ruleName,omitempty" azure:"ro"`
+	RuleName *string
 }
 
 // IncidentListResult - The List incidents operation response.
 type IncidentListResult struct {
 	// the incident collection.
-	Value []*Incident `json:"value,omitempty"`
+	Value []*Incident
+}
+
+// IngestionSettings - Settings for data ingestion
+type IngestionSettings struct {
+	// READ-ONLY; The Azure resource Id of the default data collection endpoint for this workspace.
+	DataCollectionEndpointResourceID *string
+
+	// READ-ONLY; The Azure resource Id of the default data collection rule for this workspace.
+	DataCollectionRuleResourceID *string
 }
 
 // ItsmReceiver - An Itsm receiver.
 type ItsmReceiver struct {
 	// REQUIRED; Unique identification of ITSM connection among multiple defined in above workspace.
-	ConnectionID *string `json:"connectionId,omitempty"`
+	ConnectionID *string
 
 	// REQUIRED; The name of the Itsm receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Region in which workspace resides. Supported values:'centralindia','japaneast','southeastasia','australiasoutheast','uksouth','westcentralus','canadacentral','eastus','westeurope'
-	Region *string `json:"region,omitempty"`
+	Region *string
 
 	// REQUIRED; JSON blob for the configurations of the ITSM action. CreateMultipleWorkItems option will be part of this blob
 	// as well.
-	TicketConfiguration *string `json:"ticketConfiguration,omitempty"`
+	TicketConfiguration *string
 
 	// REQUIRED; OMS LA instance identifier.
-	WorkspaceID *string `json:"workspaceId,omitempty"`
+	WorkspaceID *string
 }
 
 // LocalizableString - The localizable string class.
 type LocalizableString struct {
 	// REQUIRED; the invariant value.
-	Value *string `json:"value,omitempty"`
+	Value *string
 
 	// the locale specific value.
-	LocalizedValue *string `json:"localizedValue,omitempty"`
+	LocalizedValue *string
+}
+
+type LocationSpec struct {
+	// Name of location.
+	Location *string
+
+	// The resource provisioning state in this location.
+	ProvisioningStatus *KnownLocationSpecProvisioningStatus
 }
 
 // LocationThresholdRuleCondition - A rule condition based on a certain number of locations failing.
 type LocationThresholdRuleCondition struct {
 	// REQUIRED; the number of locations that must fail to activate the alert.
-	FailedLocationCount *int32 `json:"failedLocationCount,omitempty"`
+	FailedLocationCount *int32
 
 	// REQUIRED; specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of
 	// management events), LocationThresholdRuleCondition (based on the number of failures of a
 	// web test), and ThresholdRuleCondition (based on the threshold of a metric).
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// the resource from which the rule collects its data. For this type dataSource will always be of type RuleMetricDataSource.
-	DataSource RuleDataSourceClassification `json:"dataSource,omitempty"`
+	DataSource RuleDataSourceClassification
 
 	// the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. If specified
 	// then it must be between 5 minutes and 1 day.
-	WindowSize *string `json:"windowSize,omitempty"`
+	WindowSize *string
 }
 
 // GetRuleCondition implements the RuleConditionClassification interface for type LocationThresholdRuleCondition.
@@ -2071,115 +2505,115 @@ func (l *LocationThresholdRuleCondition) GetRuleCondition() *RuleCondition {
 type LogAnalyticsDestination struct {
 	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource ID of the Log Analytics workspace.
-	WorkspaceResourceID *string `json:"workspaceResourceId,omitempty"`
+	WorkspaceResourceID *string
 
 	// READ-ONLY; The Customer ID of the Log Analytics workspace.
-	WorkspaceID *string `json:"workspaceId,omitempty" azure:"ro"`
+	WorkspaceID *string
 }
 
 // LogFileSettings - Settings for different log file formats
 type LogFileSettings struct {
 	// Text settings
-	Text *LogFileSettingsText `json:"text,omitempty"`
+	Text *LogFileSettingsText
 }
 
 // LogFileSettingsText - Text settings
 type LogFileSettingsText struct {
 	// REQUIRED; One of the supported timestamp formats
-	RecordStartTimestampFormat *KnownLogFileTextSettingsRecordStartTimestampFormat `json:"recordStartTimestampFormat,omitempty"`
+	RecordStartTimestampFormat *KnownLogFileTextSettingsRecordStartTimestampFormat
 }
 
 // LogFileTextSettings - Settings for text log files
 type LogFileTextSettings struct {
 	// REQUIRED; One of the supported timestamp formats
-	RecordStartTimestampFormat *KnownLogFileTextSettingsRecordStartTimestampFormat `json:"recordStartTimestampFormat,omitempty"`
+	RecordStartTimestampFormat *KnownLogFileTextSettingsRecordStartTimestampFormat
 }
 
 // LogFilesDataSource - Definition of which custom log files will be collected by this data collection rule
 type LogFilesDataSource struct {
 	// REQUIRED; File Patterns where the log files are located
-	FilePatterns []*string `json:"filePatterns,omitempty"`
+	FilePatterns []*string
 
 	// REQUIRED; The data format of the log files
-	Format *KnownLogFilesDataSourceFormat `json:"format,omitempty"`
+	Format *KnownLogFilesDataSourceFormat
 
 	// REQUIRED; List of streams that this data source will be sent to. A stream indicates what schema will be used for this data
 	// source
-	Streams []*string `json:"streams,omitempty"`
+	Streams []*string
 
 	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The log files specific settings.
-	Settings *LogFilesDataSourceSettings `json:"settings,omitempty"`
+	Settings *LogFilesDataSourceSettings
 }
 
 // LogFilesDataSourceSettings - The log files specific settings.
 type LogFilesDataSourceSettings struct {
 	// Text settings
-	Text *LogFileSettingsText `json:"text,omitempty"`
+	Text *LogFileSettingsText
 }
 
 // LogProfileCollection - Represents a collection of log profiles.
 type LogProfileCollection struct {
 	// REQUIRED; the values of the log profiles.
-	Value []*LogProfileResource `json:"value,omitempty"`
+	Value []*LogProfileResource
 }
 
 // LogProfileProperties - The log profile properties.
 type LogProfileProperties struct {
 	// REQUIRED; the categories of the logs. These categories are created as is convenient to the user. Some values are: 'Write',
 	// 'Delete', and/or 'Action.'
-	Categories []*string `json:"categories,omitempty"`
+	Categories []*string
 
 	// REQUIRED; List of regions for which Activity Log events should be stored or streamed. It is a comma separated list of valid
 	// ARM locations including the 'global' location.
-	Locations []*string `json:"locations,omitempty"`
+	Locations []*string
 
 	// REQUIRED; the retention policy for the events in the log.
-	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+	RetentionPolicy *RetentionPolicy
 
 	// The service bus rule ID of the service bus namespace in which you would like to have Event Hubs created for streaming the
 	// Activity Log. The rule ID is of the format: '{service bus resource
 	// ID}/authorizationrules/{key name}'.
-	ServiceBusRuleID *string `json:"serviceBusRuleId,omitempty"`
+	ServiceBusRuleID *string
 
 	// the resource id of the storage account to which you would like to send the Activity Log.
-	StorageAccountID *string `json:"storageAccountId,omitempty"`
+	StorageAccountID *string
 }
 
 // LogProfileResource - The log profile resource.
 type LogProfileResource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The log profile properties of the resource.
-	Properties *LogProfileProperties `json:"properties,omitempty"`
+	Properties *LogProfileProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LogProfileResourcePatch - The log profile resource for patch operations.
 type LogProfileResourcePatch struct {
 	// The log profile properties for an update operation.
-	Properties *LogProfileProperties `json:"properties,omitempty"`
+	Properties *LogProfileProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // LogProfilesClientCreateOrUpdateOptions contains the optional parameters for the LogProfilesClient.CreateOrUpdate method.
@@ -2197,7 +2631,7 @@ type LogProfilesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.List method.
+// LogProfilesClientListOptions contains the optional parameters for the LogProfilesClient.NewListPager method.
 type LogProfilesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -2210,53 +2644,73 @@ type LogProfilesClientUpdateOptions struct {
 // LogSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular log.
 type LogSettings struct {
 	// REQUIRED; a value indicating whether this log is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Name of a Diagnostic Log category for a resource type this setting is applied to. To obtain the list of Diagnostic Log
 	// categories for a resource, first perform a GET diagnostic settings operation.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// Name of a Diagnostic Log category group for a resource type this setting is applied to. To obtain the list of Diagnostic
 	// Log categories for a resource, first perform a GET diagnostic settings
 	// operation.
-	CategoryGroup *string `json:"categoryGroup,omitempty"`
+	CategoryGroup *string
 
 	// the retention policy for this log.
-	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+	RetentionPolicy *RetentionPolicy
 }
 
 // LogicAppReceiver - A logic app receiver.
 type LogicAppReceiver struct {
 	// REQUIRED; The callback url where http request sent to.
-	CallbackURL *string `json:"callbackUrl,omitempty"`
+	CallbackURL *string
 
 	// REQUIRED; The name of the logic app receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The azure resource id of the logic app receiver.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool `json:"useCommonAlertSchema,omitempty"`
+	UseCommonAlertSchema *bool
 }
 
 // LogsIngestionEndpointSpec - Definition of the endpoint used for ingesting logs.
 type LogsIngestionEndpointSpec struct {
 	// READ-ONLY; The endpoint. This property is READ-ONLY.
-	Endpoint *string `json:"endpoint,omitempty" azure:"ro"`
+	Endpoint *string
+}
+
+// ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
+type ManagedServiceIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // ManagementEventAggregationCondition - How the data that is collected should be combined over time.
 type ManagementEventAggregationCondition struct {
 	// the condition operator.
-	Operator *ConditionOperator `json:"operator,omitempty"`
+	Operator *ConditionOperator
 
 	// The threshold value that activates the alert.
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold *float64
 
 	// the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. If specified
 	// then it must be between 5 minutes and 1 day.
-	WindowSize *string `json:"windowSize,omitempty"`
+	WindowSize *string
 }
 
 // ManagementEventRuleCondition - A management event rule condition.
@@ -2264,15 +2718,15 @@ type ManagementEventRuleCondition struct {
 	// REQUIRED; specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of
 	// management events), LocationThresholdRuleCondition (based on the number of failures of a
 	// web test), and ThresholdRuleCondition (based on the threshold of a metric).
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// How the data that is collected should be combined over time and when the alert is activated. Note that for management event
 	// alerts aggregation is optional – if it is not provided then any event will
 	// cause the alert to activate.
-	Aggregation *ManagementEventAggregationCondition `json:"aggregation,omitempty"`
+	Aggregation *ManagementEventAggregationCondition
 
 	// the resource from which the rule collects its data. For this type dataSource will always be of type RuleMetricDataSource.
-	DataSource RuleDataSourceClassification `json:"dataSource,omitempty"`
+	DataSource RuleDataSourceClassification
 }
 
 // GetRuleCondition implements the RuleConditionClassification interface for type ManagementEventRuleCondition.
@@ -2286,52 +2740,55 @@ func (m *ManagementEventRuleCondition) GetRuleCondition() *RuleCondition {
 // Metadata about the resource
 type Metadata struct {
 	// READ-ONLY; Azure offering managing this resource on-behalf-of customer.
-	ProvisionedBy *string `json:"provisionedBy,omitempty" azure:"ro"`
+	ProvisionedBy *string
+
+	// READ-ONLY; Resource Id of azure offering managing this resource on-behalf-of customer.
+	ProvisionedByResourceID *string
 }
 
 // MetadataValue - Represents a metric metadata value.
 type MetadataValue struct {
 	// the name of the metadata.
-	Name *LocalizableString `json:"name,omitempty"`
+	Name *LocalizableString
 
 	// the value of the metadata.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // Metric - The result data of a query.
 type Metric struct {
 	// REQUIRED; the metric Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// REQUIRED; the name and the display name of the metric, i.e. it is localizable string.
-	Name *LocalizableString `json:"name,omitempty"`
+	Name *LocalizableString
 
 	// REQUIRED; the time series returned when a data query is performed.
-	Timeseries []*TimeSeriesElement `json:"timeseries,omitempty"`
+	Timeseries []*TimeSeriesElement
 
 	// REQUIRED; the resource type of the metric resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 
 	// REQUIRED; The unit of the metric.
-	Unit *MetricUnit `json:"unit,omitempty"`
+	Unit *Unit
 
 	// Detailed description of this metric.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// 'Success' or the error details on query failures for this metric.
-	ErrorCode *string `json:"errorCode,omitempty"`
+	ErrorCode *string
 
 	// Error message encountered querying this specific metric.
-	ErrorMessage *string `json:"errorMessage,omitempty"`
+	ErrorMessage *string
 }
 
 // MetricAlertAction - An alert action.
 type MetricAlertAction struct {
 	// the id of the action group to use.
-	ActionGroupID *string `json:"actionGroupId,omitempty"`
+	ActionGroupID *string
 
 	// This field allows specifying custom properties, which would be appended to the alert payload sent as input to the webhook.
-	WebHookProperties map[string]*string `json:"webHookProperties,omitempty"`
+	WebHookProperties map[string]*string
 }
 
 // MetricAlertCriteriaClassification provides polymorphic access to related types.
@@ -2347,10 +2804,10 @@ type MetricAlertCriteriaClassification interface {
 // MetricAlertCriteria - The rule criteria that defines the conditions of the alert rule.
 type MetricAlertCriteria struct {
 	// REQUIRED; specifies the type of the alert criteria.
-	ODataType *Odatatype `json:"odata.type,omitempty"`
+	ODataType *Odatatype
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type MetricAlertCriteria.
@@ -2360,13 +2817,13 @@ func (m *MetricAlertCriteria) GetMetricAlertCriteria() *MetricAlertCriteria { re
 // multiple metric criteria.
 type MetricAlertMultipleResourceMultipleMetricCriteria struct {
 	// REQUIRED; specifies the type of the alert criteria.
-	ODataType *Odatatype `json:"odata.type,omitempty"`
+	ODataType *Odatatype
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// the list of multiple metric criteria for this 'all of' operation.
-	AllOf []MultiMetricCriteriaClassification `json:"allOf,omitempty"`
+	AllOf []MultiMetricCriteriaClassification
 }
 
 // GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type MetricAlertMultipleResourceMultipleMetricCriteria.
@@ -2380,136 +2837,136 @@ func (m *MetricAlertMultipleResourceMultipleMetricCriteria) GetMetricAlertCriter
 // MetricAlertProperties - An alert rule.
 type MetricAlertProperties struct {
 	// REQUIRED; defines the specific alert criteria information.
-	Criteria MetricAlertCriteriaClassification `json:"criteria,omitempty"`
+	Criteria MetricAlertCriteriaClassification
 
 	// REQUIRED; the flag that indicates whether the metric alert is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// REQUIRED; how often the metric alert is evaluated represented in ISO 8601 duration format.
-	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
+	EvaluationFrequency *string
 
 	// REQUIRED; the list of resource id's that this metric alert is scoped to.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 
 	// REQUIRED; Alert severity {0, 1, 2, 3, 4}
-	Severity *int32 `json:"severity,omitempty"`
+	Severity *int32
 
 	// REQUIRED; the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
-	WindowSize *string `json:"windowSize,omitempty"`
+	WindowSize *string
 
 	// the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
-	Actions []*MetricAlertAction `json:"actions,omitempty"`
+	Actions []*MetricAlertAction
 
 	// the flag that indicates whether the alert should be auto resolved or not. The default is true.
-	AutoMitigate *bool `json:"autoMitigate,omitempty"`
+	AutoMitigate *bool
 
 	// the description of the metric alert that will be included in the alert email.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// the region of the target resource(s) on which the alert is created/updated. Mandatory if the scope contains a subscription,
 	// resource group, or more than one resource.
-	TargetResourceRegion *string `json:"targetResourceRegion,omitempty"`
+	TargetResourceRegion *string
 
 	// the resource type of the target resource(s) on which the alert is created/updated. Mandatory if the scope contains a subscription,
 	// resource group, or more than one resource.
-	TargetResourceType *string `json:"targetResourceType,omitempty"`
+	TargetResourceType *string
 
 	// READ-ONLY; the value indicating whether this alert rule is migrated.
-	IsMigrated *bool `json:"isMigrated,omitempty" azure:"ro"`
+	IsMigrated *bool
 
 	// READ-ONLY; Last time the rule was updated in ISO8601 format.
-	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
+	LastUpdatedTime *time.Time
 }
 
 // MetricAlertPropertiesPatch - An alert rule properties for patch.
 type MetricAlertPropertiesPatch struct {
 	// the array of actions that are performed when the alert rule becomes active, and when an alert condition is resolved.
-	Actions []*MetricAlertAction `json:"actions,omitempty"`
+	Actions []*MetricAlertAction
 
 	// the flag that indicates whether the alert should be auto resolved or not. The default is true.
-	AutoMitigate *bool `json:"autoMitigate,omitempty"`
+	AutoMitigate *bool
 
 	// defines the specific alert criteria information.
-	Criteria MetricAlertCriteriaClassification `json:"criteria,omitempty"`
+	Criteria MetricAlertCriteriaClassification
 
 	// the description of the metric alert that will be included in the alert email.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// the flag that indicates whether the metric alert is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// how often the metric alert is evaluated represented in ISO 8601 duration format.
-	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
+	EvaluationFrequency *string
 
 	// the list of resource id's that this metric alert is scoped to.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 
 	// Alert severity {0, 1, 2, 3, 4}
-	Severity *int32 `json:"severity,omitempty"`
+	Severity *int32
 
 	// the region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
-	TargetResourceRegion *string `json:"targetResourceRegion,omitempty"`
+	TargetResourceRegion *string
 
 	// the resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.
-	TargetResourceType *string `json:"targetResourceType,omitempty"`
+	TargetResourceType *string
 
 	// the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold.
-	WindowSize *string `json:"windowSize,omitempty"`
+	WindowSize *string
 
 	// READ-ONLY; the value indicating whether this alert rule is migrated.
-	IsMigrated *bool `json:"isMigrated,omitempty" azure:"ro"`
+	IsMigrated *bool
 
 	// READ-ONLY; Last time the rule was updated in ISO8601 format.
-	LastUpdatedTime *time.Time `json:"lastUpdatedTime,omitempty" azure:"ro"`
+	LastUpdatedTime *time.Time
 }
 
 // MetricAlertResource - The metric alert resource.
 type MetricAlertResource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The alert rule properties of the resource.
-	Properties *MetricAlertProperties `json:"properties,omitempty"`
+	Properties *MetricAlertProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // MetricAlertResourceCollection - Represents a collection of alert rule resources.
 type MetricAlertResourceCollection struct {
 	// the values for the alert rule resources.
-	Value []*MetricAlertResource `json:"value,omitempty"`
+	Value []*MetricAlertResource
 }
 
 // MetricAlertResourcePatch - The metric alert resource for patch operations.
 type MetricAlertResourcePatch struct {
 	// The alert rule properties of the resource.
-	Properties *MetricAlertPropertiesPatch `json:"properties,omitempty"`
+	Properties *MetricAlertPropertiesPatch
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // MetricAlertSingleResourceMultipleMetricCriteria - Specifies the metric alert criteria for a single resource that has multiple
 // metric criteria.
 type MetricAlertSingleResourceMultipleMetricCriteria struct {
 	// REQUIRED; specifies the type of the alert criteria.
-	ODataType *Odatatype `json:"odata.type,omitempty"`
+	ODataType *Odatatype
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// The list of metric criteria for this 'all of' operation.
-	AllOf []*MetricCriteria `json:"allOf,omitempty"`
+	AllOf []*MetricCriteria
 }
 
 // GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type MetricAlertSingleResourceMultipleMetricCriteria.
@@ -2523,34 +2980,34 @@ func (m *MetricAlertSingleResourceMultipleMetricCriteria) GetMetricAlertCriteria
 // MetricAlertStatus - An alert status.
 type MetricAlertStatus struct {
 	// The alert rule arm id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The status name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The alert status properties of the metric alert status.
-	Properties *MetricAlertStatusProperties `json:"properties,omitempty"`
+	Properties *MetricAlertStatusProperties
 
 	// The extended resource type name.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // MetricAlertStatusCollection - Represents a collection of alert rule resources.
 type MetricAlertStatusCollection struct {
 	// the values for the alert rule resources.
-	Value []*MetricAlertStatus `json:"value,omitempty"`
+	Value []*MetricAlertStatus
 }
 
 // MetricAlertStatusProperties - An alert status properties.
 type MetricAlertStatusProperties struct {
 	// An object describing the type of the dimensions.
-	Dimensions map[string]*string `json:"dimensions,omitempty"`
+	Dimensions map[string]*string
 
 	// status value
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// UTC time when the status was checked.
-	Timestamp *time.Time `json:"timestamp,omitempty"`
+	Timestamp *time.Time
 }
 
 // MetricAlertsClientCreateOrUpdateOptions contains the optional parameters for the MetricAlertsClient.CreateOrUpdate method.
@@ -2568,13 +3025,13 @@ type MetricAlertsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MetricAlertsClientListByResourceGroupOptions contains the optional parameters for the MetricAlertsClient.ListByResourceGroup
+// MetricAlertsClientListByResourceGroupOptions contains the optional parameters for the MetricAlertsClient.NewListByResourceGroupPager
 // method.
 type MetricAlertsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MetricAlertsClientListBySubscriptionOptions contains the optional parameters for the MetricAlertsClient.ListBySubscription
+// MetricAlertsClientListBySubscriptionOptions contains the optional parameters for the MetricAlertsClient.NewListBySubscriptionPager
 // method.
 type MetricAlertsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -2600,68 +3057,68 @@ type MetricAlertsStatusClientListOptions struct {
 // period for that time grain.
 type MetricAvailability struct {
 	// the retention period for the metric at the specified timegrain. Expressed as a duration 'PT1M', 'P1D', etc.
-	Retention *string `json:"retention,omitempty"`
+	Retention *string
 
 	// the time grain specifies the aggregation interval for the metric. Expressed as a duration 'PT1M', 'P1D', etc.
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 }
 
 // MetricBaselinesProperties - The response to a metric baselines query.
 type MetricBaselinesProperties struct {
 	// REQUIRED; The baseline for each time series that was queried.
-	Baselines []*TimeSeriesBaseline `json:"baselines,omitempty"`
+	Baselines []*TimeSeriesBaseline
 
 	// REQUIRED; The interval (window size) for which the metric data was returned in. This may be adjusted in the future and
 	// returned back from what was originally requested. This is not present if a metadata request
 	// was made.
-	Interval *string `json:"interval,omitempty"`
+	Interval *string
 
 	// REQUIRED; The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
 	// '/'. This may be adjusted in the future and returned back from what was originally
 	// requested.
-	Timespan *string `json:"timespan,omitempty"`
+	Timespan *string
 
 	// The namespace of the metrics been queried.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 }
 
 // MetricBaselinesResponse - A list of metric baselines.
 type MetricBaselinesResponse struct {
 	// The list of metric baselines.
-	Value []*SingleMetricBaseline `json:"value,omitempty"`
+	Value []*SingleMetricBaseline
 }
 
 // MetricCriteria - Criterion to filter metrics.
 type MetricCriteria struct {
 	// REQUIRED; Specifies the type of threshold criteria
-	CriterionType *CriterionType `json:"criterionType,omitempty"`
+	CriterionType *CriterionType
 
 	// REQUIRED; Name of the metric.
-	MetricName *string `json:"metricName,omitempty"`
+	MetricName *string
 
 	// REQUIRED; Name of the criteria.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; the criteria operator.
-	Operator *Operator `json:"operator,omitempty"`
+	Operator *Operator
 
 	// REQUIRED; the criteria threshold value that activates the alert.
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold *float64
 
 	// REQUIRED; the criteria time aggregation types.
-	TimeAggregation *AggregationTypeEnum `json:"timeAggregation,omitempty"`
+	TimeAggregation *AggregationTypeEnum
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of dimension conditions.
-	Dimensions []*MetricDimension `json:"dimensions,omitempty"`
+	Dimensions []*MetricDimension
 
 	// Namespace of the metric.
-	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	MetricNamespace *string
 
 	// Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped.
-	SkipMetricValidation *bool `json:"skipMetricValidation,omitempty"`
+	SkipMetricValidation *bool
 }
 
 // GetMultiMetricCriteria implements the MultiMetricCriteriaClassification interface for type MetricCriteria.
@@ -2681,100 +3138,107 @@ func (m *MetricCriteria) GetMultiMetricCriteria() *MultiMetricCriteria {
 // MetricDefinition - Metric definition class specifies the metadata for a metric.
 type MetricDefinition struct {
 	// Custom category name for this metric.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// the name and the display name of the dimension, i.e. it is a localizable string.
-	Dimensions []*LocalizableString `json:"dimensions,omitempty"`
+	Dimensions []*LocalizableString
 
 	// Detailed description of this metric.
-	DisplayDescription *string `json:"displayDescription,omitempty"`
+	DisplayDescription *string
 
 	// the resource identifier of the metric definition.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Flag to indicate whether the dimension is required.
-	IsDimensionRequired *bool `json:"isDimensionRequired,omitempty"`
+	IsDimensionRequired *bool
 
 	// the collection of what aggregation intervals are available to be queried.
-	MetricAvailabilities []*MetricAvailability `json:"metricAvailabilities,omitempty"`
+	MetricAvailabilities []*MetricAvailability
 
 	// The class of the metric.
-	MetricClass *MetricClass `json:"metricClass,omitempty"`
+	MetricClass *MetricClass
 
 	// the name and the display name of the metric, i.e. it is a localizable string.
-	Name *LocalizableString `json:"name,omitempty"`
+	Name *LocalizableString
 
 	// the namespace the metric belongs to.
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// the primary aggregation type value defining how to use the values for display.
-	PrimaryAggregationType *AggregationType `json:"primaryAggregationType,omitempty"`
+	PrimaryAggregationType *AggregationType
 
 	// the resource identifier of the resource that emitted the metric.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// the collection of what aggregation types are supported.
-	SupportedAggregationTypes []*AggregationType `json:"supportedAggregationTypes,omitempty"`
+	SupportedAggregationTypes []*AggregationType
 
-	// The unit of the metric.
-	Unit *MetricUnit `json:"unit,omitempty"`
+	// the unit of the metric.
+	Unit *MetricUnit
 }
 
 // MetricDefinitionCollection - Represents collection of metric definitions.
 type MetricDefinitionCollection struct {
 	// REQUIRED; the values for the metric definitions.
-	Value []*MetricDefinition `json:"value,omitempty"`
+	Value []*MetricDefinition
 }
 
-// MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.List method.
+// MetricDefinitionsClientListAtSubscriptionScopeOptions contains the optional parameters for the MetricDefinitionsClient.NewListAtSubscriptionScopePager
+// method.
+type MetricDefinitionsClientListAtSubscriptionScopeOptions struct {
+	// Metric namespace where the metrics you want reside.
+	Metricnamespace *string
+}
+
+// MetricDefinitionsClientListOptions contains the optional parameters for the MetricDefinitionsClient.NewListPager method.
 type MetricDefinitionsClientListOptions struct {
-	// Metric namespace to query metric definitions for.
+	// Metric namespace where the metrics you want reside.
 	Metricnamespace *string
 }
 
 // MetricDimension - Specifies a metric dimension.
 type MetricDimension struct {
 	// REQUIRED; Name of the dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; the dimension operator. Only 'Include' and 'Exclude' are supported
-	Operator *string `json:"operator,omitempty"`
+	Operator *string
 
 	// REQUIRED; list of dimension values.
-	Values []*string `json:"values,omitempty"`
+	Values []*string
 }
 
 // MetricNamespace - Metric namespace class specifies the metadata for a metric namespace.
 type MetricNamespace struct {
 	// Kind of namespace
-	Classification *NamespaceClassification `json:"classification,omitempty"`
+	Classification *NamespaceClassification
 
 	// The ID of the metric namespace.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The escaped name of the namespace.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Properties which include the fully qualified namespace name.
-	Properties *MetricNamespaceName `json:"properties,omitempty"`
+	Properties *MetricNamespaceName
 
 	// The type of the namespace.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // MetricNamespaceCollection - Represents collection of metric namespaces.
 type MetricNamespaceCollection struct {
 	// REQUIRED; The values for the metric namespaces.
-	Value []*MetricNamespace `json:"value,omitempty"`
+	Value []*MetricNamespace
 }
 
 // MetricNamespaceName - The fully qualified metric namespace name.
 type MetricNamespaceName struct {
 	// The metric namespace name.
-	MetricNamespaceName *string `json:"metricNamespaceName,omitempty"`
+	MetricNamespaceName *string
 }
 
-// MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.List method.
+// MetricNamespacesClientListOptions contains the optional parameters for the MetricNamespacesClient.NewListPager method.
 type MetricNamespacesClientListOptions struct {
 	// The ISO 8601 conform Date start time from which to query for metric namespaces.
 	StartTime *string
@@ -2783,113 +3247,213 @@ type MetricNamespacesClientListOptions struct {
 // MetricSettings - Part of MultiTenantDiagnosticSettings. Specifies the settings for a particular metric.
 type MetricSettings struct {
 	// REQUIRED; a value indicating whether this category is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// Name of a Diagnostic Metric category for a resource type this setting is applied to. To obtain the list of Diagnostic metric
 	// categories for a resource, first perform a GET diagnostic settings
 	// operation.
-	Category *string `json:"category,omitempty"`
+	Category *string
 
 	// the retention policy for this category.
-	RetentionPolicy *RetentionPolicy `json:"retentionPolicy,omitempty"`
+	RetentionPolicy *RetentionPolicy
 
 	// the timegrain of the metric in ISO8601 format.
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 }
 
 // MetricSingleDimension - The metric dimension name and value.
 type MetricSingleDimension struct {
 	// REQUIRED; Name of the dimension.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Value of the dimension.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // MetricTrigger - The trigger that results in a scaling action.
 type MetricTrigger struct {
 	// REQUIRED; the name of the metric that defines what the rule monitors.
-	MetricName *string `json:"metricName,omitempty"`
+	MetricName *string
 
 	// REQUIRED; the resource identifier of the resource the rule monitors.
-	MetricResourceURI *string `json:"metricResourceUri,omitempty"`
+	MetricResourceURI *string
 
 	// REQUIRED; the operator that is used to compare the metric data and the threshold.
-	Operator *ComparisonOperationType `json:"operator,omitempty"`
+	Operator *ComparisonOperationType
 
 	// REQUIRED; the metric statistic type. How the metrics from multiple instances are combined.
-	Statistic *MetricStatisticType `json:"statistic,omitempty"`
+	Statistic *MetricStatisticType
 
 	// REQUIRED; the threshold of the metric that triggers the scale action.
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold *float64
 
 	// REQUIRED; time aggregation type. How the data that is collected should be combined over time. The default value is Average.
-	TimeAggregation *TimeAggregationType `json:"timeAggregation,omitempty"`
+	TimeAggregation *TimeAggregationType
 
 	// REQUIRED; the granularity of metrics the rule monitors. Must be one of the predefined values returned from metric definitions
 	// for the metric. Must be between 12 hours and 1 minute.
-	TimeGrain *string `json:"timeGrain,omitempty"`
+	TimeGrain *string
 
 	// REQUIRED; the range of time in which instance data is collected. This value must be greater than the delay in metric collection,
 	// which can vary from resource-to-resource. Must be between 12 hours and 5 minutes.
-	TimeWindow *string `json:"timeWindow,omitempty"`
+	TimeWindow *string
 
 	// List of dimension conditions. For example: [{"DimensionName":"AppName","Operator":"Equals","Values":["App1"]},{"DimensionName":"Deployment","Operator":"Equals","Values":["default"]}].
-	Dimensions []*ScaleRuleMetricDimension `json:"dimensions,omitempty"`
+	Dimensions []*ScaleRuleMetricDimension
 
 	// a value indicating whether metric should divide per instance.
-	DividePerInstance *bool `json:"dividePerInstance,omitempty"`
+	DividePerInstance *bool
 
 	// the namespace of the metric that defines what the rule monitors.
-	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	MetricNamespace *string
 
 	// the location of the resource the rule monitors.
-	MetricResourceLocation *string `json:"metricResourceLocation,omitempty"`
+	MetricResourceLocation *string
 }
 
 // MetricValue - Represents a metric value.
 type MetricValue struct {
 	// REQUIRED; the timestamp for the metric value in ISO 8601 format.
-	TimeStamp *time.Time `json:"timeStamp,omitempty"`
+	TimeStamp *time.Time
 
 	// the average value in the time range.
-	Average *float64 `json:"average,omitempty"`
+	Average *float64
 
 	// the number of samples in the time range. Can be used to determine the number of values that contributed to the average
 	// value.
-	Count *float64 `json:"count,omitempty"`
+	Count *float64
 
 	// the greatest value in the time range.
-	Maximum *float64 `json:"maximum,omitempty"`
+	Maximum *float64
 
 	// the least value in the time range.
-	Minimum *float64 `json:"minimum,omitempty"`
+	Minimum *float64
 
 	// the sum of all of the values in the time range.
-	Total *float64 `json:"total,omitempty"`
+	Total *float64
+}
+
+// Metrics - Information about metrics for the workspace
+type Metrics struct {
+	// READ-ONLY; An internal identifier for the metrics container. Only to be used by the system
+	InternalID *string
+
+	// READ-ONLY; The Prometheus query endpoint for the workspace
+	PrometheusQueryEndpoint *string
+}
+
+// MetricsClientListAtSubscriptionScopeOptions contains the optional parameters for the MetricsClient.ListAtSubscriptionScope
+// method.
+type MetricsClientListAtSubscriptionScopeOptions struct {
+	// The list of aggregation types (comma separated) to retrieve.
+	Aggregation *string
+	// When set to true, if the timespan passed in is not supported by this metric, the API will return the result using the closest
+	// supported timespan. When set to false, an error is returned for invalid
+	// timespan parameters. Defaults to false.
+	AutoAdjustTimegrain *bool
+	// The $filter is used to reduce the set of metric data returned.
+	// Example:
+	// Metric contains metadata A, B and C.
+	// - Return all time series of C where A = a1 and B = b1 or b2
+	// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
+	// - Invalid variant:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
+	// This is invalid because the logical or operator cannot separate two different metadata names.
+	// - Return all time series where A = a1, B = b1 and C = c1:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
+	// - Return all time series where A = a1
+	// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
+	Filter *string
+	// The interval (i.e. timegrain) of the query.
+	Interval *string
+	// The names of the metrics (comma separated) to retrieve.
+	Metricnames *string
+	// Metric namespace where the metrics you want reside.
+	Metricnamespace *string
+	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
+	// asc.
+	Orderby *string
+	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
+	ResultType *MetricResultType
+	// The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
+	Timespan *string
+	// The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
+	Top *int32
+	// When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for invalid
+	// filter parameters. Defaults to true.
+	ValidateDimensions *bool
+}
+
+// MetricsClientListAtSubscriptionScopePostOptions contains the optional parameters for the MetricsClient.ListAtSubscriptionScopePost
+// method.
+type MetricsClientListAtSubscriptionScopePostOptions struct {
+	// The list of aggregation types (comma separated) to retrieve.
+	Aggregation *string
+	// When set to true, if the timespan passed in is not supported by this metric, the API will return the result using the closest
+	// supported timespan. When set to false, an error is returned for invalid
+	// timespan parameters. Defaults to false.
+	AutoAdjustTimegrain *bool
+	// Parameters serialized in the body
+	Body *SubscriptionScopeMetricsRequestBodyParameters
+	// The $filter is used to reduce the set of metric data returned.
+	// Example:
+	// Metric contains metadata A, B and C.
+	// - Return all time series of C where A = a1 and B = b1 or b2
+	// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
+	// - Invalid variant:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
+	// This is invalid because the logical or operator cannot separate two different metadata names.
+	// - Return all time series where A = a1, B = b1 and C = c1:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
+	// - Return all time series where A = a1
+	// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
+	Filter *string
+	// The interval (i.e. timegrain) of the query.
+	Interval *string
+	// The names of the metrics (comma separated) to retrieve.
+	Metricnames *string
+	// Metric namespace where the metrics you want reside.
+	Metricnamespace *string
+	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
+	// asc.
+	Orderby *string
+	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
+	ResultType *MetricResultType
+	// The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
+	Timespan *string
+	// The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
+	Top *int32
+	// When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for invalid
+	// filter parameters. Defaults to true.
+	ValidateDimensions *bool
 }
 
 // MetricsClientListOptions contains the optional parameters for the MetricsClient.List method.
 type MetricsClientListOptions struct {
 	// The list of aggregation types (comma separated) to retrieve.
 	Aggregation *string
-	// The $filter is used to reduce the set of metric data returned. Example: Metric contains metadata A, B and C. - Return all
-	// time series of C where A = a1 and B = b1 or b2 $filter=A eq 'a1' and B eq 'b1'
-	// or B eq 'b2' and C eq '' - Invalid variant: $filter=A eq 'a1' and B eq 'b1' and C eq '' or B = 'b2' This is invalid because
-	// the logical or operator cannot separate two different metadata names. -
-	// Return all time series where A = a1, B = b1 and C = c1: $filter=A eq 'a1' and B eq 'b1' and C eq 'c1' - Return all time
-	// series where A = a1 $filter=A eq 'a1' and B eq '' and C eq ''. Special case:
-	// When dimension name or dimension value uses round brackets. Eg: When dimension name is dim (test) 1 Instead of using $filter=
-	// "dim (test) 1 eq '' " use $filter= "dim %2528test%2529 1 eq '' " When
-	// dimension name is dim (test) 3 and dimension value is dim3 (test) val Instead of using $filter= "dim (test) 3 eq 'dim3
-	// (test) val' " use $filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "
+	// When set to true, if the timespan passed in is not supported by this metric, the API will return the result using the closest
+	// supported timespan. When set to false, an error is returned for invalid
+	// timespan parameters. Defaults to false.
+	AutoAdjustTimegrain *bool
+	// The $filter is used to reduce the set of metric data returned.
+	// Example:
+	// Metric contains metadata A, B and C.
+	// - Return all time series of C where A = a1 and B = b1 or b2
+	// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
+	// - Invalid variant:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
+	// This is invalid because the logical or operator cannot separate two different metadata names.
+	// - Return all time series where A = a1, B = b1 and C = c1:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
+	// - Return all time series where A = a1
+	// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
 	Filter *string
 	// The interval (i.e. timegrain) of the query.
 	Interval *string
-	// The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself has a comma in it then use
-	// %2 to indicate it. Eg: 'Metric,Name1' should be 'Metric%2Name1'
+	// The names of the metrics (comma separated) to retrieve.
 	Metricnames *string
-	// Metric namespace to query metric definitions for.
+	// Metric namespace where the metrics you want reside.
 	Metricnamespace *string
 	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
 	// asc.
@@ -2900,6 +3464,28 @@ type MetricsClientListOptions struct {
 	Timespan *string
 	// The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
 	Top *int32
+	// When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for invalid
+	// filter parameters. Defaults to true.
+	ValidateDimensions *bool
+}
+
+// MetricsIngestionEndpointSpec - Definition of the endpoint used for ingesting metrics.
+type MetricsIngestionEndpointSpec struct {
+	// READ-ONLY; The endpoint. This property is READ-ONLY.
+	Endpoint *string
+}
+
+// MonitoringAccountDestination - Monitoring account destination.
+type MonitoringAccountDestination struct {
+	// The resource ID of the monitoring account.
+	AccountResourceID *string
+
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string
+
+	// READ-ONLY; The immutable ID of the account.
+	AccountID *string
 }
 
 // MultiMetricCriteriaClassification provides polymorphic access to related types.
@@ -2914,28 +3500,28 @@ type MultiMetricCriteriaClassification interface {
 // MultiMetricCriteria - The types of conditions for a multi resource alert.
 type MultiMetricCriteria struct {
 	// REQUIRED; Specifies the type of threshold criteria
-	CriterionType *CriterionType `json:"criterionType,omitempty"`
+	CriterionType *CriterionType
 
 	// REQUIRED; Name of the metric.
-	MetricName *string `json:"metricName,omitempty"`
+	MetricName *string
 
 	// REQUIRED; Name of the criteria.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; the criteria time aggregation types.
-	TimeAggregation *AggregationTypeEnum `json:"timeAggregation,omitempty"`
+	TimeAggregation *AggregationTypeEnum
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// List of dimension conditions.
-	Dimensions []*MetricDimension `json:"dimensions,omitempty"`
+	Dimensions []*MetricDimension
 
 	// Namespace of the metric.
-	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	MetricNamespace *string
 
 	// Allows creating an alert rule on a custom metric that isn't yet emitted, by causing the metric validation to be skipped.
-	SkipMetricValidation *bool `json:"skipMetricValidation,omitempty"`
+	SkipMetricValidation *bool
 }
 
 // GetMultiMetricCriteria implements the MultiMetricCriteriaClassification interface for type MultiMetricCriteria.
@@ -2944,105 +3530,160 @@ func (m *MultiMetricCriteria) GetMultiMetricCriteria() *MultiMetricCriteria { re
 // NetworkRuleSet - Definition of the network rules.
 type NetworkRuleSet struct {
 	// The configuration to set whether network access from public internet to the endpoints are allowed.
-	PublicNetworkAccess *KnownPublicNetworkAccessOptions `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *KnownPublicNetworkAccessOptions
 }
 
 // NotificationRequestBody - The request body which contain contact detail metadata
 type NotificationRequestBody struct {
 	// REQUIRED; The value of the supported alert type. Supported alert type values are: servicehealth, metricstaticthreshold,
 	// metricsdynamicthreshold, logalertv2, smartalert, webtestalert, logalertv1numresult,
-	// logalertv1metricmeasurement, resourcehealth, activitylog, budget
-	AlertType *string `json:"alertType,omitempty"`
+	// logalertv1metricmeasurement, resourcehealth, activitylog, actualcostbudget, forecastedbudget
+	AlertType *string
 
 	// The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are
 	// supported.
-	ArmRoleReceivers []*ArmRoleReceiver `json:"armRoleReceivers,omitempty"`
+	ArmRoleReceivers []*ArmRoleReceiver
 
 	// The list of AutomationRunbook receivers that are part of this action group.
-	AutomationRunbookReceivers []*AutomationRunbookReceiver `json:"automationRunbookReceivers,omitempty"`
+	AutomationRunbookReceivers []*AutomationRunbookReceiver
 
 	// The list of AzureAppPush receivers that are part of this action group.
-	AzureAppPushReceivers []*AzureAppPushReceiver `json:"azureAppPushReceivers,omitempty"`
+	AzureAppPushReceivers []*AzureAppPushReceiver
 
 	// The list of azure function receivers that are part of this action group.
-	AzureFunctionReceivers []*AzureFunctionReceiver `json:"azureFunctionReceivers,omitempty"`
+	AzureFunctionReceivers []*AzureFunctionReceiver
 
 	// The list of email receivers that are part of this action group.
-	EmailReceivers []*EmailReceiver `json:"emailReceivers,omitempty"`
+	EmailReceivers []*EmailReceiver
 
 	// The list of event hub receivers that are part of this action group.
-	EventHubReceivers []*EventHubReceiver `json:"eventHubReceivers,omitempty"`
+	EventHubReceivers []*EventHubReceiver
 
 	// The list of ITSM receivers that are part of this action group.
-	ItsmReceivers []*ItsmReceiver `json:"itsmReceivers,omitempty"`
+	ItsmReceivers []*ItsmReceiver
 
 	// The list of logic app receivers that are part of this action group.
-	LogicAppReceivers []*LogicAppReceiver `json:"logicAppReceivers,omitempty"`
+	LogicAppReceivers []*LogicAppReceiver
 
 	// The list of SMS receivers that are part of this action group.
-	SmsReceivers []*SmsReceiver `json:"smsReceivers,omitempty"`
+	SmsReceivers []*SmsReceiver
 
 	// The list of voice receivers that are part of this action group.
-	VoiceReceivers []*VoiceReceiver `json:"voiceReceivers,omitempty"`
+	VoiceReceivers []*VoiceReceiver
 
 	// The list of webhook receivers that are part of this action group.
-	WebhookReceivers []*WebhookReceiver `json:"webhookReceivers,omitempty"`
+	WebhookReceivers []*WebhookReceiver
 }
 
 // Operation - Microsoft Insights API operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
+}
+
+// OperationAutoGenerated - Details of a REST API operation, returned from the Resource Provider Operations API
+type OperationAutoGenerated struct {
+	// Localized display information for this particular operation.
+	Display *OperationDisplayAutoGenerated
+
+	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+	ActionType *ActionType
+
+	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
+	// operations.
+	IsDataAction *bool
+
+	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
+	// "Microsoft.Compute/virtualMachines/capture/action"
+	Name *string
+
+	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
+	// value is "user,system"
+	Origin *Origin
 }
 
 // OperationDisplay - Display metadata associated with the operation.
 type OperationDisplay struct {
 	// Operation type: Read, write, delete, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Service provider: Microsoft.Insights
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource on which the operation is performed: AlertRules, Autoscale, etc.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
+}
+
+// OperationDisplayAutoGenerated - Localized display information for this particular operation.
+type OperationDisplayAutoGenerated struct {
+	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
+	Description *string
+
+	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
+	// Machine", "Restart Virtual Machine".
+	Operation *string
+
+	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
+	// Compute".
+	Provider *string
+
+	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
+	// Schedule Collections".
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list Microsoft.Insights operations. It contains a list of operations and
 // a URL link to get the next set of results.
 type OperationListResult struct {
 	// URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of operations supported by the Microsoft.Insights provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
+}
+
+// OperationListResultAutoGenerated - A list of REST API operations supported by an Azure Resource Provider. It contains an
+// URL link to get the next set of results.
+type OperationListResultAutoGenerated struct {
+	// READ-ONLY; URL to get the next set of operation list results (if there are any).
+	NextLink *string
+
+	// READ-ONLY; List of operations supported by the resource provider
+	Value []*OperationAutoGenerated
 }
 
 // OperationStatus - The status of operation.
 type OperationStatus struct {
 	// End time of the job in standard ISO8601 format.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// The error detail of the operation if any.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 
 	// The operation Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// The operation name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Start time of the job in standard ISO8601 format.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 
 	// The status of the operation.
-	Status *string `json:"status,omitempty"`
+	Status *string
 }
 
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// OperationsForMonitorClientListOptions contains the optional parameters for the OperationsForMonitorClient.NewListPager
+// method.
+type OperationsForMonitorClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -3052,28 +3693,38 @@ type PerfCounterDataSource struct {
 	// A list of specifier names of the performance counters you want to collect. Use a wildcard (*) to collect a counter for
 	// all instances. To get a list of performance counters on Windows, run the command
 	// 'typeperf'.
-	CounterSpecifiers []*string `json:"counterSpecifiers,omitempty"`
+	CounterSpecifiers []*string
 
 	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The number of seconds between consecutive counter measurements (samples).
-	SamplingFrequencyInSeconds *int32 `json:"samplingFrequencyInSeconds,omitempty"`
+	SamplingFrequencyInSeconds *int32
 
 	// List of streams that this data source will be sent to. A stream indicates what schema will be used for this data and usually
 	// what table in Log Analytics the data will be sent to.
-	Streams []*KnownPerfCounterDataSourceStreams `json:"streams,omitempty"`
+	Streams []*KnownPerfCounterDataSourceStreams
+}
+
+// PlatformTelemetryDataSource - Definition of platform telemetry data source configuration
+type PlatformTelemetryDataSource struct {
+	// REQUIRED; List of platform telemetry streams to collect
+	Streams []*string
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string
 }
 
 // PredictiveAutoscalePolicy - The parameters for enabling predictive autoscale.
 type PredictiveAutoscalePolicy struct {
 	// REQUIRED; the predictive autoscale mode
-	ScaleMode *PredictiveAutoscalePolicyScaleMode `json:"scaleMode,omitempty"`
+	ScaleMode *PredictiveAutoscalePolicyScaleMode
 
 	// the amount of time to specify by which instances are launched in advance. It must be between 1 minute and 60 minutes in
 	// ISO 8601 format.
-	ScaleLookAheadTime *string `json:"scaleLookAheadTime,omitempty"`
+	ScaleLookAheadTime *string
 }
 
 // PredictiveMetricClientGetOptions contains the optional parameters for the PredictiveMetricClient.Get method.
@@ -3084,71 +3735,71 @@ type PredictiveMetricClientGetOptions struct {
 // PredictiveResponse - The response to a metrics query.
 type PredictiveResponse struct {
 	// the value of the collection.
-	Data []*PredictiveValue `json:"data,omitempty"`
+	Data []*PredictiveValue
 
 	// The interval (window size) for which the metric data was returned in. This may be adjusted in the future and returned back
 	// from what was originally requested. This is not present if a metadata request
 	// was made.
-	Interval *string `json:"interval,omitempty"`
+	Interval *string
 
 	// The metrics being queried
-	MetricName *string `json:"metricName,omitempty"`
+	MetricName *string
 
 	// resource of the predictive metric.
-	TargetResourceID *string `json:"targetResourceId,omitempty"`
+	TargetResourceID *string
 
 	// The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by '/'. This
 	// may be adjusted in the future and returned back from what was originally
 	// requested.
-	Timespan *string `json:"timespan,omitempty"`
+	Timespan *string
 }
 
 // PredictiveValue - Represents a predictive metric value in the given bucket.
 type PredictiveValue struct {
 	// REQUIRED; the timestamp for the metric value in ISO 8601 format.
-	TimeStamp *time.Time `json:"timeStamp,omitempty"`
+	TimeStamp *time.Time
 
 	// REQUIRED; Predictive value in this time bucket.
-	Value *float64 `json:"value,omitempty"`
+	Value *float64
 }
 
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
@@ -3180,34 +3831,34 @@ type PrivateEndpointConnectionsClientListByPrivateLinkScopeOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -3225,6 +3876,15 @@ type PrivateLinkResourcesClientListByPrivateLinkScopeOptions struct {
 // method.
 type PrivateLinkScopeOperationStatusClientGetOptions struct {
 	// placeholder for future optional parameters
+}
+
+type PrivateLinkScopedResource struct {
+	// The resourceId of the Azure Monitor Private Link Scope Scoped Resource through which this DCE is associated with a Azure
+	// Monitor Private Link Scope.
+	ResourceID *string
+
+	// The immutableId of the Azure Monitor Private Link Scope Resource to which the association is.
+	ScopeID *string
 }
 
 // PrivateLinkScopedResourcesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.BeginCreateOrUpdate
@@ -3247,7 +3907,7 @@ type PrivateLinkScopedResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.ListByPrivateLinkScope
+// PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions contains the optional parameters for the PrivateLinkScopedResourcesClient.NewListByPrivateLinkScopePager
 // method.
 type PrivateLinkScopedResourcesClientListByPrivateLinkScopeOptions struct {
 	// placeholder for future optional parameters
@@ -3271,13 +3931,13 @@ type PrivateLinkScopesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkScopesClient.ListByResourceGroup
+// PrivateLinkScopesClientListByResourceGroupOptions contains the optional parameters for the PrivateLinkScopesClient.NewListByResourceGroupPager
 // method.
 type PrivateLinkScopesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkScopesClientListOptions contains the optional parameters for the PrivateLinkScopesClient.List method.
+// PrivateLinkScopesClientListOptions contains the optional parameters for the PrivateLinkScopesClient.NewListPager method.
 type PrivateLinkScopesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -3291,38 +3951,52 @@ type PrivateLinkScopesClientUpdateTagsOptions struct {
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
+// PrometheusForwarderDataSource - Definition of Prometheus metrics forwarding configuration.
+type PrometheusForwarderDataSource struct {
+	// The list of label inclusion filters in the form of label "name-value" pairs. Currently only one label is supported: 'microsoftmetricsinclude_label'.
+	// Label values are matched case-insensitively.
+	LabelIncludeFilter map[string]*string
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string
+
+	// List of streams that this data source will be sent to.
+	Streams []*KnownPrometheusForwarderDataSourceStreams
 }
 
 // ProxyResource - An azure resource object
 type ProxyResource struct {
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ProxyResourceAutoGenerated - The resource model definition for a Azure Resource Manager proxy resource. It will not have
 // tags and a location
 type ProxyResourceAutoGenerated struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Recurrence - The repeating times at which this profile begins. This element is not used if the FixedDate element is used.
@@ -3330,23 +4004,23 @@ type Recurrence struct {
 	// REQUIRED; the recurrence frequency. How often the schedule profile should take effect. This value must be Week, meaning
 	// each week will have the same set of profiles. For example, to set a daily schedule, set
 	// schedule to every day of the week. The frequency property specifies that the schedule is repeated weekly.
-	Frequency *RecurrenceFrequency `json:"frequency,omitempty"`
+	Frequency *RecurrenceFrequency
 
 	// REQUIRED; the scheduling constraints for when the profile begins.
-	Schedule *RecurrentSchedule `json:"schedule,omitempty"`
+	Schedule *RecurrentSchedule
 }
 
 // RecurrentSchedule - The scheduling constraints for when the profile begins.
 type RecurrentSchedule struct {
 	// REQUIRED; the collection of days that the profile takes effect on. Possible values are Sunday through Saturday.
-	Days []*string `json:"days,omitempty"`
+	Days []*string
 
 	// REQUIRED; A collection of hours that the profile takes effect on. Values supported are 0 to 23 on the 24-hour clock (AM/PM
 	// times are not supported).
-	Hours []*int32 `json:"hours,omitempty"`
+	Hours []*int32
 
 	// REQUIRED; A collection of minutes at which the profile takes effect at.
-	Minutes []*int32 `json:"minutes,omitempty"`
+	Minutes []*int32
 
 	// REQUIRED; the timezone for the hours of the profile. Some examples of valid time zones are: Dateline Standard Time, UTC-11,
 	// Hawaiian Standard Time, Alaskan Standard Time, Pacific Standard Time (Mexico), Pacific
@@ -3375,102 +4049,140 @@ type RecurrentSchedule struct {
 	// Pacific Standard Time, Tasmania Standard Time, Magadan Standard Time, Vladivostok Standard Time, Russia Time Zone 10, Central
 	// Pacific Standard Time, Russia Time Zone 11, New Zealand Standard Time,
 	// UTC+12, Fiji Standard Time, Kamchatka Standard Time, Tonga Standard Time, Samoa Standard Time, Line Islands Standard Time
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // Resource - The autoscale setting resource.
 type Resource struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Gets or sets a list of key value pairs that describe the resource. These tags can be used in viewing and grouping this
 	// resource (across resource groups). A maximum of 15 tags can be provided for a
 	// resource. Each tag must have a key no greater in length than 128 characters and a value no greater in length than 256 characters.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The system metadata related to the response.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceAutoGenerated - An azure resource object
 type ResourceAutoGenerated struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceAutoGenerated2 - An azure resource object
 type ResourceAutoGenerated2 struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceAutoGenerated3 - Common fields that are returned in the response for all Azure Resource Manager resources
 type ResourceAutoGenerated3 struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ResourceAutoGenerated4 - An azure resource object
 type ResourceAutoGenerated4 struct {
 	// REQUIRED; Resource location
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// ResourceAutoGenerated5 - Common fields that are returned in the response for all Azure Resource Manager resources
+type ResourceAutoGenerated5 struct {
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
 // ResourceForUpdate - Definition of ARM tracked top level resource properties for update operation.
 type ResourceForUpdate struct {
+	// Managed Service Identity.
+	Identity *ResourceForUpdateIdentity
+
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
+}
+
+// ResourceForUpdateIdentity - Managed Service Identity.
+type ResourceForUpdateIdentity struct {
+	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
+	Type *ManagedServiceIdentityType
+
+	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
+	// resource ids in the form:
+	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
+	// The dictionary values can be empty objects ({}) in
+	// requests.
+	UserAssignedIdentities map[string]*UserAssignedIdentity
+
+	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
+	// identity.
+	PrincipalID *string
+
+	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
+	TenantID *string
 }
 
 // Response - The response to a metrics query.
@@ -3478,39 +4190,39 @@ type Response struct {
 	// REQUIRED; The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
 	// '/'. This may be adjusted in the future and returned back from what was originally
 	// requested.
-	Timespan *string `json:"timespan,omitempty"`
+	Timespan *string
 
 	// REQUIRED; the value of the collection.
-	Value []*Metric `json:"value,omitempty"`
+	Value []*Metric
 
 	// The integer value representing the relative cost of the query.
-	Cost *int32 `json:"cost,omitempty"`
+	Cost *int32
 
 	// The interval (window size) for which the metric data was returned in. This may be adjusted in the future and returned back
 	// from what was originally requested. This is not present if a metadata request
 	// was made.
-	Interval *string `json:"interval,omitempty"`
+	Interval *string
 
 	// The namespace of the metrics being queried
-	Namespace *string `json:"namespace,omitempty"`
+	Namespace *string
 
 	// The region of the resource being queried for metrics.
-	Resourceregion *string `json:"resourceregion,omitempty"`
+	Resourceregion *string
 }
 
 // ResponseWithError - An error response from the API.
 type ResponseWithError struct {
 	// REQUIRED; Error information.
-	Error *Error `json:"error,omitempty"`
+	Error *Error
 }
 
 // RetentionPolicy - Specifies the retention policy for the log.
 type RetentionPolicy struct {
 	// REQUIRED; the number of days for the retention in days. A value of 0 will retain the events indefinitely.
-	Days *int32 `json:"days,omitempty"`
+	Days *int32
 
 	// REQUIRED; a value indicating whether the retention policy is enabled.
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 }
 
 // RuleActionClassification provides polymorphic access to related types.
@@ -3525,7 +4237,7 @@ type RuleActionClassification interface {
 // RuleAction - The action that is performed when the alert rule becomes active, and when an alert condition is resolved.
 type RuleAction struct {
 	// REQUIRED; specifies the type of the action. There are two types of actions: RuleEmailAction and RuleWebhookAction.
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 }
 
 // GetRuleAction implements the RuleActionClassification interface for type RuleAction.
@@ -3545,10 +4257,10 @@ type RuleCondition struct {
 	// REQUIRED; specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of
 	// management events), LocationThresholdRuleCondition (based on the number of failures of a
 	// web test), and ThresholdRuleCondition (based on the threshold of a metric).
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// the resource from which the rule collects its data. For this type dataSource will always be of type RuleMetricDataSource.
-	DataSource RuleDataSourceClassification `json:"dataSource,omitempty"`
+	DataSource RuleDataSourceClassification
 }
 
 // GetRuleCondition implements the RuleConditionClassification interface for type RuleCondition.
@@ -3566,20 +4278,20 @@ type RuleDataSourceClassification interface {
 // RuleDataSource - The resource from which the rule collects its data.
 type RuleDataSource struct {
 	// REQUIRED; specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and RuleManagementEventDataSource
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// the legacy resource identifier of the resource the rule monitors. NOTE: this property cannot be updated for an existing
 	// rule.
-	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	LegacyResourceID *string
 
 	// the namespace of the metric.
-	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	MetricNamespace *string
 
 	// the location of the resource.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	ResourceLocation *string
 
 	// the resource identifier of the resource the rule monitors. NOTE: this property cannot be updated for an existing rule.
-	ResourceURI *string `json:"resourceUri,omitempty"`
+	ResourceURI *string
 }
 
 // GetRuleDataSource implements the RuleDataSourceClassification interface for type RuleDataSource.
@@ -3589,13 +4301,13 @@ func (r *RuleDataSource) GetRuleDataSource() *RuleDataSource { return r }
 // RuleEmailAction in this case.
 type RuleEmailAction struct {
 	// REQUIRED; specifies the type of the action. There are two types of actions: RuleEmailAction and RuleWebhookAction.
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// the list of administrator's custom email addresses to notify of the activation of the alert.
-	CustomEmails []*string `json:"customEmails,omitempty"`
+	CustomEmails []*string
 
 	// Whether the administrators (service and co-administrators) of the service should be notified when the alert is activated.
-	SendToServiceOwners *bool `json:"sendToServiceOwners,omitempty"`
+	SendToServiceOwners *bool
 }
 
 // GetRuleAction implements the RuleActionClassification interface for type RuleEmailAction.
@@ -3608,54 +4320,54 @@ func (r *RuleEmailAction) GetRuleAction() *RuleAction {
 // RuleManagementEventClaimsDataSource - The claims for a rule management event data source.
 type RuleManagementEventClaimsDataSource struct {
 	// the email address.
-	EmailAddress *string `json:"emailAddress,omitempty"`
+	EmailAddress *string
 }
 
 // RuleManagementEventDataSource - A rule management event data source. The discriminator fields is always RuleManagementEventDataSource
 // in this case.
 type RuleManagementEventDataSource struct {
 	// REQUIRED; specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and RuleManagementEventDataSource
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// the claims.
-	Claims *RuleManagementEventClaimsDataSource `json:"claims,omitempty"`
+	Claims *RuleManagementEventClaimsDataSource
 
 	// the event name.
-	EventName *string `json:"eventName,omitempty"`
+	EventName *string
 
 	// the event source.
-	EventSource *string `json:"eventSource,omitempty"`
+	EventSource *string
 
 	// the legacy resource identifier of the resource the rule monitors. NOTE: this property cannot be updated for an existing
 	// rule.
-	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	LegacyResourceID *string
 
 	// the level.
-	Level *string `json:"level,omitempty"`
+	Level *string
 
 	// the namespace of the metric.
-	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	MetricNamespace *string
 
 	// The name of the operation that should be checked for. If no name is provided, any operation will match.
-	OperationName *string `json:"operationName,omitempty"`
+	OperationName *string
 
 	// the resource group name.
-	ResourceGroupName *string `json:"resourceGroupName,omitempty"`
+	ResourceGroupName *string
 
 	// the location of the resource.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	ResourceLocation *string
 
 	// the resource provider name.
-	ResourceProviderName *string `json:"resourceProviderName,omitempty"`
+	ResourceProviderName *string
 
 	// the resource identifier of the resource the rule monitors. NOTE: this property cannot be updated for an existing rule.
-	ResourceURI *string `json:"resourceUri,omitempty"`
+	ResourceURI *string
 
 	// The status of the operation that should be checked for. If no status is provided, any status will match.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// the substatus.
-	SubStatus *string `json:"subStatus,omitempty"`
+	SubStatus *string
 }
 
 // GetRuleDataSource implements the RuleDataSourceClassification interface for type RuleManagementEventDataSource.
@@ -3672,23 +4384,23 @@ func (r *RuleManagementEventDataSource) GetRuleDataSource() *RuleDataSource {
 // RuleMetricDataSource - A rule metric data source. The discriminator value is always RuleMetricDataSource in this case.
 type RuleMetricDataSource struct {
 	// REQUIRED; specifies the type of data source. There are two types of rule data sources: RuleMetricDataSource and RuleManagementEventDataSource
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// the legacy resource identifier of the resource the rule monitors. NOTE: this property cannot be updated for an existing
 	// rule.
-	LegacyResourceID *string `json:"legacyResourceId,omitempty"`
+	LegacyResourceID *string
 
 	// the name of the metric that defines what the rule monitors.
-	MetricName *string `json:"metricName,omitempty"`
+	MetricName *string
 
 	// the namespace of the metric.
-	MetricNamespace *string `json:"metricNamespace,omitempty"`
+	MetricNamespace *string
 
 	// the location of the resource.
-	ResourceLocation *string `json:"resourceLocation,omitempty"`
+	ResourceLocation *string
 
 	// the resource identifier of the resource the rule monitors. NOTE: this property cannot be updated for an existing rule.
-	ResourceURI *string `json:"resourceUri,omitempty"`
+	ResourceURI *string
 }
 
 // GetRuleDataSource implements the RuleDataSourceClassification interface for type RuleMetricDataSource.
@@ -3702,17 +4414,27 @@ func (r *RuleMetricDataSource) GetRuleDataSource() *RuleDataSource {
 	}
 }
 
+// RuleResolveConfiguration - TBD. Relevant only for rules of the kind LogAlert.
+type RuleResolveConfiguration struct {
+	// The flag that indicates whether or not to auto resolve a fired alert.
+	AutoResolved *bool
+
+	// The duration a rule must evaluate as healthy before the fired alert is automatically resolved represented in ISO 8601 duration
+	// format.
+	TimeToResolve *string
+}
+
 // RuleWebhookAction - Specifies the action to post to service when the rule condition is evaluated. The discriminator is
 // always RuleWebhookAction in this case.
 type RuleWebhookAction struct {
 	// REQUIRED; specifies the type of the action. There are two types of actions: RuleEmailAction and RuleWebhookAction.
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// the dictionary of custom properties to include with the post operation. These data are appended to the webhook payload.
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// the service uri to Post the notification when the alert activates or resolves.
-	ServiceURI *string `json:"serviceUri,omitempty"`
+	ServiceURI *string
 }
 
 // GetRuleAction implements the RuleActionClassification interface for type RuleWebhookAction.
@@ -3726,179 +4448,191 @@ func (r *RuleWebhookAction) GetRuleAction() *RuleAction {
 type ScaleAction struct {
 	// REQUIRED; the amount of time to wait since the last scaling action before this action occurs. It must be between 1 week
 	// and 1 minute in ISO 8601 format.
-	Cooldown *string `json:"cooldown,omitempty"`
+	Cooldown *string
 
 	// REQUIRED; the scale direction. Whether the scaling action increases or decreases the number of instances.
-	Direction *ScaleDirection `json:"direction,omitempty"`
+	Direction *ScaleDirection
 
 	// REQUIRED; the type of action that should occur when the scale rule fires.
-	Type *ScaleType `json:"type,omitempty"`
+	Type *ScaleType
 
 	// the number of instances that are involved in the scaling action. This value must be 1 or greater. The default value is
 	// 1.
-	Value *string `json:"value,omitempty"`
+	Value *string
 }
 
 // ScaleCapacity - The number of instances that can be used during this profile.
 type ScaleCapacity struct {
 	// REQUIRED; the number of instances that will be set if metrics are not available for evaluation. The default is only used
 	// if the current instance count is lower than the default.
-	Default *string `json:"default,omitempty"`
+	Default *string
 
 	// REQUIRED; the maximum number of instances for the resource. The actual maximum number of instances is limited by the cores
 	// that are available in the subscription.
-	Maximum *string `json:"maximum,omitempty"`
+	Maximum *string
 
 	// REQUIRED; the minimum number of instances for the resource.
-	Minimum *string `json:"minimum,omitempty"`
+	Minimum *string
 }
 
 // ScaleRule - A rule that provide the triggers and parameters for the scaling action.
 type ScaleRule struct {
 	// REQUIRED; the trigger that results in a scaling action.
-	MetricTrigger *MetricTrigger `json:"metricTrigger,omitempty"`
+	MetricTrigger *MetricTrigger
 
 	// REQUIRED; the parameters for the scaling action.
-	ScaleAction *ScaleAction `json:"scaleAction,omitempty"`
+	ScaleAction *ScaleAction
 }
 
 // ScaleRuleMetricDimension - Specifies an auto scale rule metric dimension.
 type ScaleRuleMetricDimension struct {
 	// REQUIRED; Name of the dimension.
-	DimensionName *string `json:"DimensionName,omitempty"`
+	DimensionName *string
 
 	// REQUIRED; the dimension operator. Only 'Equals' and 'NotEquals' are supported. 'Equals' being equal to any of the values.
 	// 'NotEquals' being not equal to all of the values
-	Operator *ScaleRuleMetricDimensionOperationType `json:"Operator,omitempty"`
+	Operator *ScaleRuleMetricDimensionOperationType
 
 	// REQUIRED; list of dimension values. For example: ["App1","App2"].
-	Values []*string `json:"Values,omitempty"`
+	Values []*string
 }
 
 // ScheduledQueryRuleCriteria - The rule criteria that defines the conditions of the scheduled query rule.
 type ScheduledQueryRuleCriteria struct {
 	// A list of conditions to evaluate against the specified scopes
-	AllOf []*Condition `json:"allOf,omitempty"`
+	AllOf []*Condition
 }
 
 // ScheduledQueryRuleProperties - scheduled query rule Definition
 type ScheduledQueryRuleProperties struct {
 	// Actions to invoke when the alert fires.
-	Actions *Actions `json:"actions,omitempty"`
+	Actions *Actions
 
 	// The flag that indicates whether the alert should be automatically resolved or not. The default is true. Relevant only for
 	// rules of the kind LogAlert.
-	AutoMitigate *bool `json:"autoMitigate,omitempty"`
+	AutoMitigate *bool
 
 	// The flag which indicates whether this scheduled query rule should be stored in the customer's storage. The default is false.
 	// Relevant only for rules of the kind LogAlert.
-	CheckWorkspaceAlertsStorageConfigured *bool `json:"checkWorkspaceAlertsStorageConfigured,omitempty"`
+	CheckWorkspaceAlertsStorageConfigured *bool
 
 	// The rule criteria that defines the conditions of the scheduled query rule.
-	Criteria *ScheduledQueryRuleCriteria `json:"criteria,omitempty"`
+	Criteria *ScheduledQueryRuleCriteria
 
 	// The description of the scheduled query rule.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// The display name of the alert rule
-	DisplayName *string `json:"displayName,omitempty"`
+	DisplayName *string
 
 	// The flag which indicates whether this scheduled query rule is enabled. Value should be true or false
-	Enabled *bool `json:"enabled,omitempty"`
+	Enabled *bool
 
 	// How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for
 	// rules of the kind LogAlert.
-	EvaluationFrequency *string `json:"evaluationFrequency,omitempty"`
+	EvaluationFrequency *string
 
 	// Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. Relevant only for rules
 	// of the kind LogAlert.
-	MuteActionsDuration *string `json:"muteActionsDuration,omitempty"`
+	MuteActionsDuration *string
 
 	// If specified then overrides the query time range (default is WindowSize*NumberOfEvaluationPeriods). Relevant only for rules
 	// of the kind LogAlert.
-	OverrideQueryTimeRange *string `json:"overrideQueryTimeRange,omitempty"`
+	OverrideQueryTimeRange *string
+
+	// This determines if traffic is allowed over public network. By default it is enabled.
+	PublicNetworkAccess *PublicNetworkAccess
+
+	// Defines the configuration for resolving fired alerts. Relevant only for rules of the kind LogAlert.
+	RuleResolveConfiguration *RuleResolveConfiguration
 
 	// The list of resource id's that this scheduled query rule is scoped to.
-	Scopes []*string `json:"scopes,omitempty"`
+	Scopes []*string
 
 	// Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules
 	// of the kind LogAlert.
-	Severity *AlertSeverity `json:"severity,omitempty"`
+	Severity *AlertSeverity
 
 	// The flag which indicates whether the provided query should be validated or not. The default is false. Relevant only for
 	// rules of the kind LogAlert.
-	SkipQueryValidation *bool `json:"skipQueryValidation,omitempty"`
+	SkipQueryValidation *bool
 
 	// List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource
 	// group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a
 	// different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only
 	// for rules of the kind LogAlert
-	TargetResourceTypes []*string `json:"targetResourceTypes,omitempty"`
+	TargetResourceTypes []*string
 
 	// The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required
 	// only for rules of the kind LogAlert.
-	WindowSize *string `json:"windowSize,omitempty"`
+	WindowSize *string
 
 	// READ-ONLY; The api-version used when creating this alert rule
-	CreatedWithAPIVersion *string `json:"createdWithApiVersion,omitempty" azure:"ro"`
+	CreatedWithAPIVersion *string
 
 	// READ-ONLY; True if alert rule is legacy Log Analytic rule
-	IsLegacyLogAnalyticsRule *bool `json:"isLegacyLogAnalyticsRule,omitempty" azure:"ro"`
+	IsLegacyLogAnalyticsRule *bool
 
 	// READ-ONLY; The flag which indicates whether this scheduled query rule has been configured to be stored in the customer's
 	// storage. The default is false.
-	IsWorkspaceAlertsStorageConfigured *bool `json:"isWorkspaceAlertsStorageConfigured,omitempty" azure:"ro"`
+	IsWorkspaceAlertsStorageConfigured *bool
 }
 
 // ScheduledQueryRuleResource - The scheduled query rule resource.
 type ScheduledQueryRuleResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; The rule properties of the resource.
-	Properties *ScheduledQueryRuleProperties `json:"properties,omitempty"`
+	Properties *ScheduledQueryRuleProperties
+
+	// The identity of the resource.
+	Identity *Identity
 
 	// Indicates the type of scheduled query rule. The default is LogAlert.
-	Kind *Kind `json:"kind,omitempty"`
+	Kind *Kind
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; The etag field is not required. If it is provided in the response body, it must also be provided as a header
 	// per the normal etag convention. Entity tags are used for comparing two or more entities
 	// from the same requested resource. HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match
 	// (section 14.26), and If-Range (section 14.27) header fields.
-	Etag *string `json:"etag,omitempty" azure:"ro"`
+	Etag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; SystemData of ScheduledQueryRule.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScheduledQueryRuleResourceCollection - Represents a collection of scheduled query rule resources.
 type ScheduledQueryRuleResourceCollection struct {
 	// The values for the scheduled query rule resources.
-	Value []*ScheduledQueryRuleResource `json:"value,omitempty"`
+	Value []*ScheduledQueryRuleResource
 
 	// READ-ONLY; Provides the link to retrieve the next set of elements.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ScheduledQueryRuleResourcePatch - The scheduled query rule resource for patch operations.
 type ScheduledQueryRuleResourcePatch struct {
+	// The identity of the resource.
+	Identity *Identity
+
 	// The scheduled query rule properties of the resource.
-	Properties *ScheduledQueryRuleProperties `json:"properties,omitempty"`
+	Properties *ScheduledQueryRuleProperties
 
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ScheduledQueryRulesClientCreateOrUpdateOptions contains the optional parameters for the ScheduledQueryRulesClient.CreateOrUpdate
@@ -3917,13 +4651,13 @@ type ScheduledQueryRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScheduledQueryRulesClientListByResourceGroupOptions contains the optional parameters for the ScheduledQueryRulesClient.ListByResourceGroup
+// ScheduledQueryRulesClientListByResourceGroupOptions contains the optional parameters for the ScheduledQueryRulesClient.NewListByResourceGroupPager
 // method.
 type ScheduledQueryRulesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ScheduledQueryRulesClientListBySubscriptionOptions contains the optional parameters for the ScheduledQueryRulesClient.ListBySubscription
+// ScheduledQueryRulesClientListBySubscriptionOptions contains the optional parameters for the ScheduledQueryRulesClient.NewListBySubscriptionPager
 // method.
 type ScheduledQueryRulesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -3937,147 +4671,425 @@ type ScheduledQueryRulesClientUpdateOptions struct {
 // ScopedResource - A private link scoped resource
 type ScopedResource struct {
 	// Resource properties.
-	Properties *ScopedResourceProperties `json:"properties,omitempty"`
+	Properties *ScopedResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; System data
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ScopedResourceListResult - A list of scoped resources in a private link scope.
 type ScopedResourceListResult struct {
 	// READ-ONLY; Link to retrieve next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; Array of results.
-	Value []*ScopedResource `json:"value,omitempty" azure:"ro"`
+	Value []*ScopedResource
 }
 
 // ScopedResourceProperties - Properties of a private link scoped resource.
 type ScopedResourceProperties struct {
 	// The resource id of the scoped Azure monitor resource.
-	LinkedResourceID *string `json:"linkedResourceId,omitempty"`
+	LinkedResourceID *string
 
 	// READ-ONLY; State of the private endpoint connection.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // SenderAuthorization - the authorization used by the user who has performed the operation that led to this event. This captures
 // the RBAC properties of the event. These usually include the 'action', 'role' and the 'scope'
 type SenderAuthorization struct {
 	// the permissible actions. For instance: microsoft.support/supporttickets/write
-	Action *string `json:"action,omitempty"`
+	Action *string
 
 	// the role of the user. For instance: Subscription Admin
-	Role *string `json:"role,omitempty"`
+	Role *string
 
 	// the scope.
-	Scope *string `json:"scope,omitempty"`
+	Scope *string
 }
 
 // SingleBaseline - The baseline values for a single sensitivity value.
 type SingleBaseline struct {
 	// REQUIRED; The high thresholds of the baseline.
-	HighThresholds []*float64 `json:"highThresholds,omitempty"`
+	HighThresholds []*float64
 
 	// REQUIRED; The low thresholds of the baseline.
-	LowThresholds []*float64 `json:"lowThresholds,omitempty"`
+	LowThresholds []*float64
 
 	// REQUIRED; the sensitivity of the baseline.
-	Sensitivity *BaselineSensitivity `json:"sensitivity,omitempty"`
+	Sensitivity *BaselineSensitivity
 }
 
 // SingleMetricBaseline - The baseline results of a single metric.
 type SingleMetricBaseline struct {
 	// REQUIRED; The metric baseline Id.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// REQUIRED; The name of the metric for which the baselines were retrieved.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The metric baseline properties of the metric.
-	Properties *MetricBaselinesProperties `json:"properties,omitempty"`
+	Properties *MetricBaselinesProperties
 
 	// REQUIRED; The resource type of the metric baseline resource.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // SmsReceiver - An SMS receiver.
 type SmsReceiver struct {
 	// REQUIRED; The country code of the SMS receiver.
-	CountryCode *string `json:"countryCode,omitempty"`
+	CountryCode *string
 
 	// REQUIRED; The name of the SMS receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The phone number of the SMS receiver.
-	PhoneNumber *string `json:"phoneNumber,omitempty"`
+	PhoneNumber *string
 
 	// READ-ONLY; The status of the receiver.
-	Status *ReceiverStatus `json:"status,omitempty" azure:"ro"`
+	Status *ReceiverStatus
+}
+
+// SmsReceiverAutoGenerated - An SMS receiver.
+type SmsReceiverAutoGenerated struct {
+	// REQUIRED; The country code of the SMS receiver.
+	CountryCode *string
+
+	// REQUIRED; The name of the SMS receiver. Names must be unique across all receivers within a tenant action group.
+	Name *string
+
+	// REQUIRED; The phone number of the SMS receiver.
+	PhoneNumber *string
+
+	// READ-ONLY; The status of the receiver.
+	Status *ReceiverStatus
+}
+
+type StorageBlobDestination struct {
+	// The container name of the Storage Blob.
+	ContainerName *string
+
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string
+
+	// The resource ID of the storage account.
+	StorageAccountResourceID *string
+}
+
+type StorageTableDestination struct {
+	// A friendly name for the destination. This name should be unique across all destinations (regardless of type) within the
+	// data collection rule.
+	Name *string
+
+	// The resource ID of the storage account.
+	StorageAccountResourceID *string
+
+	// The name of the Storage Table.
+	TableName *string
 }
 
 // StreamDeclaration - Declaration of a custom stream.
 type StreamDeclaration struct {
 	// List of columns used by data in this stream.
-	Columns []*ColumnDefinition `json:"columns,omitempty"`
+	Columns []*ColumnDefinition
+}
+
+// SubscriptionScopeMetric - The result data of a query.
+type SubscriptionScopeMetric struct {
+	// REQUIRED; the metric Id.
+	ID *string
+
+	// REQUIRED; the name and the display name of the metric, i.e. it is localizable string.
+	Name *LocalizableString
+
+	// REQUIRED; the time series returned when a data query is performed.
+	Timeseries []*TimeSeriesElement
+
+	// REQUIRED; the resource type of the metric resource.
+	Type *string
+
+	// REQUIRED; The unit of the metric.
+	Unit *MetricUnit
+
+	// Detailed description of this metric.
+	DisplayDescription *string
+
+	// 'Success' or the error details on query failures for this metric.
+	ErrorCode *string
+
+	// Error message encountered querying this specific metric.
+	ErrorMessage *string
+}
+
+// SubscriptionScopeMetricDefinition - Metric definition class specifies the metadata for a metric.
+type SubscriptionScopeMetricDefinition struct {
+	// Custom category name for this metric.
+	Category *string
+
+	// the name and the display name of the dimension, i.e. it is a localizable string.
+	Dimensions []*LocalizableString
+
+	// Detailed description of this metric.
+	DisplayDescription *string
+
+	// the resource identifier of the metric definition.
+	ID *string
+
+	// Flag to indicate whether the dimension is required.
+	IsDimensionRequired *bool
+
+	// the collection of what aggregation intervals are available to be queried.
+	MetricAvailabilities []*MetricAvailability
+
+	// The class of the metric.
+	MetricClass *MetricClass
+
+	// the name and the display name of the metric, i.e. it is a localizable string.
+	Name *LocalizableString
+
+	// the namespace the metric belongs to.
+	Namespace *string
+
+	// the primary aggregation type value defining how to use the values for display.
+	PrimaryAggregationType *MetricAggregationType
+
+	// the resource identifier of the resource that emitted the metric.
+	ResourceID *string
+
+	// the collection of what aggregation types are supported.
+	SupportedAggregationTypes []*MetricAggregationType
+
+	// the unit of the metric.
+	Unit *MetricUnit
+}
+
+// SubscriptionScopeMetricDefinitionCollection - Represents collection of metric definitions.
+type SubscriptionScopeMetricDefinitionCollection struct {
+	// REQUIRED; The values for the metric definitions.
+	Value []*SubscriptionScopeMetricDefinition
+}
+
+// SubscriptionScopeMetricResponse - The response to a subscription scope metrics query.
+type SubscriptionScopeMetricResponse struct {
+	// REQUIRED; The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
+	// '/'. This may be adjusted in the future and returned back from what was originally
+	// requested.
+	Timespan *string
+
+	// REQUIRED; the value of the collection.
+	Value []*SubscriptionScopeMetric
+
+	// The integer value representing the relative cost of the query.
+	Cost *int32
+
+	// The interval (window size) for which the metric data was returned in. This may be adjusted in the future and returned back
+	// from what was originally requested. This is not present if a metadata request
+	// was made.
+	Interval *string
+
+	// The namespace of the metrics being queried
+	Namespace *string
+
+	// The region of the resource being queried for metrics.
+	Resourceregion *string
+}
+
+// SubscriptionScopeMetricsRequestBodyParameters - Query parameters can also be specified in the body, specifying the same
+// parameter in both the body and query parameters will result in an error.
+type SubscriptionScopeMetricsRequestBodyParameters struct {
+	// The list of aggregation types (comma separated) to retrieve.
+	Aggregation *string
+
+	// When set to true, if the timespan passed in is not supported by this metric, the API will return the result using the closest
+	// supported timespan. When set to false, an error is returned for invalid
+	// timespan parameters. Defaults to false.
+	AutoAdjustTimegrain *bool
+
+	// The $filter is used to reduce the set of metric data returned.
+	// Example:
+	// Metric contains metadata A, B and C.
+	// - Return all time series of C where A = a1 and B = b1 or b2
+	// $filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘’
+	// - Invalid variant:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘’ or B = ‘b2’
+	// This is invalid because the logical or operator cannot separate two different metadata names.
+	// - Return all time series where A = a1, B = b1 and C = c1:
+	// $filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’
+	// - Return all time series where A = a1
+	// $filter=A eq ‘a1’ and B eq ‘’ and C eq ‘’.
+	Filter *string
+
+	// The interval (i.e. timegrain) of the query.
+	Interval *string
+
+	// The names of the metrics (comma separated) to retrieve.
+	MetricNames *string
+
+	// Metric namespace where the metrics you want reside.
+	MetricNamespace *string
+
+	// The aggregation to use for sorting results and the direction of the sort. Only one order can be specified. Examples: sum
+	// asc.
+	OrderBy *string
+
+	// Reduces the set of data collected. The syntax allowed depends on the operation. See the operation's description for details.
+	ResultType *MetricResultType
+
+	// Dimension name(s) to rollup results by. For example if you only want to see metric values with a filter like 'City eq Seattle
+	// or City eq Tacoma' but don't want to see separate values for each city,
+	// you can specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+	RollUpBy *string
+
+	// The timespan of the query. It is a string with the following format 'startDateTimeISO/endDateTimeISO'.
+	Timespan *time.Time
+
+	// The maximum number of records to retrieve. Valid only if $filter is specified. Defaults to 10.
+	Top *int32
+
+	// When set to false, invalid filter parameter values will be ignored. When set to true, an error is returned for invalid
+	// filter parameters. Defaults to true.
+	ValidateDimensions *bool
 }
 
 // SyslogDataSource - Definition of which syslog data will be collected and how it will be collected. Only collected from
 // Linux machines.
 type SyslogDataSource struct {
 	// The list of facility names.
-	FacilityNames []*KnownSyslogDataSourceFacilityNames `json:"facilityNames,omitempty"`
+	FacilityNames []*KnownSyslogDataSourceFacilityNames
 
 	// The log levels to collect.
-	LogLevels []*KnownSyslogDataSourceLogLevels `json:"logLevels,omitempty"`
+	LogLevels []*KnownSyslogDataSourceLogLevels
 
 	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// List of streams that this data source will be sent to. A stream indicates what schema will be used for this data and usually
 	// what table in Log Analytics the data will be sent to.
-	Streams []*KnownSyslogDataSourceStreams `json:"streams,omitempty"`
+	Streams []*KnownSyslogDataSourceStreams
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagsResource - A container holding only the Tags for a resource, allowing the user to update the tags on a PrivateLinkScope
 // instance.
 type TagsResource struct {
 	// Resource tags
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
-// TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.List method.
+// TenantActionGroup - A tenant action group.
+type TenantActionGroup struct {
+	// REQUIRED; Indicates whether this tenant action group is enabled. If a tenant action group is not enabled, then none of
+	// its receivers will receive communications.
+	Enabled *bool
+
+	// REQUIRED; The short name of the action group. This will be used in SMS messages.
+	GroupShortName *string
+
+	// The list of AzureAppPush receivers that are part of this tenant action group.
+	AzureAppPushReceivers []*AzureAppPushReceiverAutoGenerated
+
+	// The list of email receivers that are part of this tenant action group.
+	EmailReceivers []*EmailReceiverAutoGenerated
+
+	// The list of SMS receivers that are part of this tenant action group.
+	SmsReceivers []*SmsReceiverAutoGenerated
+
+	// The list of voice receivers that are part of this tenant action group.
+	VoiceReceivers []*VoiceReceiverAutoGenerated
+
+	// The list of webhook receivers that are part of this tenant action group.
+	WebhookReceivers []*WebhookReceiverAutoGenerated
+}
+
+// TenantActionGroupList - A list of tenant action groups.
+type TenantActionGroupList struct {
+	// Provides the link to retrieve the next set of elements.
+	NextLink *string
+
+	// The list of tenant action groups.
+	Value []*TenantActionGroupResource
+}
+
+// TenantActionGroupResource - A tenant action group resource.
+type TenantActionGroupResource struct {
+	// REQUIRED; Resource location
+	Location *string
+
+	// The tenant action groups properties of the resource.
+	Properties *TenantActionGroup
+
+	// Resource tags
+	Tags map[string]*string
+
+	// READ-ONLY; Azure resource Id
+	ID *string
+
+	// READ-ONLY; Azure resource name
+	Name *string
+
+	// READ-ONLY; Azure resource type
+	Type *string
+}
+
+// TenantActionGroupsClientCreateOrUpdateOptions contains the optional parameters for the TenantActionGroupsClient.CreateOrUpdate
+// method.
+type TenantActionGroupsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActionGroupsClientDeleteOptions contains the optional parameters for the TenantActionGroupsClient.Delete method.
+type TenantActionGroupsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActionGroupsClientGetOptions contains the optional parameters for the TenantActionGroupsClient.Get method.
+type TenantActionGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActionGroupsClientListByManagementGroupIDOptions contains the optional parameters for the TenantActionGroupsClient.NewListByManagementGroupIDPager
+// method.
+type TenantActionGroupsClientListByManagementGroupIDOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActionGroupsClientUpdateOptions contains the optional parameters for the TenantActionGroupsClient.Update method.
+type TenantActionGroupsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TenantActivityLogsClientListOptions contains the optional parameters for the TenantActivityLogsClient.NewListPager method.
 type TenantActivityLogsClientListOptions struct {
 	// Reduces the set of data collected.
 	// The $filter is very restricted and allows only the following patterns.
@@ -4104,19 +5116,19 @@ type TenantActivityLogsClientListOptions struct {
 // TestNotificationDetailsResponse - The details of the test notification results.
 type TestNotificationDetailsResponse struct {
 	// REQUIRED; The overall state
-	State *string `json:"state,omitempty"`
+	State *string
 
 	// The list of action detail
-	ActionDetails []*ActionDetail `json:"actionDetails,omitempty"`
+	ActionDetails []*ActionDetail
 
 	// The completed time
-	CompletedTime *string `json:"completedTime,omitempty"`
+	CompletedTime *string
 
 	// The context info
-	Context *Context `json:"context,omitempty"`
+	Context *Context
 
 	// The created time
-	CreatedTime *string `json:"createdTime,omitempty"`
+	CreatedTime *string
 }
 
 // ThresholdRuleCondition - A rule condition based on a metric crossing a threshold.
@@ -4124,24 +5136,24 @@ type ThresholdRuleCondition struct {
 	// REQUIRED; specifies the type of condition. This can be one of three types: ManagementEventRuleCondition (occurrences of
 	// management events), LocationThresholdRuleCondition (based on the number of failures of a
 	// web test), and ThresholdRuleCondition (based on the threshold of a metric).
-	ODataType *string `json:"odata.type,omitempty"`
+	ODataType *string
 
 	// REQUIRED; the operator used to compare the data and the threshold.
-	Operator *ConditionOperator `json:"operator,omitempty"`
+	Operator *ConditionOperator
 
 	// REQUIRED; the threshold value that activates the alert.
-	Threshold *float64 `json:"threshold,omitempty"`
+	Threshold *float64
 
 	// the resource from which the rule collects its data. For this type dataSource will always be of type RuleMetricDataSource.
-	DataSource RuleDataSourceClassification `json:"dataSource,omitempty"`
+	DataSource RuleDataSourceClassification
 
 	// the time aggregation operator. How the data that are collected should be combined over time. The default value is the PrimaryAggregationType
 	// of the Metric.
-	TimeAggregation *TimeAggregationOperator `json:"timeAggregation,omitempty"`
+	TimeAggregation *TimeAggregationOperator
 
 	// the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. If specified
 	// then it must be between 5 minutes and 1 day.
-	WindowSize *string `json:"windowSize,omitempty"`
+	WindowSize *string
 }
 
 // GetRuleCondition implements the RuleConditionClassification interface for type ThresholdRuleCondition.
@@ -4155,37 +5167,37 @@ func (t *ThresholdRuleCondition) GetRuleCondition() *RuleCondition {
 // TimeSeriesBaseline - The baseline values for a single time series.
 type TimeSeriesBaseline struct {
 	// REQUIRED; The aggregation type of the metric.
-	Aggregation *string `json:"aggregation,omitempty"`
+	Aggregation *string
 
 	// REQUIRED; The baseline values for each sensitivity.
-	Data []*SingleBaseline `json:"data,omitempty"`
+	Data []*SingleBaseline
 
 	// REQUIRED; The list of timestamps of the baselines.
-	Timestamps []*time.Time `json:"timestamps,omitempty"`
+	Timestamps []*time.Time
 
 	// The dimensions of this time series.
-	Dimensions []*MetricSingleDimension `json:"dimensions,omitempty"`
+	Dimensions []*MetricSingleDimension
 
 	// The baseline metadata values.
-	MetadataValues []*BaselineMetadata `json:"metadataValues,omitempty"`
+	MetadataValues []*BaselineMetadata
 }
 
 // TimeSeriesElement - A time series result type. The discriminator value is always TimeSeries in this case.
 type TimeSeriesElement struct {
 	// An array of data points representing the metric values. This is only returned if a result type of data is specified.
-	Data []*MetricValue `json:"data,omitempty"`
+	Data []*MetricValue
 
 	// the metadata values returned if $filter was specified in the call.
-	Metadatavalues []*MetadataValue `json:"metadatavalues,omitempty"`
+	Metadatavalues []*MetadataValue
 }
 
 // TimeWindow - A specific date-time for the profile.
 type TimeWindow struct {
 	// REQUIRED; the end time for the profile in ISO 8601 format.
-	End *time.Time `json:"end,omitempty"`
+	End *time.Time
 
 	// REQUIRED; the start time for the profile in ISO 8601 format.
-	Start *time.Time `json:"start,omitempty"`
+	Start *time.Time
 
 	// the timezone of the start and end times for the profile. Some examples of valid time zones are: Dateline Standard Time,
 	// UTC-11, Hawaiian Standard Time, Alaskan Standard Time, Pacific Standard Time
@@ -4215,26 +5227,66 @@ type TimeWindow struct {
 	// Time Zone 10, Central Pacific Standard Time, Russia Time Zone 11, New
 	// Zealand Standard Time, UTC+12, Fiji Standard Time, Kamchatka Standard Time, Tonga Standard Time, Samoa Standard Time, Line
 	// Islands Standard Time
-	TimeZone *string `json:"timeZone,omitempty"`
+	TimeZone *string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
+}
+
+// TrackedResourceAutoGenerated - The resource model definition for an Azure Resource Manager tracked top level resource which
+// has 'tags' and a 'location'
+type TrackedResourceAutoGenerated struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// UserAssignedIdentity - User assigned identity properties
+type UserAssignedIdentity struct {
+	// READ-ONLY; The client ID of the assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal ID of the assigned identity.
+	PrincipalID *string
+}
+
+// UserIdentityProperties - User assigned identity properties.
+type UserIdentityProperties struct {
+	// READ-ONLY; The client id of user assigned identity.
+	ClientID *string
+
+	// READ-ONLY; The principal id of user assigned identity.
+	PrincipalID *string
 }
 
 // VMInsightsClientGetOnboardingStatusOptions contains the optional parameters for the VMInsightsClient.GetOnboardingStatus
@@ -4246,96 +5298,132 @@ type VMInsightsClientGetOnboardingStatusOptions struct {
 // VMInsightsOnboardingStatus - VM Insights onboarding status for a resource.
 type VMInsightsOnboardingStatus struct {
 	// Resource properties.
-	Properties *VMInsightsOnboardingStatusProperties `json:"properties,omitempty"`
+	Properties *VMInsightsOnboardingStatusProperties
 
 	// READ-ONLY; Azure resource Id
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource name
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure resource type
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // VMInsightsOnboardingStatusProperties - Resource properties.
 type VMInsightsOnboardingStatusProperties struct {
 	// REQUIRED; The status of VM Insights data from the resource. When reported as present the data array will contain information
 	// about the data containers to which data for the specified resource is being routed.
-	DataStatus *DataStatus `json:"dataStatus,omitempty"`
+	DataStatus *DataStatus
 
 	// REQUIRED; The onboarding status for the resource. Note that, a higher level scope, e.g., resource group or subscription,
 	// is considered onboarded if at least one resource under it is onboarded.
-	OnboardingStatus *OnboardingStatus `json:"onboardingStatus,omitempty"`
+	OnboardingStatus *OnboardingStatus
 
 	// REQUIRED; Azure Resource Manager identifier of the resource whose onboarding status is being represented.
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// Containers that currently store VM Insights data for the specified resource.
-	Data []*DataContainer `json:"data,omitempty"`
+	Data []*DataContainer
 }
 
 // VoiceReceiver - A voice receiver.
 type VoiceReceiver struct {
 	// REQUIRED; The country code of the voice receiver.
-	CountryCode *string `json:"countryCode,omitempty"`
+	CountryCode *string
 
 	// REQUIRED; The name of the voice receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The phone number of the voice receiver.
-	PhoneNumber *string `json:"phoneNumber,omitempty"`
+	PhoneNumber *string
+}
+
+// VoiceReceiverAutoGenerated - A voice receiver.
+type VoiceReceiverAutoGenerated struct {
+	// REQUIRED; The country code of the voice receiver.
+	CountryCode *string
+
+	// REQUIRED; The name of the voice receiver. Names must be unique across all receivers within a tenant action group.
+	Name *string
+
+	// REQUIRED; The phone number of the voice receiver.
+	PhoneNumber *string
 }
 
 // WebhookNotification - Webhook notification of an autoscale event.
 type WebhookNotification struct {
 	// a property bag of settings. This value can be empty.
-	Properties map[string]*string `json:"properties,omitempty"`
+	Properties map[string]*string
 
 	// the service address to receive the notification.
-	ServiceURI *string `json:"serviceUri,omitempty"`
+	ServiceURI *string
 }
 
 // WebhookReceiver - A webhook receiver.
 type WebhookReceiver struct {
 	// REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within an action group.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; The URI where webhooks should be sent.
-	ServiceURI *string `json:"serviceUri,omitempty"`
+	ServiceURI *string
 
 	// Indicates the identifier uri for aad auth.
-	IdentifierURI *string `json:"identifierUri,omitempty"`
+	IdentifierURI *string
 
 	// Indicates the webhook app object Id for aad auth.
-	ObjectID *string `json:"objectId,omitempty"`
+	ObjectID *string
 
 	// Indicates the tenant id for aad auth.
-	TenantID *string `json:"tenantId,omitempty"`
+	TenantID *string
 
 	// Indicates whether or not use AAD authentication.
-	UseAADAuth *bool `json:"useAadAuth,omitempty"`
+	UseAADAuth *bool
 
 	// Indicates whether to use common alert schema.
-	UseCommonAlertSchema *bool `json:"useCommonAlertSchema,omitempty"`
+	UseCommonAlertSchema *bool
+}
+
+// WebhookReceiverAutoGenerated - A webhook receiver.
+type WebhookReceiverAutoGenerated struct {
+	// REQUIRED; The name of the webhook receiver. Names must be unique across all receivers within a tenant action group.
+	Name *string
+
+	// REQUIRED; The URI where webhooks should be sent.
+	ServiceURI *string
+
+	// Indicates the identifier uri for aad auth.
+	IdentifierURI *string
+
+	// Indicates the webhook app object Id for aad auth.
+	ObjectID *string
+
+	// Indicates the tenant id for aad auth.
+	TenantID *string
+
+	// Indicates whether or not use AAD authentication.
+	UseAADAuth *bool
+
+	// Indicates whether to use common alert schema.
+	UseCommonAlertSchema *bool
 }
 
 // WebtestLocationAvailabilityCriteria - Specifies the metric alert rule criteria for a web test resource.
 type WebtestLocationAvailabilityCriteria struct {
 	// REQUIRED; The Application Insights resource Id.
-	ComponentID *string `json:"componentId,omitempty"`
+	ComponentID *string
 
 	// REQUIRED; The number of failed locations.
-	FailedLocationCount *float32 `json:"failedLocationCount,omitempty"`
+	FailedLocationCount *float32
 
 	// REQUIRED; specifies the type of the alert criteria.
-	ODataType *Odatatype `json:"odata.type,omitempty"`
+	ODataType *Odatatype
 
 	// REQUIRED; The Application Insights web test Id.
-	WebTestID *string `json:"webTestId,omitempty"`
+	WebTestID *string
 
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 }
 
 // GetMetricAlertCriteria implements the MetricAlertCriteriaClassification interface for type WebtestLocationAvailabilityCriteria.
@@ -4351,30 +5439,40 @@ func (w *WebtestLocationAvailabilityCriteria) GetMetricAlertCriteria() *MetricAl
 type WindowsEventLogDataSource struct {
 	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
 	// data collection rule.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// List of streams that this data source will be sent to. A stream indicates what schema will be used for this data and usually
 	// what table in Log Analytics the data will be sent to.
-	Streams []*KnownWindowsEventLogDataSourceStreams `json:"streams,omitempty"`
+	Streams []*KnownWindowsEventLogDataSourceStreams
 
 	// A list of Windows Event Log queries in XPATH format.
-	XPathQueries []*string `json:"xPathQueries,omitempty"`
+	XPathQueries []*string
+}
+
+// WindowsFirewallLogsDataSource - Enables Firewall logs to be collected by this data collection rule.
+type WindowsFirewallLogsDataSource struct {
+	// REQUIRED; Firewall logs streams
+	Streams []*string
+
+	// A friendly name for the data source. This name should be unique across all data sources (regardless of type) within the
+	// data collection rule.
+	Name *string
 }
 
 // WorkspaceInfo - Information about a Log Analytics Workspace.
 type WorkspaceInfo struct {
 	// REQUIRED; Azure Resource Manager identifier of the Log Analytics Workspace.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// REQUIRED; Location of the Log Analytics workspace.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Resource properties.
-	Properties *WorkspaceInfoProperties `json:"properties,omitempty"`
+	Properties *WorkspaceInfoProperties
 }
 
 // WorkspaceInfoProperties - Resource properties.
 type WorkspaceInfoProperties struct {
 	// REQUIRED; Log Analytics workspace identifier.
-	CustomerID *string `json:"customerId,omitempty"`
+	CustomerID *string
 }

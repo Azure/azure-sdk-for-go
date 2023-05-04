@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // ExpressRouteLinksClient contains the methods for the ExpressRouteLinks group.
 // Don't use this type directly, use NewExpressRouteLinksClient() instead.
 type ExpressRouteLinksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewExpressRouteLinksClient creates a new instance of ExpressRouteLinksClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExpressRouteLinksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRouteLinksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ExpressRouteLinksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ExpressRouteLinksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Retrieves the specified ExpressRouteLink resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// expressRoutePortName - The name of the ExpressRoutePort resource.
-// linkName - The name of the ExpressRouteLink resource.
-// options - ExpressRouteLinksClientGetOptions contains the optional parameters for the ExpressRouteLinksClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - expressRoutePortName - The name of the ExpressRoutePort resource.
+//   - linkName - The name of the ExpressRouteLink resource.
+//   - options - ExpressRouteLinksClientGetOptions contains the optional parameters for the ExpressRouteLinksClient.Get method.
 func (client *ExpressRouteLinksClient) Get(ctx context.Context, resourceGroupName string, expressRoutePortName string, linkName string, options *ExpressRouteLinksClientGetOptions) (ExpressRouteLinksClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, expressRoutePortName, linkName, options)
 	if err != nil {
 		return ExpressRouteLinksClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ExpressRouteLinksClientGetResponse{}, err
 	}
@@ -97,12 +87,12 @@ func (client *ExpressRouteLinksClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter linkName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{linkName}", url.PathEscape(linkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -118,10 +108,12 @@ func (client *ExpressRouteLinksClient) getHandleResponse(resp *http.Response) (E
 }
 
 // NewListPager - Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// expressRoutePortName - The name of the ExpressRoutePort resource.
-// options - ExpressRouteLinksClientListOptions contains the optional parameters for the ExpressRouteLinksClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - expressRoutePortName - The name of the ExpressRoutePort resource.
+//   - options - ExpressRouteLinksClientListOptions contains the optional parameters for the ExpressRouteLinksClient.NewListPager
+//     method.
 func (client *ExpressRouteLinksClient) NewListPager(resourceGroupName string, expressRoutePortName string, options *ExpressRouteLinksClientListOptions) *runtime.Pager[ExpressRouteLinksClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRouteLinksClientListResponse]{
 		More: func(page ExpressRouteLinksClientListResponse) bool {
@@ -138,7 +130,7 @@ func (client *ExpressRouteLinksClient) NewListPager(resourceGroupName string, ex
 			if err != nil {
 				return ExpressRouteLinksClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ExpressRouteLinksClientListResponse{}, err
 			}
@@ -165,12 +157,12 @@ func (client *ExpressRouteLinksClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter expressRoutePortName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{expressRoutePortName}", url.PathEscape(expressRoutePortName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

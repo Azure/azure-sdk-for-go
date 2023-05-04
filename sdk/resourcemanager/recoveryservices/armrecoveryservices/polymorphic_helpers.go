@@ -15,7 +15,7 @@ func unmarshalResourceCertificateDetailsClassification(rawMsg json.RawMessage) (
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

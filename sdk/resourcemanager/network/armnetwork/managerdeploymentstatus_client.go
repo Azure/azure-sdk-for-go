@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,50 +25,42 @@ import (
 // ManagerDeploymentStatusClient contains the methods for the NetworkManagerDeploymentStatus group.
 // Don't use this type directly, use NewManagerDeploymentStatusClient() instead.
 type ManagerDeploymentStatusClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewManagerDeploymentStatusClient creates a new instance of ManagerDeploymentStatusClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewManagerDeploymentStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagerDeploymentStatusClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ManagerDeploymentStatusClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ManagerDeploymentStatusClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // List - Post to List of Network Manager Deployment Status.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// networkManagerName - The name of the network manager.
-// parameters - Parameters supplied to specify which Managed Network deployment status is.
-// options - ManagerDeploymentStatusClientListOptions contains the optional parameters for the ManagerDeploymentStatusClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - networkManagerName - The name of the network manager.
+//   - parameters - Parameters supplied to specify which Managed Network deployment status is.
+//   - options - ManagerDeploymentStatusClientListOptions contains the optional parameters for the ManagerDeploymentStatusClient.List
+//     method.
 func (client *ManagerDeploymentStatusClient) List(ctx context.Context, resourceGroupName string, networkManagerName string, parameters ManagerDeploymentStatusParameter, options *ManagerDeploymentStatusClientListOptions) (ManagerDeploymentStatusClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, networkManagerName, parameters, options)
 	if err != nil {
 		return ManagerDeploymentStatusClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ManagerDeploymentStatusClientListResponse{}, err
 	}
@@ -95,12 +85,12 @@ func (client *ManagerDeploymentStatusClient) listCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter networkManagerName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Top != nil {
 		reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 	}

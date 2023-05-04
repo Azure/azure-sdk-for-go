@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // IntegrationRuntimeNodesClient contains the methods for the IntegrationRuntimeNodes group.
 // Don't use this type directly, use NewIntegrationRuntimeNodesClient() instead.
 type IntegrationRuntimeNodesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIntegrationRuntimeNodesClient creates a new instance of IntegrationRuntimeNodesClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIntegrationRuntimeNodesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimeNodesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IntegrationRuntimeNodesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IntegrationRuntimeNodesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Delete - Deletes a self-hosted integration runtime node.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// nodeName - The integration runtime node name.
-// options - IntegrationRuntimeNodesClientDeleteOptions contains the optional parameters for the IntegrationRuntimeNodesClient.Delete
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - nodeName - The integration runtime node name.
+//   - options - IntegrationRuntimeNodesClientDeleteOptions contains the optional parameters for the IntegrationRuntimeNodesClient.Delete
+//     method.
 func (client *IntegrationRuntimeNodesClient) Delete(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesClientDeleteOptions) (IntegrationRuntimeNodesClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, nodeName, options)
 	if err != nil {
 		return IntegrationRuntimeNodesClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntegrationRuntimeNodesClientDeleteResponse{}, err
 	}
@@ -102,7 +92,7 @@ func (client *IntegrationRuntimeNodesClient) deleteCreateRequest(ctx context.Con
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -115,19 +105,20 @@ func (client *IntegrationRuntimeNodesClient) deleteCreateRequest(ctx context.Con
 
 // Get - Gets a self-hosted integration runtime node.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// nodeName - The integration runtime node name.
-// options - IntegrationRuntimeNodesClientGetOptions contains the optional parameters for the IntegrationRuntimeNodesClient.Get
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - nodeName - The integration runtime node name.
+//   - options - IntegrationRuntimeNodesClientGetOptions contains the optional parameters for the IntegrationRuntimeNodesClient.Get
+//     method.
 func (client *IntegrationRuntimeNodesClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesClientGetOptions) (IntegrationRuntimeNodesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, nodeName, options)
 	if err != nil {
 		return IntegrationRuntimeNodesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntegrationRuntimeNodesClientGetResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *IntegrationRuntimeNodesClient) getCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -182,19 +173,20 @@ func (client *IntegrationRuntimeNodesClient) getHandleResponse(resp *http.Respon
 
 // GetIPAddress - Get the IP address of self-hosted integration runtime node.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// nodeName - The integration runtime node name.
-// options - IntegrationRuntimeNodesClientGetIPAddressOptions contains the optional parameters for the IntegrationRuntimeNodesClient.GetIPAddress
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - nodeName - The integration runtime node name.
+//   - options - IntegrationRuntimeNodesClientGetIPAddressOptions contains the optional parameters for the IntegrationRuntimeNodesClient.GetIPAddress
+//     method.
 func (client *IntegrationRuntimeNodesClient) GetIPAddress(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, options *IntegrationRuntimeNodesClientGetIPAddressOptions) (IntegrationRuntimeNodesClientGetIPAddressResponse, error) {
 	req, err := client.getIPAddressCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, nodeName, options)
 	if err != nil {
 		return IntegrationRuntimeNodesClientGetIPAddressResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntegrationRuntimeNodesClientGetIPAddressResponse{}, err
 	}
@@ -227,7 +219,7 @@ func (client *IntegrationRuntimeNodesClient) getIPAddressCreateRequest(ctx conte
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -249,20 +241,21 @@ func (client *IntegrationRuntimeNodesClient) getIPAddressHandleResponse(resp *ht
 
 // Update - Updates a self-hosted integration runtime node.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// nodeName - The integration runtime node name.
-// updateIntegrationRuntimeNodeRequest - The parameters for updating an integration runtime node.
-// options - IntegrationRuntimeNodesClientUpdateOptions contains the optional parameters for the IntegrationRuntimeNodesClient.Update
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - nodeName - The integration runtime node name.
+//   - updateIntegrationRuntimeNodeRequest - The parameters for updating an integration runtime node.
+//   - options - IntegrationRuntimeNodesClientUpdateOptions contains the optional parameters for the IntegrationRuntimeNodesClient.Update
+//     method.
 func (client *IntegrationRuntimeNodesClient) Update(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, nodeName string, updateIntegrationRuntimeNodeRequest UpdateIntegrationRuntimeNodeRequest, options *IntegrationRuntimeNodesClientUpdateOptions) (IntegrationRuntimeNodesClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, nodeName, updateIntegrationRuntimeNodeRequest, options)
 	if err != nil {
 		return IntegrationRuntimeNodesClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntegrationRuntimeNodesClientUpdateResponse{}, err
 	}
@@ -295,7 +288,7 @@ func (client *IntegrationRuntimeNodesClient) updateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter nodeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{nodeName}", url.PathEscape(nodeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

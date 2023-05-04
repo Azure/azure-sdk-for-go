@@ -14,10 +14,10 @@ import "time"
 // AccessKeys - Redis cache access keys.
 type AccessKeys struct {
 	// READ-ONLY; The current primary key that clients can use to authenticate with Redis cache.
-	PrimaryKey *string `json:"primaryKey,omitempty" azure:"ro"`
+	PrimaryKey *string
 
 	// READ-ONLY; The current secondary key that clients can use to authenticate with Redis cache.
-	SecondaryKey *string `json:"secondaryKey,omitempty" azure:"ro"`
+	SecondaryKey *string
 }
 
 // AsyncOperationStatusClientGetOptions contains the optional parameters for the AsyncOperationStatusClient.Get method.
@@ -28,10 +28,10 @@ type AsyncOperationStatusClientGetOptions struct {
 // CheckNameAvailabilityParameters - Parameters body to pass for resource name availability check.
 type CheckNameAvailabilityParameters struct {
 	// REQUIRED; Resource name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// REQUIRED; Resource type. The only legal value of this property for checking redis cache name availability is 'Microsoft.Cache/redis'.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // ClientBeginCreateOptions contains the optional parameters for the Client.BeginCreate method.
@@ -79,12 +79,12 @@ type ClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListByResourceGroupOptions contains the optional parameters for the Client.ListByResourceGroup method.
+// ClientListByResourceGroupOptions contains the optional parameters for the Client.NewListByResourceGroupPager method.
 type ClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListBySubscriptionOptions contains the optional parameters for the Client.ListBySubscription method.
+// ClientListBySubscriptionOptions contains the optional parameters for the Client.NewListBySubscriptionPager method.
 type ClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -94,7 +94,8 @@ type ClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.ListUpgradeNotifications method.
+// ClientListUpgradeNotificationsOptions contains the optional parameters for the Client.NewListUpgradeNotificationsPager
+// method.
 type ClientListUpgradeNotificationsOptions struct {
 	// placeholder for future optional parameters
 }
@@ -109,199 +110,199 @@ type ClientRegenerateKeyOptions struct {
 // etc.
 type CommonPropertiesRedisConfiguration struct {
 	// OPTIONAL; Contains additional key/value pairs not defined in the schema.
-	AdditionalProperties map[string]interface{}
+	AdditionalProperties map[string]any
 
 	// Specifies whether the aof backup is enabled
-	AofBackupEnabled *string `json:"aof-backup-enabled,omitempty"`
+	AofBackupEnabled *string
 
 	// First storage account connection string
-	AofStorageConnectionString0 *string `json:"aof-storage-connection-string-0,omitempty"`
+	AofStorageConnectionString0 *string
 
 	// Second storage account connection string
-	AofStorageConnectionString1 *string `json:"aof-storage-connection-string-1,omitempty"`
+	AofStorageConnectionString1 *string
 
 	// Specifies whether the authentication is disabled. Setting this property is highly discouraged from security point of view.
-	Authnotrequired *string `json:"authnotrequired,omitempty"`
+	Authnotrequired *string
 
 	// Value in megabytes reserved for fragmentation per shard
-	MaxfragmentationmemoryReserved *string `json:"maxfragmentationmemory-reserved,omitempty"`
+	MaxfragmentationmemoryReserved *string
 
 	// Value in megabytes reserved for non-cache usage per shard e.g. failover.
-	MaxmemoryDelta *string `json:"maxmemory-delta,omitempty"`
+	MaxmemoryDelta *string
 
 	// The eviction strategy used when your data won't fit within its memory limit.
-	MaxmemoryPolicy *string `json:"maxmemory-policy,omitempty"`
+	MaxmemoryPolicy *string
 
 	// Value in megabytes reserved for non-cache usage per shard e.g. failover.
-	MaxmemoryReserved *string `json:"maxmemory-reserved,omitempty"`
+	MaxmemoryReserved *string
 
 	// Preferred auth method to communicate to storage account used for data persistence, specify SAS or ManagedIdentity, default
 	// value is SAS
-	PreferredDataPersistenceAuthMethod *string `json:"preferred-data-persistence-auth-method,omitempty"`
+	PreferredDataPersistenceAuthMethod *string
 
 	// Specifies whether the rdb backup is enabled
-	RdbBackupEnabled *string `json:"rdb-backup-enabled,omitempty"`
+	RdbBackupEnabled *string
 
 	// Specifies the frequency for creating rdb backup in minutes. Valid values: (15, 30, 60, 360, 720, 1440)
-	RdbBackupFrequency *string `json:"rdb-backup-frequency,omitempty"`
+	RdbBackupFrequency *string
 
 	// Specifies the maximum number of snapshots for rdb backup
-	RdbBackupMaxSnapshotCount *string `json:"rdb-backup-max-snapshot-count,omitempty"`
+	RdbBackupMaxSnapshotCount *string
 
 	// The storage account connection string for storing rdb file
-	RdbStorageConnectionString *string `json:"rdb-storage-connection-string,omitempty"`
+	RdbStorageConnectionString *string
 
 	// READ-ONLY; The max clients config
-	Maxclients *string `json:"maxclients,omitempty" azure:"ro"`
+	Maxclients *string
 
 	// READ-ONLY; Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity,
 	// default value is SAS
-	PreferredDataArchiveAuthMethod *string `json:"preferred-data-archive-auth-method,omitempty" azure:"ro"`
+	PreferredDataArchiveAuthMethod *string
 
 	// READ-ONLY; Zonal Configuration
-	ZonalConfiguration *string `json:"zonal-configuration,omitempty" azure:"ro"`
+	ZonalConfiguration *string
 }
 
 // CreateParameters - Parameters supplied to the Create Redis operation.
 type CreateParameters struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Redis cache properties.
-	Properties *CreateProperties `json:"properties,omitempty"`
+	Properties *CreateProperties
 
 	// The identity of the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// A list of availability zones denoting where the resource needs to come from.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 }
 
 // CreateProperties - Properties supplied to Create Redis operation.
 type CreateProperties struct {
 	// REQUIRED; The SKU of the Redis cache to deploy.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Specifies whether the non-ssl Redis server port (6379) is enabled.
-	EnableNonSSLPort *bool `json:"enableNonSslPort,omitempty"`
+	EnableNonSSLPort *bool
 
 	// Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *TLSVersion
 
 	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
 	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
 	// Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// All Redis Settings. Few possible keys:
 	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
 	// etc.
-	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
+	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
 	// to the latest stable Redis version that is available. Supported versions: 4.0,
 	// 6.0 (latest). Default value is 'latest'.
-	RedisVersion *string `json:"redisVersion,omitempty"`
+	RedisVersion *string
 
 	// The number of replicas to be created per primary.
-	ReplicasPerMaster *int32 `json:"replicasPerMaster,omitempty"`
+	ReplicasPerMaster *int32
 
 	// The number of replicas to be created per primary.
-	ReplicasPerPrimary *int32 `json:"replicasPerPrimary,omitempty"`
+	ReplicasPerPrimary *int32
 
 	// The number of shards to be created on a Premium Cluster Cache.
-	ShardCount *int32 `json:"shardCount,omitempty"`
+	ShardCount *int32
 
 	// Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network;
 	// auto assigned by default.
-	StaticIP *string `json:"staticIP,omitempty"`
+	StaticIP *string
 
 	// The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// A dictionary of tenant settings
-	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
+	TenantSettings map[string]*string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetailAutoGenerated - The error detail.
 type ErrorDetailAutoGenerated struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetailAutoGenerated `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetailAutoGenerated
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ExportRDBParameters - Parameters for Redis export operation.
 type ExportRDBParameters struct {
 	// REQUIRED; Container name to export to.
-	Container *string `json:"container,omitempty"`
+	Container *string
 
 	// REQUIRED; Prefix to use for exported files.
-	Prefix *string `json:"prefix,omitempty"`
+	Prefix *string
 
 	// File format.
-	Format *string `json:"format,omitempty"`
+	Format *string
 
 	// Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default
 	// value is SAS
-	PreferredDataArchiveAuthMethod *string `json:"preferred-data-archive-auth-method,omitempty"`
+	PreferredDataArchiveAuthMethod *string
 }
 
 // FirewallRule - A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
 // to connect
 type FirewallRule struct {
 	// REQUIRED; redis cache firewall rule properties
-	Properties *FirewallRuleProperties `json:"properties,omitempty"`
+	Properties *FirewallRuleProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // FirewallRuleListResult - The response of list firewall rules Redis operation.
 type FirewallRuleListResult struct {
 	// Results of the list firewall rules operation.
-	Value []*FirewallRule `json:"value,omitempty"`
+	Value []*FirewallRule
 
 	// READ-ONLY; Link for next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // FirewallRuleProperties - Specifies a range of IP addresses permitted to connect to the cache
 type FirewallRuleProperties struct {
 	// REQUIRED; highest IP address included in the range
-	EndIP *string `json:"endIP,omitempty"`
+	EndIP *string
 
 	// REQUIRED; lowest IP address included in the range
-	StartIP *string `json:"startIP,omitempty"`
+	StartIP *string
 }
 
 // FirewallRulesClientCreateOrUpdateOptions contains the optional parameters for the FirewallRulesClient.CreateOrUpdate method.
@@ -319,7 +320,7 @@ type FirewallRulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.List method.
+// FirewallRulesClientListOptions contains the optional parameters for the FirewallRulesClient.NewListPager method.
 type FirewallRulesClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -327,47 +328,47 @@ type FirewallRulesClientListOptions struct {
 // ForceRebootResponse - Response to force reboot for Redis cache.
 type ForceRebootResponse struct {
 	// READ-ONLY; Status message
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 }
 
 // ImportRDBParameters - Parameters for Redis import operation.
 type ImportRDBParameters struct {
 	// REQUIRED; files to import.
-	Files []*string `json:"files,omitempty"`
+	Files []*string
 
 	// File format.
-	Format *string `json:"format,omitempty"`
+	Format *string
 
 	// Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default
 	// value is SAS
-	PreferredDataArchiveAuthMethod *string `json:"preferred-data-archive-auth-method,omitempty"`
+	PreferredDataArchiveAuthMethod *string
 }
 
 // InstanceDetails - Details of single instance of redis.
 type InstanceDetails struct {
 	// READ-ONLY; Specifies whether the instance is a primary node.
-	IsMaster *bool `json:"isMaster,omitempty" azure:"ro"`
+	IsMaster *bool
 
 	// READ-ONLY; Specifies whether the instance is a primary node.
-	IsPrimary *bool `json:"isPrimary,omitempty" azure:"ro"`
+	IsPrimary *bool
 
 	// READ-ONLY; If enableNonSslPort is true, provides Redis instance Non-SSL port.
-	NonSSLPort *int32 `json:"nonSslPort,omitempty" azure:"ro"`
+	NonSSLPort *int32
 
 	// READ-ONLY; Redis instance SSL port.
-	SSLPort *int32 `json:"sslPort,omitempty" azure:"ro"`
+	SSLPort *int32
 
 	// READ-ONLY; If clustering is enabled, the Shard ID of Redis Instance
-	ShardID *int32 `json:"shardId,omitempty" azure:"ro"`
+	ShardID *int32
 
 	// READ-ONLY; If the Cache uses availability zones, specifies availability zone where this instance is located.
-	Zone *string `json:"zone,omitempty" azure:"ro"`
+	Zone *string
 }
 
 // LinkedServer - Linked server Id
 type LinkedServer struct {
 	// READ-ONLY; Linked server Id.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // LinkedServerClientBeginCreateOptions contains the optional parameters for the LinkedServerClient.BeginCreate method.
@@ -387,7 +388,7 @@ type LinkedServerClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.List method.
+// LinkedServerClientListOptions contains the optional parameters for the LinkedServerClient.NewListPager method.
 type LinkedServerClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -395,206 +396,206 @@ type LinkedServerClientListOptions struct {
 // LinkedServerCreateParameters - Parameter required for creating a linked server to redis cache.
 type LinkedServerCreateParameters struct {
 	// REQUIRED; Properties required to create a linked server.
-	Properties *LinkedServerCreateProperties `json:"properties,omitempty"`
+	Properties *LinkedServerCreateProperties
 }
 
 // LinkedServerCreateProperties - Create properties for a linked server
 type LinkedServerCreateProperties struct {
 	// REQUIRED; Fully qualified resourceId of the linked redis cache.
-	LinkedRedisCacheID *string `json:"linkedRedisCacheId,omitempty"`
+	LinkedRedisCacheID *string
 
 	// REQUIRED; Location of the linked redis cache.
-	LinkedRedisCacheLocation *string `json:"linkedRedisCacheLocation,omitempty"`
+	LinkedRedisCacheLocation *string
 
 	// REQUIRED; Role of the linked server.
-	ServerRole *ReplicationRole `json:"serverRole,omitempty"`
+	ServerRole *ReplicationRole
 
 	// READ-ONLY; The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
 	// seamless Geo Failover experience.
-	GeoReplicatedPrimaryHostName *string `json:"geoReplicatedPrimaryHostName,omitempty" azure:"ro"`
+	GeoReplicatedPrimaryHostName *string
 
 	// READ-ONLY; The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
 	// after the Geo Failover.
-	PrimaryHostName *string `json:"primaryHostName,omitempty" azure:"ro"`
+	PrimaryHostName *string
 }
 
 // LinkedServerProperties - Properties of a linked server to be returned in get/put response
 type LinkedServerProperties struct {
 	// REQUIRED; Fully qualified resourceId of the linked redis cache.
-	LinkedRedisCacheID *string `json:"linkedRedisCacheId,omitempty"`
+	LinkedRedisCacheID *string
 
 	// REQUIRED; Location of the linked redis cache.
-	LinkedRedisCacheLocation *string `json:"linkedRedisCacheLocation,omitempty"`
+	LinkedRedisCacheLocation *string
 
 	// REQUIRED; Role of the linked server.
-	ServerRole *ReplicationRole `json:"serverRole,omitempty"`
+	ServerRole *ReplicationRole
 
 	// READ-ONLY; The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for
 	// seamless Geo Failover experience.
-	GeoReplicatedPrimaryHostName *string `json:"geoReplicatedPrimaryHostName,omitempty" azure:"ro"`
+	GeoReplicatedPrimaryHostName *string
 
 	// READ-ONLY; The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or
 	// after the Geo Failover.
-	PrimaryHostName *string `json:"primaryHostName,omitempty" azure:"ro"`
+	PrimaryHostName *string
 
 	// READ-ONLY; Terminal state of the link between primary and secondary redis cache.
-	ProvisioningState *string `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *string
 }
 
 // LinkedServerWithProperties - Response to put/get linked server (with properties) for Redis cache.
 type LinkedServerWithProperties struct {
 	// Properties of the linked server.
-	Properties *LinkedServerProperties `json:"properties,omitempty"`
+	Properties *LinkedServerProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // LinkedServerWithPropertiesList - List of linked servers (with properties) of a Redis cache.
 type LinkedServerWithPropertiesList struct {
 	// List of linked servers (with properties) of a Redis cache.
-	Value []*LinkedServerWithProperties `json:"value,omitempty"`
+	Value []*LinkedServerWithProperties
 
 	// READ-ONLY; Link for next set.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ListResult - The response of list Redis operation.
 type ListResult struct {
 	// List of Redis cache instances.
-	Value []*ResourceInfo `json:"value,omitempty"`
+	Value []*ResourceInfo
 
 	// READ-ONLY; Link for next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
 	// The dictionary values can be empty objects ({}) in
 	// requests.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
 	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // NotificationListResponse - The response of listUpgradeNotifications.
 type NotificationListResponse struct {
 	// List of all notifications.
-	Value []*UpgradeNotification `json:"value,omitempty"`
+	Value []*UpgradeNotification
 
 	// READ-ONLY; Link for next set of notifications.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // Operation - REST API operation
 type Operation struct {
 	// The object that describes the operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// Operation name: {provider}/{resource}/{operation}
-	Name *string `json:"name,omitempty"`
+	Name *string
 }
 
 // OperationDisplay - The object that describes the operation.
 type OperationDisplay struct {
 	// Friendly name of the operation
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Operation type: read, write, delete, listKeys/action, etc.
-	Operation *string `json:"operation,omitempty"`
+	Operation *string
 
 	// Friendly name of the resource provider
-	Provider *string `json:"provider,omitempty"`
+	Provider *string
 
 	// Resource type on which the operation is performed.
-	Resource *string `json:"resource,omitempty"`
+	Resource *string
 }
 
 // OperationListResult - Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
 // to get the next set of results.
 type OperationListResult struct {
 	// List of operations supported by the resource provider.
-	Value []*Operation `json:"value,omitempty"`
+	Value []*Operation
 
 	// READ-ONLY; URL to get the next set of operation list results if there are any.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // OperationStatus - Asynchronous operation status
 type OperationStatus struct {
 	// REQUIRED; Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The end time of the operation.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// If present, details of the operation error.
-	Error *ErrorDetailAutoGenerated `json:"error,omitempty"`
+	Error *ErrorDetailAutoGenerated
 
 	// Fully qualified ID for the async operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the async operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operations list.
-	Operations []*OperationStatusResult `json:"operations,omitempty"`
+	Operations []*OperationStatusResult
 
 	// Percent of the operation that is complete.
-	PercentComplete *float32 `json:"percentComplete,omitempty"`
+	PercentComplete *float32
 
 	// Additional properties from RP, only when operation is successful
-	Properties map[string]interface{} `json:"properties,omitempty"`
+	Properties map[string]any
 
 	// The start time of the operation.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
 // OperationStatusResult - The current status of an async operation.
 type OperationStatusResult struct {
 	// REQUIRED; Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// The end time of the operation.
-	EndTime *time.Time `json:"endTime,omitempty"`
+	EndTime *time.Time
 
 	// If present, details of the operation error.
-	Error *ErrorDetailAutoGenerated `json:"error,omitempty"`
+	Error *ErrorDetailAutoGenerated
 
 	// Fully qualified ID for the async operation.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Name of the async operation.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The operations list.
-	Operations []*OperationStatusResult `json:"operations,omitempty"`
+	Operations []*OperationStatusResult
 
 	// Percent of the operation that is complete.
-	PercentComplete *float32 `json:"percentComplete,omitempty"`
+	PercentComplete *float32
 
 	// The start time of the operation.
-	StartTime *time.Time `json:"startTime,omitempty"`
+	StartTime *time.Time
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -602,28 +603,28 @@ type OperationsClientListOptions struct {
 // PatchSchedule - Response to put/get patch schedules for Redis cache.
 type PatchSchedule struct {
 	// REQUIRED; List of patch schedules for a Redis cache.
-	Properties *ScheduleEntries `json:"properties,omitempty"`
+	Properties *ScheduleEntries
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The geo-location where the resource lives
-	Location *string `json:"location,omitempty" azure:"ro"`
+	Location *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PatchScheduleListResult - The response of list patch schedules Redis operation.
 type PatchScheduleListResult struct {
 	// Results of the list patch schedules operation.
-	Value []*PatchSchedule `json:"value,omitempty"`
+	Value []*PatchSchedule
 
 	// READ-ONLY; Link for next page of results.
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 }
 
 // PatchSchedulesClientCreateOrUpdateOptions contains the optional parameters for the PatchSchedulesClient.CreateOrUpdate
@@ -642,7 +643,7 @@ type PatchSchedulesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.ListByRedisResource
+// PatchSchedulesClientListByRedisResourceOptions contains the optional parameters for the PatchSchedulesClient.NewListByRedisResourcePager
 // method.
 type PatchSchedulesClientListByRedisResourceOptions struct {
 	// placeholder for future optional parameters
@@ -651,40 +652,40 @@ type PatchSchedulesClientListByRedisResourceOptions struct {
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionsClientBeginPutOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginPut
@@ -706,7 +707,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.List
+// PrivateEndpointConnectionsClientListOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListPager
 // method.
 type PrivateEndpointConnectionsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -715,37 +716,37 @@ type PrivateEndpointConnectionsClientListOptions struct {
 // PrivateLinkResource - A private link resource
 type PrivateLinkResource struct {
 	// Resource properties.
-	Properties *PrivateLinkResourceProperties `json:"properties,omitempty"`
+	Properties *PrivateLinkResourceProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateLinkResourceListResult - A list of private link resources
 type PrivateLinkResourceListResult struct {
 	// Array of private link resources
-	Value []*PrivateLinkResource `json:"value,omitempty"`
+	Value []*PrivateLinkResource
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
-// PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByRedisCache
+// PrivateLinkResourcesClientListByRedisCacheOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByRedisCachePager
 // method.
 type PrivateLinkResourcesClientListByRedisCacheOptions struct {
 	// placeholder for future optional parameters
@@ -755,230 +756,230 @@ type PrivateLinkResourcesClientListByRedisCacheOptions struct {
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // Properties of the redis cache.
 type Properties struct {
 	// REQUIRED; The SKU of the Redis cache to deploy.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// Specifies whether the non-ssl Redis server port (6379) is enabled.
-	EnableNonSSLPort *bool `json:"enableNonSslPort,omitempty"`
+	EnableNonSSLPort *bool
 
 	// Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *TLSVersion
 
 	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
 	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
 	// Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// All Redis Settings. Few possible keys:
 	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
 	// etc.
-	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
+	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
 	// to the latest stable Redis version that is available. Supported versions: 4.0,
 	// 6.0 (latest). Default value is 'latest'.
-	RedisVersion *string `json:"redisVersion,omitempty"`
+	RedisVersion *string
 
 	// The number of replicas to be created per primary.
-	ReplicasPerMaster *int32 `json:"replicasPerMaster,omitempty"`
+	ReplicasPerMaster *int32
 
 	// The number of replicas to be created per primary.
-	ReplicasPerPrimary *int32 `json:"replicasPerPrimary,omitempty"`
+	ReplicasPerPrimary *int32
 
 	// The number of shards to be created on a Premium Cluster Cache.
-	ShardCount *int32 `json:"shardCount,omitempty"`
+	ShardCount *int32
 
 	// Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network;
 	// auto assigned by default.
-	StaticIP *string `json:"staticIP,omitempty"`
+	StaticIP *string
 
 	// The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format:
 	// /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1
-	SubnetID *string `json:"subnetId,omitempty"`
+	SubnetID *string
 
 	// A dictionary of tenant settings
-	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
+	TenantSettings map[string]*string
 
 	// READ-ONLY; The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
-	AccessKeys *AccessKeys `json:"accessKeys,omitempty" azure:"ro"`
+	AccessKeys *AccessKeys
 
 	// READ-ONLY; Redis host name.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; List of the Redis instances associated with the cache
-	Instances []*InstanceDetails `json:"instances,omitempty" azure:"ro"`
+	Instances []*InstanceDetails
 
 	// READ-ONLY; List of the linked servers associated with the cache
-	LinkedServers []*LinkedServer `json:"linkedServers,omitempty" azure:"ro"`
+	LinkedServers []*LinkedServer
 
 	// READ-ONLY; Redis non-SSL port.
-	Port *int32 `json:"port,omitempty" azure:"ro"`
+	Port *int32
 
 	// READ-ONLY; List of private endpoint connection associated with the specified redis cache
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty" azure:"ro"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Redis instance provisioning status.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; Redis SSL port.
-	SSLPort *int32 `json:"sslPort,omitempty" azure:"ro"`
+	SSLPort *int32
 }
 
 // RebootParameters - Specifies which Redis node(s) to reboot.
 type RebootParameters struct {
 	// A list of redis instances to reboot, specified by per-instance SSL ports or non-SSL ports.
-	Ports []*int32 `json:"ports,omitempty"`
+	Ports []*int32
 
 	// Which Redis node(s) to reboot. Depending on this value data loss is possible.
-	RebootType *RebootType `json:"rebootType,omitempty"`
+	RebootType *RebootType
 
 	// If clustering is enabled, the ID of the shard to be rebooted.
-	ShardID *int32 `json:"shardId,omitempty"`
+	ShardID *int32
 }
 
 // RegenerateKeyParameters - Specifies which Redis access keys to reset.
 type RegenerateKeyParameters struct {
 	// REQUIRED; The Redis access key to regenerate.
-	KeyType *RedisKeyType `json:"keyType,omitempty"`
+	KeyType *RedisKeyType
 }
 
 // ResourceInfo - A single Redis item in List or Get Operation.
 type ResourceInfo struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Redis cache properties.
-	Properties *Properties `json:"properties,omitempty"`
+	Properties *Properties
 
 	// The identity of the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// A list of availability zones denoting where the resource needs to come from.
-	Zones []*string `json:"zones,omitempty"`
+	Zones []*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SKU parameters supplied to the create Redis operation.
 type SKU struct {
 	// REQUIRED; The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for
 	// P (Premium) family (1, 2, 3, 4).
-	Capacity *int32 `json:"capacity,omitempty"`
+	Capacity *int32
 
 	// REQUIRED; The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).
-	Family *SKUFamily `json:"family,omitempty"`
+	Family *SKUFamily
 
 	// REQUIRED; The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)
-	Name *SKUName `json:"name,omitempty"`
+	Name *SKUName
 }
 
 // ScheduleEntries - List of patch schedules for a Redis cache.
 type ScheduleEntries struct {
 	// REQUIRED; List of patch schedules for a Redis cache.
-	ScheduleEntries []*ScheduleEntry `json:"scheduleEntries,omitempty"`
+	ScheduleEntries []*ScheduleEntry
 }
 
 // ScheduleEntry - Patch schedule entry for a Premium Redis Cache.
 type ScheduleEntry struct {
 	// REQUIRED; Day of the week when a cache can be patched.
-	DayOfWeek *DayOfWeek `json:"dayOfWeek,omitempty"`
+	DayOfWeek *DayOfWeek
 
 	// REQUIRED; Start hour after which cache patching can start.
-	StartHourUTC *int32 `json:"startHourUtc,omitempty"`
+	StartHourUTC *int32
 
 	// ISO8601 timespan specifying how much time cache patching can take.
-	MaintenanceWindow *string `json:"maintenanceWindow,omitempty"`
+	MaintenanceWindow *string
 }
 
 // UpdateParameters - Parameters supplied to the Update Redis operation.
 type UpdateParameters struct {
 	// The identity of the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Redis cache properties.
-	Properties *UpdateProperties `json:"properties,omitempty"`
+	Properties *UpdateProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // UpdateProperties - Patchable properties of the redis cache.
 type UpdateProperties struct {
 	// Specifies whether the non-ssl Redis server port (6379) is enabled.
-	EnableNonSSLPort *bool `json:"enableNonSslPort,omitempty"`
+	EnableNonSSLPort *bool
 
 	// Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, '1.0', '1.1', '1.2')
-	MinimumTLSVersion *TLSVersion `json:"minimumTlsVersion,omitempty"`
+	MinimumTLSVersion *TLSVersion
 
 	// Whether or not public endpoint access is allowed for this cache. Value is optional but if passed in, must be 'Enabled'
 	// or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method.
 	// Default value is 'Enabled'
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// All Redis Settings. Few possible keys:
 	// rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
 	// etc.
-	RedisConfiguration *CommonPropertiesRedisConfiguration `json:"redisConfiguration,omitempty"`
+	RedisConfiguration *CommonPropertiesRedisConfiguration
 
 	// Redis version. This should be in the form 'major[.minor]' (only 'major' is required) or the value 'latest' which refers
 	// to the latest stable Redis version that is available. Supported versions: 4.0,
 	// 6.0 (latest). Default value is 'latest'.
-	RedisVersion *string `json:"redisVersion,omitempty"`
+	RedisVersion *string
 
 	// The number of replicas to be created per primary.
-	ReplicasPerMaster *int32 `json:"replicasPerMaster,omitempty"`
+	ReplicasPerMaster *int32
 
 	// The number of replicas to be created per primary.
-	ReplicasPerPrimary *int32 `json:"replicasPerPrimary,omitempty"`
+	ReplicasPerPrimary *int32
 
 	// The SKU of the Redis cache to deploy.
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// The number of shards to be created on a Premium Cluster Cache.
-	ShardCount *int32 `json:"shardCount,omitempty"`
+	ShardCount *int32
 
 	// A dictionary of tenant settings
-	TenantSettings map[string]*string `json:"tenantSettings,omitempty"`
+	TenantSettings map[string]*string
 }
 
 // UpgradeNotification - Properties of upgrade notification.
 type UpgradeNotification struct {
 	// READ-ONLY; Name of upgrade notification.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Timestamp when upgrade notification occurred.
-	Timestamp *time.Time `json:"timestamp,omitempty" azure:"ro"`
+	Timestamp *time.Time
 
 	// READ-ONLY; Details about this upgrade notification
-	UpsellNotification map[string]*string `json:"upsellNotification,omitempty" azure:"ro"`
+	UpsellNotification map[string]*string
 }
 
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }

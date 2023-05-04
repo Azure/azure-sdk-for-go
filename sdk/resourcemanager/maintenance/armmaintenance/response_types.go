@@ -9,7 +9,7 @@
 
 package armmaintenance
 
-// ApplyUpdateForResourceGroupClientListResponse contains the response from method ApplyUpdateForResourceGroupClient.List.
+// ApplyUpdateForResourceGroupClientListResponse contains the response from method ApplyUpdateForResourceGroupClient.NewListPager.
 type ApplyUpdateForResourceGroupClientListResponse struct {
 	ListApplyUpdate
 }
@@ -34,7 +34,7 @@ type ApplyUpdatesClientGetResponse struct {
 	ApplyUpdate
 }
 
-// ApplyUpdatesClientListResponse contains the response from method ApplyUpdatesClient.List.
+// ApplyUpdatesClientListResponse contains the response from method ApplyUpdatesClient.NewListPager.
 type ApplyUpdatesClientListResponse struct {
 	ListApplyUpdate
 }
@@ -59,28 +59,13 @@ type ConfigurationAssignmentsClientDeleteResponse struct {
 	ConfigurationAssignment
 }
 
-// ConfigurationAssignmentsClientGetParentResponse contains the response from method ConfigurationAssignmentsClient.GetParent.
-type ConfigurationAssignmentsClientGetParentResponse struct {
-	ConfigurationAssignment
-}
-
-// ConfigurationAssignmentsClientGetResponse contains the response from method ConfigurationAssignmentsClient.Get.
-type ConfigurationAssignmentsClientGetResponse struct {
-	ConfigurationAssignment
-}
-
-// ConfigurationAssignmentsClientListParentResponse contains the response from method ConfigurationAssignmentsClient.ListParent.
+// ConfigurationAssignmentsClientListParentResponse contains the response from method ConfigurationAssignmentsClient.NewListParentPager.
 type ConfigurationAssignmentsClientListParentResponse struct {
 	ListConfigurationAssignmentsResult
 }
 
-// ConfigurationAssignmentsClientListResponse contains the response from method ConfigurationAssignmentsClient.List.
+// ConfigurationAssignmentsClientListResponse contains the response from method ConfigurationAssignmentsClient.NewListPager.
 type ConfigurationAssignmentsClientListResponse struct {
-	ListConfigurationAssignmentsResult
-}
-
-// ConfigurationAssignmentsWithinSubscriptionClientListResponse contains the response from method ConfigurationAssignmentsWithinSubscriptionClient.List.
-type ConfigurationAssignmentsWithinSubscriptionClientListResponse struct {
 	ListConfigurationAssignmentsResult
 }
 
@@ -99,7 +84,7 @@ type ConfigurationsClientGetResponse struct {
 	Configuration
 }
 
-// ConfigurationsClientListResponse contains the response from method ConfigurationsClient.List.
+// ConfigurationsClientListResponse contains the response from method ConfigurationsClient.NewListPager.
 type ConfigurationsClientListResponse struct {
 	ListMaintenanceConfigurationsResult
 }
@@ -109,12 +94,12 @@ type ConfigurationsClientUpdateResponse struct {
 	Configuration
 }
 
-// ConfigurationsForResourceGroupClientListResponse contains the response from method ConfigurationsForResourceGroupClient.List.
+// ConfigurationsForResourceGroupClientListResponse contains the response from method ConfigurationsForResourceGroupClient.NewListPager.
 type ConfigurationsForResourceGroupClientListResponse struct {
 	ListMaintenanceConfigurationsResult
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationsListResult
 }
@@ -124,17 +109,17 @@ type PublicMaintenanceConfigurationsClientGetResponse struct {
 	Configuration
 }
 
-// PublicMaintenanceConfigurationsClientListResponse contains the response from method PublicMaintenanceConfigurationsClient.List.
+// PublicMaintenanceConfigurationsClientListResponse contains the response from method PublicMaintenanceConfigurationsClient.NewListPager.
 type PublicMaintenanceConfigurationsClientListResponse struct {
 	ListMaintenanceConfigurationsResult
 }
 
-// UpdatesClientListParentResponse contains the response from method UpdatesClient.ListParent.
+// UpdatesClientListParentResponse contains the response from method UpdatesClient.NewListParentPager.
 type UpdatesClientListParentResponse struct {
 	ListUpdatesResult
 }
 
-// UpdatesClientListResponse contains the response from method UpdatesClient.List.
+// UpdatesClientListResponse contains the response from method UpdatesClient.NewListPager.
 type UpdatesClientListResponse struct {
 	ListUpdatesResult
 }

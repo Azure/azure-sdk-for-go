@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,65 +24,58 @@ import (
 // DeploymentsClient contains the methods for the Deployments group.
 // Don't use this type directly, use NewDeploymentsClient() instead.
 type DeploymentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDeploymentsClient creates a new instance of DeploymentsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DeploymentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DeploymentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DeploymentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Update the state of specified deployments associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// deploymentName - The name of the deployment associated with the Cognitive Services Account
-// deployment - The deployment properties.
-// options - DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - deploymentName - The name of the deployment associated with the Cognitive Services Account
+//   - deployment - The deployment properties.
+//   - options - DeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the DeploymentsClient.BeginCreateOrUpdate
+//     method.
 func (client *DeploymentsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DeploymentsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, accountName, deploymentName, deployment, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Update the state of specified deployments associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
+//
+// Generated from API version 2022-12-01
 func (client *DeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, deployment Deployment, options *DeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, deploymentName, deployment, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,12 +104,12 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, deployment)
@@ -126,32 +117,34 @@ func (client *DeploymentsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Deletes the specified deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// deploymentName - The name of the deployment associated with the Cognitive Services Account
-// options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - deploymentName - The name of the deployment associated with the Cognitive Services Account
+//   - options - DeploymentsClientBeginDeleteOptions contains the optional parameters for the DeploymentsClient.BeginDelete method.
 func (client *DeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*runtime.Poller[DeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[DeploymentsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[DeploymentsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[DeploymentsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
+//
+// Generated from API version 2022-12-01
 func (client *DeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, deploymentName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,12 +173,12 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -193,17 +186,18 @@ func (client *DeploymentsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Gets the specified deployments associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// deploymentName - The name of the deployment associated with the Cognitive Services Account
-// options - DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - deploymentName - The name of the deployment associated with the Cognitive Services Account
+//   - options - DeploymentsClientGetOptions contains the optional parameters for the DeploymentsClient.Get method.
 func (client *DeploymentsClient) Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *DeploymentsClientGetOptions) (DeploymentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, deploymentName, options)
 	if err != nil {
 		return DeploymentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DeploymentsClientGetResponse{}, err
 	}
@@ -232,12 +226,12 @@ func (client *DeploymentsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter deploymentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{deploymentName}", url.PathEscape(deploymentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,10 +247,11 @@ func (client *DeploymentsClient) getHandleResponse(resp *http.Response) (Deploym
 }
 
 // NewListPager - Gets the deployments associated with the Cognitive Services account.
-// Generated from API version 2022-10-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - The name of Cognitive Services account.
-// options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.List method.
+//
+// Generated from API version 2022-12-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - options - DeploymentsClientListOptions contains the optional parameters for the DeploymentsClient.NewListPager method.
 func (client *DeploymentsClient) NewListPager(resourceGroupName string, accountName string, options *DeploymentsClientListOptions) *runtime.Pager[DeploymentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DeploymentsClientListResponse]{
 		More: func(page DeploymentsClientListResponse) bool {
@@ -273,7 +268,7 @@ func (client *DeploymentsClient) NewListPager(resourceGroupName string, accountN
 			if err != nil {
 				return DeploymentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DeploymentsClientListResponse{}, err
 			}
@@ -300,12 +295,12 @@ func (client *DeploymentsClient) listCreateRequest(ctx context.Context, resource
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-10-01")
+	reqQP.Set("api-version", "2022-12-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

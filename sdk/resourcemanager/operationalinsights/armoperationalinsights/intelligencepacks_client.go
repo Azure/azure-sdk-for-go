@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // IntelligencePacksClient contains the methods for the IntelligencePacks group.
 // Don't use this type directly, use NewIntelligencePacksClient() instead.
 type IntelligencePacksClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIntelligencePacksClient creates a new instance of IntelligencePacksClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIntelligencePacksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntelligencePacksClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IntelligencePacksClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IntelligencePacksClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Disable - Disables an intelligence pack for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// intelligencePackName - The name of the intelligence pack to be disabled.
-// options - IntelligencePacksClientDisableOptions contains the optional parameters for the IntelligencePacksClient.Disable
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - intelligencePackName - The name of the intelligence pack to be disabled.
+//   - options - IntelligencePacksClientDisableOptions contains the optional parameters for the IntelligencePacksClient.Disable
+//     method.
 func (client *IntelligencePacksClient) Disable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksClientDisableOptions) (IntelligencePacksClientDisableResponse, error) {
 	req, err := client.disableCreateRequest(ctx, resourceGroupName, workspaceName, intelligencePackName, options)
 	if err != nil {
 		return IntelligencePacksClientDisableResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntelligencePacksClientDisableResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -109,18 +99,19 @@ func (client *IntelligencePacksClient) disableCreateRequest(ctx context.Context,
 
 // Enable - Enables an intelligence pack for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// intelligencePackName - The name of the intelligence pack to be enabled.
-// options - IntelligencePacksClientEnableOptions contains the optional parameters for the IntelligencePacksClient.Enable
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - intelligencePackName - The name of the intelligence pack to be enabled.
+//   - options - IntelligencePacksClientEnableOptions contains the optional parameters for the IntelligencePacksClient.Enable
+//     method.
 func (client *IntelligencePacksClient) Enable(ctx context.Context, resourceGroupName string, workspaceName string, intelligencePackName string, options *IntelligencePacksClientEnableOptions) (IntelligencePacksClientEnableResponse, error) {
 	req, err := client.enableCreateRequest(ctx, resourceGroupName, workspaceName, intelligencePackName, options)
 	if err != nil {
 		return IntelligencePacksClientEnableResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntelligencePacksClientEnableResponse{}, err
 	}
@@ -149,7 +140,7 @@ func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -161,16 +152,17 @@ func (client *IntelligencePacksClient) enableCreateRequest(ctx context.Context, 
 
 // List - Lists all the intelligence packs possible and whether they are enabled or disabled for a given workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - IntelligencePacksClientListOptions contains the optional parameters for the IntelligencePacksClient.List method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - IntelligencePacksClientListOptions contains the optional parameters for the IntelligencePacksClient.List method.
 func (client *IntelligencePacksClient) List(ctx context.Context, resourceGroupName string, workspaceName string, options *IntelligencePacksClientListOptions) (IntelligencePacksClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, workspaceName, options)
 	if err != nil {
 		return IntelligencePacksClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntelligencePacksClientListResponse{}, err
 	}
@@ -195,7 +187,7 @@ func (client *IntelligencePacksClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

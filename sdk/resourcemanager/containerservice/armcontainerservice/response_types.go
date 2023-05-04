@@ -9,17 +9,17 @@
 
 package armcontainerservice
 
-// AgentPoolsClientAbortLatestOperationResponse contains the response from method AgentPoolsClient.AbortLatestOperation.
+// AgentPoolsClientAbortLatestOperationResponse contains the response from method AgentPoolsClient.BeginAbortLatestOperation.
 type AgentPoolsClientAbortLatestOperationResponse struct {
 	// placeholder for future response values
 }
 
-// AgentPoolsClientCreateOrUpdateResponse contains the response from method AgentPoolsClient.CreateOrUpdate.
+// AgentPoolsClientCreateOrUpdateResponse contains the response from method AgentPoolsClient.BeginCreateOrUpdate.
 type AgentPoolsClientCreateOrUpdateResponse struct {
 	AgentPool
 }
 
-// AgentPoolsClientDeleteResponse contains the response from method AgentPoolsClient.Delete.
+// AgentPoolsClientDeleteResponse contains the response from method AgentPoolsClient.BeginDelete.
 type AgentPoolsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -39,69 +39,14 @@ type AgentPoolsClientGetUpgradeProfileResponse struct {
 	AgentPoolUpgradeProfile
 }
 
-// AgentPoolsClientListResponse contains the response from method AgentPoolsClient.List.
+// AgentPoolsClientListResponse contains the response from method AgentPoolsClient.NewListPager.
 type AgentPoolsClientListResponse struct {
 	AgentPoolListResult
 }
 
-// AgentPoolsClientUpgradeNodeImageVersionResponse contains the response from method AgentPoolsClient.UpgradeNodeImageVersion.
+// AgentPoolsClientUpgradeNodeImageVersionResponse contains the response from method AgentPoolsClient.BeginUpgradeNodeImageVersion.
 type AgentPoolsClientUpgradeNodeImageVersionResponse struct {
 	AgentPool
-}
-
-// FleetMembersClientCreateOrUpdateResponse contains the response from method FleetMembersClient.CreateOrUpdate.
-type FleetMembersClientCreateOrUpdateResponse struct {
-	FleetMember
-}
-
-// FleetMembersClientDeleteResponse contains the response from method FleetMembersClient.Delete.
-type FleetMembersClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// FleetMembersClientGetResponse contains the response from method FleetMembersClient.Get.
-type FleetMembersClientGetResponse struct {
-	FleetMember
-}
-
-// FleetMembersClientListByFleetResponse contains the response from method FleetMembersClient.ListByFleet.
-type FleetMembersClientListByFleetResponse struct {
-	FleetMembersListResult
-}
-
-// FleetsClientCreateOrUpdateResponse contains the response from method FleetsClient.CreateOrUpdate.
-type FleetsClientCreateOrUpdateResponse struct {
-	Fleet
-}
-
-// FleetsClientDeleteResponse contains the response from method FleetsClient.Delete.
-type FleetsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// FleetsClientGetResponse contains the response from method FleetsClient.Get.
-type FleetsClientGetResponse struct {
-	Fleet
-}
-
-// FleetsClientListByResourceGroupResponse contains the response from method FleetsClient.ListByResourceGroup.
-type FleetsClientListByResourceGroupResponse struct {
-	FleetListResult
-}
-
-// FleetsClientListCredentialsResponse contains the response from method FleetsClient.ListCredentials.
-type FleetsClientListCredentialsResponse struct {
-	FleetCredentialResults
-}
-
-// FleetsClientListResponse contains the response from method FleetsClient.List.
-type FleetsClientListResponse struct {
-	FleetListResult
-}
-
-// FleetsClientUpdateResponse contains the response from method FleetsClient.Update.
-type FleetsClientUpdateResponse struct {
-	Fleet
 }
 
 // MaintenanceConfigurationsClientCreateOrUpdateResponse contains the response from method MaintenanceConfigurationsClient.CreateOrUpdate.
@@ -119,7 +64,7 @@ type MaintenanceConfigurationsClientGetResponse struct {
 	MaintenanceConfiguration
 }
 
-// MaintenanceConfigurationsClientListByManagedClusterResponse contains the response from method MaintenanceConfigurationsClient.ListByManagedCluster.
+// MaintenanceConfigurationsClientListByManagedClusterResponse contains the response from method MaintenanceConfigurationsClient.NewListByManagedClusterPager.
 type MaintenanceConfigurationsClientListByManagedClusterResponse struct {
 	MaintenanceConfigurationListResult
 }
@@ -139,12 +84,12 @@ type ManagedClusterSnapshotsClientGetResponse struct {
 	ManagedClusterSnapshot
 }
 
-// ManagedClusterSnapshotsClientListByResourceGroupResponse contains the response from method ManagedClusterSnapshotsClient.ListByResourceGroup.
+// ManagedClusterSnapshotsClientListByResourceGroupResponse contains the response from method ManagedClusterSnapshotsClient.NewListByResourceGroupPager.
 type ManagedClusterSnapshotsClientListByResourceGroupResponse struct {
 	ManagedClusterSnapshotListResult
 }
 
-// ManagedClusterSnapshotsClientListResponse contains the response from method ManagedClusterSnapshotsClient.List.
+// ManagedClusterSnapshotsClientListResponse contains the response from method ManagedClusterSnapshotsClient.NewListPager.
 type ManagedClusterSnapshotsClientListResponse struct {
 	ManagedClusterSnapshotListResult
 }
@@ -154,17 +99,17 @@ type ManagedClusterSnapshotsClientUpdateTagsResponse struct {
 	ManagedClusterSnapshot
 }
 
-// ManagedClustersClientAbortLatestOperationResponse contains the response from method ManagedClustersClient.AbortLatestOperation.
+// ManagedClustersClientAbortLatestOperationResponse contains the response from method ManagedClustersClient.BeginAbortLatestOperation.
 type ManagedClustersClientAbortLatestOperationResponse struct {
 	// placeholder for future response values
 }
 
-// ManagedClustersClientCreateOrUpdateResponse contains the response from method ManagedClustersClient.CreateOrUpdate.
+// ManagedClustersClientCreateOrUpdateResponse contains the response from method ManagedClustersClient.BeginCreateOrUpdate.
 type ManagedClustersClientCreateOrUpdateResponse struct {
 	ManagedCluster
 }
 
-// ManagedClustersClientDeleteResponse contains the response from method ManagedClustersClient.Delete.
+// ManagedClustersClientDeleteResponse contains the response from method ManagedClustersClient.BeginDelete.
 type ManagedClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -196,7 +141,7 @@ type ManagedClustersClientGetUpgradeProfileResponse struct {
 	ManagedClusterUpgradeProfile
 }
 
-// ManagedClustersClientListByResourceGroupResponse contains the response from method ManagedClustersClient.ListByResourceGroup.
+// ManagedClustersClientListByResourceGroupResponse contains the response from method ManagedClustersClient.NewListByResourceGroupPager.
 type ManagedClustersClientListByResourceGroupResponse struct {
 	ManagedClusterListResult
 }
@@ -216,62 +161,67 @@ type ManagedClustersClientListClusterUserCredentialsResponse struct {
 	CredentialResults
 }
 
-// ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method ManagedClustersClient.ListOutboundNetworkDependenciesEndpoints.
+// ManagedClustersClientListKubernetesVersionsResponse contains the response from method ManagedClustersClient.ListKubernetesVersions.
+type ManagedClustersClientListKubernetesVersionsResponse struct {
+	KubernetesVersionListResult
+}
+
+// ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method ManagedClustersClient.NewListOutboundNetworkDependenciesEndpointsPager.
 type ManagedClustersClientListOutboundNetworkDependenciesEndpointsResponse struct {
 	OutboundEnvironmentEndpointCollection
 }
 
-// ManagedClustersClientListResponse contains the response from method ManagedClustersClient.List.
+// ManagedClustersClientListResponse contains the response from method ManagedClustersClient.NewListPager.
 type ManagedClustersClientListResponse struct {
 	ManagedClusterListResult
 }
 
-// ManagedClustersClientResetAADProfileResponse contains the response from method ManagedClustersClient.ResetAADProfile.
+// ManagedClustersClientResetAADProfileResponse contains the response from method ManagedClustersClient.BeginResetAADProfile.
 type ManagedClustersClientResetAADProfileResponse struct {
 	// placeholder for future response values
 }
 
-// ManagedClustersClientResetServicePrincipalProfileResponse contains the response from method ManagedClustersClient.ResetServicePrincipalProfile.
+// ManagedClustersClientResetServicePrincipalProfileResponse contains the response from method ManagedClustersClient.BeginResetServicePrincipalProfile.
 type ManagedClustersClientResetServicePrincipalProfileResponse struct {
 	// placeholder for future response values
 }
 
-// ManagedClustersClientRotateClusterCertificatesResponse contains the response from method ManagedClustersClient.RotateClusterCertificates.
+// ManagedClustersClientRotateClusterCertificatesResponse contains the response from method ManagedClustersClient.BeginRotateClusterCertificates.
 type ManagedClustersClientRotateClusterCertificatesResponse struct {
 	// placeholder for future response values
 }
 
-// ManagedClustersClientRotateServiceAccountSigningKeysResponse contains the response from method ManagedClustersClient.RotateServiceAccountSigningKeys.
+// ManagedClustersClientRotateServiceAccountSigningKeysResponse contains the response from method ManagedClustersClient.BeginRotateServiceAccountSigningKeys.
 type ManagedClustersClientRotateServiceAccountSigningKeysResponse struct {
 	// placeholder for future response values
 }
 
-// ManagedClustersClientRunCommandResponse contains the response from method ManagedClustersClient.RunCommand.
+// ManagedClustersClientRunCommandResponse contains the response from method ManagedClustersClient.BeginRunCommand.
 type ManagedClustersClientRunCommandResponse struct {
 	RunCommandResult
 }
 
-// ManagedClustersClientStartResponse contains the response from method ManagedClustersClient.Start.
+// ManagedClustersClientStartResponse contains the response from method ManagedClustersClient.BeginStart.
 type ManagedClustersClientStartResponse struct {
 	// placeholder for future response values
 }
 
-// ManagedClustersClientStopResponse contains the response from method ManagedClustersClient.Stop.
+// ManagedClustersClientStopResponse contains the response from method ManagedClustersClient.BeginStop.
 type ManagedClustersClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// ManagedClustersClientUpdateTagsResponse contains the response from method ManagedClustersClient.UpdateTags.
+// ManagedClustersClientUpdateTagsResponse contains the response from method ManagedClustersClient.BeginUpdateTags.
 type ManagedClustersClientUpdateTagsResponse struct {
 	ManagedCluster
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -316,12 +266,12 @@ type SnapshotsClientGetResponse struct {
 	Snapshot
 }
 
-// SnapshotsClientListByResourceGroupResponse contains the response from method SnapshotsClient.ListByResourceGroup.
+// SnapshotsClientListByResourceGroupResponse contains the response from method SnapshotsClient.NewListByResourceGroupPager.
 type SnapshotsClientListByResourceGroupResponse struct {
 	SnapshotListResult
 }
 
-// SnapshotsClientListResponse contains the response from method SnapshotsClient.List.
+// SnapshotsClientListResponse contains the response from method SnapshotsClient.NewListPager.
 type SnapshotsClientListResponse struct {
 	SnapshotListResult
 }
@@ -346,12 +296,12 @@ type TrustedAccessRoleBindingsClientGetResponse struct {
 	TrustedAccessRoleBinding
 }
 
-// TrustedAccessRoleBindingsClientListResponse contains the response from method TrustedAccessRoleBindingsClient.List.
+// TrustedAccessRoleBindingsClientListResponse contains the response from method TrustedAccessRoleBindingsClient.NewListPager.
 type TrustedAccessRoleBindingsClientListResponse struct {
 	TrustedAccessRoleBindingListResult
 }
 
-// TrustedAccessRolesClientListResponse contains the response from method TrustedAccessRolesClient.List.
+// TrustedAccessRolesClientListResponse contains the response from method TrustedAccessRolesClient.NewListPager.
 type TrustedAccessRolesClientListResponse struct {
 	TrustedAccessRoleListResult
 }

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // AlertRuleTemplatesClient contains the methods for the AlertRuleTemplates group.
 // Don't use this type directly, use NewAlertRuleTemplatesClient() instead.
 type AlertRuleTemplatesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAlertRuleTemplatesClient creates a new instance of AlertRuleTemplatesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAlertRuleTemplatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertRuleTemplatesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AlertRuleTemplatesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AlertRuleTemplatesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets the alert rule template.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// alertRuleTemplateID - Alert rule template ID
-// options - AlertRuleTemplatesClientGetOptions contains the optional parameters for the AlertRuleTemplatesClient.Get method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - alertRuleTemplateID - Alert rule template ID
+//   - options - AlertRuleTemplatesClientGetOptions contains the optional parameters for the AlertRuleTemplatesClient.Get method.
 func (client *AlertRuleTemplatesClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, alertRuleTemplateID string, options *AlertRuleTemplatesClientGetOptions) (AlertRuleTemplatesClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, alertRuleTemplateID, options)
 	if err != nil {
 		return AlertRuleTemplatesClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AlertRuleTemplatesClientGetResponse{}, err
 	}
@@ -96,12 +86,12 @@ func (client *AlertRuleTemplatesClient) getCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter alertRuleTemplateID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{alertRuleTemplateId}", url.PathEscape(alertRuleTemplateID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -117,10 +107,12 @@ func (client *AlertRuleTemplatesClient) getHandleResponse(resp *http.Response) (
 }
 
 // NewListPager - Gets all alert rule templates.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - AlertRuleTemplatesClientListOptions contains the optional parameters for the AlertRuleTemplatesClient.List method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - AlertRuleTemplatesClientListOptions contains the optional parameters for the AlertRuleTemplatesClient.NewListPager
+//     method.
 func (client *AlertRuleTemplatesClient) NewListPager(resourceGroupName string, workspaceName string, options *AlertRuleTemplatesClientListOptions) *runtime.Pager[AlertRuleTemplatesClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AlertRuleTemplatesClientListResponse]{
 		More: func(page AlertRuleTemplatesClientListResponse) bool {
@@ -137,7 +129,7 @@ func (client *AlertRuleTemplatesClient) NewListPager(resourceGroupName string, w
 			if err != nil {
 				return AlertRuleTemplatesClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AlertRuleTemplatesClientListResponse{}, err
 			}
@@ -164,12 +156,12 @@ func (client *AlertRuleTemplatesClient) listCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

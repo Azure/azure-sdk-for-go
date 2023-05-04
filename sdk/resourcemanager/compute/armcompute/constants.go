@@ -11,7 +11,7 @@ package armcompute
 
 const (
 	moduleName    = "armcompute"
-	moduleVersion = "v4.1.0"
+	moduleVersion = "v4.2.1"
 )
 
 type AccessLevel string
@@ -1864,9 +1864,10 @@ func PossibleStatusLevelTypesValues() []StatusLevelTypes {
 type StorageAccountType string
 
 const (
-	StorageAccountTypePremiumLRS  StorageAccountType = "Premium_LRS"
-	StorageAccountTypeStandardLRS StorageAccountType = "Standard_LRS"
-	StorageAccountTypeStandardZRS StorageAccountType = "Standard_ZRS"
+	StorageAccountTypePremiumLRS     StorageAccountType = "Premium_LRS"
+	StorageAccountTypeStandardLRS    StorageAccountType = "Standard_LRS"
+	StorageAccountTypeStandardSSDLRS StorageAccountType = "StandardSSD_LRS"
+	StorageAccountTypeStandardZRS    StorageAccountType = "Standard_ZRS"
 )
 
 // PossibleStorageAccountTypeValues returns the possible values for the StorageAccountType const type.
@@ -1874,6 +1875,7 @@ func PossibleStorageAccountTypeValues() []StorageAccountType {
 	return []StorageAccountType{
 		StorageAccountTypePremiumLRS,
 		StorageAccountTypeStandardLRS,
+		StorageAccountTypeStandardSSDLRS,
 		StorageAccountTypeStandardZRS,
 	}
 }

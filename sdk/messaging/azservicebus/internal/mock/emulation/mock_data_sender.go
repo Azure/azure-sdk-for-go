@@ -6,6 +6,7 @@ package emulation
 import (
 	"context"
 	"fmt"
+	"sync/atomic"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/go-amqp"
@@ -65,12 +66,17 @@ func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.Sen
 
 	// this should work fine even for RPC links like $cbs or $management
 	q := md.upsertQueue(target)
-	sender.EXPECT().Send(gomock.Any(), gomock.Any()).DoAndReturn(func(ctx context.Context, msg *amqp.Message) error {
+	sender.EXPECT().Send(gomock.Any(), gomock.Any(), gomock.Nil()).DoAndReturn(func(ctx context.Context, msg *amqp.Message, o *amqp.SendOptions) error {
 		return q.Send(ctx, msg, sender.LinkEvent(), sender.Status)
 	}).AnyTimes()
 
+	var closed int64
+
 	sender.EXPECT().Close(gomock.Any()).DoAndReturn(func(ctx context.Context) error {
-		md.Events.CloseLink(sender.LinkEvent())
+		if atomic.CompareAndSwapInt64(&closed, 0, 1) {
+			md.Events.CloseLink(sender.LinkEvent())
+			return nil
+		}
 
 		select {
 		case <-ctx.Done():
@@ -78,7 +84,7 @@ func (md *MockData) NewSender(ctx context.Context, target string, opts *amqp.Sen
 		case <-sess.Status.Done():
 			return sess.Status.Err()
 		default:
-			sender.Status.CloseWithError(amqp.ErrLinkClosed)
+			sender.Status.CloseWithError(&amqp.LinkError{})
 		}
 
 		return nil

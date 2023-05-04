@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,39 +24,31 @@ import (
 // QuotasClient contains the methods for the Quotas group.
 // Don't use this type directly, use NewQuotasClient() instead.
 type QuotasClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewQuotasClient creates a new instance of QuotasClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewQuotasClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotasClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".QuotasClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &QuotasClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListPager - Gets the currently assigned Workspace Quotas based on VMFamily.
+//
 // Generated from API version 2022-10-01
-// location - The location for which resource usage is queried.
-// options - QuotasClientListOptions contains the optional parameters for the QuotasClient.List method.
+//   - location - The location for which resource usage is queried.
+//   - options - QuotasClientListOptions contains the optional parameters for the QuotasClient.NewListPager method.
 func (client *QuotasClient) NewListPager(location string, options *QuotasClientListOptions) *runtime.Pager[QuotasClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[QuotasClientListResponse]{
 		More: func(page QuotasClientListResponse) bool {
@@ -75,7 +65,7 @@ func (client *QuotasClient) NewListPager(location string, options *QuotasClientL
 			if err != nil {
 				return QuotasClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return QuotasClientListResponse{}, err
 			}
@@ -98,7 +88,7 @@ func (client *QuotasClient) listCreateRequest(ctx context.Context, location stri
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,16 +110,17 @@ func (client *QuotasClient) listHandleResponse(resp *http.Response) (QuotasClien
 
 // Update - Update quota for each VM family in workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-10-01
-// location - The location for update quota is queried.
-// parameters - Quota update parameters.
-// options - QuotasClientUpdateOptions contains the optional parameters for the QuotasClient.Update method.
+//   - location - The location for update quota is queried.
+//   - parameters - Quota update parameters.
+//   - options - QuotasClientUpdateOptions contains the optional parameters for the QuotasClient.Update method.
 func (client *QuotasClient) Update(ctx context.Context, location string, parameters QuotaUpdateParameters, options *QuotasClientUpdateOptions) (QuotasClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, location, parameters, options)
 	if err != nil {
 		return QuotasClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QuotasClientUpdateResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *QuotasClient) updateCreateRequest(ctx context.Context, location st
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

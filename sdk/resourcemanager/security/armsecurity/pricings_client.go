@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,38 @@ import (
 // PricingsClient contains the methods for the Pricings group.
 // Don't use this type directly, use NewPricingsClient() instead.
 type PricingsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewPricingsClient creates a new instance of PricingsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewPricingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PricingsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".PricingsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &PricingsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// pricingName - name of the pricing configuration
-// options - PricingsClientGetOptions contains the optional parameters for the PricingsClient.Get method.
+//
+// Generated from API version 2023-01-01
+//   - pricingName - name of the pricing configuration
+//   - options - PricingsClientGetOptions contains the optional parameters for the PricingsClient.Get method.
 func (client *PricingsClient) Get(ctx context.Context, pricingName string, options *PricingsClientGetOptions) (PricingsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, pricingName, options)
 	if err != nil {
 		return PricingsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PricingsClientGetResponse{}, err
 	}
@@ -86,12 +76,12 @@ func (client *PricingsClient) getCreateRequest(ctx context.Context, pricingName 
 		return nil, errors.New("parameter pricingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pricingName}", url.PathEscape(pricingName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -108,14 +98,15 @@ func (client *PricingsClient) getHandleResponse(resp *http.Response) (PricingsCl
 
 // List - Lists Microsoft Defender for Cloud pricing configurations in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - PricingsClientListOptions contains the optional parameters for the PricingsClient.List method.
+//
+// Generated from API version 2023-01-01
+//   - options - PricingsClientListOptions contains the optional parameters for the PricingsClient.List method.
 func (client *PricingsClient) List(ctx context.Context, options *PricingsClientListOptions) (PricingsClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, options)
 	if err != nil {
 		return PricingsClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PricingsClientListResponse{}, err
 	}
@@ -132,12 +123,12 @@ func (client *PricingsClient) listCreateRequest(ctx context.Context, options *Pr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -154,16 +145,17 @@ func (client *PricingsClient) listHandleResponse(resp *http.Response) (PricingsC
 
 // Update - Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// pricingName - name of the pricing configuration
-// pricing - Pricing object
-// options - PricingsClientUpdateOptions contains the optional parameters for the PricingsClient.Update method.
+//
+// Generated from API version 2023-01-01
+//   - pricingName - name of the pricing configuration
+//   - pricing - Pricing object
+//   - options - PricingsClientUpdateOptions contains the optional parameters for the PricingsClient.Update method.
 func (client *PricingsClient) Update(ctx context.Context, pricingName string, pricing Pricing, options *PricingsClientUpdateOptions) (PricingsClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, pricingName, pricing, options)
 	if err != nil {
 		return PricingsClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return PricingsClientUpdateResponse{}, err
 	}
@@ -184,12 +176,12 @@ func (client *PricingsClient) updateCreateRequest(ctx context.Context, pricingNa
 		return nil, errors.New("parameter pricingName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{pricingName}", url.PathEscape(pricingName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, pricing)

@@ -11,7 +11,7 @@ package armcontainerinstance
 
 const (
 	moduleName    = "armcontainerinstance"
-	moduleVersion = "v2.2.0-beta.1"
+	moduleVersion = "v2.3.0"
 )
 
 // ContainerGroupIPAddressType - Specifies if the IP is exposed to the public internet or private VNET.

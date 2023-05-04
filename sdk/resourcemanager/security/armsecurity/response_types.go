@@ -9,6 +9,26 @@
 
 package armsecurity
 
+// APICollectionClientGetResponse contains the response from method APICollectionClient.Get.
+type APICollectionClientGetResponse struct {
+	APICollectionResponse
+}
+
+// APICollectionClientListResponse contains the response from method APICollectionClient.NewListPager.
+type APICollectionClientListResponse struct {
+	APICollectionResponseList
+}
+
+// APICollectionOffboardingClientDeleteResponse contains the response from method APICollectionOffboardingClient.Delete.
+type APICollectionOffboardingClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APICollectionOnboardingClientCreateResponse contains the response from method APICollectionOnboardingClient.Create.
+type APICollectionOnboardingClientCreateResponse struct {
+	APICollectionResponse
+}
+
 // AccountConnectorsClientCreateOrUpdateResponse contains the response from method AccountConnectorsClient.CreateOrUpdate.
 type AccountConnectorsClientCreateOrUpdateResponse struct {
 	ConnectorSetting
@@ -24,7 +44,7 @@ type AccountConnectorsClientGetResponse struct {
 	ConnectorSetting
 }
 
-// AccountConnectorsClientListResponse contains the response from method AccountConnectorsClient.List.
+// AccountConnectorsClientListResponse contains the response from method AccountConnectorsClient.NewListPager.
 type AccountConnectorsClientListResponse struct {
 	ConnectorSettingList
 }
@@ -49,7 +69,7 @@ type AdaptiveApplicationControlsClientPutResponse struct {
 	AdaptiveApplicationControlGroup
 }
 
-// AdaptiveNetworkHardeningsClientEnforceResponse contains the response from method AdaptiveNetworkHardeningsClient.Enforce.
+// AdaptiveNetworkHardeningsClientEnforceResponse contains the response from method AdaptiveNetworkHardeningsClient.BeginEnforce.
 type AdaptiveNetworkHardeningsClientEnforceResponse struct {
 	// placeholder for future response values
 }
@@ -59,7 +79,7 @@ type AdaptiveNetworkHardeningsClientGetResponse struct {
 	AdaptiveNetworkHardening
 }
 
-// AdaptiveNetworkHardeningsClientListByExtendedResourceResponse contains the response from method AdaptiveNetworkHardeningsClient.ListByExtendedResource.
+// AdaptiveNetworkHardeningsClientListByExtendedResourceResponse contains the response from method AdaptiveNetworkHardeningsClient.NewListByExtendedResourcePager.
 type AdaptiveNetworkHardeningsClientListByExtendedResourceResponse struct {
 	AdaptiveNetworkHardeningsList
 }
@@ -84,27 +104,27 @@ type AlertsClientGetSubscriptionLevelResponse struct {
 	Alert
 }
 
-// AlertsClientListByResourceGroupResponse contains the response from method AlertsClient.ListByResourceGroup.
+// AlertsClientListByResourceGroupResponse contains the response from method AlertsClient.NewListByResourceGroupPager.
 type AlertsClientListByResourceGroupResponse struct {
 	AlertList
 }
 
-// AlertsClientListResourceGroupLevelByRegionResponse contains the response from method AlertsClient.ListResourceGroupLevelByRegion.
+// AlertsClientListResourceGroupLevelByRegionResponse contains the response from method AlertsClient.NewListResourceGroupLevelByRegionPager.
 type AlertsClientListResourceGroupLevelByRegionResponse struct {
 	AlertList
 }
 
-// AlertsClientListResponse contains the response from method AlertsClient.List.
+// AlertsClientListResponse contains the response from method AlertsClient.NewListPager.
 type AlertsClientListResponse struct {
 	AlertList
 }
 
-// AlertsClientListSubscriptionLevelByRegionResponse contains the response from method AlertsClient.ListSubscriptionLevelByRegion.
+// AlertsClientListSubscriptionLevelByRegionResponse contains the response from method AlertsClient.NewListSubscriptionLevelByRegionPager.
 type AlertsClientListSubscriptionLevelByRegionResponse struct {
 	AlertList
 }
 
-// AlertsClientSimulateResponse contains the response from method AlertsClient.Simulate.
+// AlertsClientSimulateResponse contains the response from method AlertsClient.BeginSimulate.
 type AlertsClientSimulateResponse struct {
 	// placeholder for future response values
 }
@@ -159,7 +179,7 @@ type AlertsSuppressionRulesClientGetResponse struct {
 	AlertsSuppressionRule
 }
 
-// AlertsSuppressionRulesClientListResponse contains the response from method AlertsSuppressionRulesClient.List.
+// AlertsSuppressionRulesClientListResponse contains the response from method AlertsSuppressionRulesClient.NewListPager.
 type AlertsSuppressionRulesClientListResponse struct {
 	AlertsSuppressionRulesList
 }
@@ -174,12 +194,12 @@ type AllowedConnectionsClientGetResponse struct {
 	AllowedConnectionsResource
 }
 
-// AllowedConnectionsClientListByHomeRegionResponse contains the response from method AllowedConnectionsClient.ListByHomeRegion.
+// AllowedConnectionsClientListByHomeRegionResponse contains the response from method AllowedConnectionsClient.NewListByHomeRegionPager.
 type AllowedConnectionsClientListByHomeRegionResponse struct {
 	AllowedConnectionsList
 }
 
-// AllowedConnectionsClientListResponse contains the response from method AllowedConnectionsClient.List.
+// AllowedConnectionsClientListResponse contains the response from method AllowedConnectionsClient.NewListPager.
 type AllowedConnectionsClientListResponse struct {
 	AllowedConnectionsList
 }
@@ -199,7 +219,7 @@ type ApplicationClientGetResponse struct {
 	Application
 }
 
-// ApplicationsClientListResponse contains the response from method ApplicationsClient.List.
+// ApplicationsClientListResponse contains the response from method ApplicationsClient.NewListPager.
 type ApplicationsClientListResponse struct {
 	ApplicationsList
 }
@@ -219,7 +239,7 @@ type AssessmentsClientGetResponse struct {
 	AssessmentResponse
 }
 
-// AssessmentsClientListResponse contains the response from method AssessmentsClient.List.
+// AssessmentsClientListResponse contains the response from method AssessmentsClient.NewListPager.
 type AssessmentsClientListResponse struct {
 	AssessmentList
 }
@@ -244,12 +264,12 @@ type AssessmentsMetadataClientGetResponse struct {
 	AssessmentMetadataResponse
 }
 
-// AssessmentsMetadataClientListBySubscriptionResponse contains the response from method AssessmentsMetadataClient.ListBySubscription.
+// AssessmentsMetadataClientListBySubscriptionResponse contains the response from method AssessmentsMetadataClient.NewListBySubscriptionPager.
 type AssessmentsMetadataClientListBySubscriptionResponse struct {
 	AssessmentMetadataResponseList
 }
 
-// AssessmentsMetadataClientListResponse contains the response from method AssessmentsMetadataClient.List.
+// AssessmentsMetadataClientListResponse contains the response from method AssessmentsMetadataClient.NewListPager.
 type AssessmentsMetadataClientListResponse struct {
 	AssessmentMetadataResponseList
 }
@@ -264,7 +284,7 @@ type AutoProvisioningSettingsClientGetResponse struct {
 	AutoProvisioningSetting
 }
 
-// AutoProvisioningSettingsClientListResponse contains the response from method AutoProvisioningSettingsClient.List.
+// AutoProvisioningSettingsClientListResponse contains the response from method AutoProvisioningSettingsClient.NewListPager.
 type AutoProvisioningSettingsClientListResponse struct {
 	AutoProvisioningSettingList
 }
@@ -284,12 +304,12 @@ type AutomationsClientGetResponse struct {
 	Automation
 }
 
-// AutomationsClientListByResourceGroupResponse contains the response from method AutomationsClient.ListByResourceGroup.
+// AutomationsClientListByResourceGroupResponse contains the response from method AutomationsClient.NewListByResourceGroupPager.
 type AutomationsClientListByResourceGroupResponse struct {
 	AutomationList
 }
 
-// AutomationsClientListResponse contains the response from method AutomationsClient.List.
+// AutomationsClientListResponse contains the response from method AutomationsClient.NewListPager.
 type AutomationsClientListResponse struct {
 	AutomationList
 }
@@ -299,12 +319,22 @@ type AutomationsClientValidateResponse struct {
 	AutomationValidationStatus
 }
 
+// CenterClientGetSensitivitySettingsResponse contains the response from method CenterClient.GetSensitivitySettings.
+type CenterClientGetSensitivitySettingsResponse struct {
+	GetSensitivitySettingsResponse
+}
+
+// CenterClientUpdateSensitivitySettingsResponse contains the response from method CenterClient.UpdateSensitivitySettings.
+type CenterClientUpdateSensitivitySettingsResponse struct {
+	GetSensitivitySettingsResponse
+}
+
 // ComplianceResultsClientGetResponse contains the response from method ComplianceResultsClient.Get.
 type ComplianceResultsClientGetResponse struct {
 	ComplianceResult
 }
 
-// ComplianceResultsClientListResponse contains the response from method ComplianceResultsClient.List.
+// ComplianceResultsClientListResponse contains the response from method ComplianceResultsClient.NewListPager.
 type ComplianceResultsClientListResponse struct {
 	ComplianceResultList
 }
@@ -314,7 +344,7 @@ type CompliancesClientGetResponse struct {
 	Compliance
 }
 
-// CompliancesClientListResponse contains the response from method CompliancesClient.List.
+// CompliancesClientListResponse contains the response from method CompliancesClient.NewListPager.
 type CompliancesClientListResponse struct {
 	ComplianceList
 }
@@ -334,34 +364,9 @@ type ConnectorApplicationClientGetResponse struct {
 	Application
 }
 
-// ConnectorApplicationsClientListResponse contains the response from method ConnectorApplicationsClient.List.
+// ConnectorApplicationsClientListResponse contains the response from method ConnectorApplicationsClient.NewListPager.
 type ConnectorApplicationsClientListResponse struct {
 	ApplicationsList
-}
-
-// ConnectorGovernanceRuleClientListResponse contains the response from method ConnectorGovernanceRuleClient.List.
-type ConnectorGovernanceRuleClientListResponse struct {
-	GovernanceRuleList
-}
-
-// ConnectorGovernanceRulesClientCreateOrUpdateResponse contains the response from method ConnectorGovernanceRulesClient.CreateOrUpdate.
-type ConnectorGovernanceRulesClientCreateOrUpdateResponse struct {
-	GovernanceRule
-}
-
-// ConnectorGovernanceRulesClientDeleteResponse contains the response from method ConnectorGovernanceRulesClient.Delete.
-type ConnectorGovernanceRulesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// ConnectorGovernanceRulesClientGetResponse contains the response from method ConnectorGovernanceRulesClient.Get.
-type ConnectorGovernanceRulesClientGetResponse struct {
-	GovernanceRule
-}
-
-// ConnectorGovernanceRulesExecuteStatusClientGetResponse contains the response from method ConnectorGovernanceRulesExecuteStatusClient.Get.
-type ConnectorGovernanceRulesExecuteStatusClientGetResponse struct {
-	ExecuteRuleStatus
 }
 
 // ConnectorsClientCreateOrUpdateResponse contains the response from method ConnectorsClient.CreateOrUpdate.
@@ -379,12 +384,12 @@ type ConnectorsClientGetResponse struct {
 	Connector
 }
 
-// ConnectorsClientListByResourceGroupResponse contains the response from method ConnectorsClient.ListByResourceGroup.
+// ConnectorsClientListByResourceGroupResponse contains the response from method ConnectorsClient.NewListByResourceGroupPager.
 type ConnectorsClientListByResourceGroupResponse struct {
 	ConnectorsList
 }
 
-// ConnectorsClientListResponse contains the response from method ConnectorsClient.List.
+// ConnectorsClientListResponse contains the response from method ConnectorsClient.NewListPager.
 type ConnectorsClientListResponse struct {
 	ConnectorsList
 }
@@ -409,7 +414,7 @@ type ContactsClientGetResponse struct {
 	Contact
 }
 
-// ContactsClientListResponse contains the response from method ContactsClient.List.
+// ContactsClientListResponse contains the response from method ContactsClient.NewListPager.
 type ContactsClientListResponse struct {
 	ContactList
 }
@@ -429,12 +434,12 @@ type CustomAssessmentAutomationsClientGetResponse struct {
 	CustomAssessmentAutomation
 }
 
-// CustomAssessmentAutomationsClientListByResourceGroupResponse contains the response from method CustomAssessmentAutomationsClient.ListByResourceGroup.
+// CustomAssessmentAutomationsClientListByResourceGroupResponse contains the response from method CustomAssessmentAutomationsClient.NewListByResourceGroupPager.
 type CustomAssessmentAutomationsClientListByResourceGroupResponse struct {
 	CustomAssessmentAutomationsListResult
 }
 
-// CustomAssessmentAutomationsClientListBySubscriptionResponse contains the response from method CustomAssessmentAutomationsClient.ListBySubscription.
+// CustomAssessmentAutomationsClientListBySubscriptionResponse contains the response from method CustomAssessmentAutomationsClient.NewListBySubscriptionPager.
 type CustomAssessmentAutomationsClientListBySubscriptionResponse struct {
 	CustomAssessmentAutomationsListResult
 }
@@ -454,12 +459,12 @@ type CustomEntityStoreAssignmentsClientGetResponse struct {
 	CustomEntityStoreAssignment
 }
 
-// CustomEntityStoreAssignmentsClientListByResourceGroupResponse contains the response from method CustomEntityStoreAssignmentsClient.ListByResourceGroup.
+// CustomEntityStoreAssignmentsClientListByResourceGroupResponse contains the response from method CustomEntityStoreAssignmentsClient.NewListByResourceGroupPager.
 type CustomEntityStoreAssignmentsClientListByResourceGroupResponse struct {
 	CustomEntityStoreAssignmentsListResult
 }
 
-// CustomEntityStoreAssignmentsClientListBySubscriptionResponse contains the response from method CustomEntityStoreAssignmentsClient.ListBySubscription.
+// CustomEntityStoreAssignmentsClientListBySubscriptionResponse contains the response from method CustomEntityStoreAssignmentsClient.NewListBySubscriptionPager.
 type CustomEntityStoreAssignmentsClientListBySubscriptionResponse struct {
 	CustomEntityStoreAssignmentsListResult
 }
@@ -479,7 +484,7 @@ type DeviceSecurityGroupsClientGetResponse struct {
 	DeviceSecurityGroup
 }
 
-// DeviceSecurityGroupsClientListResponse contains the response from method DeviceSecurityGroupsClient.List.
+// DeviceSecurityGroupsClientListResponse contains the response from method DeviceSecurityGroupsClient.NewListPager.
 type DeviceSecurityGroupsClientListResponse struct {
 	DeviceSecurityGroupList
 }
@@ -489,12 +494,12 @@ type DiscoveredSecuritySolutionsClientGetResponse struct {
 	DiscoveredSecuritySolution
 }
 
-// DiscoveredSecuritySolutionsClientListByHomeRegionResponse contains the response from method DiscoveredSecuritySolutionsClient.ListByHomeRegion.
+// DiscoveredSecuritySolutionsClientListByHomeRegionResponse contains the response from method DiscoveredSecuritySolutionsClient.NewListByHomeRegionPager.
 type DiscoveredSecuritySolutionsClientListByHomeRegionResponse struct {
 	DiscoveredSecuritySolutionList
 }
 
-// DiscoveredSecuritySolutionsClientListResponse contains the response from method DiscoveredSecuritySolutionsClient.List.
+// DiscoveredSecuritySolutionsClientListResponse contains the response from method DiscoveredSecuritySolutionsClient.NewListPager.
 type DiscoveredSecuritySolutionsClientListResponse struct {
 	DiscoveredSecuritySolutionList
 }
@@ -504,12 +509,12 @@ type ExternalSecuritySolutionsClientGetResponse struct {
 	ExternalSecuritySolution
 }
 
-// ExternalSecuritySolutionsClientListByHomeRegionResponse contains the response from method ExternalSecuritySolutionsClient.ListByHomeRegion.
+// ExternalSecuritySolutionsClientListByHomeRegionResponse contains the response from method ExternalSecuritySolutionsClient.NewListByHomeRegionPager.
 type ExternalSecuritySolutionsClientListByHomeRegionResponse struct {
 	ExternalSecuritySolutionList
 }
 
-// ExternalSecuritySolutionsClientListResponse contains the response from method ExternalSecuritySolutionsClient.List.
+// ExternalSecuritySolutionsClientListResponse contains the response from method ExternalSecuritySolutionsClient.NewListPager.
 type ExternalSecuritySolutionsClientListResponse struct {
 	ExternalSecuritySolutionList
 }
@@ -529,14 +534,9 @@ type GovernanceAssignmentsClientGetResponse struct {
 	GovernanceAssignment
 }
 
-// GovernanceAssignmentsClientListResponse contains the response from method GovernanceAssignmentsClient.List.
+// GovernanceAssignmentsClientListResponse contains the response from method GovernanceAssignmentsClient.NewListPager.
 type GovernanceAssignmentsClientListResponse struct {
 	GovernanceAssignmentsList
-}
-
-// GovernanceRuleClientListResponse contains the response from method GovernanceRuleClient.List.
-type GovernanceRuleClientListResponse struct {
-	GovernanceRuleList
 }
 
 // GovernanceRulesClientCreateOrUpdateResponse contains the response from method GovernanceRulesClient.CreateOrUpdate.
@@ -544,8 +544,13 @@ type GovernanceRulesClientCreateOrUpdateResponse struct {
 	GovernanceRule
 }
 
-// GovernanceRulesClientDeleteResponse contains the response from method GovernanceRulesClient.Delete.
+// GovernanceRulesClientDeleteResponse contains the response from method GovernanceRulesClient.BeginDelete.
 type GovernanceRulesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GovernanceRulesClientExecuteResponse contains the response from method GovernanceRulesClient.BeginExecute.
+type GovernanceRulesClientExecuteResponse struct {
 	// placeholder for future response values
 }
 
@@ -554,14 +559,26 @@ type GovernanceRulesClientGetResponse struct {
 	GovernanceRule
 }
 
-// GovernanceRulesClientRuleIDExecuteSingleSecurityConnectorResponse contains the response from method GovernanceRulesClient.RuleIDExecuteSingleSecurityConnector.
-type GovernanceRulesClientRuleIDExecuteSingleSecurityConnectorResponse struct {
-	// placeholder for future response values
+// GovernanceRulesClientListResponse contains the response from method GovernanceRulesClient.NewListPager.
+type GovernanceRulesClientListResponse struct {
+	GovernanceRuleList
 }
 
-// GovernanceRulesClientRuleIDExecuteSingleSubscriptionResponse contains the response from method GovernanceRulesClient.RuleIDExecuteSingleSubscription.
-type GovernanceRulesClientRuleIDExecuteSingleSubscriptionResponse struct {
-	// placeholder for future response values
+// GovernanceRulesClientOperationResultsResponse contains the response from method GovernanceRulesClient.OperationResults.
+type GovernanceRulesClientOperationResultsResponse struct {
+	OperationResultAutoGenerated
+	// Location contains the information returned from the location header response.
+	Location *string
+}
+
+// HealthReportClientGetResponse contains the response from method HealthReportClient.Get.
+type HealthReportClientGetResponse struct {
+	HealthReport
+}
+
+// HealthReportsClientListResponse contains the response from method HealthReportsClient.NewListPager.
+type HealthReportsClientListResponse struct {
+	HealthReportsList
 }
 
 // InformationProtectionPoliciesClientCreateOrUpdateResponse contains the response from method InformationProtectionPoliciesClient.CreateOrUpdate.
@@ -574,7 +591,7 @@ type InformationProtectionPoliciesClientGetResponse struct {
 	InformationProtectionPolicy
 }
 
-// InformationProtectionPoliciesClientListResponse contains the response from method InformationProtectionPoliciesClient.List.
+// InformationProtectionPoliciesClientListResponse contains the response from method InformationProtectionPoliciesClient.NewListPager.
 type InformationProtectionPoliciesClientListResponse struct {
 	InformationProtectionPolicyList
 }
@@ -599,7 +616,7 @@ type IngestionSettingsClientListConnectionStringsResponse struct {
 	ConnectionStrings
 }
 
-// IngestionSettingsClientListResponse contains the response from method IngestionSettingsClient.List.
+// IngestionSettingsClientListResponse contains the response from method IngestionSettingsClient.NewListPager.
 type IngestionSettingsClientListResponse struct {
 	IngestionSettingList
 }
@@ -634,12 +651,12 @@ type IotSecuritySolutionClientGetResponse struct {
 	IoTSecuritySolutionModel
 }
 
-// IotSecuritySolutionClientListByResourceGroupResponse contains the response from method IotSecuritySolutionClient.ListByResourceGroup.
+// IotSecuritySolutionClientListByResourceGroupResponse contains the response from method IotSecuritySolutionClient.NewListByResourceGroupPager.
 type IotSecuritySolutionClientListByResourceGroupResponse struct {
 	IoTSecuritySolutionsList
 }
 
-// IotSecuritySolutionClientListBySubscriptionResponse contains the response from method IotSecuritySolutionClient.ListBySubscription.
+// IotSecuritySolutionClientListBySubscriptionResponse contains the response from method IotSecuritySolutionClient.NewListBySubscriptionPager.
 type IotSecuritySolutionClientListBySubscriptionResponse struct {
 	IoTSecuritySolutionsList
 }
@@ -659,7 +676,7 @@ type IotSecuritySolutionsAnalyticsAggregatedAlertClientGetResponse struct {
 	IoTSecurityAggregatedAlert
 }
 
-// IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse contains the response from method IotSecuritySolutionsAnalyticsAggregatedAlertClient.List.
+// IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse contains the response from method IotSecuritySolutionsAnalyticsAggregatedAlertClient.NewListPager.
 type IotSecuritySolutionsAnalyticsAggregatedAlertClientListResponse struct {
 	IoTSecurityAggregatedAlertList
 }
@@ -669,7 +686,7 @@ type IotSecuritySolutionsAnalyticsRecommendationClientGetResponse struct {
 	IoTSecurityAggregatedRecommendation
 }
 
-// IotSecuritySolutionsAnalyticsRecommendationClientListResponse contains the response from method IotSecuritySolutionsAnalyticsRecommendationClient.List.
+// IotSecuritySolutionsAnalyticsRecommendationClientListResponse contains the response from method IotSecuritySolutionsAnalyticsRecommendationClient.NewListPager.
 type IotSecuritySolutionsAnalyticsRecommendationClientListResponse struct {
 	IoTSecurityAggregatedRecommendationList
 }
@@ -694,22 +711,22 @@ type JitNetworkAccessPoliciesClientInitiateResponse struct {
 	JitNetworkAccessRequest
 }
 
-// JitNetworkAccessPoliciesClientListByRegionResponse contains the response from method JitNetworkAccessPoliciesClient.ListByRegion.
+// JitNetworkAccessPoliciesClientListByRegionResponse contains the response from method JitNetworkAccessPoliciesClient.NewListByRegionPager.
 type JitNetworkAccessPoliciesClientListByRegionResponse struct {
 	JitNetworkAccessPoliciesList
 }
 
-// JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse contains the response from method JitNetworkAccessPoliciesClient.ListByResourceGroupAndRegion.
+// JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse contains the response from method JitNetworkAccessPoliciesClient.NewListByResourceGroupAndRegionPager.
 type JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse struct {
 	JitNetworkAccessPoliciesList
 }
 
-// JitNetworkAccessPoliciesClientListByResourceGroupResponse contains the response from method JitNetworkAccessPoliciesClient.ListByResourceGroup.
+// JitNetworkAccessPoliciesClientListByResourceGroupResponse contains the response from method JitNetworkAccessPoliciesClient.NewListByResourceGroupPager.
 type JitNetworkAccessPoliciesClientListByResourceGroupResponse struct {
 	JitNetworkAccessPoliciesList
 }
 
-// JitNetworkAccessPoliciesClientListResponse contains the response from method JitNetworkAccessPoliciesClient.List.
+// JitNetworkAccessPoliciesClientListResponse contains the response from method JitNetworkAccessPoliciesClient.NewListPager.
 type JitNetworkAccessPoliciesClientListResponse struct {
 	JitNetworkAccessPoliciesList
 }
@@ -719,7 +736,7 @@ type LocationsClientGetResponse struct {
 	AscLocation
 }
 
-// LocationsClientListResponse contains the response from method LocationsClient.List.
+// LocationsClientListResponse contains the response from method LocationsClient.NewListPager.
 type LocationsClientListResponse struct {
 	AscLocationList
 }
@@ -734,9 +751,29 @@ type MdeOnboardingsClientListResponse struct {
 	MdeOnboardingDataList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationList
+}
+
+// OperatorsClientCreateOrUpdateResponse contains the response from method OperatorsClient.CreateOrUpdate.
+type OperatorsClientCreateOrUpdateResponse struct {
+	OperatorResource
+}
+
+// OperatorsClientDeleteResponse contains the response from method OperatorsClient.Delete.
+type OperatorsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// OperatorsClientGetResponse contains the response from method OperatorsClient.Get.
+type OperatorsClientGetResponse struct {
+	OperatorResource
+}
+
+// OperatorsClientListResponse contains the response from method OperatorsClient.List.
+type OperatorsClientListResponse struct {
+	OperatorList
 }
 
 // PricingsClientGetResponse contains the response from method PricingsClient.Get.
@@ -759,7 +796,7 @@ type RegulatoryComplianceAssessmentsClientGetResponse struct {
 	RegulatoryComplianceAssessment
 }
 
-// RegulatoryComplianceAssessmentsClientListResponse contains the response from method RegulatoryComplianceAssessmentsClient.List.
+// RegulatoryComplianceAssessmentsClientListResponse contains the response from method RegulatoryComplianceAssessmentsClient.NewListPager.
 type RegulatoryComplianceAssessmentsClientListResponse struct {
 	RegulatoryComplianceAssessmentList
 }
@@ -769,7 +806,7 @@ type RegulatoryComplianceControlsClientGetResponse struct {
 	RegulatoryComplianceControl
 }
 
-// RegulatoryComplianceControlsClientListResponse contains the response from method RegulatoryComplianceControlsClient.List.
+// RegulatoryComplianceControlsClientListResponse contains the response from method RegulatoryComplianceControlsClient.NewListPager.
 type RegulatoryComplianceControlsClientListResponse struct {
 	RegulatoryComplianceControlList
 }
@@ -779,7 +816,7 @@ type RegulatoryComplianceStandardsClientGetResponse struct {
 	RegulatoryComplianceStandard
 }
 
-// RegulatoryComplianceStandardsClientListResponse contains the response from method RegulatoryComplianceStandardsClient.List.
+// RegulatoryComplianceStandardsClientListResponse contains the response from method RegulatoryComplianceStandardsClient.NewListPager.
 type RegulatoryComplianceStandardsClientListResponse struct {
 	RegulatoryComplianceStandardList
 }
@@ -829,22 +866,22 @@ type SQLVulnerabilityAssessmentScansClientListResponse struct {
 	Scans
 }
 
-// SecureScoreControlDefinitionsClientListBySubscriptionResponse contains the response from method SecureScoreControlDefinitionsClient.ListBySubscription.
+// SecureScoreControlDefinitionsClientListBySubscriptionResponse contains the response from method SecureScoreControlDefinitionsClient.NewListBySubscriptionPager.
 type SecureScoreControlDefinitionsClientListBySubscriptionResponse struct {
 	SecureScoreControlDefinitionList
 }
 
-// SecureScoreControlDefinitionsClientListResponse contains the response from method SecureScoreControlDefinitionsClient.List.
+// SecureScoreControlDefinitionsClientListResponse contains the response from method SecureScoreControlDefinitionsClient.NewListPager.
 type SecureScoreControlDefinitionsClientListResponse struct {
 	SecureScoreControlDefinitionList
 }
 
-// SecureScoreControlsClientListBySecureScoreResponse contains the response from method SecureScoreControlsClient.ListBySecureScore.
+// SecureScoreControlsClientListBySecureScoreResponse contains the response from method SecureScoreControlsClient.NewListBySecureScorePager.
 type SecureScoreControlsClientListBySecureScoreResponse struct {
 	SecureScoreControlList
 }
 
-// SecureScoreControlsClientListResponse contains the response from method SecureScoreControlsClient.List.
+// SecureScoreControlsClientListResponse contains the response from method SecureScoreControlsClient.NewListPager.
 type SecureScoreControlsClientListResponse struct {
 	SecureScoreControlList
 }
@@ -854,9 +891,14 @@ type SecureScoresClientGetResponse struct {
 	SecureScoreItem
 }
 
-// SecureScoresClientListResponse contains the response from method SecureScoresClient.List.
+// SecureScoresClientListResponse contains the response from method SecureScoresClient.NewListPager.
 type SecureScoresClientListResponse struct {
 	SecureScoresList
+}
+
+// SensitivitySettingsClientListResponse contains the response from method SensitivitySettingsClient.List.
+type SensitivitySettingsClientListResponse struct {
+	GetSensitivitySettingsListResponse
 }
 
 // ServerVulnerabilityAssessmentClientCreateOrUpdateResponse contains the response from method ServerVulnerabilityAssessmentClient.CreateOrUpdate.
@@ -864,7 +906,7 @@ type ServerVulnerabilityAssessmentClientCreateOrUpdateResponse struct {
 	ServerVulnerabilityAssessment
 }
 
-// ServerVulnerabilityAssessmentClientDeleteResponse contains the response from method ServerVulnerabilityAssessmentClient.Delete.
+// ServerVulnerabilityAssessmentClientDeleteResponse contains the response from method ServerVulnerabilityAssessmentClient.BeginDelete.
 type ServerVulnerabilityAssessmentClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -894,7 +936,7 @@ func (s *SettingsClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// SettingsClientListResponse contains the response from method SettingsClient.List.
+// SettingsClientListResponse contains the response from method SettingsClient.NewListPager.
 type SettingsClientListResponse struct {
 	SettingsList
 }
@@ -919,12 +961,12 @@ type SoftwareInventoriesClientGetResponse struct {
 	Software
 }
 
-// SoftwareInventoriesClientListByExtendedResourceResponse contains the response from method SoftwareInventoriesClient.ListByExtendedResource.
+// SoftwareInventoriesClientListByExtendedResourceResponse contains the response from method SoftwareInventoriesClient.NewListByExtendedResourcePager.
 type SoftwareInventoriesClientListByExtendedResourceResponse struct {
 	SoftwaresList
 }
 
-// SoftwareInventoriesClientListBySubscriptionResponse contains the response from method SoftwareInventoriesClient.ListBySubscription.
+// SoftwareInventoriesClientListBySubscriptionResponse contains the response from method SoftwareInventoriesClient.NewListBySubscriptionPager.
 type SoftwareInventoriesClientListBySubscriptionResponse struct {
 	SoftwaresList
 }
@@ -934,7 +976,7 @@ type SolutionsClientGetResponse struct {
 	Solution
 }
 
-// SolutionsClientListResponse contains the response from method SolutionsClient.List.
+// SolutionsClientListResponse contains the response from method SolutionsClient.NewListPager.
 type SolutionsClientListResponse struct {
 	SolutionList
 }
@@ -954,19 +996,14 @@ type SubAssessmentsClientGetResponse struct {
 	SubAssessment
 }
 
-// SubAssessmentsClientListAllResponse contains the response from method SubAssessmentsClient.ListAll.
+// SubAssessmentsClientListAllResponse contains the response from method SubAssessmentsClient.NewListAllPager.
 type SubAssessmentsClientListAllResponse struct {
 	SubAssessmentList
 }
 
-// SubAssessmentsClientListResponse contains the response from method SubAssessmentsClient.List.
+// SubAssessmentsClientListResponse contains the response from method SubAssessmentsClient.NewListPager.
 type SubAssessmentsClientListResponse struct {
 	SubAssessmentList
-}
-
-// SubscriptionGovernanceRulesExecuteStatusClientGetResponse contains the response from method SubscriptionGovernanceRulesExecuteStatusClient.Get.
-type SubscriptionGovernanceRulesExecuteStatusClientGetResponse struct {
-	ExecuteRuleStatus
 }
 
 // TasksClientGetResourceGroupLevelTaskResponse contains the response from method TasksClient.GetResourceGroupLevelTask.
@@ -979,17 +1016,17 @@ type TasksClientGetSubscriptionLevelTaskResponse struct {
 	Task
 }
 
-// TasksClientListByHomeRegionResponse contains the response from method TasksClient.ListByHomeRegion.
+// TasksClientListByHomeRegionResponse contains the response from method TasksClient.NewListByHomeRegionPager.
 type TasksClientListByHomeRegionResponse struct {
 	TaskList
 }
 
-// TasksClientListByResourceGroupResponse contains the response from method TasksClient.ListByResourceGroup.
+// TasksClientListByResourceGroupResponse contains the response from method TasksClient.NewListByResourceGroupPager.
 type TasksClientListByResourceGroupResponse struct {
 	TaskList
 }
 
-// TasksClientListResponse contains the response from method TasksClient.List.
+// TasksClientListResponse contains the response from method TasksClient.NewListPager.
 type TasksClientListResponse struct {
 	TaskList
 }
@@ -1009,12 +1046,12 @@ type TopologyClientGetResponse struct {
 	TopologyResource
 }
 
-// TopologyClientListByHomeRegionResponse contains the response from method TopologyClient.ListByHomeRegion.
+// TopologyClientListByHomeRegionResponse contains the response from method TopologyClient.NewListByHomeRegionPager.
 type TopologyClientListByHomeRegionResponse struct {
 	TopologyList
 }
 
-// TopologyClientListResponse contains the response from method TopologyClient.List.
+// TopologyClientListResponse contains the response from method TopologyClient.NewListPager.
 type TopologyClientListResponse struct {
 	TopologyList
 }
@@ -1034,7 +1071,7 @@ type WorkspaceSettingsClientGetResponse struct {
 	WorkspaceSetting
 }
 
-// WorkspaceSettingsClientListResponse contains the response from method WorkspaceSettingsClient.List.
+// WorkspaceSettingsClientListResponse contains the response from method WorkspaceSettingsClient.NewListPager.
 type WorkspaceSettingsClientListResponse struct {
 	WorkspaceSettingList
 }

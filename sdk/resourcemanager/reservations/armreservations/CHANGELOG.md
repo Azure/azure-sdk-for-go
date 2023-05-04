@@ -1,5 +1,66 @@
 # Release History
 
+## 3.0.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 3.0.0 (2023-03-24)
+### Breaking Changes
+
+- Response of `ReturnClient.Post` has been changed from `RefundResponse` to `ReservationOrderResponse`
+
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New field `P3Y` in struct `CatalogMsrp`
+- New field `P5Y` in struct `CatalogMsrp`
+- New anonymous field `ReservationOrderResponse` in struct `ReturnClientPostResponse`
+
+
+## 2.0.0 (2023-02-24)
+### Breaking Changes
+
+- Operation `*AzureReservationAPIClient.GetCatalog` has supported pagination, use `*AzureReservationAPIClient.NewGetCatalogPager` instead.
+- Operation `*ReturnClient.Post` has been changed to LRO, use `*ReturnClient.BeginPost` instead.
+
+### Features Added
+
+- New value `AppliedScopeTypeManagementGroup` added to type alias `AppliedScopeType`
+- New value `DisplayProvisioningStateNoBenefit`, `DisplayProvisioningStateWarning` added to type alias `DisplayProvisioningState`
+- New type alias `BillingPlan` with values `BillingPlanP1M`
+- New type alias `CommitmentGrain` with values `CommitmentGrainHourly`
+- New type alias `SavingsPlanTerm` with values `SavingsPlanTermP1Y`, `SavingsPlanTermP3Y`
+- New struct `AppliedScopeProperties`
+- New struct `CatalogsResult`
+- New struct `Commitment`
+- New struct `ProxyResource`
+- New struct `ReservationSwapProperties`
+- New struct `Resource`
+- New struct `SavingsPlanPurchaseRequest`
+- New struct `SavingsPlanPurchaseRequestProperties`
+- New struct `SavingsPlanToPurchaseCalculateExchange`
+- New struct `SavingsPlanToPurchaseExchange`
+- New anonymous field `CatalogsResult` in struct `AzureReservationAPIClientGetCatalogResponse`
+- New field `SavingsPlansToPurchase` in struct `CalculateExchangeRequestProperties`
+- New field `SavingsPlansToPurchase` in struct `CalculateExchangeResponseProperties`
+- New field `SavingsPlansToPurchase` in struct `ExchangeResponseProperties`
+- New field `AppliedScopeProperties` in struct `PatchProperties`
+- New field `ReviewDateTime` in struct `PatchProperties`
+- New field `AppliedScopeProperties` in struct `Properties`
+- New field `ExpiryDateTime` in struct `Properties`
+- New field `PurchaseDateTime` in struct `Properties`
+- New field `ReviewDateTime` in struct `Properties`
+- New field `SwapProperties` in struct `Properties`
+- New field `AppliedScopeProperties` in struct `PurchaseRequestProperties`
+- New field `ReviewDateTime` in struct `PurchaseRequestProperties`
+- New field `ExpiryDateTime` in struct `ReservationOrderProperties`
+- New field `ReviewDateTime` in struct `ReservationOrderProperties`
+- New field `NoBenefitCount` in struct `ReservationSummary`
+- New field `WarningCount` in struct `ReservationSummary`
+
+
 ## 1.1.0 (2022-09-16)
 ### Features Added
 

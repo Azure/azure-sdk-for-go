@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,48 +24,40 @@ import (
 // CollectionRegionClient contains the methods for the CollectionRegion group.
 // Don't use this type directly, use NewCollectionRegionClient() instead.
 type CollectionRegionClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCollectionRegionClient creates a new instance of CollectionRegionClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCollectionRegionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CollectionRegionClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CollectionRegionClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CollectionRegionClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewListMetricsPager - Retrieves the metrics determined by the given filter for the given database account, collection and
 // region.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// region - Cosmos DB region, with spaces between words and each word capitalized.
-// databaseRid - Cosmos DB database rid.
-// collectionRid - Cosmos DB collection rid.
-// filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
-// name.value (name of the metric, can have an or of multiple names), startTime, endTime,
-// and timeGrain. The supported operator is eq.
-// options - CollectionRegionClientListMetricsOptions contains the optional parameters for the CollectionRegionClient.ListMetrics
-// method.
+//
+// Generated from API version 2023-03-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - region - Cosmos DB region, with spaces between words and each word capitalized.
+//   - databaseRid - Cosmos DB database rid.
+//   - collectionRid - Cosmos DB collection rid.
+//   - filter - An OData filter expression that describes a subset of metrics to return. The parameters that can be filtered are
+//     name.value (name of the metric, can have an or of multiple names), startTime, endTime,
+//     and timeGrain. The supported operator is eq.
+//   - options - CollectionRegionClientListMetricsOptions contains the optional parameters for the CollectionRegionClient.NewListMetricsPager
+//     method.
 func (client *CollectionRegionClient) NewListMetricsPager(resourceGroupName string, accountName string, region string, databaseRid string, collectionRid string, filter string, options *CollectionRegionClientListMetricsOptions) *runtime.Pager[CollectionRegionClientListMetricsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CollectionRegionClientListMetricsResponse]{
 		More: func(page CollectionRegionClientListMetricsResponse) bool {
@@ -78,7 +68,7 @@ func (client *CollectionRegionClient) NewListMetricsPager(resourceGroupName stri
 			if err != nil {
 				return CollectionRegionClientListMetricsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CollectionRegionClientListMetricsResponse{}, err
 			}
@@ -117,12 +107,12 @@ func (client *CollectionRegionClient) listMetricsCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter collectionRid cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{collectionRid}", url.PathEscape(collectionRid))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2023-03-15")
 	reqQP.Set("$filter", filter)
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}

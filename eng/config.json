@@ -25,6 +25,10 @@
             "CoverageGoal": 0.68
         },
         {
+            "Name": "azqueue",
+            "CoverageGoal": 0.60
+        },
+        {
             "Name": "aztemplate",
             "CoverageGoal": 0.50
         },
@@ -66,8 +70,12 @@
             "CoverageGoal": 0.10
         },
         {
+            "Name": "messaging/azservicebus",
+            "CoverageGoal": 0.50
+        },
+        {
             "Name": "messaging/azeventhubs",
-            "CoverageGoal": 0.0
+            "CoverageGoal": 0.60
         },
         {
             "Name": "messaging/internal",
@@ -75,11 +83,15 @@
         },
         {
             "Name": "monitor/azquery",
-            "CoverageGoal": 0.80
+            "CoverageGoal": 0.85
         },
         {
             "Name": "resourcemanager",
             "CoverageGoal": 0.0
+        },
+        {
+            "Name": "security/keyvault/azadmin",
+            "CoverageGoal": 0.80
         }
     ]
 }

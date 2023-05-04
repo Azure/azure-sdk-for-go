@@ -15,7 +15,7 @@ func unmarshalActiveBaseSecurityAdminRuleClassification(rawMsg json.RawMessage) 
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func unmarshalBaseAdminRuleClassification(rawMsg json.RawMessage) (BaseAdminRule
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -93,7 +93,7 @@ func unmarshalEffectiveBaseSecurityAdminRuleClassification(rawMsg json.RawMessag
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -132,7 +132,7 @@ func unmarshalFirewallPolicyRuleClassification(rawMsg json.RawMessage) (Firewall
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -173,7 +173,7 @@ func unmarshalFirewallPolicyRuleCollectionClassification(rawMsg json.RawMessage)
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,49 +25,41 @@ import (
 // FarmBeatsModelsClient contains the methods for the FarmBeatsModels group.
 // Don't use this type directly, use NewFarmBeatsModelsClient() instead.
 type FarmBeatsModelsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewFarmBeatsModelsClient creates a new instance of FarmBeatsModelsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewFarmBeatsModelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FarmBeatsModelsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".FarmBeatsModelsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &FarmBeatsModelsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// farmBeatsResourceName - FarmBeats resource name.
-// body - FarmBeats resource create or update request object.
-// options - FarmBeatsModelsClientCreateOrUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - farmBeatsResourceName - FarmBeats resource name.
+//   - body - FarmBeats resource create or update request object.
+//   - options - FarmBeatsModelsClientCreateOrUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.CreateOrUpdate
+//     method.
 func (client *FarmBeatsModelsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, body FarmBeats, options *FarmBeatsModelsClientCreateOrUpdateOptions) (FarmBeatsModelsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, body, options)
 	if err != nil {
 		return FarmBeatsModelsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FarmBeatsModelsClientCreateOrUpdateResponse{}, err
 	}
@@ -94,7 +84,7 @@ func (client *FarmBeatsModelsClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{farmBeatsResourceName}", url.PathEscape(farmBeatsResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,16 +106,17 @@ func (client *FarmBeatsModelsClient) createOrUpdateHandleResponse(resp *http.Res
 
 // Delete - Delete a FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// farmBeatsResourceName - FarmBeats resource name.
-// options - FarmBeatsModelsClientDeleteOptions contains the optional parameters for the FarmBeatsModelsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - farmBeatsResourceName - FarmBeats resource name.
+//   - options - FarmBeatsModelsClientDeleteOptions contains the optional parameters for the FarmBeatsModelsClient.Delete method.
 func (client *FarmBeatsModelsClient) Delete(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsClientDeleteOptions) (FarmBeatsModelsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, options)
 	if err != nil {
 		return FarmBeatsModelsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FarmBeatsModelsClientDeleteResponse{}, err
 	}
@@ -150,7 +141,7 @@ func (client *FarmBeatsModelsClient) deleteCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{farmBeatsResourceName}", url.PathEscape(farmBeatsResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -163,16 +154,17 @@ func (client *FarmBeatsModelsClient) deleteCreateRequest(ctx context.Context, re
 
 // Get - Get FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// farmBeatsResourceName - FarmBeats resource name.
-// options - FarmBeatsModelsClientGetOptions contains the optional parameters for the FarmBeatsModelsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - farmBeatsResourceName - FarmBeats resource name.
+//   - options - FarmBeatsModelsClientGetOptions contains the optional parameters for the FarmBeatsModelsClient.Get method.
 func (client *FarmBeatsModelsClient) Get(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, options *FarmBeatsModelsClientGetOptions) (FarmBeatsModelsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, options)
 	if err != nil {
 		return FarmBeatsModelsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FarmBeatsModelsClientGetResponse{}, err
 	}
@@ -197,7 +189,7 @@ func (client *FarmBeatsModelsClient) getCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{farmBeatsResourceName}", url.PathEscape(farmBeatsResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -219,18 +211,19 @@ func (client *FarmBeatsModelsClient) getHandleResponse(resp *http.Response) (Far
 
 // GetOperationResult - Get operationResults for a FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// farmBeatsResourceName - FarmBeats resource name.
-// operationResultsID - The operation results id.
-// options - FarmBeatsModelsClientGetOperationResultOptions contains the optional parameters for the FarmBeatsModelsClient.GetOperationResult
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - farmBeatsResourceName - FarmBeats resource name.
+//   - operationResultsID - The operation results id.
+//   - options - FarmBeatsModelsClientGetOperationResultOptions contains the optional parameters for the FarmBeatsModelsClient.GetOperationResult
+//     method.
 func (client *FarmBeatsModelsClient) GetOperationResult(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, operationResultsID string, options *FarmBeatsModelsClientGetOperationResultOptions) (FarmBeatsModelsClientGetOperationResultResponse, error) {
 	req, err := client.getOperationResultCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, operationResultsID, options)
 	if err != nil {
 		return FarmBeatsModelsClientGetOperationResultResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return FarmBeatsModelsClientGetOperationResultResponse{}, err
 	}
@@ -259,7 +252,7 @@ func (client *FarmBeatsModelsClient) getOperationResultCreateRequest(ctx context
 		return nil, errors.New("parameter operationResultsID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{operationResultsId}", url.PathEscape(operationResultsID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -280,11 +273,11 @@ func (client *FarmBeatsModelsClient) getOperationResultHandleResponse(resp *http
 }
 
 // NewListByResourceGroupPager - Lists the FarmBeats instances for a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - FarmBeatsModelsClientListByResourceGroupOptions contains the optional parameters for the FarmBeatsModelsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - FarmBeatsModelsClientListByResourceGroupOptions contains the optional parameters for the FarmBeatsModelsClient.NewListByResourceGroupPager
+//     method.
 func (client *FarmBeatsModelsClient) NewListByResourceGroupPager(resourceGroupName string, options *FarmBeatsModelsClientListByResourceGroupOptions) *runtime.Pager[FarmBeatsModelsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FarmBeatsModelsClientListByResourceGroupResponse]{
 		More: func(page FarmBeatsModelsClientListByResourceGroupResponse) bool {
@@ -301,7 +294,7 @@ func (client *FarmBeatsModelsClient) NewListByResourceGroupPager(resourceGroupNa
 			if err != nil {
 				return FarmBeatsModelsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FarmBeatsModelsClientListByResourceGroupResponse{}, err
 			}
@@ -324,7 +317,7 @@ func (client *FarmBeatsModelsClient) listByResourceGroupCreateRequest(ctx contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -351,10 +344,10 @@ func (client *FarmBeatsModelsClient) listByResourceGroupHandleResponse(resp *htt
 }
 
 // NewListBySubscriptionPager - Lists the FarmBeats instances for a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// options - FarmBeatsModelsClientListBySubscriptionOptions contains the optional parameters for the FarmBeatsModelsClient.ListBySubscription
-// method.
+//   - options - FarmBeatsModelsClientListBySubscriptionOptions contains the optional parameters for the FarmBeatsModelsClient.NewListBySubscriptionPager
+//     method.
 func (client *FarmBeatsModelsClient) NewListBySubscriptionPager(options *FarmBeatsModelsClientListBySubscriptionOptions) *runtime.Pager[FarmBeatsModelsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[FarmBeatsModelsClientListBySubscriptionResponse]{
 		More: func(page FarmBeatsModelsClientListBySubscriptionResponse) bool {
@@ -371,7 +364,7 @@ func (client *FarmBeatsModelsClient) NewListBySubscriptionPager(options *FarmBea
 			if err != nil {
 				return FarmBeatsModelsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return FarmBeatsModelsClientListBySubscriptionResponse{}, err
 			}
@@ -390,7 +383,7 @@ func (client *FarmBeatsModelsClient) listBySubscriptionCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -418,35 +411,37 @@ func (client *FarmBeatsModelsClient) listBySubscriptionHandleResponse(resp *http
 
 // BeginUpdate - Update a FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// farmBeatsResourceName - FarmBeats resource name.
-// body - Request object.
-// options - FarmBeatsModelsClientBeginUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - farmBeatsResourceName - FarmBeats resource name.
+//   - body - Request object.
+//   - options - FarmBeatsModelsClientBeginUpdateOptions contains the optional parameters for the FarmBeatsModelsClient.BeginUpdate
+//     method.
 func (client *FarmBeatsModelsClient) BeginUpdate(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, body FarmBeatsUpdateRequestModel, options *FarmBeatsModelsClientBeginUpdateOptions) (*runtime.Poller[FarmBeatsModelsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, farmBeatsResourceName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[FarmBeatsModelsClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FarmBeatsModelsClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[FarmBeatsModelsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[FarmBeatsModelsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update a FarmBeats resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-09-01-preview
 func (client *FarmBeatsModelsClient) update(ctx context.Context, resourceGroupName string, farmBeatsResourceName string, body FarmBeatsUpdateRequestModel, options *FarmBeatsModelsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, farmBeatsResourceName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -471,7 +466,7 @@ func (client *FarmBeatsModelsClient) updateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter farmBeatsResourceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{farmBeatsResourceName}", url.PathEscape(farmBeatsResourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

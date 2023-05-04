@@ -15,12 +15,14 @@ func unmarshalDataConnectionClassification(rawMsg json.RawMessage) (DataConnecti
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
 	var b DataConnectionClassification
 	switch m["kind"] {
+	case string(DataConnectionKindCosmosDb):
+		b = &CosmosDbDataConnection{}
 	case string(DataConnectionKindEventGrid):
 		b = &EventGridDataConnection{}
 	case string(DataConnectionKindEventHub):
@@ -56,7 +58,7 @@ func unmarshalDatabaseClassification(rawMsg json.RawMessage) (DatabaseClassifica
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

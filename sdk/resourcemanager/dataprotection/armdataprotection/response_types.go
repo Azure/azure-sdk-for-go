@@ -9,17 +9,17 @@
 
 package armdataprotection
 
-// BackupInstancesClientAdhocBackupResponse contains the response from method BackupInstancesClient.AdhocBackup.
+// BackupInstancesClientAdhocBackupResponse contains the response from method BackupInstancesClient.BeginAdhocBackup.
 type BackupInstancesClientAdhocBackupResponse struct {
 	OperationJobExtendedInfo
 }
 
-// BackupInstancesClientCreateOrUpdateResponse contains the response from method BackupInstancesClient.CreateOrUpdate.
+// BackupInstancesClientCreateOrUpdateResponse contains the response from method BackupInstancesClient.BeginCreateOrUpdate.
 type BackupInstancesClientCreateOrUpdateResponse struct {
 	BackupInstanceResource
 }
 
-// BackupInstancesClientDeleteResponse contains the response from method BackupInstancesClient.Delete.
+// BackupInstancesClientDeleteResponse contains the response from method BackupInstancesClient.BeginDelete.
 type BackupInstancesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -34,59 +34,54 @@ type BackupInstancesClientGetResponse struct {
 	BackupInstanceResource
 }
 
-// BackupInstancesClientListResponse contains the response from method BackupInstancesClient.List.
+// BackupInstancesClientListResponse contains the response from method BackupInstancesClient.NewListPager.
 type BackupInstancesClientListResponse struct {
 	BackupInstanceResourceList
 }
 
-// BackupInstancesClientResumeBackupsResponse contains the response from method BackupInstancesClient.ResumeBackups.
+// BackupInstancesClientResumeBackupsResponse contains the response from method BackupInstancesClient.BeginResumeBackups.
 type BackupInstancesClientResumeBackupsResponse struct {
 	// placeholder for future response values
 }
 
-// BackupInstancesClientResumeProtectionResponse contains the response from method BackupInstancesClient.ResumeProtection.
+// BackupInstancesClientResumeProtectionResponse contains the response from method BackupInstancesClient.BeginResumeProtection.
 type BackupInstancesClientResumeProtectionResponse struct {
 	// placeholder for future response values
 }
 
-// BackupInstancesClientStopProtectionResponse contains the response from method BackupInstancesClient.StopProtection.
+// BackupInstancesClientStopProtectionResponse contains the response from method BackupInstancesClient.BeginStopProtection.
 type BackupInstancesClientStopProtectionResponse struct {
 	// placeholder for future response values
 }
 
-// BackupInstancesClientSuspendBackupsResponse contains the response from method BackupInstancesClient.SuspendBackups.
+// BackupInstancesClientSuspendBackupsResponse contains the response from method BackupInstancesClient.BeginSuspendBackups.
 type BackupInstancesClientSuspendBackupsResponse struct {
 	// placeholder for future response values
 }
 
-// BackupInstancesClientSyncBackupInstanceResponse contains the response from method BackupInstancesClient.SyncBackupInstance.
+// BackupInstancesClientSyncBackupInstanceResponse contains the response from method BackupInstancesClient.BeginSyncBackupInstance.
 type BackupInstancesClientSyncBackupInstanceResponse struct {
 	// placeholder for future response values
 }
 
-// BackupInstancesClientTriggerRehydrateResponse contains the response from method BackupInstancesClient.TriggerRehydrate.
+// BackupInstancesClientTriggerRehydrateResponse contains the response from method BackupInstancesClient.BeginTriggerRehydrate.
 type BackupInstancesClientTriggerRehydrateResponse struct {
 	// placeholder for future response values
 }
 
-// BackupInstancesClientTriggerRestoreResponse contains the response from method BackupInstancesClient.TriggerRestore.
+// BackupInstancesClientTriggerRestoreResponse contains the response from method BackupInstancesClient.BeginTriggerRestore.
 type BackupInstancesClientTriggerRestoreResponse struct {
 	OperationJobExtendedInfo
 }
 
-// BackupInstancesClientValidateForBackupResponse contains the response from method BackupInstancesClient.ValidateForBackup.
+// BackupInstancesClientValidateForBackupResponse contains the response from method BackupInstancesClient.BeginValidateForBackup.
 type BackupInstancesClientValidateForBackupResponse struct {
 	OperationJobExtendedInfo
 }
 
-// BackupInstancesClientValidateForRestoreResponse contains the response from method BackupInstancesClient.ValidateForRestore.
+// BackupInstancesClientValidateForRestoreResponse contains the response from method BackupInstancesClient.BeginValidateForRestore.
 type BackupInstancesClientValidateForRestoreResponse struct {
 	OperationJobExtendedInfo
-}
-
-// BackupInstancesExtensionRoutingClientListResponse contains the response from method BackupInstancesExtensionRoutingClient.List.
-type BackupInstancesExtensionRoutingClientListResponse struct {
-	BackupInstanceResourceList
 }
 
 // BackupPoliciesClientCreateOrUpdateResponse contains the response from method BackupPoliciesClient.CreateOrUpdate.
@@ -104,7 +99,7 @@ type BackupPoliciesClientGetResponse struct {
 	BaseBackupPolicyResource
 }
 
-// BackupPoliciesClientListResponse contains the response from method BackupPoliciesClient.List.
+// BackupPoliciesClientListResponse contains the response from method BackupPoliciesClient.NewListPager.
 type BackupPoliciesClientListResponse struct {
 	BaseBackupPolicyResourceList
 }
@@ -127,22 +122,22 @@ type BackupVaultsClientCheckNameAvailabilityResponse struct {
 	CheckNameAvailabilityResult
 }
 
-// BackupVaultsClientCreateOrUpdateResponse contains the response from method BackupVaultsClient.CreateOrUpdate.
+// BackupVaultsClientCreateOrUpdateResponse contains the response from method BackupVaultsClient.BeginCreateOrUpdate.
 type BackupVaultsClientCreateOrUpdateResponse struct {
 	BackupVaultResource
 }
 
-// BackupVaultsClientDeleteResponse contains the response from method BackupVaultsClient.Delete.
+// BackupVaultsClientDeleteResponse contains the response from method BackupVaultsClient.BeginDelete.
 type BackupVaultsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// BackupVaultsClientGetInResourceGroupResponse contains the response from method BackupVaultsClient.GetInResourceGroup.
+// BackupVaultsClientGetInResourceGroupResponse contains the response from method BackupVaultsClient.NewGetInResourceGroupPager.
 type BackupVaultsClientGetInResourceGroupResponse struct {
 	BackupVaultResourceList
 }
 
-// BackupVaultsClientGetInSubscriptionResponse contains the response from method BackupVaultsClient.GetInSubscription.
+// BackupVaultsClientGetInSubscriptionResponse contains the response from method BackupVaultsClient.NewGetInSubscriptionPager.
 type BackupVaultsClientGetInSubscriptionResponse struct {
 	BackupVaultResourceList
 }
@@ -152,7 +147,7 @@ type BackupVaultsClientGetResponse struct {
 	BackupVaultResource
 }
 
-// BackupVaultsClientUpdateResponse contains the response from method BackupVaultsClient.Update.
+// BackupVaultsClientUpdateResponse contains the response from method BackupVaultsClient.BeginUpdate.
 type BackupVaultsClientUpdateResponse struct {
 	BackupVaultResource
 }
@@ -177,42 +172,17 @@ type DeletedBackupInstancesClientGetResponse struct {
 	DeletedBackupInstanceResource
 }
 
-// DeletedBackupInstancesClientListResponse contains the response from method DeletedBackupInstancesClient.List.
+// DeletedBackupInstancesClientListResponse contains the response from method DeletedBackupInstancesClient.NewListPager.
 type DeletedBackupInstancesClientListResponse struct {
 	DeletedBackupInstanceResourceList
 }
 
-// DeletedBackupInstancesClientUndeleteResponse contains the response from method DeletedBackupInstancesClient.Undelete.
+// DeletedBackupInstancesClientUndeleteResponse contains the response from method DeletedBackupInstancesClient.BeginUndelete.
 type DeletedBackupInstancesClientUndeleteResponse struct {
 	// placeholder for future response values
 }
 
-// DppResourceGuardProxyClientDeleteResponse contains the response from method DppResourceGuardProxyClient.Delete.
-type DppResourceGuardProxyClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// DppResourceGuardProxyClientGetResponse contains the response from method DppResourceGuardProxyClient.Get.
-type DppResourceGuardProxyClientGetResponse struct {
-	ResourceGuardProxyBaseResource
-}
-
-// DppResourceGuardProxyClientListResponse contains the response from method DppResourceGuardProxyClient.List.
-type DppResourceGuardProxyClientListResponse struct {
-	ResourceGuardProxyBaseResourceList
-}
-
-// DppResourceGuardProxyClientPutResponse contains the response from method DppResourceGuardProxyClient.Put.
-type DppResourceGuardProxyClientPutResponse struct {
-	ResourceGuardProxyBaseResource
-}
-
-// DppResourceGuardProxyClientUnlockDeleteResponse contains the response from method DppResourceGuardProxyClient.UnlockDelete.
-type DppResourceGuardProxyClientUnlockDeleteResponse struct {
-	UnlockDeleteResponse
-}
-
-// ExportJobsClientTriggerResponse contains the response from method ExportJobsClient.Trigger.
+// ExportJobsClientTriggerResponse contains the response from method ExportJobsClient.BeginTrigger.
 type ExportJobsClientTriggerResponse struct {
 	// placeholder for future response values
 }
@@ -227,7 +197,7 @@ type JobsClientGetResponse struct {
 	AzureBackupJobResource
 }
 
-// JobsClientListResponse contains the response from method JobsClient.List.
+// JobsClientListResponse contains the response from method JobsClient.NewListPager.
 type JobsClientListResponse struct {
 	AzureBackupJobResourceList
 }
@@ -260,7 +230,7 @@ type OperationStatusResourceGroupContextClientGetResponse struct {
 	OperationResource
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	ClientDiscoveryResponse
 }
@@ -270,7 +240,7 @@ type RecoveryPointsClientGetResponse struct {
 	AzureBackupRecoveryPointResource
 }
 
-// RecoveryPointsClientListResponse contains the response from method RecoveryPointsClient.List.
+// RecoveryPointsClientListResponse contains the response from method RecoveryPointsClient.NewListPager.
 type RecoveryPointsClientListResponse struct {
 	AzureBackupRecoveryPointResourceList
 }
@@ -280,7 +250,7 @@ type ResourceGuardsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetBackupSecurityPINRequestsObjects.
+// ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse contains the response from method ResourceGuardsClient.NewGetBackupSecurityPINRequestsObjectsPager.
 type ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse struct {
 	DppBaseResourceList
 }
@@ -315,27 +285,27 @@ type ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse 
 	DppBaseResource
 }
 
-// ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetDeleteProtectedItemRequestsObjects.
+// ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse contains the response from method ResourceGuardsClient.NewGetDeleteProtectedItemRequestsObjectsPager.
 type ResourceGuardsClientGetDeleteProtectedItemRequestsObjectsResponse struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetDeleteResourceGuardProxyRequestsObjects.
+// ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse contains the response from method ResourceGuardsClient.NewGetDeleteResourceGuardProxyRequestsObjectsPager.
 type ResourceGuardsClientGetDeleteResourceGuardProxyRequestsObjectsResponse struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetDisableSoftDeleteRequestsObjects.
+// ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse contains the response from method ResourceGuardsClient.NewGetDisableSoftDeleteRequestsObjectsPager.
 type ResourceGuardsClientGetDisableSoftDeleteRequestsObjectsResponse struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsClientGetResourcesInResourceGroupResponse contains the response from method ResourceGuardsClient.GetResourcesInResourceGroup.
+// ResourceGuardsClientGetResourcesInResourceGroupResponse contains the response from method ResourceGuardsClient.NewGetResourcesInResourceGroupPager.
 type ResourceGuardsClientGetResourcesInResourceGroupResponse struct {
 	ResourceGuardResourceList
 }
 
-// ResourceGuardsClientGetResourcesInSubscriptionResponse contains the response from method ResourceGuardsClient.GetResourcesInSubscription.
+// ResourceGuardsClientGetResourcesInSubscriptionResponse contains the response from method ResourceGuardsClient.NewGetResourcesInSubscriptionPager.
 type ResourceGuardsClientGetResourcesInSubscriptionResponse struct {
 	ResourceGuardResourceList
 }
@@ -345,12 +315,12 @@ type ResourceGuardsClientGetResponse struct {
 	ResourceGuardResource
 }
 
-// ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetUpdateProtectedItemRequestsObjects.
+// ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse contains the response from method ResourceGuardsClient.NewGetUpdateProtectedItemRequestsObjectsPager.
 type ResourceGuardsClientGetUpdateProtectedItemRequestsObjectsResponse struct {
 	DppBaseResourceList
 }
 
-// ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse contains the response from method ResourceGuardsClient.GetUpdateProtectionPolicyRequestsObjects.
+// ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse contains the response from method ResourceGuardsClient.NewGetUpdateProtectionPolicyRequestsObjectsPager.
 type ResourceGuardsClientGetUpdateProtectionPolicyRequestsObjectsResponse struct {
 	DppBaseResourceList
 }

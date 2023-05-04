@@ -327,8 +327,7 @@ func TestSessionReceiver_Detach(t *testing.T) {
 		}})
 	defer cleanup()
 
-	stopFn := test.EnableStdoutLogging()
-	defer stopFn()
+	test.EnableStdoutLogging(t)
 
 	adminClient, err := admin.NewClientFromConnectionString(test.GetConnectionString(t), nil)
 	require.NoError(t, err)

@@ -14,7 +14,7 @@ type BestPracticesClientGetResponse struct {
 	BestPractice
 }
 
-// BestPracticesClientListByTenantResponse contains the response from method BestPracticesClient.ListByTenant.
+// BestPracticesClientListByTenantResponse contains the response from method BestPracticesClient.NewListByTenantPager.
 type BestPracticesClientListByTenantResponse struct {
 	BestPracticeList
 }
@@ -24,7 +24,7 @@ type BestPracticesVersionsClientGetResponse struct {
 	BestPractice
 }
 
-// BestPracticesVersionsClientListByTenantResponse contains the response from method BestPracticesVersionsClient.ListByTenant.
+// BestPracticesVersionsClientListByTenantResponse contains the response from method BestPracticesVersionsClient.NewListByTenantPager.
 type BestPracticesVersionsClientListByTenantResponse struct {
 	BestPracticeList
 }
@@ -44,27 +44,27 @@ type ConfigurationProfileAssignmentsClientGetResponse struct {
 	ConfigurationProfileAssignment
 }
 
-// ConfigurationProfileAssignmentsClientListByClusterNameResponse contains the response from method ConfigurationProfileAssignmentsClient.ListByClusterName.
+// ConfigurationProfileAssignmentsClientListByClusterNameResponse contains the response from method ConfigurationProfileAssignmentsClient.NewListByClusterNamePager.
 type ConfigurationProfileAssignmentsClientListByClusterNameResponse struct {
 	ConfigurationProfileAssignmentList
 }
 
-// ConfigurationProfileAssignmentsClientListByMachineNameResponse contains the response from method ConfigurationProfileAssignmentsClient.ListByMachineName.
+// ConfigurationProfileAssignmentsClientListByMachineNameResponse contains the response from method ConfigurationProfileAssignmentsClient.NewListByMachineNamePager.
 type ConfigurationProfileAssignmentsClientListByMachineNameResponse struct {
 	ConfigurationProfileAssignmentList
 }
 
-// ConfigurationProfileAssignmentsClientListBySubscriptionResponse contains the response from method ConfigurationProfileAssignmentsClient.ListBySubscription.
+// ConfigurationProfileAssignmentsClientListBySubscriptionResponse contains the response from method ConfigurationProfileAssignmentsClient.NewListBySubscriptionPager.
 type ConfigurationProfileAssignmentsClientListBySubscriptionResponse struct {
 	ConfigurationProfileAssignmentList
 }
 
-// ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse contains the response from method ConfigurationProfileAssignmentsClient.ListByVirtualMachines.
+// ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse contains the response from method ConfigurationProfileAssignmentsClient.NewListByVirtualMachinesPager.
 type ConfigurationProfileAssignmentsClientListByVirtualMachinesResponse struct {
 	ConfigurationProfileAssignmentList
 }
 
-// ConfigurationProfileAssignmentsClientListResponse contains the response from method ConfigurationProfileAssignmentsClient.List.
+// ConfigurationProfileAssignmentsClientListResponse contains the response from method ConfigurationProfileAssignmentsClient.NewListPager.
 type ConfigurationProfileAssignmentsClientListResponse struct {
 	ConfigurationProfileAssignmentList
 }
@@ -114,12 +114,12 @@ type ConfigurationProfilesClientGetResponse struct {
 	ConfigurationProfile
 }
 
-// ConfigurationProfilesClientListByResourceGroupResponse contains the response from method ConfigurationProfilesClient.ListByResourceGroup.
+// ConfigurationProfilesClientListByResourceGroupResponse contains the response from method ConfigurationProfilesClient.NewListByResourceGroupPager.
 type ConfigurationProfilesClientListByResourceGroupResponse struct {
 	ConfigurationProfileList
 }
 
-// ConfigurationProfilesClientListBySubscriptionResponse contains the response from method ConfigurationProfilesClient.ListBySubscription.
+// ConfigurationProfilesClientListBySubscriptionResponse contains the response from method ConfigurationProfilesClient.NewListBySubscriptionPager.
 type ConfigurationProfilesClientListBySubscriptionResponse struct {
 	ConfigurationProfileList
 }
@@ -144,7 +144,7 @@ type ConfigurationProfilesVersionsClientGetResponse struct {
 	ConfigurationProfile
 }
 
-// ConfigurationProfilesVersionsClientListChildResourcesResponse contains the response from method ConfigurationProfilesVersionsClient.ListChildResources.
+// ConfigurationProfilesVersionsClientListChildResourcesResponse contains the response from method ConfigurationProfilesVersionsClient.NewListChildResourcesPager.
 type ConfigurationProfilesVersionsClientListChildResourcesResponse struct {
 	ConfigurationProfileList
 }
@@ -154,7 +154,7 @@ type HCIReportsClientGetResponse struct {
 	Report
 }
 
-// HCIReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method HCIReportsClient.ListByConfigurationProfileAssignments.
+// HCIReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method HCIReportsClient.NewListByConfigurationProfileAssignmentsPager.
 type HCIReportsClientListByConfigurationProfileAssignmentsResponse struct {
 	ReportList
 }
@@ -164,12 +164,12 @@ type HCRPReportsClientGetResponse struct {
 	Report
 }
 
-// HCRPReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method HCRPReportsClient.ListByConfigurationProfileAssignments.
+// HCRPReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method HCRPReportsClient.NewListByConfigurationProfileAssignmentsPager.
 type HCRPReportsClientListByConfigurationProfileAssignmentsResponse struct {
 	ReportList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -179,7 +179,7 @@ type ReportsClientGetResponse struct {
 	Report
 }
 
-// ReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method ReportsClient.ListByConfigurationProfileAssignments.
+// ReportsClientListByConfigurationProfileAssignmentsResponse contains the response from method ReportsClient.NewListByConfigurationProfileAssignmentsPager.
 type ReportsClientListByConfigurationProfileAssignmentsResponse struct {
 	ReportList
 }
@@ -189,7 +189,7 @@ type ServicePrincipalsClientGetResponse struct {
 	ServicePrincipal
 }
 
-// ServicePrincipalsClientListBySubscriptionResponse contains the response from method ServicePrincipalsClient.ListBySubscription.
+// ServicePrincipalsClientListBySubscriptionResponse contains the response from method ServicePrincipalsClient.NewListBySubscriptionPager.
 type ServicePrincipalsClientListBySubscriptionResponse struct {
 	ServicePrincipalListResult
 }

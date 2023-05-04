@@ -49,21 +49,21 @@ func ParseTrack2(config *config.Config, specRoot string) (armServices map[string
 				subService = s[0]
 			}
 
-			for _, packageInfos := range service {
-				for i := range packageInfos {
-					packageInfos[i].RequestLink = request.RequestLink
-					packageInfos[i].ReleaseDate = request.TargetDate
-				}
-			}
-
 			for arm, packageInfos := range service {
-				armServices[arm] = make([]common.PackageInfo, 0)
-				if subService == "" || len(packageInfos) == 1 {
-					armServices[arm] = packageInfos
-				} else {
-					for _, info := range packageInfos {
-						if strings.Contains(info.Config, subService) {
-							armServices[arm] = append(armServices[arm], info)
+				if subService == "" && len(packageInfos) > 0 {
+					packageInfos[0].RequestLink = request.RequestLink
+					packageInfos[0].ReleaseDate = request.TargetDate
+					packageInfos[0].Tag = fmt.Sprintf("tag: %s", request.PackageFlag)
+					armServices[arm] = append(armServices[arm], packageInfos[0])
+				}
+
+				if subService != "" && len(packageInfos) > 0 {
+					for _, packageInfo := range packageInfos {
+						if strings.Contains(packageInfo.Config, subService) {
+							packageInfo.RequestLink = request.RequestLink
+							packageInfo.ReleaseDate = request.TargetDate
+							packageInfo.Tag = fmt.Sprintf("tag: %s", request.PackageFlag)
+							armServices[arm] = append(armServices[arm], packageInfo)
 							break
 						}
 					}

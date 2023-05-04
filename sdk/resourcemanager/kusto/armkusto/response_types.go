@@ -14,12 +14,12 @@ type AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse struct {
 	CheckNameResult
 }
 
-// AttachedDatabaseConfigurationsClientCreateOrUpdateResponse contains the response from method AttachedDatabaseConfigurationsClient.CreateOrUpdate.
+// AttachedDatabaseConfigurationsClientCreateOrUpdateResponse contains the response from method AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate.
 type AttachedDatabaseConfigurationsClientCreateOrUpdateResponse struct {
 	AttachedDatabaseConfiguration
 }
 
-// AttachedDatabaseConfigurationsClientDeleteResponse contains the response from method AttachedDatabaseConfigurationsClient.Delete.
+// AttachedDatabaseConfigurationsClientDeleteResponse contains the response from method AttachedDatabaseConfigurationsClient.BeginDelete.
 type AttachedDatabaseConfigurationsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -29,7 +29,7 @@ type AttachedDatabaseConfigurationsClientGetResponse struct {
 	AttachedDatabaseConfiguration
 }
 
-// AttachedDatabaseConfigurationsClientListByClusterResponse contains the response from method AttachedDatabaseConfigurationsClient.ListByCluster.
+// AttachedDatabaseConfigurationsClientListByClusterResponse contains the response from method AttachedDatabaseConfigurationsClient.NewListByClusterPager.
 type AttachedDatabaseConfigurationsClientListByClusterResponse struct {
 	AttachedDatabaseConfigurationListResult
 }
@@ -39,12 +39,12 @@ type ClusterPrincipalAssignmentsClientCheckNameAvailabilityResponse struct {
 	CheckNameResult
 }
 
-// ClusterPrincipalAssignmentsClientCreateOrUpdateResponse contains the response from method ClusterPrincipalAssignmentsClient.CreateOrUpdate.
+// ClusterPrincipalAssignmentsClientCreateOrUpdateResponse contains the response from method ClusterPrincipalAssignmentsClient.BeginCreateOrUpdate.
 type ClusterPrincipalAssignmentsClientCreateOrUpdateResponse struct {
 	ClusterPrincipalAssignment
 }
 
-// ClusterPrincipalAssignmentsClientDeleteResponse contains the response from method ClusterPrincipalAssignmentsClient.Delete.
+// ClusterPrincipalAssignmentsClientDeleteResponse contains the response from method ClusterPrincipalAssignmentsClient.BeginDelete.
 type ClusterPrincipalAssignmentsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -54,12 +54,12 @@ type ClusterPrincipalAssignmentsClientGetResponse struct {
 	ClusterPrincipalAssignment
 }
 
-// ClusterPrincipalAssignmentsClientListResponse contains the response from method ClusterPrincipalAssignmentsClient.List.
+// ClusterPrincipalAssignmentsClientListResponse contains the response from method ClusterPrincipalAssignmentsClient.NewListPager.
 type ClusterPrincipalAssignmentsClientListResponse struct {
 	ClusterPrincipalAssignmentListResult
 }
 
-// ClustersClientAddLanguageExtensionsResponse contains the response from method ClustersClient.AddLanguageExtensions.
+// ClustersClientAddLanguageExtensionsResponse contains the response from method ClustersClient.BeginAddLanguageExtensions.
 type ClustersClientAddLanguageExtensionsResponse struct {
 	// placeholder for future response values
 }
@@ -69,22 +69,22 @@ type ClustersClientCheckNameAvailabilityResponse struct {
 	CheckNameResult
 }
 
-// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.CreateOrUpdate.
+// ClustersClientCreateOrUpdateResponse contains the response from method ClustersClient.BeginCreateOrUpdate.
 type ClustersClientCreateOrUpdateResponse struct {
 	Cluster
 }
 
-// ClustersClientDeleteResponse contains the response from method ClustersClient.Delete.
+// ClustersClientDeleteResponse contains the response from method ClustersClient.BeginDelete.
 type ClustersClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ClustersClientDetachFollowerDatabasesResponse contains the response from method ClustersClient.DetachFollowerDatabases.
+// ClustersClientDetachFollowerDatabasesResponse contains the response from method ClustersClient.BeginDetachFollowerDatabases.
 type ClustersClientDetachFollowerDatabasesResponse struct {
 	// placeholder for future response values
 }
 
-// ClustersClientDiagnoseVirtualNetworkResponse contains the response from method ClustersClient.DiagnoseVirtualNetwork.
+// ClustersClientDiagnoseVirtualNetworkResponse contains the response from method ClustersClient.BeginDiagnoseVirtualNetwork.
 type ClustersClientDiagnoseVirtualNetworkResponse struct {
 	DiagnoseVirtualNetworkResult
 }
@@ -94,57 +94,57 @@ type ClustersClientGetResponse struct {
 	Cluster
 }
 
-// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.ListByResourceGroup.
+// ClustersClientListByResourceGroupResponse contains the response from method ClustersClient.NewListByResourceGroupPager.
 type ClustersClientListByResourceGroupResponse struct {
 	ClusterListResult
 }
 
-// ClustersClientListFollowerDatabasesResponse contains the response from method ClustersClient.ListFollowerDatabases.
+// ClustersClientListFollowerDatabasesResponse contains the response from method ClustersClient.NewListFollowerDatabasesPager.
 type ClustersClientListFollowerDatabasesResponse struct {
 	FollowerDatabaseListResult
 }
 
-// ClustersClientListLanguageExtensionsResponse contains the response from method ClustersClient.ListLanguageExtensions.
+// ClustersClientListLanguageExtensionsResponse contains the response from method ClustersClient.NewListLanguageExtensionsPager.
 type ClustersClientListLanguageExtensionsResponse struct {
 	LanguageExtensionsList
 }
 
-// ClustersClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method ClustersClient.ListOutboundNetworkDependenciesEndpoints.
+// ClustersClientListOutboundNetworkDependenciesEndpointsResponse contains the response from method ClustersClient.NewListOutboundNetworkDependenciesEndpointsPager.
 type ClustersClientListOutboundNetworkDependenciesEndpointsResponse struct {
 	OutboundNetworkDependenciesEndpointListResult
 }
 
-// ClustersClientListResponse contains the response from method ClustersClient.List.
+// ClustersClientListResponse contains the response from method ClustersClient.NewListPager.
 type ClustersClientListResponse struct {
 	ClusterListResult
 }
 
-// ClustersClientListSKUsByResourceResponse contains the response from method ClustersClient.ListSKUsByResource.
+// ClustersClientListSKUsByResourceResponse contains the response from method ClustersClient.NewListSKUsByResourcePager.
 type ClustersClientListSKUsByResourceResponse struct {
 	ListResourceSKUsResult
 }
 
-// ClustersClientListSKUsResponse contains the response from method ClustersClient.ListSKUs.
+// ClustersClientListSKUsResponse contains the response from method ClustersClient.NewListSKUsPager.
 type ClustersClientListSKUsResponse struct {
 	SKUDescriptionList
 }
 
-// ClustersClientRemoveLanguageExtensionsResponse contains the response from method ClustersClient.RemoveLanguageExtensions.
+// ClustersClientRemoveLanguageExtensionsResponse contains the response from method ClustersClient.BeginRemoveLanguageExtensions.
 type ClustersClientRemoveLanguageExtensionsResponse struct {
 	// placeholder for future response values
 }
 
-// ClustersClientStartResponse contains the response from method ClustersClient.Start.
+// ClustersClientStartResponse contains the response from method ClustersClient.BeginStart.
 type ClustersClientStartResponse struct {
 	// placeholder for future response values
 }
 
-// ClustersClientStopResponse contains the response from method ClustersClient.Stop.
+// ClustersClientStopResponse contains the response from method ClustersClient.BeginStop.
 type ClustersClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// ClustersClientUpdateResponse contains the response from method ClustersClient.Update.
+// ClustersClientUpdateResponse contains the response from method ClustersClient.BeginUpdate.
 type ClustersClientUpdateResponse struct {
 	Cluster
 }
@@ -154,7 +154,7 @@ type DataConnectionsClientCheckNameAvailabilityResponse struct {
 	CheckNameResult
 }
 
-// DataConnectionsClientCreateOrUpdateResponse contains the response from method DataConnectionsClient.CreateOrUpdate.
+// DataConnectionsClientCreateOrUpdateResponse contains the response from method DataConnectionsClient.BeginCreateOrUpdate.
 type DataConnectionsClientCreateOrUpdateResponse struct {
 	DataConnectionClassification
 }
@@ -169,12 +169,12 @@ func (d *DataConnectionsClientCreateOrUpdateResponse) UnmarshalJSON(data []byte)
 	return nil
 }
 
-// DataConnectionsClientDataConnectionValidationResponse contains the response from method DataConnectionsClient.DataConnectionValidation.
+// DataConnectionsClientDataConnectionValidationResponse contains the response from method DataConnectionsClient.BeginDataConnectionValidation.
 type DataConnectionsClientDataConnectionValidationResponse struct {
 	DataConnectionValidationListResult
 }
 
-// DataConnectionsClientDeleteResponse contains the response from method DataConnectionsClient.Delete.
+// DataConnectionsClientDeleteResponse contains the response from method DataConnectionsClient.BeginDelete.
 type DataConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -194,12 +194,12 @@ func (d *DataConnectionsClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DataConnectionsClientListByDatabaseResponse contains the response from method DataConnectionsClient.ListByDatabase.
+// DataConnectionsClientListByDatabaseResponse contains the response from method DataConnectionsClient.NewListByDatabasePager.
 type DataConnectionsClientListByDatabaseResponse struct {
 	DataConnectionListResult
 }
 
-// DataConnectionsClientUpdateResponse contains the response from method DataConnectionsClient.Update.
+// DataConnectionsClientUpdateResponse contains the response from method DataConnectionsClient.BeginUpdate.
 type DataConnectionsClientUpdateResponse struct {
 	DataConnectionClassification
 }
@@ -219,12 +219,12 @@ type DatabasePrincipalAssignmentsClientCheckNameAvailabilityResponse struct {
 	CheckNameResult
 }
 
-// DatabasePrincipalAssignmentsClientCreateOrUpdateResponse contains the response from method DatabasePrincipalAssignmentsClient.CreateOrUpdate.
+// DatabasePrincipalAssignmentsClientCreateOrUpdateResponse contains the response from method DatabasePrincipalAssignmentsClient.BeginCreateOrUpdate.
 type DatabasePrincipalAssignmentsClientCreateOrUpdateResponse struct {
 	DatabasePrincipalAssignment
 }
 
-// DatabasePrincipalAssignmentsClientDeleteResponse contains the response from method DatabasePrincipalAssignmentsClient.Delete.
+// DatabasePrincipalAssignmentsClientDeleteResponse contains the response from method DatabasePrincipalAssignmentsClient.BeginDelete.
 type DatabasePrincipalAssignmentsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -234,7 +234,7 @@ type DatabasePrincipalAssignmentsClientGetResponse struct {
 	DatabasePrincipalAssignment
 }
 
-// DatabasePrincipalAssignmentsClientListResponse contains the response from method DatabasePrincipalAssignmentsClient.List.
+// DatabasePrincipalAssignmentsClientListResponse contains the response from method DatabasePrincipalAssignmentsClient.NewListPager.
 type DatabasePrincipalAssignmentsClientListResponse struct {
 	DatabasePrincipalAssignmentListResult
 }
@@ -249,7 +249,7 @@ type DatabasesClientCheckNameAvailabilityResponse struct {
 	CheckNameResult
 }
 
-// DatabasesClientCreateOrUpdateResponse contains the response from method DatabasesClient.CreateOrUpdate.
+// DatabasesClientCreateOrUpdateResponse contains the response from method DatabasesClient.BeginCreateOrUpdate.
 type DatabasesClientCreateOrUpdateResponse struct {
 	DatabaseClassification
 }
@@ -264,7 +264,7 @@ func (d *DatabasesClientCreateOrUpdateResponse) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// DatabasesClientDeleteResponse contains the response from method DatabasesClient.Delete.
+// DatabasesClientDeleteResponse contains the response from method DatabasesClient.BeginDelete.
 type DatabasesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -284,12 +284,12 @@ func (d *DatabasesClientGetResponse) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// DatabasesClientListByClusterResponse contains the response from method DatabasesClient.ListByCluster.
+// DatabasesClientListByClusterResponse contains the response from method DatabasesClient.NewListByClusterPager.
 type DatabasesClientListByClusterResponse struct {
 	DatabaseListResult
 }
 
-// DatabasesClientListPrincipalsResponse contains the response from method DatabasesClient.ListPrincipals.
+// DatabasesClientListPrincipalsResponse contains the response from method DatabasesClient.NewListPrincipalsPager.
 type DatabasesClientListPrincipalsResponse struct {
 	DatabasePrincipalListResult
 }
@@ -299,7 +299,7 @@ type DatabasesClientRemovePrincipalsResponse struct {
 	DatabasePrincipalListResult
 }
 
-// DatabasesClientUpdateResponse contains the response from method DatabasesClient.Update.
+// DatabasesClientUpdateResponse contains the response from method DatabasesClient.BeginUpdate.
 type DatabasesClientUpdateResponse struct {
 	DatabaseClassification
 }
@@ -319,12 +319,12 @@ type ManagedPrivateEndpointsClientCheckNameAvailabilityResponse struct {
 	CheckNameResult
 }
 
-// ManagedPrivateEndpointsClientCreateOrUpdateResponse contains the response from method ManagedPrivateEndpointsClient.CreateOrUpdate.
+// ManagedPrivateEndpointsClientCreateOrUpdateResponse contains the response from method ManagedPrivateEndpointsClient.BeginCreateOrUpdate.
 type ManagedPrivateEndpointsClientCreateOrUpdateResponse struct {
 	ManagedPrivateEndpoint
 }
 
-// ManagedPrivateEndpointsClientDeleteResponse contains the response from method ManagedPrivateEndpointsClient.Delete.
+// ManagedPrivateEndpointsClientDeleteResponse contains the response from method ManagedPrivateEndpointsClient.BeginDelete.
 type ManagedPrivateEndpointsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -334,17 +334,17 @@ type ManagedPrivateEndpointsClientGetResponse struct {
 	ManagedPrivateEndpoint
 }
 
-// ManagedPrivateEndpointsClientListResponse contains the response from method ManagedPrivateEndpointsClient.List.
+// ManagedPrivateEndpointsClientListResponse contains the response from method ManagedPrivateEndpointsClient.NewListPager.
 type ManagedPrivateEndpointsClientListResponse struct {
 	ManagedPrivateEndpointListResult
 }
 
-// ManagedPrivateEndpointsClientUpdateResponse contains the response from method ManagedPrivateEndpointsClient.Update.
+// ManagedPrivateEndpointsClientUpdateResponse contains the response from method ManagedPrivateEndpointsClient.BeginUpdate.
 type ManagedPrivateEndpointsClientUpdateResponse struct {
 	ManagedPrivateEndpoint
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -359,12 +359,12 @@ type OperationsResultsLocationClientGetResponse struct {
 	// placeholder for future response values
 }
 
-// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.
 type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -374,7 +374,7 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.List.
+// PrivateEndpointConnectionsClientListResponse contains the response from method PrivateEndpointConnectionsClient.NewListPager.
 type PrivateEndpointConnectionsClientListResponse struct {
 	PrivateEndpointConnectionListResult
 }
@@ -384,9 +384,14 @@ type PrivateLinkResourcesClientGetResponse struct {
 	PrivateLinkResource
 }
 
-// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.List.
+// PrivateLinkResourcesClientListResponse contains the response from method PrivateLinkResourcesClient.NewListPager.
 type PrivateLinkResourcesClientListResponse struct {
 	PrivateLinkResourceListResult
+}
+
+// SKUsClientListResponse contains the response from method SKUsClient.NewListPager.
+type SKUsClientListResponse struct {
+	SKUDescriptionList
 }
 
 // ScriptsClientCheckNameAvailabilityResponse contains the response from method ScriptsClient.CheckNameAvailability.
@@ -394,12 +399,12 @@ type ScriptsClientCheckNameAvailabilityResponse struct {
 	CheckNameResult
 }
 
-// ScriptsClientCreateOrUpdateResponse contains the response from method ScriptsClient.CreateOrUpdate.
+// ScriptsClientCreateOrUpdateResponse contains the response from method ScriptsClient.BeginCreateOrUpdate.
 type ScriptsClientCreateOrUpdateResponse struct {
 	Script
 }
 
-// ScriptsClientDeleteResponse contains the response from method ScriptsClient.Delete.
+// ScriptsClientDeleteResponse contains the response from method ScriptsClient.BeginDelete.
 type ScriptsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -409,12 +414,12 @@ type ScriptsClientGetResponse struct {
 	Script
 }
 
-// ScriptsClientListByDatabaseResponse contains the response from method ScriptsClient.ListByDatabase.
+// ScriptsClientListByDatabaseResponse contains the response from method ScriptsClient.NewListByDatabasePager.
 type ScriptsClientListByDatabaseResponse struct {
 	ScriptListResult
 }
 
-// ScriptsClientUpdateResponse contains the response from method ScriptsClient.Update.
+// ScriptsClientUpdateResponse contains the response from method ScriptsClient.BeginUpdate.
 type ScriptsClientUpdateResponse struct {
 	Script
 }

@@ -9,12 +9,12 @@
 
 package armsecuritydevops
 
-// AzureDevOpsConnectorClientCreateOrUpdateResponse contains the response from method AzureDevOpsConnectorClient.CreateOrUpdate.
+// AzureDevOpsConnectorClientCreateOrUpdateResponse contains the response from method AzureDevOpsConnectorClient.BeginCreateOrUpdate.
 type AzureDevOpsConnectorClientCreateOrUpdateResponse struct {
 	AzureDevOpsConnector
 }
 
-// AzureDevOpsConnectorClientDeleteResponse contains the response from method AzureDevOpsConnectorClient.Delete.
+// AzureDevOpsConnectorClientDeleteResponse contains the response from method AzureDevOpsConnectorClient.BeginDelete.
 type AzureDevOpsConnectorClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,17 +24,17 @@ type AzureDevOpsConnectorClientGetResponse struct {
 	AzureDevOpsConnector
 }
 
-// AzureDevOpsConnectorClientListByResourceGroupResponse contains the response from method AzureDevOpsConnectorClient.ListByResourceGroup.
+// AzureDevOpsConnectorClientListByResourceGroupResponse contains the response from method AzureDevOpsConnectorClient.NewListByResourceGroupPager.
 type AzureDevOpsConnectorClientListByResourceGroupResponse struct {
 	AzureDevOpsConnectorListResponse
 }
 
-// AzureDevOpsConnectorClientListBySubscriptionResponse contains the response from method AzureDevOpsConnectorClient.ListBySubscription.
+// AzureDevOpsConnectorClientListBySubscriptionResponse contains the response from method AzureDevOpsConnectorClient.NewListBySubscriptionPager.
 type AzureDevOpsConnectorClientListBySubscriptionResponse struct {
 	AzureDevOpsConnectorListResponse
 }
 
-// AzureDevOpsConnectorClientUpdateResponse contains the response from method AzureDevOpsConnectorClient.Update.
+// AzureDevOpsConnectorClientUpdateResponse contains the response from method AzureDevOpsConnectorClient.BeginUpdate.
 type AzureDevOpsConnectorClientUpdateResponse struct {
 	AzureDevOpsConnector
 }
@@ -44,7 +44,7 @@ type AzureDevOpsConnectorStatsClientGetResponse struct {
 	AzureDevOpsConnectorStatsListResponse
 }
 
-// AzureDevOpsOrgClientCreateOrUpdateResponse contains the response from method AzureDevOpsOrgClient.CreateOrUpdate.
+// AzureDevOpsOrgClientCreateOrUpdateResponse contains the response from method AzureDevOpsOrgClient.BeginCreateOrUpdate.
 type AzureDevOpsOrgClientCreateOrUpdateResponse struct {
 	AzureDevOpsOrg
 }
@@ -54,17 +54,17 @@ type AzureDevOpsOrgClientGetResponse struct {
 	AzureDevOpsOrg
 }
 
-// AzureDevOpsOrgClientListResponse contains the response from method AzureDevOpsOrgClient.List.
+// AzureDevOpsOrgClientListResponse contains the response from method AzureDevOpsOrgClient.NewListPager.
 type AzureDevOpsOrgClientListResponse struct {
 	AzureDevOpsOrgListResponse
 }
 
-// AzureDevOpsOrgClientUpdateResponse contains the response from method AzureDevOpsOrgClient.Update.
+// AzureDevOpsOrgClientUpdateResponse contains the response from method AzureDevOpsOrgClient.BeginUpdate.
 type AzureDevOpsOrgClientUpdateResponse struct {
 	AzureDevOpsOrg
 }
 
-// AzureDevOpsProjectClientCreateOrUpdateResponse contains the response from method AzureDevOpsProjectClient.CreateOrUpdate.
+// AzureDevOpsProjectClientCreateOrUpdateResponse contains the response from method AzureDevOpsProjectClient.BeginCreateOrUpdate.
 type AzureDevOpsProjectClientCreateOrUpdateResponse struct {
 	AzureDevOpsProject
 }
@@ -74,17 +74,17 @@ type AzureDevOpsProjectClientGetResponse struct {
 	AzureDevOpsProject
 }
 
-// AzureDevOpsProjectClientListResponse contains the response from method AzureDevOpsProjectClient.List.
+// AzureDevOpsProjectClientListResponse contains the response from method AzureDevOpsProjectClient.NewListPager.
 type AzureDevOpsProjectClientListResponse struct {
 	AzureDevOpsProjectListResponse
 }
 
-// AzureDevOpsProjectClientUpdateResponse contains the response from method AzureDevOpsProjectClient.Update.
+// AzureDevOpsProjectClientUpdateResponse contains the response from method AzureDevOpsProjectClient.BeginUpdate.
 type AzureDevOpsProjectClientUpdateResponse struct {
 	AzureDevOpsProject
 }
 
-// AzureDevOpsRepoClientCreateOrUpdateResponse contains the response from method AzureDevOpsRepoClient.CreateOrUpdate.
+// AzureDevOpsRepoClientCreateOrUpdateResponse contains the response from method AzureDevOpsRepoClient.BeginCreateOrUpdate.
 type AzureDevOpsRepoClientCreateOrUpdateResponse struct {
 	AzureDevOpsRepo
 }
@@ -94,27 +94,27 @@ type AzureDevOpsRepoClientGetResponse struct {
 	AzureDevOpsRepo
 }
 
-// AzureDevOpsRepoClientListByConnectorResponse contains the response from method AzureDevOpsRepoClient.ListByConnector.
+// AzureDevOpsRepoClientListByConnectorResponse contains the response from method AzureDevOpsRepoClient.NewListByConnectorPager.
 type AzureDevOpsRepoClientListByConnectorResponse struct {
 	AzureDevOpsRepoListResponse
 }
 
-// AzureDevOpsRepoClientListResponse contains the response from method AzureDevOpsRepoClient.List.
+// AzureDevOpsRepoClientListResponse contains the response from method AzureDevOpsRepoClient.NewListPager.
 type AzureDevOpsRepoClientListResponse struct {
 	AzureDevOpsRepoListResponse
 }
 
-// AzureDevOpsRepoClientUpdateResponse contains the response from method AzureDevOpsRepoClient.Update.
+// AzureDevOpsRepoClientUpdateResponse contains the response from method AzureDevOpsRepoClient.BeginUpdate.
 type AzureDevOpsRepoClientUpdateResponse struct {
 	AzureDevOpsRepo
 }
 
-// GitHubConnectorClientCreateOrUpdateResponse contains the response from method GitHubConnectorClient.CreateOrUpdate.
+// GitHubConnectorClientCreateOrUpdateResponse contains the response from method GitHubConnectorClient.BeginCreateOrUpdate.
 type GitHubConnectorClientCreateOrUpdateResponse struct {
 	GitHubConnector
 }
 
-// GitHubConnectorClientDeleteResponse contains the response from method GitHubConnectorClient.Delete.
+// GitHubConnectorClientDeleteResponse contains the response from method GitHubConnectorClient.BeginDelete.
 type GitHubConnectorClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -124,17 +124,17 @@ type GitHubConnectorClientGetResponse struct {
 	GitHubConnector
 }
 
-// GitHubConnectorClientListByResourceGroupResponse contains the response from method GitHubConnectorClient.ListByResourceGroup.
+// GitHubConnectorClientListByResourceGroupResponse contains the response from method GitHubConnectorClient.NewListByResourceGroupPager.
 type GitHubConnectorClientListByResourceGroupResponse struct {
 	GitHubConnectorListResponse
 }
 
-// GitHubConnectorClientListBySubscriptionResponse contains the response from method GitHubConnectorClient.ListBySubscription.
+// GitHubConnectorClientListBySubscriptionResponse contains the response from method GitHubConnectorClient.NewListBySubscriptionPager.
 type GitHubConnectorClientListBySubscriptionResponse struct {
 	GitHubConnectorListResponse
 }
 
-// GitHubConnectorClientUpdateResponse contains the response from method GitHubConnectorClient.Update.
+// GitHubConnectorClientUpdateResponse contains the response from method GitHubConnectorClient.BeginUpdate.
 type GitHubConnectorClientUpdateResponse struct {
 	GitHubConnector
 }
@@ -144,7 +144,7 @@ type GitHubConnectorStatsClientGetResponse struct {
 	GitHubConnectorStatsListResponse
 }
 
-// GitHubOwnerClientCreateOrUpdateResponse contains the response from method GitHubOwnerClient.CreateOrUpdate.
+// GitHubOwnerClientCreateOrUpdateResponse contains the response from method GitHubOwnerClient.BeginCreateOrUpdate.
 type GitHubOwnerClientCreateOrUpdateResponse struct {
 	GitHubOwner
 }
@@ -154,17 +154,17 @@ type GitHubOwnerClientGetResponse struct {
 	GitHubOwner
 }
 
-// GitHubOwnerClientListResponse contains the response from method GitHubOwnerClient.List.
+// GitHubOwnerClientListResponse contains the response from method GitHubOwnerClient.NewListPager.
 type GitHubOwnerClientListResponse struct {
 	GitHubOwnerListResponse
 }
 
-// GitHubOwnerClientUpdateResponse contains the response from method GitHubOwnerClient.Update.
+// GitHubOwnerClientUpdateResponse contains the response from method GitHubOwnerClient.BeginUpdate.
 type GitHubOwnerClientUpdateResponse struct {
 	GitHubOwner
 }
 
-// GitHubRepoClientCreateOrUpdateResponse contains the response from method GitHubRepoClient.CreateOrUpdate.
+// GitHubRepoClientCreateOrUpdateResponse contains the response from method GitHubRepoClient.BeginCreateOrUpdate.
 type GitHubRepoClientCreateOrUpdateResponse struct {
 	GitHubRepo
 }
@@ -174,22 +174,22 @@ type GitHubRepoClientGetResponse struct {
 	GitHubRepo
 }
 
-// GitHubRepoClientListByConnectorResponse contains the response from method GitHubRepoClient.ListByConnector.
+// GitHubRepoClientListByConnectorResponse contains the response from method GitHubRepoClient.NewListByConnectorPager.
 type GitHubRepoClientListByConnectorResponse struct {
 	GitHubRepoListResponse
 }
 
-// GitHubRepoClientListResponse contains the response from method GitHubRepoClient.List.
+// GitHubRepoClientListResponse contains the response from method GitHubRepoClient.NewListPager.
 type GitHubRepoClientListResponse struct {
 	GitHubRepoListResponse
 }
 
-// GitHubRepoClientUpdateResponse contains the response from method GitHubRepoClient.Update.
+// GitHubRepoClientUpdateResponse contains the response from method GitHubRepoClient.BeginUpdate.
 type GitHubRepoClientUpdateResponse struct {
 	GitHubRepo
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }

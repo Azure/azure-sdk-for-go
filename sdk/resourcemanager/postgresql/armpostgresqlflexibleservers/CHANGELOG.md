@@ -1,5 +1,27 @@
 # Release History
 
+## 3.0.0 (2023-04-28)
+### Breaking Changes
+
+- `ArmServerKeyTypeSystemAssigned` from enum `ArmServerKeyType` has been removed
+- `ReplicationRoleGeoSyncReplica`, `ReplicationRoleSecondary`, `ReplicationRoleSyncReplica`, `ReplicationRoleWalReplica` from enum `ReplicationRole` has been removed
+
+### Features Added
+
+- New value `ArmServerKeyTypeSystemManaged` added to enum type `ArmServerKeyType`
+
+
+## 2.1.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 2.1.0 (2023-03-27)
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+
 ## 2.0.0 (2023-01-27)
 ### Breaking Changes
 

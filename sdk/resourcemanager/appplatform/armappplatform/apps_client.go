@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // AppsClient contains the methods for the Apps group.
 // Don't use this type directly, use NewAppsClient() instead.
 type AppsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAppsClient creates a new instance of AppsClient with the specified values.
-// subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription ID which uniquely identify the Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAppsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AppsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AppsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AppsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Create a new App or update an exiting App.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// appResource - Parameters for the create or update operation
-// options - AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - appResource - Parameters for the create or update operation
+//   - options - AppsClientBeginCreateOrUpdateOptions contains the optional parameters for the AppsClient.BeginCreateOrUpdate
+//     method.
 func (client *AppsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AppsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, serviceName, appName, appResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AppsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AppsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AppsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AppsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Create a new App or update an exiting App.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *AppsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, serviceName, appName, appResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -115,12 +106,12 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, appResource)
@@ -128,33 +119,35 @@ func (client *AppsClient) createOrUpdateCreateRequest(ctx context.Context, resou
 
 // BeginDelete - Operation to delete an App.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// options - AppsClientBeginDeleteOptions contains the optional parameters for the AppsClient.BeginDelete method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - options - AppsClientBeginDeleteOptions contains the optional parameters for the AppsClient.BeginDelete method.
 func (client *AppsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientBeginDeleteOptions) (*runtime.Poller[AppsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceName, appName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AppsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AppsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AppsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AppsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Operation to delete an App.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *AppsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -183,12 +176,12 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -196,18 +189,19 @@ func (client *AppsClient) deleteCreateRequest(ctx context.Context, resourceGroup
 
 // Get - Get an App and its properties.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// options - AppsClientGetOptions contains the optional parameters for the AppsClient.Get method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - options - AppsClientGetOptions contains the optional parameters for the AppsClient.Get method.
 func (client *AppsClient) Get(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientGetOptions) (AppsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
 	if err != nil {
 		return AppsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AppsClientGetResponse{}, err
 	}
@@ -236,12 +230,12 @@ func (client *AppsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	if options != nil && options.SyncStatus != nil {
 		reqQP.Set("syncStatus", *options.SyncStatus)
 	}
@@ -261,19 +255,20 @@ func (client *AppsClient) getHandleResponse(resp *http.Response) (AppsClientGetR
 
 // GetResourceUploadURL - Get an resource upload URL for an App, which may be artifacts or source archive.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// options - AppsClientGetResourceUploadURLOptions contains the optional parameters for the AppsClient.GetResourceUploadURL
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - options - AppsClientGetResourceUploadURLOptions contains the optional parameters for the AppsClient.GetResourceUploadURL
+//     method.
 func (client *AppsClient) GetResourceUploadURL(ctx context.Context, resourceGroupName string, serviceName string, appName string, options *AppsClientGetResourceUploadURLOptions) (AppsClientGetResourceUploadURLResponse, error) {
 	req, err := client.getResourceUploadURLCreateRequest(ctx, resourceGroupName, serviceName, appName, options)
 	if err != nil {
 		return AppsClientGetResourceUploadURLResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AppsClientGetResourceUploadURLResponse{}, err
 	}
@@ -302,12 +297,12 @@ func (client *AppsClient) getResourceUploadURLCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -323,11 +318,12 @@ func (client *AppsClient) getResourceUploadURLHandleResponse(resp *http.Response
 }
 
 // NewListPager - Handles requests to list all resources in a Service.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// options - AppsClientListOptions contains the optional parameters for the AppsClient.List method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - options - AppsClientListOptions contains the optional parameters for the AppsClient.NewListPager method.
 func (client *AppsClient) NewListPager(resourceGroupName string, serviceName string, options *AppsClientListOptions) *runtime.Pager[AppsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AppsClientListResponse]{
 		More: func(page AppsClientListResponse) bool {
@@ -344,7 +340,7 @@ func (client *AppsClient) NewListPager(resourceGroupName string, serviceName str
 			if err != nil {
 				return AppsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AppsClientListResponse{}, err
 			}
@@ -371,12 +367,12 @@ func (client *AppsClient) listCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -393,35 +389,37 @@ func (client *AppsClient) listHandleResponse(resp *http.Response) (AppsClientLis
 
 // BeginSetActiveDeployments - Set existing Deployment under the app as active
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// activeDeploymentCollection - A list of Deployment name to be active.
-// options - AppsClientBeginSetActiveDeploymentsOptions contains the optional parameters for the AppsClient.BeginSetActiveDeployments
-// method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - activeDeploymentCollection - A list of Deployment name to be active.
+//   - options - AppsClientBeginSetActiveDeploymentsOptions contains the optional parameters for the AppsClient.BeginSetActiveDeployments
+//     method.
 func (client *AppsClient) BeginSetActiveDeployments(ctx context.Context, resourceGroupName string, serviceName string, appName string, activeDeploymentCollection ActiveDeploymentCollection, options *AppsClientBeginSetActiveDeploymentsOptions) (*runtime.Poller[AppsClientSetActiveDeploymentsResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.setActiveDeployments(ctx, resourceGroupName, serviceName, appName, activeDeploymentCollection, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AppsClientSetActiveDeploymentsResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AppsClientSetActiveDeploymentsResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AppsClientSetActiveDeploymentsResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AppsClientSetActiveDeploymentsResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // SetActiveDeployments - Set existing Deployment under the app as active
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *AppsClient) setActiveDeployments(ctx context.Context, resourceGroupName string, serviceName string, appName string, activeDeploymentCollection ActiveDeploymentCollection, options *AppsClientBeginSetActiveDeploymentsOptions) (*http.Response, error) {
 	req, err := client.setActiveDeploymentsCreateRequest(ctx, resourceGroupName, serviceName, appName, activeDeploymentCollection, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -450,12 +448,12 @@ func (client *AppsClient) setActiveDeploymentsCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, activeDeploymentCollection)
@@ -463,34 +461,36 @@ func (client *AppsClient) setActiveDeploymentsCreateRequest(ctx context.Context,
 
 // BeginUpdate - Operation to update an exiting App.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// appResource - Parameters for the update operation
-// options - AppsClientBeginUpdateOptions contains the optional parameters for the AppsClient.BeginUpdate method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - appResource - Parameters for the update operation
+//   - options - AppsClientBeginUpdateOptions contains the optional parameters for the AppsClient.BeginUpdate method.
 func (client *AppsClient) BeginUpdate(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginUpdateOptions) (*runtime.Poller[AppsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, serviceName, appName, appResource, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AppsClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AppsClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AppsClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AppsClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Operation to update an exiting App.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
+//
+// Generated from API version 2023-01-01-preview
 func (client *AppsClient) update(ctx context.Context, resourceGroupName string, serviceName string, appName string, appResource AppResource, options *AppsClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, serviceName, appName, appResource, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -519,12 +519,12 @@ func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, appResource)
@@ -532,19 +532,20 @@ func (client *AppsClient) updateCreateRequest(ctx context.Context, resourceGroup
 
 // ValidateDomain - Check the resource name is valid as well as not in use.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
-// Resource Manager API or the portal.
-// serviceName - The name of the Service resource.
-// appName - The name of the App resource.
-// validatePayload - Custom domain payload to be validated
-// options - AppsClientValidateDomainOptions contains the optional parameters for the AppsClient.ValidateDomain method.
+//
+// Generated from API version 2023-01-01-preview
+//   - resourceGroupName - The name of the resource group that contains the resource. You can obtain this value from the Azure
+//     Resource Manager API or the portal.
+//   - serviceName - The name of the Service resource.
+//   - appName - The name of the App resource.
+//   - validatePayload - Custom domain payload to be validated
+//   - options - AppsClientValidateDomainOptions contains the optional parameters for the AppsClient.ValidateDomain method.
 func (client *AppsClient) ValidateDomain(ctx context.Context, resourceGroupName string, serviceName string, appName string, validatePayload CustomDomainValidatePayload, options *AppsClientValidateDomainOptions) (AppsClientValidateDomainResponse, error) {
 	req, err := client.validateDomainCreateRequest(ctx, resourceGroupName, serviceName, appName, validatePayload, options)
 	if err != nil {
 		return AppsClientValidateDomainResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AppsClientValidateDomainResponse{}, err
 	}
@@ -573,12 +574,12 @@ func (client *AppsClient) validateDomainCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter appName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{appName}", url.PathEscape(appName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01-preview")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, validatePayload)

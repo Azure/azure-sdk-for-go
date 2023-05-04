@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // AttachedDatabaseConfigurationsClient contains the methods for the AttachedDatabaseConfigurations group.
 // Don't use this type directly, use NewAttachedDatabaseConfigurationsClient() instead.
 type AttachedDatabaseConfigurationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAttachedDatabaseConfigurationsClient creates a new instance of AttachedDatabaseConfigurationsClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAttachedDatabaseConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedDatabaseConfigurationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AttachedDatabaseConfigurationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AttachedDatabaseConfigurationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckNameAvailability - Checks that the attached database configuration resource name is valid and is not already in use.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// resourceName - The name of the resource.
-// options - AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.CheckNameAvailability
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - resourceName - The name of the resource.
+//   - options - AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.CheckNameAvailability
+//     method.
 func (client *AttachedDatabaseConfigurationsClient) CheckNameAvailability(ctx context.Context, resourceGroupName string, clusterName string, resourceName AttachedDatabaseConfigurationsCheckNameRequest, options *AttachedDatabaseConfigurationsClientCheckNameAvailabilityOptions) (AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse, error) {
 	req, err := client.checkNameAvailabilityCreateRequest(ctx, resourceGroupName, clusterName, resourceName, options)
 	if err != nil {
 		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttachedDatabaseConfigurationsClientCheckNameAvailabilityResponse{}, err
 	}
@@ -94,12 +84,12 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityCreateR
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, resourceName)
@@ -116,34 +106,36 @@ func (client *AttachedDatabaseConfigurationsClient) checkNameAvailabilityHandleR
 
 // BeginCreateOrUpdate - Creates or updates an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// attachedDatabaseConfigurationName - The name of the attached database configuration.
-// parameters - The database parameters supplied to the CreateOrUpdate operation.
-// options - AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - attachedDatabaseConfigurationName - The name of the attached database configuration.
+//   - parameters - The database parameters supplied to the CreateOrUpdate operation.
+//   - options - AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginCreateOrUpdate
+//     method.
 func (client *AttachedDatabaseConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
+//
+// Generated from API version 2022-12-29
 func (client *AttachedDatabaseConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, parameters AttachedDatabaseConfiguration, options *AttachedDatabaseConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -172,12 +164,12 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -185,33 +177,35 @@ func (client *AttachedDatabaseConfigurationsClient) createOrUpdateCreateRequest(
 
 // BeginDelete - Deletes the attached database configuration with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// attachedDatabaseConfigurationName - The name of the attached database configuration.
-// options - AttachedDatabaseConfigurationsClientBeginDeleteOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - attachedDatabaseConfigurationName - The name of the attached database configuration.
+//   - options - AttachedDatabaseConfigurationsClientBeginDeleteOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.BeginDelete
+//     method.
 func (client *AttachedDatabaseConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*runtime.Poller[AttachedDatabaseConfigurationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[AttachedDatabaseConfigurationsClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[AttachedDatabaseConfigurationsClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[AttachedDatabaseConfigurationsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the attached database configuration with the given name.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
+//
+// Generated from API version 2022-12-29
 func (client *AttachedDatabaseConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -240,12 +234,12 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -253,18 +247,19 @@ func (client *AttachedDatabaseConfigurationsClient) deleteCreateRequest(ctx cont
 
 // Get - Returns an attached database configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// attachedDatabaseConfigurationName - The name of the attached database configuration.
-// options - AttachedDatabaseConfigurationsClientGetOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.Get
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - attachedDatabaseConfigurationName - The name of the attached database configuration.
+//   - options - AttachedDatabaseConfigurationsClientGetOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.Get
+//     method.
 func (client *AttachedDatabaseConfigurationsClient) Get(ctx context.Context, resourceGroupName string, clusterName string, attachedDatabaseConfigurationName string, options *AttachedDatabaseConfigurationsClientGetOptions) (AttachedDatabaseConfigurationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, attachedDatabaseConfigurationName, options)
 	if err != nil {
 		return AttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AttachedDatabaseConfigurationsClientGetResponse{}, err
 	}
@@ -293,12 +288,12 @@ func (client *AttachedDatabaseConfigurationsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -314,11 +309,12 @@ func (client *AttachedDatabaseConfigurationsClient) getHandleResponse(resp *http
 }
 
 // NewListByClusterPager - Returns the list of attached database configurations of the given Kusto cluster.
-// Generated from API version 2022-07-07
-// resourceGroupName - The name of the resource group containing the Kusto cluster.
-// clusterName - The name of the Kusto cluster.
-// options - AttachedDatabaseConfigurationsClientListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.ListByCluster
-// method.
+//
+// Generated from API version 2022-12-29
+//   - resourceGroupName - The name of the resource group containing the Kusto cluster.
+//   - clusterName - The name of the Kusto cluster.
+//   - options - AttachedDatabaseConfigurationsClientListByClusterOptions contains the optional parameters for the AttachedDatabaseConfigurationsClient.NewListByClusterPager
+//     method.
 func (client *AttachedDatabaseConfigurationsClient) NewListByClusterPager(resourceGroupName string, clusterName string, options *AttachedDatabaseConfigurationsClientListByClusterOptions) *runtime.Pager[AttachedDatabaseConfigurationsClientListByClusterResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AttachedDatabaseConfigurationsClientListByClusterResponse]{
 		More: func(page AttachedDatabaseConfigurationsClientListByClusterResponse) bool {
@@ -329,7 +325,7 @@ func (client *AttachedDatabaseConfigurationsClient) NewListByClusterPager(resour
 			if err != nil {
 				return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AttachedDatabaseConfigurationsClientListByClusterResponse{}, err
 			}
@@ -356,12 +352,12 @@ func (client *AttachedDatabaseConfigurationsClient) listByClusterCreateRequest(c
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-07")
+	reqQP.Set("api-version", "2022-12-29")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

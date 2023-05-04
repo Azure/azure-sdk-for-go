@@ -39,7 +39,13 @@ type StressContext struct {
 	cancel context.CancelFunc
 }
 
-func MustCreateStressContext(testName string) *StressContext {
+type StressContextOptions struct {
+	// Duration is the amount of time the stress test should run before
+	// the StressContext.Context expires.
+	Duration time.Duration
+}
+
+func MustCreateStressContext(testName string, options *StressContextOptions) *StressContext {
 	cs := os.Getenv("SERVICEBUS_CONNECTION_STRING")
 
 	if cs == "" {
@@ -66,6 +72,10 @@ func MustCreateStressContext(testName string) *StressContext {
 	log.Printf("Common properties\n:%#v", telemetryClient.Context().CommonProperties)
 
 	ctx, cancel := NewCtrlCContext()
+
+	if options != nil && options.Duration > 0 {
+		ctx, cancel = context.WithTimeout(ctx, options.Duration)
+	}
 
 	azlog.SetEvents(azservicebus.EventSender, azservicebus.EventReceiver, azservicebus.EventConn)
 

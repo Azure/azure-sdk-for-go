@@ -11,7 +11,7 @@ package armcommunication
 
 const (
 	moduleName    = "armcommunication"
-	moduleVersion = "v2.0.0-beta.2"
+	moduleVersion = "v2.0.1"
 )
 
 // ActionType - Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -204,6 +204,36 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
+	}
+}
+
+// ProvisioningState - Provisioning state of the resource. Unknown is the default state for Communication Services.
+type ProvisioningState string
+
+const (
+	ProvisioningStateCanceled  ProvisioningState = "Canceled"
+	ProvisioningStateCreating  ProvisioningState = "Creating"
+	ProvisioningStateDeleting  ProvisioningState = "Deleting"
+	ProvisioningStateFailed    ProvisioningState = "Failed"
+	ProvisioningStateMoving    ProvisioningState = "Moving"
+	ProvisioningStateRunning   ProvisioningState = "Running"
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	ProvisioningStateUnknown   ProvisioningState = "Unknown"
+	ProvisioningStateUpdating  ProvisioningState = "Updating"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateMoving,
+		ProvisioningStateRunning,
+		ProvisioningStateSucceeded,
+		ProvisioningStateUnknown,
+		ProvisioningStateUpdating,
 	}
 }
 

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,45 +24,37 @@ import (
 // RoleAssignmentScheduleRequestsClient contains the methods for the RoleAssignmentScheduleRequests group.
 // Don't use this type directly, use NewRoleAssignmentScheduleRequestsClient() instead.
 type RoleAssignmentScheduleRequestsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewRoleAssignmentScheduleRequestsClient creates a new instance of RoleAssignmentScheduleRequestsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewRoleAssignmentScheduleRequestsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RoleAssignmentScheduleRequestsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".RoleAssignmentScheduleRequestsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &RoleAssignmentScheduleRequestsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Cancel - Cancels a pending role assignment schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role assignment request to cancel.
-// roleAssignmentScheduleRequestName - The name of the role assignment request to cancel.
-// options - RoleAssignmentScheduleRequestsClientCancelOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Cancel
-// method.
+//   - scope - The scope of the role assignment request to cancel.
+//   - roleAssignmentScheduleRequestName - The name of the role assignment request to cancel.
+//   - options - RoleAssignmentScheduleRequestsClientCancelOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Cancel
+//     method.
 func (client *RoleAssignmentScheduleRequestsClient) Cancel(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, options *RoleAssignmentScheduleRequestsClientCancelOptions) (RoleAssignmentScheduleRequestsClientCancelResponse, error) {
 	req, err := client.cancelCreateRequest(ctx, scope, roleAssignmentScheduleRequestName, options)
 	if err != nil {
 		return RoleAssignmentScheduleRequestsClientCancelResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentScheduleRequestsClientCancelResponse{}, err
 	}
@@ -82,7 +72,7 @@ func (client *RoleAssignmentScheduleRequestsClient) cancelCreateRequest(ctx cont
 		return nil, errors.New("parameter roleAssignmentScheduleRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentScheduleRequestName}", url.PathEscape(roleAssignmentScheduleRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -95,23 +85,24 @@ func (client *RoleAssignmentScheduleRequestsClient) cancelCreateRequest(ctx cont
 
 // Create - Creates a role assignment schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role assignment schedule request to create. The scope can be any REST resource instance. For example,
-// use '/subscriptions/{subscription-id}/' for a subscription,
-// '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
-// '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
-// for a resource.
-// roleAssignmentScheduleRequestName - A GUID for the role assignment to create. The name must be unique and different for
-// each role assignment.
-// parameters - Parameters for the role assignment schedule request.
-// options - RoleAssignmentScheduleRequestsClientCreateOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Create
-// method.
+//   - scope - The scope of the role assignment schedule request to create. The scope can be any REST resource instance. For example,
+//     use '/subscriptions/{subscription-id}/' for a subscription,
+//     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for a resource group, and
+//     '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider}/{resource-type}/{resource-name}'
+//     for a resource.
+//   - roleAssignmentScheduleRequestName - A GUID for the role assignment to create. The name must be unique and different for
+//     each role assignment.
+//   - parameters - Parameters for the role assignment schedule request.
+//   - options - RoleAssignmentScheduleRequestsClientCreateOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Create
+//     method.
 func (client *RoleAssignmentScheduleRequestsClient) Create(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, parameters RoleAssignmentScheduleRequest, options *RoleAssignmentScheduleRequestsClientCreateOptions) (RoleAssignmentScheduleRequestsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, scope, roleAssignmentScheduleRequestName, parameters, options)
 	if err != nil {
 		return RoleAssignmentScheduleRequestsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentScheduleRequestsClientCreateResponse{}, err
 	}
@@ -129,7 +120,7 @@ func (client *RoleAssignmentScheduleRequestsClient) createCreateRequest(ctx cont
 		return nil, errors.New("parameter roleAssignmentScheduleRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentScheduleRequestName}", url.PathEscape(roleAssignmentScheduleRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -151,17 +142,18 @@ func (client *RoleAssignmentScheduleRequestsClient) createHandleResponse(resp *h
 
 // Get - Get the specified role assignment schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role assignment schedule request.
-// roleAssignmentScheduleRequestName - The name (guid) of the role assignment schedule request to get.
-// options - RoleAssignmentScheduleRequestsClientGetOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Get
-// method.
+//   - scope - The scope of the role assignment schedule request.
+//   - roleAssignmentScheduleRequestName - The name (guid) of the role assignment schedule request to get.
+//   - options - RoleAssignmentScheduleRequestsClientGetOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Get
+//     method.
 func (client *RoleAssignmentScheduleRequestsClient) Get(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, options *RoleAssignmentScheduleRequestsClientGetOptions) (RoleAssignmentScheduleRequestsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, roleAssignmentScheduleRequestName, options)
 	if err != nil {
 		return RoleAssignmentScheduleRequestsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentScheduleRequestsClientGetResponse{}, err
 	}
@@ -179,7 +171,7 @@ func (client *RoleAssignmentScheduleRequestsClient) getCreateRequest(ctx context
 		return nil, errors.New("parameter roleAssignmentScheduleRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentScheduleRequestName}", url.PathEscape(roleAssignmentScheduleRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -200,11 +192,11 @@ func (client *RoleAssignmentScheduleRequestsClient) getHandleResponse(resp *http
 }
 
 // NewListForScopePager - Gets role assignment schedule requests for a scope.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role assignments schedule requests.
-// options - RoleAssignmentScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.ListForScope
-// method.
+//   - scope - The scope of the role assignments schedule requests.
+//   - options - RoleAssignmentScheduleRequestsClientListForScopeOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.NewListForScopePager
+//     method.
 func (client *RoleAssignmentScheduleRequestsClient) NewListForScopePager(scope string, options *RoleAssignmentScheduleRequestsClientListForScopeOptions) *runtime.Pager[RoleAssignmentScheduleRequestsClientListForScopeResponse] {
 	return runtime.NewPager(runtime.PagingHandler[RoleAssignmentScheduleRequestsClientListForScopeResponse]{
 		More: func(page RoleAssignmentScheduleRequestsClientListForScopeResponse) bool {
@@ -221,7 +213,7 @@ func (client *RoleAssignmentScheduleRequestsClient) NewListForScopePager(scope s
 			if err != nil {
 				return RoleAssignmentScheduleRequestsClientListForScopeResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return RoleAssignmentScheduleRequestsClientListForScopeResponse{}, err
 			}
@@ -237,7 +229,7 @@ func (client *RoleAssignmentScheduleRequestsClient) NewListForScopePager(scope s
 func (client *RoleAssignmentScheduleRequestsClient) listForScopeCreateRequest(ctx context.Context, scope string, options *RoleAssignmentScheduleRequestsClientListForScopeOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Authorization/roleAssignmentScheduleRequests"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -262,18 +254,19 @@ func (client *RoleAssignmentScheduleRequestsClient) listForScopeHandleResponse(r
 
 // Validate - Validates a new role assignment schedule request.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-01
-// scope - The scope of the role assignment request to validate.
-// roleAssignmentScheduleRequestName - The name of the role assignment request to validate.
-// parameters - Parameters for the role assignment schedule request.
-// options - RoleAssignmentScheduleRequestsClientValidateOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Validate
-// method.
+//   - scope - The scope of the role assignment request to validate.
+//   - roleAssignmentScheduleRequestName - The name of the role assignment request to validate.
+//   - parameters - Parameters for the role assignment schedule request.
+//   - options - RoleAssignmentScheduleRequestsClientValidateOptions contains the optional parameters for the RoleAssignmentScheduleRequestsClient.Validate
+//     method.
 func (client *RoleAssignmentScheduleRequestsClient) Validate(ctx context.Context, scope string, roleAssignmentScheduleRequestName string, parameters RoleAssignmentScheduleRequest, options *RoleAssignmentScheduleRequestsClientValidateOptions) (RoleAssignmentScheduleRequestsClientValidateResponse, error) {
 	req, err := client.validateCreateRequest(ctx, scope, roleAssignmentScheduleRequestName, parameters, options)
 	if err != nil {
 		return RoleAssignmentScheduleRequestsClientValidateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return RoleAssignmentScheduleRequestsClientValidateResponse{}, err
 	}
@@ -291,7 +284,7 @@ func (client *RoleAssignmentScheduleRequestsClient) validateCreateRequest(ctx co
 		return nil, errors.New("parameter roleAssignmentScheduleRequestName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{roleAssignmentScheduleRequestName}", url.PathEscape(roleAssignmentScheduleRequestName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

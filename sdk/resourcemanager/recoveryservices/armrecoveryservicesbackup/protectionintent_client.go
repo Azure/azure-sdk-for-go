@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,9 +24,8 @@ import (
 // ProtectionIntentClient contains the methods for the ProtectionIntent group.
 // Don't use this type directly, use NewProtectionIntentClient() instead.
 type ProtectionIntentClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProtectionIntentClient creates a new instance of ProtectionIntentClient with the specified values.
@@ -36,21 +33,13 @@ type ProtectionIntentClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - pass nil to accept the default values.
 func NewProtectionIntentClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProtectionIntentClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ProtectionIntentClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProtectionIntentClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,7 +47,7 @@ func NewProtectionIntentClient(subscriptionID string, credential azcore.TokenCre
 // CreateOrUpdate - Create Intent for Enabling backup of an item. This is a synchronous operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backup item.
@@ -71,7 +60,7 @@ func (client *ProtectionIntentClient) CreateOrUpdate(ctx context.Context, vaultN
 	if err != nil {
 		return ProtectionIntentClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProtectionIntentClientCreateOrUpdateResponse{}, err
 	}
@@ -104,12 +93,12 @@ func (client *ProtectionIntentClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, errors.New("parameter intentObjectName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{intentObjectName}", url.PathEscape(intentObjectName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -127,7 +116,7 @@ func (client *ProtectionIntentClient) createOrUpdateHandleResponse(resp *http.Re
 // Delete - Used to remove intent from an item
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the intent.
@@ -138,7 +127,7 @@ func (client *ProtectionIntentClient) Delete(ctx context.Context, vaultName stri
 	if err != nil {
 		return ProtectionIntentClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProtectionIntentClientDeleteResponse{}, err
 	}
@@ -171,12 +160,12 @@ func (client *ProtectionIntentClient) deleteCreateRequest(ctx context.Context, v
 		return nil, errors.New("parameter intentObjectName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{intentObjectName}", url.PathEscape(intentObjectName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	return req, nil
 }
@@ -185,7 +174,7 @@ func (client *ProtectionIntentClient) deleteCreateRequest(ctx context.Context, v
 // operation, call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - vaultName - The name of the recovery services vault.
 //   - resourceGroupName - The name of the resource group where the recovery services vault is present.
 //   - fabricName - Fabric name associated with the backed up item.
@@ -196,7 +185,7 @@ func (client *ProtectionIntentClient) Get(ctx context.Context, vaultName string,
 	if err != nil {
 		return ProtectionIntentClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProtectionIntentClientGetResponse{}, err
 	}
@@ -229,12 +218,12 @@ func (client *ProtectionIntentClient) getCreateRequest(ctx context.Context, vaul
 		return nil, errors.New("parameter intentObjectName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{intentObjectName}", url.PathEscape(intentObjectName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -255,7 +244,7 @@ func (client *ProtectionIntentClient) getHandleResponse(resp *http.Response) (Pr
 // 3. Any VM related configuration passed in properties.
 // If the operation fails it returns an *azcore.ResponseError type.
 //
-// Generated from API version 2023-01-01
+// Generated from API version 2023-02-01
 //   - azureRegion - Azure region to hit Api
 //   - parameters - Enable backup validation request on Virtual Machine
 //   - options - ProtectionIntentClientValidateOptions contains the optional parameters for the ProtectionIntentClient.Validate
@@ -265,7 +254,7 @@ func (client *ProtectionIntentClient) Validate(ctx context.Context, azureRegion 
 	if err != nil {
 		return ProtectionIntentClientValidateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ProtectionIntentClientValidateResponse{}, err
 	}
@@ -286,12 +275,12 @@ func (client *ProtectionIntentClient) validateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2023-01-01")
+	reqQP.Set("api-version", "2023-02-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

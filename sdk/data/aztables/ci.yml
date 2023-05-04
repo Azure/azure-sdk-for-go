@@ -20,6 +20,8 @@ pr:
   paths:
     include:
     - sdk/data/aztables
+    - eng/common/testproxy
+    # adding eng/common/testproxy as aztables is a good exercise of the test-proxy features. if a new proxy version works on this build, we can be confident updating to it
 
 stages:
 - template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml

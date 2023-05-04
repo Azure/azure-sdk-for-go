@@ -9,12 +9,12 @@
 
 package armresourceconnector
 
-// AppliancesClientCreateOrUpdateResponse contains the response from method AppliancesClient.CreateOrUpdate.
+// AppliancesClientCreateOrUpdateResponse contains the response from method AppliancesClient.BeginCreateOrUpdate.
 type AppliancesClientCreateOrUpdateResponse struct {
 	Appliance
 }
 
-// AppliancesClientDeleteResponse contains the response from method AppliancesClient.Delete.
+// AppliancesClientDeleteResponse contains the response from method AppliancesClient.BeginDelete.
 type AppliancesClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -24,24 +24,24 @@ type AppliancesClientGetResponse struct {
 	Appliance
 }
 
+// AppliancesClientGetTelemetryConfigResponse contains the response from method AppliancesClient.GetTelemetryConfig.
+type AppliancesClientGetTelemetryConfigResponse struct {
+	ApplianceGetTelemetryConfigResult
+}
+
 // AppliancesClientGetUpgradeGraphResponse contains the response from method AppliancesClient.GetUpgradeGraph.
 type AppliancesClientGetUpgradeGraphResponse struct {
 	UpgradeGraph
 }
 
-// AppliancesClientListByResourceGroupResponse contains the response from method AppliancesClient.ListByResourceGroup.
+// AppliancesClientListByResourceGroupResponse contains the response from method AppliancesClient.NewListByResourceGroupPager.
 type AppliancesClientListByResourceGroupResponse struct {
 	ApplianceListResult
 }
 
-// AppliancesClientListBySubscriptionResponse contains the response from method AppliancesClient.ListBySubscription.
+// AppliancesClientListBySubscriptionResponse contains the response from method AppliancesClient.NewListBySubscriptionPager.
 type AppliancesClientListBySubscriptionResponse struct {
 	ApplianceListResult
-}
-
-// AppliancesClientListClusterCustomerUserCredentialResponse contains the response from method AppliancesClient.ListClusterCustomerUserCredential.
-type AppliancesClientListClusterCustomerUserCredentialResponse struct {
-	ApplianceListClusterCustomerUserCredentialResults
 }
 
 // AppliancesClientListClusterUserCredentialResponse contains the response from method AppliancesClient.ListClusterUserCredential.
@@ -49,7 +49,12 @@ type AppliancesClientListClusterUserCredentialResponse struct {
 	ApplianceListCredentialResults
 }
 
-// AppliancesClientListOperationsResponse contains the response from method AppliancesClient.ListOperations.
+// AppliancesClientListKeysResponse contains the response from method AppliancesClient.ListKeys.
+type AppliancesClientListKeysResponse struct {
+	ApplianceListKeysResults
+}
+
+// AppliancesClientListOperationsResponse contains the response from method AppliancesClient.NewListOperationsPager.
 type AppliancesClientListOperationsResponse struct {
 	ApplianceOperationsList
 }

@@ -15,7 +15,7 @@ func unmarshalActionClassification(rawMsg json.RawMessage) (ActionClassification
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -54,7 +54,7 @@ func unmarshalAlertsMetaDataPropertiesClassification(rawMsg json.RawMessage) (Al
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}
@@ -72,7 +72,7 @@ func unmarshalRecurrenceClassification(rawMsg json.RawMessage) (RecurrenceClassi
 	if rawMsg == nil {
 		return nil, nil
 	}
-	var m map[string]interface{}
+	var m map[string]any
 	if err := json.Unmarshal(rawMsg, &m); err != nil {
 		return nil, err
 	}

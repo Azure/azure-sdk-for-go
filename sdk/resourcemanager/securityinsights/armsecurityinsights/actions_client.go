@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ActionsClient contains the methods for the Actions group.
 // Don't use this type directly, use NewActionsClient() instead.
 type ActionsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewActionsClient creates a new instance of ActionsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActionsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ActionsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ActionsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates the action of alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// ruleID - Alert rule ID
-// actionID - Action ID
-// action - The action
-// options - ActionsClientCreateOrUpdateOptions contains the optional parameters for the ActionsClient.CreateOrUpdate method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - ruleID - Alert rule ID
+//   - actionID - Action ID
+//   - action - The action
+//   - options - ActionsClientCreateOrUpdateOptions contains the optional parameters for the ActionsClient.CreateOrUpdate method.
 func (client *ActionsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, action ActionRequest, options *ActionsClientCreateOrUpdateOptions) (ActionsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, actionID, action, options)
 	if err != nil {
 		return ActionsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ActionsClientCreateOrUpdateResponse{}, err
 	}
@@ -102,12 +92,12 @@ func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter actionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionId}", url.PathEscape(actionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, action)
@@ -124,18 +114,19 @@ func (client *ActionsClient) createOrUpdateHandleResponse(resp *http.Response) (
 
 // Delete - Delete the action of alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// ruleID - Alert rule ID
-// actionID - Action ID
-// options - ActionsClientDeleteOptions contains the optional parameters for the ActionsClient.Delete method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - ruleID - Alert rule ID
+//   - actionID - Action ID
+//   - options - ActionsClientDeleteOptions contains the optional parameters for the ActionsClient.Delete method.
 func (client *ActionsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsClientDeleteOptions) (ActionsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, actionID, options)
 	if err != nil {
 		return ActionsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ActionsClientDeleteResponse{}, err
 	}
@@ -168,12 +159,12 @@ func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter actionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionId}", url.PathEscape(actionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -181,18 +172,19 @@ func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Gets the action of alert rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// ruleID - Alert rule ID
-// actionID - Action ID
-// options - ActionsClientGetOptions contains the optional parameters for the ActionsClient.Get method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - ruleID - Alert rule ID
+//   - actionID - Action ID
+//   - options - ActionsClientGetOptions contains the optional parameters for the ActionsClient.Get method.
 func (client *ActionsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, options *ActionsClientGetOptions) (ActionsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, ruleID, actionID, options)
 	if err != nil {
 		return ActionsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ActionsClientGetResponse{}, err
 	}
@@ -225,12 +217,12 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter actionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{actionId}", url.PathEscape(actionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -246,11 +238,13 @@ func (client *ActionsClient) getHandleResponse(resp *http.Response) (ActionsClie
 }
 
 // NewListByAlertRulePager - Gets all actions of alert rule.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// ruleID - Alert rule ID
-// options - ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.ListByAlertRule method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - ruleID - Alert rule ID
+//   - options - ActionsClientListByAlertRuleOptions contains the optional parameters for the ActionsClient.NewListByAlertRulePager
+//     method.
 func (client *ActionsClient) NewListByAlertRulePager(resourceGroupName string, workspaceName string, ruleID string, options *ActionsClientListByAlertRuleOptions) *runtime.Pager[ActionsClientListByAlertRuleResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ActionsClientListByAlertRuleResponse]{
 		More: func(page ActionsClientListByAlertRuleResponse) bool {
@@ -267,7 +261,7 @@ func (client *ActionsClient) NewListByAlertRulePager(resourceGroupName string, w
 			if err != nil {
 				return ActionsClientListByAlertRuleResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ActionsClientListByAlertRuleResponse{}, err
 			}
@@ -298,12 +292,12 @@ func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter ruleID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{ruleId}", url.PathEscape(ruleID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // ActivityRunsClient contains the methods for the ActivityRuns group.
 // Don't use this type directly, use NewActivityRunsClient() instead.
 type ActivityRunsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewActivityRunsClient creates a new instance of ActivityRunsClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewActivityRunsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActivityRunsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ActivityRunsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ActivityRunsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // QueryByPipelineRun - Query activity runs based on input filter conditions.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// runID - The pipeline run identifier.
-// filterParameters - Parameters to filter the activity runs.
-// options - ActivityRunsClientQueryByPipelineRunOptions contains the optional parameters for the ActivityRunsClient.QueryByPipelineRun
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - runID - The pipeline run identifier.
+//   - filterParameters - Parameters to filter the activity runs.
+//   - options - ActivityRunsClientQueryByPipelineRunOptions contains the optional parameters for the ActivityRunsClient.QueryByPipelineRun
+//     method.
 func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resourceGroupName string, factoryName string, runID string, filterParameters RunFilterParameters, options *ActivityRunsClientQueryByPipelineRunOptions) (ActivityRunsClientQueryByPipelineRunResponse, error) {
 	req, err := client.queryByPipelineRunCreateRequest(ctx, resourceGroupName, factoryName, runID, filterParameters, options)
 	if err != nil {
 		return ActivityRunsClientQueryByPipelineRunResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ActivityRunsClientQueryByPipelineRunResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *ActivityRunsClient) queryByPipelineRunCreateRequest(ctx context.Co
 		return nil, errors.New("parameter runID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{runId}", url.PathEscape(runID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

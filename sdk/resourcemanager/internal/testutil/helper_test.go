@@ -12,6 +12,8 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
 	"github.com/stretchr/testify/require"
@@ -31,7 +33,7 @@ func TestGetEnv(t *testing.T) {
 func TestCreateDeleteResourceGroup(t *testing.T) {
 	ctx := context.Background()
 	cred, options := GetCredAndClientOptions(t)
-	subscriptionID := GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	stop := StartRecording(t, pathToPackage)
 	defer stop()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")
@@ -44,7 +46,7 @@ func TestCreateDeleteResourceGroup(t *testing.T) {
 func TestCreateDeployment(t *testing.T) {
 	ctx := context.Background()
 	cred, options := GetCredAndClientOptions(t)
-	subscriptionID := GetEnv("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
+	subscriptionID := recording.GetEnvVariable("AZURE_SUBSCRIPTION_ID", "00000000-0000-0000-0000-000000000000")
 	stop := StartRecording(t, pathToPackage)
 	defer stop()
 	resourceGroup, _, err := CreateResourceGroup(ctx, subscriptionID, cred, options, "eastus")

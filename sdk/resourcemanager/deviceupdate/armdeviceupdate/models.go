@@ -14,70 +14,70 @@ import "time"
 // Account - Device Update account details.
 type Account struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// The type of identity used for the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// Device Update account properties.
-	Properties *AccountProperties `json:"properties,omitempty"`
+	Properties *AccountProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // AccountList - List of Accounts.
 type AccountList struct {
 	// The link used to get the next page of Accounts list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Accounts.
-	Value []*Account `json:"value,omitempty"`
+	Value []*Account
 }
 
 // AccountProperties - Device Update account properties.
 type AccountProperties struct {
 	// List of private endpoint connections associated with the account.
-	PrivateEndpointConnections []*PrivateEndpointConnection `json:"privateEndpointConnections,omitempty"`
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// Whether or not public network access is allowed for the account.
-	PublicNetworkAccess *PublicNetworkAccess `json:"publicNetworkAccess,omitempty"`
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// Device Update Sku
-	SKU *SKU `json:"sku,omitempty"`
+	SKU *SKU
 
 	// READ-ONLY; API host name.
-	HostName *string `json:"hostName,omitempty" azure:"ro"`
+	HostName *string
 
 	// READ-ONLY; Device Update account primary and failover location details
-	Locations []*Location `json:"locations,omitempty" azure:"ro"`
+	Locations []*Location
 
 	// READ-ONLY; Provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // AccountUpdate - Request payload used to update and existing Accounts.
 type AccountUpdate struct {
 	// The type of identity used for the resource.
-	Identity *ManagedServiceIdentity `json:"identity,omitempty"`
+	Identity *ManagedServiceIdentity
 
 	// The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// List of key value pairs that describe the resource. This will overwrite the existing tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // AccountsClientBeginCreateOptions contains the optional parameters for the AccountsClient.BeginCreate method.
@@ -108,12 +108,14 @@ type AccountsClientHeadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.ListByResourceGroup method.
+// AccountsClientListByResourceGroupOptions contains the optional parameters for the AccountsClient.NewListByResourceGroupPager
+// method.
 type AccountsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.ListBySubscription method.
+// AccountsClientListBySubscriptionOptions contains the optional parameters for the AccountsClient.NewListBySubscriptionPager
+// method.
 type AccountsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
@@ -121,22 +123,22 @@ type AccountsClientListBySubscriptionOptions struct {
 // CheckNameAvailabilityRequest - The check availability request body.
 type CheckNameAvailabilityRequest struct {
 	// The name of the resource for which availability needs to be checked.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// The resource type.
-	Type *string `json:"type,omitempty"`
+	Type *string
 }
 
 // CheckNameAvailabilityResponse - The check availability result.
 type CheckNameAvailabilityResponse struct {
 	// Detailed reason why the given name is available.
-	Message *string `json:"message,omitempty"`
+	Message *string
 
 	// Indicates if the resource name is available.
-	NameAvailable *bool `json:"nameAvailable,omitempty"`
+	NameAvailable *bool
 
 	// The reason why the given name is not available.
-	Reason *CheckNameAvailabilityReason `json:"reason,omitempty"`
+	Reason *CheckNameAvailabilityReason
 }
 
 // ClientCheckNameAvailabilityOptions contains the optional parameters for the Client.CheckNameAvailability method.
@@ -147,170 +149,170 @@ type ClientCheckNameAvailabilityOptions struct {
 // ConnectionDetails - Private endpoint connection proxy object properties.
 type ConnectionDetails struct {
 	// READ-ONLY; Group ID.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; Connection details ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Link ID.
-	LinkIdentifier *string `json:"linkIdentifier,omitempty" azure:"ro"`
+	LinkIdentifier *string
 
 	// READ-ONLY; Member name.
-	MemberName *string `json:"memberName,omitempty" azure:"ro"`
+	MemberName *string
 
 	// READ-ONLY; Private IP address.
-	PrivateIPAddress *string `json:"privateIpAddress,omitempty" azure:"ro"`
+	PrivateIPAddress *string
 }
 
 // DiagnosticStorageProperties - Customer-initiated diagnostic log collection storage properties
 type DiagnosticStorageProperties struct {
 	// REQUIRED; Authentication Type
-	AuthenticationType *AuthenticationType `json:"authenticationType,omitempty"`
+	AuthenticationType *AuthenticationType
 
 	// REQUIRED; ResourceId of the diagnostic storage account
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 
 	// ConnectionString of the diagnostic storage account
-	ConnectionString *string `json:"connectionString,omitempty"`
+	ConnectionString *string
 }
 
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // GroupConnectivityInformation - Group connectivity details.
 type GroupConnectivityInformation struct {
 	// List of customer visible FQDNs.
-	CustomerVisibleFqdns []*string `json:"customerVisibleFqdns,omitempty"`
+	CustomerVisibleFqdns []*string
 
 	// PrivateLinkService ARM region.
-	PrivateLinkServiceArmRegion *string `json:"privateLinkServiceArmRegion,omitempty"`
+	PrivateLinkServiceArmRegion *string
 
 	// Redirect map ID.
-	RedirectMapID *string `json:"redirectMapId,omitempty"`
+	RedirectMapID *string
 
 	// READ-ONLY; Group ID.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; Internal FQDN.
-	InternalFqdn *string `json:"internalFqdn,omitempty" azure:"ro"`
+	InternalFqdn *string
 
 	// READ-ONLY; Member name.
-	MemberName *string `json:"memberName,omitempty" azure:"ro"`
+	MemberName *string
 }
 
 // GroupInformation - The group information for creating a private endpoint on an Account
 type GroupInformation struct {
 	// REQUIRED; The properties for a group information object
-	Properties *GroupInformationProperties `json:"properties,omitempty"`
+	Properties *GroupInformationProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // GroupInformationProperties - The properties for a group information object
 type GroupInformationProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The provisioning state of private link group ID.
-	ProvisioningState *GroupIDProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *GroupIDProvisioningState
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // Instance - Device Update instance details.
 type Instance struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// REQUIRED; Device Update instance properties.
-	Properties *InstanceProperties `json:"properties,omitempty"`
+	Properties *InstanceProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // InstanceList - List of Instances.
 type InstanceList struct {
 	// The link used to get the next page of Instances list.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// List of Instances.
-	Value []*Instance `json:"value,omitempty"`
+	Value []*Instance
 }
 
 // InstanceProperties - Device Update instance properties.
 type InstanceProperties struct {
 	// Customer-initiated diagnostic log collection storage properties
-	DiagnosticStorageProperties *DiagnosticStorageProperties `json:"diagnosticStorageProperties,omitempty"`
+	DiagnosticStorageProperties *DiagnosticStorageProperties
 
 	// Enables or Disables the diagnostic logs collection
-	EnableDiagnostics *bool `json:"enableDiagnostics,omitempty"`
+	EnableDiagnostics *bool
 
 	// List of IoT Hubs associated with the account.
-	IotHubs []*IotHubSettings `json:"iotHubs,omitempty"`
+	IotHubs []*IotHubSettings
 
 	// READ-ONLY; Parent Device Update Account name which Instance belongs to.
-	AccountName *string `json:"accountName,omitempty" azure:"ro"`
+	AccountName *string
 
 	// READ-ONLY; Provisioning state.
-	ProvisioningState *ProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *ProvisioningState
 }
 
 // InstancesClientBeginCreateOptions contains the optional parameters for the InstancesClient.BeginCreate method.
@@ -335,7 +337,7 @@ type InstancesClientHeadOptions struct {
 	// placeholder for future optional parameters
 }
 
-// InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.ListByAccount method.
+// InstancesClientListByAccountOptions contains the optional parameters for the InstancesClient.NewListByAccountPager method.
 type InstancesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
 }
@@ -348,86 +350,86 @@ type InstancesClientUpdateOptions struct {
 // IotHubSettings - Device Update account integration with IoT Hub settings.
 type IotHubSettings struct {
 	// REQUIRED; IoTHub resource ID
-	ResourceID *string `json:"resourceId,omitempty"`
+	ResourceID *string
 }
 
 type Location struct {
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Whether the location is primary or failover
-	Role *Role `json:"role,omitempty"`
+	Role *Role
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
 type ManagedServiceIdentity struct {
 	// REQUIRED; Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
-	Type *ManagedServiceIdentityType `json:"type,omitempty"`
+	Type *ManagedServiceIdentityType
 
 	// The set of user assigned identities associated with the resource. The userAssignedIdentities dictionary keys will be ARM
 	// resource ids in the form:
 	// '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}.
 	// The dictionary values can be empty objects ({}) in
 	// requests.
-	UserAssignedIdentities map[string]*UserAssignedIdentity `json:"userAssignedIdentities,omitempty"`
+	UserAssignedIdentities map[string]*UserAssignedIdentity
 
 	// READ-ONLY; The service principal ID of the system assigned identity. This property will only be provided for a system assigned
 	// identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
-	TenantID *string `json:"tenantId,omitempty" azure:"ro"`
+	TenantID *string
 }
 
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -435,46 +437,46 @@ type OperationsClientListOptions struct {
 // PrivateEndpoint - The Private Endpoint resource.
 type PrivateEndpoint struct {
 	// READ-ONLY; The ARM identifier for Private Endpoint
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // PrivateEndpointConnection - The Private Endpoint Connection resource.
 type PrivateEndpointConnection struct {
 	// REQUIRED; Resource properties.
-	Properties *PrivateEndpointConnectionProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionListResult - List of private endpoint connection associated with the specified storage account
 type PrivateEndpointConnectionListResult struct {
 	// Array of private endpoint connections
-	Value []*PrivateEndpointConnection `json:"value,omitempty"`
+	Value []*PrivateEndpointConnection
 }
 
 // PrivateEndpointConnectionProperties - Properties of the PrivateEndpointConnectProperties.
 type PrivateEndpointConnectionProperties struct {
 	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"privateLinkServiceConnectionState,omitempty"`
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 
 	// Array of group IDs.
-	GroupIDs []*string `json:"groupIds,omitempty"`
+	GroupIDs []*string
 
 	// The resource of private end point.
-	PrivateEndpoint *PrivateEndpoint `json:"privateEndpoint,omitempty"`
+	PrivateEndpoint *PrivateEndpoint
 
 	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *PrivateEndpointConnectionProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
 }
 
 // PrivateEndpointConnectionProxiesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.BeginCreateOrUpdate
@@ -497,7 +499,7 @@ type PrivateEndpointConnectionProxiesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.ListByAccount
+// PrivateEndpointConnectionProxiesClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionProxiesClient.NewListByAccountPager
 // method.
 type PrivateEndpointConnectionProxiesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
@@ -518,56 +520,56 @@ type PrivateEndpointConnectionProxiesClientValidateOptions struct {
 // PrivateEndpointConnectionProxy - Private endpoint connection proxy details.
 type PrivateEndpointConnectionProxy struct {
 	// Private endpoint connection proxy object property bag.
-	Properties *PrivateEndpointConnectionProxyProperties `json:"properties,omitempty"`
+	Properties *PrivateEndpointConnectionProxyProperties
 
 	// Remote private endpoint details.
-	RemotePrivateEndpoint *RemotePrivateEndpoint `json:"remotePrivateEndpoint,omitempty"`
+	RemotePrivateEndpoint *RemotePrivateEndpoint
 
 	// Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// READ-ONLY; ETag from NRP.
-	ETag *string `json:"eTag,omitempty" azure:"ro"`
+	ETag *string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // PrivateEndpointConnectionProxyListResult - The available private endpoint connection proxies for an Account (not to be
 // used by anyone, here because of ARM requirements)
 type PrivateEndpointConnectionProxyListResult struct {
 	// The URI that can be used to request the next list of private endpoint connection proxies.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of available private endpoint connection proxies for an Account
-	Value []*PrivateEndpointConnectionProxy `json:"value,omitempty"`
+	Value []*PrivateEndpointConnectionProxy
 }
 
 // PrivateEndpointConnectionProxyProperties - Private endpoint connection proxy object property bag.
 type PrivateEndpointConnectionProxyProperties struct {
 	// READ-ONLY; The provisioning state of the private endpoint connection proxy resource.
-	ProvisioningState *PrivateEndpointConnectionProxyProvisioningState `json:"provisioningState,omitempty" azure:"ro"`
+	ProvisioningState *PrivateEndpointConnectionProxyProvisioningState
 }
 
 // PrivateEndpointConnectionProxyPropertiesAutoGenerated - Private endpoint connection proxy object properties.
 type PrivateEndpointConnectionProxyPropertiesAutoGenerated struct {
 	// Remote private endpoint details.
-	RemotePrivateEndpoint *RemotePrivateEndpoint `json:"remotePrivateEndpoint,omitempty"`
+	RemotePrivateEndpoint *RemotePrivateEndpoint
 
 	// Operation status.
-	Status *string `json:"status,omitempty"`
+	Status *string
 
 	// READ-ONLY; ETag from NRP.
-	ETag *string `json:"eTag,omitempty" azure:"ro"`
+	ETag *string
 }
 
 // PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
@@ -590,7 +592,7 @@ type PrivateEndpointConnectionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateEndpointConnectionsClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.ListByAccount
+// PrivateEndpointConnectionsClientListByAccountOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByAccountPager
 // method.
 type PrivateEndpointConnectionsClientListByAccountOptions struct {
 	// placeholder for future optional parameters
@@ -599,40 +601,40 @@ type PrivateEndpointConnectionsClientListByAccountOptions struct {
 // PrivateEndpointUpdate - Private endpoint update details.
 type PrivateEndpointUpdate struct {
 	// Remote endpoint resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Original resource ID needed by Microsoft.Network.
-	ImmutableResourceID *string `json:"immutableResourceId,omitempty"`
+	ImmutableResourceID *string
 
 	// Original subscription ID needed by Microsoft.Network.
-	ImmutableSubscriptionID *string `json:"immutableSubscriptionId,omitempty"`
+	ImmutableSubscriptionID *string
 
 	// ARM location of the remote private endpoint.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Virtual network traffic tag.
-	VnetTrafficTag *string `json:"vnetTrafficTag,omitempty"`
+	VnetTrafficTag *string
 }
 
 // PrivateLinkResourceListResult - The available private link resources for an Account
 type PrivateLinkResourceListResult struct {
 	// The URI that can be used to request the next list of private link resources.
-	NextLink *string `json:"nextLink,omitempty"`
+	NextLink *string
 
 	// The list of available private link resources for an Account
-	Value []*GroupInformation `json:"value,omitempty"`
+	Value []*GroupInformation
 }
 
 // PrivateLinkResourceProperties - Properties of a private link resource.
 type PrivateLinkResourceProperties struct {
 	// The private link resource Private link DNS zone name.
-	RequiredZoneNames []*string `json:"requiredZoneNames,omitempty"`
+	RequiredZoneNames []*string
 
 	// READ-ONLY; The private link resource group id.
-	GroupID *string `json:"groupId,omitempty" azure:"ro"`
+	GroupID *string
 
 	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string `json:"requiredMembers,omitempty" azure:"ro"`
+	RequiredMembers []*string
 }
 
 // PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
@@ -640,7 +642,7 @@ type PrivateLinkResourcesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.ListByAccount
+// PrivateLinkResourcesClientListByAccountOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByAccountPager
 // method.
 type PrivateLinkResourcesClientListByAccountOptions struct {
 	// placeholder for future optional parameters
@@ -649,170 +651,170 @@ type PrivateLinkResourcesClientListByAccountOptions struct {
 // PrivateLinkServiceConnection - Private link service connection details.
 type PrivateLinkServiceConnection struct {
 	// List of group IDs.
-	GroupIDs []*string `json:"groupIds,omitempty"`
+	GroupIDs []*string
 
 	// Private link service connection name.
-	Name *string `json:"name,omitempty"`
+	Name *string
 
 	// Request message.
-	RequestMessage *string `json:"requestMessage,omitempty"`
+	RequestMessage *string
 }
 
 // PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
 // and provider.
 type PrivateLinkServiceConnectionState struct {
 	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string `json:"actionsRequired,omitempty"`
+	ActionsRequired *string
 
 	// The reason for approval/rejection of the connection.
-	Description *string `json:"description,omitempty"`
+	Description *string
 
 	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus `json:"status,omitempty"`
+	Status *PrivateEndpointServiceConnectionStatus
 }
 
 // PrivateLinkServiceProxy - Private link service proxy details.
 type PrivateLinkServiceProxy struct {
 	// Group connectivity information.
-	GroupConnectivityInformation []*GroupConnectivityInformation `json:"groupConnectivityInformation,omitempty"`
+	GroupConnectivityInformation []*GroupConnectivityInformation
 
 	// NRP resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Remote private endpoint connection details.
-	RemotePrivateEndpointConnection *PrivateLinkServiceProxyRemotePrivateEndpointConnection `json:"remotePrivateEndpointConnection,omitempty"`
+	RemotePrivateEndpointConnection *PrivateLinkServiceProxyRemotePrivateEndpointConnection
 
 	// Remote private link service connection state
-	RemotePrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState `json:"remotePrivateLinkServiceConnectionState,omitempty"`
+	RemotePrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
 }
 
 // PrivateLinkServiceProxyRemotePrivateEndpointConnection - Remote private endpoint connection details.
 type PrivateLinkServiceProxyRemotePrivateEndpointConnection struct {
 	// READ-ONLY; Remote private endpoint connection ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // ProxyResource - The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // RemotePrivateEndpoint - Remote private endpoint details.
 type RemotePrivateEndpoint struct {
 	// List of connection details.
-	ConnectionDetails []*ConnectionDetails `json:"connectionDetails,omitempty"`
+	ConnectionDetails []*ConnectionDetails
 
 	// Remote endpoint resource ID.
-	ID *string `json:"id,omitempty"`
+	ID *string
 
 	// Original resource ID needed by Microsoft.Network.
-	ImmutableResourceID *string `json:"immutableResourceId,omitempty"`
+	ImmutableResourceID *string
 
 	// Original subscription ID needed by Microsoft.Network.
-	ImmutableSubscriptionID *string `json:"immutableSubscriptionId,omitempty"`
+	ImmutableSubscriptionID *string
 
 	// ARM location of the remote private endpoint.
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// List of private link service connections that need manual approval.
-	ManualPrivateLinkServiceConnections []*PrivateLinkServiceConnection `json:"manualPrivateLinkServiceConnections,omitempty"`
+	ManualPrivateLinkServiceConnections []*PrivateLinkServiceConnection
 
 	// List of automatically approved private link service connections.
-	PrivateLinkServiceConnections []*PrivateLinkServiceConnection `json:"privateLinkServiceConnections,omitempty"`
+	PrivateLinkServiceConnections []*PrivateLinkServiceConnection
 
 	// List of private link service proxies.
-	PrivateLinkServiceProxies []*PrivateLinkServiceProxy `json:"privateLinkServiceProxies,omitempty"`
+	PrivateLinkServiceProxies []*PrivateLinkServiceProxy
 
 	// Virtual network traffic tag.
-	VnetTrafficTag *string `json:"vnetTrafficTag,omitempty"`
+	VnetTrafficTag *string
 }
 
 // RemotePrivateEndpointConnection - Remote private endpoint connection details.
 type RemotePrivateEndpointConnection struct {
 	// READ-ONLY; Remote private endpoint connection ID.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 }
 
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TagUpdate - Request payload used to update an existing resource's tags.
 type TagUpdate struct {
 	// List of key value pairs that describe the resource. This will overwrite the existing tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
-	ClientID *string `json:"clientId,omitempty" azure:"ro"`
+	ClientID *string
 
 	// READ-ONLY; The principal ID of the assigned identity.
-	PrincipalID *string `json:"principalId,omitempty" azure:"ro"`
+	PrincipalID *string
 }

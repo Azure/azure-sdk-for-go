@@ -29,12 +29,12 @@ type AccountClientGetResponse struct {
 	Account
 }
 
-// AccountClientListByResourceGroupResponse contains the response from method AccountClient.ListByResourceGroup.
+// AccountClientListByResourceGroupResponse contains the response from method AccountClient.NewListByResourceGroupPager.
 type AccountClientListByResourceGroupResponse struct {
 	AccountListResult
 }
 
-// AccountClientListResponse contains the response from method AccountClient.List.
+// AccountClientListResponse contains the response from method AccountClient.NewListPager.
 type AccountClientListResponse struct {
 	AccountListResult
 }
@@ -49,7 +49,7 @@ type ActivityClientGetResponse struct {
 	Activity
 }
 
-// ActivityClientListByModuleResponse contains the response from method ActivityClient.ListByModule.
+// ActivityClientListByModuleResponse contains the response from method ActivityClient.NewListByModulePager.
 type ActivityClientListByModuleResponse struct {
 	ActivityListResult
 }
@@ -79,7 +79,7 @@ type CertificateClientGetResponse struct {
 	Certificate
 }
 
-// CertificateClientListByAutomationAccountResponse contains the response from method CertificateClient.ListByAutomationAccount.
+// CertificateClientListByAutomationAccountResponse contains the response from method CertificateClient.NewListByAutomationAccountPager.
 type CertificateClientListByAutomationAccountResponse struct {
 	CertificateListResult
 }
@@ -109,7 +109,7 @@ type ConnectionClientGetResponse struct {
 	Connection
 }
 
-// ConnectionClientListByAutomationAccountResponse contains the response from method ConnectionClient.ListByAutomationAccount.
+// ConnectionClientListByAutomationAccountResponse contains the response from method ConnectionClient.NewListByAutomationAccountPager.
 type ConnectionClientListByAutomationAccountResponse struct {
 	ConnectionListResult
 }
@@ -134,7 +134,7 @@ type ConnectionTypeClientGetResponse struct {
 	ConnectionType
 }
 
-// ConnectionTypeClientListByAutomationAccountResponse contains the response from method ConnectionTypeClient.ListByAutomationAccount.
+// ConnectionTypeClientListByAutomationAccountResponse contains the response from method ConnectionTypeClient.NewListByAutomationAccountPager.
 type ConnectionTypeClientListByAutomationAccountResponse struct {
 	ConnectionTypeListResult
 }
@@ -154,7 +154,7 @@ type CredentialClientGetResponse struct {
 	Credential
 }
 
-// CredentialClientListByAutomationAccountResponse contains the response from method CredentialClient.ListByAutomationAccount.
+// CredentialClientListByAutomationAccountResponse contains the response from method CredentialClient.NewListByAutomationAccountPager.
 type CredentialClientListByAutomationAccountResponse struct {
 	CredentialListResult
 }
@@ -169,7 +169,7 @@ type DeletedAutomationAccountsClientListBySubscriptionResponse struct {
 	DeletedAutomationAccountListResult
 }
 
-// DscCompilationJobClientCreateResponse contains the response from method DscCompilationJobClient.Create.
+// DscCompilationJobClientCreateResponse contains the response from method DscCompilationJobClient.BeginCreate.
 type DscCompilationJobClientCreateResponse struct {
 	DscCompilationJob
 }
@@ -184,7 +184,7 @@ type DscCompilationJobClientGetStreamResponse struct {
 	JobStream
 }
 
-// DscCompilationJobClientListByAutomationAccountResponse contains the response from method DscCompilationJobClient.ListByAutomationAccount.
+// DscCompilationJobClientListByAutomationAccountResponse contains the response from method DscCompilationJobClient.NewListByAutomationAccountPager.
 type DscCompilationJobClientListByAutomationAccountResponse struct {
 	DscCompilationJobListResult
 }
@@ -219,7 +219,7 @@ type DscConfigurationClientGetResponse struct {
 	DscConfiguration
 }
 
-// DscConfigurationClientListByAutomationAccountResponse contains the response from method DscConfigurationClient.ListByAutomationAccount.
+// DscConfigurationClientListByAutomationAccountResponse contains the response from method DscConfigurationClient.NewListByAutomationAccountPager.
 type DscConfigurationClientListByAutomationAccountResponse struct {
 	DscConfigurationListResult
 }
@@ -244,7 +244,7 @@ type DscNodeClientGetResponse struct {
 	DscNode
 }
 
-// DscNodeClientListByAutomationAccountResponse contains the response from method DscNodeClient.ListByAutomationAccount.
+// DscNodeClientListByAutomationAccountResponse contains the response from method DscNodeClient.NewListByAutomationAccountPager.
 type DscNodeClientListByAutomationAccountResponse struct {
 	DscNodeListResult
 }
@@ -254,7 +254,7 @@ type DscNodeClientUpdateResponse struct {
 	DscNode
 }
 
-// DscNodeConfigurationClientCreateOrUpdateResponse contains the response from method DscNodeConfigurationClient.CreateOrUpdate.
+// DscNodeConfigurationClientCreateOrUpdateResponse contains the response from method DscNodeConfigurationClient.BeginCreateOrUpdate.
 type DscNodeConfigurationClientCreateOrUpdateResponse struct {
 	DscNodeConfiguration
 }
@@ -269,12 +269,12 @@ type DscNodeConfigurationClientGetResponse struct {
 	DscNodeConfiguration
 }
 
-// DscNodeConfigurationClientListByAutomationAccountResponse contains the response from method DscNodeConfigurationClient.ListByAutomationAccount.
+// DscNodeConfigurationClientListByAutomationAccountResponse contains the response from method DscNodeConfigurationClient.NewListByAutomationAccountPager.
 type DscNodeConfigurationClientListByAutomationAccountResponse struct {
 	DscNodeConfigurationListResult
 }
 
-// FieldsClientListByTypeResponse contains the response from method FieldsClient.ListByType.
+// FieldsClientListByTypeResponse contains the response from method FieldsClient.NewListByTypePager.
 type FieldsClientListByTypeResponse struct {
 	TypeFieldListResult
 }
@@ -294,7 +294,7 @@ type HybridRunbookWorkerGroupClientGetResponse struct {
 	HybridRunbookWorkerGroup
 }
 
-// HybridRunbookWorkerGroupClientListByAutomationAccountResponse contains the response from method HybridRunbookWorkerGroupClient.ListByAutomationAccount.
+// HybridRunbookWorkerGroupClientListByAutomationAccountResponse contains the response from method HybridRunbookWorkerGroupClient.NewListByAutomationAccountPager.
 type HybridRunbookWorkerGroupClientListByAutomationAccountResponse struct {
 	HybridRunbookWorkerGroupsListResult
 }
@@ -319,7 +319,7 @@ type HybridRunbookWorkersClientGetResponse struct {
 	HybridRunbookWorker
 }
 
-// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse contains the response from method HybridRunbookWorkersClient.ListByHybridRunbookWorkerGroup.
+// HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse contains the response from method HybridRunbookWorkersClient.NewListByHybridRunbookWorkerGroupPager.
 type HybridRunbookWorkersClientListByHybridRunbookWorkerGroupResponse struct {
 	HybridRunbookWorkersListResult
 }
@@ -349,7 +349,7 @@ type JobClientGetRunbookContentResponse struct {
 	Value *string
 }
 
-// JobClientListByAutomationAccountResponse contains the response from method JobClient.ListByAutomationAccount.
+// JobClientListByAutomationAccountResponse contains the response from method JobClient.NewListByAutomationAccountPager.
 type JobClientListByAutomationAccountResponse struct {
 	JobListResultV2
 }
@@ -384,7 +384,7 @@ type JobScheduleClientGetResponse struct {
 	JobSchedule
 }
 
-// JobScheduleClientListByAutomationAccountResponse contains the response from method JobScheduleClient.ListByAutomationAccount.
+// JobScheduleClientListByAutomationAccountResponse contains the response from method JobScheduleClient.NewListByAutomationAccountPager.
 type JobScheduleClientListByAutomationAccountResponse struct {
 	JobScheduleListResult
 }
@@ -394,7 +394,7 @@ type JobStreamClientGetResponse struct {
 	JobStream
 }
 
-// JobStreamClientListByJobResponse contains the response from method JobStreamClient.ListByJob.
+// JobStreamClientListByJobResponse contains the response from method JobStreamClient.NewListByJobPager.
 type JobStreamClientListByJobResponse struct {
 	JobStreamListResult
 }
@@ -424,7 +424,7 @@ type ModuleClientGetResponse struct {
 	Module
 }
 
-// ModuleClientListByAutomationAccountResponse contains the response from method ModuleClient.ListByAutomationAccount.
+// ModuleClientListByAutomationAccountResponse contains the response from method ModuleClient.NewListByAutomationAccountPager.
 type ModuleClientListByAutomationAccountResponse struct {
 	ModuleListResult
 }
@@ -442,7 +442,7 @@ type NodeCountInformationClientGetResponse struct {
 // NodeReportsClientGetContentResponse contains the response from method NodeReportsClient.GetContent.
 type NodeReportsClientGetContentResponse struct {
 	// Anything
-	Interface interface{}
+	Interface any
 }
 
 // NodeReportsClientGetResponse contains the response from method NodeReportsClient.Get.
@@ -450,32 +450,32 @@ type NodeReportsClientGetResponse struct {
 	DscNodeReport
 }
 
-// NodeReportsClientListByNodeResponse contains the response from method NodeReportsClient.ListByNode.
+// NodeReportsClientListByNodeResponse contains the response from method NodeReportsClient.NewListByNodePager.
 type NodeReportsClientListByNodeResponse struct {
 	DscNodeReportListResult
 }
 
-// ObjectDataTypesClientListFieldsByModuleAndTypeResponse contains the response from method ObjectDataTypesClient.ListFieldsByModuleAndType.
+// ObjectDataTypesClientListFieldsByModuleAndTypeResponse contains the response from method ObjectDataTypesClient.NewListFieldsByModuleAndTypePager.
 type ObjectDataTypesClientListFieldsByModuleAndTypeResponse struct {
 	TypeFieldListResult
 }
 
-// ObjectDataTypesClientListFieldsByTypeResponse contains the response from method ObjectDataTypesClient.ListFieldsByType.
+// ObjectDataTypesClientListFieldsByTypeResponse contains the response from method ObjectDataTypesClient.NewListFieldsByTypePager.
 type ObjectDataTypesClientListFieldsByTypeResponse struct {
 	TypeFieldListResult
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.CreateOrUpdate.
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.
 type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.Delete.
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
 type PrivateEndpointConnectionsClientDeleteResponse struct {
 	// placeholder for future response values
 }
@@ -485,12 +485,12 @@ type PrivateEndpointConnectionsClientGetResponse struct {
 	PrivateEndpointConnection
 }
 
-// PrivateEndpointConnectionsClientListByAutomationAccountResponse contains the response from method PrivateEndpointConnectionsClient.ListByAutomationAccount.
+// PrivateEndpointConnectionsClientListByAutomationAccountResponse contains the response from method PrivateEndpointConnectionsClient.NewListByAutomationAccountPager.
 type PrivateEndpointConnectionsClientListByAutomationAccountResponse struct {
 	PrivateEndpointConnectionListResult
 }
 
-// PrivateLinkResourcesClientAutomationResponse contains the response from method PrivateLinkResourcesClient.Automation.
+// PrivateLinkResourcesClientAutomationResponse contains the response from method PrivateLinkResourcesClient.NewAutomationPager.
 type PrivateLinkResourcesClientAutomationResponse struct {
 	PrivateLinkResourceListResult
 }
@@ -510,7 +510,7 @@ type Python2PackageClientGetResponse struct {
 	Module
 }
 
-// Python2PackageClientListByAutomationAccountResponse contains the response from method Python2PackageClient.ListByAutomationAccount.
+// Python2PackageClientListByAutomationAccountResponse contains the response from method Python2PackageClient.NewListByAutomationAccountPager.
 type Python2PackageClientListByAutomationAccountResponse struct {
 	ModuleListResult
 }
@@ -540,12 +540,12 @@ type RunbookClientGetResponse struct {
 	Runbook
 }
 
-// RunbookClientListByAutomationAccountResponse contains the response from method RunbookClient.ListByAutomationAccount.
+// RunbookClientListByAutomationAccountResponse contains the response from method RunbookClient.NewListByAutomationAccountPager.
 type RunbookClientListByAutomationAccountResponse struct {
 	RunbookListResult
 }
 
-// RunbookClientPublishResponse contains the response from method RunbookClient.Publish.
+// RunbookClientPublishResponse contains the response from method RunbookClient.BeginPublish.
 type RunbookClientPublishResponse struct {
 	// placeholder for future response values
 }
@@ -565,7 +565,7 @@ type RunbookDraftClientGetResponse struct {
 	RunbookDraft
 }
 
-// RunbookDraftClientReplaceContentResponse contains the response from method RunbookDraftClient.ReplaceContent.
+// RunbookDraftClientReplaceContentResponse contains the response from method RunbookDraftClient.BeginReplaceContent.
 type RunbookDraftClientReplaceContentResponse struct {
 	// Body contains the streaming response.
 	Body io.ReadCloser
@@ -596,7 +596,7 @@ type ScheduleClientGetResponse struct {
 	Schedule
 }
 
-// ScheduleClientListByAutomationAccountResponse contains the response from method ScheduleClient.ListByAutomationAccount.
+// ScheduleClientListByAutomationAccountResponse contains the response from method ScheduleClient.NewListByAutomationAccountPager.
 type ScheduleClientListByAutomationAccountResponse struct {
 	ScheduleListResult
 }
@@ -661,7 +661,7 @@ type SourceControlClientGetResponse struct {
 	SourceControl
 }
 
-// SourceControlClientListByAutomationAccountResponse contains the response from method SourceControlClient.ListByAutomationAccount.
+// SourceControlClientListByAutomationAccountResponse contains the response from method SourceControlClient.NewListByAutomationAccountPager.
 type SourceControlClientListByAutomationAccountResponse struct {
 	SourceControlListResult
 }
@@ -681,7 +681,7 @@ type SourceControlSyncJobClientGetResponse struct {
 	SourceControlSyncJobByID
 }
 
-// SourceControlSyncJobClientListByAutomationAccountResponse contains the response from method SourceControlSyncJobClient.ListByAutomationAccount.
+// SourceControlSyncJobClientListByAutomationAccountResponse contains the response from method SourceControlSyncJobClient.NewListByAutomationAccountPager.
 type SourceControlSyncJobClientListByAutomationAccountResponse struct {
 	SourceControlSyncJobListResult
 }
@@ -691,12 +691,12 @@ type SourceControlSyncJobStreamsClientGetResponse struct {
 	SourceControlSyncJobStreamByID
 }
 
-// SourceControlSyncJobStreamsClientListBySyncJobResponse contains the response from method SourceControlSyncJobStreamsClient.ListBySyncJob.
+// SourceControlSyncJobStreamsClientListBySyncJobResponse contains the response from method SourceControlSyncJobStreamsClient.NewListBySyncJobPager.
 type SourceControlSyncJobStreamsClientListBySyncJobResponse struct {
 	SourceControlSyncJobStreamsListBySyncJob
 }
 
-// StatisticsClientListByAutomationAccountResponse contains the response from method StatisticsClient.ListByAutomationAccount.
+// StatisticsClientListByAutomationAccountResponse contains the response from method StatisticsClient.NewListByAutomationAccountPager.
 type StatisticsClientListByAutomationAccountResponse struct {
 	StatisticsListResult
 }
@@ -731,12 +731,12 @@ type TestJobStreamsClientGetResponse struct {
 	JobStream
 }
 
-// TestJobStreamsClientListByTestJobResponse contains the response from method TestJobStreamsClient.ListByTestJob.
+// TestJobStreamsClientListByTestJobResponse contains the response from method TestJobStreamsClient.NewListByTestJobPager.
 type TestJobStreamsClientListByTestJobResponse struct {
 	JobStreamListResult
 }
 
-// UsagesClientListByAutomationAccountResponse contains the response from method UsagesClient.ListByAutomationAccount.
+// UsagesClientListByAutomationAccountResponse contains the response from method UsagesClient.NewListByAutomationAccountPager.
 type UsagesClientListByAutomationAccountResponse struct {
 	UsageListResult
 }
@@ -756,7 +756,7 @@ type VariableClientGetResponse struct {
 	Variable
 }
 
-// VariableClientListByAutomationAccountResponse contains the response from method VariableClient.ListByAutomationAccount.
+// VariableClientListByAutomationAccountResponse contains the response from method VariableClient.NewListByAutomationAccountPager.
 type VariableClientListByAutomationAccountResponse struct {
 	VariableListResult
 }
@@ -781,7 +781,7 @@ type WatcherClientGetResponse struct {
 	Watcher
 }
 
-// WatcherClientListByAutomationAccountResponse contains the response from method WatcherClient.ListByAutomationAccount.
+// WatcherClientListByAutomationAccountResponse contains the response from method WatcherClient.NewListByAutomationAccountPager.
 type WatcherClientListByAutomationAccountResponse struct {
 	WatcherListResult
 }
@@ -821,7 +821,7 @@ type WebhookClientGetResponse struct {
 	Webhook
 }
 
-// WebhookClientListByAutomationAccountResponse contains the response from method WebhookClient.ListByAutomationAccount.
+// WebhookClientListByAutomationAccountResponse contains the response from method WebhookClient.NewListByAutomationAccountPager.
 type WebhookClientListByAutomationAccountResponse struct {
 	WebhookListResult
 }

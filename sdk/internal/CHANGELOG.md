@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.3 (Unreleased)
+## 1.3.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2023-04-04)
+
+### Features Added
+* Added package `poller` which exports various LRO helpers to aid in the creation of custom `PollerHandler[T]`.
+* Added package `exported` which contains payload helpers needed by the `poller` package and exported in `azcore`.
+
+## 1.2.0 (2023-03-02)
+
+### Features Added
+
+* Add random alphanumeric string generation support for test-proxy recording framework.
+
+### Bugs Fixed
+
+* Store RNG seed in recordings.
 
 ## 1.1.2 (2022-12-12)
 

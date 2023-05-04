@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,51 +24,43 @@ import (
 // ConnectionClient contains the methods for the Connection group.
 // Don't use this type directly, use NewConnectionClient() instead.
 type ConnectionClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewConnectionClient creates a new instance of ConnectionClient with the specified values.
-// subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
-// forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID
+//     forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewConnectionClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectionClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ConnectionClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ConnectionClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update a connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// connectionName - The parameters supplied to the create or update connection operation.
-// parameters - The parameters supplied to the create or update connection operation.
-// options - ConnectionClientCreateOrUpdateOptions contains the optional parameters for the ConnectionClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - connectionName - The parameters supplied to the create or update connection operation.
+//   - parameters - The parameters supplied to the create or update connection operation.
+//   - options - ConnectionClientCreateOrUpdateOptions contains the optional parameters for the ConnectionClient.CreateOrUpdate
+//     method.
 func (client *ConnectionClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, automationAccountName string, connectionName string, parameters ConnectionCreateOrUpdateParameters, options *ConnectionClientCreateOrUpdateOptions) (ConnectionClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, automationAccountName, connectionName, parameters, options)
 	if err != nil {
 		return ConnectionClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConnectionClientCreateOrUpdateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *ConnectionClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,17 +111,18 @@ func (client *ConnectionClient) createOrUpdateHandleResponse(resp *http.Response
 
 // Delete - Delete the connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// connectionName - The name of connection.
-// options - ConnectionClientDeleteOptions contains the optional parameters for the ConnectionClient.Delete method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - connectionName - The name of connection.
+//   - options - ConnectionClientDeleteOptions contains the optional parameters for the ConnectionClient.Delete method.
 func (client *ConnectionClient) Delete(ctx context.Context, resourceGroupName string, automationAccountName string, connectionName string, options *ConnectionClientDeleteOptions) (ConnectionClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, automationAccountName, connectionName, options)
 	if err != nil {
 		return ConnectionClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConnectionClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *ConnectionClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -173,17 +164,18 @@ func (client *ConnectionClient) deleteCreateRequest(ctx context.Context, resourc
 
 // Get - Retrieve the connection identified by connection name.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// connectionName - The name of connection.
-// options - ConnectionClientGetOptions contains the optional parameters for the ConnectionClient.Get method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - connectionName - The name of connection.
+//   - options - ConnectionClientGetOptions contains the optional parameters for the ConnectionClient.Get method.
 func (client *ConnectionClient) Get(ctx context.Context, resourceGroupName string, automationAccountName string, connectionName string, options *ConnectionClientGetOptions) (ConnectionClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, automationAccountName, connectionName, options)
 	if err != nil {
 		return ConnectionClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConnectionClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *ConnectionClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,12 +225,12 @@ func (client *ConnectionClient) getHandleResponse(resp *http.Response) (Connecti
 }
 
 // NewListByAutomationAccountPager - Retrieve a list of connections.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// options - ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.ListByAutomationAccount
-// method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - options - ConnectionClientListByAutomationAccountOptions contains the optional parameters for the ConnectionClient.NewListByAutomationAccountPager
+//     method.
 func (client *ConnectionClient) NewListByAutomationAccountPager(resourceGroupName string, automationAccountName string, options *ConnectionClientListByAutomationAccountOptions) *runtime.Pager[ConnectionClientListByAutomationAccountResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ConnectionClientListByAutomationAccountResponse]{
 		More: func(page ConnectionClientListByAutomationAccountResponse) bool {
@@ -255,7 +247,7 @@ func (client *ConnectionClient) NewListByAutomationAccountPager(resourceGroupNam
 			if err != nil {
 				return ConnectionClientListByAutomationAccountResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ConnectionClientListByAutomationAccountResponse{}, err
 			}
@@ -282,7 +274,7 @@ func (client *ConnectionClient) listByAutomationAccountCreateRequest(ctx context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -304,18 +296,19 @@ func (client *ConnectionClient) listByAutomationAccountHandleResponse(resp *http
 
 // Update - Update a connection.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-13-preview
-// resourceGroupName - Name of an Azure Resource group.
-// automationAccountName - The name of the automation account.
-// connectionName - The parameters supplied to the update a connection operation.
-// parameters - The parameters supplied to the update a connection operation.
-// options - ConnectionClientUpdateOptions contains the optional parameters for the ConnectionClient.Update method.
+//   - resourceGroupName - Name of an Azure Resource group.
+//   - automationAccountName - The name of the automation account.
+//   - connectionName - The parameters supplied to the update a connection operation.
+//   - parameters - The parameters supplied to the update a connection operation.
+//   - options - ConnectionClientUpdateOptions contains the optional parameters for the ConnectionClient.Update method.
 func (client *ConnectionClient) Update(ctx context.Context, resourceGroupName string, automationAccountName string, connectionName string, parameters ConnectionUpdateParameters, options *ConnectionClientUpdateOptions) (ConnectionClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, automationAccountName, connectionName, parameters, options)
 	if err != nil {
 		return ConnectionClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ConnectionClientUpdateResponse{}, err
 	}
@@ -344,7 +337,7 @@ func (client *ConnectionClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

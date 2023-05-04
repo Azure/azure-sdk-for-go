@@ -16,10 +16,10 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 )
 
-const secret = "secret"
+const fakeSecret = "secret"
 
 func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
-	cred, err := NewClientSecretCredential(badTenantID, fakeClientID, secret, nil)
+	cred, err := NewClientSecretCredential(badTenantID, fakeClientID, fakeSecret, nil)
 	if err == nil {
 		t.Fatal("Expected an error but received none")
 	}
@@ -29,7 +29,7 @@ func TestClientSecretCredential_InvalidTenantID(t *testing.T) {
 }
 
 func TestClientSecretCredential_GetTokenSuccess(t *testing.T) {
-	cred, err := NewClientSecretCredential(fakeTenantID, fakeClientID, secret, nil)
+	cred, err := NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, nil)
 	if err != nil {
 		t.Fatalf("Unable to create credential. Received: %v", err)
 	}
@@ -49,7 +49,7 @@ func TestClientSecretCredential_Live(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			opts, stop := initRecording(t)
 			defer stop()
-			o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: disabledID}
+			o := ClientSecretCredentialOptions{ClientOptions: opts, DisableAuthorityValidationAndInstanceDiscovery: disabledID}
 			cred, err := NewClientSecretCredential(liveSP.tenantID, liveSP.clientID, liveSP.secret, &o)
 			if err != nil {
 				t.Fatalf("failed to construct credential: %v", err)
@@ -68,7 +68,7 @@ func TestClientSecretCredentialADFS_Live(t *testing.T) {
 	opts, stop := initRecording(t)
 	defer stop()
 	opts.Cloud.ActiveDirectoryAuthorityHost = adfsAuthority
-	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableInstanceDiscovery: true}
+	o := ClientSecretCredentialOptions{ClientOptions: opts, DisableAuthorityValidationAndInstanceDiscovery: true}
 	cred, err := NewClientSecretCredential("adfs", adfsLiveSP.clientID, adfsLiveSP.secret, &o)
 	if err != nil {
 		t.Fatalf("failed to construct credential: %v", err)

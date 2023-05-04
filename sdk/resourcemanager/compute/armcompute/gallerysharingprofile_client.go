@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,65 +24,58 @@ import (
 // GallerySharingProfileClient contains the methods for the GallerySharingProfile group.
 // Don't use this type directly, use NewGallerySharingProfileClient() instead.
 type GallerySharingProfileClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewGallerySharingProfileClient creates a new instance of GallerySharingProfileClient with the specified values.
-// subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
-// part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
+//     part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewGallerySharingProfileClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GallerySharingProfileClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".GallerySharingProfileClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &GallerySharingProfileClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginUpdate - Update sharing profile of a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-03-03
-// resourceGroupName - The name of the resource group.
-// galleryName - The name of the Shared Image Gallery.
-// sharingUpdate - Parameters supplied to the update gallery sharing profile.
-// options - GallerySharingProfileClientBeginUpdateOptions contains the optional parameters for the GallerySharingProfileClient.BeginUpdate
-// method.
+//   - resourceGroupName - The name of the resource group.
+//   - galleryName - The name of the Shared Image Gallery.
+//   - sharingUpdate - Parameters supplied to the update gallery sharing profile.
+//   - options - GallerySharingProfileClientBeginUpdateOptions contains the optional parameters for the GallerySharingProfileClient.BeginUpdate
+//     method.
 func (client *GallerySharingProfileClient) BeginUpdate(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileClientBeginUpdateOptions) (*runtime.Poller[GallerySharingProfileClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[GallerySharingProfileClientUpdateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[GallerySharingProfileClientUpdateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[GallerySharingProfileClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[GallerySharingProfileClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update sharing profile of a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-03-03
 func (client *GallerySharingProfileClient) update(ctx context.Context, resourceGroupName string, galleryName string, sharingUpdate SharingUpdate, options *GallerySharingProfileClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, galleryName, sharingUpdate, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +100,7 @@ func (client *GallerySharingProfileClient) updateCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter galleryName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{galleryName}", url.PathEscape(galleryName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

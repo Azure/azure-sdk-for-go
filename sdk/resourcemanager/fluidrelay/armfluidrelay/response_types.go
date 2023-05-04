@@ -19,12 +19,12 @@ type ContainersClientGetResponse struct {
 	Container
 }
 
-// ContainersClientListByFluidRelayServersResponse contains the response from method ContainersClient.ListByFluidRelayServers.
+// ContainersClientListByFluidRelayServersResponse contains the response from method ContainersClient.NewListByFluidRelayServersPager.
 type ContainersClientListByFluidRelayServersResponse struct {
 	ContainerList
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
@@ -44,12 +44,12 @@ type ServersClientGetResponse struct {
 	Server
 }
 
-// ServersClientListByResourceGroupResponse contains the response from method ServersClient.ListByResourceGroup.
+// ServersClientListByResourceGroupResponse contains the response from method ServersClient.NewListByResourceGroupPager.
 type ServersClientListByResourceGroupResponse struct {
 	ServerList
 }
 
-// ServersClientListBySubscriptionResponse contains the response from method ServersClient.ListBySubscription.
+// ServersClientListBySubscriptionResponse contains the response from method ServersClient.NewListBySubscriptionPager.
 type ServersClientListBySubscriptionResponse struct {
 	ServerList
 }

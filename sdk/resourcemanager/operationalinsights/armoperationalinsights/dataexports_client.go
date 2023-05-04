@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // DataExportsClient contains the methods for the DataExports group.
 // Don't use this type directly, use NewDataExportsClient() instead.
 type DataExportsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDataExportsClient creates a new instance of DataExportsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDataExportsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataExportsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DataExportsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DataExportsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update a data export.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// dataExportName - The data export rule name.
-// parameters - The parameters required to create or update a data export.
-// options - DataExportsClientCreateOrUpdateOptions contains the optional parameters for the DataExportsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - dataExportName - The data export rule name.
+//   - parameters - The parameters required to create or update a data export.
+//   - options - DataExportsClientCreateOrUpdateOptions contains the optional parameters for the DataExportsClient.CreateOrUpdate
+//     method.
 func (client *DataExportsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, parameters DataExport, options *DataExportsClientCreateOrUpdateOptions) (DataExportsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, dataExportName, parameters, options)
 	if err != nil {
 		return DataExportsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataExportsClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *DataExportsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter dataExportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataExportName}", url.PathEscape(dataExportName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *DataExportsClient) createOrUpdateHandleResponse(resp *http.Respons
 
 // Delete - Deletes the specified data export in a given workspace..
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// dataExportName - The data export rule name.
-// options - DataExportsClientDeleteOptions contains the optional parameters for the DataExportsClient.Delete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - dataExportName - The data export rule name.
+//   - options - DataExportsClientDeleteOptions contains the optional parameters for the DataExportsClient.Delete method.
 func (client *DataExportsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsClientDeleteOptions) (DataExportsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, dataExportName, options)
 	if err != nil {
 		return DataExportsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataExportsClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *DataExportsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter dataExportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataExportName}", url.PathEscape(dataExportName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +163,18 @@ func (client *DataExportsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Gets a data export instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// dataExportName - The data export rule name.
-// options - DataExportsClientGetOptions contains the optional parameters for the DataExportsClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - dataExportName - The data export rule name.
+//   - options - DataExportsClientGetOptions contains the optional parameters for the DataExportsClient.Get method.
 func (client *DataExportsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, dataExportName string, options *DataExportsClientGetOptions) (DataExportsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, dataExportName, options)
 	if err != nil {
 		return DataExportsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DataExportsClientGetResponse{}, err
 	}
@@ -211,7 +203,7 @@ func (client *DataExportsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter dataExportName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{dataExportName}", url.PathEscape(dataExportName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,12 +224,12 @@ func (client *DataExportsClient) getHandleResponse(resp *http.Response) (DataExp
 }
 
 // NewListByWorkspacePager - Lists the data export instances within a workspace.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.ListByWorkspace
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - DataExportsClientListByWorkspaceOptions contains the optional parameters for the DataExportsClient.NewListByWorkspacePager
+//     method.
 func (client *DataExportsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *DataExportsClientListByWorkspaceOptions) *runtime.Pager[DataExportsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DataExportsClientListByWorkspaceResponse]{
 		More: func(page DataExportsClientListByWorkspaceResponse) bool {
@@ -248,7 +240,7 @@ func (client *DataExportsClient) NewListByWorkspacePager(resourceGroupName strin
 			if err != nil {
 				return DataExportsClientListByWorkspaceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DataExportsClientListByWorkspaceResponse{}, err
 			}
@@ -275,7 +267,7 @@ func (client *DataExportsClient) listByWorkspaceCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter workspaceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

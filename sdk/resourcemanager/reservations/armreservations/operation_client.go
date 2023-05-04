@@ -13,8 +13,6 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -23,35 +21,27 @@ import (
 // OperationClient contains the methods for the Operation group.
 // Don't use this type directly, use NewOperationClient() instead.
 type OperationClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewOperationClient creates a new instance of OperationClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewOperationClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".OperationClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &OperationClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // NewListPager - List all the operations.
-// Generated from API version 2022-03-01
-// options - OperationClientListOptions contains the optional parameters for the OperationClient.List method.
+//
+// Generated from API version 2022-11-01
+//   - options - OperationClientListOptions contains the optional parameters for the OperationClient.NewListPager method.
 func (client *OperationClient) NewListPager(options *OperationClientListOptions) *runtime.Pager[OperationClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[OperationClientListResponse]{
 		More: func(page OperationClientListResponse) bool {
@@ -68,7 +58,7 @@ func (client *OperationClient) NewListPager(options *OperationClientListOptions)
 			if err != nil {
 				return OperationClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return OperationClientListResponse{}, err
 			}
@@ -83,12 +73,12 @@ func (client *OperationClient) NewListPager(options *OperationClientListOptions)
 // listCreateRequest creates the List request.
 func (client *OperationClient) listCreateRequest(ctx context.Context, options *OperationClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Capacity/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-11-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,28 +25,19 @@ import (
 // QuotaRequestStatusClient contains the methods for the QuotaRequestStatus group.
 // Don't use this type directly, use NewQuotaRequestStatusClient() instead.
 type QuotaRequestStatusClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewQuotaRequestStatusClient creates a new instance of QuotaRequestStatusClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*QuotaRequestStatusClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".QuotaRequestStatusClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &QuotaRequestStatusClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
@@ -57,18 +46,19 @@ func NewQuotaRequestStatusClient(credential azcore.TokenCredential, options *arm
 // for the resources of the resource provider. The PUT request for the quota (service
 // limit) returns a response with the requestId parameter.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-10-25
-// subscriptionID - Azure subscription ID.
-// providerID - Azure resource provider ID.
-// location - Azure region.
-// id - Quota Request ID.
-// options - QuotaRequestStatusClientGetOptions contains the optional parameters for the QuotaRequestStatusClient.Get method.
+//   - subscriptionID - Azure subscription ID.
+//   - providerID - Azure resource provider ID.
+//   - location - Azure region.
+//   - id - Quota Request ID.
+//   - options - QuotaRequestStatusClientGetOptions contains the optional parameters for the QuotaRequestStatusClient.Get method.
 func (client *QuotaRequestStatusClient) Get(ctx context.Context, subscriptionID string, providerID string, location string, id string, options *QuotaRequestStatusClientGetOptions) (QuotaRequestStatusClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, subscriptionID, providerID, location, id, options)
 	if err != nil {
 		return QuotaRequestStatusClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return QuotaRequestStatusClientGetResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *QuotaRequestStatusClient) getCreateRequest(ctx context.Context, su
 		return nil, errors.New("parameter id cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{id}", url.PathEscape(id))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -119,11 +109,13 @@ func (client *QuotaRequestStatusClient) getHandleResponse(resp *http.Response) (
 
 // NewListPager - For the specified Azure region (location), subscription, and resource provider, get the history of the quota
 // requests for the past year. To select specific quota requests, use the oData filter.
+//
 // Generated from API version 2020-10-25
-// subscriptionID - Azure subscription ID.
-// providerID - Azure resource provider ID.
-// location - Azure region.
-// options - QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.List method.
+//   - subscriptionID - Azure subscription ID.
+//   - providerID - Azure resource provider ID.
+//   - location - Azure region.
+//   - options - QuotaRequestStatusClientListOptions contains the optional parameters for the QuotaRequestStatusClient.NewListPager
+//     method.
 func (client *QuotaRequestStatusClient) NewListPager(subscriptionID string, providerID string, location string, options *QuotaRequestStatusClientListOptions) *runtime.Pager[QuotaRequestStatusClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[QuotaRequestStatusClientListResponse]{
 		More: func(page QuotaRequestStatusClientListResponse) bool {
@@ -140,7 +132,7 @@ func (client *QuotaRequestStatusClient) NewListPager(subscriptionID string, prov
 			if err != nil {
 				return QuotaRequestStatusClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return QuotaRequestStatusClientListResponse{}, err
 			}
@@ -167,7 +159,7 @@ func (client *QuotaRequestStatusClient) listCreateRequest(ctx context.Context, s
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

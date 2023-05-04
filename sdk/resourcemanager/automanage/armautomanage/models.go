@@ -14,58 +14,58 @@ import "time"
 // AssignmentReportProperties - Data related to the report detail.
 type AssignmentReportProperties struct {
 	// End time of the configuration profile assignment processing.
-	EndTime *string `json:"endTime,omitempty"`
+	EndTime *string
 
 	// Start time of the configuration profile assignment processing.
-	StartTime *string `json:"startTime,omitempty"`
+	StartTime *string
 
 	// READ-ONLY; The configurationProfile linked to the assignment.
-	ConfigurationProfile *string `json:"configurationProfile,omitempty" azure:"ro"`
+	ConfigurationProfile *string
 
 	// READ-ONLY; Duration of the configuration profile assignment processing.
-	Duration *string `json:"duration,omitempty" azure:"ro"`
+	Duration *string
 
 	// READ-ONLY; Error message, if any, returned by the configuration profile assignment processing.
-	Error *ErrorDetail `json:"error,omitempty" azure:"ro"`
+	Error *ErrorDetail
 
 	// READ-ONLY; Last modified time of the configuration profile assignment processing.
-	LastModifiedTime *string `json:"lastModifiedTime,omitempty" azure:"ro"`
+	LastModifiedTime *string
 
 	// READ-ONLY; Version of the report format
-	ReportFormatVersion *string `json:"reportFormatVersion,omitempty" azure:"ro"`
+	ReportFormatVersion *string
 
 	// READ-ONLY; List of resources processed by the configuration profile assignment.
-	Resources []*ReportResource `json:"resources,omitempty" azure:"ro"`
+	Resources []*ReportResource
 
 	// READ-ONLY; The status of the configuration profile assignment.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; Type of the configuration profile assignment processing (Initial/Consistency).
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BestPractice - Definition of the Automanage best practice.
 type BestPractice struct {
 	// Properties of the best practice.
-	Properties *ConfigurationProfileProperties `json:"properties,omitempty"`
+	Properties *ConfigurationProfileProperties
 
 	// READ-ONLY; The fully qualified ID for the best practice. For example, /providers/Microsoft.Automanage/bestPractices/azureBestPracticesProduction
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the best practice. For example, azureBestPracticesProduction
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. For example, Microsoft.Automanage/bestPractices
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // BestPracticeList - The response of the list best practice operation.
 type BestPracticeList struct {
 	// Result of the list best practice operation.
-	Value []*BestPractice `json:"value,omitempty"`
+	Value []*BestPractice
 }
 
 // BestPracticesClientGetOptions contains the optional parameters for the BestPracticesClient.Get method.
@@ -73,7 +73,8 @@ type BestPracticesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BestPracticesClientListByTenantOptions contains the optional parameters for the BestPracticesClient.ListByTenant method.
+// BestPracticesClientListByTenantOptions contains the optional parameters for the BestPracticesClient.NewListByTenantPager
+// method.
 type BestPracticesClientListByTenantOptions struct {
 	// placeholder for future optional parameters
 }
@@ -83,7 +84,7 @@ type BestPracticesVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BestPracticesVersionsClientListByTenantOptions contains the optional parameters for the BestPracticesVersionsClient.ListByTenant
+// BestPracticesVersionsClientListByTenantOptions contains the optional parameters for the BestPracticesVersionsClient.NewListByTenantPager
 // method.
 type BestPracticesVersionsClientListByTenantOptions struct {
 	// placeholder for future optional parameters
@@ -92,65 +93,65 @@ type BestPracticesVersionsClientListByTenantOptions struct {
 // ConfigurationProfile - Definition of the configuration profile.
 type ConfigurationProfile struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Properties of the configuration profile.
-	Properties *ConfigurationProfileProperties `json:"properties,omitempty"`
+	Properties *ConfigurationProfileProperties
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConfigurationProfileAssignment - Configuration profile assignment is an association between a VM and automanage profile
 // configuration.
 type ConfigurationProfileAssignment struct {
 	// Properties of the configuration profile assignment.
-	Properties *ConfigurationProfileAssignmentProperties `json:"properties,omitempty"`
+	Properties *ConfigurationProfileAssignmentProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Azure resource id. Indicates if this resource is managed by another Azure resource.
-	ManagedBy *string `json:"managedBy,omitempty" azure:"ro"`
+	ManagedBy *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ConfigurationProfileAssignmentList - The response of the list configuration profile assignment operation.
 type ConfigurationProfileAssignmentList struct {
 	// Result of the list configuration profile assignment operation.
-	Value []*ConfigurationProfileAssignment `json:"value,omitempty"`
+	Value []*ConfigurationProfileAssignment
 }
 
 // ConfigurationProfileAssignmentProperties - Automanage configuration profile assignment properties.
 type ConfigurationProfileAssignmentProperties struct {
 	// The Automanage configurationProfile ARM Resource URI.
-	ConfigurationProfile *string `json:"configurationProfile,omitempty"`
+	ConfigurationProfile *string
 
 	// READ-ONLY; The status of onboarding, which only appears in the response.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; The target VM resource URI
-	TargetID *string `json:"targetId,omitempty" azure:"ro"`
+	TargetID *string
 }
 
 // ConfigurationProfileAssignmentsClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.CreateOrUpdate
@@ -171,31 +172,31 @@ type ConfigurationProfileAssignmentsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListByClusterNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByClusterName
+// ConfigurationProfileAssignmentsClientListByClusterNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListByClusterNamePager
 // method.
 type ConfigurationProfileAssignmentsClientListByClusterNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListByMachineNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByMachineName
+// ConfigurationProfileAssignmentsClientListByMachineNameOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListByMachineNamePager
 // method.
 type ConfigurationProfileAssignmentsClientListByMachineNameOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListBySubscription
+// ConfigurationProfileAssignmentsClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListBySubscriptionPager
 // method.
 type ConfigurationProfileAssignmentsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.ListByVirtualMachines
+// ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListByVirtualMachinesPager
 // method.
 type ConfigurationProfileAssignmentsClientListByVirtualMachinesOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.List
+// ConfigurationProfileAssignmentsClientListOptions contains the optional parameters for the ConfigurationProfileAssignmentsClient.NewListPager
 // method.
 type ConfigurationProfileAssignmentsClientListOptions struct {
 	// placeholder for future optional parameters
@@ -240,22 +241,22 @@ type ConfigurationProfileHCRPAssignmentsClientGetOptions struct {
 // ConfigurationProfileList - The response of the list configuration profile operation.
 type ConfigurationProfileList struct {
 	// Result of the list ConfigurationProfile operation.
-	Value []*ConfigurationProfile `json:"value,omitempty"`
+	Value []*ConfigurationProfile
 }
 
 // ConfigurationProfileProperties - Automanage configuration profile properties.
 type ConfigurationProfileProperties struct {
 	// configuration dictionary of the configuration profile.
-	Configuration interface{} `json:"configuration,omitempty"`
+	Configuration any
 }
 
 // ConfigurationProfileUpdate - Definition of the configuration profile.
 type ConfigurationProfileUpdate struct {
 	// Properties of the configuration profile.
-	Properties *ConfigurationProfileProperties `json:"properties,omitempty"`
+	Properties *ConfigurationProfileProperties
 
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }
 
 // ConfigurationProfilesClientCreateOrUpdateOptions contains the optional parameters for the ConfigurationProfilesClient.CreateOrUpdate
@@ -274,13 +275,13 @@ type ConfigurationProfilesClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.ListByResourceGroup
+// ConfigurationProfilesClientListByResourceGroupOptions contains the optional parameters for the ConfigurationProfilesClient.NewListByResourceGroupPager
 // method.
 type ConfigurationProfilesClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.ListBySubscription
+// ConfigurationProfilesClientListBySubscriptionOptions contains the optional parameters for the ConfigurationProfilesClient.NewListBySubscriptionPager
 // method.
 type ConfigurationProfilesClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -309,7 +310,7 @@ type ConfigurationProfilesVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ConfigurationProfilesVersionsClientListChildResourcesOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.ListChildResources
+// ConfigurationProfilesVersionsClientListChildResourcesOptions contains the optional parameters for the ConfigurationProfilesVersionsClient.NewListChildResourcesPager
 // method.
 type ConfigurationProfilesVersionsClientListChildResourcesOptions struct {
 	// placeholder for future optional parameters
@@ -318,35 +319,35 @@ type ConfigurationProfilesVersionsClientListChildResourcesOptions struct {
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
-	Info interface{} `json:"info,omitempty" azure:"ro"`
+	Info any
 
 	// READ-ONLY; The additional info type.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ErrorDetail - The error detail.
 type ErrorDetail struct {
 	// READ-ONLY; The error additional info.
-	AdditionalInfo []*ErrorAdditionalInfo `json:"additionalInfo,omitempty" azure:"ro"`
+	AdditionalInfo []*ErrorAdditionalInfo
 
 	// READ-ONLY; The error code.
-	Code *string `json:"code,omitempty" azure:"ro"`
+	Code *string
 
 	// READ-ONLY; The error details.
-	Details []*ErrorDetail `json:"details,omitempty" azure:"ro"`
+	Details []*ErrorDetail
 
 	// READ-ONLY; The error message.
-	Message *string `json:"message,omitempty" azure:"ro"`
+	Message *string
 
 	// READ-ONLY; The error target.
-	Target *string `json:"target,omitempty" azure:"ro"`
+	Target *string
 }
 
 // ErrorResponse - Common error response for all Azure Resource Manager APIs to return error details for failed operations.
 // (This also follows the OData error response format.).
 type ErrorResponse struct {
 	// The error object.
-	Error *ErrorDetail `json:"error,omitempty"`
+	Error *ErrorDetail
 }
 
 // HCIReportsClientGetOptions contains the optional parameters for the HCIReportsClient.Get method.
@@ -354,7 +355,7 @@ type HCIReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HCIReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCIReportsClient.ListByConfigurationProfileAssignments
+// HCIReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCIReportsClient.NewListByConfigurationProfileAssignmentsPager
 // method.
 type HCIReportsClientListByConfigurationProfileAssignmentsOptions struct {
 	// placeholder for future optional parameters
@@ -365,7 +366,7 @@ type HCRPReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// HCRPReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCRPReportsClient.ListByConfigurationProfileAssignments
+// HCRPReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the HCRPReportsClient.NewListByConfigurationProfileAssignmentsPager
 // method.
 type HCRPReportsClientListByConfigurationProfileAssignmentsOptions struct {
 	// placeholder for future optional parameters
@@ -374,53 +375,53 @@ type HCRPReportsClientListByConfigurationProfileAssignmentsOptions struct {
 // Operation - Details of a REST API operation, returned from the Resource Provider Operations API
 type Operation struct {
 	// Localized display information for this particular operation.
-	Display *OperationDisplay `json:"display,omitempty"`
+	Display *OperationDisplay
 
 	// READ-ONLY; Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
-	ActionType *ActionType `json:"actionType,omitempty" azure:"ro"`
+	ActionType *ActionType
 
 	// READ-ONLY; Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for ARM/control-plane
 	// operations.
-	IsDataAction *bool `json:"isDataAction,omitempty" azure:"ro"`
+	IsDataAction *bool
 
 	// READ-ONLY; The name of the operation, as per Resource-Based Access Control (RBAC). Examples: "Microsoft.Compute/virtualMachines/write",
 	// "Microsoft.Compute/virtualMachines/capture/action"
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The intended executor of the operation; as in Resource Based Access Control (RBAC) and audit logs UX. Default
 	// value is "user,system"
-	Origin *Origin `json:"origin,omitempty" azure:"ro"`
+	Origin *Origin
 }
 
 // OperationDisplay - Localized display information for this particular operation.
 type OperationDisplay struct {
 	// READ-ONLY; The short, localized friendly description of the operation; suitable for tool tips and detailed views.
-	Description *string `json:"description,omitempty" azure:"ro"`
+	Description *string
 
 	// READ-ONLY; The concise, localized friendly name for the operation; suitable for dropdowns. E.g. "Create or Update Virtual
 	// Machine", "Restart Virtual Machine".
-	Operation *string `json:"operation,omitempty" azure:"ro"`
+	Operation *string
 
 	// READ-ONLY; The localized friendly form of the resource provider name, e.g. "Microsoft Monitoring Insights" or "Microsoft
 	// Compute".
-	Provider *string `json:"provider,omitempty" azure:"ro"`
+	Provider *string
 
 	// READ-ONLY; The localized friendly name of the resource type related to this operation. E.g. "Virtual Machines" or "Job
 	// Schedule Collections".
-	Resource *string `json:"resource,omitempty" azure:"ro"`
+	Resource *string
 }
 
 // OperationListResult - A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to
 // get the next set of results.
 type OperationListResult struct {
 	// READ-ONLY; URL to get the next set of operation list results (if there are any).
-	NextLink *string `json:"nextLink,omitempty" azure:"ro"`
+	NextLink *string
 
 	// READ-ONLY; List of operations supported by the resource provider
-	Value []*Operation `json:"value,omitempty" azure:"ro"`
+	Value []*Operation
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -429,55 +430,55 @@ type OperationsClientListOptions struct {
 // location
 type ProxyResource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // Report - Definition of the report.
 type Report struct {
 	// The properties for the report.
-	Properties *AssignmentReportProperties `json:"properties,omitempty"`
+	Properties *AssignmentReportProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReportList - The response of the list report operation.
 type ReportList struct {
 	// Result of the list report operation.
-	Value []*Report `json:"value,omitempty"`
+	Value []*Report
 }
 
 // ReportResource - Details about the resource processed by the configuration profile assignment
 type ReportResource struct {
 	// READ-ONLY; Error message, if any, returned when deploying the resource.
-	Error *ErrorDetail `json:"error,omitempty" azure:"ro"`
+	Error *ErrorDetail
 
 	// READ-ONLY; ARM id of the resource.
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; Name of the resource.
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Status of the resource.
-	Status *string `json:"status,omitempty" azure:"ro"`
+	Status *string
 
 	// READ-ONLY; Type of the resource.
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ReportsClientGetOptions contains the optional parameters for the ReportsClient.Get method.
@@ -485,7 +486,7 @@ type ReportsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.ListByConfigurationProfileAssignments
+// ReportsClientListByConfigurationProfileAssignmentsOptions contains the optional parameters for the ReportsClient.NewListByConfigurationProfileAssignmentsPager
 // method.
 type ReportsClientListByConfigurationProfileAssignmentsOptions struct {
 	// placeholder for future optional parameters
@@ -494,46 +495,46 @@ type ReportsClientListByConfigurationProfileAssignmentsOptions struct {
 // Resource - Common fields that are returned in the response for all Azure Resource Manager resources
 type Resource struct {
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServicePrincipal - The Service Principal Id for the subscription.
 type ServicePrincipal struct {
 	// The Service Principal properties for the subscription
-	Properties *ServicePrincipalProperties `json:"properties,omitempty"`
+	Properties *ServicePrincipalProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData `json:"systemData,omitempty" azure:"ro"`
+	SystemData *SystemData
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // ServicePrincipalListResult - The list of ServicePrincipals.
 type ServicePrincipalListResult struct {
 	// The list of servicePrincipals.
-	Value []*ServicePrincipal `json:"value,omitempty"`
+	Value []*ServicePrincipal
 }
 
 // ServicePrincipalProperties - The Service Principal properties for the subscription.
 type ServicePrincipalProperties struct {
 	// READ-ONLY; Returns the contributor RBAC Role exist or not for the Service Principal Id.
-	AuthorizationSet *bool `json:"authorizationSet,omitempty" azure:"ro"`
+	AuthorizationSet *bool
 
 	// READ-ONLY; The Service Principal Id for the subscription.
-	ServicePrincipalID *string `json:"servicePrincipalId,omitempty" azure:"ro"`
+	ServicePrincipalID *string
 }
 
 // ServicePrincipalsClientGetOptions contains the optional parameters for the ServicePrincipalsClient.Get method.
@@ -541,7 +542,7 @@ type ServicePrincipalsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.ListBySubscription
+// ServicePrincipalsClientListBySubscriptionOptions contains the optional parameters for the ServicePrincipalsClient.NewListBySubscriptionPager
 // method.
 type ServicePrincipalsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -550,45 +551,45 @@ type ServicePrincipalsClientListBySubscriptionOptions struct {
 // SystemData - Metadata pertaining to creation and last modification of the resource.
 type SystemData struct {
 	// The timestamp of resource creation (UTC).
-	CreatedAt *time.Time `json:"createdAt,omitempty"`
+	CreatedAt *time.Time
 
 	// The identity that created the resource.
-	CreatedBy *string `json:"createdBy,omitempty"`
+	CreatedBy *string
 
 	// The type of identity that created the resource.
-	CreatedByType *CreatedByType `json:"createdByType,omitempty"`
+	CreatedByType *CreatedByType
 
 	// The timestamp of resource last modification (UTC)
-	LastModifiedAt *time.Time `json:"lastModifiedAt,omitempty"`
+	LastModifiedAt *time.Time
 
 	// The identity that last modified the resource.
-	LastModifiedBy *string `json:"lastModifiedBy,omitempty"`
+	LastModifiedBy *string
 
 	// The type of identity that last modified the resource.
-	LastModifiedByType *CreatedByType `json:"lastModifiedByType,omitempty"`
+	LastModifiedByType *CreatedByType
 }
 
 // TrackedResource - The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags'
 // and a 'location'
 type TrackedResource struct {
 	// REQUIRED; The geo-location where the resource lives
-	Location *string `json:"location,omitempty"`
+	Location *string
 
 	// Resource tags.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string `json:"id,omitempty" azure:"ro"`
+	ID *string
 
 	// READ-ONLY; The name of the resource
-	Name *string `json:"name,omitempty" azure:"ro"`
+	Name *string
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string `json:"type,omitempty" azure:"ro"`
+	Type *string
 }
 
 // UpdateResource - Represents an update resource
 type UpdateResource struct {
 	// The tags of the resource.
-	Tags map[string]*string `json:"tags,omitempty"`
+	Tags map[string]*string
 }

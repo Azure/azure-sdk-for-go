@@ -1,6 +1,6 @@
 # Azure Security Insight Module for Go
 
-[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2)
+[![PkgGoDev](https://pkg.go.dev/badge/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights)](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights)
 
 The `armsecurityinsights` module provides operations for working with Azure Security Insight.
 
@@ -20,7 +20,7 @@ This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for ve
 Install the Azure Security Insight module:
 
 ```sh
-go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights/v2
+go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/securityinsights/armsecurityinsights
 ```
 
 ## Authorization
@@ -33,12 +33,12 @@ cred, err := azidentity.NewDefaultAzureCredential(nil)
 
 For more information on authentication, please see the documentation for `azidentity` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity).
 
-## Clients
+## Client Factory
 
-Azure Security Insight modules consist of one or more clients.  A client groups a set of related APIs, providing access to its functionality within the specified subscription.  Create one or more clients to access the APIs you require using your credential.
+Azure Security Insight module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
-client, err := armsecurityinsights.NewEntityQueriesClient(<subscription ID>, cred, nil)
+clientFactory, err := armsecurityinsights.NewClientFactory(<subscription ID>, cred, nil)
 ```
 
 You can use `ClientOptions` in package `github.com/Azure/azure-sdk-for-go/sdk/azcore/arm` to set endpoint to connect with public and sovereign clouds as well as Azure Stack. For more information, please see the documentation for `azcore` at [pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore](https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azcore).
@@ -49,7 +49,15 @@ options := arm.ClientOptions {
         Cloud: cloud.AzureChina,
     },
 }
-client, err := armsecurityinsights.NewEntityQueriesClient(<subscription ID>, cred, &options)
+clientFactory, err := armsecurityinsights.NewClientFactory(<subscription ID>, cred, &options)
+```
+
+## Clients
+
+A client groups a set of related APIs, providing access to its functionality.  Create one or more clients to access the APIs you require using client factory.
+
+```go
+client := clientFactory.NewEntityQueriesClient()
 ```
 
 ## Provide Feedback

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // IPGroupsClient contains the methods for the IPGroups group.
 // Don't use this type directly, use NewIPGroupsClient() instead.
 type IPGroupsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIPGroupsClient creates a new instance of IPGroupsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIPGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IPGroupsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IPGroupsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IPGroupsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// ipGroupsName - The name of the ipGroups.
-// parameters - Parameters supplied to the create or update IpGroups operation.
-// options - IPGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the IPGroupsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - ipGroupsName - The name of the ipGroups.
+//   - parameters - Parameters supplied to the create or update IpGroups operation.
+//   - options - IPGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the IPGroupsClient.BeginCreateOrUpdate
+//     method.
 func (client *IPGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[IPGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, ipGroupsName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[IPGroupsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IPGroupsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[IPGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IPGroupsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates an ipGroups in a specified resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *IPGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters IPGroup, options *IPGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, ipGroupsName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,12 +102,12 @@ func (client *IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, r
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)
@@ -124,33 +115,35 @@ func (client *IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, r
 
 // BeginDelete - Deletes the specified ipGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// ipGroupsName - The name of the ipGroups.
-// options - IPGroupsClientBeginDeleteOptions contains the optional parameters for the IPGroupsClient.BeginDelete method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - ipGroupsName - The name of the ipGroups.
+//   - options - IPGroupsClientBeginDeleteOptions contains the optional parameters for the IPGroupsClient.BeginDelete method.
 func (client *IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsClientBeginDeleteOptions) (*runtime.Poller[IPGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, ipGroupsName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[IPGroupsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[IPGroupsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[IPGroupsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IPGroupsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified ipGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *IPGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, ipGroupsName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,12 +168,12 @@ func (client *IPGroupsClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,16 +181,17 @@ func (client *IPGroupsClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Gets the specified ipGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// ipGroupsName - The name of the ipGroups.
-// options - IPGroupsClientGetOptions contains the optional parameters for the IPGroupsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - ipGroupsName - The name of the ipGroups.
+//   - options - IPGroupsClientGetOptions contains the optional parameters for the IPGroupsClient.Get method.
 func (client *IPGroupsClient) Get(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsClientGetOptions) (IPGroupsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, ipGroupsName, options)
 	if err != nil {
 		return IPGroupsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IPGroupsClientGetResponse{}, err
 	}
@@ -222,12 +216,12 @@ func (client *IPGroupsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
@@ -246,8 +240,9 @@ func (client *IPGroupsClient) getHandleResponse(resp *http.Response) (IPGroupsCl
 }
 
 // NewListPager - Gets all IpGroups in a subscription.
-// Generated from API version 2022-07-01
-// options - IPGroupsClientListOptions contains the optional parameters for the IPGroupsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - options - IPGroupsClientListOptions contains the optional parameters for the IPGroupsClient.NewListPager method.
 func (client *IPGroupsClient) NewListPager(options *IPGroupsClientListOptions) *runtime.Pager[IPGroupsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IPGroupsClientListResponse]{
 		More: func(page IPGroupsClientListResponse) bool {
@@ -264,7 +259,7 @@ func (client *IPGroupsClient) NewListPager(options *IPGroupsClientListOptions) *
 			if err != nil {
 				return IPGroupsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return IPGroupsClientListResponse{}, err
 			}
@@ -283,12 +278,12 @@ func (client *IPGroupsClient) listCreateRequest(ctx context.Context, options *IP
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -304,10 +299,11 @@ func (client *IPGroupsClient) listHandleResponse(resp *http.Response) (IPGroupsC
 }
 
 // NewListByResourceGroupPager - Gets all IpGroups in a resource group.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// options - IPGroupsClientListByResourceGroupOptions contains the optional parameters for the IPGroupsClient.ListByResourceGroup
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - options - IPGroupsClientListByResourceGroupOptions contains the optional parameters for the IPGroupsClient.NewListByResourceGroupPager
+//     method.
 func (client *IPGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *IPGroupsClientListByResourceGroupOptions) *runtime.Pager[IPGroupsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IPGroupsClientListByResourceGroupResponse]{
 		More: func(page IPGroupsClientListByResourceGroupResponse) bool {
@@ -324,7 +320,7 @@ func (client *IPGroupsClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return IPGroupsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return IPGroupsClientListByResourceGroupResponse{}, err
 			}
@@ -347,12 +343,12 @@ func (client *IPGroupsClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -369,17 +365,18 @@ func (client *IPGroupsClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // UpdateGroups - Updates tags of an IpGroups resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// ipGroupsName - The name of the ipGroups.
-// parameters - Parameters supplied to the update ipGroups operation.
-// options - IPGroupsClientUpdateGroupsOptions contains the optional parameters for the IPGroupsClient.UpdateGroups method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - ipGroupsName - The name of the ipGroups.
+//   - parameters - Parameters supplied to the update ipGroups operation.
+//   - options - IPGroupsClientUpdateGroupsOptions contains the optional parameters for the IPGroupsClient.UpdateGroups method.
 func (client *IPGroupsClient) UpdateGroups(ctx context.Context, resourceGroupName string, ipGroupsName string, parameters TagsObject, options *IPGroupsClientUpdateGroupsOptions) (IPGroupsClientUpdateGroupsResponse, error) {
 	req, err := client.updateGroupsCreateRequest(ctx, resourceGroupName, ipGroupsName, parameters, options)
 	if err != nil {
 		return IPGroupsClientUpdateGroupsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IPGroupsClientUpdateGroupsResponse{}, err
 	}
@@ -404,12 +401,12 @@ func (client *IPGroupsClient) updateGroupsCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

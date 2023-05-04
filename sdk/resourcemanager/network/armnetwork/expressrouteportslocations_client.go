@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,32 +24,23 @@ import (
 // ExpressRoutePortsLocationsClient contains the methods for the ExpressRoutePortsLocations group.
 // Don't use this type directly, use NewExpressRoutePortsLocationsClient() instead.
 type ExpressRoutePortsLocationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewExpressRoutePortsLocationsClient creates a new instance of ExpressRoutePortsLocationsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewExpressRoutePortsLocationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExpressRoutePortsLocationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ExpressRoutePortsLocationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ExpressRoutePortsLocationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -59,16 +48,17 @@ func NewExpressRoutePortsLocationsClient(subscriptionID string, credential azcor
 // Get - Retrieves a single ExpressRoutePort peering location, including the list of available bandwidths available at said
 // peering location.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// locationName - Name of the requested ExpressRoutePort peering location.
-// options - ExpressRoutePortsLocationsClientGetOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - locationName - Name of the requested ExpressRoutePort peering location.
+//   - options - ExpressRoutePortsLocationsClientGetOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.Get
+//     method.
 func (client *ExpressRoutePortsLocationsClient) Get(ctx context.Context, locationName string, options *ExpressRoutePortsLocationsClientGetOptions) (ExpressRoutePortsLocationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, locationName, options)
 	if err != nil {
 		return ExpressRoutePortsLocationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ExpressRoutePortsLocationsClientGetResponse{}, err
 	}
@@ -89,12 +79,12 @@ func (client *ExpressRoutePortsLocationsClient) getCreateRequest(ctx context.Con
 		return nil, errors.New("parameter locationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{locationName}", url.PathEscape(locationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -111,9 +101,10 @@ func (client *ExpressRoutePortsLocationsClient) getHandleResponse(resp *http.Res
 
 // NewListPager - Retrieves all ExpressRoutePort peering locations. Does not return available bandwidths for each location.
 // Available bandwidths can only be obtained when retrieving a specific peering location.
-// Generated from API version 2022-07-01
-// options - ExpressRoutePortsLocationsClientListOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - ExpressRoutePortsLocationsClientListOptions contains the optional parameters for the ExpressRoutePortsLocationsClient.NewListPager
+//     method.
 func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRoutePortsLocationsClientListOptions) *runtime.Pager[ExpressRoutePortsLocationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ExpressRoutePortsLocationsClientListResponse]{
 		More: func(page ExpressRoutePortsLocationsClientListResponse) bool {
@@ -130,7 +121,7 @@ func (client *ExpressRoutePortsLocationsClient) NewListPager(options *ExpressRou
 			if err != nil {
 				return ExpressRoutePortsLocationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ExpressRoutePortsLocationsClientListResponse{}, err
 			}
@@ -149,12 +140,12 @@ func (client *ExpressRoutePortsLocationsClient) listCreateRequest(ctx context.Co
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

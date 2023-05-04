@@ -71,13 +71,13 @@ type AzureDevOpsConnectorClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureDevOpsConnectorClientListByResourceGroupOptions contains the optional parameters for the AzureDevOpsConnectorClient.ListByResourceGroup
+// AzureDevOpsConnectorClientListByResourceGroupOptions contains the optional parameters for the AzureDevOpsConnectorClient.NewListByResourceGroupPager
 // method.
 type AzureDevOpsConnectorClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureDevOpsConnectorClientListBySubscriptionOptions contains the optional parameters for the AzureDevOpsConnectorClient.ListBySubscription
+// AzureDevOpsConnectorClientListBySubscriptionOptions contains the optional parameters for the AzureDevOpsConnectorClient.NewListBySubscriptionPager
 // method.
 type AzureDevOpsConnectorClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -177,7 +177,7 @@ type AzureDevOpsOrgClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureDevOpsOrgClientListOptions contains the optional parameters for the AzureDevOpsOrgClient.List method.
+// AzureDevOpsOrgClientListOptions contains the optional parameters for the AzureDevOpsOrgClient.NewListPager method.
 type AzureDevOpsOrgClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -242,7 +242,7 @@ type AzureDevOpsProjectClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureDevOpsProjectClientListOptions contains the optional parameters for the AzureDevOpsProjectClient.List method.
+// AzureDevOpsProjectClientListOptions contains the optional parameters for the AzureDevOpsProjectClient.NewListPager method.
 type AzureDevOpsProjectClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -314,13 +314,13 @@ type AzureDevOpsRepoClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureDevOpsRepoClientListByConnectorOptions contains the optional parameters for the AzureDevOpsRepoClient.ListByConnector
+// AzureDevOpsRepoClientListByConnectorOptions contains the optional parameters for the AzureDevOpsRepoClient.NewListByConnectorPager
 // method.
 type AzureDevOpsRepoClientListByConnectorOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AzureDevOpsRepoClientListOptions contains the optional parameters for the AzureDevOpsRepoClient.List method.
+// AzureDevOpsRepoClientListOptions contains the optional parameters for the AzureDevOpsRepoClient.NewListPager method.
 type AzureDevOpsRepoClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -402,13 +402,13 @@ type GitHubConnectorClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GitHubConnectorClientListByResourceGroupOptions contains the optional parameters for the GitHubConnectorClient.ListByResourceGroup
+// GitHubConnectorClientListByResourceGroupOptions contains the optional parameters for the GitHubConnectorClient.NewListByResourceGroupPager
 // method.
 type GitHubConnectorClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GitHubConnectorClientListBySubscriptionOptions contains the optional parameters for the GitHubConnectorClient.ListBySubscription
+// GitHubConnectorClientListBySubscriptionOptions contains the optional parameters for the GitHubConnectorClient.NewListBySubscriptionPager
 // method.
 type GitHubConnectorClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
@@ -503,7 +503,7 @@ type GitHubOwnerClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GitHubOwnerClientListOptions contains the optional parameters for the GitHubOwnerClient.List method.
+// GitHubOwnerClientListOptions contains the optional parameters for the GitHubOwnerClient.NewListPager method.
 type GitHubOwnerClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -559,12 +559,13 @@ type GitHubRepoClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GitHubRepoClientListByConnectorOptions contains the optional parameters for the GitHubRepoClient.ListByConnector method.
+// GitHubRepoClientListByConnectorOptions contains the optional parameters for the GitHubRepoClient.NewListByConnectorPager
+// method.
 type GitHubRepoClientListByConnectorOptions struct {
 	// placeholder for future optional parameters
 }
 
-// GitHubRepoClientListOptions contains the optional parameters for the GitHubRepoClient.List method.
+// GitHubRepoClientListOptions contains the optional parameters for the GitHubRepoClient.NewListPager method.
 type GitHubRepoClientListOptions struct {
 	// placeholder for future optional parameters
 }
@@ -639,7 +640,7 @@ type OperationListResult struct {
 	Value []*Operation `json:"value,omitempty" azure:"ro"`
 }
 
-// OperationsClientListOptions contains the optional parameters for the OperationsClient.List method.
+// OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }

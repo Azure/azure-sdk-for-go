@@ -1,35 +1,37 @@
 # Azure Monitor Query client module for Go
 
-The Azure Monitor Query client library is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
+The Azure Monitor Query client module is used to execute read-only queries against [Azure Monitor][azure_monitor_overview]'s two data platforms:
 
 - [Logs][logs_overview] - Collects and organizes log and performance data from monitored resources. Data from different sources such as platform logs from Azure services, log and performance data from virtual machines agents, and usage and performance data from apps can be consolidated into a single [Azure Log Analytics workspace][log_analytics_workspace]. The various data types can be analyzed together using the [Kusto Query Language][kusto_query_language]. See the [Kusto to SQL cheat sheet][kusto_to_sql] for more information.
 - [Metrics][metrics_overview] - Collects numeric data from monitored resources into a time series database. Metrics are numerical values that are collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast detection of issues.
 
-[Source code][azquery_repo] | [Package (pkg.go.dev)][azquery_pkg_go] | [Product documentation][monitor_docs] | [Samples][azquery_pkg_go_samples]
+[Source code][azquery_repo] | [Package (pkg.go.dev)][azquery_pkg_go] | [REST API documentation][monitor_rest_docs] | [Product documentation][monitor_docs] | [Samples][azquery_pkg_go_samples]
 
 ## Getting started
 
-### Install packages
+### Prerequisites
 
-Install `azquery` and `azidentity` with `go get`:
-```Bash
+* Go, version 1.18 or higher - [Install Go](https://go.dev/doc/install)
+* Azure subscription - [Create a free account][azure_sub]
+* To query some logs, an Azure Log Analytics workspace ID - Create an [Azure Log Analytics workspace][log_analytics_workspace_create]
+* To query metrics and some logs, the Resource URI of an Azure resource (Storage Account, Key Vault, CosmosDB, etc.) that you plan to monitor
+
+### Install the packages
+
+Install the `azquery` and `azidentity` modules with `go get`:
+
+```bash
 go get github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
 go get github.com/Azure/azure-sdk-for-go/sdk/azidentity
 ```
-[azidentity][azure_identity] is used for Azure Active Directory authentication during client construction.
 
-### Prerequisites
-
-* An [Azure subscription][azure_sub]
-* A supported Go version (the Azure SDK supports the two most recent Go releases)
-* For log queries, an [Azure Log Analytics workspace][log_analytics_workspace_create] ID. 
-* For metric queries, the Resource URI of any Azure resource (Storage Account, Key Vault, CosmosDB, etc).
+The [azidentity][azure_identity] module is used for Azure Active Directory authentication during client construction.
 
 ### Authentication
 
-This document demonstrates using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate. The client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
+An authenticated client object is required to execute a query. The examples demonstrate using [azidentity.NewDefaultAzureCredential][default_cred_ref] to authenticate; however, the client accepts any [azidentity][azure_identity] credential. See the [azidentity][azure_identity] documentation for more information about other credential types.
 
-The clients default to the Azure Public Cloud. See the [cloud][cloud_documentation] documentation for more information about other cloud configurations. 
+The clients default to the Azure public cloud. For other cloud configurations, see the [cloud][cloud_documentation] package documentation.
 
 #### Create a logs client
 
@@ -43,7 +45,7 @@ Example [metrics client][example_metrics_client]
 
 ### Timespan
 
-It's best practice to always query with a timespan (type `TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Log queries uses the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan is included in both the Kusto query string and `Timespan` field, the timespan will be the intersection of the two values.
+It's best practice to always query with a timespan (type `TimeInterval`) to prevent excessive queries of the entire logs or metrics data set. Log queries use the ISO8601 Time Interval Standard. All time should be represented in UTC. If the timespan is included in both the Kusto query string and `Timespan` field, the timespan is the intersection of the two values.
 
 Use the `NewTimeInterval()` method for easy creation.
 
@@ -56,7 +58,7 @@ Each set of metric values is a time series with the following characteristics:
 - A namespace that acts like a category for the metric
 - A metric name
 - The value itself
-- Some metrics may have multiple dimensions as described in multi-dimensional metrics. Custom metrics can have up to 10 dimensions.
+- Some metrics may have multiple dimensions as described in [multi-dimensional metrics][multi-metrics]. Custom metrics can have up to 10 dimensions.
 
 ### Logs query rate limits and throttling
 
@@ -64,23 +66,23 @@ The Log Analytics service applies throttling when the request rate is too high. 
 
 If you're executing a batch logs query, a throttled request will return a `ErrorInfo` object. That object's `code` value will be `ThrottledError`.
 
-### Advanced logs query
+### Advanced logs queries
 
 #### Query multiple workspaces
 
 To run the same query against multiple Log Analytics workspaces, add the additional workspace ID strings to the `AdditionalWorkspaces` slice in the `Body` struct. 
 
-When multiple workspaces are included in the query, the logs in the result table are not grouped according to the workspace from which it was retrieved.
+When multiple workspaces are included in the query, the logs in the result table are not grouped according to the workspace from which they were retrieved.
 
 #### Increase wait time, include statistics, include render (visualization)
 
 The `LogsQueryOptions` type is used for advanced logs options.
 
-By default, your query will run for up to three minutes. To increase the default timeout, set `LogsQueryOptions.Wait` to the desired number of seconds. The maximum wait time the service will allow is ten minutes (600 seconds).
+* By default, your query will run for up to three minutes. To increase the default timeout, set `LogsQueryOptions.Wait` to the desired number of seconds. The maximum wait time is 10 minutes (600 seconds).
 
-To get logs query execution statistics, such as CPU and memory consumption, set `LogsQueryOptions.Statistics` to `true`.
+* To get logs query execution statistics, such as CPU and memory consumption, set `LogsQueryOptions.Statistics` to `true`.
 
-To get visualization data for logs queries, set `LogsQueryOptions.Visualization` to `true`.
+* To get visualization data for logs queries, set `LogsQueryOptions.Visualization` to `true`.
 
 ```go
 azquery.LogsClientQueryWorkspaceOptions{
@@ -98,9 +100,9 @@ To do the same with `QueryBatch`, set the values in the `BatchQueryRequest.Heade
 
 Get started with our [examples][azquery_pkg_go_samples].
 
-For the majority of log queries, use the `LogsClient.QueryWorkspace` method. The `LogsClient.QueryBatch` method should only be used in advanced scenerios.
+* For the majority of log queries, use the `LogsClient.QueryWorkspace` or the `LogsClient.QueryResource` method. Only use the `LogsClient.QueryBatch` method in advanced scenerios.
 
-Use `MetricsClient.QueryResource` for metric queries.
+* Use `MetricsClient.QueryResource` for metric queries.
 
 ## Troubleshooting
 
@@ -121,6 +123,7 @@ comments.
 <!-- LINKS -->
 [azquery_repo]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/monitor/azquery
 [azquery_pkg_go]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery
+[azquery_pkg_go_docs]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#section-documentation
 [azquery_pkg_go_samples]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#pkg-examples
 [azure_identity]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/azidentity
 [azure_sub]: https://azure.microsoft.com/free/
@@ -130,6 +133,7 @@ comments.
 [default_cred_ref]: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/azidentity#defaultazurecredential
 [example_logs_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-NewLogsClient
 [example_metrics_client]: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/monitor/azquery#example-NewMetricsClient
+[go_samples]: (https://github.com/Azure-Samples/azure-sdk-for-go-samples)
 [kusto_query_language]: https://learn.microsoft.com/azure/data-explorer/kusto/query/
 [kusto_to_sql]: https://learn.microsoft.com/azure/data-explorer/kusto/query/sqlcheatsheet
 [log_analytics_workspace]: https://learn.microsoft.com/azure/azure-monitor/logs/log-analytics-workspace-overview
@@ -137,6 +141,8 @@ comments.
 [logs_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs
 [metrics_overview]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics
 [monitor_docs]: https://learn.microsoft.com/azure/azure-monitor/
+[monitor_rest_docs]: https://learn.microsoft.com/rest/api/monitor/
+[multi-metrics]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics#multi-dimensional-metrics
 [service_limits]: https://learn.microsoft.com/azure/azure-monitor/service-limits#la-query-api
 [troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/monitor/azquery/TROUBLESHOOTING.md
 [cla]: https://cla.microsoft.com

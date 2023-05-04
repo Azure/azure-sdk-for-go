@@ -14,12 +14,32 @@ type ActivityRunsClientQueryByPipelineRunResponse struct {
 	ActivityRunsQueryResponse
 }
 
+// CredentialOperationsClientCreateOrUpdateResponse contains the response from method CredentialOperationsClient.CreateOrUpdate.
+type CredentialOperationsClientCreateOrUpdateResponse struct {
+	ManagedIdentityCredentialResource
+}
+
+// CredentialOperationsClientDeleteResponse contains the response from method CredentialOperationsClient.Delete.
+type CredentialOperationsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// CredentialOperationsClientGetResponse contains the response from method CredentialOperationsClient.Get.
+type CredentialOperationsClientGetResponse struct {
+	ManagedIdentityCredentialResource
+}
+
+// CredentialOperationsClientListByFactoryResponse contains the response from method CredentialOperationsClient.NewListByFactoryPager.
+type CredentialOperationsClientListByFactoryResponse struct {
+	CredentialListResponse
+}
+
 // DataFlowDebugSessionClientAddDataFlowResponse contains the response from method DataFlowDebugSessionClient.AddDataFlow.
 type DataFlowDebugSessionClientAddDataFlowResponse struct {
 	AddDataFlowToDebugSessionResponse
 }
 
-// DataFlowDebugSessionClientCreateResponse contains the response from method DataFlowDebugSessionClient.Create.
+// DataFlowDebugSessionClientCreateResponse contains the response from method DataFlowDebugSessionClient.BeginCreate.
 type DataFlowDebugSessionClientCreateResponse struct {
 	CreateDataFlowDebugSessionResponse
 }
@@ -29,12 +49,12 @@ type DataFlowDebugSessionClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// DataFlowDebugSessionClientExecuteCommandResponse contains the response from method DataFlowDebugSessionClient.ExecuteCommand.
+// DataFlowDebugSessionClientExecuteCommandResponse contains the response from method DataFlowDebugSessionClient.BeginExecuteCommand.
 type DataFlowDebugSessionClientExecuteCommandResponse struct {
 	DataFlowDebugCommandResponse
 }
 
-// DataFlowDebugSessionClientQueryByFactoryResponse contains the response from method DataFlowDebugSessionClient.QueryByFactory.
+// DataFlowDebugSessionClientQueryByFactoryResponse contains the response from method DataFlowDebugSessionClient.NewQueryByFactoryPager.
 type DataFlowDebugSessionClientQueryByFactoryResponse struct {
 	QueryDataFlowDebugSessionsResponse
 }
@@ -54,7 +74,7 @@ type DataFlowsClientGetResponse struct {
 	DataFlowResource
 }
 
-// DataFlowsClientListByFactoryResponse contains the response from method DataFlowsClient.ListByFactory.
+// DataFlowsClientListByFactoryResponse contains the response from method DataFlowsClient.NewListByFactoryPager.
 type DataFlowsClientListByFactoryResponse struct {
 	DataFlowListResponse
 }
@@ -74,7 +94,7 @@ type DatasetsClientGetResponse struct {
 	DatasetResource
 }
 
-// DatasetsClientListByFactoryResponse contains the response from method DatasetsClient.ListByFactory.
+// DatasetsClientListByFactoryResponse contains the response from method DatasetsClient.NewListByFactoryPager.
 type DatasetsClientListByFactoryResponse struct {
 	DatasetListResponse
 }
@@ -124,12 +144,12 @@ type FactoriesClientGetResponse struct {
 	Factory
 }
 
-// FactoriesClientListByResourceGroupResponse contains the response from method FactoriesClient.ListByResourceGroup.
+// FactoriesClientListByResourceGroupResponse contains the response from method FactoriesClient.NewListByResourceGroupPager.
 type FactoriesClientListByResourceGroupResponse struct {
 	FactoryListResponse
 }
 
-// FactoriesClientListResponse contains the response from method FactoriesClient.List.
+// FactoriesClientListResponse contains the response from method FactoriesClient.NewListPager.
 type FactoriesClientListResponse struct {
 	FactoryListResponse
 }
@@ -154,7 +174,7 @@ type GlobalParametersClientGetResponse struct {
 	GlobalParameterResource
 }
 
-// GlobalParametersClientListByFactoryResponse contains the response from method GlobalParametersClient.ListByFactory.
+// GlobalParametersClientListByFactoryResponse contains the response from method GlobalParametersClient.NewListByFactoryPager.
 type GlobalParametersClientListByFactoryResponse struct {
 	GlobalParameterListResponse
 }
@@ -184,7 +204,7 @@ type IntegrationRuntimeObjectMetadataClientGetResponse struct {
 	SsisObjectMetadataListResponse
 }
 
-// IntegrationRuntimeObjectMetadataClientRefreshResponse contains the response from method IntegrationRuntimeObjectMetadataClient.Refresh.
+// IntegrationRuntimeObjectMetadataClientRefreshResponse contains the response from method IntegrationRuntimeObjectMetadataClient.BeginRefresh.
 type IntegrationRuntimeObjectMetadataClientRefreshResponse struct {
 	SsisObjectMetadataStatusResponse
 }
@@ -229,7 +249,7 @@ type IntegrationRuntimesClientListAuthKeysResponse struct {
 	IntegrationRuntimeAuthKeys
 }
 
-// IntegrationRuntimesClientListByFactoryResponse contains the response from method IntegrationRuntimesClient.ListByFactory.
+// IntegrationRuntimesClientListByFactoryResponse contains the response from method IntegrationRuntimesClient.NewListByFactoryPager.
 type IntegrationRuntimesClientListByFactoryResponse struct {
 	IntegrationRuntimeListResponse
 }
@@ -249,12 +269,12 @@ type IntegrationRuntimesClientRemoveLinksResponse struct {
 	// placeholder for future response values
 }
 
-// IntegrationRuntimesClientStartResponse contains the response from method IntegrationRuntimesClient.Start.
+// IntegrationRuntimesClientStartResponse contains the response from method IntegrationRuntimesClient.BeginStart.
 type IntegrationRuntimesClientStartResponse struct {
 	IntegrationRuntimeStatusResponse
 }
 
-// IntegrationRuntimesClientStopResponse contains the response from method IntegrationRuntimesClient.Stop.
+// IntegrationRuntimesClientStopResponse contains the response from method IntegrationRuntimesClient.BeginStop.
 type IntegrationRuntimesClientStopResponse struct {
 	// placeholder for future response values
 }
@@ -289,7 +309,7 @@ type LinkedServicesClientGetResponse struct {
 	LinkedServiceResource
 }
 
-// LinkedServicesClientListByFactoryResponse contains the response from method LinkedServicesClient.ListByFactory.
+// LinkedServicesClientListByFactoryResponse contains the response from method LinkedServicesClient.NewListByFactoryPager.
 type LinkedServicesClientListByFactoryResponse struct {
 	LinkedServiceListResponse
 }
@@ -309,7 +329,7 @@ type ManagedPrivateEndpointsClientGetResponse struct {
 	ManagedPrivateEndpointResource
 }
 
-// ManagedPrivateEndpointsClientListByFactoryResponse contains the response from method ManagedPrivateEndpointsClient.ListByFactory.
+// ManagedPrivateEndpointsClientListByFactoryResponse contains the response from method ManagedPrivateEndpointsClient.NewListByFactoryPager.
 type ManagedPrivateEndpointsClientListByFactoryResponse struct {
 	ManagedPrivateEndpointListResponse
 }
@@ -324,12 +344,12 @@ type ManagedVirtualNetworksClientGetResponse struct {
 	ManagedVirtualNetworkResource
 }
 
-// ManagedVirtualNetworksClientListByFactoryResponse contains the response from method ManagedVirtualNetworksClient.ListByFactory.
+// ManagedVirtualNetworksClientListByFactoryResponse contains the response from method ManagedVirtualNetworksClient.NewListByFactoryPager.
 type ManagedVirtualNetworksClientListByFactoryResponse struct {
 	ManagedVirtualNetworkListResponse
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResponse
 }
@@ -369,12 +389,12 @@ type PipelinesClientGetResponse struct {
 	PipelineResource
 }
 
-// PipelinesClientListByFactoryResponse contains the response from method PipelinesClient.ListByFactory.
+// PipelinesClientListByFactoryResponse contains the response from method PipelinesClient.NewListByFactoryPager.
 type PipelinesClientListByFactoryResponse struct {
 	PipelineListResponse
 }
 
-// PrivateEndPointConnectionsClientListByFactoryResponse contains the response from method PrivateEndPointConnectionsClient.ListByFactory.
+// PrivateEndPointConnectionsClientListByFactoryResponse contains the response from method PrivateEndPointConnectionsClient.NewListByFactoryPager.
 type PrivateEndPointConnectionsClientListByFactoryResponse struct {
 	PrivateEndpointConnectionListResponse
 }
@@ -434,7 +454,7 @@ type TriggersClientGetResponse struct {
 	TriggerResource
 }
 
-// TriggersClientListByFactoryResponse contains the response from method TriggersClient.ListByFactory.
+// TriggersClientListByFactoryResponse contains the response from method TriggersClient.NewListByFactoryPager.
 type TriggersClientListByFactoryResponse struct {
 	TriggerListResponse
 }
@@ -444,22 +464,22 @@ type TriggersClientQueryByFactoryResponse struct {
 	TriggerQueryResponse
 }
 
-// TriggersClientStartResponse contains the response from method TriggersClient.Start.
+// TriggersClientStartResponse contains the response from method TriggersClient.BeginStart.
 type TriggersClientStartResponse struct {
 	// placeholder for future response values
 }
 
-// TriggersClientStopResponse contains the response from method TriggersClient.Stop.
+// TriggersClientStopResponse contains the response from method TriggersClient.BeginStop.
 type TriggersClientStopResponse struct {
 	// placeholder for future response values
 }
 
-// TriggersClientSubscribeToEventsResponse contains the response from method TriggersClient.SubscribeToEvents.
+// TriggersClientSubscribeToEventsResponse contains the response from method TriggersClient.BeginSubscribeToEvents.
 type TriggersClientSubscribeToEventsResponse struct {
 	TriggerSubscriptionOperationStatus
 }
 
-// TriggersClientUnsubscribeFromEventsResponse contains the response from method TriggersClient.UnsubscribeFromEvents.
+// TriggersClientUnsubscribeFromEventsResponse contains the response from method TriggersClient.BeginUnsubscribeFromEvents.
 type TriggersClientUnsubscribeFromEventsResponse struct {
 	TriggerSubscriptionOperationStatus
 }

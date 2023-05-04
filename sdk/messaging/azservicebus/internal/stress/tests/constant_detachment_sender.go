@@ -16,7 +16,7 @@ import (
 )
 
 func ConstantDetachmentSender(remainingArgs []string) {
-	sc := shared.MustCreateStressContext("ConstantDetachmentSender")
+	sc := shared.MustCreateStressContext("ConstantDetachmentSender", nil)
 	defer sc.End()
 
 	adminClient, err := admin.NewClientFromConnectionString(sc.ConnectionString, nil)

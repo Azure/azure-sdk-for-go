@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // SecureScoresClient contains the methods for the SecureScores group.
 // Don't use this type directly, use NewSecureScoresClient() instead.
 type SecureScoresClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewSecureScoresClient creates a new instance of SecureScoresClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SecureScoresClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SecureScoresClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SecureScoresClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,15 +47,16 @@ func NewSecureScoresClient(subscriptionID string, credential azcore.TokenCredent
 // Get - Get secure score for a specific Microsoft Defender for Cloud initiative within your current scope. For the ASC Default
 // initiative, use 'ascScore'.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-01-01
-// secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
-// options - SecureScoresClientGetOptions contains the optional parameters for the SecureScoresClient.Get method.
+//   - secureScoreName - The initiative name. For the ASC Default initiative, use 'ascScore' as in the sample request below.
+//   - options - SecureScoresClientGetOptions contains the optional parameters for the SecureScoresClient.Get method.
 func (client *SecureScoresClient) Get(ctx context.Context, secureScoreName string, options *SecureScoresClientGetOptions) (SecureScoresClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, secureScoreName, options)
 	if err != nil {
 		return SecureScoresClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SecureScoresClientGetResponse{}, err
 	}
@@ -87,7 +77,7 @@ func (client *SecureScoresClient) getCreateRequest(ctx context.Context, secureSc
 		return nil, errors.New("parameter secureScoreName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{secureScoreName}", url.PathEscape(secureScoreName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,8 +98,9 @@ func (client *SecureScoresClient) getHandleResponse(resp *http.Response) (Secure
 }
 
 // NewListPager - List secure scores for all your Microsoft Defender for Cloud initiatives within your current scope.
+//
 // Generated from API version 2020-01-01
-// options - SecureScoresClientListOptions contains the optional parameters for the SecureScoresClient.List method.
+//   - options - SecureScoresClientListOptions contains the optional parameters for the SecureScoresClient.NewListPager method.
 func (client *SecureScoresClient) NewListPager(options *SecureScoresClientListOptions) *runtime.Pager[SecureScoresClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SecureScoresClientListResponse]{
 		More: func(page SecureScoresClientListResponse) bool {
@@ -126,7 +117,7 @@ func (client *SecureScoresClient) NewListPager(options *SecureScoresClientListOp
 			if err != nil {
 				return SecureScoresClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SecureScoresClientListResponse{}, err
 			}
@@ -145,7 +136,7 @@ func (client *SecureScoresClient) listCreateRequest(ctx context.Context, options
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

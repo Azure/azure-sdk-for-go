@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,51 +25,43 @@ import (
 // IncidentRelationsClient contains the methods for the IncidentRelations group.
 // Don't use this type directly, use NewIncidentRelationsClient() instead.
 type IncidentRelationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIncidentRelationsClient creates a new instance of IncidentRelationsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIncidentRelationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IncidentRelationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IncidentRelationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IncidentRelationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
-// CreateOrUpdate - Creates or updates the incident relation.
+// CreateOrUpdate - Creates or updates a relation for a given incident.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// relationName - Relation Name
-// relation - The relation model
-// options - IncidentRelationsClientCreateOrUpdateOptions contains the optional parameters for the IncidentRelationsClient.CreateOrUpdate
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - incidentID - Incident ID
+//   - relationName - Relation Name
+//   - relation - The relation model
+//   - options - IncidentRelationsClientCreateOrUpdateOptions contains the optional parameters for the IncidentRelationsClient.CreateOrUpdate
+//     method.
 func (client *IncidentRelationsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, relationName string, relation Relation, options *IncidentRelationsClientCreateOrUpdateOptions) (IncidentRelationsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, relationName, relation, options)
 	if err != nil {
 		return IncidentRelationsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IncidentRelationsClientCreateOrUpdateResponse{}, err
 	}
@@ -104,12 +94,12 @@ func (client *IncidentRelationsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, errors.New("parameter relationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{relationName}", url.PathEscape(relationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, relation)
@@ -124,21 +114,22 @@ func (client *IncidentRelationsClient) createOrUpdateHandleResponse(resp *http.R
 	return result, nil
 }
 
-// Delete - Delete the incident relation.
+// Delete - Deletes a relation for a given incident.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// relationName - Relation Name
-// options - IncidentRelationsClientDeleteOptions contains the optional parameters for the IncidentRelationsClient.Delete
-// method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - incidentID - Incident ID
+//   - relationName - Relation Name
+//   - options - IncidentRelationsClientDeleteOptions contains the optional parameters for the IncidentRelationsClient.Delete
+//     method.
 func (client *IncidentRelationsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, relationName string, options *IncidentRelationsClientDeleteOptions) (IncidentRelationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, relationName, options)
 	if err != nil {
 		return IncidentRelationsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IncidentRelationsClientDeleteResponse{}, err
 	}
@@ -171,31 +162,32 @@ func (client *IncidentRelationsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter relationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{relationName}", url.PathEscape(relationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// Get - Gets an incident relation.
+// Get - Gets a relation for a given incident.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// relationName - Relation Name
-// options - IncidentRelationsClientGetOptions contains the optional parameters for the IncidentRelationsClient.Get method.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - incidentID - Incident ID
+//   - relationName - Relation Name
+//   - options - IncidentRelationsClientGetOptions contains the optional parameters for the IncidentRelationsClient.Get method.
 func (client *IncidentRelationsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, incidentID string, relationName string, options *IncidentRelationsClientGetOptions) (IncidentRelationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, incidentID, relationName, options)
 	if err != nil {
 		return IncidentRelationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IncidentRelationsClientGetResponse{}, err
 	}
@@ -228,12 +220,12 @@ func (client *IncidentRelationsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter relationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{relationName}", url.PathEscape(relationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -248,12 +240,14 @@ func (client *IncidentRelationsClient) getHandleResponse(resp *http.Response) (I
 	return result, nil
 }
 
-// NewListPager - Gets all incident relations.
-// Generated from API version 2022-09-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// incidentID - Incident ID
-// options - IncidentRelationsClientListOptions contains the optional parameters for the IncidentRelationsClient.List method.
+// NewListPager - Gets all relations for a given incident.
+//
+// Generated from API version 2021-10-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - incidentID - Incident ID
+//   - options - IncidentRelationsClientListOptions contains the optional parameters for the IncidentRelationsClient.NewListPager
+//     method.
 func (client *IncidentRelationsClient) NewListPager(resourceGroupName string, workspaceName string, incidentID string, options *IncidentRelationsClientListOptions) *runtime.Pager[IncidentRelationsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[IncidentRelationsClientListResponse]{
 		More: func(page IncidentRelationsClientListResponse) bool {
@@ -270,7 +264,7 @@ func (client *IncidentRelationsClient) NewListPager(resourceGroupName string, wo
 			if err != nil {
 				return IncidentRelationsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return IncidentRelationsClientListResponse{}, err
 			}
@@ -301,12 +295,12 @@ func (client *IncidentRelationsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter incidentID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{incidentId}", url.PathEscape(incidentID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-09-01-preview")
+	reqQP.Set("api-version", "2021-10-01")
 	if options != nil && options.Filter != nil {
 		reqQP.Set("$filter", *options.Filter)
 	}

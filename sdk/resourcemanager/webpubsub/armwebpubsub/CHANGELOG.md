@@ -1,56 +1,39 @@
 # Release History
 
-## 1.1.0-beta.1 (2022-11-03)
+## 1.1.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 1.1.0 (2023-03-24)
 ### Features Added
 
-- New const `EventListenerFilterDiscriminatorEventName`
-- New const `EventListenerEndpointDiscriminatorEventHub`
-- New type alias `EventListenerEndpointDiscriminator`
-- New type alias `EventListenerFilterDiscriminator`
-- New function `PossibleEventListenerFilterDiscriminatorValues() []EventListenerFilterDiscriminator`
-- New function `*EventHubEndpoint.GetEventListenerEndpoint() *EventListenerEndpoint`
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New enum type `EventListenerEndpointDiscriminator` with values `EventListenerEndpointDiscriminatorEventHub`
+- New enum type `EventListenerFilterDiscriminator` with values `EventListenerFilterDiscriminatorEventName`
+- New function `NewCustomCertificatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CustomCertificatesClient, error)`
 - New function `*CustomCertificatesClient.BeginCreateOrUpdate(context.Context, string, string, string, CustomCertificate, *CustomCertificatesClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomCertificatesClientCreateOrUpdateResponse], error)`
-- New function `*CustomCertificatesClient.NewListPager(string, string, *CustomCertificatesClientListOptions) *runtime.Pager[CustomCertificatesClientListResponse]`
+- New function `*CustomCertificatesClient.Delete(context.Context, string, string, string, *CustomCertificatesClientDeleteOptions) (CustomCertificatesClientDeleteResponse, error)`
 - New function `*CustomCertificatesClient.Get(context.Context, string, string, string, *CustomCertificatesClientGetOptions) (CustomCertificatesClientGetResponse, error)`
+- New function `*CustomCertificatesClient.NewListPager(string, string, *CustomCertificatesClientListOptions) *runtime.Pager[CustomCertificatesClientListResponse]`
+- New function `NewCustomDomainsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CustomDomainsClient, error)`
+- New function `*CustomDomainsClient.BeginCreateOrUpdate(context.Context, string, string, string, CustomDomain, *CustomDomainsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)`
 - New function `*CustomDomainsClient.BeginDelete(context.Context, string, string, string, *CustomDomainsClientBeginDeleteOptions) (*runtime.Poller[CustomDomainsClientDeleteResponse], error)`
 - New function `*CustomDomainsClient.Get(context.Context, string, string, string, *CustomDomainsClientGetOptions) (CustomDomainsClientGetResponse, error)`
-- New function `NewCustomCertificatesClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CustomCertificatesClient, error)`
-- New function `PossibleEventListenerEndpointDiscriminatorValues() []EventListenerEndpointDiscriminator`
-- New function `*CustomCertificatesClient.Delete(context.Context, string, string, string, *CustomCertificatesClientDeleteOptions) (CustomCertificatesClientDeleteResponse, error)`
-- New function `*EventListenerEndpoint.GetEventListenerEndpoint() *EventListenerEndpoint`
 - New function `*CustomDomainsClient.NewListPager(string, string, *CustomDomainsClientListOptions) *runtime.Pager[CustomDomainsClientListResponse]`
-- New function `*CustomDomainsClient.BeginCreateOrUpdate(context.Context, string, string, string, CustomDomain, *CustomDomainsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CustomDomainsClientCreateOrUpdateResponse], error)`
+- New function `*EventHubEndpoint.GetEventListenerEndpoint() *EventListenerEndpoint`
+- New function `*EventListenerEndpoint.GetEventListenerEndpoint() *EventListenerEndpoint`
 - New function `*EventListenerFilter.GetEventListenerFilter() *EventListenerFilter`
-- New function `NewCustomDomainsClient(string, azcore.TokenCredential, *arm.ClientOptions) (*CustomDomainsClient, error)`
 - New function `*EventNameFilter.GetEventListenerFilter() *EventListenerFilter`
 - New struct `CustomCertificate`
 - New struct `CustomCertificateList`
 - New struct `CustomCertificateProperties`
-- New struct `CustomCertificatesClient`
-- New struct `CustomCertificatesClientBeginCreateOrUpdateOptions`
-- New struct `CustomCertificatesClientCreateOrUpdateResponse`
-- New struct `CustomCertificatesClientDeleteOptions`
-- New struct `CustomCertificatesClientDeleteResponse`
-- New struct `CustomCertificatesClientGetOptions`
-- New struct `CustomCertificatesClientGetResponse`
-- New struct `CustomCertificatesClientListOptions`
-- New struct `CustomCertificatesClientListResponse`
 - New struct `CustomDomain`
 - New struct `CustomDomainList`
 - New struct `CustomDomainProperties`
-- New struct `CustomDomainsClient`
-- New struct `CustomDomainsClientBeginCreateOrUpdateOptions`
-- New struct `CustomDomainsClientBeginDeleteOptions`
-- New struct `CustomDomainsClientCreateOrUpdateResponse`
-- New struct `CustomDomainsClientDeleteResponse`
-- New struct `CustomDomainsClientGetOptions`
-- New struct `CustomDomainsClientGetResponse`
-- New struct `CustomDomainsClientListOptions`
-- New struct `CustomDomainsClientListResponse`
 - New struct `EventHubEndpoint`
 - New struct `EventListener`
-- New struct `EventListenerEndpoint`
-- New struct `EventListenerFilter`
 - New struct `EventNameFilter`
 - New struct `ResourceReference`
 - New field `EventListeners` in struct `HubProperties`

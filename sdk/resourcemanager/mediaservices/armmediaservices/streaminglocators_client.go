@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -27,50 +25,42 @@ import (
 // StreamingLocatorsClient contains the methods for the StreamingLocators group.
 // Don't use this type directly, use NewStreamingLocatorsClient() instead.
 type StreamingLocatorsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewStreamingLocatorsClient creates a new instance of StreamingLocatorsClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewStreamingLocatorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StreamingLocatorsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".StreamingLocatorsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &StreamingLocatorsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Create - Create a Streaming Locator in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// streamingLocatorName - The Streaming Locator name.
-// parameters - The request parameters
-// options - StreamingLocatorsClientCreateOptions contains the optional parameters for the StreamingLocatorsClient.Create
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - streamingLocatorName - The Streaming Locator name.
+//   - parameters - The request parameters
+//   - options - StreamingLocatorsClientCreateOptions contains the optional parameters for the StreamingLocatorsClient.Create
+//     method.
 func (client *StreamingLocatorsClient) Create(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, parameters StreamingLocator, options *StreamingLocatorsClientCreateOptions) (StreamingLocatorsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, parameters, options)
 	if err != nil {
 		return StreamingLocatorsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StreamingLocatorsClientCreateResponse{}, err
 	}
@@ -99,7 +89,7 @@ func (client *StreamingLocatorsClient) createCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -121,18 +111,19 @@ func (client *StreamingLocatorsClient) createHandleResponse(resp *http.Response)
 
 // Delete - Deletes a Streaming Locator in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// streamingLocatorName - The Streaming Locator name.
-// options - StreamingLocatorsClientDeleteOptions contains the optional parameters for the StreamingLocatorsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - streamingLocatorName - The Streaming Locator name.
+//   - options - StreamingLocatorsClientDeleteOptions contains the optional parameters for the StreamingLocatorsClient.Delete
+//     method.
 func (client *StreamingLocatorsClient) Delete(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientDeleteOptions) (StreamingLocatorsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, options)
 	if err != nil {
 		return StreamingLocatorsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StreamingLocatorsClientDeleteResponse{}, err
 	}
@@ -161,7 +152,7 @@ func (client *StreamingLocatorsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -174,17 +165,18 @@ func (client *StreamingLocatorsClient) deleteCreateRequest(ctx context.Context, 
 
 // Get - Get the details of a Streaming Locator in the Media Services account
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// streamingLocatorName - The Streaming Locator name.
-// options - StreamingLocatorsClientGetOptions contains the optional parameters for the StreamingLocatorsClient.Get method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - streamingLocatorName - The Streaming Locator name.
+//   - options - StreamingLocatorsClientGetOptions contains the optional parameters for the StreamingLocatorsClient.Get method.
 func (client *StreamingLocatorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientGetOptions) (StreamingLocatorsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, options)
 	if err != nil {
 		return StreamingLocatorsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StreamingLocatorsClientGetResponse{}, err
 	}
@@ -213,7 +205,7 @@ func (client *StreamingLocatorsClient) getCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -234,10 +226,12 @@ func (client *StreamingLocatorsClient) getHandleResponse(resp *http.Response) (S
 }
 
 // NewListPager - Lists the Streaming Locators in the account
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// options - StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.List method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - options - StreamingLocatorsClientListOptions contains the optional parameters for the StreamingLocatorsClient.NewListPager
+//     method.
 func (client *StreamingLocatorsClient) NewListPager(resourceGroupName string, accountName string, options *StreamingLocatorsClientListOptions) *runtime.Pager[StreamingLocatorsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[StreamingLocatorsClientListResponse]{
 		More: func(page StreamingLocatorsClientListResponse) bool {
@@ -254,7 +248,7 @@ func (client *StreamingLocatorsClient) NewListPager(resourceGroupName string, ac
 			if err != nil {
 				return StreamingLocatorsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StreamingLocatorsClientListResponse{}, err
 			}
@@ -281,7 +275,7 @@ func (client *StreamingLocatorsClient) listCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -312,18 +306,19 @@ func (client *StreamingLocatorsClient) listHandleResponse(resp *http.Response) (
 
 // ListContentKeys - List Content Keys used by this Streaming Locator
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// streamingLocatorName - The Streaming Locator name.
-// options - StreamingLocatorsClientListContentKeysOptions contains the optional parameters for the StreamingLocatorsClient.ListContentKeys
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - streamingLocatorName - The Streaming Locator name.
+//   - options - StreamingLocatorsClientListContentKeysOptions contains the optional parameters for the StreamingLocatorsClient.ListContentKeys
+//     method.
 func (client *StreamingLocatorsClient) ListContentKeys(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientListContentKeysOptions) (StreamingLocatorsClientListContentKeysResponse, error) {
 	req, err := client.listContentKeysCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, options)
 	if err != nil {
 		return StreamingLocatorsClientListContentKeysResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StreamingLocatorsClientListContentKeysResponse{}, err
 	}
@@ -352,7 +347,7 @@ func (client *StreamingLocatorsClient) listContentKeysCreateRequest(ctx context.
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -374,18 +369,19 @@ func (client *StreamingLocatorsClient) listContentKeysHandleResponse(resp *http.
 
 // ListPaths - List Paths supported by this Streaming Locator
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// streamingLocatorName - The Streaming Locator name.
-// options - StreamingLocatorsClientListPathsOptions contains the optional parameters for the StreamingLocatorsClient.ListPaths
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - streamingLocatorName - The Streaming Locator name.
+//   - options - StreamingLocatorsClientListPathsOptions contains the optional parameters for the StreamingLocatorsClient.ListPaths
+//     method.
 func (client *StreamingLocatorsClient) ListPaths(ctx context.Context, resourceGroupName string, accountName string, streamingLocatorName string, options *StreamingLocatorsClientListPathsOptions) (StreamingLocatorsClientListPathsResponse, error) {
 	req, err := client.listPathsCreateRequest(ctx, resourceGroupName, accountName, streamingLocatorName, options)
 	if err != nil {
 		return StreamingLocatorsClientListPathsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StreamingLocatorsClientListPathsResponse{}, err
 	}
@@ -414,7 +410,7 @@ func (client *StreamingLocatorsClient) listPathsCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter streamingLocatorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{streamingLocatorName}", url.PathEscape(streamingLocatorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

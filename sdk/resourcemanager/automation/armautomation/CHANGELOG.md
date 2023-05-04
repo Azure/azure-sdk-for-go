@@ -1,5 +1,24 @@
 # Release History
 
+## 0.8.1 (2023-04-14)
+### Bug Fixes
+
+- Fix serialization bug of empty value of `any` type.
+
+
+## 0.8.0 (2023-04-03)
+### Breaking Changes
+
+- Function `*DscConfigurationClient.UpdateWithJSON` parameter(s) have been changed from `(context.Context, string, string, string, DscConfigurationUpdateParameters, *DscConfigurationClientUpdateWithJSONOptions)` to `(context.Context, string, string, string, *DscConfigurationClientUpdateWithJSONOptions)`
+- Function `*DscConfigurationClient.UpdateWithText` parameter(s) have been changed from `(context.Context, string, string, string, string, *DscConfigurationClientUpdateWithTextOptions)` to `(context.Context, string, string, string, *DscConfigurationClientUpdateWithTextOptions)`
+
+### Features Added
+
+- New struct `ClientFactory` which is a client factory used to create any client in this module
+- New field `Parameters` in struct `DscConfigurationClientUpdateWithJSONOptions`
+- New field `Parameters` in struct `DscConfigurationClientUpdateWithTextOptions`
+
+
 ## 0.7.0 (2022-07-12)
 ### Breaking Changes
 

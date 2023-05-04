@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,64 +24,57 @@ import (
 // ServiceClient contains the methods for the Service group.
 // Don't use this type directly, use NewServiceClient() instead.
 type ServiceClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewServiceClient creates a new instance of ServiceClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewServiceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ServiceClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ServiceClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ServiceClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Creates a service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// serviceName - Cosmos DB service name.
-// createUpdateParameters - The Service resource parameters.
-// options - ServiceClientBeginCreateOptions contains the optional parameters for the ServiceClient.BeginCreate method.
+//
+// Generated from API version 2023-03-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - serviceName - Cosmos DB service name.
+//   - createUpdateParameters - The Service resource parameters.
+//   - options - ServiceClientBeginCreateOptions contains the optional parameters for the ServiceClient.BeginCreate method.
 func (client *ServiceClient) BeginCreate(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResourceCreateUpdateParameters, options *ServiceClientBeginCreateOptions) (*runtime.Poller[ServiceClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, accountName, serviceName, createUpdateParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ServiceClientCreateResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServiceClientCreateResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServiceClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Creates a service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-15-preview
+//
+// Generated from API version 2023-03-15
 func (client *ServiceClient) create(ctx context.Context, resourceGroupName string, accountName string, serviceName string, createUpdateParameters ServiceResourceCreateUpdateParameters, options *ServiceClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, accountName, serviceName, createUpdateParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -112,12 +103,12 @@ func (client *ServiceClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2023-03-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, createUpdateParameters)
@@ -125,32 +116,34 @@ func (client *ServiceClient) createCreateRequest(ctx context.Context, resourceGr
 
 // BeginDelete - Deletes service with the given serviceName.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// serviceName - Cosmos DB service name.
-// options - ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
+//
+// Generated from API version 2023-03-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - serviceName - Cosmos DB service name.
+//   - options - ServiceClientBeginDeleteOptions contains the optional parameters for the ServiceClient.BeginDelete method.
 func (client *ServiceClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, serviceName string, options *ServiceClientBeginDeleteOptions) (*runtime.Poller[ServiceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, serviceName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ServiceClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ServiceClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ServiceClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ServiceClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes service with the given serviceName.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-15-preview
+//
+// Generated from API version 2023-03-15
 func (client *ServiceClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, serviceName string, options *ServiceClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, serviceName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -179,12 +172,12 @@ func (client *ServiceClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2023-03-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -192,17 +185,18 @@ func (client *ServiceClient) deleteCreateRequest(ctx context.Context, resourceGr
 
 // Get - Gets the status of service.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// serviceName - Cosmos DB service name.
-// options - ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
+//
+// Generated from API version 2023-03-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - serviceName - Cosmos DB service name.
+//   - options - ServiceClientGetOptions contains the optional parameters for the ServiceClient.Get method.
 func (client *ServiceClient) Get(ctx context.Context, resourceGroupName string, accountName string, serviceName string, options *ServiceClientGetOptions) (ServiceClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, serviceName, options)
 	if err != nil {
 		return ServiceClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ServiceClientGetResponse{}, err
 	}
@@ -231,12 +225,12 @@ func (client *ServiceClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, errors.New("parameter serviceName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2023-03-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -252,10 +246,11 @@ func (client *ServiceClient) getHandleResponse(resp *http.Response) (ServiceClie
 }
 
 // NewListPager - Gets the status of service.
-// Generated from API version 2022-08-15-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// accountName - Cosmos DB database account name.
-// options - ServiceClientListOptions contains the optional parameters for the ServiceClient.List method.
+//
+// Generated from API version 2023-03-15
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - Cosmos DB database account name.
+//   - options - ServiceClientListOptions contains the optional parameters for the ServiceClient.NewListPager method.
 func (client *ServiceClient) NewListPager(resourceGroupName string, accountName string, options *ServiceClientListOptions) *runtime.Pager[ServiceClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ServiceClientListResponse]{
 		More: func(page ServiceClientListResponse) bool {
@@ -266,7 +261,7 @@ func (client *ServiceClient) NewListPager(resourceGroupName string, accountName 
 			if err != nil {
 				return ServiceClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ServiceClientListResponse{}, err
 			}
@@ -293,12 +288,12 @@ func (client *ServiceClient) listCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-08-15-preview")
+	reqQP.Set("api-version", "2023-03-15")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

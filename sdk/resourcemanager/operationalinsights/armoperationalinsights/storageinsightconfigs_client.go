@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // StorageInsightConfigsClient contains the methods for the StorageInsightConfigs group.
 // Don't use this type directly, use NewStorageInsightConfigsClient() instead.
 type StorageInsightConfigsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewStorageInsightConfigsClient creates a new instance of StorageInsightConfigsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewStorageInsightConfigsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StorageInsightConfigsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".StorageInsightConfigsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &StorageInsightConfigsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Create or update a storage insight.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// storageInsightName - Name of the storageInsightsConfigs resource
-// parameters - The parameters required to create or update a storage insight.
-// options - StorageInsightConfigsClientCreateOrUpdateOptions contains the optional parameters for the StorageInsightConfigsClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - storageInsightName - Name of the storageInsightsConfigs resource
+//   - parameters - The parameters required to create or update a storage insight.
+//   - options - StorageInsightConfigsClientCreateOrUpdateOptions contains the optional parameters for the StorageInsightConfigsClient.CreateOrUpdate
+//     method.
 func (client *StorageInsightConfigsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, parameters StorageInsight, options *StorageInsightConfigsClientCreateOrUpdateOptions) (StorageInsightConfigsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, workspaceName, storageInsightName, parameters, options)
 	if err != nil {
 		return StorageInsightConfigsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StorageInsightConfigsClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *StorageInsightConfigsClient) createOrUpdateCreateRequest(ctx conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,18 +110,19 @@ func (client *StorageInsightConfigsClient) createOrUpdateHandleResponse(resp *ht
 
 // Delete - Deletes a storageInsightsConfigs resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// storageInsightName - Name of the storageInsightsConfigs resource
-// options - StorageInsightConfigsClientDeleteOptions contains the optional parameters for the StorageInsightConfigsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - storageInsightName - Name of the storageInsightsConfigs resource
+//   - options - StorageInsightConfigsClientDeleteOptions contains the optional parameters for the StorageInsightConfigsClient.Delete
+//     method.
 func (client *StorageInsightConfigsClient) Delete(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, options *StorageInsightConfigsClientDeleteOptions) (StorageInsightConfigsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, workspaceName, storageInsightName, options)
 	if err != nil {
 		return StorageInsightConfigsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StorageInsightConfigsClientDeleteResponse{}, err
 	}
@@ -160,7 +151,7 @@ func (client *StorageInsightConfigsClient) deleteCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,18 +163,19 @@ func (client *StorageInsightConfigsClient) deleteCreateRequest(ctx context.Conte
 
 // Get - Gets a storage insight instance.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// storageInsightName - Name of the storageInsightsConfigs resource
-// options - StorageInsightConfigsClientGetOptions contains the optional parameters for the StorageInsightConfigsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - storageInsightName - Name of the storageInsightsConfigs resource
+//   - options - StorageInsightConfigsClientGetOptions contains the optional parameters for the StorageInsightConfigsClient.Get
+//     method.
 func (client *StorageInsightConfigsClient) Get(ctx context.Context, resourceGroupName string, workspaceName string, storageInsightName string, options *StorageInsightConfigsClientGetOptions) (StorageInsightConfigsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, workspaceName, storageInsightName, options)
 	if err != nil {
 		return StorageInsightConfigsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return StorageInsightConfigsClientGetResponse{}, err
 	}
@@ -212,7 +204,7 @@ func (client *StorageInsightConfigsClient) getCreateRequest(ctx context.Context,
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -233,12 +225,12 @@ func (client *StorageInsightConfigsClient) getHandleResponse(resp *http.Response
 }
 
 // NewListByWorkspacePager - Lists the storage insight instances within a workspace
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2020-08-01
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// workspaceName - The name of the workspace.
-// options - StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.ListByWorkspace
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - options - StorageInsightConfigsClientListByWorkspaceOptions contains the optional parameters for the StorageInsightConfigsClient.NewListByWorkspacePager
+//     method.
 func (client *StorageInsightConfigsClient) NewListByWorkspacePager(resourceGroupName string, workspaceName string, options *StorageInsightConfigsClientListByWorkspaceOptions) *runtime.Pager[StorageInsightConfigsClientListByWorkspaceResponse] {
 	return runtime.NewPager(runtime.PagingHandler[StorageInsightConfigsClientListByWorkspaceResponse]{
 		More: func(page StorageInsightConfigsClientListByWorkspaceResponse) bool {
@@ -255,7 +247,7 @@ func (client *StorageInsightConfigsClient) NewListByWorkspacePager(resourceGroup
 			if err != nil {
 				return StorageInsightConfigsClientListByWorkspaceResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return StorageInsightConfigsClientListByWorkspaceResponse{}, err
 			}
@@ -282,7 +274,7 @@ func (client *StorageInsightConfigsClient) listByWorkspaceCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

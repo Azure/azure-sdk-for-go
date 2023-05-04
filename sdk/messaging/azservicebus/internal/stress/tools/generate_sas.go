@@ -38,7 +38,7 @@ func GenerateSas(remainingArgs []string) int {
 		return 1
 	}
 
-	cs, err := sas.CreateConnectionStringWithSAS(connectionString, duration)
+	cs, err := sas.CreateConnectionStringWithSASUsingExpiry(connectionString, time.Now().UTC().Add(duration))
 
 	if err != nil {
 		fmt.Printf("Failed to generate a connection with string with SAS: %s", err.Error())

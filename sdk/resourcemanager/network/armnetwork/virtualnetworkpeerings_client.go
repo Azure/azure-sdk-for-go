@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,68 +24,61 @@ import (
 // VirtualNetworkPeeringsClient contains the methods for the VirtualNetworkPeerings group.
 // Don't use this type directly, use NewVirtualNetworkPeeringsClient() instead.
 type VirtualNetworkPeeringsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewVirtualNetworkPeeringsClient creates a new instance of VirtualNetworkPeeringsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualNetworkPeeringsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualNetworkPeeringsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".VirtualNetworkPeeringsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &VirtualNetworkPeeringsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates or updates a peering in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// virtualNetworkPeeringName - The name of the peering.
-// virtualNetworkPeeringParameters - Parameters supplied to the create or update virtual network peering operation.
-// options - VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkPeeringsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - virtualNetworkPeeringName - The name of the peering.
+//   - virtualNetworkPeeringParameters - Parameters supplied to the create or update virtual network peering operation.
+//   - options - VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkPeeringsClient.BeginCreateOrUpdate
+//     method.
 func (client *VirtualNetworkPeeringsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualNetworkPeeringsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkPeeringsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkPeeringsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkPeeringsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkPeeringsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates or updates a peering in the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkPeeringsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, virtualNetworkPeeringParameters VirtualNetworkPeering, options *VirtualNetworkPeeringsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, virtualNetworkPeeringParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -116,7 +107,7 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -124,7 +115,7 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateCreateRequest(ctx cont
 	if options != nil && options.SyncRemoteAddressSpace != nil {
 		reqQP.Set("syncRemoteAddressSpace", string(*options.SyncRemoteAddressSpace))
 	}
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, virtualNetworkPeeringParameters)
@@ -132,35 +123,37 @@ func (client *VirtualNetworkPeeringsClient) createOrUpdateCreateRequest(ctx cont
 
 // BeginDelete - Deletes the specified virtual network peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// virtualNetworkPeeringName - The name of the virtual network peering.
-// options - VirtualNetworkPeeringsClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkPeeringsClient.BeginDelete
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - virtualNetworkPeeringName - The name of the virtual network peering.
+//   - options - VirtualNetworkPeeringsClientBeginDeleteOptions contains the optional parameters for the VirtualNetworkPeeringsClient.BeginDelete
+//     method.
 func (client *VirtualNetworkPeeringsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, options *VirtualNetworkPeeringsClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworkPeeringsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualNetworkPeeringsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualNetworkPeeringsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualNetworkPeeringsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualNetworkPeeringsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes the specified virtual network peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualNetworkPeeringsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, options *VirtualNetworkPeeringsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -189,12 +182,12 @@ func (client *VirtualNetworkPeeringsClient) deleteCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -202,18 +195,19 @@ func (client *VirtualNetworkPeeringsClient) deleteCreateRequest(ctx context.Cont
 
 // Get - Gets the specified virtual network peering.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// virtualNetworkPeeringName - The name of the virtual network peering.
-// options - VirtualNetworkPeeringsClientGetOptions contains the optional parameters for the VirtualNetworkPeeringsClient.Get
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - virtualNetworkPeeringName - The name of the virtual network peering.
+//   - options - VirtualNetworkPeeringsClientGetOptions contains the optional parameters for the VirtualNetworkPeeringsClient.Get
+//     method.
 func (client *VirtualNetworkPeeringsClient) Get(ctx context.Context, resourceGroupName string, virtualNetworkName string, virtualNetworkPeeringName string, options *VirtualNetworkPeeringsClientGetOptions) (VirtualNetworkPeeringsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualNetworkName, virtualNetworkPeeringName, options)
 	if err != nil {
 		return VirtualNetworkPeeringsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualNetworkPeeringsClientGetResponse{}, err
 	}
@@ -242,12 +236,12 @@ func (client *VirtualNetworkPeeringsClient) getCreateRequest(ctx context.Context
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -263,11 +257,12 @@ func (client *VirtualNetworkPeeringsClient) getHandleResponse(resp *http.Respons
 }
 
 // NewListPager - Gets all virtual network peerings in a virtual network.
-// Generated from API version 2022-07-01
-// resourceGroupName - The name of the resource group.
-// virtualNetworkName - The name of the virtual network.
-// options - VirtualNetworkPeeringsClientListOptions contains the optional parameters for the VirtualNetworkPeeringsClient.List
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The name of the resource group.
+//   - virtualNetworkName - The name of the virtual network.
+//   - options - VirtualNetworkPeeringsClientListOptions contains the optional parameters for the VirtualNetworkPeeringsClient.NewListPager
+//     method.
 func (client *VirtualNetworkPeeringsClient) NewListPager(resourceGroupName string, virtualNetworkName string, options *VirtualNetworkPeeringsClientListOptions) *runtime.Pager[VirtualNetworkPeeringsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualNetworkPeeringsClientListResponse]{
 		More: func(page VirtualNetworkPeeringsClientListResponse) bool {
@@ -284,7 +279,7 @@ func (client *VirtualNetworkPeeringsClient) NewListPager(resourceGroupName strin
 			if err != nil {
 				return VirtualNetworkPeeringsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VirtualNetworkPeeringsClientListResponse{}, err
 			}
@@ -311,12 +306,12 @@ func (client *VirtualNetworkPeeringsClient) listCreateRequest(ctx context.Contex
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

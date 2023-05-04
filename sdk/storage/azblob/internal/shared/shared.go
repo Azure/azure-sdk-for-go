@@ -38,6 +38,8 @@ const (
 	HeaderIfNoneMatch       = "If-None-Match"
 	HeaderIfUnmodifiedSince = "If-Unmodified-Since"
 	HeaderRange             = "Range"
+	HeaderXmsVersion        = "x-ms-version"
+	HeaderXmsRequestID      = "x-ms-request-id"
 )
 
 const crc64Polynomial uint64 = 0x9A6C9329AC4BC9B5
@@ -128,7 +130,7 @@ func ParseConnectionString(connectionString string) (ParsedConnectionString, err
 
 // SerializeBlobTags converts tags to generated.BlobTags
 func SerializeBlobTags(tagsMap map[string]string) *generated.BlobTags {
-	if tagsMap == nil {
+	if len(tagsMap) == 0 {
 		return nil
 	}
 	blobTagSet := make([]*generated.BlobTag, 0)
@@ -140,7 +142,7 @@ func SerializeBlobTags(tagsMap map[string]string) *generated.BlobTags {
 }
 
 func SerializeBlobTagsToStrPtr(tagsMap map[string]string) *string {
-	if tagsMap == nil {
+	if len(tagsMap) == 0 {
 		return nil
 	}
 	tags := make([]string, 0)

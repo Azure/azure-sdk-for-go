@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,40 +24,31 @@ import (
 // ProviderClient contains the methods for the Provider group.
 // Don't use this type directly, use NewProviderClient() instead.
 type ProviderClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewProviderClient creates a new instance of ProviderClient with the specified values.
-// subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Your Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000).
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewProviderClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ProviderClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ProviderClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // NewGetAvailableStacksPager - Description for Get available application frameworks and their versions
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.GetAvailableStacks
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksPager
+//     method.
 func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetAvailableStacksResponse]{
 		More: func(page ProviderClientGetAvailableStacksResponse) bool {
@@ -76,7 +65,7 @@ func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClient
 			if err != nil {
 				return ProviderClientGetAvailableStacksResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientGetAvailableStacksResponse{}, err
 			}
@@ -91,7 +80,7 @@ func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClient
 // getAvailableStacksCreateRequest creates the GetAvailableStacks request.
 func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Context, options *ProviderClientGetAvailableStacksOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/availableStacks"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +88,7 @@ func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Contex
 	if options != nil && options.OSTypeSelected != nil {
 		reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -115,10 +104,10 @@ func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Respon
 }
 
 // NewGetAvailableStacksOnPremPager - Description for Get available application frameworks and their versions
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.GetAvailableStacksOnPrem
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - ProviderClientGetAvailableStacksOnPremOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksOnPremPager
+//     method.
 func (client *ProviderClient) NewGetAvailableStacksOnPremPager(options *ProviderClientGetAvailableStacksOnPremOptions) *runtime.Pager[ProviderClientGetAvailableStacksOnPremResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetAvailableStacksOnPremResponse]{
 		More: func(page ProviderClientGetAvailableStacksOnPremResponse) bool {
@@ -135,7 +124,7 @@ func (client *ProviderClient) NewGetAvailableStacksOnPremPager(options *Provider
 			if err != nil {
 				return ProviderClientGetAvailableStacksOnPremResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientGetAvailableStacksOnPremResponse{}, err
 			}
@@ -154,7 +143,7 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -162,7 +151,7 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 	if options != nil && options.OSTypeSelected != nil {
 		reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -178,10 +167,10 @@ func (client *ProviderClient) getAvailableStacksOnPremHandleResponse(resp *http.
 }
 
 // NewGetFunctionAppStacksPager - Description for Get available Function app frameworks and their versions
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacks
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksPager
+//     method.
 func (client *ProviderClient) NewGetFunctionAppStacksPager(options *ProviderClientGetFunctionAppStacksOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetFunctionAppStacksResponse]{
 		More: func(page ProviderClientGetFunctionAppStacksResponse) bool {
@@ -198,7 +187,7 @@ func (client *ProviderClient) NewGetFunctionAppStacksPager(options *ProviderClie
 			if err != nil {
 				return ProviderClientGetFunctionAppStacksResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientGetFunctionAppStacksResponse{}, err
 			}
@@ -213,7 +202,7 @@ func (client *ProviderClient) NewGetFunctionAppStacksPager(options *ProviderClie
 // getFunctionAppStacksCreateRequest creates the GetFunctionAppStacks request.
 func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Context, options *ProviderClientGetFunctionAppStacksOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/functionAppStacks"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -221,7 +210,7 @@ func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Cont
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -238,11 +227,11 @@ func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Resp
 
 // NewGetFunctionAppStacksForLocationPager - Description for Get available Function app frameworks and their versions for
 // location
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// location - Function App stack location.
-// options - ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetFunctionAppStacksForLocation
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - Function App stack location.
+//   - options - ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksForLocationPager
+//     method.
 func (client *ProviderClient) NewGetFunctionAppStacksForLocationPager(location string, options *ProviderClientGetFunctionAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksForLocationResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetFunctionAppStacksForLocationResponse]{
 		More: func(page ProviderClientGetFunctionAppStacksForLocationResponse) bool {
@@ -259,7 +248,7 @@ func (client *ProviderClient) NewGetFunctionAppStacksForLocationPager(location s
 			if err != nil {
 				return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientGetFunctionAppStacksForLocationResponse{}, err
 			}
@@ -278,7 +267,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -286,7 +275,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -302,10 +291,10 @@ func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp
 }
 
 // NewGetWebAppStacksPager - Description for Get available Web app frameworks and their versions
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.GetWebAppStacks
-// method.
+//
+// Generated from API version 2022-09-01
+//   - options - ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksPager
+//     method.
 func (client *ProviderClient) NewGetWebAppStacksPager(options *ProviderClientGetWebAppStacksOptions) *runtime.Pager[ProviderClientGetWebAppStacksResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetWebAppStacksResponse]{
 		More: func(page ProviderClientGetWebAppStacksResponse) bool {
@@ -322,7 +311,7 @@ func (client *ProviderClient) NewGetWebAppStacksPager(options *ProviderClientGet
 			if err != nil {
 				return ProviderClientGetWebAppStacksResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientGetWebAppStacksResponse{}, err
 			}
@@ -337,7 +326,7 @@ func (client *ProviderClient) NewGetWebAppStacksPager(options *ProviderClientGet
 // getWebAppStacksCreateRequest creates the GetWebAppStacks request.
 func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, options *ProviderClientGetWebAppStacksOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/webAppStacks"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -345,7 +334,7 @@ func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, 
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -361,11 +350,11 @@ func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response)
 }
 
 // NewGetWebAppStacksForLocationPager - Description for Get available Web app frameworks and their versions for location
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// location - Web App stack location.
-// options - ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.GetWebAppStacksForLocation
-// method.
+//
+// Generated from API version 2022-09-01
+//   - location - Web App stack location.
+//   - options - ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksForLocationPager
+//     method.
 func (client *ProviderClient) NewGetWebAppStacksForLocationPager(location string, options *ProviderClientGetWebAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetWebAppStacksForLocationResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetWebAppStacksForLocationResponse]{
 		More: func(page ProviderClientGetWebAppStacksForLocationResponse) bool {
@@ -382,7 +371,7 @@ func (client *ProviderClient) NewGetWebAppStacksForLocationPager(location string
 			if err != nil {
 				return ProviderClientGetWebAppStacksForLocationResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientGetWebAppStacksForLocationResponse{}, err
 			}
@@ -401,7 +390,7 @@ func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx contex
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -409,7 +398,7 @@ func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx contex
 	if options != nil && options.StackOsType != nil {
 		reqQP.Set("stackOsType", string(*options.StackOsType))
 	}
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -426,9 +415,10 @@ func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *htt
 
 // NewListOperationsPager - Description for Gets all available operations for the Microsoft.Web resource provider. Also exposes
 // resource metric definitions
-// If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-03-01
-// options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.ListOperations method.
+//
+// Generated from API version 2022-09-01
+//   - options - ProviderClientListOperationsOptions contains the optional parameters for the ProviderClient.NewListOperationsPager
+//     method.
 func (client *ProviderClient) NewListOperationsPager(options *ProviderClientListOperationsOptions) *runtime.Pager[ProviderClientListOperationsResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ProviderClientListOperationsResponse]{
 		More: func(page ProviderClientListOperationsResponse) bool {
@@ -445,7 +435,7 @@ func (client *ProviderClient) NewListOperationsPager(options *ProviderClientList
 			if err != nil {
 				return ProviderClientListOperationsResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ProviderClientListOperationsResponse{}, err
 			}
@@ -460,12 +450,12 @@ func (client *ProviderClient) NewListOperationsPager(options *ProviderClientList
 // listOperationsCreateRequest creates the ListOperations request.
 func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, options *ProviderClientListOperationsOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Web/operations"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-03-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

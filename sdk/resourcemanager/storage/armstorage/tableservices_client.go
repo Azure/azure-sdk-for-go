@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // TableServicesClient contains the methods for the TableServices group.
 // Don't use this type directly, use NewTableServicesClient() instead.
 type TableServicesClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTableServicesClient creates a new instance of TableServicesClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTableServicesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TableServicesClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TableServicesClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TableServicesClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,18 +47,19 @@ func NewTableServicesClient(subscriptionID string, credential azcore.TokenCreden
 // GetServiceProperties - Gets the properties of a storage account’s Table service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// options - TableServicesClientGetServicePropertiesOptions contains the optional parameters for the TableServicesClient.GetServiceProperties
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - TableServicesClientGetServicePropertiesOptions contains the optional parameters for the TableServicesClient.GetServiceProperties
+//     method.
 func (client *TableServicesClient) GetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesClientGetServicePropertiesOptions) (TableServicesClientGetServicePropertiesResponse, error) {
 	req, err := client.getServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return TableServicesClientGetServicePropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TableServicesClientGetServicePropertiesResponse{}, err
 	}
@@ -95,7 +85,7 @@ func (client *TableServicesClient) getServicePropertiesCreateRequest(ctx context
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{tableServiceName}", url.PathEscape("default"))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -117,17 +107,18 @@ func (client *TableServicesClient) getServicePropertiesHandleResponse(resp *http
 
 // List - List all table services for the storage account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// options - TableServicesClientListOptions contains the optional parameters for the TableServicesClient.List method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - TableServicesClientListOptions contains the optional parameters for the TableServicesClient.List method.
 func (client *TableServicesClient) List(ctx context.Context, resourceGroupName string, accountName string, options *TableServicesClientListOptions) (TableServicesClientListResponse, error) {
 	req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, options)
 	if err != nil {
 		return TableServicesClientListResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TableServicesClientListResponse{}, err
 	}
@@ -152,7 +143,7 @@ func (client *TableServicesClient) listCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -175,20 +166,21 @@ func (client *TableServicesClient) listHandleResponse(resp *http.Response) (Tabl
 // SetServiceProperties - Sets the properties of a storage account’s Table service, including properties for Storage Analytics
 // and CORS (Cross-Origin Resource Sharing) rules.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-09-01
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// accountName - The name of the storage account within the specified resource group. Storage account names must be between
-// 3 and 24 characters in length and use numbers and lower-case letters only.
-// parameters - The properties of a storage account’s Table service, only properties for Storage Analytics and CORS (Cross-Origin
-// Resource Sharing) rules can be specified.
-// options - TableServicesClientSetServicePropertiesOptions contains the optional parameters for the TableServicesClient.SetServiceProperties
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - parameters - The properties of a storage account’s Table service, only properties for Storage Analytics and CORS (Cross-Origin
+//     Resource Sharing) rules can be specified.
+//   - options - TableServicesClientSetServicePropertiesOptions contains the optional parameters for the TableServicesClient.SetServiceProperties
+//     method.
 func (client *TableServicesClient) SetServiceProperties(ctx context.Context, resourceGroupName string, accountName string, parameters TableServiceProperties, options *TableServicesClientSetServicePropertiesOptions) (TableServicesClientSetServicePropertiesResponse, error) {
 	req, err := client.setServicePropertiesCreateRequest(ctx, resourceGroupName, accountName, parameters, options)
 	if err != nil {
 		return TableServicesClientSetServicePropertiesResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TableServicesClientSetServicePropertiesResponse{}, err
 	}
@@ -214,7 +206,7 @@ func (client *TableServicesClient) setServicePropertiesCreateRequest(ctx context
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	urlPath = strings.ReplaceAll(urlPath, "{tableServiceName}", url.PathEscape("default"))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

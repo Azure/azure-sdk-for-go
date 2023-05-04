@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,38 @@ import (
 // Client contains the methods for the DataProtection group.
 // Don't use this type directly, use NewClient() instead.
 type Client struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClient creates a new instance of Client with the specified values.
-// subscriptionID - The subscription Id.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription. The value must be an UUID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*Client, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".Client", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &Client{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CheckFeatureSupport - Validates if a feature is supported
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-11-01-preview
-// parameters - Feature support request object
-// options - ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
+//
+// Generated from API version 2023-01-01
+//   - parameters - Feature support request object
+//   - options - ClientCheckFeatureSupportOptions contains the optional parameters for the Client.CheckFeatureSupport method.
 func (client *Client) CheckFeatureSupport(ctx context.Context, location string, parameters FeatureValidationRequestBaseClassification, options *ClientCheckFeatureSupportOptions) (ClientCheckFeatureSupportResponse, error) {
 	req, err := client.checkFeatureSupportCreateRequest(ctx, location, parameters, options)
 	if err != nil {
 		return ClientCheckFeatureSupportResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClientCheckFeatureSupportResponse{}, err
 	}
@@ -78,20 +68,17 @@ func (client *Client) CheckFeatureSupport(ctx context.Context, location string, 
 // checkFeatureSupportCreateRequest creates the CheckFeatureSupport request.
 func (client *Client) checkFeatureSupportCreateRequest(ctx context.Context, location string, parameters FeatureValidationRequestBaseClassification, options *ClientCheckFeatureSupportOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/checkFeatureSupport"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
 		return nil, errors.New("parameter location cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-11-01-preview")
+	reqQP.Set("api-version", "2023-01-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, parameters)

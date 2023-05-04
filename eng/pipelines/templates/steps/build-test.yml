@@ -66,6 +66,7 @@ steps:
       PROXY_CERT: $(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.crt
       ${{ insert }}: ${{ parameters.EnvVars }}
       GOTRACEBACK: all
+      AZURE_SDK_GO_LOGGING: all
 
   - task: PowerShell@2
     displayName: 'Build Performance Tests'

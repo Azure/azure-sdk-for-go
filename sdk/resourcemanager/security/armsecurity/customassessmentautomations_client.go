@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,31 +24,22 @@ import (
 // CustomAssessmentAutomationsClient contains the methods for the CustomAssessmentAutomations group.
 // Don't use this type directly, use NewCustomAssessmentAutomationsClient() instead.
 type CustomAssessmentAutomationsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewCustomAssessmentAutomationsClient creates a new instance of CustomAssessmentAutomationsClient with the specified values.
-// subscriptionID - Azure subscription ID
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - Azure subscription ID
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewCustomAssessmentAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomAssessmentAutomationsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".CustomAssessmentAutomationsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &CustomAssessmentAutomationsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
@@ -58,18 +47,19 @@ func NewCustomAssessmentAutomationsClient(subscriptionID string, credential azco
 // Create - Creates or updates a custom assessment automation for the provided subscription. Please note that providing an
 // existing custom assessment automation will replace the existing record.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// customAssessmentAutomationName - Name of the Custom Assessment Automation.
-// customAssessmentAutomationBody - Custom Assessment Automation body
-// options - CustomAssessmentAutomationsClientCreateOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Create
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - customAssessmentAutomationName - Name of the Custom Assessment Automation.
+//   - customAssessmentAutomationBody - Custom Assessment Automation body
+//   - options - CustomAssessmentAutomationsClientCreateOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Create
+//     method.
 func (client *CustomAssessmentAutomationsClient) Create(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, customAssessmentAutomationBody CustomAssessmentAutomationRequest, options *CustomAssessmentAutomationsClientCreateOptions) (CustomAssessmentAutomationsClientCreateResponse, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, customAssessmentAutomationName, customAssessmentAutomationBody, options)
 	if err != nil {
 		return CustomAssessmentAutomationsClientCreateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CustomAssessmentAutomationsClientCreateResponse{}, err
 	}
@@ -94,7 +84,7 @@ func (client *CustomAssessmentAutomationsClient) createCreateRequest(ctx context
 		return nil, errors.New("parameter customAssessmentAutomationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customAssessmentAutomationName}", url.PathEscape(customAssessmentAutomationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -116,17 +106,18 @@ func (client *CustomAssessmentAutomationsClient) createHandleResponse(resp *http
 
 // Delete - Deletes a custom assessment automation by name for a provided subscription
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// customAssessmentAutomationName - Name of the Custom Assessment Automation.
-// options - CustomAssessmentAutomationsClientDeleteOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Delete
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - customAssessmentAutomationName - Name of the Custom Assessment Automation.
+//   - options - CustomAssessmentAutomationsClientDeleteOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Delete
+//     method.
 func (client *CustomAssessmentAutomationsClient) Delete(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsClientDeleteOptions) (CustomAssessmentAutomationsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, customAssessmentAutomationName, options)
 	if err != nil {
 		return CustomAssessmentAutomationsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CustomAssessmentAutomationsClientDeleteResponse{}, err
 	}
@@ -151,7 +142,7 @@ func (client *CustomAssessmentAutomationsClient) deleteCreateRequest(ctx context
 		return nil, errors.New("parameter customAssessmentAutomationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customAssessmentAutomationName}", url.PathEscape(customAssessmentAutomationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -164,17 +155,18 @@ func (client *CustomAssessmentAutomationsClient) deleteCreateRequest(ctx context
 
 // Get - Gets a single custom assessment automation by name for the provided subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// customAssessmentAutomationName - Name of the Custom Assessment Automation.
-// options - CustomAssessmentAutomationsClientGetOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Get
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - customAssessmentAutomationName - Name of the Custom Assessment Automation.
+//   - options - CustomAssessmentAutomationsClientGetOptions contains the optional parameters for the CustomAssessmentAutomationsClient.Get
+//     method.
 func (client *CustomAssessmentAutomationsClient) Get(ctx context.Context, resourceGroupName string, customAssessmentAutomationName string, options *CustomAssessmentAutomationsClientGetOptions) (CustomAssessmentAutomationsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, customAssessmentAutomationName, options)
 	if err != nil {
 		return CustomAssessmentAutomationsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return CustomAssessmentAutomationsClientGetResponse{}, err
 	}
@@ -199,7 +191,7 @@ func (client *CustomAssessmentAutomationsClient) getCreateRequest(ctx context.Co
 		return nil, errors.New("parameter customAssessmentAutomationName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{customAssessmentAutomationName}", url.PathEscape(customAssessmentAutomationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -220,10 +212,11 @@ func (client *CustomAssessmentAutomationsClient) getHandleResponse(resp *http.Re
 }
 
 // NewListByResourceGroupPager - List custom assessment automations by provided subscription and resource group
+//
 // Generated from API version 2021-07-01-preview
-// resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
-// options - CustomAssessmentAutomationsClientListByResourceGroupOptions contains the optional parameters for the CustomAssessmentAutomationsClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group within the user's subscription. The name is case insensitive.
+//   - options - CustomAssessmentAutomationsClientListByResourceGroupOptions contains the optional parameters for the CustomAssessmentAutomationsClient.NewListByResourceGroupPager
+//     method.
 func (client *CustomAssessmentAutomationsClient) NewListByResourceGroupPager(resourceGroupName string, options *CustomAssessmentAutomationsClientListByResourceGroupOptions) *runtime.Pager[CustomAssessmentAutomationsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CustomAssessmentAutomationsClientListByResourceGroupResponse]{
 		More: func(page CustomAssessmentAutomationsClientListByResourceGroupResponse) bool {
@@ -240,7 +233,7 @@ func (client *CustomAssessmentAutomationsClient) NewListByResourceGroupPager(res
 			if err != nil {
 				return CustomAssessmentAutomationsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CustomAssessmentAutomationsClientListByResourceGroupResponse{}, err
 			}
@@ -263,7 +256,7 @@ func (client *CustomAssessmentAutomationsClient) listByResourceGroupCreateReques
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -284,9 +277,10 @@ func (client *CustomAssessmentAutomationsClient) listByResourceGroupHandleRespon
 }
 
 // NewListBySubscriptionPager - List custom assessment automations by provided subscription
+//
 // Generated from API version 2021-07-01-preview
-// options - CustomAssessmentAutomationsClientListBySubscriptionOptions contains the optional parameters for the CustomAssessmentAutomationsClient.ListBySubscription
-// method.
+//   - options - CustomAssessmentAutomationsClientListBySubscriptionOptions contains the optional parameters for the CustomAssessmentAutomationsClient.NewListBySubscriptionPager
+//     method.
 func (client *CustomAssessmentAutomationsClient) NewListBySubscriptionPager(options *CustomAssessmentAutomationsClientListBySubscriptionOptions) *runtime.Pager[CustomAssessmentAutomationsClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[CustomAssessmentAutomationsClientListBySubscriptionResponse]{
 		More: func(page CustomAssessmentAutomationsClientListBySubscriptionResponse) bool {
@@ -303,7 +297,7 @@ func (client *CustomAssessmentAutomationsClient) NewListBySubscriptionPager(opti
 			if err != nil {
 				return CustomAssessmentAutomationsClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return CustomAssessmentAutomationsClientListBySubscriptionResponse{}, err
 			}
@@ -322,7 +316,7 @@ func (client *CustomAssessmentAutomationsClient) listBySubscriptionCreateRequest
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

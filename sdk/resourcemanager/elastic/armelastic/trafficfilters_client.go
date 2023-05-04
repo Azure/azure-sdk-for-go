@@ -22,8 +22,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -34,47 +32,39 @@ import (
 // TrafficFiltersClient contains the methods for the TrafficFilters group.
 // Don't use this type directly, use NewTrafficFiltersClient() instead.
 type TrafficFiltersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewTrafficFiltersClient creates a new instance of TrafficFiltersClient with the specified values.
-// subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Azure subscription ID. This is a GUID-formatted string (e.g. 00000000-0000-0000-0000-000000000000)
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewTrafficFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TrafficFiltersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".TrafficFiltersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &TrafficFiltersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Delete - Delete traffic filter from the account.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01-preview
-// resourceGroupName - The name of the resource group to which the Elastic resource belongs.
-// monitorName - Monitor resource name
-// options - TrafficFiltersClientDeleteOptions contains the optional parameters for the TrafficFiltersClient.Delete method.
+//
+// Generated from API version 2023-02-01-preview
+//   - resourceGroupName - The name of the resource group to which the Elastic resource belongs.
+//   - monitorName - Monitor resource name
+//   - options - TrafficFiltersClientDeleteOptions contains the optional parameters for the TrafficFiltersClient.Delete method.
 func (client *TrafficFiltersClient) Delete(ctx context.Context, resourceGroupName string, monitorName string, options *TrafficFiltersClientDeleteOptions) (TrafficFiltersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, monitorName, options)
 	if err != nil {
 		return TrafficFiltersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return TrafficFiltersClientDeleteResponse{}, err
 	}
@@ -99,12 +89,12 @@ func (client *TrafficFiltersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter monitorName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{monitorName}", url.PathEscape(monitorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01-preview")
+	reqQP.Set("api-version", "2023-02-01-preview")
 	if options != nil && options.RulesetID != nil {
 		reqQP.Set("rulesetId", *options.RulesetID)
 	}

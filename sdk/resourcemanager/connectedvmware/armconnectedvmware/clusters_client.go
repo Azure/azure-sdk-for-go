@@ -22,8 +22,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -35,65 +33,58 @@ import (
 // ClustersClient contains the methods for the Clusters group.
 // Don't use this type directly, use NewClustersClient() instead.
 type ClustersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewClustersClient creates a new instance of ClustersClient with the specified values.
-// subscriptionID - The Subscription ID.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The Subscription ID.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ClustersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ClustersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ClustersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Create Or Update cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// clusterName - Name of the cluster.
-// body - Request payload.
-// options - ClustersClientBeginCreateOptions contains the optional parameters for the ClustersClient.BeginCreate method.
+//   - resourceGroupName - The Resource Group Name.
+//   - clusterName - Name of the cluster.
+//   - body - Request payload.
+//   - options - ClustersClientBeginCreateOptions contains the optional parameters for the ClustersClient.BeginCreate method.
 func (client *ClustersClient) BeginCreate(ctx context.Context, resourceGroupName string, clusterName string, body Cluster, options *ClustersClientBeginCreateOptions) (*runtime.Poller[ClustersClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, clusterName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ClustersClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClustersClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create Or Update cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *ClustersClient) create(ctx context.Context, resourceGroupName string, clusterName string, body Cluster, options *ClustersClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, clusterName, body, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -118,7 +109,7 @@ func (client *ClustersClient) createCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -131,31 +122,33 @@ func (client *ClustersClient) createCreateRequest(ctx context.Context, resourceG
 
 // BeginDelete - Implements cluster DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// clusterName - Name of the cluster.
-// options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
+//   - resourceGroupName - The Resource Group Name.
+//   - clusterName - Name of the cluster.
+//   - options - ClustersClientBeginDeleteOptions contains the optional parameters for the ClustersClient.BeginDelete method.
 func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*runtime.Poller[ClustersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, clusterName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[ClustersClientDeleteResponse](resp, client.pl, nil)
+		return runtime.NewPoller[ClustersClientDeleteResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ClustersClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Implements cluster DELETE method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -180,7 +173,7 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -196,16 +189,17 @@ func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceG
 
 // Get - Implements cluster GET method.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// clusterName - Name of the cluster.
-// options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
+//   - resourceGroupName - The Resource Group Name.
+//   - clusterName - Name of the cluster.
+//   - options - ClustersClientGetOptions contains the optional parameters for the ClustersClient.Get method.
 func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientGetOptions) (ClustersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, clusterName, options)
 	if err != nil {
 		return ClustersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClustersClientGetResponse{}, err
 	}
@@ -230,7 +224,7 @@ func (client *ClustersClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -251,9 +245,9 @@ func (client *ClustersClient) getHandleResponse(resp *http.Response) (ClustersCl
 }
 
 // NewListPager - List of clusters in a subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// options - ClustersClientListOptions contains the optional parameters for the ClustersClient.List method.
+//   - options - ClustersClientListOptions contains the optional parameters for the ClustersClient.NewListPager method.
 func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *runtime.Pager[ClustersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListResponse]{
 		More: func(page ClustersClientListResponse) bool {
@@ -270,7 +264,7 @@ func (client *ClustersClient) NewListPager(options *ClustersClientListOptions) *
 			if err != nil {
 				return ClustersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListResponse{}, err
 			}
@@ -289,7 +283,7 @@ func (client *ClustersClient) listCreateRequest(ctx context.Context, options *Cl
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -310,11 +304,11 @@ func (client *ClustersClient) listHandleResponse(resp *http.Response) (ClustersC
 }
 
 // NewListByResourceGroupPager - List of clusters in a resource group.
-// If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The Resource Group Name.
+//   - options - ClustersClientListByResourceGroupOptions contains the optional parameters for the ClustersClient.NewListByResourceGroupPager
+//     method.
 func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName string, options *ClustersClientListByResourceGroupOptions) *runtime.Pager[ClustersClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ClustersClientListByResourceGroupResponse]{
 		More: func(page ClustersClientListByResourceGroupResponse) bool {
@@ -331,7 +325,7 @@ func (client *ClustersClient) NewListByResourceGroupPager(resourceGroupName stri
 			if err != nil {
 				return ClustersClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ClustersClientListByResourceGroupResponse{}, err
 			}
@@ -354,7 +348,7 @@ func (client *ClustersClient) listByResourceGroupCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -376,17 +370,18 @@ func (client *ClustersClient) listByResourceGroupHandleResponse(resp *http.Respo
 
 // Update - API to update certain properties of the cluster resource.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-01-10-preview
-// resourceGroupName - The Resource Group Name.
-// clusterName - Name of the cluster.
-// body - Resource properties to update.
-// options - ClustersClientUpdateOptions contains the optional parameters for the ClustersClient.Update method.
+//   - resourceGroupName - The Resource Group Name.
+//   - clusterName - Name of the cluster.
+//   - body - Resource properties to update.
+//   - options - ClustersClientUpdateOptions contains the optional parameters for the ClustersClient.Update method.
 func (client *ClustersClient) Update(ctx context.Context, resourceGroupName string, clusterName string, body ResourcePatch, options *ClustersClientUpdateOptions) (ClustersClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, body, options)
 	if err != nil {
 		return ClustersClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ClustersClientUpdateResponse{}, err
 	}
@@ -411,7 +406,7 @@ func (client *ClustersClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter clusterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // DaprComponentsClient contains the methods for the DaprComponents group.
 // Don't use this type directly, use NewDaprComponentsClient() instead.
 type DaprComponentsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewDaprComponentsClient creates a new instance of DaprComponentsClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewDaprComponentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DaprComponentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".DaprComponentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &DaprComponentsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates a Dapr Component in a Managed Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// componentName - Name of the Dapr Component.
-// daprComponentEnvelope - Configuration details of the Dapr Component.
-// options - DaprComponentsClientCreateOrUpdateOptions contains the optional parameters for the DaprComponentsClient.CreateOrUpdate
-// method.
+//
+// Generated from API version 2022-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - componentName - Name of the Dapr Component.
+//   - daprComponentEnvelope - Configuration details of the Dapr Component.
+//   - options - DaprComponentsClientCreateOrUpdateOptions contains the optional parameters for the DaprComponentsClient.CreateOrUpdate
+//     method.
 func (client *DaprComponentsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, environmentName string, componentName string, daprComponentEnvelope DaprComponent, options *DaprComponentsClientCreateOrUpdateOptions) (DaprComponentsClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, environmentName, componentName, daprComponentEnvelope, options)
 	if err != nil {
 		return DaprComponentsClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DaprComponentsClientCreateOrUpdateResponse{}, err
 	}
@@ -98,12 +88,12 @@ func (client *DaprComponentsClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter componentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, daprComponentEnvelope)
@@ -120,17 +110,18 @@ func (client *DaprComponentsClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Delete a Dapr Component from a Managed Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// componentName - Name of the Dapr Component.
-// options - DaprComponentsClientDeleteOptions contains the optional parameters for the DaprComponentsClient.Delete method.
+//
+// Generated from API version 2022-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - componentName - Name of the Dapr Component.
+//   - options - DaprComponentsClientDeleteOptions contains the optional parameters for the DaprComponentsClient.Delete method.
 func (client *DaprComponentsClient) Delete(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *DaprComponentsClientDeleteOptions) (DaprComponentsClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
 	if err != nil {
 		return DaprComponentsClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DaprComponentsClientDeleteResponse{}, err
 	}
@@ -159,12 +150,12 @@ func (client *DaprComponentsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter componentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -172,17 +163,18 @@ func (client *DaprComponentsClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Get a dapr component.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// componentName - Name of the Dapr Component.
-// options - DaprComponentsClientGetOptions contains the optional parameters for the DaprComponentsClient.Get method.
+//
+// Generated from API version 2022-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - componentName - Name of the Dapr Component.
+//   - options - DaprComponentsClientGetOptions contains the optional parameters for the DaprComponentsClient.Get method.
 func (client *DaprComponentsClient) Get(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *DaprComponentsClientGetOptions) (DaprComponentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
 	if err != nil {
 		return DaprComponentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DaprComponentsClientGetResponse{}, err
 	}
@@ -211,12 +203,12 @@ func (client *DaprComponentsClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter componentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -232,10 +224,11 @@ func (client *DaprComponentsClient) getHandleResponse(resp *http.Response) (Dapr
 }
 
 // NewListPager - Get the Dapr Components for a managed environment.
-// Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// options - DaprComponentsClientListOptions contains the optional parameters for the DaprComponentsClient.List method.
+//
+// Generated from API version 2022-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - options - DaprComponentsClientListOptions contains the optional parameters for the DaprComponentsClient.NewListPager method.
 func (client *DaprComponentsClient) NewListPager(resourceGroupName string, environmentName string, options *DaprComponentsClientListOptions) *runtime.Pager[DaprComponentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[DaprComponentsClientListResponse]{
 		More: func(page DaprComponentsClientListResponse) bool {
@@ -252,7 +245,7 @@ func (client *DaprComponentsClient) NewListPager(resourceGroupName string, envir
 			if err != nil {
 				return DaprComponentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return DaprComponentsClientListResponse{}, err
 			}
@@ -279,12 +272,12 @@ func (client *DaprComponentsClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter environmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -301,18 +294,19 @@ func (client *DaprComponentsClient) listHandleResponse(resp *http.Response) (Dap
 
 // ListSecrets - List secrets for a dapr component
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-06-01-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// environmentName - Name of the Managed Environment.
-// componentName - Name of the Dapr Component.
-// options - DaprComponentsClientListSecretsOptions contains the optional parameters for the DaprComponentsClient.ListSecrets
-// method.
+//
+// Generated from API version 2022-03-01
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - componentName - Name of the Dapr Component.
+//   - options - DaprComponentsClientListSecretsOptions contains the optional parameters for the DaprComponentsClient.ListSecrets
+//     method.
 func (client *DaprComponentsClient) ListSecrets(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *DaprComponentsClientListSecretsOptions) (DaprComponentsClientListSecretsResponse, error) {
 	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
 	if err != nil {
 		return DaprComponentsClientListSecretsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return DaprComponentsClientListSecretsResponse{}, err
 	}
@@ -341,12 +335,12 @@ func (client *DaprComponentsClient) listSecretsCreateRequest(ctx context.Context
 		return nil, errors.New("parameter componentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-06-01-preview")
+	reqQP.Set("api-version", "2022-03-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

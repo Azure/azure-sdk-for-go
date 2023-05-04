@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,50 +24,42 @@ import (
 // AccountFiltersClient contains the methods for the AccountFilters group.
 // Don't use this type directly, use NewAccountFiltersClient() instead.
 type AccountFiltersClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewAccountFiltersClient creates a new instance of AccountFiltersClient with the specified values.
-// subscriptionID - The unique identifier for a Microsoft Azure subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The unique identifier for a Microsoft Azure subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewAccountFiltersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountFiltersClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".AccountFiltersClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &AccountFiltersClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // CreateOrUpdate - Creates or updates an Account Filter in the Media Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// filterName - The Account Filter name
-// parameters - The request parameters
-// options - AccountFiltersClientCreateOrUpdateOptions contains the optional parameters for the AccountFiltersClient.CreateOrUpdate
-// method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - filterName - The Account Filter name
+//   - parameters - The request parameters
+//   - options - AccountFiltersClientCreateOrUpdateOptions contains the optional parameters for the AccountFiltersClient.CreateOrUpdate
+//     method.
 func (client *AccountFiltersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, filterName string, parameters AccountFilter, options *AccountFiltersClientCreateOrUpdateOptions) (AccountFiltersClientCreateOrUpdateResponse, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, filterName, parameters, options)
 	if err != nil {
 		return AccountFiltersClientCreateOrUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountFiltersClientCreateOrUpdateResponse{}, err
 	}
@@ -98,7 +88,7 @@ func (client *AccountFiltersClient) createOrUpdateCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter filterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filterName}", url.PathEscape(filterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -120,17 +110,18 @@ func (client *AccountFiltersClient) createOrUpdateHandleResponse(resp *http.Resp
 
 // Delete - Deletes an Account Filter in the Media Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// filterName - The Account Filter name
-// options - AccountFiltersClientDeleteOptions contains the optional parameters for the AccountFiltersClient.Delete method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - filterName - The Account Filter name
+//   - options - AccountFiltersClientDeleteOptions contains the optional parameters for the AccountFiltersClient.Delete method.
 func (client *AccountFiltersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, filterName string, options *AccountFiltersClientDeleteOptions) (AccountFiltersClientDeleteResponse, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, filterName, options)
 	if err != nil {
 		return AccountFiltersClientDeleteResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountFiltersClientDeleteResponse{}, err
 	}
@@ -159,7 +150,7 @@ func (client *AccountFiltersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter filterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filterName}", url.PathEscape(filterName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -172,17 +163,18 @@ func (client *AccountFiltersClient) deleteCreateRequest(ctx context.Context, res
 
 // Get - Get the details of an Account Filter in the Media Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// filterName - The Account Filter name
-// options - AccountFiltersClientGetOptions contains the optional parameters for the AccountFiltersClient.Get method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - filterName - The Account Filter name
+//   - options - AccountFiltersClientGetOptions contains the optional parameters for the AccountFiltersClient.Get method.
 func (client *AccountFiltersClient) Get(ctx context.Context, resourceGroupName string, accountName string, filterName string, options *AccountFiltersClientGetOptions) (AccountFiltersClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, filterName, options)
 	if err != nil {
 		return AccountFiltersClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountFiltersClientGetResponse{}, err
 	}
@@ -211,7 +203,7 @@ func (client *AccountFiltersClient) getCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter filterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filterName}", url.PathEscape(filterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -232,10 +224,11 @@ func (client *AccountFiltersClient) getHandleResponse(resp *http.Response) (Acco
 }
 
 // NewListPager - List Account Filters in the Media Services account.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// options - AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.List method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - options - AccountFiltersClientListOptions contains the optional parameters for the AccountFiltersClient.NewListPager method.
 func (client *AccountFiltersClient) NewListPager(resourceGroupName string, accountName string, options *AccountFiltersClientListOptions) *runtime.Pager[AccountFiltersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[AccountFiltersClientListResponse]{
 		More: func(page AccountFiltersClientListResponse) bool {
@@ -252,7 +245,7 @@ func (client *AccountFiltersClient) NewListPager(resourceGroupName string, accou
 			if err != nil {
 				return AccountFiltersClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return AccountFiltersClientListResponse{}, err
 			}
@@ -279,7 +272,7 @@ func (client *AccountFiltersClient) listCreateRequest(ctx context.Context, resou
 		return nil, errors.New("parameter accountName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -301,18 +294,19 @@ func (client *AccountFiltersClient) listHandleResponse(resp *http.Response) (Acc
 
 // Update - Updates an existing Account Filter in the Media Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2022-08-01
-// resourceGroupName - The name of the resource group within the Azure subscription.
-// accountName - The Media Services account name.
-// filterName - The Account Filter name
-// parameters - The request parameters
-// options - AccountFiltersClientUpdateOptions contains the optional parameters for the AccountFiltersClient.Update method.
+//   - resourceGroupName - The name of the resource group within the Azure subscription.
+//   - accountName - The Media Services account name.
+//   - filterName - The Account Filter name
+//   - parameters - The request parameters
+//   - options - AccountFiltersClientUpdateOptions contains the optional parameters for the AccountFiltersClient.Update method.
 func (client *AccountFiltersClient) Update(ctx context.Context, resourceGroupName string, accountName string, filterName string, parameters AccountFilter, options *AccountFiltersClientUpdateOptions) (AccountFiltersClientUpdateResponse, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, accountName, filterName, parameters, options)
 	if err != nil {
 		return AccountFiltersClientUpdateResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return AccountFiltersClientUpdateResponse{}, err
 	}
@@ -341,7 +335,7 @@ func (client *AccountFiltersClient) updateCreateRequest(ctx context.Context, res
 		return nil, errors.New("parameter filterName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{filterName}", url.PathEscape(filterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

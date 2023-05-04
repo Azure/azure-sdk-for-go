@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,46 +24,38 @@ import (
 // SubAssessmentsClient contains the methods for the SubAssessments group.
 // Don't use this type directly, use NewSubAssessmentsClient() instead.
 type SubAssessmentsClient struct {
-	host string
-	pl   runtime.Pipeline
+	internal *arm.Client
 }
 
 // NewSubAssessmentsClient creates a new instance of SubAssessmentsClient with the specified values.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewSubAssessmentsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*SubAssessmentsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".SubAssessmentsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &SubAssessmentsClient{
-		host: ep,
-		pl:   pl,
+		internal: cl,
 	}
 	return client, nil
 }
 
 // Get - Get a security sub-assessment on your scanned resource
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2019-01-01-preview
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// assessmentName - The Assessment Key - Unique key for the assessment type
-// subAssessmentName - The Sub-Assessment Key - Unique key for the sub-assessment type
-// options - SubAssessmentsClientGetOptions contains the optional parameters for the SubAssessmentsClient.Get method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - assessmentName - The Assessment Key - Unique key for the assessment type
+//   - subAssessmentName - The Sub-Assessment Key - Unique key for the sub-assessment type
+//   - options - SubAssessmentsClientGetOptions contains the optional parameters for the SubAssessmentsClient.Get method.
 func (client *SubAssessmentsClient) Get(ctx context.Context, scope string, assessmentName string, subAssessmentName string, options *SubAssessmentsClientGetOptions) (SubAssessmentsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, scope, assessmentName, subAssessmentName, options)
 	if err != nil {
 		return SubAssessmentsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return SubAssessmentsClientGetResponse{}, err
 	}
@@ -87,7 +77,7 @@ func (client *SubAssessmentsClient) getCreateRequest(ctx context.Context, scope 
 		return nil, errors.New("parameter subAssessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subAssessmentName}", url.PathEscape(subAssessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -108,11 +98,12 @@ func (client *SubAssessmentsClient) getHandleResponse(resp *http.Response) (SubA
 }
 
 // NewListPager - Get security sub-assessments on all your scanned resources inside a scope
+//
 // Generated from API version 2019-01-01-preview
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// assessmentName - The Assessment Key - Unique key for the assessment type
-// options - SubAssessmentsClientListOptions contains the optional parameters for the SubAssessmentsClient.List method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - assessmentName - The Assessment Key - Unique key for the assessment type
+//   - options - SubAssessmentsClientListOptions contains the optional parameters for the SubAssessmentsClient.NewListPager method.
 func (client *SubAssessmentsClient) NewListPager(scope string, assessmentName string, options *SubAssessmentsClientListOptions) *runtime.Pager[SubAssessmentsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SubAssessmentsClientListResponse]{
 		More: func(page SubAssessmentsClientListResponse) bool {
@@ -129,7 +120,7 @@ func (client *SubAssessmentsClient) NewListPager(scope string, assessmentName st
 			if err != nil {
 				return SubAssessmentsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SubAssessmentsClientListResponse{}, err
 			}
@@ -149,7 +140,7 @@ func (client *SubAssessmentsClient) listCreateRequest(ctx context.Context, scope
 		return nil, errors.New("parameter assessmentName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{assessmentName}", url.PathEscape(assessmentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -170,10 +161,12 @@ func (client *SubAssessmentsClient) listHandleResponse(resp *http.Response) (Sub
 }
 
 // NewListAllPager - Get security sub-assessments on all your scanned resources inside a subscription scope
+//
 // Generated from API version 2019-01-01-preview
-// scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
-// (/providers/Microsoft.Management/managementGroups/mgName).
-// options - SubAssessmentsClientListAllOptions contains the optional parameters for the SubAssessmentsClient.ListAll method.
+//   - scope - Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or management group
+//     (/providers/Microsoft.Management/managementGroups/mgName).
+//   - options - SubAssessmentsClientListAllOptions contains the optional parameters for the SubAssessmentsClient.NewListAllPager
+//     method.
 func (client *SubAssessmentsClient) NewListAllPager(scope string, options *SubAssessmentsClientListAllOptions) *runtime.Pager[SubAssessmentsClientListAllResponse] {
 	return runtime.NewPager(runtime.PagingHandler[SubAssessmentsClientListAllResponse]{
 		More: func(page SubAssessmentsClientListAllResponse) bool {
@@ -190,7 +183,7 @@ func (client *SubAssessmentsClient) NewListAllPager(scope string, options *SubAs
 			if err != nil {
 				return SubAssessmentsClientListAllResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return SubAssessmentsClientListAllResponse{}, err
 			}
@@ -206,7 +199,7 @@ func (client *SubAssessmentsClient) NewListAllPager(scope string, options *SubAs
 func (client *SubAssessmentsClient) listAllCreateRequest(ctx context.Context, scope string, options *SubAssessmentsClientListAllOptions) (*policy.Request, error) {
 	urlPath := "/{scope}/providers/Microsoft.Security/subAssessments"
 	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

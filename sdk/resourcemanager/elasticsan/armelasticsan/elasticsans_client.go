@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,65 +24,58 @@ import (
 // ElasticSansClient contains the methods for the ElasticSans group.
 // Don't use this type directly, use NewElasticSansClient() instead.
 type ElasticSansClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewElasticSansClient creates a new instance of ElasticSansClient with the specified values.
-// subscriptionID - The ID of the target subscription.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The ID of the target subscription.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewElasticSansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ElasticSansClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".ElasticSansClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &ElasticSansClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreate - Create ElasticSan.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-20-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// elasticSanName - The name of the ElasticSan.
-// parameters - Elastic San object.
-// options - ElasticSansClientBeginCreateOptions contains the optional parameters for the ElasticSansClient.BeginCreate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - elasticSanName - The name of the ElasticSan.
+//   - parameters - Elastic San object.
+//   - options - ElasticSansClientBeginCreateOptions contains the optional parameters for the ElasticSansClient.BeginCreate method.
 func (client *ElasticSansClient) BeginCreate(ctx context.Context, resourceGroupName string, elasticSanName string, parameters ElasticSan, options *ElasticSansClientBeginCreateOptions) (*runtime.Poller[ElasticSansClientCreateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.create(ctx, resourceGroupName, elasticSanName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ElasticSansClientCreateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticSansClientCreateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ElasticSansClientCreateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ElasticSansClientCreateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Create - Create ElasticSan.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-20-preview
 func (client *ElasticSansClient) create(ctx context.Context, resourceGroupName string, elasticSanName string, parameters ElasticSan, options *ElasticSansClientBeginCreateOptions) (*http.Response, error) {
 	req, err := client.createCreateRequest(ctx, resourceGroupName, elasticSanName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +100,7 @@ func (client *ElasticSansClient) createCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter elasticSanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{elasticSanName}", url.PathEscape(elasticSanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,33 +113,35 @@ func (client *ElasticSansClient) createCreateRequest(ctx context.Context, resour
 
 // BeginDelete - Delete a Elastic San.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-20-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// elasticSanName - The name of the ElasticSan.
-// options - ElasticSansClientBeginDeleteOptions contains the optional parameters for the ElasticSansClient.BeginDelete method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - elasticSanName - The name of the ElasticSan.
+//   - options - ElasticSansClientBeginDeleteOptions contains the optional parameters for the ElasticSansClient.BeginDelete method.
 func (client *ElasticSansClient) BeginDelete(ctx context.Context, resourceGroupName string, elasticSanName string, options *ElasticSansClientBeginDeleteOptions) (*runtime.Poller[ElasticSansClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, elasticSanName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ElasticSansClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticSansClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ElasticSansClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ElasticSansClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Delete a Elastic San.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-20-preview
 func (client *ElasticSansClient) deleteOperation(ctx context.Context, resourceGroupName string, elasticSanName string, options *ElasticSansClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, elasticSanName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -173,7 +166,7 @@ func (client *ElasticSansClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter elasticSanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{elasticSanName}", url.PathEscape(elasticSanName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -186,16 +179,17 @@ func (client *ElasticSansClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Get a ElasticSan.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-20-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// elasticSanName - The name of the ElasticSan.
-// options - ElasticSansClientGetOptions contains the optional parameters for the ElasticSansClient.Get method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - elasticSanName - The name of the ElasticSan.
+//   - options - ElasticSansClientGetOptions contains the optional parameters for the ElasticSansClient.Get method.
 func (client *ElasticSansClient) Get(ctx context.Context, resourceGroupName string, elasticSanName string, options *ElasticSansClientGetOptions) (ElasticSansClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, elasticSanName, options)
 	if err != nil {
 		return ElasticSansClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return ElasticSansClientGetResponse{}, err
 	}
@@ -220,7 +214,7 @@ func (client *ElasticSansClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter elasticSanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{elasticSanName}", url.PathEscape(elasticSanName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -241,10 +235,11 @@ func (client *ElasticSansClient) getHandleResponse(resp *http.Response) (Elastic
 }
 
 // NewListByResourceGroupPager - Gets a list of ElasticSan in a resource group.
+//
 // Generated from API version 2021-11-20-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// options - ElasticSansClientListByResourceGroupOptions contains the optional parameters for the ElasticSansClient.ListByResourceGroup
-// method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ElasticSansClientListByResourceGroupOptions contains the optional parameters for the ElasticSansClient.NewListByResourceGroupPager
+//     method.
 func (client *ElasticSansClient) NewListByResourceGroupPager(resourceGroupName string, options *ElasticSansClientListByResourceGroupOptions) *runtime.Pager[ElasticSansClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ElasticSansClientListByResourceGroupResponse]{
 		More: func(page ElasticSansClientListByResourceGroupResponse) bool {
@@ -261,7 +256,7 @@ func (client *ElasticSansClient) NewListByResourceGroupPager(resourceGroupName s
 			if err != nil {
 				return ElasticSansClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ElasticSansClientListByResourceGroupResponse{}, err
 			}
@@ -284,7 +279,7 @@ func (client *ElasticSansClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -305,9 +300,10 @@ func (client *ElasticSansClient) listByResourceGroupHandleResponse(resp *http.Re
 }
 
 // NewListBySubscriptionPager - Gets a list of ElasticSans in a subscription
+//
 // Generated from API version 2021-11-20-preview
-// options - ElasticSansClientListBySubscriptionOptions contains the optional parameters for the ElasticSansClient.ListBySubscription
-// method.
+//   - options - ElasticSansClientListBySubscriptionOptions contains the optional parameters for the ElasticSansClient.NewListBySubscriptionPager
+//     method.
 func (client *ElasticSansClient) NewListBySubscriptionPager(options *ElasticSansClientListBySubscriptionOptions) *runtime.Pager[ElasticSansClientListBySubscriptionResponse] {
 	return runtime.NewPager(runtime.PagingHandler[ElasticSansClientListBySubscriptionResponse]{
 		More: func(page ElasticSansClientListBySubscriptionResponse) bool {
@@ -324,7 +320,7 @@ func (client *ElasticSansClient) NewListBySubscriptionPager(options *ElasticSans
 			if err != nil {
 				return ElasticSansClientListBySubscriptionResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return ElasticSansClientListBySubscriptionResponse{}, err
 			}
@@ -343,7 +339,7 @@ func (client *ElasticSansClient) listBySubscriptionCreateRequest(ctx context.Con
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -365,34 +361,36 @@ func (client *ElasticSansClient) listBySubscriptionHandleResponse(resp *http.Res
 
 // BeginUpdate - Update a Elastic San.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-20-preview
-// resourceGroupName - The name of the resource group. The name is case insensitive.
-// elasticSanName - The name of the ElasticSan.
-// parameters - Elastic San object.
-// options - ElasticSansClientBeginUpdateOptions contains the optional parameters for the ElasticSansClient.BeginUpdate method.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - elasticSanName - The name of the ElasticSan.
+//   - parameters - Elastic San object.
+//   - options - ElasticSansClientBeginUpdateOptions contains the optional parameters for the ElasticSansClient.BeginUpdate method.
 func (client *ElasticSansClient) BeginUpdate(ctx context.Context, resourceGroupName string, elasticSanName string, parameters Update, options *ElasticSansClientBeginUpdateOptions) (*runtime.Poller[ElasticSansClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, elasticSanName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[ElasticSansClientUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ElasticSansClientUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[ElasticSansClientUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[ElasticSansClientUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Update - Update a Elastic San.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2021-11-20-preview
 func (client *ElasticSansClient) update(ctx context.Context, resourceGroupName string, elasticSanName string, parameters Update, options *ElasticSansClientBeginUpdateOptions) (*http.Response, error) {
 	req, err := client.updateCreateRequest(ctx, resourceGroupName, elasticSanName, parameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -417,7 +415,7 @@ func (client *ElasticSansClient) updateCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter elasticSanName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{elasticSanName}", url.PathEscape(elasticSanName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

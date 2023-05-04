@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,49 +24,41 @@ import (
 // IntegrationRuntimeObjectMetadataClient contains the methods for the IntegrationRuntimeObjectMetadata group.
 // Don't use this type directly, use NewIntegrationRuntimeObjectMetadataClient() instead.
 type IntegrationRuntimeObjectMetadataClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewIntegrationRuntimeObjectMetadataClient creates a new instance of IntegrationRuntimeObjectMetadataClient with the specified values.
-// subscriptionID - The subscription identifier.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription identifier.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewIntegrationRuntimeObjectMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IntegrationRuntimeObjectMetadataClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".IntegrationRuntimeObjectMetadataClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &IntegrationRuntimeObjectMetadataClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // Get - Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimeObjectMetadataClientGetOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.Get
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimeObjectMetadataClientGetOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.Get
+//     method.
 func (client *IntegrationRuntimeObjectMetadataClient) Get(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientGetOptions) (IntegrationRuntimeObjectMetadataClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
 		return IntegrationRuntimeObjectMetadataClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return IntegrationRuntimeObjectMetadataClientGetResponse{}, err
 	}
@@ -97,7 +87,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) getCreateRequest(ctx conte
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -122,33 +112,35 @@ func (client *IntegrationRuntimeObjectMetadataClient) getHandleResponse(resp *ht
 
 // BeginRefresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
-// resourceGroupName - The resource group name.
-// factoryName - The factory name.
-// integrationRuntimeName - The integration runtime name.
-// options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
-// method.
+//   - resourceGroupName - The resource group name.
+//   - factoryName - The factory name.
+//   - integrationRuntimeName - The integration runtime name.
+//   - options - IntegrationRuntimeObjectMetadataClientBeginRefreshOptions contains the optional parameters for the IntegrationRuntimeObjectMetadataClient.BeginRefresh
+//     method.
 func (client *IntegrationRuntimeObjectMetadataClient) BeginRefresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*runtime.Poller[IntegrationRuntimeObjectMetadataClientRefreshResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.refresh(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller[IntegrationRuntimeObjectMetadataClientRefreshResponse](resp, client.pl, nil)
+		return runtime.NewPoller[IntegrationRuntimeObjectMetadataClientRefreshResponse](resp, client.internal.Pipeline(), nil)
 	} else {
-		return runtime.NewPollerFromResumeToken[IntegrationRuntimeObjectMetadataClientRefreshResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[IntegrationRuntimeObjectMetadataClientRefreshResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Refresh - Refresh a SSIS integration runtime object metadata.
 // If the operation fails it returns an *azcore.ResponseError type.
+//
 // Generated from API version 2018-06-01
 func (client *IntegrationRuntimeObjectMetadataClient) refresh(ctx context.Context, resourceGroupName string, factoryName string, integrationRuntimeName string, options *IntegrationRuntimeObjectMetadataClientBeginRefreshOptions) (*http.Response, error) {
 	req, err := client.refreshCreateRequest(ctx, resourceGroupName, factoryName, integrationRuntimeName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -177,7 +169,7 @@ func (client *IntegrationRuntimeObjectMetadataClient) refreshCreateRequest(ctx c
 		return nil, errors.New("parameter integrationRuntimeName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{integrationRuntimeName}", url.PathEscape(integrationRuntimeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}

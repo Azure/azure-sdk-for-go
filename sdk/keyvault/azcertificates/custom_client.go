@@ -9,6 +9,9 @@ package azcertificates
 // this file contains handwritten additions to the generated code
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
@@ -37,8 +40,11 @@ func NewClient(vaultURL string, credential azcore.TokenCredential, options *Clie
 			DisableChallengeResourceVerification: options.DisableChallengeResourceVerification,
 		},
 	)
-	pl := runtime.NewPipeline(moduleName, version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
-	return &Client{endpoint: vaultURL, pl: pl}, nil
+	azcoreClient, err := azcore.NewClient("azcertificates.Client", version, runtime.PipelineOptions{PerRetry: []policy.Policy{authPolicy}}, &options.ClientOptions)
+	if err != nil {
+		return nil, err
+	}
+	return &Client{endpoint: vaultURL, internal: azcoreClient}, nil
 }
 
 // ID is a certificate's unique ID, containing its name and version.
@@ -57,4 +63,31 @@ func (i *ID) Version() string {
 		return ""
 	}
 	return *version
+}
+
+// ErrorInfo - Internal error from Azure Key Vault server.
+type ErrorInfo struct {
+	// REQUIRED; A machine readable error code.
+	Code string
+
+	// full error message detailing why the operation failed.
+	data []byte
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ErrorInfo.
+func (e *ErrorInfo) UnmarshalJSON(data []byte) error {
+	e.data = data
+	ei := struct{ Code string }{}
+	if err := json.Unmarshal(data, &ei); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %v", e, err)
+	}
+	e.Code = ei.Code
+
+	return nil
+}
+
+// Error implements a custom error for type ErrorInfo.
+// Returns full error message
+func (e *ErrorInfo) Error() string {
+	return string(e.data)
 }

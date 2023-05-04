@@ -135,9 +135,7 @@ Testing is built into the Go toolchain as well with the `testing` library. The t
 | playback | `$ENV:AZURE_RECORD_MODE="playback"` | Running tests against recording HTTP interactiosn |
 | live | `$ENV:AZURE_RECORD_MODE="live"` | Bypassing test proxy, running against live service, and not recording HTTP interactions (used by live pipelines) |
 
-To get started first install [`docker`][get_docker]. Then to start the proxy, from the root of the repository, run the command `./eng/common/testproxy/docker-start-proxy.ps1 start`. This command will take care of pulling the pinned docker image and running it in the background.
-
-It is not required to run the test-proxy from within the docker container, but this is how the proxy is run in the Azure DevOps pipelines. If you would like to run the test-proxy in a different manner the [documentation][test_proxy_docs] has more information.
+To get started first [install test-proxy][test_proxy_install] via the standalone executable. Then to start the proxy, from the root of the repository, run the command `test-proxy start`.
 
 ### Test Mode Options
 
@@ -367,6 +365,7 @@ This creates the pipelines that will verify future PRs. The `azure-sdk-for-go` i
 [go_download]: https://golang.org/dl/
 [require_package]: https://pkg.go.dev/github.com/stretchr/testify/require
 [test_proxy_docs]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy
+[test_proxy_install]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#via-standalone-executable
 [workspace_setup]: https://www.digitalocean.com/community/tutorials/how-to-install-go-and-set-up-a-local-programming-environment-on-windows-10
 [directory_structure]: https://azure.github.io/azure-sdk/golang_introduction.html
 [module_design]: https://azure.github.io/azure-sdk/golang_introduction.html#azure-sdk-module-design

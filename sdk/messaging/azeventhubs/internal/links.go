@@ -7,7 +7,6 @@ import (
 	"context"
 	"fmt"
 	"sync"
-	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/internal/log"
@@ -62,8 +61,6 @@ type Links[LinkT AMQPLink] struct {
 	managementPath string
 	newLinkFn      func(ctx context.Context, session amqpwrap.AMQPSession, partitionID string) (LinkT, error)
 	entityPathFn   func(partitionID string) string
-
-	contextWithTimeoutFn contextWithTimeoutFn // stubbable version of context.WithTimeout
 }
 
 type NewLinksFn[LinkT AMQPLink] func(ctx context.Context, session amqpwrap.AMQPSession, entityPath string) (LinkT, error)
@@ -76,9 +73,8 @@ func NewLinks[LinkT AMQPLink](ns NamespaceForAMQPLinks, managementPath string, e
 		managementLinkMu: &sync.RWMutex{},
 		managementPath:   managementPath,
 
-		newLinkFn:            newLinkFn,
-		entityPathFn:         entityPathFn,
-		contextWithTimeoutFn: context.WithTimeout,
+		newLinkFn:    newLinkFn,
+		entityPathFn: entityPathFn,
 	}
 }
 
@@ -93,23 +89,9 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 	case RecoveryKindNone:
 		return nil
 	case RecoveryKindLink:
-		ctx, cancel := l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
-		defer cancel()
-
-		err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName())
-
-		if err != nil {
-			if IsCancelError(err) {
-				azlog.Writef(exported.EventConn, "(%s) Link close was cancelled, connection will reset on next recovery", lwid.String())
-				// if we failed to close a link then something odd is going on with
-				// our connection or the user has cancelled. Let the next attempt to use
-				// the connection recover it.
-				return errConnResetNeeded
-			}
-
-			// we don't need to propagate this error - it'll just be the link detach error or whatever
-			// caused the link to detach (for instance, if the Event Hub itself has been Disabled).
+		if err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName()); err != nil {
 			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link for link recovery: %s", lwid.String(), err)
+			return err
 		}
 
 		return nil
@@ -118,9 +100,6 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 		// We used to close _all_ the links, but no longer do that since it's possible (when we do receiver
 		// redirect) to have more than one active connection at a time which means not all links would be
 		// affected when a single connection goes down.
-		ctx, cancel := l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
-		defer cancel()
-
 		if err := l.closePartitionLinkIfMatch(ctx, partitionID, lwid.Link.LinkName()); err != nil {
 			azlog.Writef(exported.EventConn, "(%s) Error when cleaning up old link: %s", lwid.String(), err)
 
@@ -143,9 +122,6 @@ func (l *Links[LinkT]) RecoverIfNeeded(ctx context.Context, partitionID string, 
 		//
 		// For #2, we may recreate the connection. It's possible we won't if the connection itself
 		// has already been recovered by another goroutine.
-		ctx, cancel = l.contextWithTimeoutFn(ctx, defaultCloseTimeout)
-		defer cancel()
-
 		err := l.ns.Recover(ctx, lwid.ConnID)
 
 		if err != nil {
@@ -522,9 +498,3 @@ func (ls *linkState[LinkT]) Close(ctx context.Context) error {
 
 	return nil
 }
-
-const defaultCloseTimeout = time.Minute
-
-// contextWithTimeoutFn matches the signature for `context.WithTimeout` and is used when we want to
-// stub things out for tests.
-type contextWithTimeoutFn func(parent context.Context, timeout time.Duration) (context.Context, context.CancelFunc)

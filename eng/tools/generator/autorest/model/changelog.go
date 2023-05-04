@@ -94,9 +94,13 @@ func writeChangelogForPackage(r *report.Package) string {
 	}
 
 	// write additional changes
+	toAny := typeToAny(r.BreakingChanges, true)
 	additives := getNewContents(r.AdditiveChanges)
-	if len(additives) > 0 {
+	if len(additives) > 0 || len(toAny) > 0 {
 		md.WriteHeader("Features Added")
+		for _, item := range toAny {
+			md.WriteListItem(item)
+		}
 		for _, item := range additives {
 			md.WriteListItem(item)
 		}
@@ -152,7 +156,7 @@ func getNewContents(c *delta.Content) []string {
 			for _, cs := range existedTypeAlias[k] {
 				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
 			}
-			line := fmt.Sprintf("New value %s added to type alias `%s`", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
+			line := fmt.Sprintf("New value %s added to enum type `%s`", strings.TrimRight(strings.TrimSpace(aliasValue), ","), k)
 			items = append(items, line)
 		}
 
@@ -161,7 +165,7 @@ func getNewContents(c *delta.Content) []string {
 			for _, cs := range newTypeAlias[k] {
 				aliasValue = fmt.Sprintf("%s`%s`, ", aliasValue, cs)
 			}
-			line := fmt.Sprintf("New type alias `%s` with values %s", k, strings.TrimRight(strings.TrimSpace(aliasValue), ","))
+			line := fmt.Sprintf("New enum type `%s` with values %s", k, strings.TrimRight(strings.TrimSpace(aliasValue), ","))
 			items = append(items, line)
 		}
 	}
@@ -194,12 +198,22 @@ func getNewContents(c *delta.Content) []string {
 		modified := c.GetModifiedStructs()
 		for _, s := range sortChangeItem(modified) {
 			f := modified[s]
+			afs := ""
+			sort.Strings(f.AnonymousFields)
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("New anonymous field `%s` in struct `%s`", af, s)
+				afs = fmt.Sprintf("%s`%s`, ", afs, af)
+			}
+			if afs != "" {
+				line := fmt.Sprintf("New anonymous field %s in struct `%s`", strings.TrimSuffix(strings.TrimSpace(afs), ","), s)
 				items = append(items, line)
 			}
+
+			newFields := ""
 			for _, field := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("New field `%s` in struct `%s`", field, s)
+				newFields = fmt.Sprintf("%s`%s`, ", newFields, field)
+			}
+			if newFields != "" {
+				line := fmt.Sprintf("New field %s in struct `%s`", strings.TrimSuffix(strings.TrimSpace(newFields), ","), s)
 				items = append(items, line)
 			}
 		}
@@ -261,15 +275,8 @@ func getSignatureChangeItems(b *report.BreakingChanges) []string {
 		}
 	}
 	// write struct changes
-	if len(b.Structs) > 0 {
-		for _, k := range sortChangeItem(b.Structs) {
-			v := b.Structs[k]
-			for f, d := range v.Fields {
-				line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
-				items = append(items, line)
-			}
-		}
-	}
+	items = append(items, typeToAny(b, false)...)
+
 	// interfaces are skipped, which are identical to some of the functions
 
 	return items
@@ -302,36 +309,47 @@ func getRemovedContent(removed *delta.Content) []string {
 			for _, cs := range removedConst[k] {
 				consts = fmt.Sprintf("%s`%s`, ", consts, cs)
 			}
-			line := fmt.Sprintf("Const %s from type alias `%s` has been removed", strings.TrimRight(strings.TrimSpace(consts), ","), k)
+			line := fmt.Sprintf("%s from enum `%s` has been removed", strings.TrimRight(strings.TrimSpace(consts), ","), k)
 			items = append(items, line)
 		}
 	}
 	// write type alias
 	if len(removed.TypeAliases) > 0 {
 		for _, k := range sortChangeItem(removed.TypeAliases) {
-			line := fmt.Sprintf("Type alias `%s` has been removed", k)
+			line := fmt.Sprintf("Enum `%s` has been removed", k)
 			items = append(items, line)
 		}
 	}
 	// write functions
 	if len(removed.Funcs) > 0 {
 		var lroItem []string
+		var paginationItem []string
 		for _, k := range sortFuncItem(removed.Funcs) {
 			v := removed.Funcs[k]
 			if v.ReplacedBy != nil {
 				var line string
-				if !strings.Contains(k, "Begin") {
-					line = fmt.Sprintf("Operation `%s` has been changed to LRO, use `%s` instead.", k, *v.ReplacedBy)
-				} else {
-					line = fmt.Sprintf("Operation `%s` has been changed to non-LRO, use `%s` instead.", k, *v.ReplacedBy)
+				if strings.Contains(k, "Begin") || strings.Contains(*v.ReplacedBy, "Begin") {
+					if !strings.Contains(k, "Begin") {
+						line = fmt.Sprintf("Operation `%s` has been changed to LRO, use `%s` instead.", k, *v.ReplacedBy)
+					} else {
+						line = fmt.Sprintf("Operation `%s` has been changed to non-LRO, use `%s` instead.", k, *v.ReplacedBy)
+					}
+					lroItem = append(lroItem, line)
+				} else if strings.Contains(k, "Pager") || strings.Contains(*v.ReplacedBy, "Pager") {
+					if !strings.Contains(k, "Pager") {
+						line = fmt.Sprintf("Operation `%s` has supported pagination, use `%s` instead.", k, *v.ReplacedBy)
+					} else {
+						line = fmt.Sprintf("Operation `%s` does not support pagination anymore, use `%s` instead.", k, *v.ReplacedBy)
+					}
+					paginationItem = append(paginationItem, line)
 				}
-				lroItem = append(lroItem, line)
 				continue
 			}
 			line := fmt.Sprintf("Function `%s` has been removed", k)
 			items = append(items, line)
 		}
 		items = append(items, lroItem...)
+		items = append(items, paginationItem...)
 	}
 	// write complete struct removal
 	if len(removed.CompleteStructs) > 0 {
@@ -345,12 +363,22 @@ func getRemovedContent(removed *delta.Content) []string {
 	if len(modified) > 0 {
 		for _, s := range sortChangeItem(modified) {
 			f := modified[s]
+			afs := ""
+			sort.Strings(f.AnonymousFields)
 			for _, af := range f.AnonymousFields {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", af, s)
+				afs = fmt.Sprintf("%s`%s`, ", afs, af)
+			}
+			if afs != "" {
+				line := fmt.Sprintf("Field %s of struct `%s` has been removed", strings.TrimSuffix(strings.TrimSpace(afs), ","), s)
 				items = append(items, line)
 			}
+
+			newFields := ""
 			for _, field := range sortChangeItem(f.Fields) {
-				line := fmt.Sprintf("Field `%s` of struct `%s` has been removed", field, s)
+				newFields = fmt.Sprintf("%s`%s`, ", newFields, field)
+			}
+			if newFields != "" {
+				line := fmt.Sprintf("Field %s of struct `%s` has been removed", strings.TrimSuffix(strings.TrimSpace(newFields), ","), s)
 				items = append(items, line)
 			}
 		}
@@ -364,6 +392,10 @@ type sortItem interface {
 }
 
 func sortChangeItem[T sortItem](change map[string]T) []string {
+	if len(change) == 0 {
+		return nil
+	}
+
 	s := make([]string, 0, len(change))
 	for k := range change {
 		s = append(s, k)
@@ -418,4 +450,27 @@ func removePattern(funcName string, returnValue string) string {
 	}
 
 	return fmt.Sprintf("%s.%s", before, after)
+}
+
+func typeToAny(b *report.BreakingChanges, flag bool) []string {
+	var items []string
+
+	if b == nil || b.IsEmpty() {
+		return items
+	}
+
+	if len(b.Structs) > 0 {
+		for _, k := range sortChangeItem(b.Structs) {
+			v := b.Structs[k]
+			for _, f := range sortChangeItem(v.Fields) {
+				d := v.Fields[f]
+				if flag == (d.To == "any") {
+					line := fmt.Sprintf("Type of `%s.%s` has been changed from `%s` to `%s`", k, f, d.From, d.To)
+					items = append(items, line)
+				}
+			}
+		}
+	}
+
+	return items
 }

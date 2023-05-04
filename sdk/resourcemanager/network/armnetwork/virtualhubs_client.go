@@ -14,8 +14,6 @@ import (
 	"errors"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
-	armruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/arm/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
@@ -26,67 +24,60 @@ import (
 // VirtualHubsClient contains the methods for the VirtualHubs group.
 // Don't use this type directly, use NewVirtualHubsClient() instead.
 type VirtualHubsClient struct {
-	host           string
+	internal       *arm.Client
 	subscriptionID string
-	pl             runtime.Pipeline
 }
 
 // NewVirtualHubsClient creates a new instance of VirtualHubsClient with the specified values.
-// subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
-// ID forms part of the URI for every service call.
-// credential - used to authorize requests. Usually a credential from azidentity.
-// options - pass nil to accept the default values.
+//   - subscriptionID - The subscription credentials which uniquely identify the Microsoft Azure subscription. The subscription
+//     ID forms part of the URI for every service call.
+//   - credential - used to authorize requests. Usually a credential from azidentity.
+//   - options - pass nil to accept the default values.
 func NewVirtualHubsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualHubsClient, error) {
-	if options == nil {
-		options = &arm.ClientOptions{}
-	}
-	ep := cloud.AzurePublic.Services[cloud.ResourceManager].Endpoint
-	if c, ok := options.Cloud.Services[cloud.ResourceManager]; ok {
-		ep = c.Endpoint
-	}
-	pl, err := armruntime.NewPipeline(moduleName, moduleVersion, credential, runtime.PipelineOptions{}, options)
+	cl, err := arm.NewClient(moduleName+".VirtualHubsClient", moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
 	}
 	client := &VirtualHubsClient{
 		subscriptionID: subscriptionID,
-		host:           ep,
-		pl:             pl,
+		internal:       cl,
 	}
 	return client, nil
 }
 
 // BeginCreateOrUpdate - Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// virtualHubParameters - Parameters supplied to create or update VirtualHub.
-// options - VirtualHubsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHubsClient.BeginCreateOrUpdate
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - virtualHubParameters - Parameters supplied to create or update VirtualHub.
+//   - options - VirtualHubsClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualHubsClient.BeginCreateOrUpdate
+//     method.
 func (client *VirtualHubsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub, options *VirtualHubsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VirtualHubsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, virtualHubName, virtualHubParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualHubsClientCreateOrUpdateResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualHubsClientCreateOrUpdateResponse]{
 			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualHubsClientCreateOrUpdateResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualHubsClientCreateOrUpdateResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // CreateOrUpdate - Creates a VirtualHub resource if it doesn't exist else updates the existing VirtualHub.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualHubsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters VirtualHub, options *VirtualHubsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, virtualHubName, virtualHubParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -111,12 +102,12 @@ func (client *VirtualHubsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, virtualHubParameters)
@@ -124,33 +115,35 @@ func (client *VirtualHubsClient) createOrUpdateCreateRequest(ctx context.Context
 
 // BeginDelete - Deletes a VirtualHub.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// options - VirtualHubsClientBeginDeleteOptions contains the optional parameters for the VirtualHubsClient.BeginDelete method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - options - VirtualHubsClientBeginDeleteOptions contains the optional parameters for the VirtualHubsClient.BeginDelete method.
 func (client *VirtualHubsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsClientBeginDeleteOptions) (*runtime.Poller[VirtualHubsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualHubsClientDeleteResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualHubsClientDeleteResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualHubsClientDeleteResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualHubsClientDeleteResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // Delete - Deletes a VirtualHub.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualHubsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsClientBeginDeleteOptions) (*http.Response, error) {
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,12 +168,12 @@ func (client *VirtualHubsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -188,16 +181,17 @@ func (client *VirtualHubsClient) deleteCreateRequest(ctx context.Context, resour
 
 // Get - Retrieves the details of a VirtualHub.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// options - VirtualHubsClientGetOptions contains the optional parameters for the VirtualHubsClient.Get method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - options - VirtualHubsClientGetOptions contains the optional parameters for the VirtualHubsClient.Get method.
 func (client *VirtualHubsClient) Get(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsClientGetOptions) (VirtualHubsClientGetResponse, error) {
 	req, err := client.getCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 	if err != nil {
 		return VirtualHubsClientGetResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualHubsClientGetResponse{}, err
 	}
@@ -222,12 +216,12 @@ func (client *VirtualHubsClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -245,35 +239,37 @@ func (client *VirtualHubsClient) getHandleResponse(resp *http.Response) (Virtual
 // BeginGetEffectiveVirtualHubRoutes - Gets the effective routes configured for the Virtual Hub resource or the specified
 // resource .
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// options - VirtualHubsClientBeginGetEffectiveVirtualHubRoutesOptions contains the optional parameters for the VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - options - VirtualHubsClientBeginGetEffectiveVirtualHubRoutesOptions contains the optional parameters for the VirtualHubsClient.BeginGetEffectiveVirtualHubRoutes
+//     method.
 func (client *VirtualHubsClient) BeginGetEffectiveVirtualHubRoutes(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsClientBeginGetEffectiveVirtualHubRoutesOptions) (*runtime.Poller[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getEffectiveVirtualHubRoutes(ctx, resourceGroupName, virtualHubName, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualHubsClientGetEffectiveVirtualHubRoutesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // GetEffectiveVirtualHubRoutes - Gets the effective routes configured for the Virtual Hub resource or the specified resource
 // .
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualHubsClient) getEffectiveVirtualHubRoutes(ctx context.Context, resourceGroupName string, virtualHubName string, options *VirtualHubsClientBeginGetEffectiveVirtualHubRoutesOptions) (*http.Response, error) {
 	req, err := client.getEffectiveVirtualHubRoutesCreateRequest(ctx, resourceGroupName, virtualHubName, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -298,12 +294,12 @@ func (client *VirtualHubsClient) getEffectiveVirtualHubRoutesCreateRequest(ctx c
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.EffectiveRoutesParameters != nil {
@@ -314,35 +310,37 @@ func (client *VirtualHubsClient) getEffectiveVirtualHubRoutesCreateRequest(ctx c
 
 // BeginGetInboundRoutes - Gets the inbound routes configured for the Virtual Hub on a particular connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// getInboundRoutesParameters - Parameters supplied to get the inbound routes for a connection resource.
-// options - VirtualHubsClientBeginGetInboundRoutesOptions contains the optional parameters for the VirtualHubsClient.BeginGetInboundRoutes
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - getInboundRoutesParameters - Parameters supplied to get the inbound routes for a connection resource.
+//   - options - VirtualHubsClientBeginGetInboundRoutesOptions contains the optional parameters for the VirtualHubsClient.BeginGetInboundRoutes
+//     method.
 func (client *VirtualHubsClient) BeginGetInboundRoutes(ctx context.Context, resourceGroupName string, virtualHubName string, getInboundRoutesParameters GetInboundRoutesParameters, options *VirtualHubsClientBeginGetInboundRoutesOptions) (*runtime.Poller[VirtualHubsClientGetInboundRoutesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getInboundRoutes(ctx, resourceGroupName, virtualHubName, getInboundRoutesParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualHubsClientGetInboundRoutesResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualHubsClientGetInboundRoutesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualHubsClientGetInboundRoutesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualHubsClientGetInboundRoutesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // GetInboundRoutes - Gets the inbound routes configured for the Virtual Hub on a particular connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualHubsClient) getInboundRoutes(ctx context.Context, resourceGroupName string, virtualHubName string, getInboundRoutesParameters GetInboundRoutesParameters, options *VirtualHubsClientBeginGetInboundRoutesOptions) (*http.Response, error) {
 	req, err := client.getInboundRoutesCreateRequest(ctx, resourceGroupName, virtualHubName, getInboundRoutesParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -367,12 +365,12 @@ func (client *VirtualHubsClient) getInboundRoutesCreateRequest(ctx context.Conte
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, getInboundRoutesParameters)
@@ -380,35 +378,37 @@ func (client *VirtualHubsClient) getInboundRoutesCreateRequest(ctx context.Conte
 
 // BeginGetOutboundRoutes - Gets the outbound routes configured for the Virtual Hub on a particular connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// getOutboundRoutesParameters - Parameters supplied to get the outbound routes for a connection resource.
-// options - VirtualHubsClientBeginGetOutboundRoutesOptions contains the optional parameters for the VirtualHubsClient.BeginGetOutboundRoutes
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - getOutboundRoutesParameters - Parameters supplied to get the outbound routes for a connection resource.
+//   - options - VirtualHubsClientBeginGetOutboundRoutesOptions contains the optional parameters for the VirtualHubsClient.BeginGetOutboundRoutes
+//     method.
 func (client *VirtualHubsClient) BeginGetOutboundRoutes(ctx context.Context, resourceGroupName string, virtualHubName string, getOutboundRoutesParameters GetOutboundRoutesParameters, options *VirtualHubsClientBeginGetOutboundRoutesOptions) (*runtime.Poller[VirtualHubsClientGetOutboundRoutesResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.getOutboundRoutes(ctx, resourceGroupName, virtualHubName, getOutboundRoutesParameters, options)
 		if err != nil {
 			return nil, err
 		}
-		return runtime.NewPoller(resp, client.pl, &runtime.NewPollerOptions[VirtualHubsClientGetOutboundRoutesResponse]{
+		return runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualHubsClientGetOutboundRoutesResponse]{
 			FinalStateVia: runtime.FinalStateViaLocation,
 		})
 	} else {
-		return runtime.NewPollerFromResumeToken[VirtualHubsClientGetOutboundRoutesResponse](options.ResumeToken, client.pl, nil)
+		return runtime.NewPollerFromResumeToken[VirtualHubsClientGetOutboundRoutesResponse](options.ResumeToken, client.internal.Pipeline(), nil)
 	}
 }
 
 // GetOutboundRoutes - Gets the outbound routes configured for the Virtual Hub on a particular connection.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
+//
+// Generated from API version 2022-09-01
 func (client *VirtualHubsClient) getOutboundRoutes(ctx context.Context, resourceGroupName string, virtualHubName string, getOutboundRoutesParameters GetOutboundRoutesParameters, options *VirtualHubsClientBeginGetOutboundRoutesOptions) (*http.Response, error) {
 	req, err := client.getOutboundRoutesCreateRequest(ctx, resourceGroupName, virtualHubName, getOutboundRoutesParameters, options)
 	if err != nil {
 		return nil, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -433,20 +433,21 @@ func (client *VirtualHubsClient) getOutboundRoutesCreateRequest(ctx context.Cont
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, getOutboundRoutesParameters)
 }
 
 // NewListPager - Lists all the VirtualHubs in a subscription.
-// Generated from API version 2022-07-01
-// options - VirtualHubsClientListOptions contains the optional parameters for the VirtualHubsClient.List method.
+//
+// Generated from API version 2022-09-01
+//   - options - VirtualHubsClientListOptions contains the optional parameters for the VirtualHubsClient.NewListPager method.
 func (client *VirtualHubsClient) NewListPager(options *VirtualHubsClientListOptions) *runtime.Pager[VirtualHubsClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualHubsClientListResponse]{
 		More: func(page VirtualHubsClientListResponse) bool {
@@ -463,7 +464,7 @@ func (client *VirtualHubsClient) NewListPager(options *VirtualHubsClientListOpti
 			if err != nil {
 				return VirtualHubsClientListResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VirtualHubsClientListResponse{}, err
 			}
@@ -482,12 +483,12 @@ func (client *VirtualHubsClient) listCreateRequest(ctx context.Context, options 
 		return nil, errors.New("parameter client.subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -503,10 +504,11 @@ func (client *VirtualHubsClient) listHandleResponse(resp *http.Response) (Virtua
 }
 
 // NewListByResourceGroupPager - Lists all the VirtualHubs in a resource group.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// options - VirtualHubsClientListByResourceGroupOptions contains the optional parameters for the VirtualHubsClient.ListByResourceGroup
-// method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - options - VirtualHubsClientListByResourceGroupOptions contains the optional parameters for the VirtualHubsClient.NewListByResourceGroupPager
+//     method.
 func (client *VirtualHubsClient) NewListByResourceGroupPager(resourceGroupName string, options *VirtualHubsClientListByResourceGroupOptions) *runtime.Pager[VirtualHubsClientListByResourceGroupResponse] {
 	return runtime.NewPager(runtime.PagingHandler[VirtualHubsClientListByResourceGroupResponse]{
 		More: func(page VirtualHubsClientListByResourceGroupResponse) bool {
@@ -523,7 +525,7 @@ func (client *VirtualHubsClient) NewListByResourceGroupPager(resourceGroupName s
 			if err != nil {
 				return VirtualHubsClientListByResourceGroupResponse{}, err
 			}
-			resp, err := client.pl.Do(req)
+			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
 				return VirtualHubsClientListByResourceGroupResponse{}, err
 			}
@@ -546,12 +548,12 @@ func (client *VirtualHubsClient) listByResourceGroupCreateRequest(ctx context.Co
 		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -568,17 +570,18 @@ func (client *VirtualHubsClient) listByResourceGroupHandleResponse(resp *http.Re
 
 // UpdateTags - Updates VirtualHub tags.
 // If the operation fails it returns an *azcore.ResponseError type.
-// Generated from API version 2022-07-01
-// resourceGroupName - The resource group name of the VirtualHub.
-// virtualHubName - The name of the VirtualHub.
-// virtualHubParameters - Parameters supplied to update VirtualHub tags.
-// options - VirtualHubsClientUpdateTagsOptions contains the optional parameters for the VirtualHubsClient.UpdateTags method.
+//
+// Generated from API version 2022-09-01
+//   - resourceGroupName - The resource group name of the VirtualHub.
+//   - virtualHubName - The name of the VirtualHub.
+//   - virtualHubParameters - Parameters supplied to update VirtualHub tags.
+//   - options - VirtualHubsClientUpdateTagsOptions contains the optional parameters for the VirtualHubsClient.UpdateTags method.
 func (client *VirtualHubsClient) UpdateTags(ctx context.Context, resourceGroupName string, virtualHubName string, virtualHubParameters TagsObject, options *VirtualHubsClientUpdateTagsOptions) (VirtualHubsClientUpdateTagsResponse, error) {
 	req, err := client.updateTagsCreateRequest(ctx, resourceGroupName, virtualHubName, virtualHubParameters, options)
 	if err != nil {
 		return VirtualHubsClientUpdateTagsResponse{}, err
 	}
-	resp, err := client.pl.Do(req)
+	resp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
 		return VirtualHubsClientUpdateTagsResponse{}, err
 	}
@@ -603,12 +606,12 @@ func (client *VirtualHubsClient) updateTagsCreateRequest(ctx context.Context, re
 		return nil, errors.New("parameter virtualHubName cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{virtualHubName}", url.PathEscape(virtualHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.host, urlPath))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2022-07-01")
+	reqQP.Set("api-version", "2022-09-01")
 	req.Raw().URL.RawQuery = reqQP.Encode()
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, runtime.MarshalAsJSON(req, virtualHubParameters)

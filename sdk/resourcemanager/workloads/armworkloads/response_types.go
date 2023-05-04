@@ -39,12 +39,12 @@ type ClientSAPSupportedSKUResponse struct {
 	SAPSupportedResourceSKUsResult
 }
 
-// MonitorsClientCreateResponse contains the response from method MonitorsClient.Create.
+// MonitorsClientCreateResponse contains the response from method MonitorsClient.BeginCreate.
 type MonitorsClientCreateResponse struct {
 	Monitor
 }
 
-// MonitorsClientDeleteResponse contains the response from method MonitorsClient.Delete.
+// MonitorsClientDeleteResponse contains the response from method MonitorsClient.BeginDelete.
 type MonitorsClientDeleteResponse struct {
 	OperationStatusResult
 }
@@ -54,12 +54,12 @@ type MonitorsClientGetResponse struct {
 	Monitor
 }
 
-// MonitorsClientListByResourceGroupResponse contains the response from method MonitorsClient.ListByResourceGroup.
+// MonitorsClientListByResourceGroupResponse contains the response from method MonitorsClient.NewListByResourceGroupPager.
 type MonitorsClientListByResourceGroupResponse struct {
 	MonitorListResult
 }
 
-// MonitorsClientListResponse contains the response from method MonitorsClient.List.
+// MonitorsClientListResponse contains the response from method MonitorsClient.NewListPager.
 type MonitorsClientListResponse struct {
 	MonitorListResult
 }
@@ -69,47 +69,17 @@ type MonitorsClientUpdateResponse struct {
 	Monitor
 }
 
-// OperationsClientListResponse contains the response from method OperationsClient.List.
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PhpWorkloadsClientCreateOrUpdateResponse contains the response from method PhpWorkloadsClient.CreateOrUpdate.
-type PhpWorkloadsClientCreateOrUpdateResponse struct {
-	PhpWorkloadResource
-}
-
-// PhpWorkloadsClientDeleteResponse contains the response from method PhpWorkloadsClient.Delete.
-type PhpWorkloadsClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// PhpWorkloadsClientGetResponse contains the response from method PhpWorkloadsClient.Get.
-type PhpWorkloadsClientGetResponse struct {
-	PhpWorkloadResource
-}
-
-// PhpWorkloadsClientListByResourceGroupResponse contains the response from method PhpWorkloadsClient.ListByResourceGroup.
-type PhpWorkloadsClientListByResourceGroupResponse struct {
-	PhpWorkloadResourceList
-}
-
-// PhpWorkloadsClientListBySubscriptionResponse contains the response from method PhpWorkloadsClient.ListBySubscription.
-type PhpWorkloadsClientListBySubscriptionResponse struct {
-	PhpWorkloadResourceList
-}
-
-// PhpWorkloadsClientUpdateResponse contains the response from method PhpWorkloadsClient.Update.
-type PhpWorkloadsClientUpdateResponse struct {
-	PhpWorkloadResource
-}
-
-// ProviderInstancesClientCreateResponse contains the response from method ProviderInstancesClient.Create.
+// ProviderInstancesClientCreateResponse contains the response from method ProviderInstancesClient.BeginCreate.
 type ProviderInstancesClientCreateResponse struct {
 	ProviderInstance
 }
 
-// ProviderInstancesClientDeleteResponse contains the response from method ProviderInstancesClient.Delete.
+// ProviderInstancesClientDeleteResponse contains the response from method ProviderInstancesClient.BeginDelete.
 type ProviderInstancesClientDeleteResponse struct {
 	OperationStatusResult
 }
@@ -119,17 +89,17 @@ type ProviderInstancesClientGetResponse struct {
 	ProviderInstance
 }
 
-// ProviderInstancesClientListResponse contains the response from method ProviderInstancesClient.List.
+// ProviderInstancesClientListResponse contains the response from method ProviderInstancesClient.NewListPager.
 type ProviderInstancesClientListResponse struct {
 	ProviderInstanceListResult
 }
 
-// SAPApplicationServerInstancesClientCreateResponse contains the response from method SAPApplicationServerInstancesClient.Create.
+// SAPApplicationServerInstancesClientCreateResponse contains the response from method SAPApplicationServerInstancesClient.BeginCreate.
 type SAPApplicationServerInstancesClientCreateResponse struct {
 	SAPApplicationServerInstance
 }
 
-// SAPApplicationServerInstancesClientDeleteResponse contains the response from method SAPApplicationServerInstancesClient.Delete.
+// SAPApplicationServerInstancesClientDeleteResponse contains the response from method SAPApplicationServerInstancesClient.BeginDelete.
 type SAPApplicationServerInstancesClientDeleteResponse struct {
 	OperationStatusResult
 }
@@ -139,22 +109,32 @@ type SAPApplicationServerInstancesClientGetResponse struct {
 	SAPApplicationServerInstance
 }
 
-// SAPApplicationServerInstancesClientListResponse contains the response from method SAPApplicationServerInstancesClient.List.
+// SAPApplicationServerInstancesClientListResponse contains the response from method SAPApplicationServerInstancesClient.NewListPager.
 type SAPApplicationServerInstancesClientListResponse struct {
 	SAPApplicationServerInstanceList
 }
 
-// SAPApplicationServerInstancesClientUpdateResponse contains the response from method SAPApplicationServerInstancesClient.Update.
+// SAPApplicationServerInstancesClientStartInstanceResponse contains the response from method SAPApplicationServerInstancesClient.BeginStartInstance.
+type SAPApplicationServerInstancesClientStartInstanceResponse struct {
+	OperationStatusResult
+}
+
+// SAPApplicationServerInstancesClientStopInstanceResponse contains the response from method SAPApplicationServerInstancesClient.BeginStopInstance.
+type SAPApplicationServerInstancesClientStopInstanceResponse struct {
+	OperationStatusResult
+}
+
+// SAPApplicationServerInstancesClientUpdateResponse contains the response from method SAPApplicationServerInstancesClient.BeginUpdate.
 type SAPApplicationServerInstancesClientUpdateResponse struct {
 	SAPApplicationServerInstance
 }
 
-// SAPCentralInstancesClientCreateResponse contains the response from method SAPCentralInstancesClient.Create.
+// SAPCentralInstancesClientCreateResponse contains the response from method SAPCentralInstancesClient.BeginCreate.
 type SAPCentralInstancesClientCreateResponse struct {
 	SAPCentralServerInstance
 }
 
-// SAPCentralInstancesClientDeleteResponse contains the response from method SAPCentralInstancesClient.Delete.
+// SAPCentralInstancesClientDeleteResponse contains the response from method SAPCentralInstancesClient.BeginDelete.
 type SAPCentralInstancesClientDeleteResponse struct {
 	OperationStatusResult
 }
@@ -164,22 +144,32 @@ type SAPCentralInstancesClientGetResponse struct {
 	SAPCentralServerInstance
 }
 
-// SAPCentralInstancesClientListResponse contains the response from method SAPCentralInstancesClient.List.
+// SAPCentralInstancesClientListResponse contains the response from method SAPCentralInstancesClient.NewListPager.
 type SAPCentralInstancesClientListResponse struct {
 	SAPCentralInstanceList
 }
 
-// SAPCentralInstancesClientUpdateResponse contains the response from method SAPCentralInstancesClient.Update.
+// SAPCentralInstancesClientStartInstanceResponse contains the response from method SAPCentralInstancesClient.BeginStartInstance.
+type SAPCentralInstancesClientStartInstanceResponse struct {
+	OperationStatusResult
+}
+
+// SAPCentralInstancesClientStopInstanceResponse contains the response from method SAPCentralInstancesClient.BeginStopInstance.
+type SAPCentralInstancesClientStopInstanceResponse struct {
+	OperationStatusResult
+}
+
+// SAPCentralInstancesClientUpdateResponse contains the response from method SAPCentralInstancesClient.BeginUpdate.
 type SAPCentralInstancesClientUpdateResponse struct {
 	SAPCentralServerInstance
 }
 
-// SAPDatabaseInstancesClientCreateResponse contains the response from method SAPDatabaseInstancesClient.Create.
+// SAPDatabaseInstancesClientCreateResponse contains the response from method SAPDatabaseInstancesClient.BeginCreate.
 type SAPDatabaseInstancesClientCreateResponse struct {
 	SAPDatabaseInstance
 }
 
-// SAPDatabaseInstancesClientDeleteResponse contains the response from method SAPDatabaseInstancesClient.Delete.
+// SAPDatabaseInstancesClientDeleteResponse contains the response from method SAPDatabaseInstancesClient.BeginDelete.
 type SAPDatabaseInstancesClientDeleteResponse struct {
 	OperationStatusResult
 }
@@ -189,22 +179,32 @@ type SAPDatabaseInstancesClientGetResponse struct {
 	SAPDatabaseInstance
 }
 
-// SAPDatabaseInstancesClientListResponse contains the response from method SAPDatabaseInstancesClient.List.
+// SAPDatabaseInstancesClientListResponse contains the response from method SAPDatabaseInstancesClient.NewListPager.
 type SAPDatabaseInstancesClientListResponse struct {
 	SAPDatabaseInstanceList
 }
 
-// SAPDatabaseInstancesClientUpdateResponse contains the response from method SAPDatabaseInstancesClient.Update.
+// SAPDatabaseInstancesClientStartInstanceResponse contains the response from method SAPDatabaseInstancesClient.BeginStartInstance.
+type SAPDatabaseInstancesClientStartInstanceResponse struct {
+	OperationStatusResult
+}
+
+// SAPDatabaseInstancesClientStopInstanceResponse contains the response from method SAPDatabaseInstancesClient.BeginStopInstance.
+type SAPDatabaseInstancesClientStopInstanceResponse struct {
+	OperationStatusResult
+}
+
+// SAPDatabaseInstancesClientUpdateResponse contains the response from method SAPDatabaseInstancesClient.BeginUpdate.
 type SAPDatabaseInstancesClientUpdateResponse struct {
 	SAPDatabaseInstance
 }
 
-// SAPVirtualInstancesClientCreateResponse contains the response from method SAPVirtualInstancesClient.Create.
+// SAPVirtualInstancesClientCreateResponse contains the response from method SAPVirtualInstancesClient.BeginCreate.
 type SAPVirtualInstancesClientCreateResponse struct {
 	SAPVirtualInstance
 }
 
-// SAPVirtualInstancesClientDeleteResponse contains the response from method SAPVirtualInstancesClient.Delete.
+// SAPVirtualInstancesClientDeleteResponse contains the response from method SAPVirtualInstancesClient.BeginDelete.
 type SAPVirtualInstancesClientDeleteResponse struct {
 	OperationStatusResult
 }
@@ -214,22 +214,22 @@ type SAPVirtualInstancesClientGetResponse struct {
 	SAPVirtualInstance
 }
 
-// SAPVirtualInstancesClientListByResourceGroupResponse contains the response from method SAPVirtualInstancesClient.ListByResourceGroup.
+// SAPVirtualInstancesClientListByResourceGroupResponse contains the response from method SAPVirtualInstancesClient.NewListByResourceGroupPager.
 type SAPVirtualInstancesClientListByResourceGroupResponse struct {
 	SAPVirtualInstanceList
 }
 
-// SAPVirtualInstancesClientListBySubscriptionResponse contains the response from method SAPVirtualInstancesClient.ListBySubscription.
+// SAPVirtualInstancesClientListBySubscriptionResponse contains the response from method SAPVirtualInstancesClient.NewListBySubscriptionPager.
 type SAPVirtualInstancesClientListBySubscriptionResponse struct {
 	SAPVirtualInstanceList
 }
 
-// SAPVirtualInstancesClientStartResponse contains the response from method SAPVirtualInstancesClient.Start.
+// SAPVirtualInstancesClientStartResponse contains the response from method SAPVirtualInstancesClient.BeginStart.
 type SAPVirtualInstancesClientStartResponse struct {
 	OperationStatusResult
 }
 
-// SAPVirtualInstancesClientStopResponse contains the response from method SAPVirtualInstancesClient.Stop.
+// SAPVirtualInstancesClientStopResponse contains the response from method SAPVirtualInstancesClient.BeginStop.
 type SAPVirtualInstancesClientStopResponse struct {
 	OperationStatusResult
 }
@@ -239,27 +239,27 @@ type SAPVirtualInstancesClientUpdateResponse struct {
 	SAPVirtualInstance
 }
 
-// SKUsClientListResponse contains the response from method SKUsClient.List.
-type SKUsClientListResponse struct {
-	SKUsListResult
+// SapLandscapeMonitorClientCreateResponse contains the response from method SapLandscapeMonitorClient.Create.
+type SapLandscapeMonitorClientCreateResponse struct {
+	SapLandscapeMonitor
 }
 
-// WordpressInstancesClientCreateOrUpdateResponse contains the response from method WordpressInstancesClient.CreateOrUpdate.
-type WordpressInstancesClientCreateOrUpdateResponse struct {
-	WordpressInstanceResource
-}
-
-// WordpressInstancesClientDeleteResponse contains the response from method WordpressInstancesClient.Delete.
-type WordpressInstancesClientDeleteResponse struct {
+// SapLandscapeMonitorClientDeleteResponse contains the response from method SapLandscapeMonitorClient.Delete.
+type SapLandscapeMonitorClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// WordpressInstancesClientGetResponse contains the response from method WordpressInstancesClient.Get.
-type WordpressInstancesClientGetResponse struct {
-	WordpressInstanceResource
+// SapLandscapeMonitorClientGetResponse contains the response from method SapLandscapeMonitorClient.Get.
+type SapLandscapeMonitorClientGetResponse struct {
+	SapLandscapeMonitor
 }
 
-// WordpressInstancesClientListResponse contains the response from method WordpressInstancesClient.List.
-type WordpressInstancesClientListResponse struct {
-	WordpressInstanceResourceList
+// SapLandscapeMonitorClientListResponse contains the response from method SapLandscapeMonitorClient.List.
+type SapLandscapeMonitorClientListResponse struct {
+	SapLandscapeMonitorListResult
+}
+
+// SapLandscapeMonitorClientUpdateResponse contains the response from method SapLandscapeMonitorClient.Update.
+type SapLandscapeMonitorClientUpdateResponse struct {
+	SapLandscapeMonitor
 }

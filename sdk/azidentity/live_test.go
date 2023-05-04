@@ -119,6 +119,11 @@ func init() {
 }
 
 func TestMain(m *testing.M) {
+	code := run(m)
+	os.Exit(code)
+}
+
+func run(m *testing.M) int {
 	if recording.GetRecordMode() == recording.PlaybackMode || recording.GetRecordMode() == recording.RecordingMode {
 		// Start from a fresh proxy
 		err := recording.ResetProxy(nil)
@@ -185,9 +190,7 @@ func TestMain(m *testing.M) {
 			}
 		}
 	}
-	val := m.Run()
-
-	os.Exit(val)
+	return m.Run()
 }
 
 func initRecording(t *testing.T) (policy.ClientOptions, func()) {

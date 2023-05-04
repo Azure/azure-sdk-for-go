@@ -258,6 +258,10 @@ func TestCreateRequest(t *testing.T) {
 		t.Errorf("Expected %v, but got %v", "2020-11-05", req.Raw().Header.Get(headerXmsVersion))
 	}
 
+	if req.Raw().Header.Get(cosmosHeaderSDKSupportedCapabilities) != supportedCapabilitiesHeaderValue {
+		t.Errorf("Expected %v, but got %v", supportedCapabilitiesHeaderValue, req.Raw().Header.Get(cosmosHeaderSDKSupportedCapabilities))
+	}
+
 	opValue := pipelineRequestOptions{}
 	if !req.OperationValue(&opValue) {
 		t.Error("Expected to find operation value")

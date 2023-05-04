@@ -67,6 +67,31 @@ func GetConnectionStringListenOnly(t *testing.T) string {
 	return getEnvOrSkipTest(t, "SERVICEBUS_CONNECTION_STRING_LISTEN_ONLY")
 }
 
+func GetIdentityVars(t *testing.T) *struct {
+	TenantID string
+	ClientID string
+	Secret   string
+	Endpoint string
+} {
+	runningLiveTest := GetConnectionString(t) != ""
+
+	if !runningLiveTest {
+		return nil
+	}
+
+	return &struct {
+		TenantID string
+		ClientID string
+		Secret   string
+		Endpoint string
+	}{
+		TenantID: getEnvOrSkipTest(t, "AZURE_TENANT_ID"),
+		ClientID: getEnvOrSkipTest(t, "AZURE_CLIENT_ID"),
+		Endpoint: getEnvOrSkipTest(t, "SERVICEBUS_ENDPOINT"),
+		Secret:   getEnvOrSkipTest(t, "AZURE_CLIENT_SECRET"),
+	}
+}
+
 func getEnvOrSkipTest(t *testing.T, name string) string {
 	cs := os.Getenv(name)
 

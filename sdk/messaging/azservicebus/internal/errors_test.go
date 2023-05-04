@@ -227,6 +227,7 @@ func Test_ServiceBusError_LinkRecoveryNeeded(t *testing.T) {
 func Test_ServiceBusError_Fatal(t *testing.T) {
 	var fatalConditions = []amqp.ErrCond{
 		amqp.ErrCondMessageSizeExceeded,
+		amqp.ErrCondResourceLimitExceeded,
 		amqp.ErrCondUnauthorizedAccess,
 		amqp.ErrCondNotFound,
 		amqp.ErrCondNotAllowed,

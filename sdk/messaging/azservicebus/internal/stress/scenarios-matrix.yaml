@@ -12,46 +12,46 @@ matrix:
   scenarios:
     constantDetach:
       testTarget: constantDetach
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     constantDetachmentSender:
       testTarget: constantDetachmentSender
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     emptySessions:
       testTarget: emptySessions
       memory: "1.0Gi"
     finitePeeks:
       testTarget: finitePeeks
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     finiteSendAndReceive:
       testTarget: finiteSendAndReceive    
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     finiteSessions:
       testTarget: finiteSessions
       memory: "4Gi"
     idleFastReconnect:
       testTarget: idleFastReconnect
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     infiniteSendAndReceive:
       testTarget: infiniteSendAndReceive
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     infiniteSendAndReceiveWithChaos:
       testTarget: infiniteSendAndReceive
       # this value is injected as a label value in templates/deploy-job.yaml
       # this'll activate our standard chaos policy, which is at the bottom of that file.
       chaos: "true"
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     longRunningRenewLock:
       testTarget: longRunningRenewLock
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     mostlyIdleReceiver:
       testTarget: mostlyIdleReceiver
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     rapidOpenClose:
       testTarget: rapidOpenClose
-      memory: "1.5Gi"      
+      memory: "0.5Gi"      
     receiveCancellation:
       testTarget: receiveCancellation
-      memory: "1.5Gi"
+      memory: "0.5Gi"
     sendAndReceiveDrain:
       testTarget: sendAndReceiveDrain
-      memory: "1.5Gi"
+      memory: "0.5Gi"

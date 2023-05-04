@@ -442,14 +442,16 @@ func TestClientUnauthorizedCreds(t *testing.T) {
 	})
 
 	t.Run("invalid identity creds", func(t *testing.T) {
-		tenantID := os.Getenv("AZURE_TENANT_ID")
-		clientID := os.Getenv("AZURE_CLIENT_ID")
-		endpoint := os.Getenv("SERVICEBUS_ENDPOINT")
+		identityVars := test.GetIdentityVars(t)
 
-		cliCred, err := azidentity.NewClientSecretCredential(tenantID, clientID, "bogus-client-secret", nil)
+		if identityVars == nil {
+			return
+		}
+
+		cliCred, err := azidentity.NewClientSecretCredential(identityVars.TenantID, identityVars.ClientID, "bogus-client-secret", nil)
 		require.NoError(t, err)
 
-		client, err := NewClient(endpoint, cliCred, nil)
+		client, err := NewClient(identityVars.Endpoint, cliCred, nil)
 		require.NoError(t, err)
 
 		defer test.RequireClose(t, client)

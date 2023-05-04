@@ -11,7 +11,6 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/amqpwrap"
 	"github.com/Azure/azure-sdk-for-go/sdk/messaging/azservicebus/internal/exported"
@@ -321,7 +320,7 @@ func (r *Receiver) RenewMessageLock(ctx context.Context, msg *ReceivedMessage, o
 func (r *Receiver) Close(ctx context.Context) error {
 	cancelReleaser := r.cancelReleaser.Swap(emptyCancelFn).(func() string)
 	releaserID := cancelReleaser()
-	log.Writef(EventReceiver, "Stopped message releaser with ID '%s'", releaserID)
+	r.amqpLinks.Writef(EventReceiver, "Stopped message releaser with ID '%s'", releaserID)
 
 	r.cleanupOnClose()
 	return r.amqpLinks.Close(ctx, true)
@@ -388,21 +387,20 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 	// might have exited before all credits were used up.
 	currentReceiverCredits := int64(linksWithID.Receiver.Credits())
 	creditsToIssue := int64(maxMessages) - currentReceiverCredits
-	log.Writef(EventReceiver, "Asking for %d credits", maxMessages)
 
 	if creditsToIssue > 0 {
-		log.Writef(EventReceiver, "Only need to issue %d additional credits", creditsToIssue)
+		r.amqpLinks.Writef(EventReceiver, "Issuing %d credits, have %d", creditsToIssue, currentReceiverCredits)
 
 		if err := linksWithID.Receiver.IssueCredit(uint32(creditsToIssue)); err != nil {
 			return nil, err
 		}
 	} else {
-		log.Writef(EventReceiver, "No additional credits needed, still have %d credits active", currentReceiverCredits)
+		r.amqpLinks.Writef(EventReceiver, "Have %d credits, no new credits needed", currentReceiverCredits)
 	}
 
 	result := r.fetchMessages(ctx, linksWithID.Receiver, maxMessages, r.defaultTimeAfterFirstMsg)
 
-	log.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
+	r.amqpLinks.Writef(EventReceiver, "Received %d/%d messages", len(result.Messages), maxMessages)
 
 	// this'll only close anything if the error indicates that the link/connection is bad.
 	// it's safe to call with cancellation errors.
@@ -417,7 +415,7 @@ func (r *Receiver) receiveMessagesImpl(ctx context.Context, maxMessages int, opt
 		releaserFunc := r.newReleaserFunc(linksWithID.Receiver)
 		go releaserFunc()
 	} else {
-		log.Writef(EventReceiver, "Failure when receiving messages: %s", result.Error)
+		r.amqpLinks.Writef(EventReceiver, "Failure when receiving messages: %s", result.Error)
 	}
 
 	// If the user does get some messages we ignore 'error' and return only the messages.
@@ -616,8 +614,6 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 	return func() {
 		defer close(done)
 
-		log.Writef(EventReceiver, "[%s] Message releaser starting...", receiver.LinkName())
-
 		for {
 			// we might not have all the messages we need here.
 			msg, err := receiver.Receive(ctx, nil)
@@ -631,10 +627,12 @@ func (r *Receiver) newReleaserFunc(receiver amqpwrap.AMQPReceiver) func() {
 			}
 
 			if internal.IsCancelError(err) {
-				log.Writef(exported.EventReceiver, "[%s] Message releaser pausing. Released %d messages", receiver.LinkName(), released)
+				if released > 0 {
+					r.amqpLinks.Writef(exported.EventReceiver, "Message releaser pausing. Released %d messages", released)
+				}
 				break
 			} else if internal.GetRecoveryKind(err) != internal.RecoveryKindNone {
-				log.Writef(exported.EventReceiver, "[%s] Message releaser stopping because of link failure. Released %d messages. Will start again after next receive: %s", receiver.LinkName(), released, err)
+				r.amqpLinks.Writef(exported.EventReceiver, "Message releaser stopping because of link failure. Released %d messages. Will start again after next receive: %s", released, err)
 				break
 			}
 		}

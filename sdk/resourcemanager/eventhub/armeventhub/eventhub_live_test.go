@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/eventhub/armeventhub"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/resources/armresources"
@@ -43,12 +44,12 @@ func (testsuite *EventhubTestSuite) SetupSuite() {
 	testutil.StartRecording(testsuite.T(), "sdk/resourcemanager/eventhub/armeventhub/testdata")
 	testsuite.ctx = context.Background()
 	testsuite.cred, testsuite.options = testutil.GetCredAndClientOptions(testsuite.T())
-	testsuite.applicationGroupName = testutil.GenerateAlphaNumericID(testsuite.T(), "applicatio", 6)
-	testsuite.authorizationRuleName = testutil.GenerateAlphaNumericID(testsuite.T(), "authorizat", 6)
-	testsuite.consumerGroupName = testutil.GenerateAlphaNumericID(testsuite.T(), "consumergr", 6)
-	testsuite.eventHubName = testutil.GenerateAlphaNumericID(testsuite.T(), "eventhubna", 6)
-	testsuite.namespaceName = testutil.GenerateAlphaNumericID(testsuite.T(), "namespacen", 6)
-	testsuite.schemaGroupName = testutil.GenerateAlphaNumericID(testsuite.T(), "schemagrou", 6)
+	testsuite.applicationGroupName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "applicatio", 16, false)
+	testsuite.authorizationRuleName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "authorizat", 16, false)
+	testsuite.consumerGroupName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "consumergr", 16, false)
+	testsuite.eventHubName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "eventhubna", 16, false)
+	testsuite.namespaceName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "namespacen", 16, false)
+	testsuite.schemaGroupName, _ = recording.GenerateAlphaNumericID(testsuite.T(), "schemagrou", 16, false)
 	testsuite.storageAccountName = "storageeventhub2"
 	testsuite.location = testutil.GetEnv("LOCATION", "westus")
 	testsuite.resourceGroupName = testutil.GetEnv("RESOURCE_GROUP_NAME", "scenarioTestTempGroup")

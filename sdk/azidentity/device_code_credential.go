@@ -27,12 +27,11 @@ type DeviceCodeCredentialOptions struct {
 	// ClientID is the ID of the application users will authenticate to.
 	// Defaults to the ID of an Azure development application.
 	ClientID string
-	// DisableAuthorityValidationAndInstanceDiscovery should be set true only by applications authenticating
-	// in disconnected clouds, or private clouds such as Azure Stack. It determines whether the credential
-	// requests Azure AD instance metadata from https://login.microsoft.com before authenticating. Setting
-	// this to true will skip this request, making the application responsible for ensuring the configured
-	// authority is valid and trustworthy.
-	DisableAuthorityValidationAndInstanceDiscovery bool
+	// DisableInstanceDiscovery should be set true only by applications authenticating in disconnected clouds, or
+	// private clouds such as Azure Stack. It determines whether the credential requests Azure AD instance metadata
+	// from https://login.microsoft.com before authenticating. Setting this to true will skip this request, making
+	// the application responsible for ensuring the configured authority is valid and trustworthy.
+	DisableInstanceDiscovery bool
 	// TenantID is the Azure Active Directory tenant the credential authenticates in. Defaults to the
 	// "organizations" tenant, which can authenticate work and school accounts. Required for single-tenant
 	// applications.
@@ -89,7 +88,7 @@ func NewDeviceCodeCredential(options *DeviceCodeCredentialOptions) (*DeviceCodeC
 	}
 	cp.init()
 	c, err := getPublicClient(
-		cp.ClientID, cp.TenantID, &cp.ClientOptions, public.WithInstanceDiscovery(!cp.DisableAuthorityValidationAndInstanceDiscovery),
+		cp.ClientID, cp.TenantID, &cp.ClientOptions, public.WithInstanceDiscovery(!cp.DisableInstanceDiscovery),
 	)
 	if err != nil {
 		return nil, err
